@@ -22,19 +22,45 @@ extern "C" {
 
 /**
  * xmlSecKeyUsage:
- * @xmlSecKeyUsageAny: the key can be used in any way.
- * @xmlSecKeyUsageSign: the key for signing.
- * @xmlSecKeyUsageVerify: the key for signature verification.
- * @xmlSecKeyUsageEncrypt: the encryption key.
- * @xmlSecKeyUsageDecrypt: the decryption key.
  *
  * The key usage.
  */
 typedef unsigned int 			xmlSecKeyUsage;
+
+/**
+ * xmlSecKeyUsageSign:
+ * 
+ * Key can be used in any way.
+
+ */
 #define	xmlSecKeyUsageSign		0x0001
+
+/**
+ * xmlSecKeyUsageVerify:
+ *
+ * Key for signing.
+ */
 #define	xmlSecKeyUsageVerify		0x0002
+
+/**
+ * xmlSecKeyUsageEncrypt:
+ *
+ * Key for signature verification.
+ */
 #define	xmlSecKeyUsageEncrypt		0x0004
+
+/**
+ * xmlSecKeyUsageDecrypt:
+ *
+ * An encryption key.
+ */
 #define	xmlSecKeyUsageDecrypt		0x0008
+
+/**
+ * xmlSecKeyUsageAny:
+ *
+ * A decryption key.
+ */
 #define	xmlSecKeyUsageAny		0xFFFF
 
 /**************************************************************************
@@ -43,6 +69,16 @@ typedef unsigned int 			xmlSecKeyUsage;
  *
  *************************************************************************/
 typedef struct _xmlSecKeyReq 			xmlSecKeyReq, *xmlSecKeyReqPtr; 
+
+/**
+ * xmlSecKeyReq:
+ * @keyId:		the desired key value klass.
+ * @keyType:		the desired key type.
+ * @keyUsage:		the desired key usage.
+ * @keyBitsSize:	the desired key size (in bits!).
+ *
+ * The key requirements information.
+ */
 struct _xmlSecKeyReq {
     xmlSecKeyDataId			keyId;
     xmlSecKeyDataType			keyType;
@@ -62,8 +98,12 @@ XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
 
 /**
  * xmlSecKey:
- * @origin: the key origin.
- * @keyData: key specific data.
+ * @name: 		the key name.
+ * @value:		the key value.
+ * @dataList:		the key data list.
+ * @usage:		the key usage.
+ * @reserved0:		reserved for future.
+ * @reserved1:		reserved for future.
  *
  * The key.
  */
@@ -146,6 +186,11 @@ XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key,
  * Keys list
  *
  **********************************************************************/
+/** 
+ * xmlSecKeyPtrListId:
+ * 
+ * The keys list klass.
+ */
 #define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()
 XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyPtrListGetKlass		(void);
 

@@ -590,29 +590,31 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
 /**
  * xmlSecTransformCtxSetUri:
  *
- * Parses uri and adds transforms if required.
- *
- * http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel:
+ * Parses uri and adds xpointer transforms if required.
  *
  * The following examples demonstrate what the URI attribute identifies and
- * how it is dereferenced:
+ * how it is dereferenced 
+ * (http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel):
  *
  * - URI="http://example.com/bar.xml"
- * Identifies the octets that represent the external resource 
+ * identifies the octets that represent the external resource 
  * 'http://example.com/bar.xml', that is probably an XML document given 
  * its file extension. 
+ *
  * - URI="http://example.com/bar.xml#chapter1"
- * Identifies the element with ID attribute value 'chapter1' of the 
+ * identifies the element with ID attribute value 'chapter1' of the 
  * external XML resource 'http://example.com/bar.xml', provided as an 
  * octet stream. Again, for the sake of interoperability, the element 
  * identified as 'chapter1' should be obtained using an XPath transform 
  * rather than a URI fragment (barename XPointer resolution in external 
  * resources is not REQUIRED in this specification). 
+ *
  * - URI=""
- * Identifies the node-set (minus any comment nodes) of the XML resource 
+ * identifies the node-set (minus any comment nodes) of the XML resource 
  * containing the signature 
+ *
  * - URI="#chapter1"
- * Identifies a node-set containing the element with ID attribute value 
+ * identifies a node-set containing the element with ID attribute value 
  * 'chapter1' of the XML resource containing the signature. XML Signature 
  * (and its applications) modify this node-set to include the element plus 
  * all descendents including namespaces and attributes -- but not comments.
@@ -918,13 +920,8 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     }	
     
     /* Now we have a choice: we either can push from first transform or pop 
-     * from last. Parser likes pop and does not like push; c14n transforms
-     * like push and do not like pop. 
+     * from last. Our C14N transforms prefers push, so push data!
      */
-     
-     /* TODO: find first parser transform and do pop/push manually,
-      * if there are no parser transforms, just push data through
-      * from input uri transform */
     ret = xmlSecTransformPump(uriTransform, uriTransform->next, ctx);     
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -2040,7 +2037,6 @@ int xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr*
  *
  * Transform Ids list
  *
- * TODO: debug dump
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecTransformIdListKlass = {
     BAD_CAST "transform-ids-list",

@@ -26,9 +26,9 @@
 <h1>
 <a name="XMLSEC-XMLTREE"/>xmltree.h</h1>
 <div class="REFNAMEDIV">
-<a name="AEN5047"/><h2>Name</h2>xmltree.h -- The XML tree helper functions.</div>
+<a name="AEN5186"/><h2>Name</h2>xmltree.h -- The XML tree helper functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN5050"/><h2>Synopsis</h2>
+<a name="AEN5189"/><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-xmltree.html#XMLSECNODEGETNAME">xmlSecNodeGetName</a>               (node)
@@ -78,17 +78,17 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 #define     <a href="xmlsec-xmltree.html#XMLSECISHEX">xmlSecIsHex</a>                     (c)
 #define     <a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a>                    (c)</pre></td></tr></table></div>
 <div class="REFSECT1">
-<a name="AEN5119"/><h2>Description</h2>
+<a name="AEN5258"/><h2>Description</h2>
 <p/>
 </div>
 <div class="REFSECT1">
-<a name="AEN5122"/><h2>Details</h2>
+<a name="AEN5261"/><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN5124"/><h3>
+<a name="AEN5263"/><h3>
 <a name="XMLSECNODEGETNAME"/>xmlSecNodeGetName()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecNodeGetName(node)</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN5129"/><p/>
+<a name="AEN5268"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
@@ -96,13 +96,13 @@ void        <a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a>         
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5138"/><h3>
+<a name="AEN5277"/><h3>
 <a name="XMLSECPARSEFILE"/>xmlSecParseFile ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlDocPtr</strong>   xmlSecParseFile                 (const char *filename);</pre></td></tr></table><p>Loads XML Doc from file <tt class="PARAMETER"><i>filename</i></tt>. We need a special version because of 
 c14n issue. The code is copied from <strong>xmlSAXParseFileWithData</strong>() function.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5147"/><p/>
+<a name="AEN5286"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>filename</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the filename.</td>
@@ -113,7 +113,7 @@ c14n issue. The code is copied from <strong>xmlSAXParseFileWithData</strong>() f
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5160"/><h3>
+<a name="AEN5299"/><h3>
 <a name="XMLSECPARSEMEMORY"/>xmlSecParseMemory ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlDocPtr</strong>   xmlSecParseMemory               (unsigned char *buffer,
                                              <strong>size_t</strong> size,
@@ -121,7 +121,7 @@ c14n issue. The code is copied from <strong>xmlSAXParseFileWithData</strong>() f
 c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() function.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5169"/><p/>
+<a name="AEN5308"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>buffer</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the input buffer.</td>
@@ -138,7 +138,7 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5190"/><h3>
+<a name="AEN5329"/><h3>
 <a name="XMLSECPARSEMEMORYEXT"/>xmlSecParseMemoryExt ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlDocPtr</strong>   xmlSecParseMemoryExt            (unsigned char *prefix,
                                              <strong>size_t</strong> prefixSize,
@@ -148,7 +148,7 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
                                              <strong>size_t</strong> postfixSize);</pre></td></tr></table><p>Loads XML Doc from 3 chunks of memory: <tt class="PARAMETER"><i>prefix</i></tt>, <tt class="PARAMETER"><i>buffer</i></tt> and <tt class="PARAMETER"><i>postfix</i></tt>. '</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5203"/><p/>
+<a name="AEN5342"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>prefix</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the first part of the input.</td>
@@ -174,11 +174,11 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5236"/><h3>
+<a name="AEN5375"/><h3>
 <a name="XMLSECGETNODENSHREF"/>xmlSecGetNodeNsHref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <strong>xmlChar</strong>* xmlSecGetNodeNsHref          (const <strong>xmlNodePtr</strong> cur);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN5243"/><p/>
+<a name="AEN5382"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>cur</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
@@ -189,14 +189,14 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5256"/><h3>
+<a name="AEN5395"/><h3>
 <a name="XMLSECCHECKNODENAME"/>xmlSecCheckNodeName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecCheckNodeName             (const <strong>xmlNodePtr</strong> cur,
                                              const <strong>xmlChar</strong> *name,
                                              const <strong>xmlChar</strong> *ns);</pre></td></tr></table><p>Checks that the node has a given name and a given namespace href.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5265"/><p/>
+<a name="AEN5404"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>cur</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
@@ -213,12 +213,12 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5286"/><h3>
+<a name="AEN5425"/><h3>
 <a name="XMLSECGETNEXTELEMENTNODE"/>xmlSecGetNextElementNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecGetNextElementNode        (<strong>xmlNodePtr</strong> cur);</pre></td></tr></table><p>Seraches for the next element node.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5294"/><p/>
+<a name="AEN5433"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>cur</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
@@ -229,7 +229,7 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5307"/><h3>
+<a name="AEN5446"/><h3>
 <a name="XMLSECFINDCHILD"/>xmlSecFindChild ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecFindChild                 (const <strong>xmlNodePtr</strong> parent,
                                              const <strong>xmlChar</strong> *name,
@@ -237,7 +237,7 @@ c14n issue. The code is copied from <strong>xmlSAXParseMemory</strong>() functio
 namespace href.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5318"/><p/>
+<a name="AEN5457"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>parent</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to XML node.</td>
@@ -255,7 +255,7 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5339"/><h3>
+<a name="AEN5478"/><h3>
 <a name="XMLSECFINDPARENT"/>xmlSecFindParent ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecFindParent                (const <strong>xmlNodePtr</strong> cur,
                                              const <strong>xmlChar</strong> *name,
@@ -263,7 +263,7 @@ node is not found.</td>
 and namespace href.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5350"/><p/>
+<a name="AEN5489"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>cur</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
@@ -281,7 +281,7 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5371"/><h3>
+<a name="AEN5510"/><h3>
 <a name="XMLSECFINDNODE"/>xmlSecFindNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecFindNode                  (const <strong>xmlNodePtr</strong> parent,
                                              const <strong>xmlChar</strong> *name,
@@ -289,7 +289,7 @@ node is not found.</td>
 namespace href.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5382"/><p/>
+<a name="AEN5521"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>parent</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to XML node.</td>
@@ -307,14 +307,14 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5403"/><h3>
+<a name="AEN5542"/><h3>
 <a name="XMLSECADDCHILD"/>xmlSecAddChild ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecAddChild                  (<strong>xmlNodePtr</strong> parent,
                                              const <strong>xmlChar</strong> *name,
                                              const <strong>xmlChar</strong> *ns);</pre></td></tr></table><p>Adds a child to the node <tt class="PARAMETER"><i>parent</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5416"/><p/>
+<a name="AEN5555"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>parent</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
@@ -331,14 +331,14 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5437"/><h3>
+<a name="AEN5576"/><h3>
 <a name="XMLSECADDNEXTSIBLING"/>xmlSecAddNextSibling ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecAddNextSibling            (<strong>xmlNodePtr</strong> node,
                                              const <strong>xmlChar</strong> *name,
                                              const <strong>xmlChar</strong> *ns);</pre></td></tr></table><p>Adds next sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5450"/><p/>
+<a name="AEN5589"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
@@ -355,14 +355,14 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5471"/><h3>
+<a name="AEN5610"/><h3>
 <a name="XMLSECADDPREVSIBLING"/>xmlSecAddPrevSibling ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlNodePtr</strong>  xmlSecAddPrevSibling            (<strong>xmlNodePtr</strong> node,
                                              const <strong>xmlChar</strong> *name,
                                              const <strong>xmlChar</strong> *ns);</pre></td></tr></table><p>Adds prev sibling to the node <tt class="PARAMETER"><i>node</i></tt> with given <tt class="PARAMETER"><i>name</i></tt> and namespace <tt class="PARAMETER"><i>ns</i></tt>.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5484"/><p/>
+<a name="AEN5623"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML node.</td>
@@ -379,13 +379,13 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5505"/><h3>
+<a name="AEN5644"/><h3>
 <a name="XMLSECREPLACENODE"/>xmlSecReplaceNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNode               (<strong>xmlNodePtr</strong> node,
                                              <strong>xmlNodePtr</strong> newNode);</pre></td></tr></table><p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt> in the XML tree.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5515"/><p/>
+<a name="AEN5654"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the current node.</td>
@@ -399,13 +399,13 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5532"/><h3>
+<a name="AEN5671"/><h3>
 <a name="XMLSECREPLACECONTENT"/>xmlSecReplaceContent ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceContent            (<strong>xmlNodePtr</strong> node,
                                              <strong>xmlNodePtr</strong> newNode);</pre></td></tr></table><p>Swaps the content of <tt class="PARAMETER"><i>node</i></tt> and <tt class="PARAMETER"><i>newNode</i></tt>.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5542"/><p/>
+<a name="AEN5681"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the current node.</td>
@@ -419,14 +419,14 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5559"/><h3>
+<a name="AEN5698"/><h3>
 <a name="XMLSECREPLACENODEBUFFER"/>xmlSecReplaceNodeBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecReplaceNodeBuffer         (<strong>xmlNodePtr</strong> node,
                                              unsigned char *buffer,
                                              <strong>size_t</strong> size);</pre></td></tr></table><p>Swaps the <tt class="PARAMETER"><i>node</i></tt> and the parsed XML data from the <tt class="PARAMETER"><i>buffer</i></tt> in the XML tree.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5569"/><p/>
+<a name="AEN5708"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the current node.</td>
@@ -443,7 +443,7 @@ node is not found.</td>
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5590"/><h3>
+<a name="AEN5729"/><h3>
 <a name="XMLSECADDIDS"/>xmlSecAddIDs ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecAddIDs                    (<strong>xmlDocPtr</strong> doc,
                                              <strong>xmlNodePtr</strong> cur,
@@ -451,7 +451,7 @@ node is not found.</td>
 from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"><i>doc</i></tt> document IDs attributes hash.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5602"/><p/>
+<a name="AEN5741"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>doc</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the pointer to an XML document.</td>
@@ -465,12 +465,12 @@ from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5619"/><h3>
+<a name="AEN5758"/><h3>
 <a name="XMLSECISHEX"/>xmlSecIsHex()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecIsHex(c)</pre></td></tr></table><p>Macro. Returns 1 if <tt class="PARAMETER"><i>c</i></tt> is a hex digit or 0 other wise.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5626"/><p/>
+<a name="AEN5765"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>c</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the character.</td>
@@ -478,12 +478,12 @@ from the <tt class="PARAMETER"><i>ids</i></tt> list to the <tt class="PARAMETER"
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN5635"/><h3>
+<a name="AEN5774"/><h3>
 <a name="XMLSECGETHEX"/>xmlSecGetHex()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecGetHex(c)</pre></td></tr></table><p>Macro. Returns the hex value of the <tt class="PARAMETER"><i>c</i></tt>.</p>
 <p/>
 <div class="INFORMALTABLE">
-<a name="AEN5642"/><p/>
+<a name="AEN5781"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>c</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> the character,</td>

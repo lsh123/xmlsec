@@ -1,6 +1,6 @@
 50% function docs coverage.
-195 functions documented.
-194 not documented.
+196 functions documented.
+193 not documented.
 
 
 XMLSEC_ERRORS_MAX_NUMBER
@@ -116,7 +116,6 @@ xmlSecKeyGetName
 xmlSecKeyGetType
 xmlSecKeyGetValue
 xmlSecKeyPtrListGetKlass
-xmlSecKeyPtrListId
 xmlSecKeyReqCopy
 xmlSecKeyReqFinalize
 xmlSecKeyReqInitialize

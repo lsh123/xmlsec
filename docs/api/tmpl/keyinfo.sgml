@@ -53,19 +53,33 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 
 
 
+<!-- ##### MACRO xmlSecKeyDataValueId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataRetrievalMethodId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataEncryptedKeyId ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION xmlSecKeyDataNameGetKlass ##### -->
 <para>
 
 </para>
 
 @Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataValueId ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### FUNCTION xmlSecKeyDataValueGetKlass ##### -->
@@ -76,26 +90,12 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecKeyDataRetrievalMethodId ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION xmlSecKeyDataRetrievalMethodGetKlass ##### -->
 <para>
 
 </para>
 
 @Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyDataEncryptedKeyId ##### -->
-<para>
-
-</para>
-
 
 
 <!-- ##### FUNCTION xmlSecKeyDataEncryptedKeyGetKlass ##### -->

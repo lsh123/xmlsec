@@ -94,8 +94,35 @@ The key usage.</para>
 };
 </programlisting>
 <para>
+The key requirements information.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <structfield>keyId</structfield></entry>
+<entry>		the desired key value klass.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <structfield>keyType</structfield></entry>
+<entry>		the desired key type.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> <structfield>keyUsage</structfield></entry>
+<entry>		the desired key usage.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>keyBitsSize</structfield></entry>
+<entry>	the desired key size (in bits!).
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize ()</title>
 <programlisting>int         xmlSecKeyReqInitialize          (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
@@ -249,7 +276,42 @@ Macro. Returns 1 if <parameter>key</parameter> is valid and <parameter>key</para
 The key.</para>
 <para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
+<entry> 		the key name.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <structfield>value</structfield></entry>
+<entry>		the key value.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>dataList</structfield></entry>
+<entry>		the key data list.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> <structfield>usage</structfield></entry>
+<entry>		the key usage.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>		reserved for future.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>		reserved for future.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyCreate">xmlSecKeyCreate ()</title>
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (void);</programlisting>
@@ -605,6 +667,8 @@ key type is <parameter>type</parameter>).</para>
 <title><anchor id="xmlSecKeyPtrListId">xmlSecKeyPtrListId</title>
 <programlisting>#define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()
 </programlisting>
+<para>
+The keys list klass.</para>
 <para>
 
 </para></refsect2>

@@ -39,19 +39,21 @@ void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>      
 <programlisting>struct xmlSecEncCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;    
     xmlEncCtxMode		mode;
+    xmlSecTransformId		defEncMethodId;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		encTransformCtx;
 
-    xmlSecTransformPtr		encMethod;
-    xmlSecKeyPtr		encKey;
-
     /* these data are returned */
-    xmlSecBufferPtr		result;
     xmlSecTransformOperation	operation;
+    xmlSecBufferPtr		result;
     int				resultBase64Encoded;
     int				resultReplaced;
+    xmlSecTransformPtr		encMethod;
+    xmlSecKeyPtr		encKey;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
@@ -62,7 +64,6 @@ void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>      
     xmlChar*			carriedKeyName;
 
     /* these are internal data, nobody should change that except us */
-    int				dontDestroyEncMethod;
     xmlNodePtr			encDataNode;
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;
@@ -88,7 +89,22 @@ XML Encrypiton context.</para>
 </entry>
 </row>
 <row>
+<entry>unsigned int <structfield>flags</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>unsigned int <structfield>flags2</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
 <entry><link linkend="xmlEncCtxMode">xmlEncCtxMode</link> <structfield>mode</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>defEncMethodId</structfield></entry>
 <entry>
 </entry>
 </row>
@@ -108,22 +124,12 @@ XML Encrypiton context.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>encMethod</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>encKey</structfield></entry>
+<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
 <entry>
 </entry>
 </row>
 <row>
 <entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link> <structfield>operation</structfield></entry>
 <entry>
 </entry>
 </row>
@@ -134,6 +140,16 @@ XML Encrypiton context.</para>
 </row>
 <row>
 <entry>int <structfield>resultReplaced</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>encMethod</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>encKey</structfield></entry>
 <entry>
 </entry>
 </row>
@@ -164,11 +180,6 @@ XML Encrypiton context.</para>
 </row>
 <row>
 <entry><link linkend="xmlChar">xmlChar</link> *<structfield>carriedKeyName</structfield></entry>
-<entry>
-</entry>
-</row>
-<row>
-<entry>int <structfield>dontDestroyEncMethod</structfield></entry>
 <entry>
 </entry>
 </row>

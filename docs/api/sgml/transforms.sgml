@@ -231,30 +231,115 @@ int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIO
 <title><anchor id="xmlSecTransformCtx">struct xmlSecTransformCtx</title>
 <programlisting>struct xmlSecTransformCtx {
     /* user settings */
-    void*				userData;
-    unsigned int			flags;
-    unsigned int			flags2;
-    xmlSecTransformUriType		enabledUris;
-    xmlSecPtrList			enabledTransforms;
-
+    void*					userData;
+    unsigned int				flags;
+    unsigned int				flags2;
+    xmlSecTransformUriType			enabledUris;
+    xmlSecPtrList				enabledTransforms;
+    xmlSecTransformCtxPreExecuteCallback	preExecCallback;
+    
     /* results */
-    xmlSecBufferPtr			result;
-    xmlSecTransformStatus		status;
-    xmlChar*				uri;
-    xmlChar*				xptrExpr;
-    xmlSecTransformPtr			first;
-    xmlSecTransformPtr			last;
+    xmlSecBufferPtr				result;
+    xmlSecTransformStatus			status;
+    xmlChar*					uri;
+    xmlChar*					xptrExpr;
+    xmlSecTransformPtr				first;
+    xmlSecTransformPtr				last;
 
     /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    void*					reserved0;
+    void*					reserved1;
 };
 </programlisting>
 <para>
-The transform context.</para>
+The transform execution context.</para>
 <para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry>void *<structfield>userData</structfield></entry>
+<entry> 		the pointer to user data (xmlsec and xmlsec-crypto never 
+		touch this).
+</entry>
+</row>
+<row>
+<entry>unsigned int <structfield>flags</structfield></entry>
+<entry> 		the bit mask flags to control transforms execution 
+		(reserved for the future).
+</entry>
+</row>
+<row>
+<entry>unsigned int <structfield>flags2</structfield></entry>
+<entry> 		the bit mask flags to control transforms execution 
+			(reserved for the future).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> <structfield>enabledUris</structfield></entry>
+<entry> 	the allowed transform data source uri types.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledTransforms</structfield></entry>
+<entry> 	the list of enabled transforms; if list is empty (default)
+		then all registered transforms are enabled.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link> <structfield>preExecCallback</structfield></entry>
+<entry>	the callback called after preparing transform chain
+		and right before actual data processing; application
+		can use this callback to change transforms parameters,
+		insert additional transforms in the chain or do
+		additional validation (and abort transform execution 
+		if needed).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
+<entry>		the pointer to transforms result buffer.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>uri</structfield></entry>
+<entry>		the data source URI without xpointer expression.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>xptrExpr</structfield></entry>
+<entry>		the xpointer expression from data source URI (if any).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>first</structfield></entry>
+<entry>		the first transform in the chain.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>last</structfield></entry>
+<entry>		the last transform in the chain.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>		reserved for the future.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransform">struct xmlSecTransform</title>
 <programlisting>struct xmlSecTransform {

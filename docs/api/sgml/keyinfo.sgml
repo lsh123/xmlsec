@@ -21,13 +21,13 @@ int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 #define     <link linkend="xmlSecKeyDataNameId">xmlSecKeyDataNameId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass</link>   (void);
 #define     <link linkend="xmlSecKeyDataValueId">xmlSecKeyDataValueId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass</link>  (void);
 #define     <link linkend="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</link>
+#define     <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass</link>   (void);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass</link>  (void);
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass</link>
                                             (void);
-#define     <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass</link>
                                             (void);
 struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
@@ -102,10 +102,37 @@ Writes the key into the &lt;dsig:KeyInfo&gt; template <parameter>keyInfoNode</pa
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataNameId">xmlSecKeyDataNameId</title>
-<programlisting>#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()
+<programlisting>#define xmlSecKeyDataNameId 		xmlSecKeyDataNameGetKlass()
 </programlisting>
 <para>
 The &lt;dsig:KeyName&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataValueId">xmlSecKeyDataValueId</title>
+<programlisting>#define xmlSecKeyDataValueId		xmlSecKeyDataValueGetKlass()
+</programlisting>
+<para>
+The &lt;dsig:KeyValue&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</title>
+<programlisting>#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
+</programlisting>
+<para>
+The &lt;dsig:RetrievalMethod&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</title>
+<programlisting>#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
+</programlisting>
+<para>
+The &lt;enc:EncryptedKey&gt; processing class.</para>
 <para>
 
 </para></refsect2>
@@ -125,15 +152,6 @@ The &lt;dsig:KeyName&gt; processing class.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataValueId">xmlSecKeyDataValueId</title>
-<programlisting>#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()
-</programlisting>
-<para>
-The &lt;dsig:KeyValue&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
 <para>
@@ -148,15 +166,6 @@ The &lt;dsig:KeyValue&gt; processing class.</para>
 
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</title>
-<programlisting>#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
-</programlisting>
-<para>
-The &lt;dsig:RetrievalMethod&gt; processing class.</para>
-<para>
-
-</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
@@ -173,15 +182,6 @@ The &lt;dsig:RetrievalMethod&gt; processing class.</para>
 
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</title>
-<programlisting>#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
-</programlisting>
-<para>
-The &lt;enc:EncryptedKey&gt; processing class.</para>
-<para>
-
-</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass

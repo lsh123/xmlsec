@@ -228,16 +228,16 @@ XMLSEC_EXPORT void			xmlSecKeyInfoCtxDebugXmlDump	(xmlSecKeyInfoCtxPtr keyInfoCt
  *
  * The <dsig:KeyName> processing class.
  */
-#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataNameGetKlass		(void);
+#define xmlSecKeyDataNameId 		xmlSecKeyDataNameGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId 		xmlSecKeyDataNameGetKlass	(void);
 
 /**
-	 * xmlSecKeyDataValueId
+ * xmlSecKeyDataValueId
  *
  * The <dsig:KeyValue> processing class.
  */
-#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataValueGetKlass		(void);
+#define xmlSecKeyDataValueId		xmlSecKeyDataValueGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId		xmlSecKeyDataValueGetKlass	(void);
 
 /**
  * xmlSecKeyDataRetrievalMethodId
@@ -245,7 +245,7 @@ XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataValueGetKlass		(void);
  * The <dsig:RetrievalMethod> processing class.
  */
 #define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataRetrievalMethodGetKlass	(void);
+XMLSEC_EXPORT xmlSecKeyDataId		xmlSecKeyDataRetrievalMethodGetKlass(void);
 
 #ifndef XMLSEC_NO_XMLENC
 /**
@@ -254,7 +254,7 @@ XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataRetrievalMethodGetKlass	(void);
  * The <enc:EncryptedKey> processing class.
  */
 #define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataEncryptedKeyGetKlass	(void);
+XMLSEC_EXPORT xmlSecKeyDataId		xmlSecKeyDataEncryptedKeyGetKlass(void);
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifdef __cplusplus

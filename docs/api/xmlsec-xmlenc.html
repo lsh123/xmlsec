@@ -47,19 +47,21 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecEncCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;    
     xmlEncCtxMode		mode;
+    xmlSecTransformId		defEncMethodId;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		encTransformCtx;
 
-    xmlSecTransformPtr		encMethod;
-    xmlSecKeyPtr		encKey;
-
     /* these data are returned */
-    xmlSecBufferPtr		result;
     xmlSecTransformOperation	operation;
+    xmlSecBufferPtr		result;
     int				resultBase64Encoded;
     int				resultReplaced;
+    xmlSecTransformPtr		encMethod;
+    xmlSecKeyPtr		encKey;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
@@ -70,7 +72,6 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
     xmlChar*			carriedKeyName;
 
     /* these are internal data, nobody should change that except us */
-    int				dontDestroyEncMethod;
     xmlNodePtr			encDataNode;
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;
@@ -86,8 +87,18 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="LEFT" valign="TOP">void *<tt class="STRUCTFIELD"><i>userData</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">unsigned int <tt class="STRUCTFIELD"><i>flags2</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlEncCtxMode</strong> <tt class="STRUCTFIELD"><i>mode</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformId</strong> <tt class="STRUCTFIELD"><i>defEncMethodId</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
@@ -103,25 +114,25 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecTransformPtr</strong> <tt class="STRUCTFIELD"><i>encMethod</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecKeyPtr</strong> <tt class="STRUCTFIELD"><i>encKey</i></tt>
+<strong>xmlSecTransformOperation</strong> <tt class="STRUCTFIELD"><i>operation</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlSecBufferPtr</strong> <tt class="STRUCTFIELD"><i>result</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">
-<strong>xmlSecTransformOperation</strong> <tt class="STRUCTFIELD"><i>operation</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultBase64Encoded</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>resultReplaced</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecTransformPtr</strong> <tt class="STRUCTFIELD"><i>encMethod</i></tt>
+</td>
+<td width="80%" align="LEFT" valign="TOP"> </td>
+</tr><tr><td width="20%" align="LEFT" valign="TOP">
+<strong>xmlSecKeyPtr</strong> <tt class="STRUCTFIELD"><i>encKey</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
@@ -146,9 +157,6 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
 <strong>xmlChar</strong> *<tt class="STRUCTFIELD"><i>carriedKeyName</i></tt>
-</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
-</tr><tr><td width="20%" align="LEFT" valign="TOP">int <tt class="STRUCTFIELD"><i>dontDestroyEncMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr><tr><td width="20%" align="LEFT" valign="TOP">
@@ -177,11 +185,11 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN425"/><h3>
+<a name="AEN434"/><h3>
 <a name="XMLSECENCCTXCREATE"/>xmlSecEncCtxCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><strong>xmlSecEncCtxPtr</strong> xmlSecEncCtxCreate          (<strong>xmlSecKeysMngrPtr</strong> keysMngr);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN432"/><p/>
+<a name="AEN441"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>keysMngr</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
@@ -192,11 +200,11 @@ void        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy
 </div>
 </div>
 <hr/><div class="REFSECT2">
-<a name="AEN445"/><h3>
+<a name="AEN454"/><h3>
 <a name="XMLSECENCCTXDESTROY"/>xmlSecEncCtxDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecEncCtxDestroy             (<strong>xmlSecEncCtxPtr</strong> encCtx);</pre></td></tr></table><p/>
 <div class="INFORMALTABLE">
-<a name="AEN451"/><p/>
+<a name="AEN460"/><p/>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr><td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>encCtx</i></tt> :</td>
 <td width="80%" align="LEFT" valign="TOP"> </td>

@@ -518,16 +518,16 @@ xmlSecKeyInfoCtxPtr keyInfoCtx,FILE* output
 </FUNCTION>
 <MACRO>
 <NAME>xmlSecKeyDataNameId</NAME>
-#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()
+#define xmlSecKeyDataNameId 		xmlSecKeyDataNameGetKlass()
 </MACRO>
 <FUNCTION>
 <NAME>xmlSecKeyDataNameGetKlass</NAME>
-<RETURNS>xmlSecKeyDataId 	</RETURNS>
+<RETURNS>xmlSecKeyDataId  </RETURNS>
 void
 </FUNCTION>
 <MACRO>
 <NAME>xmlSecKeyDataValueId</NAME>
-#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()
+#define xmlSecKeyDataValueId		xmlSecKeyDataValueGetKlass()
 </MACRO>
 <FUNCTION>
 <NAME>xmlSecKeyDataValueGetKlass</NAME>
@@ -1963,27 +1963,33 @@ typedef unsigned int				xmlSecTransformUsage;
 <NAME>xmlSecTransformUsageAny</NAME>
 #define xmlSecTransformUsageAny			0xFFFF
 </MACRO>
+<USER_FUNCTION>
+<NAME>xmlSecTransformCtxPreExecuteCallback</NAME>
+<RETURNS>int </RETURNS>
+xmlSecTransformCtxPtr transformCtx
+</USER_FUNCTION>
 <STRUCT>
 <NAME>xmlSecTransformCtx</NAME>
 struct xmlSecTransformCtx {
     /* user settings */
-    void*				userData;
-    unsigned int			flags;
-    unsigned int			flags2;
-    xmlSecTransformUriType		enabledUris;
-    xmlSecPtrList			enabledTransforms;
-
+    void*					userData;
+    unsigned int				flags;
+    unsigned int				flags2;
+    xmlSecTransformUriType			enabledUris;
+    xmlSecPtrList				enabledTransforms;
+    xmlSecTransformCtxPreExecuteCallback	preExecCallback;
+    
     /* results */
-    xmlSecBufferPtr			result;
-    xmlSecTransformStatus		status;
-    xmlChar*				uri;
-    xmlChar*				xptrExpr;
-    xmlSecTransformPtr			first;
-    xmlSecTransformPtr			last;
+    xmlSecBufferPtr				result;
+    xmlSecTransformStatus			status;
+    xmlChar*					uri;
+    xmlChar*					xptrExpr;
+    xmlSecTransformPtr				first;
+    xmlSecTransformPtr				last;
 
     /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    void*					reserved0;
+    void*					reserved1;
 };
 </STRUCT>
 <FUNCTION>
@@ -2901,19 +2907,21 @@ typedef enum {
 struct xmlSecEncCtx {
     /* these data user can set before performing the operation */
     void*			userData;
+    unsigned int		flags;
+    unsigned int		flags2;    
     xmlEncCtxMode		mode;
+    xmlSecTransformId		defEncMethodId;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
     xmlSecTransformCtx		encTransformCtx;
 
-    xmlSecTransformPtr		encMethod;
-    xmlSecKeyPtr		encKey;
-
     /* these data are returned */
-    xmlSecBufferPtr		result;
     xmlSecTransformOperation	operation;
+    xmlSecBufferPtr		result;
     int				resultBase64Encoded;
     int				resultReplaced;
+    xmlSecTransformPtr		encMethod;
+    xmlSecKeyPtr		encKey;
 
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
@@ -2924,7 +2932,6 @@ struct xmlSecEncCtx {
     xmlChar*			carriedKeyName;
 
     /* these are internal data, nobody should change that except us */
-    int				dontDestroyEncMethod;
     xmlNodePtr			encDataNode;
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;

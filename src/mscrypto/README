@@ -1,3 +1,23 @@
+9/21/2003 Aleksey
+	Copule issues with certs verification:
+	1) Currently the only "trusted" certs are ones loaded to xmlsec directly (for 
+	example, using xmlsec command line utility "--trusted" option). This means that
+	code does not accept trusted certs in MS Crypto store as such. There are some functions
+	that allow to check against trusted certs in MS Crypto store. But MSDN says that
+	these functions are not available in Windows 95/98/Me and partially not available 
+	in NT 4.0 and Windows 2000. Anyone interested in more details feel free to search
+	for "Certificate Chain Verification Functions" article in MSDN. For me, it sounds
+	like it would be possible to use these new functions but I think it would be good
+	to have a runtime version check:
+		- if it's old Windows then use current code;
+		- if it's new Windows with new functions then use some new code.
+	If you are interested in this functionality, feel free to contribute :)
+
+	2) Curerntly the cert chain construction/verification function is recursive. It's 
+	not too difficult to use a loop instead but I don't think this is important too 
+	much. If you do then feel free to submit a patch :)
+	
+
 9/21/2003
 	Issuer/serial of certificates lookup and writing is now
 	supported. The conversion from and to xml integer

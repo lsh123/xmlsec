@@ -993,11 +993,11 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 	goto done;
     }
 
-    keyBlob = (LPBYTE)LocalAlloc(LPTR, keyBlobLen);
+    keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,
-		    "LocalAlloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
@@ -1124,7 +1124,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
    
 done:
     if(keyBlob != NULL) { 
-	LocalFree(keyBlob);
+	xmlFree(keyBlob);
     }
     if (hKey != 0) {
 	CryptDestroyKey(hKey);
@@ -1261,11 +1261,11 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     keyBlobLen = sizeof(PUBLICKEYSTRUC) + sizeof(ALG_ID) + (dwPublicKeySize / 8);
 
     /* allocate simple blob buffer */
-    keyBlob = (LPBYTE)LocalAlloc(LPTR, keyBlobLen);
+    keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,
-		    "LocalAlloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
@@ -1327,7 +1327,7 @@ done:
 	CryptDestroyKey(hTempKey);
     }
     if(keyBlob != NULL) {
-	LocalFree(keyBlob);
+	xmlFree(keyBlob);
     }
     return(res);
 }

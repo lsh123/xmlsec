@@ -233,8 +233,8 @@ static const xmlChar* xmlSecMSCryptoKeyDataX509GetIdentifier	(xmlSecKeyDataPtr d
 
 static void		xmlSecMSCryptoKeyDataX509DebugDump	(xmlSecKeyDataPtr data,
 								 FILE* output);
-static void		xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data,
-							      FILE* output);
+static void		xmlSecMSCryptoKeyDataX509DebugXmlDump	(xmlSecKeyDataPtr data,
+								 FILE* output);
 
 
 
@@ -327,9 +327,10 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     if(ctx->keyCert != NULL) {
 	CertFreeCertificateContext(ctx->keyCert);
+	ctx->keyCert = 0;
     }
     ctx->keyCert = cert;
 
@@ -348,42 +349,15 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
 int 
 xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
-    PCCERT_CONTEXT pCert;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(cert != NULL, -1);
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
 
-    pCert = CertDuplicateCertificateContext(cert);
-    CertFreeCertificateContext(cert);
-    if (!pCert) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "CertDuplicateCertificateContext",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-
-    if (ctx->hMemStore == 0) {
-	ctx->hMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
-				       0, 
-				       0, 
-				       CERT_STORE_CREATE_NEW_FLAG, 
-				       NULL);
-	if (ctx->hMemStore == 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			"CertOpenStore",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-    }
-
-    if (!CertAddCertificateContextToStore(ctx->hMemStore, pCert, CERT_STORE_ADD_ALWAYS, NULL)) {
+    if (!CertAddCertificateContextToStore(ctx->hMemStore, cert, CERT_STORE_ADD_ALWAYS, NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "CertAddCertificateContextToStore",
@@ -415,12 +389,14 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
+    xmlSecAssert2(ctx->numCerts > pos, NULL);
 
     while ((pCert = CertEnumCertificatesInStore(ctx->hMemStore, pCert)) && (pos > 0)) {
 	pos--;
     }
 
-    return pCert;
+    return(pCert);
 }
 
 /**
@@ -440,7 +416,7 @@ xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, 0);
 
-    return (ctx->numCerts);
+    return(ctx->numCerts);
 }
 
 /**
@@ -461,22 +437,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-
-    if (ctx->hMemStore == 0) {
-	ctx->hMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
-				       0, 
-				       0, 
-				       CERT_STORE_CREATE_NEW_FLAG, 
-				       NULL);
-	if (ctx->hMemStore == 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			"CertOpenStore",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-    }
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
 
     if (!CertAddCRLContextToStore(ctx->hMemStore, crl, CERT_STORE_ADD_ALWAYS, NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -509,15 +470,14 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), NULL);
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, NULL);
-
     xmlSecAssert2(ctx->hMemStore != 0, NULL);
-    xmlSecAssert2(pos < ctx->numCrls, NULL);
+    xmlSecAssert2(ctx->numCrls > pos, NULL);
 
     while ((pCRL = CertEnumCRLsInStore(ctx->hMemStore, pCRL)) && (pos > 0)) {
 	pos--;
     }
 
-    return pCRL;
+    return(pCRL);
 }
 
 /**
@@ -550,6 +510,21 @@ xmlSecMSCryptoKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoX509DataCtx));
+
+    ctx->hMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
+				   0, 
+				   0, 
+				   CERT_STORE_CREATE_NEW_FLAG, 
+				   NULL);
+    if (ctx->hMemStore == 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		    "CertOpenStore",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
     return(0);
 }
 
@@ -676,7 +651,7 @@ xmlSecMSCryptoKeyDataX509Finalize(xmlSecKeyDataPtr data) {
 	ctx->keyCert = NULL;
     }
 
-    if (ctx->hMemStore) {
+    if (ctx->hMemStore != 0) {
 	if (!CertCloseStore(ctx->hMemStore, CERT_CLOSE_STORE_FORCE_FLAG)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -1125,8 +1100,6 @@ xmlSecMSCryptoX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 
     cert = xmlSecMSCryptoX509StoreFindCert(x509Store, subject, NULL, NULL, NULL, keyInfoCtx);
     if(cert == NULL){
-	xmlFree(subject);
-
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1134,8 +1107,10 @@ xmlSecMSCryptoX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 			XMLSEC_ERRORS_R_CERT_NOT_FOUND,
 			"subject=%s", 
 			xmlSecErrorsSafeString(subject));
+    	    xmlFree(subject);
 	    return(-1);
 	}
+	xmlFree(subject);
 	return(0);
     }
 
@@ -1543,7 +1518,7 @@ xmlSecMSCryptoX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlFree(content);
-    CertFreeCRLContext(crl); 
+        CertFreeCRLContext(crl); 
 	return(-1);
     }
     
@@ -1606,6 +1581,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->hMemStore != 0, -1);
 
     x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecMSCryptoX509StoreId);
     if(x509Store == NULL) {
@@ -1617,7 +1593,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 	return(-1);
     }
 
-    if((ctx->keyCert == NULL) && (ctx->hMemStore != 0) && (xmlSecKeyGetValue(key) == NULL)) {
+    if((ctx->keyCert == NULL) && (xmlSecKeyGetValue(key) == NULL)) {
 	PCCERT_CONTEXT cert;
 
 	cert = xmlSecMSCryptoX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
@@ -1675,6 +1651,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 			    "notValidBefore");
 		return(-1);
 	    }
+
 	    ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1700,6 +1677,9 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 static int
 xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     LONGLONG result;
+    
+    xmlSecAssert2(res != NULL, -1);
+    
     result = t.dwHighDateTime;
     result = (result) << 32;
     result |= t.dwLowDateTime;
@@ -1903,12 +1883,12 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
     xmlSecAssert2(nm->cbData > 0, NULL);
 
     csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR, NULL, 0);
-    str = (char *)malloc(csz);
+    str = (char *)xmlMalloc(csz);
     if (NULL == str) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "malloc",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "xmlMalloc",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return (NULL);
     }
@@ -1920,7 +1900,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
 		    "CertNameToStr",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	free(str);
+	xmlFree(str);
 	return(NULL);
     }
 
@@ -1931,11 +1911,11 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
 		    "xmlStrdup",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	free(str);
+	xmlFree(str);
 	return(NULL);
     }
 
-    free(str);
+    xmlFree(str);
     return(res);
 }
 
@@ -2047,14 +2027,23 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 		return (NULL);
 	    }
-    bSKI = malloc(dwSize);
+    bSKI = xmlMalloc(dwSize);
+    if (NULL == bSKI) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return (NULL);
+    }
+
     if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, bSKI, &dwSize)) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
 			    "CertGetCertificateContextProperty",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
-		free(bSKI);
+		xmlFree(bSKI);
 		return (NULL);
 	    }
 
@@ -2069,10 +2058,10 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
 		    "xmlSecBase64Encode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	free(bSKI);
+	xmlFree(bSKI);
 	return(NULL);
     }
-    free(bSKI);
+    xmlFree(bSKI);
     
     return(res);
 }
@@ -2088,18 +2077,19 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
+    // todo: add error checks
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
-    subject = (LPSTR)malloc(dwSize);
+    subject = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, NULL, 0);
-    issuer = (LPSTR)malloc(dwSize);
+    issuer = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, issuer, dwSize);
 
     fprintf(output, "=== X509 Certificate\n");
     fprintf(output, "==== Subject Name: %s\n", subject);
     fprintf(output, "==== Issuer Name: %s\n", issuer);
-    if (subject) free(subject);
-    if (issuer) free(issuer);
+    if (subject) xmlFree(subject);
+    if (issuer) xmlFree(issuer);
     sn = &(cert->pCertInfo->SerialNumber);
 
     for (i = 0; i < sn->cbData; i++) {
@@ -2123,18 +2113,19 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
+    // todo: add error checks
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
-    subject = (LPSTR)malloc(dwSize);
+    subject = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, NULL, 0);
-    issuer = (LPSTR)malloc(dwSize);
+    issuer = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, issuer, dwSize);
 
     fprintf(output, "=== X509 Certificate\n");
     fprintf(output, "==== Subject Name: %s\n", subject);
     fprintf(output, "==== Issuer Name: %s\n", issuer);
-    if (subject) free(subject);
-    if (issuer) free(issuer);
+    if (subject) xmlFree(subject);
+    if (issuer) xmlFree(issuer);
     sn = &(cert->pCertInfo->SerialNumber);
 
     for (i = 0; i < sn->cbData; i++) {

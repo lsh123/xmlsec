@@ -3,7 +3,7 @@
  * 
  * See Copyright for the status of this software.
  * 
- * Author: Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include <stdlib.h>
 #include <string.h>

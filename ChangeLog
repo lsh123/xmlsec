@@ -1,3 +1,9 @@
+Tue Jul 29 08:44:24 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/openssl/x509.c: minor patches for errors (Roumen)
+	* src/xmltree.c: fixed xmlIsEmptyNode() to return false
+	if there is an element child
+
 Mon Jul 28 12:02:40 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/keyinfo.h: added XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE flag

@@ -45,7 +45,7 @@
  *
  ************************************************************************/
 static int		xmlSecOpenSSLX509DataNodeRead		(xmlSecKeyDataPtr data,
-    								 xmlNodePtr node,
+								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int		xmlSecOpenSSLX509CertificateNodeRead	(xmlSecKeyDataPtr data,
 								 xmlNodePtr node,
@@ -848,7 +848,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			    "xmlSecOpenSSLX509SKINodeWrite",
+			    "xmlSecOpenSSLX509CRLNodeWrite",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			    "pos=%d", pos);
 		return(-1);
@@ -2145,7 +2145,7 @@ xmlSecOpenSSLX509NameWrite(X509_NAME* nm) {
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "ASN1_INTEGER_to_BN",
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	BIO_free_all(mem);
@@ -2182,7 +2182,7 @@ xmlSecOpenSSLASN1IntegerWrite(ASN1_INTEGER *asni) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "BN_bn2dec",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	BN_free(bn);
 	return(NULL);

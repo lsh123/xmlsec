@@ -630,6 +630,10 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
     int res;
     
     xmlSecAssert2(node != NULL, -1);
+
+    if(xmlSecGetNextElementNode(node->children) != NULL) {
+	return(0);
+    }
     
     content = xmlNodeGetContent(node);
     if(content == NULL) {

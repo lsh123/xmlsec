@@ -1,3 +1,8 @@
+Tue 22 Mar 2005 20:10:19 CET Igor Zlatkovic <igor@zlatkovic.com>
+
+	* apps/xmlsec.c: changed the type of the --depth parameter to
+	number.
+
 2005-03-06  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/nss/crypto.h src/nss/Makefile.am src/nss/crypto.c 

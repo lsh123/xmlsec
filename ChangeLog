@@ -1,3 +1,7 @@
+Mon 02 Sep 2002 12:20:03 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* docs/*: added LibXML2, LibXSLT and OpenSSL logos
+	
 Sat Aug 31 17:12:56 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/keys.h include/xmlsec/x509.h

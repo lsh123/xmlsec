@@ -203,7 +203,7 @@ xmlSecGnuTLSAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecGnuTLSAppSimpleKeysMngrInit:
+ * xmlSecGnuTLSAppDefaultKeysMngrInit:
  * @mngr: 		the pointer to keys manager.
  *
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
@@ -212,7 +212,7 @@ xmlSecGnuTLSAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
  * Returns 0 on success or a negative value otherwise.
  */ 
 int
-xmlSecGnuTLSAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
     
     xmlSecAssert2(mngr != NULL, -1);
@@ -259,17 +259,17 @@ xmlSecGnuTLSAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecGnuTLSAppSimpleKeysMngrAdoptKey:
+ * xmlSecGnuTLSAppDefaultKeysMngrAdoptKey:
  * @mngr: 		the pointer to keys manager.
  * @key:		the pointer to key.
  *
- * Adds @key to the keys manager @mngr created with #xmlSecGnuTLSAppSimpleKeysMngrInit
+ * Adds @key to the keys manager @mngr created with #xmlSecGnuTLSAppDefaultKeysMngrInit
  * function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecGnuTLSAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
+xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
     int ret;
     
@@ -300,17 +300,17 @@ xmlSecGnuTLSAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) 
 }
 
 /**
- * xmlSecGnuTLSAppSimpleKeysMngrLoad:
+ * xmlSecGnuTLSAppDefaultKeysMngrLoad:
  * @mngr: 		the pointer to keys manager.
  * @uri:		the uri.
  *
  * Loads XML keys file from @uri to the keys manager @mngr created 
- * with #xmlSecGnuTLSAppSimpleKeysMngrInit function.
+ * with #xmlSecGnuTLSAppDefaultKeysMngrInit function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecGnuTLSAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
+xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
     int ret;
     
@@ -341,7 +341,7 @@ xmlSecGnuTLSAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecGnuTLSAppSimpleKeysMngrSave:
+ * xmlSecGnuTLSAppDefaultKeysMngrSave:
  * @mngr: 		the pointer to keys manager.
  * @filename:		the destination filename.
  * @type:		the type of keys to save (public/private/symmetric).
@@ -351,7 +351,7 @@ xmlSecGnuTLSAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecGnuTLSAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
+xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;
     int ret;
     

@@ -631,7 +631,7 @@ xmlSecOpenSSLAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecOpenSSLAppSimpleKeysMngrInit:
+ * xmlSecOpenSSLAppDefaultKeysMngrInit:
  * @mngr: 		the pointer to keys manager.
  *
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
@@ -640,7 +640,7 @@ xmlSecOpenSSLAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
  * Returns 0 on success or a negative value otherwise.
  */ 
 int
-xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
     
     xmlSecAssert2(mngr != NULL, -1);
@@ -687,17 +687,17 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecOpenSSLAppSimpleKeysMngrAdoptKey:
+ * xmlSecOpenSSLAppDefaultKeysMngrAdoptKey:
  * @mngr: 		the pointer to keys manager.
  * @key:		the pointer to key.
  *
- * Adds @key to the keys manager @mngr created with #xmlSecOpenSSLAppSimpleKeysMngrInit
+ * Adds @key to the keys manager @mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
+xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
     int ret;
     
@@ -728,17 +728,17 @@ xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 }
 
 /**
- * xmlSecOpenSSLAppSimpleKeysMngrLoad:
+ * xmlSecOpenSSLAppDefaultKeysMngrLoad:
  * @mngr: 		the pointer to keys manager.
  * @uri:		the uri.
  *
  * Loads XML keys file from @uri to the keys manager @mngr created 
- * with #xmlSecOpenSSLAppSimpleKeysMngrInit function.
+ * with #xmlSecOpenSSLAppDefaultKeysMngrInit function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
+xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
     int ret;
     
@@ -769,7 +769,7 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecOpenSSLAppSimpleKeysMngrSave:
+ * xmlSecOpenSSLAppDefaultKeysMngrSave:
  * @mngr: 		the pointer to keys manager.
  * @filename:		the destination filename.
  * @type:		the type of keys to save (public/private/symmetric).
@@ -779,7 +779,7 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
+xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
 				    xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;
     int ret;

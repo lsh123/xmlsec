@@ -194,7 +194,7 @@ xmlSecSkeletonAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) 
 #endif /* XMLSEC_NO_X509 */
 
 /**
- * xmlSecSkeletonAppSimpleKeysMngrInit:
+ * xmlSecSkeletonAppDefaultKeysMngrInit:
  * @mngr: 		the pointer to keys manager.
  *
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
@@ -203,7 +203,7 @@ xmlSecSkeletonAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) 
  * Returns 0 on success or a negative value otherwise.
  */ 
 int
-xmlSecSkeletonAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
     
     xmlSecAssert2(mngr != NULL, -1);
@@ -253,17 +253,17 @@ xmlSecSkeletonAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecSkeletonAppSimpleKeysMngrAdoptKey:
+ * xmlSecSkeletonAppDefaultKeysMngrAdoptKey:
  * @mngr: 		the pointer to keys manager.
  * @key:		the pointer to key.
  *
- * Adds @key to the keys manager @mngr created with #xmlSecSkeletonAppSimpleKeysMngrInit
+ * Adds @key to the keys manager @mngr created with #xmlSecSkeletonAppDefaultKeysMngrInit
  * function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecSkeletonAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
+xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
     int ret;
     
@@ -298,17 +298,17 @@ xmlSecSkeletonAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
 }
 
 /**
- * xmlSecSkeletonAppSimpleKeysMngrLoad:
+ * xmlSecSkeletonAppDefaultKeysMngrLoad:
  * @mngr: 		the pointer to keys manager.
  * @uri:		the uri.
  *
  * Loads XML keys file from @uri to the keys manager @mngr created 
- * with #xmlSecSkeletonAppSimpleKeysMngrInit function.
+ * with #xmlSecSkeletonAppDefaultKeysMngrInit function.
  *  
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecSkeletonAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
+xmlSecSkeletonAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
     int ret;
     
@@ -343,7 +343,7 @@ xmlSecSkeletonAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 }
 
 /**
- * xmlSecSkeletonAppSimpleKeysMngrSave:
+ * xmlSecSkeletonAppDefaultKeysMngrSave:
  * @mngr: 		the pointer to keys manager.
  * @filename:		the destination filename.
  * @type:		the type of keys to save (public/private/symmetric).
@@ -353,7 +353,7 @@ xmlSecSkeletonAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  * Returns 0 on success or a negative value otherwise.
  */ 
 int 
-xmlSecSkeletonAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
+xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;
     int ret;
     

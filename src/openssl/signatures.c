@@ -12,6 +12,7 @@
 
 #include <openssl/evp.h>
 #include <openssl/rand.h>
+#include <openssl/sha.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>

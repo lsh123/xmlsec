@@ -18,6 +18,7 @@
 
 #include <openssl/des.h>
 #include <openssl/rand.h>
+#include <openssl/sha.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>

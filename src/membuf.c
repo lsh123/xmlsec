@@ -347,14 +347,14 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetMaxSize(buf), columns);
+    content = xmlSecBase64Encode(xmlSecBufferGetData(buf), xmlSecBufferGetSize(buf), columns);
     if(content == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecBase64Encode");
 	return(-1);
     }
-    xmlNodeSetContent(node, content);
+    xmlNodeAddContent(node, content);
     xmlFree(content);
     
     return(0);

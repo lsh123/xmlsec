@@ -20,10 +20,6 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-XMLSEC_EXPORT BIGNUM*	xmlSecOpenSSLCryptoBinary2BN	(const xmlChar *str,
-							 BIGNUM **a);
-XMLSEC_EXPORT xmlChar*	xmlSecOpenSSLBN2CryptoBinary	(const BIGNUM *a);
-
 XMLSEC_EXPORT BIGNUM*	xmlSecOpenSSLNodeGetBNValue	(const xmlNodePtr cur,
 							 BIGNUM **a);
 XMLSEC_EXPORT int	xmlSecOpenSSLNodeSetBNValue	(xmlNodePtr cur, 

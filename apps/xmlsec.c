@@ -164,8 +164,9 @@ static xmlSecAppCmdLineParam cryptoParam = {
     "--crypto",
     NULL,
     "--crypto <name>"
-    "\n\tthe name of the crypto engine to use (if not specified, the default"
-    "\n\tcrypto engine is used)",
+    "\n\tthe name of the crypto engine to use from the following"
+    "\n\tlist: openssl, gnutls, nss, mscrypto (if no crypto engine is"
+    "\n\tspecified then the default one is used)",
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL

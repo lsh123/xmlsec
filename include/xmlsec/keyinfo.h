@@ -71,6 +71,10 @@ struct _xmlSecKeyInfoCtx {
     int 				curRetrievalMethodLevel;
     int					curEncryptedKeyLevel;                
     xmlSecKeyReq			keyReq;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 
 XMLSEC_EXPORT xmlSecKeyInfoCtxPtr 	xmlSecKeyInfoCtxCreate		(xmlSecKeysMngrPtr keysMngr);

@@ -217,8 +217,17 @@ xmlSecKeysMngrGetDataStore(xmlSecKeysMngrPtr mngr, xmlSecKeyDataStoreId id) {
 /****************************************************************************
  *
  * Simple Keys Store
+ * 
+ * keys list (xmlSecPtrList) is located after xmlSecKeyDataStore
  *
  ***************************************************************************/
+#define xmlSecSimpleKeysStoreSize \
+	(sizeof(xmlSecKeyDataStore) + sizeof(xmlSecPtrList))
+#define xmlSecSimpleKeysStoreGetList(store) \
+    ((xmlSecKeyDataStoreCheckSize((store), xmlSecSimpleKeysStoreSize)) ? \
+	(xmlSecPtrListPtr)(((unsigned char*)(store)) + sizeof(xmlSecKeyDataStore)) : \
+	(xmlSecPtrListPtr)NULL)
+
 static int			xmlSecSimpleKeysStoreInitialize	(xmlSecKeyDataStorePtr store);
 static void			xmlSecSimpleKeysStoreFinalize	(xmlSecKeyDataStorePtr store);
 static int			xmlSecSimpleKeysStoreFind	(xmlSecKeyDataStorePtr store,
@@ -238,14 +247,12 @@ static xmlSecKeyDataStoreKlass xmlSecSimpleKeysStoreKlass = {
     xmlSecSimpleKeysStoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
     xmlSecSimpleKeysStoreFinalize,	/* xmlSecKeyDataStoreFinalizeMethod finalize; */
     xmlSecSimpleKeysStoreFind,		/* xmlSecKeyDataStoreFindMethod find; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
-/*
- * mapping: 
- * xmlSecKeysDataStore::reserved0 --> xmlSecKeyPtrList
- */
-#define xmlSecSimpleKeysStoreGetList(store) ((xmlSecPtrListPtr)(store)->reserved0)
- 
 xmlSecKeyDataStoreId 
 xmlSecSimpleKeysStoreGetKlass(void) {
     return(&xmlSecSimpleKeysStoreKlass);
@@ -260,18 +267,7 @@ xmlSecSimpleKeysStoreAdoptKey(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key) {
     xmlSecAssert2(key != NULL, -1);
 
     list = xmlSecSimpleKeysStoreGetList(store);
-    if(list == NULL) {
-	list = xmlSecPtrListCreate(xmlSecKeyPtrListId);
-	if(list == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-			"xmlSecPtrListCreate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyPtrListId");
-	    return(-1);
-	}
-	store->reserved0 = list;
-    }
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
 
     ret = xmlSecPtrListAdd(list, key);
     if(ret < 0) {
@@ -297,11 +293,8 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyDataStorePtr store, const xmlChar* name,
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     list = xmlSecSimpleKeysStoreGetList(store);
-    if(list == NULL) {
-	/* we have nothing in the list */
-	return(NULL);
-    }
-    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
+
     size = xmlSecPtrListGetSize(list);
     for(pos = 0; pos < size; ++pos) {
 	key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, pos);
@@ -323,7 +316,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
     xmlSecAssert2(uri != NULL, -1);    
-    
+
     doc = xmlParseFile(uri);
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -344,8 +337,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	xmlFreeDoc(doc);
 	return(-1);
     }
-    
-    
+        
     cur = xmlSecGetNextElementNode(root->children);
     while((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs)) {  
 	key = xmlSecKeyCreate();
@@ -435,10 +427,16 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     xmlNodePtr root;
     xmlNodePtr cur;
     xmlSecKeyDataPtr data;
+    xmlSecPtrListPtr idsList;
+    xmlSecKeyDataId dataId;
+    size_t idsSize, j;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
     xmlSecAssert2(filename != NULL, -1);    
+
+    list = xmlSecSimpleKeysStoreGetList(store);
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
 
     /* create doc */
     doc = xmlNewDoc(BAD_CAST "1.0");
@@ -474,101 +472,94 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     }
     
     
-    list = xmlSecSimpleKeysStoreGetList(store);
-    if(list != NULL) {
-	xmlSecPtrListPtr idsList;
-	xmlSecKeyDataId dataId;
-	size_t idsSize, j;
+    idsList = xmlSecKeyDataIdsGet();	
+    xmlSecAssert2(idsList != NULL, -1);
 	
-	idsList = xmlSecKeyDataIdsGet();	
-	xmlSecAssert2(idsList != NULL, -1);
-	
-        keysSize = xmlSecPtrListGetSize(list);
-	idsSize = xmlSecPtrListGetSize(idsList);
-	for(i = 0; i < keysSize; ++i) {
-	    key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, i);
-	    xmlSecAssert2(key != NULL, -1);
+    keysSize = xmlSecPtrListGetSize(list);
+    idsSize = xmlSecPtrListGetSize(idsList);
+    for(i = 0; i < keysSize; ++i) {
+	key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert2(key != NULL, -1);
 	    
-    	    cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecDSigNs);
-	    if(cur == NULL) {
+    	cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecDSigNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			"xmlSecAddChild",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"<dsig:KeyInfo>");
+	    xmlFreeDoc(doc); 
+	    return(-1);
+	}
+
+	/* special data key name */
+	if(xmlSecKeyGetName(key) != NULL) {
+    	    if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecDSigNs) == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "xmlSecAddChild",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "<dsig:KeyInfo>");
-	        xmlFreeDoc(doc); 
-		return(-1);
-	    }
-
-	    /* special data key name */
-	    if(xmlSecKeyGetName(key) != NULL) {
-    		if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecDSigNs) == NULL) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-				"xmlSecAddChild",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"<dsig:KeyName>");
-		    xmlFreeDoc(doc); 
-		    return(-1);
-		}
-	    }
-    
-	    /* create nodes for other keys data */
-	    for(j = 0; j < idsSize; ++j) {
-		dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(idsList, j);
-		xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, -1);
-
-		if(dataId->dataNodeName == NULL) {
-		    continue;
-		}
-	    
-		data = xmlSecKeyGetData(key, dataId);
-		if(data == NULL) {
-		    continue;
-		}
-
-	        if(xmlSecAddChild(cur, dataId->dataNodeName, dataId->dataNodeNs) == NULL) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-				"xmlSecAddChild",
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"node=\"%s\"", dataId->dataNodeName);
-		    xmlFreeDoc(doc); 
-		    return(-1);
-		}
-	    }
-
-    	    ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-		    	    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-			    "xmlSecKeyInfoCtxInitialize",
-			    XMLSEC_ERRORS_R_INVALID_NODE,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlFreeDoc(doc);
-		return(-1);
-	    }
-
-	    keyInfoCtx.mode 		= xmlSecKeyInfoModeWrite;
-	    keyInfoCtx.stopWhenKeyFound	= 0;
-    	    keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
-	    keyInfoCtx.keyReq.keyType	= type;
-	    keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
-
-	    /* finally write key in the node */
-	    ret = xmlSecKeyInfoNodeWrite(cur, key, &keyInfoCtx);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-			    "xmlSecKeyInfoNodeWrite",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
+			    "<dsig:KeyName>");
 		xmlFreeDoc(doc); 
 		return(-1);
-	    }		
+	    }
+	}
+    
+	/* create nodes for other keys data */
+	for(j = 0; j < idsSize; ++j) {
+	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(idsList, j);
+	    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, -1);
+
+	    if(dataId->dataNodeName == NULL) {
+		continue;
+	    }
+	    
+	    data = xmlSecKeyGetData(key, dataId);
+	    if(data == NULL) {
+		continue;
+	    }
+
+	    if(xmlSecAddChild(cur, dataId->dataNodeName, dataId->dataNodeNs) == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			    "xmlSecAddChild",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "node=\"%s\"", dataId->dataNodeName);
+		xmlFreeDoc(doc); 
+	        return(-1);
+	    }
+	}
+
+    	ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    	xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			"xmlSecKeyInfoCtxInitialize",
+			XMLSEC_ERRORS_R_INVALID_NODE,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlFreeDoc(doc);
+	    return(-1);
+	}
+
+	keyInfoCtx.mode 		= xmlSecKeyInfoModeWrite;
+	keyInfoCtx.stopWhenKeyFound	= 0;
+    	keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
+	keyInfoCtx.keyReq.keyType	= type;
+	keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
+
+	/* finally write key in the node */
+	ret = xmlSecKeyInfoNodeWrite(cur, key, &keyInfoCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			"xmlSecKeyInfoNodeWrite",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
-	}    
+	    xmlFreeDoc(doc); 
+	    return(-1);
+	}		
+	xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
     }
     
     /* now write result */
@@ -585,12 +576,27 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
     
     xmlFreeDoc(doc);
     return(0);
-
 }
 
 static int
 xmlSecSimpleKeysStoreInitialize(xmlSecKeyDataStorePtr store) {
+    xmlSecPtrListPtr list;
+    int ret;
+
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId), -1);
+
+    list = xmlSecSimpleKeysStoreGetList(store);
+    xmlSecAssert2(list != NULL, -1);
+    
+    ret = xmlSecPtrListInitialize(list, xmlSecKeyPtrListId);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "xmlSecPtrListInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyPtrListId");
+	return(-1);
+    }
 
     return(0);    
 }
@@ -601,12 +607,10 @@ xmlSecSimpleKeysStoreFinalize(xmlSecKeyDataStorePtr store) {
     
     xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecSimpleKeysStoreId));
     
-
     list = xmlSecSimpleKeysStoreGetList(store);
-    if(list != NULL) {
-	xmlSecPtrListDestroy(list);
-	store->reserved0 = NULL;
-    }
+    xmlSecAssert(list != NULL);
+    
+    xmlSecPtrListDestroy(list);
 }
 
 static int

@@ -63,7 +63,6 @@ XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
 
 /**
  * xmlSecKey:
- * @type: the key type (private/public).
  * @origin: the key origin.
  * @keyData: key specific data.
  *
@@ -74,10 +73,10 @@ struct _xmlSecKey {
     xmlChar*				name;
     xmlSecPtrListPtr			dataList;
 
-    /* obsolete */
-    xmlSecKeyDataType			type;
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
-
 
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(void);
 XMLSEC_EXPORT void		xmlSecKeyDestroy	(xmlSecKeyPtr key);

@@ -235,6 +235,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesKlass = {
     /* debug */
     xmlSecOpenSSLSymKeyDataDebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
     xmlSecOpenSSLSymKeyDataDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 
@@ -297,6 +301,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesKlass = {
     /* debug */
     xmlSecOpenSSLSymKeyDataDebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
     xmlSecOpenSSLSymKeyDataDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 
@@ -358,6 +366,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacKlass = {
     /* debug */
     xmlSecOpenSSLSymKeyDataDebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
     xmlSecOpenSSLSymKeyDataDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 

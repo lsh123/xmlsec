@@ -77,6 +77,10 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     xmlSecOpenSSLX509StoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
     xmlSecOpenSSLX509StoreFinalize,	/* xmlSecKeyDataStoreFinalizeMethod finalize; */
     NULL,				/* xmlSecKeyDataStoreFindMethod find; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 static int		xmlSecOpenSSLX509VerifyCRL			(X509_STORE* xst, 

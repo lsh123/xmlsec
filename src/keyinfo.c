@@ -582,6 +582,10 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
     /* debug */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugDump; */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 
@@ -734,6 +738,10 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
     /* debug */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugDump; */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 
@@ -918,6 +926,10 @@ static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
     /* debug */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugDump; */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 static int			xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId,
@@ -1259,6 +1271,10 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
     /* debug */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugDump; */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 

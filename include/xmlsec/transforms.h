@@ -165,6 +165,10 @@ struct _xmlSecTransformCtx {
     /* internal data */
     xmlSecTransformPtr		first;
     xmlSecTransformPtr		last;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 
 XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize	(xmlSecTransformCtxPtr ctx);

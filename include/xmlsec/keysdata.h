@@ -89,10 +89,8 @@ XMLSEC_EXPORT int 		xmlSecKeyDataIdsRegister	(xmlSecKeyDataId id);
  */
 struct _xmlSecKeyData {
     xmlSecKeyDataId			id;
-    void				*reserved0;
-    void				*reserved1;
-    void				*reserved2;
-    void				*reserved3;
+    void*				reserved0;
+    void*				reserved1;
 };
 
 XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyDataCreate		(xmlSecKeyDataId id);
@@ -376,6 +374,10 @@ struct _xmlSecKeyDataKlass {
     /* debug */
     xmlSecKeyDataDebugDumpMethod	debugDump;
     xmlSecKeyDataDebugDumpMethod	debugXmlDump;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
 
 #define xmlSecKeyDataKlassGetName(klass) \
@@ -466,10 +468,10 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueSetBuffer	(xmlSecKeyDataPtr data,
  */
 struct _xmlSecKeyDataStore {
     xmlSecKeyDataStoreId		id;
+
+    /* for the future */
     void*				reserved0;
     void*				reserved1;
-    void*				reserved2;
-    void*				reserved4;
 };
 
 XMLSEC_EXPORT xmlSecKeyDataStorePtr xmlSecKeyDataStoreCreate	(xmlSecKeyDataStoreId id);
@@ -502,6 +504,18 @@ XMLSEC_EXPORT int		xmlSecKeyDataStoreFind		(xmlSecKeyDataStorePtr store,
 #define xmlSecKeyDataStoreCheckId(store, storeId) \
  	(xmlSecKeyDataStoreIsValid(( store )) && \
 	((( store )->id) == ( storeId )))
+
+/**
+ * xmlSecKeyDataStoreCheckSize:
+ * @store: the pointer to store.
+ * @size: the expected size.
+ *
+ * Macro. Returns 1 if @data is valid and @stores's object has at least @size bytes.
+ */
+#define xmlSecKeyDataStoreCheckSize(store, size) \
+ 	(xmlSecKeyDataStoreIsValid(( store )) && \
+	 (( store )->id->objSize >= size))
+
 
 /**************************************************************************
  *
@@ -569,7 +583,12 @@ struct _xmlSecKeyDataStoreKlass {
     xmlSecKeyDataStoreInitializeMethod	initialize;
     xmlSecKeyDataStoreFinalizeMethod	finalize;
     xmlSecKeyDataStoreFindMethod	find;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
 };
+
 #define xmlSecKeyDataStoreKlassGetName(klass) \
 	(((klass)) ? ((klass)->name) : NULL)
 

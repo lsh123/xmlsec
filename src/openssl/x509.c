@@ -241,6 +241,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataX509Klass = {
     /* debug */
     xmlSecOpenSSLKeyDataX509DebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
     xmlSecOpenSSLKeyDataX509DebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 
@@ -1623,6 +1627,10 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRawX509CertKlass = {
     /* debug */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugDump; */
     NULL,					/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
 };
 
 xmlSecKeyDataId 

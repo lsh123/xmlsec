@@ -28,7 +28,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/strings.h>
-#include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>

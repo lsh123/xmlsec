@@ -40,7 +40,6 @@ extern "C" {
 #  endif
 #endif
 
-
 #if !defined XMLSEC_CRYPTO_EXPORT
 #  if defined _MSC_VER
      /* if we compile libxmlsec itself: */
@@ -91,7 +90,6 @@ extern "C" {
 #    define XMLSEC_EXPORT_VAR extern
 #  endif
 #endif
-
 
 #ifdef __cplusplus
 }

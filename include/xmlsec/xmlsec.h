@@ -35,14 +35,10 @@ typedef struct _xmlSecTransformCtx 		xmlSecTransformCtx, *xmlSecTransformCtxPtr;
 
 #ifndef XMLSEC_NO_XMLDSIG
 typedef struct _xmlSecDSigCtx 			xmlSecDSigCtx, *xmlSecDSigCtxPtr; 
-#else /* XMLSEC_NO_XMLDSIG */
-typedef void*					xmlSecDSigCtxPtr;
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
 typedef struct _xmlSecEncCtx 			xmlSecEncCtx, *xmlSecEncCtxPtr; 
-#else /* XMLSEC_NO_XMLENC */
-typedef void*					xmlSecEncCtxPtr;
 #endif /* XMLSEC_NO_XMLENC */
 
 /**

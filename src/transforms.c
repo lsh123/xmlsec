@@ -358,7 +358,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     xmlSecAssert2(src != NULL, -1);
     
     dst->userData 	= src->userData;  
-    dst->flags1		= src->flags1;  
+    dst->flags		= src->flags;  
     dst->flags2		= src->flags2;  
     dst->enabledUris	= src->enabledUris;
     ret = xmlSecPtrListCopy(&(dst->enabledTransforms), &(src->enabledTransforms));

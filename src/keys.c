@@ -41,6 +41,13 @@ xmlSecKeyReqInitialize(xmlSecKeyReqPtr keyReq) {
 void
 xmlSecKeyReqFinalize(xmlSecKeyReqPtr keyReq) {
     xmlSecAssert(keyReq != NULL);
+    
+    xmlSecKeyReqReset(keyReq);
+}
+
+void 
+xmlSecKeyReqReset(xmlSecKeyReqPtr keyReq) {
+    xmlSecAssert(keyReq != NULL);
 
     memset(keyReq, 0, sizeof(xmlSecKeyReq));
 }

@@ -364,12 +364,13 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri,
 	    return(-1);
 	}
 	
-	keyInfoCtx.mode 		= xmlSecKeyInfoModeRead;
-	keyInfoCtx.keysMngr		= keysMngr;
-	keyInfoCtx.stopWhenKeyFound	= 0;
-        keyInfoCtx.keyReq.keyId		= xmlSecKeyDataIdUnknown;
-	keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;
-	keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
+	keyInfoCtx.mode 	  = xmlSecKeyInfoModeRead;
+	keyInfoCtx.keysMngr	  = keysMngr;
+	keyInfoCtx.flags 	  = XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND |
+				    XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS;
+        keyInfoCtx.keyReq.keyId	  = xmlSecKeyDataIdUnknown;
+	keyInfoCtx.keyReq.keyType = xmlSecKeyDataTypeAny;
+	keyInfoCtx.keyReq.keyUsage= xmlSecKeyDataUsageAny;
 
 	ret = xmlSecKeyInfoNodeRead(cur, key, &keyInfoCtx);
 	if(ret < 0) {
@@ -544,8 +545,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyDataStorePtr store, const char *filename, xml
 	}
 
 	keyInfoCtx.mode 		= xmlSecKeyInfoModeWrite;
-	keyInfoCtx.stopWhenKeyFound	= 0;
-    	keyInfoCtx.keyReq.keyId	= xmlSecKeyDataIdUnknown;
+    	keyInfoCtx.keyReq.keyId		= xmlSecKeyDataIdUnknown;
 	keyInfoCtx.keyReq.keyType	= type;
 	keyInfoCtx.keyReq.keyUsage 	= xmlSecKeyDataUsageAny;
 

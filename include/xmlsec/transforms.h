@@ -171,7 +171,7 @@ typedef unsigned int				xmlSecTransformUsage;
 struct _xmlSecTransformCtx {
     /* user settings */
     void*				userData;
-    unsigned int			flags1;
+    unsigned int			flags;
     unsigned int			flags2;
     xmlSecTransformUriType		enabledUris;
     xmlSecPtrList			enabledTransforms;

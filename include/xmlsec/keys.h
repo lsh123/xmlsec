@@ -52,6 +52,7 @@ struct _xmlSecKeyReq {
 
 XMLSEC_EXPORT int	xmlSecKeyReqInitialize			(xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT void	xmlSecKeyReqFinalize			(xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT void	xmlSecKeyReqReset			(xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT int	xmlSecKeyReqCopy			(xmlSecKeyReqPtr dst,
 								 xmlSecKeyReqPtr src);
 XMLSEC_EXPORT int	xmlSecKeyReqMatchKey			(xmlSecKeyReqPtr keyReq,

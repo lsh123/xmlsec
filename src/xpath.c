@@ -22,7 +22,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/list.h>
 #include <xmlsec/transforms.h>
-#include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
 

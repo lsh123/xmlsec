@@ -34,7 +34,6 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/parser.h>
-#include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
 #include "crypto.h"
@@ -816,9 +815,6 @@ int main(int argc, const char **argv) {
        
 	repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
         fprintf(stderr, "Executed %d tests in %ld msec\n", repeats, total_time / (CLOCKS_PER_SEC / 1000));    
-	if(xmlSecTimerGet() > 0.0001) {
-	    fprintf(stderr, "The debug timer is %f\n", xmlSecTimerGet());    
-	}
     }
 
     goto success;
@@ -1344,12 +1340,18 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 		    enabledKeyDataParam.fullName);
 	    return(-1);
 	} else {
+	    xmlSecKeyDataId dataId;
 	    const char* p;
 	    
 	    for(p = value->strListValue; (p != NULL) && ((*p) != '\0'); p += strlen(p)) {
-		ret = xmlSecKeyInfoCtxEnableKeyDataByName(keyInfoCtx, BAD_CAST p);
+		dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST p, xmlSecKeyDataUsageAny);
+		if(dataId == xmlSecKeyDataIdUnknown) {
+		    fprintf(stderr, "Error: key data \"%s\" is unknown.\n", p);
+		    return(-1);
+		}
+		ret = xmlSecPtrListAdd(&(keyInfoCtx->enabledKeyData), (const xmlSecPtr)dataId);
 		if(ret < 0) {
-	    	    fprintf(stderr, "Error: invalid (unkown) key data name \"%s\".\n", p);
+		    fprintf(stderr, "Error: failed to enable key data \"%s\".\n", p);
 		    return(-1);
 		}
 	    }
@@ -1358,9 +1360,9 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 
     /* read enabled RetrievalMethod uris */
     if(xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam) != NULL) {
-	keyInfoCtx->enabledRetrievalMethodUris = xmlSecAppGetUriType(
+	keyInfoCtx->retrievalMethodCtx.enabledUris = xmlSecAppGetUriType(
 		    xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam));
-	if(keyInfoCtx->enabledRetrievalMethodUris == xmlSecTransformUriTypeNone) {
+	if(keyInfoCtx->retrievalMethodCtx.enabledUris == xmlSecTransformUriTypeNone) {
 	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
 		    xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam));
 	    return(-1);

@@ -161,6 +161,22 @@ xmlSecEncCtxFinalize(xmlSecEncCtxPtr encCtx) {
     memset(encCtx, 0, sizeof(xmlSecEncCtx));
 }
 
+void 
+xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
+    xmlSecAssert(encCtx != NULL);
+    
+    /* TODO */
+}
+
+int 
+xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
+    xmlSecAssert2(dst != NULL, -1);
+    xmlSecAssert2(src != NULL, -1);
+
+    /* TODO */
+    return(0);
+} 
+
 int 
 xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, 
 			  const unsigned char* data, size_t dataSize) {

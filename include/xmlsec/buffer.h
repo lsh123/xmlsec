@@ -17,7 +17,8 @@ extern "C" {
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 
-typedef struct _xmlSecBuffer				xmlSecBuffer, *xmlSecBufferPtr;
+typedef struct _xmlSecBuffer					xmlSecBuffer, 
+								*xmlSecBufferPtr;
 
 typedef enum {
     xmlSecAllocModeExact = 0,
@@ -65,7 +66,6 @@ XMLSEC_EXPORT int		xmlSecBufferRemoveHead		(xmlSecBufferPtr buf,
 								 size_t size);
 XMLSEC_EXPORT int		xmlSecBufferRemoveTail		(xmlSecBufferPtr buf,
 								 size_t size);
-
 XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,

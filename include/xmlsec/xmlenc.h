@@ -89,6 +89,9 @@ XMLSEC_EXPORT void 		xmlSecEncCtxDestroy		(xmlSecEncCtxPtr encCtx);
 XMLSEC_EXPORT int		xmlSecEncCtxInitialize		(xmlSecEncCtxPtr encCtx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecEncCtxFinalize		(xmlSecEncCtxPtr encCtx);
+XMLSEC_EXPORT int		xmlSecEncCtxCopyUserPref	(xmlSecEncCtxPtr dst,
+								 xmlSecEncCtxPtr src);
+XMLSEC_EXPORT void		xmlSecEncCtxReset		(xmlSecEncCtxPtr encCtx);
 XMLSEC_EXPORT int		xmlSecEncCtxBinaryEncrypt	(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
 								 const unsigned char* data,

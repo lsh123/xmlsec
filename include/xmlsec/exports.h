@@ -81,7 +81,7 @@ extern "C" {
      /* if a client program includes this file: */
 #    else
 #      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_EXPORT_VAR __declspec(dllimport) 
+#        define XMLSEC_EXPORT_VAR __declspec(dllimport) export
 #      else
 #        define XMLSEC_EXPORT_VAR extern
 #      endif

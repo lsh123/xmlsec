@@ -12,6 +12,7 @@ INCLUDES = \
 
 EXTRA_DIST = \
 	globals.h \
+	skeleton \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)
 

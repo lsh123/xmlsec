@@ -1,7 +1,6 @@
 NULL =
 
 SUBDIRS = $(XMLSEC_CRYPTO_LIST)
-EXTRA_DIST = $(XMLSEC_CRYPTO_DISABLED_LIST)
 
 INCLUDES = \
 -I$(top_srcdir) \
@@ -13,6 +12,7 @@ $(NULL)
 
 EXTRA_DIST = \
 	globals.h \
+	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 $(NULL)
 
 lib_LTLIBRARIES = libxmlsec.la

@@ -26,6 +26,8 @@ const xmlChar xmlSecXkmsNs[] 			= "http://www.w3.org/2002/03/xkms#";
 const xmlChar xmlSecXPathNs[] 			= "http://www.w3.org/TR/1999/REC-xpath-19991116";
 const xmlChar xmlSecXPath2Ns[] 			= "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecXPointerNs[]		= "http://www.w3.org/2001/04/xmldsig-more/xptr";
+const xmlChar xmlSecSoap11Ns[]			= "http://schemas.xmlsoap.org/soap/envelope/";
+const xmlChar xmlSecSoap12Ns[]			= "http://www.w3.org/2002/06/soap-envelope";
 
 /*************************************************************************
  *
@@ -460,6 +462,28 @@ const xmlChar xmlSecNodeXPointer[]		= "XPointer";
  ************************************************************************/
 const xmlChar xmlSecNameXslt[]			= "xslt";
 const xmlChar xmlSecHrefXslt[]			= "http://www.w3.org/TR/1999/REC-xslt-19991116";
+
+#ifndef XMLSEC_NO_SOAP
+/*************************************************************************
+ *
+ * SOAP 1.1/1.2 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNodeSoapEnvelope[]		= "Envelope";
+const xmlChar xmlSecNodeSoapHeader[]		= "Header";
+const xmlChar xmlSecNodeSoapBody[]		= "Body";
+const xmlChar xmlSecNodeSoapFault[]		= "Fault";
+const xmlChar xmlSecNodeSoapFaultCode[]		= "faultcode";
+const xmlChar xmlSecNodeSoapFaultString[]	= "faultstring";
+const xmlChar xmlSecNodeSoapFaultActor[]	= "faultactor";
+const xmlChar xmlSecNodeSoapFaultDetail[]	= "detail";
+
+const xmlChar xmlSecSoapFaultCodeVersionMismatch[] 	= "VersionMismatch";
+const xmlChar xmlSecSoapFaultCodeMustUnderstand[]	= "MustUnderstand";
+const xmlChar xmlSecSoapFaultCodeClient[]		= "Client";
+const xmlChar xmlSecSoapFaultCodeServer[]		= "Server";
+
+#endif /* XMLSEC_NO_SOAP */
 
 /*************************************************************************
  *

@@ -47,7 +47,9 @@ typedef int  		(*xmlSecXkmsRespondWithNodeWriteMethod)	(xmlSecXkmsRespondWithId 
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 struct _xmlSecXkmsRespondWithKlass {
-    const xmlChar*				name;
+    const xmlChar*				valueName;
+    const xmlChar*				valueNs;
+    
     const xmlChar*				nodeName;
     const xmlChar*				nodeNs;
     
@@ -57,6 +59,9 @@ struct _xmlSecXkmsRespondWithKlass {
     void*					reserved1;
     void*					reserved2;
 };
+
+#define xmlSecXkmsRespondWithKlassGetName(id) \
+	((((id) != NULL) && ((id)->valueName != NULL)) ? (id)->valueName : NULL)
 
 /************************************************************************
  *
@@ -89,6 +94,10 @@ struct _xmlSecXkmsServerRequestKlass {
     void*					reserved1;
     void*					reserved2;
 };
+
+#define xmlSecXkmsServerRequestKlassGetName(id) \
+	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
+
 
 /************************************************************************
  *

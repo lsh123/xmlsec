@@ -96,82 +96,111 @@ XMLSEC_EXPORT int		xmlSecIsEmptyString	(const xmlChar* str);
 
 /*************************************************************************
  *
- * String <-> Integer mapping
+ * QName <-> Integer mapping
  *
  ************************************************************************/
-struct _xmlSecString2IntegerInfo {
-    const xmlChar*      strValue;
+typedef struct _xmlSecQName2IntegerInfo			xmlSecQName2IntegerInfo,
+							*xmlSecQName2IntegerInfoPtr;
+typedef const struct _xmlSecQName2IntegerInfo*		xmlSecQName2IntegerInfoConstPtr;
+
+struct _xmlSecQName2IntegerInfo {
+    const xmlChar*      qnameHref;
+    const xmlChar*      qnameLocalPart;
     int       		intValue;
 };
-typedef struct _xmlSecString2IntegerInfo		xmlSecString2IntegerInfo,
-							*xmlSecString2IntegerInfoPtr;
-typedef const struct _xmlSecString2IntegerInfo*		xmlSecString2IntegerInfoConstPtr;
-
-XMLSEC_EXPORT const xmlChar*	xmlSecString2IntegerGetString	(xmlSecString2IntegerInfoConstPtr info,
+XMLSEC_EXPORT xmlChar* 		xmlSecQName2IntegerGetString	(xmlSecQName2IntegerInfoConstPtr info,
+								 xmlNodePtr node);
+XMLSEC_EXPORT xmlSecQName2IntegerInfoConstPtr xmlSecQName2IntegerGetInfo	
+								(xmlSecQName2IntegerInfoConstPtr info,
 								 int intValue);
-XMLSEC_EXPORT int		xmlSecString2IntegerGetInteger	(xmlSecString2IntegerInfoConstPtr info,
-								 const xmlChar* strValue,
+XMLSEC_EXPORT int		xmlSecQName2IntegerGetInteger	(xmlSecQName2IntegerInfoConstPtr info,
+								 const xmlChar* qnameHref,
+								 const xmlChar* qnameLocalPart,
 								 int* intValue);
-XMLSEC_EXPORT int		xmlSecString2IntegerNodeRead	(xmlSecString2IntegerInfoConstPtr info,
+XMLSEC_EXPORT int		xmlSecQName2IntegerGetIntegerFromString	
+								(xmlSecQName2IntegerInfoConstPtr info,
+								 xmlNodePtr node,
+								 const xmlChar* qname,
+								 int* intValue);
+XMLSEC_EXPORT xmlChar* 		xmlSecQName2IntegerGetStringFromInteger
+								(xmlSecQName2IntegerInfoConstPtr info,
+								 xmlNodePtr node,
+								 int intValue);
+XMLSEC_EXPORT int		xmlSecQName2IntegerNodeRead	(xmlSecQName2IntegerInfoConstPtr info,
 								 xmlNodePtr node,
 								 int* intValue);
-XMLSEC_EXPORT int		xmlSecString2IntegerNodeWrite	(xmlSecString2IntegerInfoConstPtr info,
-								 xmlNodePtr parent,
+XMLSEC_EXPORT int		xmlSecQName2IntegerNodeWrite	(xmlSecQName2IntegerInfoConstPtr info,
+								 xmlNodePtr node,
 								 const xmlChar* nodeName,
 								 const xmlChar* nodeNs,
 								 int intValue);
-XMLSEC_EXPORT int		xmlSecString2IntegerAttributeRead(xmlSecString2IntegerInfoConstPtr info,
+XMLSEC_EXPORT int		xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info,
 								 xmlNodePtr node,
 								 const xmlChar* attrName,
 								 int* intValue);
-XMLSEC_EXPORT int		xmlSecString2IntegerAttributeWrite(xmlSecString2IntegerInfoConstPtr info,
-								 xmlNodePtr parent,
+XMLSEC_EXPORT int		xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info,
+								 xmlNodePtr node,
 								 const xmlChar* attrName,
 								 int intValue);
-XMLSEC_EXPORT void		xmlSecString2IntegerDebugDump	(xmlSecString2IntegerInfoConstPtr info,
+XMLSEC_EXPORT void		xmlSecQName2IntegerDebugDump	(xmlSecQName2IntegerInfoConstPtr info,
 								 int intValue,
 								 const xmlChar* name,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecString2IntegerDebugXmlDump(xmlSecString2IntegerInfoConstPtr info,
+XMLSEC_EXPORT void		xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info,
 								 int intValue,
 								 const xmlChar* name,
 								 FILE* output);
 
 /*************************************************************************
  *
- * String <-> Bits mask mapping
+ * QName <-> Bits mask mapping
  *
  ************************************************************************/
-typedef unsigned int                            xmlSecBitMask;
+typedef unsigned int                            	xmlSecBitMask;
+typedef struct _xmlSecQName2BitMaskInfo			xmlSecQName2BitMaskInfo,
+							*xmlSecQName2BitMaskInfoPtr;
+typedef const struct _xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;
 
-struct _xmlSecString2BitMaskInfo {
-    const xmlChar*      strValue;
+struct _xmlSecQName2BitMaskInfo {
+    const xmlChar*      qnameHref;
+    const xmlChar*      qnameLocalPart;
     xmlSecBitMask       mask;
 };
-typedef struct _xmlSecString2BitMaskInfo		xmlSecString2BitMaskInfo,
-							*xmlSecString2BitMaskInfoPtr;
-typedef const struct _xmlSecString2BitMaskInfo*		xmlSecString2BitMaskInfoConstPtr;
 
-XMLSEC_EXPORT const xmlChar*	xmlSecString2BitMaskGetString	(xmlSecString2BitMaskInfoConstPtr info,
+XMLSEC_EXPORT xmlChar* 		xmlSecQName2BitMaskGetString	(xmlSecQName2BitMaskInfoConstPtr info,
+								 xmlNodePtr node);
+XMLSEC_EXPORT xmlSecQName2BitMaskInfoConstPtr xmlSecQName2BitMaskGetInfo	
+								(xmlSecQName2BitMaskInfoConstPtr info,
 								 xmlSecBitMask mask);
-XMLSEC_EXPORT int		xmlSecString2BitMaskGetBitMask	(xmlSecString2BitMaskInfoConstPtr info,
-								 const xmlChar* strValue,
+XMLSEC_EXPORT int		xmlSecQName2BitMaskGetBitMask	(xmlSecQName2BitMaskInfoConstPtr info,
+								 const xmlChar* qnameLocalPart,
+								 const xmlChar* qnameHref,
 								 xmlSecBitMask* mask);
-XMLSEC_EXPORT int		xmlSecString2BitMaskNodesRead	(xmlSecString2BitMaskInfoConstPtr info,
+XMLSEC_EXPORT int		xmlSecQName2BitMaskNodesRead	(xmlSecQName2BitMaskInfoConstPtr info,
 								 xmlNodePtr* node,
 								 const xmlChar* nodeName,
 								 const xmlChar* nodeNs,
+								 int stopOnUnknown,
 								 xmlSecBitMask* mask);
-XMLSEC_EXPORT int		xmlSecString2BitMaskNodesWrite	(xmlSecString2BitMaskInfoConstPtr info,
-								 xmlNodePtr parent,
+XMLSEC_EXPORT int		xmlSecQName2BitMaskGetBitMaskFromString	
+								(xmlSecQName2BitMaskInfoConstPtr info,
+								 xmlNodePtr node,
+								 const xmlChar* qname,
+								 xmlSecBitMask* mask);
+XMLSEC_EXPORT xmlChar* 		xmlSecQName2BitMaskGetStringFromBitMask
+								(xmlSecQName2BitMaskInfoConstPtr info,
+								 xmlNodePtr node,
+								 xmlSecBitMask mask);
+XMLSEC_EXPORT int		xmlSecQName2BitMaskNodesWrite	(xmlSecQName2BitMaskInfoConstPtr info,
+								 xmlNodePtr node,
 								 const xmlChar* nodeName,
 								 const xmlChar* nodeNs,
 								 xmlSecBitMask mask);
-XMLSEC_EXPORT void		xmlSecString2BitMaskDebugDump	(xmlSecString2BitMaskInfoConstPtr info,
+XMLSEC_EXPORT void		xmlSecQName2BitMaskDebugDump	(xmlSecQName2BitMaskInfoConstPtr info,
 								 xmlSecBitMask mask,
 								 const xmlChar* name,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecString2BitMaskDebugXmlDump(xmlSecString2BitMaskInfoConstPtr info,
+XMLSEC_EXPORT void		xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info,
 								 xmlSecBitMask mask,
 								 const xmlChar* name,
 								 FILE* output);

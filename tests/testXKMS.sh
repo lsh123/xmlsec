@@ -41,6 +41,10 @@ if [ -n "$PERF_TEST" ] ; then
     xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
 fi
 
+# debug 
+xmlsec_params="$xmlsec_params --xkms-stop-on-unknown-response-mechanism --xkms-stop-on-unknown-respond-with --xkms-stop-on-unknown-key-usage"
+        
+
 printRes() {
     if [ $1 = 0 ]; then
 	echo "   OK"
@@ -58,7 +62,7 @@ execXkmsServerRequestTest() {
     echo "$1 ($2)"
 
     rm -f $tmpfile
-        
+    
     printf "    Processing xkms request                              "
     echo "$xmlsec_app --xkms-server-request --output $tmpfile $xmlsec_params $3 $src_file" >> $logfile
     $VALGRIND $xmlsec_app --xkms-server-request  --output $tmpfile $xmlsec_params $3 $src_file >> $logfile 2>> $logfile
@@ -90,6 +94,10 @@ execXkmsServerRequestTest \
 
 execXkmsServerRequestTest \
     "aleksey-xkms-01/validate-example-1" "no-match" \
+    "--xkms-service http://www.example.com/xkms"
+
+execXkmsServerRequestTest \
+    "aleksey-xkms-01/locate-opaque-client-data" "no-match" \
     "--xkms-service http://www.example.com/xkms"
 
 execXkmsServerRequestTest \

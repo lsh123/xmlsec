@@ -31,6 +31,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXkmsNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoap11Ns[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoap12Ns[];
 
 
 /*************************************************************************
@@ -468,6 +470,28 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeXPointer[];
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXslt[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
+
+#ifndef XMLSEC_NO_SOAP
+/*************************************************************************
+ *
+ * SOAP 1.1/1.2 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEnvelope[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHeader[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeBody[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFault[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultCode[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultString[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultActor[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeFaultDetail[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeVersionMismatch[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeMustUnderstand[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeClient[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecSoapFaultCodeServer[];
+
+#endif /* XMLSEC_NO_SOAP */
 
 /*************************************************************************
  *

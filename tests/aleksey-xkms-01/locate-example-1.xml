@@ -5,7 +5,7 @@
   <RespondWith>X509Cert</RespondWith>
   <RespondWith>X509Chain</RespondWith>
   <RespondWith>PGPWeb</RespondWith>
-  <RespondWith>PGP</RespondWith>
+  <RespondWith>PGP</RespondWith>  
   <QueryKeyBinding>
     <KeyUsage>Encryption</KeyUsage>
     <UseKeyWith Application="urn:ietf:rfc:2440" Identifier="bob@bobcorp.test"/>

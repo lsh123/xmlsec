@@ -649,6 +649,7 @@ static xmlSecAppCmdLineParam xkmsServiceParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+
 static xmlSecAppCmdLineParam xkmsFormatParam = { 
     xmlSecAppCmdLineTopicXkmsCommon,
     "--xkms-format",
@@ -660,6 +661,43 @@ static xmlSecAppCmdLineParam xkmsFormatParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+
+static xmlSecAppCmdLineParam xkmsStopUnknownResponseMechanismParam = { 
+    xmlSecAppCmdLineTopicXkmsCommon, /* todo: server */
+    "--xkms-stop-on-unknown-response-mechanism",
+    NULL,
+    "--xkms-stop-on-unknown-response-mechanism"
+    "\n\tstop processing XKMS server request if unknown ResponseMechanism"
+    "\n\tvalue was found",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
+static xmlSecAppCmdLineParam xkmsStopUnknownRespondWithParam = { 
+    xmlSecAppCmdLineTopicXkmsCommon, /* todo: server */
+    "--xkms-stop-on-unknown-respond-with",
+    NULL,
+    "--xkms-stop-on-unknown-respond-with"
+    "\n\tstop processing XKMS server request if unknown RespondWith"
+    "\n\tvalue was found",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
+static xmlSecAppCmdLineParam xkmsStopUnknownKeyUsageParam = { 
+    xmlSecAppCmdLineTopicXkmsCommon, /* todo: server */
+    "--xkms-stop-on-unknown-key-usage",
+    NULL,
+    "--xkms-stop-on-unknown-key-usage"
+    "\n\tstop processing XKMS server request if unknown KeyUsage"
+    "\n\tvalue was found",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 #endif /* XMLSEC_NO_XKMS */
 
 /****************************************************************
@@ -801,6 +839,9 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_XKMS
     &xkmsServiceParam,
     &xkmsFormatParam,
+    &xkmsStopUnknownResponseMechanismParam,
+    &xkmsStopUnknownRespondWithParam,
+    &xkmsStopUnknownKeyUsageParam,
 #endif /* XMLSEC_NO_XKMS */
              
     /* common dsig and enc parameters */
@@ -1903,7 +1944,15 @@ xmlSecAppPrepareXkmsServerCtx(xmlSecXkmsServerCtxPtr xkmsServerCtx) {
 	}
     }
     
-
+    if(xmlSecAppCmdLineParamIsSet(&xkmsStopUnknownResponseMechanismParam)) {
+	xkmsServerCtx->flags |= XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&xkmsStopUnknownRespondWithParam)) {
+	xkmsServerCtx->flags |= XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&xkmsStopUnknownKeyUsageParam)) {
+	xkmsServerCtx->flags |= XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE;
+    }
     return(0);
 }
 

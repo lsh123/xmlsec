@@ -1,3 +1,17 @@
+Thu Feb  5 16:26:40 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: added new params for xkms
+	* include/xmlsec/Makefile.am include/xmlsec/private/xkms.h:
+        added new private xmlsec headers folder
+	* include/xmlsec/xmltree.h src/xmltree.c: created code for
+        reading/writing qname values 
+	* include/xmlsec/strings.h include/xmlsec/soap.h 
+        src/strings.h src/soap.c src/Makefile.am: created basic soap 
+        messages parsing framework
+	* include/xmlsec/xkms.h src/xkms.c: added xkms request format
+        enum and parameters
+	* tests/aleksey-xkms-01/ tests/testXKMS.sh: added new tests
+
 Wed Feb  4 01:26:51 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c: created new --xkms-format parameter 

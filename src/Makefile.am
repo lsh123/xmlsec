@@ -43,6 +43,7 @@ libxmlsec1_la_SOURCES = \
 	membuf.c \
 	nodeset.c \
 	parser.c \
+	soap.c \
 	strings.c \
 	templates.c \
 	transforms.c \

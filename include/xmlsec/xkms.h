@@ -252,6 +252,35 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsServerCtxPtrListGetKlass
 
 /************************************************************************
  *
+ * xmlSecXkmsServerCtxFlags
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM
+ *
+ * If flag is set then we abort if an unknown <xkms:ResponseMechanism/> 
+ * value is found.
+ */
+#define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM	0x00000001
+
+/**
+ * XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH
+ *
+ * If flag is set then we abort if an unknown <xkms:RespondWith/> 
+ * value is found.
+ */
+#define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH		0x00000002
+
+/**
+ * XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE
+ *
+ * If flag is set then we abort if an unknown <xkms:KeyUsage/> 
+ * value is found.
+ */
+#define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE		0x00000004
+
+/************************************************************************
+ *
  * XKMS ResponseMechanism element values.
  *
  ************************************************************************/ 
@@ -360,10 +389,6 @@ XMLSEC_EXPORT void 		xmlSecXkmsRespondWithIdsShutdown(void);
 XMLSEC_EXPORT int 		xmlSecXkmsRespondWithIdsRegisterDefault
                                                                 (void);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
-
-#define xmlSecXkmsRespondWithKlassGetName(id) \
-	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
-
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithNodeRead	(xmlSecXkmsRespondWithId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
@@ -398,9 +423,9 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecXkmsRespondWithIdListGetKlass
                                                                 (void);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListFind (xmlSecPtrListPtr list,
 								 xmlSecXkmsRespondWithId id);
-XMLSEC_EXPORT xmlSecXkmsRespondWithId xmlSecXkmsRespondWithIdListFindByName
+XMLSEC_EXPORT xmlSecXkmsRespondWithId xmlSecXkmsRespondWithIdListFindByNodeValue
 								(xmlSecPtrListPtr list,
-								 const xmlChar* name);
+								 xmlNodePtr node);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPtr list,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
@@ -513,10 +538,6 @@ XMLSEC_EXPORT int 		xmlSecXkmsServerRequestIdsRegisterDefault
 								(void);
 XMLSEC_EXPORT int		xmlSecXkmsServerRequestIdsRegister	
 								(xmlSecXkmsServerRequestId id);
-
-#define xmlSecXkmsServerRequestKlassGetName(id) \
-	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
-
 XMLSEC_EXPORT int  		xmlSecXkmsServerRequestNodeRead	(xmlSecXkmsServerRequestId id,
 								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);

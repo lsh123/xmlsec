@@ -34,12 +34,151 @@ typedef struct _xmlSecXkmsRespondWithKlass	xmlSecXkmsRespondWithKlass,
 						*xmlSecXkmsRespondWithId;
 
 
+/************************************************************************
+ *
+ * XKMS error codes
+ *
+ ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_SUCCESS:
+ *
+ *  The operation succeeded.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_SUCCESS			0		
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH:
+ *
+ * The service does not support the protocol version specified in the request.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_VERSION_MISMATCH	1	
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_SENDER:
+ *
+ * An error occurred that was due to the message sent by the sender.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_SENDER			2			
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_RECEIVER:
+ *
+ * An error occurred at the receiver.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_RECEIVER		3			
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_REPRESENT:
+ *
+ * The service has not acted on the request. In order for 
+ * the request to be acted upon the request MUST be represented 
+ * with the specified nonce in accordance with the two phase protocol.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_REPRESENT		4			
+
+/**
+ * XMLSEC_XKMS_ERROR_MAJOR_PENDING:
+ *
+ * The request has been accepted for processing and the service 
+ * will return the result asynchronously.
+ */
+#define XMLSEC_XKMS_ERROR_MAJOR_PENDING			5			
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NONE:
+ *
+ * No minor error code.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NONE			0		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NO_MATCH:
+ *
+ *  No match was found for the search prototype provided.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NO_MATCH		1		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES:
+ *
+ * The request resulted in the number of responses that 
+ * exceeded either  the ResponseLimit value specified in 
+ * the request or some other limit determined by the service. 
+ * The service MAY either return a subset of the possible 
+ * responses or none at all.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_TOO_MANY_RESPONSES	2		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE:
+ *
+ * Only part of the information requested could be provided.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_INCOMPLETE		3
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_FAILURE:
+ *
+ * The service attempted to perform the request but 
+ * the operation failed for unspecified reasons.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_FAILURE			4		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_REFUSED:
+ *
+ * The operation was refused. The service did not attempt to 
+ * perform the request.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_REFUSED			5		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION:
+ *
+ * The operation was refused because the necessary authentication 
+ * information was incorrect or missing.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NO_AUTHENTICATION	6		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED:
+ *	
+ * The receiver does not implement the specified operation.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_MESSAGE_NOT_SUPPORTED	7		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID:
+ *
+ * The ResponseId for which pending status was requested is unknown 
+ * to the service.
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_UNKNOWN_RESPONSE_ID	8		
+
+/**
+ * XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS:
+ *
+ * The receiver does not support synchronous processing of this type of 
+ * request
+ */
+#define XMLSEC_XKMS_ERROR_MINOR_NOT_SYNCHRONOUS		9		
+
+XMLSEC_EXPORT const xmlChar*	xmlSecXkmsGetMajorErrorString	(int errorCode);
+XMLSEC_EXPORT const xmlChar*	xmlSecXkmsGetMinorErrorString	(int errorCode);
+
 
 /************************************************************************
  *
  * XKMS requests server side processing klass
  *
  ************************************************************************/ 
+/**
+ * XMLSEC_XKMS_NO_RESPONSE_LIMIT:
+ *
+ * The responseLimit value.
+ */
+#define XMLSEC_XKMS_NO_RESPONSE_LIMIT				-1
+
 /**
  * xmlXkmsServerCtxMode:
  * @xmlXkmsServerCtxModeLocateRequest: 	the <xkms:LocateRequest/> node processing.
@@ -77,6 +216,13 @@ struct _xmlSecXkmsServerCtx {
     /* these data are returned */
     xmlDocPtr			result;
     xmlSecPtrList		keys;
+    int				majorError;
+    int				minorError;
+    xmlChar*			requestId;    
+    xmlChar*			service;
+    xmlChar*			originalRequestId;
+    xmlChar*			nonce;
+    int 			responseLimit;
 
     /* these are internal data, nobody should change that except us */
     xmlXkmsServerCtxMode	mode;
@@ -92,20 +238,23 @@ struct _xmlSecXkmsServerCtx {
 };
 
 XMLSEC_EXPORT xmlSecXkmsServerCtxPtr	xmlSecXkmsServerCtxCreate(xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void 		xmlSecXkmsServerCtxDestroy	(xmlSecXkmsServerCtxPtr xkmsServerCtx);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxInitialize	(xmlSecXkmsServerCtxPtr xkmsServerCtx,
+XMLSEC_EXPORT void 		xmlSecXkmsServerCtxDestroy	(xmlSecXkmsServerCtxPtr ctx);
+XMLSEC_EXPORT int		xmlSecXkmsServerCtxInitialize	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxFinalize	(xmlSecXkmsServerCtxPtr xkmsServerCtx);
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxFinalize	(xmlSecXkmsServerCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst,
 								 xmlSecXkmsServerCtxPtr src);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxReset	(xmlSecXkmsServerCtxPtr xkmsServerCtx);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxLocate	(xmlSecXkmsServerCtxPtr xkmsServerCtx,
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxReset	(xmlSecXkmsServerCtxPtr ctx);
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxSetError	(xmlSecXkmsServerCtxPtr ctx,
+								 int majorError,
+								 int minorError);
+XMLSEC_EXPORT int		xmlSecXkmsServerCtxLocate	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecXkmsServerCtxValidate	(xmlSecXkmsServerCtxPtr xkmsServerCtx,
+XMLSEC_EXPORT int		xmlSecXkmsServerCtxValidate	(xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugDump	(xmlSecXkmsServerCtxPtr xkmsServerCtx,
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugDump	(xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr xkmsServerCtx,
+XMLSEC_EXPORT void		xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx,
 								 FILE* output);
 
 
@@ -126,27 +275,27 @@ XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id);
  *
  ************************************************************************/ 
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithReadNode	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithWriteNode	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugDump	(xmlSecXkmsRespondWithId id,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecXkmsRespondWithDebugXmlDump(xmlSecXkmsRespondWithId id,
 								 FILE* output);
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultReadNode(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int  		xmlSecXkmsRespondWithDefaultWriteNode(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 
 typedef int  		(*xmlSecXkmsRespondWithReadNodeMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 typedef int  		(*xmlSecXkmsRespondWithWriteNodeMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 struct _xmlSecXkmsRespondWithKlass {
     const xmlChar*				name;
@@ -178,7 +327,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId	xmlSecXkmsRespondWithIdListFindByName
 								(xmlSecPtrListPtr list,
 								 const xmlChar* name);
 XMLSEC_EXPORT int		xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPtr list,
-								 xmlSecXkmsServerCtxPtr xkmsServerCtx,
+								 xmlSecXkmsServerCtxPtr ctx,
 								 xmlNodePtr node);
 
 /******************************************************************** 

@@ -45,6 +45,8 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecFindNode		(const xmlNodePtr parent,
 XMLSEC_EXPORT xmlNodePtr	xmlSecAddChild		(xmlNodePtr parent, 
 							 const xmlChar *name,
 							 const xmlChar *ns);
+XMLSEC_EXPORT xmlNodePtr	xmlSecAddChildNode	(xmlNodePtr parent, 
+							 xmlNodePtr child);
 XMLSEC_EXPORT xmlNodePtr	xmlSecAddNextSibling	(xmlNodePtr node, 
 							 const xmlChar *name,
 							 const xmlChar *ns);

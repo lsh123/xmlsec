@@ -230,6 +230,53 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
+ * xmlSecAddChildNode:
+ * @parent: 		the pointer to an XML node.
+ * @child: 		the new node.
+ *
+ * Adds @child node to the @parent node.
+ *
+ * Returns pointer to the new node or NULL if an error occurs.
+ */
+xmlNodePtr		
+xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
+    xmlNodePtr text;
+
+    xmlSecAssert2(parent != NULL, NULL);
+    xmlSecAssert2(child != NULL, NULL);        
+
+    if(parent->children == NULL) {
+        /* TODO: add indents */
+	text = xmlNewText(BAD_CAST "\n"); 
+        if(text == NULL) {	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlNewText",
+			XMLSEC_ERRORS_R_XML_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);
+	}
+	xmlAddChild(parent, text);
+    }
+
+    xmlAddChild(parent, child);
+
+    /* TODO: add indents */
+    text = xmlNewText(BAD_CAST "\n"); 
+    if(text == NULL) {	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewText",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    xmlAddChild(parent, text);
+
+    return(child);
+}
+
+/**
  * xmlSecAddNextSibling
  * @node: 		the pointer to an XML node.
  * @name: 		the new node name.

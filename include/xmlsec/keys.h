@@ -14,7 +14,7 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-
+#include <time.h>
 #include <xmlsec/xmlsec.h>
 
 /**
@@ -177,8 +177,15 @@ struct _xmlSecKey {
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(xmlSecKeyId id,
 							 xmlSecKeyOrigin origin);
 XMLSEC_EXPORT void		xmlSecKeyDestroy	(xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(xmlSecKeyId id,
+							 int keySize,
+							 xmlSecKeyOrigin origin,
+							 const char* name);
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDuplicate	(xmlSecKeyPtr key,
 							 xmlSecKeyOrigin origin);
+XMLSEC_EXPORT int		xmlSecKeySetValue	(xmlSecKeyPtr key, 
+							 void* data,
+							 int dataSize);
 XMLSEC_EXPORT int		xmlSecVerifyKey		(xmlSecKeyPtr key, 
 							 const xmlChar *name,
 							 xmlSecKeyId id, 

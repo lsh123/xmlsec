@@ -83,6 +83,12 @@ do
     shift
 done
 
+the_xmlsec_flags="@XMLSEC_DEFINES@ -I${prefix}/include -I${prefix}/include/xmlsec -I${prefix}/include/xmlsec/@XMLSEC_CRYPTO@"
+the_xmlsec_libs="-L${exec_prefix}/lib -l@XMLSEC_CRYPTO@ -lxmlsec"
+
+the_xml_flags="`@LIBXML_CONFIG@ --cflags`"
+the_xml_libs="`@LIBXML_CONFIG@ --libs`"
+
 the_xslt_flags=""
 the_xslt_libs=""
 if test "@LIBXSLT_WITHOUT@" = "no"; then 
@@ -90,8 +96,9 @@ if test "@LIBXSLT_WITHOUT@" = "no"; then
     the_xslt_libs="`@LIBXSLT_CONFIG@ --libs`"
 fi    
 
-the_flags="$the_flags @XMLSEC_DEFINES@ -I${prefix}/include -I${prefix}/include/xmlsec `@LIBXML_CONFIG@ --cflags` $the_xslt_flags @OPENSSL_CFLAGS@"
-the_libs="$the_libs -L${exec_prefix}/lib -lxmlsec `@LIBXML_CONFIG@ --libs` $the_xslt_libs @OPENSSL_LIBS@"
+
+the_flags="$the_flags $the_xmlsec_flags @XMLSEC_CRYPTO_CFLAGS@ $the_xslt_flags $the_xml_flags"
+the_libs="$the_libs $the_xmlsec_libs @XMLSEC_CRYPTO_LIBS@ $the_xslt_libs $the_xml_libs"
 
 if $cflags; then
     all_flags="$the_flags"

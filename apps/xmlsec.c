@@ -13,13 +13,14 @@
 #define snprintf _snprintf
 #endif
 
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <openssl/err.h>
-
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+
+#ifdef XMLSEC_CRYPTO_OPENSSL
+#include <openssl/err.h>
+#include <openssl/x509.h>
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
@@ -38,6 +39,7 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/crypto.h>
 
 
 static const char copyright[] =
@@ -211,7 +213,9 @@ static const char helpMisc[] =
     "Misc. options:\n"
     "  --repeat <number>     repeat the operation <number> times\n"
     "  --disable-error-msgs  do not print xmlsec error messages\n"
+#ifdef XMLSEC_CRYPTO_OPENSSL
     "  --print-openssl-errors print openssl errors stack at the end\n"
+#endif /* XMLSEC_CRYPTO_OPENSSL */
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -237,8 +241,6 @@ typedef struct _xmlSecDSigStatus {
  */
 int  initXmlsec(xmlsecCommand command);
 void shutdownXmlsec(void);
-int app_RAND_load_file(const char *file);
-int app_RAND_write_file(const char *file);
 
 
 /**
@@ -256,13 +258,7 @@ int  readPKCS12Key(char *filename, char *name);
 /**
  * Keys generation/manipulation
  */
-xmlSecKeyPtr genHmac(const char *name);
-xmlSecKeyPtr genRsa(const char *name);
-xmlSecKeyPtr genDsa(const char *name);
-xmlSecKeyPtr genDes3(const char *name);
-xmlSecKeyPtr genAes128(const char *name);
-xmlSecKeyPtr genAes192(const char *name);
-xmlSecKeyPtr genAes256(const char *name);
+xmlSecKeyPtr genKey(const char* type, const char *name);
  
 /**
  * Print help
@@ -310,7 +306,7 @@ int printXml = 0;
 FILE* printFile = NULL;
 clock_t total_time = 0;
 char *global_pwd = NULL;
-int print_openssl_errors = 0;
+int print_errors_stack = 0;
 
 int main(int argc, char **argv) {
     int res = 1;
@@ -433,72 +429,12 @@ int main(int argc, char **argv) {
 	/**
 	 * Key selection options
 	 */	
-	if((strcmp(argv[pos], "--session-key-hmac") == 0)) {
+	if((strncmp(argv[pos], "--session-key-", 14) == 0)) {
 	    if(sessionKey != NULL) {
 		fprintf(stderr, "Error: session key already selected\n");
 		ret = -1;
 	    } else {    
-		sessionKey = genHmac(NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else if((strcmp(argv[pos], "--session-key-rsa") == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genRsa(NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else if((strcmp(argv[pos], "--session-key-dsa") == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genDsa(NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else if((strcmp(argv[pos], "--session-key-des3") == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genDes3(NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else if((strcmp(argv[pos], "--session-key-aes128") == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genAes128(NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else if((strcmp(argv[pos], "--session-key-aes192") == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genAes192(NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else if((strcmp(argv[pos], "--session-key-aes256") == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genAes256(NULL);
+		sessionKey = genKey(argv[pos] + 14, NULL);
 		if(sessionKey == NULL) {
 		    ret = -1;
 		}
@@ -527,7 +463,10 @@ int main(int argc, char **argv) {
 		} 
 #endif /* XMLSEC_NO_XMLENC */
 		if(keyMgr != NULL) {
+#ifdef XMLSEC_CRYPTO_OPENSSL	
+		    /* todo: */	
     		    xmlSecSimpleKeysMngrSetCertsFlags(keyMgr, X509_V_FLAG_USE_CHECK_TIME);
+#endif /* XMLSEC_CRYPTO_OPENSSL */		    
 		}
     		ret = 0;
 	    } else {
@@ -549,76 +488,26 @@ int main(int argc, char **argv) {
 	} else if((strcmp(argv[pos], "--disable-error-msgs") == 0)) {
 	    xmlSecPrintErrorMessages = 0;
 	    ret = 0;
+#ifdef XMLSEC_CRYPTO_OPENSSL
 	} else if((strcmp(argv[pos], "--print-openssl-errors") == 0)) {
-	    print_openssl_errors = 1;
+	    print_errors_stack = 1;
 	    ret = 0;
+#endif /* XMLSEC_CRYPTO_OPENSSL */
 	} else 
 
 	/**
 	 * Keys options
 	 */	
-	if((strcmp(argv[pos], "--gen-hmac") == 0) && (pos + 1 < argc)) {
+	if((strncmp(argv[pos], "--gen-", 6) == 0) && (pos + 1 < argc)) {
 	    xmlSecKeyPtr key;
-	    
-	    key = genHmac(argv[++pos]);
+	    char* type = argv[pos] + 6;
+	    key = genKey(type, argv[++pos]);
 	    if(key != NULL) {
 		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
 	    } else {
-		ret = -1;
-	    }
-	} else if((strcmp(argv[pos], "--gen-rsa") == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    
-	    key = genRsa(argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
-	    } else {
-		ret = -1;
-	    }
-	} else if((strcmp(argv[pos], "--gen-dsa") == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    
-	    key = genDsa(argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
-	    } else {
-		ret = -1;
-	    }
-	} else if((strcmp(argv[pos], "--gen-des3") == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    
-	    key = genDes3(argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
-	    } else {
-		ret = -1;
-	    }
-	} else if((strcmp(argv[pos], "--gen-aes128") == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    
-	    key = genAes128(argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
-	    } else {
-		ret = -1;
-	    }
-	} else if((strcmp(argv[pos], "--gen-aes192") == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    
-	    key = genAes192(argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
-	    } else {
-		ret = -1;
-	    }
-	} else if((strcmp(argv[pos], "--gen-aes256") == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    
-	    key = genAes256(argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(keyMgr, key);
-	    } else {
-		ret = -1;
+		/* we ignore this error because it might be cause 
+		by a missed algorithm */
+		ret = 0;
 	    }
 	} else 
 	
@@ -785,9 +674,11 @@ int main(int argc, char **argv) {
     res = 0;
     
 done:    
-    if(print_openssl_errors) {
+#ifdef XMLSEC_CRYPTO_OPENSSL
+    if(print_errors_stack) {
 	ERR_print_errors_fp(stderr);
     }
+#endif /* XMLSEC_CRYPTO_OPENSSL */
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
@@ -865,14 +756,12 @@ void printVersion(void) {
  */
 int initXmlsec(xmlsecCommand command) {
     /* 
-     * Init OpenSSL
+     * Init crypto engine
      */
-    OpenSSL_add_all_algorithms();
-    if((RAND_status() != 1) && (app_RAND_load_file(NULL) != 1)) {
-	fprintf(stderr, "Failed to initialize random numbers\n"); 
+    if(xmlSecAppCryptoInit() < 0) { 
+	fprintf(stderr, "Failed to initialize crypto engine\n"); 
 	return(-1);
     }
-	
     
     /*
      * Init libxml
@@ -888,8 +777,10 @@ int initXmlsec(xmlsecCommand command) {
     /*
      * Init xmlsec
      */
-    xmlSecInit();    
-
+    if(xmlSecInit() < 0) {
+    	fprintf(stderr, "Error: failed to initialize xmlsec\n");
+	return(-1);
+    }
 
     /** 
      * Create Keys and x509 managers
@@ -971,23 +862,15 @@ void shutdownXmlsec(void) {
     /* 
      * Shutdown libxslt/libxml
      */
-#ifndef XMLSEC_NO_XSLT
+    #ifndef XMLSEC_NO_XSLT
     xsltCleanupGlobals();            
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();
 
     /**
-     * Shutdown OpenSSL
+     * Shutdown crypto engine
      */    
-    app_RAND_write_file(NULL);
-    RAND_cleanup();
-    EVP_cleanup();    
-#ifndef XMLSEC_NO_X509
-    X509_TRUST_cleanup();
-#endif /* XMLSEC_NO_X509 */    
-#ifndef XMLSEC_OPENSSL096
-    CRYPTO_cleanup_all_ex_data();
-#endif /* XMLSEC_OPENSSL096 */     
+    xmlSecAppCryptoShutdown();
 }
 
 /**
@@ -1011,9 +894,9 @@ int  readTime(const char* str, time_t* t) {
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
     
-    n = sscanf(str, "%4u-%2u-%2u%*c%2u:%2u:%2u", 
-			    &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-			    &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+    n = sscanf(str, "%4d-%2d-%2d%*c%2d:%2d:%2d", 
+	    &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+	    &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
     if((n != 6) || (tm.tm_year < 1900) 
 		|| (tm.tm_mon  < 1) || (tm.tm_mon  > 12) 
 		|| (tm.tm_mday < 1) || (tm.tm_mday > 31)
@@ -1095,7 +978,7 @@ int readPemKey(int privateKey, char *param, char *name) {
     int ret;
     
     p = strtok(param, ","); 
-    key = xmlSecSimpleKeysMngrLoadPemKey(keyMgr, p, global_pwd, NULL, privateKey);
+    key = xmlSecSimpleKeysMngrLoadPemKey(keyMgr, p, global_pwd, privateKey);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", p);
 	return(-1);
@@ -1132,11 +1015,16 @@ int readPKCS12Key(char *filename, char *name) {
     
     if(global_pwd == NULL) {
 	snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
+#ifdef XMLSEC_CRYPTO_OPENSSL
 	ret = EVP_read_pw_string(pwd, sizeof(pwd), prompt, 0);
 	if(ret != 0) {
 	    fprintf(stderr, "Error: password propmpt failed for file \"%s\"\n", filename); 
 	    return(-1);
 	}	
+#else
+	/* todo: do something more intelligent and remove openssl dependenct */
+	scanf("%200s", pwd);
+#endif /* XMLSEC_CRYPTO_OPENSSL */
     } 
 
     ret = xmlSecSimpleKeysMngrLoadPkcs12(keyMgr, name, filename, 
@@ -1180,7 +1068,7 @@ int readHmacKey(char *filename, char *name) {
 	fprintf(stderr, "Error: failed to create hmac key\n"); 
 	return(-1);
     }    
-    ret = xmlSecHmacKeyGenerate(key, buf, ret);
+    ret = xmlSecKeySetValue(key, buf, ret);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to set key value\n"); 
 	xmlSecKeyDestroy(key);
@@ -1558,241 +1446,53 @@ done:
 /**
  * Keys generation/manipulation
  */
-xmlSecKeyPtr genRsa(const char *name) {
-#ifndef XMLSEC_NO_RSA
-    xmlSecKeyPtr key;    
-    int ret;
+xmlSecKeyPtr genKey(const char* type, const char *name) {
+    xmlSecKeyPtr key = NULL;    
 
-    /* RSA */
-    key = xmlSecKeyCreate(xmlSecRsaKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create rsa key\n"); 
+    if(type == NULL) {
+    	fprintf(stderr, "Error: bad key type (NULL)\n");
 	return(NULL);
-    }        
-    ret = xmlSecRsaKeyGenerate(key, NULL);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key); 	
-	fprintf(stderr, "Error: failed to set rsa key params\n"); 
-	return(NULL);
-    }    
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);
-#else    
-    fprintf(stderr, "Error: RSA support was disabled during compilation\n");
-    return(NULL);
-#endif /* XMLSEC_NO_RSA */    
-}
-
-xmlSecKeyPtr genDsa(const char *name) {
-#ifndef XMLSEC_NO_DSA
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* DSA */
-    key = xmlSecKeyCreate(xmlSecDsaKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create dsa key\n"); 
-	return(NULL);
-    }        
-    ret = xmlSecDsaKeyGenerate(key, NULL);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key); 	
-	fprintf(stderr, "Error: failed to set dsa key params\n"); 
-	return(NULL);
-    }    
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);     
-#else    
-    fprintf(stderr, "Error: DSA support was disabled during compilation\n");
-    return(NULL);
-#endif /* XMLSEC_NO_DSA */    
-}
-
-xmlSecKeyPtr genDes3(const char *name) {
-#ifndef XMLSEC_NO_DES
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* DES */    
-    key = xmlSecKeyCreate(xmlSecDesKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create des key\n"); 
-	return(NULL);
-    }        
-    ret = xmlSecDesKeyGenerate(key, NULL, 24);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key); 	
-	fprintf(stderr, "Error: failed to set des key params\n"); 
-	return(NULL);
-    }    
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);     
-#else    
-    fprintf(stderr, "Error: DES support was disabled during compilation\n");
-    return(NULL);
-#endif /* XMLSEC_NO_DES */
-}
-
-xmlSecKeyPtr genAes128(const char *name) {
-#ifndef XMLSEC_NO_AES
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* AES 128 */    
-    key = xmlSecKeyCreate(xmlSecAesKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
-	return(NULL);
-    }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 128 / 8);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);  
-	fprintf(stderr, "Error: failed to create aes 128 key\n"); 
-	return(NULL);
-    }    
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);     
-#else    
-    fprintf(stderr, "Error: AES support was disabled during compilation\n");
-    return(NULL);
-#endif /* XMLSEC_NO_AES */
-}
-
-xmlSecKeyPtr genAes192(const char *name) {
-#ifndef XMLSEC_NO_AES
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* AES 192 */    
-    key = xmlSecKeyCreate(xmlSecAesKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create aes 192 key\n"); 
-	return(NULL);
-    }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 192 / 8);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);  
-	fprintf(stderr, "Error: failed to create aes 192 key\n"); 
-	return(NULL);
-    }    
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);     
-#else    
-    fprintf(stderr, "Error: AES support was disabled during compilation\n");
-    return(NULL);
-#endif /* XMLSEC_NO_AES */
-}
-
-xmlSecKeyPtr genAes256(const char *name) {
-#ifndef XMLSEC_NO_AES
-    xmlSecKeyPtr key;    
-    int ret;
-
-    /* AES 256 */    
-    key = xmlSecKeyCreate(xmlSecAesKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create aes 256 key\n"); 
-	return(NULL);
-    }        
-    ret = xmlSecAesKeyGenerate(key, NULL, 256 / 8);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);  
-	fprintf(stderr, "Error: failed to create aes 256 key\n"); 
-	return(NULL);
-    }    
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);     
-#else    
-    fprintf(stderr, "Error: AES support was disabled during compilation\n");
-    return(NULL);
-#endif /* XMLSEC_NO_AES */
-}
-xmlSecKeyPtr genHmac(const char *name) {  
+    } else
 #ifndef XMLSEC_NO_HMAC    
-    xmlSecKeyPtr key;    
-    int ret;
-    /* HMAC */    
-    key = xmlSecKeyCreate(xmlSecHmacKey, xmlSecKeyOriginDefault);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to create hmac key\n"); 
-	return(NULL);
-    }        
-    ret = xmlSecHmacKeyGenerate(key, NULL, 24);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key); 
-	fprintf(stderr, "Error: failed to set hmac key params\n"); 
-	return(NULL);
-    }
-    key->name = xmlStrdup(BAD_CAST name);
-    return(key);
-#else    
-    fprintf(stderr, "Error: HMAC support was disabled during compilation\n");
-    return(NULL);
+    if(strcmp(type, "hmac") == 0) {
+	key = xmlSecKeyGenerate(xmlSecHmacKey, 24, xmlSecKeyOriginDefault, name);
+    } else 
 #endif /* XMLSEC_NO_HMAC */ 
-}   
-
-/**
- * Random numbers initialization from openssl (apps/app_rand.c)
- */
-static int seeded = 0;
-static int egdsocket = 0;
-
-int app_RAND_load_file(const char *file) {
-    char buffer[1024];
-	
-    if(file == NULL) {
-	file = RAND_file_name(buffer, sizeof(buffer));
-    }else if(RAND_egd(file) > 0) {
-	/* we try if the given filename is an EGD socket.
-	 * if it is, we don't write anything back to the file. */
-	egdsocket = 1;
-	return 1;
-    }
-
-    if((file == NULL) || !RAND_load_file(file, -1)) {
-	if(RAND_status() == 0) {
-	    fprintf(stderr, "Random numbers initialization failed (file=%s)\n", (file) ? file : "NULL"); 
-	    return 0;
-	}
-    }
-    seeded = 1;
-    return 1;
-}
-
-int app_RAND_write_file(const char *file) {
-    char buffer[1024];
-	
-    if(egdsocket || !seeded) {
-	/* If we did not manage to read the seed file,
-	 * we should not write a low-entropy seed file back --
-	 * it would suppress a crucial warning the next time
-	 * we want to use it. */
-	return 0;
+#ifndef XMLSEC_NO_RSA
+    if(strcmp(type, "rsa") == 0) {
+	key = xmlSecKeyGenerate(xmlSecRsaKey, 1024, xmlSecKeyOriginDefault, name);	
+    } else 
+#endif /* XMLSEC_NO_RSA */    
+#ifndef XMLSEC_NO_DSA
+    if(strcmp(type, "dsa") == 0) {
+	key = xmlSecKeyGenerate(xmlSecDsaKey, 1024, xmlSecKeyOriginDefault, name);	
+    } else 
+#endif /* XMLSEC_NO_DSA */    
+#ifndef XMLSEC_NO_DES
+    if(strcmp(type, "des3") == 0) {
+	key = xmlSecKeyGenerate(xmlSecDesKey, 24, xmlSecKeyOriginDefault, name);	
+    } else 
+#endif /* XMLSEC_NO_DES */
+#ifndef XMLSEC_NO_AES
+    if(strcmp(type, "aes128") == 0) {
+    	key = xmlSecKeyGenerate(xmlSecAesKey, 16, xmlSecKeyOriginDefault, name);	
+    } else 
+    if(strcmp(type, "aes192") == 0) {
+    	key = xmlSecKeyGenerate(xmlSecAesKey, 24, xmlSecKeyOriginDefault, name);	
+    } else 
+    if(strcmp(type, "aes256") == 0) {
+    	key = xmlSecKeyGenerate(xmlSecAesKey, 32, xmlSecKeyOriginDefault, name);	
+    } else 
+#endif /* XMLSEC_NO_AES */
+    {
+    	fprintf(stderr, "Error: \"%s\" is a bad key identifier or the algorithm support was disabled during compilation\n", type);
+	return(NULL);
     }
     
-    if(file == NULL) {
-	file = RAND_file_name(buffer, sizeof(buffer));
+    if(key == NULL) {
+	fprintf(stderr, "Error: failed to create key \"%s\" \n", type);
+	return(NULL);	
     }
-    if((file == NULL) || !RAND_write_file(file)) {
-	    fprintf(stderr, "Failed to write random init file (file=%s)\n", (file) ? file : "NULL"); 
-	    return 0;
-    }
-
-    return 1;
+    return(key);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    

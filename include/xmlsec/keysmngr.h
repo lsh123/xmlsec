@@ -14,22 +14,16 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#include <openssl/pem.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/x509.h>
 
-/**
- * Simple Keys Manager:
- */
-XMLSEC_EXPORT xmlSecKeysMngrPtr	xmlSecSimpleKeysMngrCreate	
-							(void);
-XMLSEC_EXPORT void	xmlSecSimpleKeysMngrDestroy 	(xmlSecKeysMngrPtr mngr);
+XMLSEC_EXPORT xmlSecKeysMngrPtr	xmlSecSimpleKeysMngrCreate 	(void);
+XMLSEC_EXPORT void		xmlSecSimpleKeysMngrDestroy 	(xmlSecKeysMngrPtr mngr);
 
 /**
- * Keys management
+ * Keys functions
  */
 XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrFindKey	(xmlSecKeysMngrPtr mngr,
 							 void *context,
@@ -48,9 +42,7 @@ XMLSEC_EXPORT int	xmlSecSimpleKeysMngrSave	(const xmlSecKeysMngrPtr mngr,
 XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
 							 const char *keyfile,
 							 const char *keyPwd,
-							 pem_password_cb *keyPwdCallback,
 							 int privateKey);
-
 /**
  * X509 certificates management
  */

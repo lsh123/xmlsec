@@ -13,8 +13,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-#include <openssl/evp.h>
-
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
@@ -24,6 +22,9 @@ extern "C" {
 
 typedef struct _xmlSecCipherTransform 	xmlSecCipherTransform, *xmlSecCipherTransformPtr; 
 typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
+
+typedef int (*xmlSecCipherGenerateIvMethod)	(xmlSecCipherTransformPtr transform);
+typedef int (*xmlSecCipherInitMethod)		(xmlSecCipherTransformPtr transform);
 
 /**
  * xmlSecCipherUpdateMethod:
@@ -95,6 +96,8 @@ struct _xmlSecCipherTransformIdStruct {
     xmlSecBinTransformFlushMethod	flushBin;    
     
     /* xmlSecCipherTransform data/methods */
+    xmlSecCipherGenerateIvMethod	cipherGenerateIv;
+    xmlSecCipherInitMethod		cipherInit;
     xmlSecCipherUpdateMethod		cipherUpdate;
     xmlSecCipherFinalMethod		cipherFinal;
     size_t				keySize;
@@ -138,7 +141,6 @@ struct _xmlSecCipherTransform {
     /* xmlSecCipherTransform specific */
     unsigned char			*bufIn;
     unsigned char			*bufOut;
-    EVP_CIPHER_CTX 			cipherCtx;
     unsigned char			*iv;
     size_t				ivPos;
     void				*cipherData;
@@ -157,16 +159,10 @@ XMLSEC_EXPORT int  	xmlSecCipherTransformFlush	(xmlSecBinTransformPtr transform)
 
 
 /**
- * EVP Cipher methods
- */
-XMLSEC_EXPORT int 	xmlSecEvpCipherUpdate		(xmlSecCipherTransformPtr cipher,
-							 const unsigned char *buffer,
-							 size_t size);
-XMLSEC_EXPORT int 	xmlSecEvpCipherFinal		(xmlSecCipherTransformPtr cipher);
- 
-/**
  * Low-level methods
  */
+XMLSEC_EXPORT int 	xmlSecCipherGenerateIv		(xmlSecTransformPtr transform);
+XMLSEC_EXPORT int 	xmlSecCipherInit		(xmlSecTransformPtr transform);
 XMLSEC_EXPORT int 	xmlSecCipherUpdate		(xmlSecTransformPtr transform,
 							 const unsigned char *buffer,
 							 size_t size);
@@ -176,5 +172,5 @@ XMLSEC_EXPORT int 	xmlSecCipherFinal		(xmlSecTransformPtr transform);
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_CIPHERS_H__ */
+#endif /* __XMLSEC_			CIPHERS_H__ */
 

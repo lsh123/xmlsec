@@ -17,8 +17,8 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/base64.h>
-#include <xmlsec/bn.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/openssl/bn.h>
 
 /**
  * xmlSecBN2CryptoBinary:

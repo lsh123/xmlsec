@@ -1,14 +1,15 @@
-## Process this file with automake to produce Makefile.in
+NULL=
+SUBDIRS = $(XMLSEC_CRYPTO)
 
 xmlsecincdir = $(includedir)/xmlsec
 
 xmlsecinc_HEADERS = \
 base64.h \
-bn.h \
 buffered.h \
 ciphers.h \
-digests.h \
+crypto.h \
 debug.h \
+digests.h \
 errors.h \
 io.h \
 keyinfo.h \
@@ -24,7 +25,8 @@ x509.h \
 xmldsig.h \
 xmlenc.h \
 xmlsec.h \
-xmltree.h
+xmltree.h \
+$(NULL)
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlsecincdir)

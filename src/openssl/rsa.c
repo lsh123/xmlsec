@@ -23,7 +23,6 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
-#include <xmlsec/bn.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
@@ -33,7 +32,8 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
-
+#include <xmlsec/openssl/bn.h>
+#include <xmlsec/openssl/evp.h>
 
 /**
  * RSA transform
@@ -59,6 +59,11 @@ static RSA* 		xmlSecRsaDup		(RSA *rsa);
 static xmlSecKeyPtr	xmlSecRsaKeyCreate	(xmlSecKeyId id);
 static void		xmlSecRsaKeyDestroy	(xmlSecKeyPtr key);
 static xmlSecKeyPtr	xmlSecRsaKeyDuplicate	(xmlSecKeyPtr key);
+static int		xmlSecRsaKeyGenerate	(xmlSecKeyPtr key,
+						 int keySize);
+static int		xmlSecRsaKeySetValue	(xmlSecKeyPtr key,
+						 void* data,
+						 int dataSize);
 static int		xmlSecRsaKeyRead	(xmlSecKeyPtr key,
 						 xmlNodePtr node);
 static int		xmlSecRsaKeyWrite	(xmlSecKeyPtr key,
@@ -74,6 +79,8 @@ struct _xmlSecKeyIdStruct xmlSecRsaKeyId = {
     xmlSecRsaKeyCreate,		/* xmlSecKeyCreateMethod create; */    
     xmlSecRsaKeyDestroy,	/* xmlSecKeyDestroyMethod destroy; */
     xmlSecRsaKeyDuplicate,	/* xmlSecKeyDuplicateMethod duplicate; */
+    xmlSecRsaKeyGenerate,	/* xmlSecKeyGenerateMethod generate; */
+    xmlSecRsaKeySetValue,	/* xmlSecKeySetValueMethod setValue; */
     xmlSecRsaKeyRead, 		/* xmlSecKeyReadXmlMethod read; */
     xmlSecRsaKeyWrite,		/* xmlSecKeyWriteXmlMethod write; */
     NULL,			/* xmlSecKeyReadBinaryMethod readBin; */
@@ -556,18 +563,10 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
     return(newKey);
 }
 
-/**
- * xmlSecRsaKeyGenerate:
- * @key: the pointer to RSA key.
- * @rsa: the pointer to OpenSSL RSA key or NULL.
- *
- * Sets the @key to the value of @rsa or generates a new RSA key
- * if @rsa is NULL.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int		
-xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
+static int
+xmlSecRsaKeyGenerate(xmlSecKeyPtr key, int keySize) {
+    RSA *rsa;
+    int ret;
 
     xmlSecAssert2(key != NULL, -1);
     
@@ -578,16 +577,49 @@ xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
 	return(-1);
     }
 
-    if(rsa == NULL) {    
-	rsa = RSA_generate_key(1024, 3, NULL, NULL); 
-	if(rsa == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"RSA_generate_key");
-	    return(-1);    
-	}
-    } else {
-	rsa =  xmlSecRsaDup(rsa); 
+    /* todo: change exponent? */
+    rsa = RSA_generate_key(keySize, 3, NULL, NULL); 
+    if(rsa == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RSA_generate_key");
+	return(-1);
+    }    
+    
+    ret = xmlSecRsaKeySetValue(key, rsa, sizeof(RSA));
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecRsaKeySetValue");
+	RSA_free(rsa);
+	return(-1);
+    }
+    RSA_free(rsa);
+    return(0);
+}
+
+static int	
+xmlSecRsaKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
+    RSA* rsa = NULL;
+    xmlSecAssert2(key != NULL, -1);
+    
+    if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
+	return(-1);
+    }
+    
+    /* not the best way to do it but... */
+    if(dataSize != sizeof(RSA)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+		    "%d bytes actually, %d bytes expected", dataSize, sizeof(RSA));
+	return(-1);
+    }
+
+    if(data != NULL) {
+	rsa = xmlSecRsaDup((RSA*)data); 
 	if(rsa == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -595,18 +627,18 @@ xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
 	    return(-1);    
 	}
     }
-
     if(xmlSecGetRsaKey(key) != NULL) {
 	RSA_free(xmlSecGetRsaKey(key));
     }    
     key->keyData = rsa;
-    if(rsa->d != NULL) {
-	key->type = xmlSecKeyTypePrivate;
+    if((rsa != NULL) && (rsa->d != NULL)) {
+        key->type = xmlSecKeyTypePrivate;    
     } else {
-	key->type = xmlSecKeyTypePublic;
+        key->type = xmlSecKeyTypePublic;    
     }
-    return(0);    
+    return(0);
 }
+
 
 /**
  * xmlSecRsaKeyRead:
@@ -1241,6 +1273,7 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
     buffer->use = ret;
     return(0);
 }
+
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -15,9 +15,6 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#include <openssl/rsa.h>
-#include <openssl/dsa.h>
-
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
@@ -99,9 +96,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes256;
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 	 		xmlSecAesKey;
 
-XMLSEC_EXPORT     int	xmlSecAesKeyGenerate	(xmlSecKeyPtr key,
-						 const unsigned char *buf, 
-						 size_t size);
 #endif /* XMLSEC_NO_AES */
 
 /******************************************************************** 
@@ -191,9 +185,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWDes3Cbc;
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecDesKey;
  
-XMLSEC_EXPORT int	xmlSecDesKeyGenerate	(xmlSecKeyPtr key,
-						 const unsigned char *buf, 
-						 size_t size);
 #endif /* XMLSEC_NO_DES */
 
 /********************************************************************
@@ -202,8 +193,6 @@ XMLSEC_EXPORT int	xmlSecDesKeyGenerate	(xmlSecKeyPtr key,
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
-#include <openssl/dsa.h>
-
 /**
  * xmlSecSignDsaSha1:
  * 
@@ -216,9 +205,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecSignDsaSha1;
  * The DSA signature key id.
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecDsaKey;
-
-XMLSEC_EXPORT int	xmlSecDsaKeyGenerate	(xmlSecKeyPtr key,
-						 DSA *dsa);
 #endif /* XMLSEC_NO_DSA */
 
 /********************************************************************
@@ -265,9 +251,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacMd5;
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecHmacKey;
 
-XMLSEC_EXPORT int	xmlSecHmacKeyGenerate	(xmlSecKeyPtr key,
-						 const unsigned char *buf, 
-						 size_t size);
 XMLSEC_EXPORT int	xmlSecHmacAddOutputLength(xmlNodePtr transformNode,
 						 size_t bitsLen);
 #endif /* XMLSEC_NO_HMAC */
@@ -317,8 +300,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncRsaOaep;
  */
 XMLSEC_EXPORT_VAR xmlSecKeyId 			xmlSecRsaKey;
 
-XMLSEC_EXPORT int	xmlSecRsaKeyGenerate	(xmlSecKeyPtr key,
-						 RSA *rsa);
 XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode,
 						 const unsigned char *buf,
 						 size_t size);

@@ -13,7 +13,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-#include <openssl/evp.h>
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>

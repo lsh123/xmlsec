@@ -68,6 +68,11 @@ static void		xmlSecHmacKeyDataDestroy	(xmlSecHmacKeyDataPtr data);
 static xmlSecKeyPtr	xmlSecHmacKeyCreate		(xmlSecKeyId id);
 static void		xmlSecHmacKeyDestroy		(xmlSecKeyPtr key);
 static xmlSecKeyPtr	xmlSecHmacKeyDuplicate		(xmlSecKeyPtr key);
+static int		xmlSecHmacKeyGenerate		(xmlSecKeyPtr key,
+							 int keySize);
+static int		xmlSecHmacKeySetValue		(xmlSecKeyPtr key,
+							 void* data,
+							 int dataSize);
 static int		xmlSecHmacKeyRead		(xmlSecKeyPtr key,
 							 xmlNodePtr node);
 static int		xmlSecHmacKeyWrite		(xmlSecKeyPtr key,
@@ -89,6 +94,8 @@ struct _xmlSecKeyIdStruct xmlSecHmacKeyId = {
     xmlSecHmacKeyCreate,		/* xmlSecKeyCreateMethod create; */    
     xmlSecHmacKeyDestroy,		/* xmlSecKeyDestroyMethod destroy; */
     xmlSecHmacKeyDuplicate,		/* xmlSecKeyDuplicateMethod duplicate; */
+    xmlSecHmacKeyGenerate, 		/* xmlSecKeyGenerateMethod generate; */
+    xmlSecHmacKeySetValue, 		/* xmlSecKeySetValueMethod setValue; */
     xmlSecHmacKeyRead, 			/* xmlSecKeyReadXmlMethod read; */
     xmlSecHmacKeyWrite,			/* xmlSecKeyWriteXmlMethod write; */
     xmlSecHmacKeyReadBinary,		/* xmlSecKeyReadBinaryMethod readBin; */
@@ -616,19 +623,8 @@ xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
     return(newKey);
 }
 
-/**
- * xmlSecHmacKeyGenerate:
- * @key: the pointer to HMAC key.
- * @buf: the HMAC key binary data or NULL.
- * @size: the binary data size.
- *
- * Sets the HMAC key @key to data in @buf or generates a new HMAC key 
- * if @buf is NULL.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int		
-xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
+static int		
+xmlSecHmacKeyGenerate(xmlSecKeyPtr key, int keySize) {
     xmlSecHmacKeyDataPtr data;
     int ret;
 
@@ -640,32 +636,60 @@ xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 		    "xmlSecHmacKey");
 	return(-1);
     }
-
-    data = xmlSecHmacKeyDataCreate(buf, size);
+        
+    data = xmlSecHmacKeyDataCreate(NULL, keySize);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecHmacKeyDataCreate");
 	return(-1);    
     }
-    if((buf == NULL) && (data->key != NULL)) {
-	/* generate the key */
-	ret = RAND_bytes(data->key, data->keySize);
-	if(ret != 1) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"RAND_bytes - %d", ret);
-	    xmlSecHmacKeyDataDestroy(data);
-	    return(-1);    
-	}	
-    }
 
+    /* generate the key */
+    ret = RAND_bytes(data->key, data->keySize);
+    if(ret != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RAND_bytes - %d", ret);
+	xmlSecHmacKeyDataDestroy(data);
+	return(-1);    
+    }
     
     if(key->keyData != NULL) {
 	xmlSecHmacKeyDataDestroy((xmlSecHmacKeyDataPtr)key->keyData);
 	key->keyData = NULL;
     }
     key->keyData = data;
+    key->type = xmlSecKeyTypePrivate;    
+    return(0);    
+}
+
+static int		
+xmlSecHmacKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
+    xmlSecHmacKeyDataPtr keyData;
+
+    xmlSecAssert2(key != NULL, -1);
+    
+    if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
+	return(-1);
+    }
+        
+    keyData = xmlSecHmacKeyDataCreate((unsigned char*)data, dataSize);
+    if(keyData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecHmacKeyDataCreate");
+	return(-1);    
+    }
+
+    if(key->keyData != NULL) {
+	xmlSecHmacKeyDataDestroy((xmlSecHmacKeyDataPtr)key->keyData);
+	key->keyData = NULL;
+    }
+    key->keyData = keyData;
     key->type = xmlSecKeyTypePrivate;    
     return(0);    
 }
@@ -861,7 +885,7 @@ xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
 		    "%d", size);
 	return(NULL);
     }
-    memset(data, 0,  sizeof(xmlSecHmacKeyData) + sizeof(unsigned char) * keySize); 
+    memset(data, 0, size); 
     
     data->key = ((unsigned char*)data) + sizeof(struct _xmlSecHmacKeyData);
     data->keySize = keySize;

@@ -848,8 +848,7 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 			"xmlSecX509DataCreate");
 	    goto done;
 	}
-	x509Data->certsVerificationTime = status->certsVerificationTime;
-	
+	xmlSecX509DataSetVerificationTime(x509Data, status->certsVerificationTime);	
 	ret = xmlSecX509DataReadDerCert(x509Data, (unsigned char*)xmlBufferContent(state->curBuf),
 	                    	    xmlBufferLength(state->curBuf), 0);
 	if(ret < 0) {
@@ -1154,7 +1153,7 @@ xmlSecX509DataNodeRead(xmlNodePtr x509DataNode, xmlSecKeyInfoNodeStatusPtr statu
 		    "xmlSecX509DataCreate");
 	return(NULL);
     }
-    x509Data->certsVerificationTime = status->certsVerificationTime;
+    xmlSecX509DataSetVerificationTime(x509Data, status->certsVerificationTime);
 
     ret = 0;
     cur = xmlSecGetNextElementNode(x509DataNode->children);

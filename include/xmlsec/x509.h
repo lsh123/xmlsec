@@ -16,40 +16,13 @@ extern "C" {
 
 #ifndef XMLSEC_NO_X509
 
-#include <libxml/tree.h>
-
-#include <openssl/x509.h>
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/transforms.h>
-
-
+/* forward declarations */
 typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
 typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
 
-/**
- * xmlSecX509Data:
- * @verified: the cert that contains this key.
- * @certs: the certs list used to verify the @verified cert.
- * @crls: the crls list present in the key data.
- *
- * XML DSig data for the key.
- */
-
-/* openssl specific */
-struct _xmlSecX509Data {
-    X509		*verified;
-    STACK_OF(X509) 	*certs;
-    STACK_OF(X509_CRL)  *crls;
-    time_t		certsVerificationTime;
-};
-
-struct _xmlSecX509Store {
-    unsigned long	x509_store_flags;
-    X509_STORE		*xst;
-    STACK_OF(X509)	*untrusted;
-    STACK_OF(X509_CRL)	*crls;
-};
+#include <libxml/tree.h>
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/transforms.h>
 
 XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataCreate		(void);
 XMLSEC_EXPORT void		xmlSecX509DataDestroy		(xmlSecX509DataPtr x509Data);
@@ -59,6 +32,8 @@ XMLSEC_EXPORT int		xmlSecX509DataReadDerCert	(xmlSecX509DataPtr x509Data,
 							 	 xmlChar *buf,
 								 size_t size,
 								 int base64);
+XMLSEC_EXPORT void		xmlSecX509DataSetVerificationTime(xmlSecX509DataPtr x509Data,
+								 time_t t);
 XMLSEC_EXPORT xmlChar*		xmlSecX509DataWriteDerCert	(xmlSecX509DataPtr x509Data,
 								 int pos);
 XMLSEC_EXPORT int		xmlSecX509DataReadDerCrl	(xmlSecX509DataPtr x509Data,

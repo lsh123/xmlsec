@@ -13,27 +13,6 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#include <openssl/err.h>
-
-/**************************************************************
- *
- * Error constants for OpenSSL 
- *
- *************************************************************/
-
-/**
- * XMLSEC_ERRORS_LIB:
- *
- * Macro. The XMLSec library id for OpenSSL errors reporting functions.
- */
-#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
-/**
- * XMLSEC_ERRORS_FUNCTION:
- *
- * Macro. The XMLSec library functions OpenSSL errors reporting functions.
- */
-#define XMLSEC_ERRORS_FUNCTION			0
-
 /***************************************************************
  *
  * Error codes
@@ -55,7 +34,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_CRYPTO_FAILED:
  *
- * Crypto (OpenSSL) function failed. 
+ * Crypto function failed. 
  */
 #define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3
 /**
@@ -274,9 +253,11 @@ typedef void (*xmlSecErrorsCallback) 		(const char* file, int line,
 				    		 const char* func,
 						 int reason, const char* msg);
 
-XMLSEC_EXPORT void xmlSecErrorsInit		(void);
-XMLSEC_EXPORT void xmlSecErrorsShutdown		(void);
 XMLSEC_EXPORT void xmlSecErrorsSetCallback	(xmlSecErrorsCallback callback);
+XMLSEC_EXPORT void xmlSecErrorsDefaultCallback	(const char* file, int line, 
+				    		 const char* func,
+						 int reason, const char* msg);
+
  
 /**
  * xmlSecPrintErrorMessages:
@@ -347,6 +328,7 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 #define __FUNCTION__  ""
 #endif /* _MSC_VER */
 
+#define XMLSEC_ERRORS_BUFFER_SIZE	1024
 
 #ifdef __cplusplus
 }

@@ -25,10 +25,10 @@
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/ciphers.h>
 #include <xmlsec/buffered.h> 
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/openssl/evp.h>
 
 #define XMLSEC_AES_BLOCK_SIZE			16
 #define XMLSEC_AES128_KEY_SIZE			16
@@ -51,6 +51,11 @@ static void		xmlSecAesKeyDataDestroy		(xmlSecAesKeyDataPtr data);
 static xmlSecKeyPtr	xmlSecAesKeyCreate		(xmlSecKeyId id);
 static void		xmlSecAesKeyDestroy		(xmlSecKeyPtr key);
 static xmlSecKeyPtr	xmlSecAesKeyDuplicate		(xmlSecKeyPtr key);
+static int		xmlSecAesKeyGenerate		(xmlSecKeyPtr key,
+							 int keySize);
+static int		xmlSecAesKeySetValue		(xmlSecKeyPtr key,
+							 void* data,
+							 int dataSize);
 static int		xmlSecAesKeyRead		(xmlSecKeyPtr key,
 							 xmlNodePtr node);
 static int		xmlSecAesKeyWrite		(xmlSecKeyPtr key,
@@ -72,6 +77,8 @@ struct _xmlSecKeyIdStruct xmlSecAesKeyId = {
     xmlSecAesKeyCreate,		/* xmlSecKeyCreateMethod create; */    
     xmlSecAesKeyDestroy,	/* xmlSecKeyDestroyMethod destroy; */
     xmlSecAesKeyDuplicate,	/* xmlSecKeyDuplicateMethod duplicate; */
+    xmlSecAesKeyGenerate, 	/* xmlSecKeyGenerateMethod generate; */
+    xmlSecAesKeySetValue, 	/* xmlSecKeySetValueMethod setValue; */
     xmlSecAesKeyRead, 		/* xmlSecKeyReadXmlMethod read; */
     xmlSecAesKeyWrite,		/* xmlSecKeyWriteXmlMethod write; */
     xmlSecAesKeyReadBinary,	/* xmlSecKeyReadBinaryMethod readBin; */
@@ -109,7 +116,9 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecCipherTransform data/methods */
+    /* xmlSecEvpCipherTransform data/methods */
+    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_AES128_KEY_SIZE,		/* size_t keySize */
@@ -139,7 +148,9 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecCipherTransform data/methods */
+    /* xmlSecEvpCipherTransform data/methods */
+    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_AES192_KEY_SIZE,		/* size_t keySize */
@@ -169,7 +180,9 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
-    /* xmlSecCipherTransform data/methods */
+    /* xmlSecEvpCipherTransform data/methods */
+    xmlSecEvpCipherGenerateIv,		/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecEvpCipherInit,		/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
     XMLSEC_AES256_KEY_SIZE,		/* size_t keySize */
@@ -286,7 +299,7 @@ xmlSecTransformId xmlSecKWAes256 = (xmlSecTransformId)&xmlSecKWAes256Id;
 static xmlSecTransformPtr 
 xmlSecAesCreate(xmlSecTransformId id) {
     xmlSecCipherTransformId cipherId;
-    xmlSecCipherTransformPtr cipher;
+    xmlSecEvpCipherTransformPtr cipher;
     const EVP_CIPHER *type;
     size_t size;
     
@@ -306,11 +319,11 @@ xmlSecAesCreate(xmlSecTransformId id) {
     }
     cipherId = (xmlSecCipherTransformId)id;
     
-    size = sizeof(xmlSecCipherTransform) +
+    size = sizeof(xmlSecEvpCipherTransform) +
 	   sizeof(unsigned char) * (cipherId->bufInSize + 
 				    cipherId->bufOutSize + 
 				    cipherId->ivSize);
-    cipher = (xmlSecCipherTransformPtr)xmlMalloc(size);
+    cipher = (xmlSecEvpCipherTransformPtr)xmlMalloc(size);
     if(cipher == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -318,13 +331,13 @@ xmlSecAesCreate(xmlSecTransformId id) {
 	return(NULL);
     }
 
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
+    memset(cipher, 0, sizeof(xmlSecEvpCipherTransform) + 
 			sizeof(unsigned char) * (cipherId->bufInSize + 
         		cipherId->bufOutSize + cipherId->ivSize));
     EVP_CIPHER_CTX_init(&(cipher->cipherCtx));
     
     cipher->id = cipherId;
-    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecCipherTransform);
+    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecEvpCipherTransform);
     cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
     cipher->iv = cipher->bufOut + cipherId->bufOutSize; 
     cipher->cipherData = (void*)type; /* cache cipher type */
@@ -336,7 +349,7 @@ xmlSecAesCreate(xmlSecTransformId id) {
  */ 
 static void 	
 xmlSecAesDestroy(xmlSecTransformPtr transform) {
-    xmlSecCipherTransformPtr cipher;
+    xmlSecEvpCipherTransformPtr cipher;
 
     xmlSecAssert(transform != NULL);
         
@@ -350,9 +363,9 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
 	return;
     }
     
-    cipher = (xmlSecCipherTransformPtr) transform;
+    cipher = (xmlSecEvpCipherTransformPtr) transform;
     EVP_CIPHER_CTX_cleanup(&(cipher->cipherCtx));
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) +
+    memset(cipher, 0, sizeof(xmlSecEvpCipherTransform) +
 			sizeof(unsigned char) * (cipher->id->bufInSize + 
         		cipher->id->bufOutSize + cipher->id->ivSize));
     xmlFree(cipher);
@@ -363,7 +376,7 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
  */ 
 static int  	
 xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecCipherTransformPtr cipher;
+    xmlSecEvpCipherTransformPtr cipher;
     xmlSecAesKeyDataPtr aesKey;
     int ret;
     
@@ -381,7 +394,7 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	return(-1);
     }
     
-    cipher = (xmlSecCipherTransformPtr) transform;
+    cipher = (xmlSecEvpCipherTransformPtr) transform;
     aesKey = (xmlSecAesKeyDataPtr)key->keyData;
 
     if(aesKey->keySize < cipher->id->keySize) {
@@ -802,19 +815,9 @@ xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
     return(newKey);
 }
 
-/**
- * xmlSecAesKeyGenerate:
- * @key: the pointer to AES key.
- * @buf: the pointer to AES key data or NULL if new key should be generated.
- * @size: the AES key data size or 0 if new key should be generated.
- *
- * Sets the AES key to the given data or generates a new random key.
- *
- * Returns 0 for success or a negative value otherwise.  
- */
-int		
-xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    xmlSecAesKeyDataPtr data;
+static int
+xmlSecAesKeyGenerate(xmlSecKeyPtr key, int keySize) {
+    xmlSecAesKeyDataPtr keyData;
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -826,24 +829,22 @@ xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 	return(-1);
     }
 
-    data = xmlSecAesKeyDataCreate(buf, size);
-    if(data == NULL) {
+    keyData = xmlSecAesKeyDataCreate(NULL, keySize);
+    if(keyData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecAesKeyDataCreate");
 	return(-1);    
     }
 
-    if((buf == NULL) && (data->key != NULL)) {
-	/* generate the key */
-	ret = RAND_bytes(data->key, data->keySize);
-	if(ret != 1) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"RAND_bytes");
-	    xmlSecAesKeyDataDestroy(data);
-	    return(-1);    
-	}	
+    /* generate the key */
+    ret = RAND_bytes(keyData->key, keyData->keySize);
+    if(ret != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RAND_bytes");
+	xmlSecAesKeyDataDestroy(keyData);
+	return(-1);    
     }
     
     if(key->keyData != NULL) {
@@ -851,10 +852,42 @@ xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 	key->keyData = NULL;
     }
     
-    key->keyData = data;
+    key->keyData = keyData;
     key->type = xmlSecKeyTypePrivate;    
     return(0);    
 }
+
+static int		
+xmlSecAesKeySetValue(xmlSecKeyPtr key, void* data, int dataSize) {
+    xmlSecAesKeyDataPtr keyData;
+
+    xmlSecAssert2(key != NULL, -1);
+        
+    if(!xmlSecKeyCheckId(key, xmlSecAesKey)) { 
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    " ");
+	return(-1);
+    }
+
+    keyData = xmlSecAesKeyDataCreate((unsigned char*)data, dataSize);
+    if(keyData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAesKeyDataCreate");
+	return(-1);    
+    }
+
+    if(key->keyData != NULL) {
+	xmlSecAesKeyDataDestroy((xmlSecAesKeyDataPtr)key->keyData);
+	key->keyData = NULL;
+    }
+    
+    key->keyData = keyData;
+    key->type = xmlSecKeyTypePrivate;    
+    return(0);    
+}
+
 
 /**
  * xmlSecAesKeyRead:
@@ -865,7 +898,7 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     size_t keyLen;
     int ret;
 
-    xmlSecAssert2(key != NULL, -1);
+        xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
         
     if(!xmlSecKeyCheckId(key, xmlSecAesKey)) {

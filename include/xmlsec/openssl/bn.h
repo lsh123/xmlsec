@@ -7,8 +7,8 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
-#ifndef __XMLSEC_BN_H__
-#define __XMLSEC_BN_H__    
+#ifndef __XMLSEC_OPENSSL_BN_H__
+#define __XMLSEC_OPENSSL_BN_H__    
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,5 +34,5 @@ XMLSEC_EXPORT int	xmlSecNodeSetBNValue		(xmlNodePtr cur,
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_BN_H__ */
+#endif /* __XMLSEC_OPENSSL_BN_H__ */
 

@@ -167,6 +167,62 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key,  xmlSecKeyOrigin origin) {
     return(newKey);
 }
 
+xmlSecKeyPtr
+xmlSecKeyGenerate(xmlSecKeyId id, int keySize, xmlSecKeyOrigin origin, const char* name) {
+    xmlSecKeyPtr key;
+    int ret;
+    
+    xmlSecAssert2(id != NULL, NULL);
+    xmlSecAssert2(id->generate != NULL, NULL);
+    
+    key = xmlSecKeyCreate(id, origin);
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCreate");
+	return(NULL);	
+    }
+    
+    ret = id->generate(key, keySize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->generate");
+	xmlSecKeyDestroy(key);
+	return(NULL);	
+    }	
+
+    if(name != NULL) {
+	key->name = xmlStrdup(BAD_CAST name);
+    }						    
+    return(key);
+}
+
+int
+xmlSecKeySetValue(xmlSecKeyPtr key,  void* data, int dataSize) {
+    int ret;
+    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->id != NULL, -1);
+    xmlSecAssert2(key->id->setValue != NULL, -1);
+    
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    " ");
+	return(-1);	
+    }
+    
+    ret = key->id->setValue(key, data, dataSize);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "id->setValue");
+	return(-1);	
+    }	
+    return(0);
+}
+
 /**
  * xmlSecKeyReadXml:
  * @id: the key id.

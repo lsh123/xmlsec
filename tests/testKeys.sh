@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh 
 
 topfolder=$1
 xmlsec_app=$2

@@ -21,6 +21,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/io.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/crypto.h>
 
 const xmlChar xmlSecNs[] 	= "http://www.aleksey.com/xmlsec/2002";
 const xmlChar xmlSecDSigNs[] 	= "http://www.w3.org/2000/09/xmldsig#";
@@ -33,14 +34,23 @@ const xmlChar xmlSecXPointerNs[]= "http://www.w3.org/2001/04/xmldsig-more/xptr";
  * xmlSecInit:
  *
  * Initializes XML Security Library. The depended libraries
- * (LibXML, LibXSLT and OpenSSL) must be initialized before.
+ * (LibXML, LibXSLT and Crypto engine) must be initialized before.
  */
-void
+int
 xmlSecInit(void) {
-    xmlSecErrorsInit();
+    int ret;
+
+    ret = xmlSecCryptoInit();
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCryptoInit");
+	return(-1);
+    }
     xmlSecTransformsInit();
     xmlSecKeysInit();
     xmlSecIOInit();
+    return(0);
 }
 
 /**
@@ -48,9 +58,18 @@ xmlSecInit(void) {
  *
  * Clean ups the XML Security Library.
  */
-void
+int 
 xmlSecShutdown(void) {
+    int ret;
+    
     xmlSecIOShutdown();
-    xmlSecErrorsShutdown();
+    ret = xmlSecCryptoShutdown();
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCryptoInit");
+	return(-1);
+    }
+    return(0);
 }
 

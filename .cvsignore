@@ -31,3 +31,4 @@ core
 xmlsec.spec
 conftest.o
 *.stamp
+*.cache

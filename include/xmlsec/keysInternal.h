@@ -15,11 +15,6 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <libxml/tree.h>
-#include <openssl/evp.h>
-
-#ifndef XMLSEC_NO_X509
-#include <openssl/x509.h>
-#endif /* XMLSEC_NO_X509 */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -60,6 +55,29 @@ typedef xmlSecKeyPtr	(*xmlSecKeyDuplicateMethod)	(xmlSecKeyPtr key);
  * Key specific destroy method.
  */
 typedef void		(*xmlSecKeyDestroyMethod)	(xmlSecKeyPtr key);
+/** 
+ * xmlSecKeyGenerateMethod:
+ * @id: the key id.
+ * @keySize: the key size (specific to key type).
+ *
+ * Key specific method to generate a new key. The old key material 
+ * is destroyed.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef int		(*xmlSecKeyGenerateMethod)	(xmlSecKeyPtr key, int keySize);
+/** 
+ * xmlSecKeySetValueMethod:
+ * @id: the key id.
+ * @data: the key data (specific to key type).
+ * @dataSize: the @data size.
+ *
+ * Key specific method to set value of the key. The old key material 
+ * is destroyed.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef int		(*xmlSecKeySetValueMethod)	(xmlSecKeyPtr key, void* data, int dataSize);
 /** 
  * xmlSecKeyReadXmlMethod:
  * @key: the key.
@@ -136,6 +154,8 @@ struct _xmlSecKeyIdStruct {
     xmlSecKeyCreateMethod		create;
     xmlSecKeyDestroyMethod		destroy;
     xmlSecKeyDuplicateMethod		duplicate;
+    xmlSecKeyGenerateMethod		generate;
+    xmlSecKeySetValueMethod		setValue;
     xmlSecKeyReadXmlMethod		read;
     xmlSecKeyWriteXmlMethod		write;
     xmlSecKeyReadBinaryMethod		readBin;
@@ -150,7 +170,7 @@ void		xmlSecKeysInit				(void);
  
 /**
  * xmlSecKeyIsValid:
- * @key: the pointer to key.
+ * @		key: the pointer to key.
  *
  * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
  * or 0 otherwise.

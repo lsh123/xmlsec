@@ -13,9 +13,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 

@@ -1,4 +1,4 @@
-/**
+/**		
  * XMLSec library
  *
  * Base64 encode/decode transform
@@ -85,6 +85,7 @@ static int		xmlSecBase64CtxDecode		(xmlSecBase64CtxPtr ctx);
 
 static xmlSecTransformPtr xmlSecBase64Create		(xmlSecTransformId id);
 static void		xmlSecBase64Destroy		(xmlSecTransformPtr transform);
+static int  		xmlSecBase64Init		(xmlSecCipherTransformPtr transform);
 static int  		xmlSecBase64Update		(xmlSecCipherTransformPtr transform, 
 							 const unsigned char *buf, 
 							 size_t size);
@@ -111,6 +112,8 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
     /* xmlSecCipherTransform data/methods */
+    NULL,				/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecBase64Init,			/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecBase64Update,			/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecBase64Final,			/* xmlSecCipherFinalMethod cipherFinal; */
     0,					/* size_t keySize; */
@@ -141,6 +144,8 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
 
     /* xmlSecCipherTransform data/methods */
+    NULL,				/* xmlSecCipherGenerateIvMethod cipherUpdate; */
+    xmlSecBase64Init,			/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecBase64Update,			/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecBase64Final,			/* xmlSecCipherFinalMethod cipherFinal; */
     0,					/* size_t keySize; */
@@ -263,6 +268,36 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 }
 
 /**
+ * xmlSecBase64Init:
+ */
+static int
+xmlSecBase64Init(xmlSecCipherTransformPtr cipher) {
+    xmlSecBase64CtxPtr ctx;
+    int ret;
+    
+    xmlSecAssert2(cipher != NULL, -1);
+        
+    if(!xmlSecTransformCheckId(cipher, xmlSecEncBase64Encode) &&
+       !xmlSecTransformCheckId(cipher, xmlSecEncBase64Decode)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
+	return(-1);
+    }
+    
+    ctx = (xmlSecBase64CtxPtr)cipher->data;
+    ret = xmlSecBase64CtxInit(ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64CtxInit");
+	return(-1);
+    }
+    return(ret);
+}
+
+/**
  * xmlSecBase64Update:
  */
 static int
@@ -285,8 +320,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
     if((buf == NULL) || (size == 0)) {
 	return(0);
     }
-
-
+    
     ctx = (xmlSecBase64CtxPtr)cipher->data;
     if(size > cipher->id->bufInSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -299,7 +333,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    " ");
+		    "xmlSecBase64CtxUpdate");
 	return(-1);
     }
     return(ret);
@@ -463,6 +497,22 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
     
     memset(ctx, 0, sizeof(xmlSecBase64Ctx)); 
     xmlFree(ctx);
+}
+
+/**
+ * xmlSecBase64CtxInit:
+ * @ctx: the pointer to #xmlSecBase64Ctx structure
+ *
+ * Initializes the base64 input context.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecBase64CtxInit(xmlSecBase64CtxPtr ctx) {
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    memset(ctx, 0, sizeof(xmlSecBase64Ctx));
+    return(0);
 }
 
 /**

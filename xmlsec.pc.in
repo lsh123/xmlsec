@@ -7,5 +7,5 @@ Name: xmlsec
 Version: @VERSION@
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ 
-Libs: -L${libdir} -lxmlsec @LIBXSLT_LIBS@ @LIBXML_LIBS@  @OPENSSL_LIBS@ @LIBS@
-Cflags: @CFLAGS@ -I${includedir}/xmlsec @LIBXSLT_CFLAGS@ @LIBXML_CFLAGS@  @OPENSSL_CFLAGS@
+Cflags: -I${includedir}/xmlsec  @XMLSEC_CRYPTO_CFLAGS@ @LIBXSLT_CFLAGS@ @LIBXML_CFLAGS@ @CFLAGS@
+Libs: -L${libdir} -lxmlsec -l@XMLSEC_CRYPTO_LIB@  @XMLSEC_CRYPTO_LIBS@ @LIBXSLT_LIBS@ @LIBXML_LIBS@ @LIBS@

@@ -858,7 +858,8 @@ static int
 xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     xmlChar *xpath2Type;
     xmlChar* expr;
-
+    int len;
+    
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(data->expr == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -877,8 +878,8 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
     switch(data->xpathType) {
     case xmlSecXPathTypeXPath:
 	/* Create full XPath expression */
-        data->expr = (xmlChar*) xmlMalloc(sizeof(xmlChar) * 
-	        (xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1));
+	len = sizeof(xmlChar) * (xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1);
+        data->expr = (xmlChar*) xmlMalloc(len + 1);
 	if(data->expr == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -886,7 +887,8 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 			xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1);
     	    return(-1);
         }
-        sprintf((char*)data->expr, (char*)xpathPattern, expr);	
+	/* we could not exceed buffer size because we just allocated it */
+        sprintf((char*)data->expr, (char*)xpathPattern, (char*)expr);	
         xmlFree(expr);
 	break;
     case xmlSecXPathTypeXPath2:

@@ -86,8 +86,8 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 /* XPointer transform namespace */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 
-XMLSEC_EXPORT void	xmlSecInit			(void);
-XMLSEC_EXPORT void	xmlSecShutdown			(void);
+XMLSEC_EXPORT int	xmlSecInit			(void);
+XMLSEC_EXPORT int	xmlSecShutdown			(void);
 
 
 /**

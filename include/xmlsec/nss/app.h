@@ -96,6 +96,8 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeyCertLoadMemory	(xmlSecKeyPtr key,
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssAppKeyCertLoadSECItem	(xmlSecKeyPtr key,
 									 SECItem* secItem,
 									 xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem,
+									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 XMLSEC_CRYPTO_EXPORT void*		xmlSecNssAppGetDefaultPwdCallback(void);
 

@@ -46,6 +46,8 @@ XMLSEC_CRYPTO_EXPORT X509_CRL*		xmlSecOpenSSLKeyDataX509GetCrl	(xmlSecKeyDataPtr
 									 xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data);
 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr	xmlSecOpenSSLX509CertGetKey	(X509* cert);
+
 
 /**
  * xmlSecOpenSSLKeyDataRawX509CertId:

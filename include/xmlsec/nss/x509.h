@@ -43,6 +43,7 @@ XMLSEC_CRYPTO_EXPORT int 		xmlSecNssKeyDataX509AdoptCrl(xmlSecKeyDataPtr data,
 XMLSEC_CRYPTO_EXPORT CERTSignedCrl*	xmlSecNssKeyDataX509GetCrl	(xmlSecKeyDataPtr data,
 									 xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecNssKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr	xmlSecNssX509CertGetKey		(CERTCertificate* cert);
 
 
 /**

@@ -81,7 +81,6 @@ static int		xmlSecOpenSSLX509CRLNodeWrite		(X509_CRL* crl,
 static int		xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, 
 								xmlSecKeyPtr key,
 								xmlSecKeyInfoCtxPtr keyInfoCtx);
-static xmlSecKeyDataPtr	xmlSecOpenSSLX509CertGetKey		(X509* cert);
 static X509*		xmlSecOpenSSLX509CertDerRead		(const xmlSecByte* buf, 
 								 xmlSecSize size);
 static X509*		xmlSecOpenSSLX509CertBase64DerRead	(xmlChar* buf);
@@ -1812,7 +1811,15 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME* t, time_t* res) {
     return(0);
 }
 
-static xmlSecKeyDataPtr	
+/** 
+ * xmlSecOpenSSLX509CertGetKey:
+ * @cert:		the certificate.
+ * 
+ * Extracts public key from the @cert.
+ *
+ * Returns public key value or NULL if an error occurs.
+ */
+xmlSecKeyDataPtr	
 xmlSecOpenSSLX509CertGetKey(X509* cert) {
     xmlSecKeyDataPtr data;
     EVP_PKEY *pKey = NULL;

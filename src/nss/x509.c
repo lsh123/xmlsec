@@ -92,7 +92,6 @@ static int		xmlSecNssKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
 								xmlSecKeyPtr key,
 								xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static xmlSecKeyDataPtr	xmlSecNssX509CertGetKey			(CERTCertificate* cert);
 static CERTCertificate*	xmlSecNssX509CertDerRead		(const xmlSecByte* buf, 
 								 xmlSecSize size);
 static CERTCertificate*	xmlSecNssX509CertBase64DerRead		(xmlChar* buf);
@@ -1726,7 +1725,15 @@ xmlSecNssX509CertGetTime(PRTime* t, time_t* res) {
     return(0);
 }
 
-static xmlSecKeyDataPtr	
+/** 
+ * xmlSecNssX509CertGetKey:
+ * @cert:		the certificate.
+ * 
+ * Extracts public key from the @cert.
+ *
+ * Returns public key value or NULL if an error occurs.
+ */
+xmlSecKeyDataPtr	
 xmlSecNssX509CertGetKey(CERTCertificate* cert) {
     xmlSecKeyDataPtr data;
     SECKEYPublicKey *pubkey = NULL;

@@ -103,6 +103,8 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key,
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeyCertLoadBIO	(xmlSecKeyPtr key,
 									 BIO* bio,
 									 xmlSecKeyDataFormat format);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr 	xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, 
+									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 
 XMLSEC_CRYPTO_EXPORT void*		xmlSecOpenSSLAppGetDefaultPwdCallback(void);

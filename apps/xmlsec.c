@@ -318,6 +318,7 @@ static xmlSecAppCmdLineParam pubkeyDerParam = {
     NULL
 };
 
+
 #ifndef XMLSEC_NO_AES    
 static xmlSecAppCmdLineParam aeskeyParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
@@ -619,6 +620,28 @@ static xmlSecAppCmdLineParam pkcs12Param = {
     NULL
 };
 
+static xmlSecAppCmdLineParam pubkeyCertParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-cert-pem",
+    "--pubkey-cert",
+    "--pubkey-cert-pem[:<name>] <file>"
+    "\n\tload public key from PEM cert file",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam pubkeyCertDerParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey-cert-der",
+    NULL,
+    "--pubkey-cert-der[:<name>] <file>"
+    "\n\tload public key from DER cert file",
+    xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
 static xmlSecAppCmdLineParam trustedParam = { 
     xmlSecAppCmdLineTopicX509Certs,
     "--trusted-pem",
@@ -747,6 +770,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &pwdParam,
 #ifndef XMLSEC_NO_X509
     &pkcs12Param,
+    &pubkeyCertParam,
+    &pubkeyCertDerParam,
     &trustedParam,
     &untrustedParam,
     &trustedDerParam,
@@ -2161,6 +2186,40 @@ xmlSecAppLoadKeys(void) {
 		    xmlSecKeyDataTypeTrusted) < 0) {
 	    fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
 		    value->strValue);
+	    return(-1);
+	}
+    }
+
+
+    /* read all public keys in certs */
+    for(value = pubkeyCertParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    pubkeyCertParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
+		    value->strListValue, 
+		    xmlSecAppCmdLineParamGetString(&pwdParam),
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatCertPem) < 0) {
+	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
+		    value->strListValue);
+	    return(-1);
+	}
+    }
+
+    for(value = pubkeyCertDerParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    pubkeyCertDerParam.fullName);
+	    return(-1);
+	} else if(xmlSecAppCryptoSimpleKeysMngrKeyAndCertsLoad(gKeysMngr, 
+		    value->strListValue, 
+		    xmlSecAppCmdLineParamGetString(&pwdParam),
+		    value->paramNameValue,
+		    xmlSecKeyDataFormatCertDer) < 0) {
+	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
+		    value->strListValue);
 	    return(-1);
 	}
     }

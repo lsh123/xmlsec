@@ -33,6 +33,7 @@ static int 		xmlSecOpenSSLAppLoadRANDFile		(const char *file);
 static int 		xmlSecOpenSSLAppSaveRANDFile		(const char *file);
 static int		xmlSecOpenSSLDefaultPasswordCallback	(char *buf, int bufsiz, int verify, void *userdata);
 
+
 #if defined(_MSC_VER)
 #define snprintf _snprintf
 #endif
@@ -289,6 +290,22 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	    return(NULL);	
 	}
 	return(key);
+	
+#ifndef XMLSEC_NO_X509
+    case xmlSecKeyDataFormatCertPem:
+    case xmlSecKeyDataFormatCertDer: 
+	key = xmlSecOpenSSLAppKeyFromCertLoadBIO(bio, format);
+        if(key == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecOpenSSLAppKeyFromCertLoadBIO",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);	
+	}
+	return(key);
+#endif /* XMLSEC_NO_X509 */
+
     default:
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -336,10 +353,10 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     return(key);
 }
 
+
 #ifndef XMLSEC_NO_X509
 static X509*		xmlSecOpenSSLAppCertLoadBIO		(BIO* bio,
 								 xmlSecKeyDataFormat format);
-
 /**
  * xmlSecOpenSSLAppKeyCertLoad:
  * @key:		the pointer to key.
@@ -808,6 +825,106 @@ done:
 }
 
 /**
+ * xmlSecOpenSSLAppKeyFromCertLoadBIO:
+ * @bio:		the BIO.
+ * @format:		the cert format.
+ *
+ * Loads public key from cert.
+ *
+ * Returns pointer to key or NULL if an error occurs.
+ */
+xmlSecKeyPtr 
+xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
+    xmlSecKeyPtr key;
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyDataPtr certData;
+    X509 *cert;
+    int ret;
+
+    xmlSecAssert2(bio != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    
+    /* load cert */
+    cert = xmlSecOpenSSLAppCertLoadBIO(bio, format);
+    if(cert == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLAppCertLoadBIO",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);    
+    }
+
+    /* get key value */
+    keyData = xmlSecOpenSSLX509CertGetKey(cert);
+    if(keyData == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLX509CertGetKey",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	X509_free(cert);
+	return(NULL);    
+    }
+    
+    /* create key */
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDataDestroy(keyData);
+	X509_free(cert);
+	return(NULL);    
+    }    
+    
+    /* set key value */
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeySetValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	xmlSecKeyDataDestroy(keyData);
+	X509_free(cert);
+	return(NULL);    
+    }
+
+    /* create cert data */ 
+    certData = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
+    if(certData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyEnsureData",		    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	X509_free(cert);
+	return(NULL);    
+    }
+
+    /* put cert in the cert data */
+    ret = xmlSecOpenSSLKeyDataX509AdoptCert(certData, cert);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	X509_free(cert);
+	return(NULL);    
+    }
+    
+    return(key);
+}
+
+
+/**
  * xmlSecOpenSSLAppKeysMngrCertLoad:
  * @mngr: 		the keys manager.
  * @filename: 		the certificate file.
@@ -1016,6 +1133,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
 
     switch(format) {
     case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatCertPem:
 	cert = PEM_read_bio_X509_AUX(bio, NULL, NULL, NULL);
 	if(cert == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1027,6 +1145,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
 	}
 	break;
     case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
 	cert = d2i_X509_bio(bio, NULL);
 	if(cert == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,

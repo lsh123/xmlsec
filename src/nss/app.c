@@ -54,6 +54,7 @@ static PRBool xmlSecNssAppAscii2UCS2Conv			(PRBool toUnicode,
 static SECItem *xmlSecNssAppNicknameCollisionCallback		(SECItem *old_nick,
 						    		 PRBool *cancel,
 								 void *wincx);
+static xmlSecKeyPtr	xmlSecNssAppDerKeyLoadSECItem		(SECItem* secItem);
 
 /**
  * xmlSecNssAppInit:
@@ -375,6 +376,61 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
 		    void* pwdCallback,
 		    void* pwdCallbackCtx) {
     xmlSecKeyPtr key = NULL;
+
+    xmlSecAssert2(secItem != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    switch(format) {
+#ifndef XMLSEC_NO_X509
+    case xmlSecKeyDataFormatPkcs12:
+	key = xmlSecNssAppPkcs12LoadSECItem(secItem, pwd, pwdCallback, pwdCallbackCtx);
+        if(key == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecNssAppPkcs12LoadSECItem",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);	
+	}
+	break;
+    case xmlSecKeyDataFormatCertDer: 
+	key = xmlSecNssAppKeyFromCertLoadSECItem(secItem, format);
+        if(key == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecNssAppKeyFromCertLoadSECItem",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);	
+	}
+	break;
+#endif /* XMLSEC_NO_X509 */
+    case xmlSecKeyDataFormatDer:
+	key = xmlSecNssAppDerKeyLoadSECItem(secItem);
+        if(key == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecNssAppDerKeyLoadSECItem",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);	
+	}
+	break;
+    default:
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNssAppKeyLoad",
+		    XMLSEC_ERRORS_R_INVALID_FORMAT,
+		    "format=%d", format);
+	    return(NULL);	
+    }
+
+    return(key);
+}
+
+static xmlSecKeyPtr
+xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
+    xmlSecKeyPtr key = NULL;
     xmlSecKeyPtr retval = NULL;
     xmlSecKeyDataPtr data = NULL;
     int ret;
@@ -387,13 +443,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
     SECStatus status;
 
     xmlSecAssert2(secItem != NULL, NULL);
-    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    if (format == xmlSecKeyDataFormatPkcs12) {
-	return (xmlSecNssAppPkcs12LoadSECItem(secItem, pwd, pwdCallback,
-				    	      pwdCallbackCtx));
-    }
-    
     /* we're importing a key about which we know nothing yet, just use the 
      * internal slot 
      */
@@ -410,42 +460,35 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
     nickname.len = 0;
     nickname.data = NULL;
 
-    switch(format) {
-    case xmlSecKeyDataFormatDer:
-	/* TRY PRIVATE KEY FIRST 
-	 * Note: This expects the key to be in PrivateKeyInfo format. The
-	 * DER files created from PEM via openssl utilities aren't in that 
-	 * format
-	 */
-	status = PK11_ImportDERPrivateKeyInfoAndReturnKey(slot, secItem, 
-					    &nickname, NULL, PR_FALSE, 
-					    PR_TRUE, KU_ALL, &privkey, NULL);
-	if (status != SECSuccess) {
-	    /* TRY PUBLIC KEY */
-	    spki = SECKEY_DecodeDERSubjectPublicKeyInfo(secItem);
-	    if (spki) {
-		pubkey = SECKEY_ExtractPublicKey(spki);
-		if (pubkey == NULL)
-		    goto done;
-	    } else {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    NULL,
-			    "SECKEY_DecodeDERSubjectPublicKeyInfo",
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		goto done;
-	    }
 
-        }
-
-	break;
-    default:
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecNssAppKeyLoad",
-		    XMLSEC_ERRORS_R_INVALID_FORMAT,
-		    "format=%d", format);
-	goto done;
+    /* TRY PRIVATE KEY FIRST 
+     * Note: This expects the key to be in PrivateKeyInfo format. The
+     * DER files created from PEM via openssl utilities aren't in that 
+     * format
+     */
+    status = PK11_ImportDERPrivateKeyInfoAndReturnKey(slot, secItem, 
+			    &nickname, NULL, PR_FALSE, 
+			    PR_TRUE, KU_ALL, &privkey, NULL);
+    if (status != SECSuccess) {
+	/* TRY PUBLIC KEY */
+	spki = SECKEY_DecodeDERSubjectPublicKeyInfo(secItem);
+	if (spki == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"SECKEY_DecodeDERSubjectPublicKeyInfo",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	}
+	
+	pubkey = SECKEY_ExtractPublicKey(spki);
+	if (pubkey == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"SECKEY_ExtractPublicKey",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
+	}
     }
 
     data = xmlSecNssPKIAdoptKey(privkey, pubkey);
@@ -1082,6 +1125,118 @@ done:
 
     return(key);    
 }
+
+/**
+ * xmlSecNssAppKeyFromCertLoadSECItem:
+ * @secItem:		the @SECItem object.
+ * @format:		the cert format.
+ *
+ * Loads public key from cert.
+ *
+ * Returns pointer to key or NULL if an error occurs.
+ */
+xmlSecKeyPtr 
+xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format) {
+    xmlSecKeyPtr key;
+    xmlSecKeyDataPtr keyData;
+    xmlSecKeyDataPtr certData;
+    CERTCertificate *cert=NULL;
+    int ret;
+
+    xmlSecAssert2(secItem != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+    
+    /* load cert */
+    switch(format) {
+    case xmlSecKeyDataFormatCertDer:
+	cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(), 
+					 secItem, NULL, PR_FALSE, PR_TRUE);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"__CERT_NewTempCertificate", 
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        "format=%d", format);
+	    return(NULL);    
+	}
+	break;
+    default:
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_FORMAT,
+		    "format=%d", format); 
+	return(NULL);
+    }
+
+    /* get key value */
+    keyData = xmlSecNssX509CertGetKey(cert);
+    if(keyData == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNssX509CertGetKey",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	CERT_DestroyCertificate(cert);
+	return(NULL);    
+    }
+    
+    /* create key */
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDataDestroy(keyData);
+	CERT_DestroyCertificate(cert);
+	return(NULL);    
+    }    
+    
+    /* set key value */
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeySetValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	xmlSecKeyDataDestroy(keyData);
+	CERT_DestroyCertificate(cert);
+	return(NULL);    
+    }
+
+    /* create cert data */ 
+    certData = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
+    if(certData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyEnsureData",		    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	CERT_DestroyCertificate(cert);
+	return(NULL);    
+    }
+
+    /* put cert in the cert data */
+    ret = xmlSecNssKeyDataX509AdoptCert(certData, cert);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecNssKeyDataX509AdoptCert",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecKeyDestroy(key);
+	CERT_DestroyCertificate(cert);
+	return(NULL);    
+    }
+    
+    return(key);
+}
+
 
 /**
  * xmlSecNssAppKeysMngrCertLoad:

@@ -296,8 +296,10 @@ xmlSecNssErrorsDefaultCallback(const char* file, int line, const char* func,
 				const char* errorObject, const char* errorSubject,
 				int reason, const char* msg) {
     char buf[500];
+    int err;
 
-    snprintf(buf, sizeof(buf), "%s;last nss error=%d", msg, PORT_GetError());
+    err = PORT_GetError();
+    snprintf(buf, sizeof(buf), "%s;last nss error=%d (0x%08X)", msg, err, err);
     xmlSecErrorsDefaultCallback(file, line, func, 
 		errorObject, errorSubject, 
 		reason, buf);

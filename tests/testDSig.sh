@@ -124,7 +124,7 @@ execDSigTest "merlin-xmldsig-twenty-three/signature-external-dsa" \
     " " 
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-keyname" \
-    "--pubkey-$pub_key_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh.$pub_key_format" \
+    "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format" \
     "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
     "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret"
 

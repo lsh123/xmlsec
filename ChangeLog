@@ -1,3 +1,16 @@
+Thu Sep 25 20:47:11 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keysdata.h: introduced new cert-pem and cert-der
+	key formats (public key in a certificate)
+	* include/xmlsec/nss/app.h nclude/xmlsec/nss/x509.h
+	include/xmlsec/openssl/app.h include/xmlsec/openssl/x509.h
+	src/nss/app.c src/nss/crypto.c src/nss/x509.c 
+	src/openssl/app.c src/openssl/x509.c: implemented
+	support for new formats in OpenSSL and NSS
+	* apps/xmlsec.c: added "--pubkey-cert-pem" and "--pubkey-cert-der" options 
+	* tests/testDSig.sh tests/merlin-xmldsig-twenty-three/certs/lugh-cert.der: 
+	use certificate for public keys 	
+
 Thu 25 Sep 2003 05:51:37 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* include/ src/ win32/ docs/ Makefile.am configure.in: merging

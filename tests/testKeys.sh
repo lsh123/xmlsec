@@ -20,7 +20,7 @@ tmpfile=$TMPFOLDER/testKeys.$timestamp-$$.tmp
 logfile=$TMPFOLDER/testKeys.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
-nssdbfolds=$topfolder/nssdb
+nssdbfolder=$topfolder/nssdb
 
 valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
 valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"

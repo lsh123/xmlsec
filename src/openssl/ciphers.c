@@ -443,15 +443,25 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
     
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpBlockCipherCtx));
 
+#ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
 	ctx->cipher = EVP_des_ede3_cbc();
-    } else if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
+    } else 
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_AES
+#ifndef XMLSEC_OPENSSL_096
+    if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
 	ctx->cipher = EVP_aes_128_cbc();	
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
 	ctx->cipher = EVP_aes_192_cbc();	
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
 	ctx->cipher = EVP_aes_256_cbc();	
-    } else {
+    } else 
+#endif /* XMLSEC_NO_AES */
+#endif /* XMLSEC_OPENSSL_096 */
+    
+    {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,

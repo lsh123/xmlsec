@@ -69,11 +69,19 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecOpenSSLDigestCtx));
 
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id)) {
         ctx->digest = EVP_sha1();
-    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
+    } else 
+#endif /* XMLSEC_NO_SHA1 */    
+    
+#ifndef XMLSEC_NO_RIPEMD160 
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
         ctx->digest = EVP_ripemd160();
-    } else {
+    } else 
+#endif /* XMLSEC_NO_RIPEMD160 */
+    
+    {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,

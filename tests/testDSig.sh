@@ -182,7 +182,7 @@ execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509 --verificaiton-time 2002-10-02+10:00:00" 
+    "--trusted $topfolder/keys/cacert.pem --allowed x509 --verification-time 2002-10-02+10:00:00" 
 
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     ""

@@ -1,3 +1,10 @@
+Fri Oct 11 09:13:27 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* tests/testDSig.sh configure.in apps/xmlsec.c: applied patch from 
+	Ferrell Moultrie and removed strptime() function usage completelly
+	* include/xmlsec/errors.h src/errors.c src/x509.c: added more
+	error to the cert verification
+
 Thu Oct 10 00:44:36 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl

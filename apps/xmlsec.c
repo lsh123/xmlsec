@@ -200,10 +200,8 @@ static const char helpX509[] =
     "  --trusted <file>      load trusted (root) certificate from PEM file\n"
     "  --untrusted <file>    load un-trusted certificate from PEM file\n"
     "  --pwd <password>      the password to use for reading keys and certs\n"
-#ifndef XMLSEC_NO_STRPTIME
-    "  --verificaiton-time <time> the local time in \"YYYY-MM-DD HH:MM:SS\"\n"
+    "  --verification-time <time> the local time in \"YYYY-MM-DD HH:MM:SS\"\n"
     "                       format used certificates verification\n"
-#endif /* XMLSEC_NO_STRPTIME */
 #else /* XMLSEC_NO_X509 */
     "x509 certificates support was disabled during compilation\n"
 #endif /* XMLSEC_NO_X509 */        
@@ -514,8 +512,7 @@ int main(int argc, char **argv) {
 	    ret = readPEMCertificate(argv[++pos], 1);
 	} else if((strcmp(argv[pos], "--untrusted") == 0) && (pos + 1 < argc)) {	
 	    ret = readPEMCertificate(argv[++pos], 0);
-#ifndef XMLSEC_NO_STRPTIME
-	} else if((strcmp(argv[pos], "--verificaiton-time") == 0) && (pos + 1 < argc)) {
+	} else if((strcmp(argv[pos], "--verification-time") == 0) && (pos + 1 < argc)) {
 	    time_t t = 0;
 	     
 	    if(readTime(argv[++pos], &t) >= 0) {
@@ -536,7 +533,6 @@ int main(int argc, char **argv) {
 	    } else {
     		ret = -1;
 	    }
-#endif /* XMLSEC_NO_STRPTIME */
 	} else 
 
 	/**
@@ -1007,24 +1003,31 @@ int  readNumber(const char *str, int *number) {
 
 int  readTime(const char* str, time_t* t) {
     struct tm tm;
-
+    int n;
+    
     if((str == NULL) || (t == NULL)) {
 	return(-1);
     }
-    
-#ifndef XMLSEC_NO_STRPTIME
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
-    if((strptime(str, "%Y-%m-%d %H:%M:%S", &tm) == NULL) &&
-       (strptime(str, "%Y-%m-%d+%H:%M:%S", &tm) == NULL)){
-	fprintf(stderr, "Error: the local system time in \"YYYY-MM-DD HH:MM:SS\" is expected isntead of \"%s\"\n", str);
-	return(-1);	
+    
+    n = sscanf(str, "%4u-%2u-%2u%*c%2u:%2u:%2u", 
+			    &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+			    &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+    if((n != 6) || (tm.tm_year < 1900) 
+		|| (tm.tm_mon  < 1) || (tm.tm_mon  > 12) 
+		|| (tm.tm_mday < 1) || (tm.tm_mday > 31)
+		|| (tm.tm_hour < 0) || (tm.tm_hour > 23)
+		|| (tm.tm_min  < 0) || (tm.tm_min  > 59)
+		|| (tm.tm_sec  < 0) || (tm.tm_sec  > 61)) {
+	return(-1);	    
     }
+
+    tm.tm_year -= 1900; /* tm relative format year */
+    tm.tm_mon  -= 1; /* tm relative format month */
+
     (*t) = mktime(&tm);
     return(0);    
-#endif /* XMLSEC_NO_STRPTIME */
-    fprintf(stderr, "Error: strptime() function is not supported by your system, feature is disabled\n");
-    return(-1);
 }
 
 int  readPEMCertificate(const char *file, int trusted) {

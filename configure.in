@@ -45,8 +45,6 @@ AC_CHECK_HEADERS(stdio.h stdlib.h string.h ctype.h errno.h ansidecl.h time.h)
 
 XMLSEC_DEFINES=""
 
-AC_CHECK_FUNC(strptime, , [XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_STRPTIME=1"])
-
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================

@@ -201,25 +201,45 @@ extern "C" {
  *
  * Certificate verification failed.
  */
-#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31
+#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 41
 /**
  * XMLSEC_ERRORS_R_CERT_NOT_FOUND:
  *
  * Requested certificate is not found.
  */
-#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32
+#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 42
 /**
  * XMLSEC_ERRORS_R_CERT_REVOKED:
  * 
  * The certificate is revoked.
  */
-#define XMLSEC_ERRORS_R_CERT_REVOKED		 33
+#define XMLSEC_ERRORS_R_CERT_REVOKED		 43
+/**
+ * XMLSEC_ERRORS_R_CERT_ISSUER_FAILED:
+ *
+ * Failed to get certificate issuer.
+ */
+#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED	 44
+/**
+ * XMLSEC_ERRORS_R_CERT_NOT_YET_VALID:
+ *
+ * "Not valid before" verification failed.
+ */
+#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID	 45
+/**
+ * XMLSEC_ERRORS_R_CERT_HAS_EXPIRED:
+ *
+ * "Not valid after" verification failed.
+ */
+#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 46
+
 /**
  * XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE:
  *
  * The <dsig:Reference> validation failed.
  */
-#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34
+#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
+
 /**
  * XMLSEC_ERRORS_R_ASSERTION:
  *

@@ -170,7 +170,7 @@ xmlSecAppCmdLineMatchParam(const char* argvParam, const char* paramName,
 	int len = strlen(paramName);
 	
 	if((strncmp(argvParam, paramName, len) == 0) &&
-	   ((argvParam[len] == ':') || (argvParam[len] == ':'))) {
+	   ((argvParam[len] == '\0') || (argvParam[len] == ':'))) {
 	   
 	   return(1);
 	}

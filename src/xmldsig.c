@@ -489,12 +489,12 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     
     /* todo: call key info ctx initialize */
     
-    /* by default we process Manifests and store everything */
+    /* by default we process Manifests and store nothing */
     ctx->keyInfoCtx.keysMngr = keysMngr;
     ctx->processManifests = 1;
-    ctx->storeSignatures = 1;
-    ctx->storeReferences = 1;
-    ctx->storeManifests = 1;
+    ctx->storeSignatures  = 0;
+    ctx->storeReferences  = 0;
+    ctx->storeManifests   = 0;
     return(ctx);
 }
 

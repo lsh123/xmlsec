@@ -142,7 +142,7 @@ execDSigTest "merlin-xmldsig-twenty-three/signature" \
 
 execDSigTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--session-hmac-192 --keys $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--session-key hmac-192 --keys $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" 
     
 execDSigTest "merlin-exc-c14n-one/exc-signature" \

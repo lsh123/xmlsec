@@ -25,13 +25,13 @@ echo "--- testKeys started ($timestamp) ---" >> $logfile
 
 printf "    Creating new keys                                    "
 $xmlsec_app keys \
-    --gen-hmac-192  "test-hmac-sha1" \
-    --gen-rsa-1024  "test-rsa" \
-    --gen-dsa-1024  "test-dsa" \
-    --gen-des-192   "test-des" \
-    --gen-aes-128   "test-aes128" \
-    --gen-aes-192   "test-aes192" \
-    --gen-aes-256   "test-aes256" \
+    --gen-key:test-hmac-sha1 hmac-192 \
+    --gen-key:test-rsa rsa-1024  \
+    --gen-key:test-dsa dsa-1024 \
+    --gen-key:test-des des-192 \
+    --gen-key:test-aes128 aes-128 \
+    --gen-key:test-aes192 aes-192 \
+    --gen-key:test-aes256 aes-256 \
     $keysfile >> $logfile 2>> $logfile
 printRes 
 

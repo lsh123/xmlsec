@@ -281,11 +281,11 @@ static xmlSecAppCmdLineParam allowedParam = {
  * Common params
  *
  ***************************************************************/
-static xmlSecAppCmdLineParam sessionParam = { 
+static xmlSecAppCmdLineParam sessionKeyParam = { 
     xmlSecAppCmdLineTopicDSigSign | xmlSecAppCmdLineTopicEncEncrypt,
-    "--session",
+    "--session-key",
     NULL,
-    "--session <keyKlass>-<keySize>"
+    "--session-key <keyKlass>-<keySize>"
     "\n\tgenerate new session <keyKlass> key of <keySize> bits size"
     "\n\t(for example, \"--session des-192\" generates a new 192 bits"
     "\n\tDES key for DES3 encryption)",
@@ -559,7 +559,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #endif /* XMLSEC_NO_XMLENC */
              
     /* common dsig and enc parameters */
-    &sessionParam,    
+    &sessionKeyParam,    
     &outputParam,
     &printDebugParam,
     &printXmlDebugParam,    
@@ -615,6 +615,20 @@ typedef enum {
     xmlSecAppCommandDecrypt
 } xmlSecAppCommand;
 
+typedef struct _xmlSecAppXmlData				xmlSecAppXmlData,
+								*xmlSecAppXmlDataPtr;
+struct _xmlSecAppXmlData {
+    xmlDocPtr	doc;
+    xmlDtdPtr	dtd;
+    xmlNodePtr	startNode;
+};
+
+static xmlSecAppXmlDataPtr	xmlSecAppXmlDataCreate		(const char* filename,
+								 const xmlChar* defStartNodeName,
+								 const xmlChar* defStartNodeNs);
+static void			xmlSecAppXmlDataDestroy		(xmlSecAppXmlDataPtr data);							
+
+
 static xmlSecAppCommand 	xmlSecAppParseCommand		(const char* cmd, 
 							         xmlSecAppCmdLineParamTopic* topics,
 								 xmlSecAppCommand* subCommand);
@@ -630,18 +644,27 @@ static int			xmlSecAppPrepareKeyInfoCtx	(xmlSecKeyInfoCtxPtr ctx);
 static int			xmlSecAppSignFile		(const char* filename);
 static int			xmlSecAppVerifyFile		(const char* filename);
 static xmlSecDSigCtxPtr		xmlSecAppCreateDSigCtx		(void);
+static void			xmlSecAppPrintDSigResult	(xmlSecDSigResultPtr result, 
+								 const char* filename); 
+static void			xmlSecAppPrintDSigXmlResult	(xmlSecDSigResultPtr result, 
+								 const char* filename);
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
 static int			xmlSecAppEncryptFile		(const char* filename);
 static int			xmlSecAppDecryptFile		(const char* filename);
 static xmlSecEncCtxPtr		xmlSecAppCreateEncCtx		(void);
+static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
 
+
+static FILE* 			xmlSecAppOpenFile		(const char* filename);
+static void			xmlSecAppCloseFile		(FILE* file);
 
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
 int print_debug = 0;
+clock_t total_time = 0;
 
 int main(int argc, const char **argv) {
     xmlSecAppCmdLineParamTopic cmdLineTopics;
@@ -763,6 +786,17 @@ int main(int argc, const char **argv) {
 	}
     }
 
+    /* print perf stats results */
+    if(xmlSecAppCmdLineParamIsSet(&repeatParam) && 
+       (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
+       
+	repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
+        fprintf(stderr, "Executed %d tests in %ld msec\n", repeats, total_time / (CLOCKS_PER_SEC / 1000));    
+	if(xmlSecTimerGet() > 0.0001) {
+	    fprintf(stderr, "The debug timer is %f\n", xmlSecTimerGet());    
+	}
+    }
+
     goto success;
 success:
     res = 0;
@@ -778,32 +812,74 @@ fail:
 
 
 #ifndef XMLSEC_NO_XMLDSIG
-
 static int 
 xmlSecAppSignFile(const char* filename) {
+    xmlSecAppXmlDataPtr data;
     xmlSecDSigCtxPtr dsigCtx;
+    xmlSecDSigResultPtr result;
+    clock_t start_time;
 
     if(filename == NULL) {
+	return(-1);
+    }
+    
+    /* parse template and select start node */
+    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
 	return(-1);
     }
 
     dsigCtx = xmlSecAppCreateDSigCtx();
     if(dsigCtx == NULL) {
 	fprintf(stderr, "Error: failed create signature context\n");
+	xmlSecAppXmlDataDestroy(data);
 	return(-1);
     }
     
-    /* TODO */
-    fprintf(stdout, "sign >> %s\n", filename);
+    /* sign */
+    start_time = clock();
+    /* TODO: session key */
+    if(xmlSecDSigGenerate(dsigCtx, NULL, NULL, data->startNode, &result) < 0) {
+        fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
+	xmlSecDSigCtxDestroy(dsigCtx);
+	xmlSecAppXmlDataDestroy(data);
+	return(-1);
+    }
+    total_time += clock() - start_time;    
 
+
+    if(repeats <= 1) { 
+	FILE* f;
+        
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
+	if( f != NULL) {
+	    xmlDocDump(f, data->doc);
+	    xmlSecAppCloseFile(f);
+	}
+	
+	/* print debug info if requested */
+	if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
+	   xmlSecAppPrintDSigResult(result, xmlSecAppCmdLineParamGetString(&printDebugParam));
+	}
+	if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
+	   xmlSecAppPrintDSigXmlResult(result, xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
+	}
+    }
+
+    if(result != NULL) {
+	xmlSecDSigResultDestroy(result);
+    }
     xmlSecDSigCtxDestroy(dsigCtx);
+    xmlSecAppXmlDataDestroy(data);
     return(0);
 }
 
 static int 
 xmlSecAppVerifyFile(const char* filename) {
     xmlSecDSigCtxPtr dsigCtx;
-
+    int res = -1;
+    
     if(filename == NULL) {
 	return(-1);
     }
@@ -818,7 +894,7 @@ xmlSecAppVerifyFile(const char* filename) {
     fprintf(stdout, "verify >> %s\n", filename);
 
     xmlSecDSigCtxDestroy(dsigCtx);
-    return(0);
+    return(res);
 }
 
 static xmlSecDSigCtxPtr	
@@ -866,49 +942,120 @@ xmlSecAppCreateDSigCtx(void) {
     
     return(dsigCtx);
 }
+
+static void
+xmlSecAppPrintDSigResult(xmlSecDSigResultPtr result, const char* filename) { 
+    /* TODO */
+}
+
+static void
+xmlSecAppPrintDSigXmlResult(xmlSecDSigResultPtr result, const char* filename) { 
+    /* TODO */
+}
+
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
 static int 
 xmlSecAppEncryptFile(const char* filename) {
-    xmlSecEncCtxPtr encCtx;
-    
-    if(filename == NULL) {
-	return(-1);
-    }
-    
-    encCtx = xmlSecAppCreateEncCtx();
-    if(encCtx == NULL) {
-	fprintf(stderr, "Error: failed create encryption context\n");
-	return(-1);
-    }
-    
-    /* TODO */
-    fprintf(stdout, "encrypt >> %s\n", filename);
-
-    xmlSecEncCtxDestroy(encCtx);
-    return(0);
-}
-
-static int 
-xmlSecAppDecryptFile(const char* filename) {
-    xmlSecEncCtxPtr encCtx;
+    xmlSecAppXmlDataPtr data = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
 
     if(filename == NULL) {
 	return(-1);
+    }
+
+    /* parse file and select start node */
+    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to load file \"%s\"\n", filename);
+	goto done;
     }
 
     encCtx = xmlSecAppCreateEncCtx();
     if(encCtx == NULL) {
 	fprintf(stderr, "Error: failed create decryption context\n");
-	return(-1);
+	goto done;
     }
     
     /* TODO */
     fprintf(stdout, "decrypt >> %s\n", filename);
+    res = 0;    
 
-    xmlSecEncCtxDestroy(encCtx);
-    return(0);
+done:
+    if(encCtx != NULL) {
+	/* print debug info if requested */
+        xmlSecAppPrintEncCtx(encCtx);
+        xmlSecEncCtxDestroy(encCtx);
+    }
+    if(data != NULL) {
+	xmlSecAppXmlDataDestroy(data);
+    }
+    return(res);
+}
+
+static int 
+xmlSecAppDecryptFile(const char* filename) {
+    xmlSecAppXmlDataPtr data = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    clock_t start_time;
+    int res = -1;
+
+    if(filename == NULL) {
+	return(-1);
+    }
+
+    /* parse template and select start node */
+    data = xmlSecAppXmlDataCreate(filename, xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+	goto done;
+    }
+
+    /* decrypt */
+    encCtx = xmlSecAppCreateEncCtx();
+    if(encCtx == NULL) {
+	fprintf(stderr, "Error: failed create decryption context\n");
+	goto done;
+    }
+    
+    start_time = clock();            
+    if((xmlSecEncCtxDecrypt(encCtx, data->startNode) < 0) || (encCtx->encResult == NULL)) {
+	fprintf(stderr, "Error: failed to decrypt file\n");
+	goto done;
+    }
+    total_time += clock() - start_time;    
+    
+    /* print out result only once per execution */
+    if(repeats <= 1) {
+	FILE* f;
+
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
+	if(f != NULL) {
+	    if(encCtx->replaced) {
+		xmlDocDump(f, data->doc);    
+    	    } else {
+    		fwrite(xmlSecBufferGetData(encCtx->encResult), 
+	    	    xmlSecBufferGetSize(encCtx->encResult), 1, f); 
+	    }
+	    xmlSecAppCloseFile(f);
+	}    
+    }
+    res = 0;    
+
+done:
+    if(encCtx != NULL) {
+	/* print debug info if requested */
+	if(repeats <= 1) { 
+    	    xmlSecAppPrintEncCtx(encCtx);
+	}
+        xmlSecEncCtxDestroy(encCtx);
+    }
+    if(data != NULL) {
+	xmlSecAppXmlDataDestroy(data);
+    }
+    return(res);
 }
 
 static xmlSecEncCtxPtr	
@@ -928,8 +1075,49 @@ xmlSecAppCreateEncCtx(void) {
 	return(NULL);
     }
 
+    if(xmlSecAppCmdLineParamGetString(&sessionKeyParam) != NULL) {
+	encCtx->encKey = xmlSecAppCryptoKeyGenerate(xmlSecAppCmdLineParamGetString(&sessionKeyParam),
+				NULL, xmlSecKeyDataTypeSession);
+	if(encCtx->encKey == NULL) {
+	    fprintf(stderr, "Error: failed to generate a session key \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&sessionKeyParam));
+	    xmlSecEncCtxDestroy(encCtx);
+	    return(NULL);
+	}
+    }
+    
+
     return(encCtx);
 }
+
+static void 
+xmlSecAppPrintEncCtx(xmlSecEncCtxPtr encCtx) {
+    if(encCtx == NULL) {
+	return;
+    }
+    
+    /* print debug info if requested */
+    if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
+	FILE* f;
+	
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printDebugParam));
+	if(f != NULL) {
+	    xmlSecEncCtxDebugDump(encCtx, f);
+	    xmlSecAppCloseFile(f);
+	}
+    }
+    
+    if(xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) {	   
+	FILE* f;
+	
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&printXmlDebugParam));
+	if(f != NULL) {
+	    xmlSecEncCtxDebugXmlDump(encCtx, f);
+	    xmlSecAppCloseFile(f);
+	}
+    }
+}
+
 #endif /* XMLSEC_NO_XMLENC */
 
 static int 
@@ -945,7 +1133,7 @@ xmlSecAppPrepareKeyInfoCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
 	keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
     }
-    
+
     return(0);
 }
 
@@ -1172,6 +1360,152 @@ xmlSecAppShutdown(void) {
     xmlCleanupParser();
 }
 
+static xmlSecAppXmlDataPtr 
+xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, const xmlChar* defStartNodeNs) {
+    xmlSecAppXmlDataPtr data;
+    
+    if(filename == NULL) {
+	fprintf(stderr, "Error: xml filename is null\n");
+	return(NULL);
+    }
+    
+    /* create object */
+    data = (xmlSecAppXmlDataPtr) xmlMalloc(sizeof(xmlSecAppXmlData));
+    if(data == NULL) {
+	fprintf(stderr, "Error: failed to create xml data\n");
+	return(NULL);
+    }
+    memset(data, 0, sizeof(xmlSecAppXmlData));
+    
+    /* parse doc */
+    data->doc = xmlSecParseFile(filename);
+    if(data->doc == NULL) {
+	fprintf(stderr, "Error: failed to parse xml file \"%s\"\n", 
+		filename);
+	xmlSecAppXmlDataDestroy(data);
+	return(NULL);    
+    }
+    
+    /* load dtd and set default attrs and ids */
+    if(xmlSecAppCmdLineParamGetString(&dtdfileParam) != NULL) {
+        xmlValidCtxt ctx;
+
+        data->dtd = xmlParseDTD(NULL, BAD_CAST xmlSecAppCmdLineParamGetString(&dtdfileParam));
+	if(data->dtd == NULL) {
+	    fprintf(stderr, "Error: failed to parse dtd file \"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&dtdfileParam));
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+
+	memset(&ctx, 0, sizeof(ctx));    
+	/* we don't care is doc actually valid or not */
+	xmlValidateDtd(&ctx, data->doc, data->dtd);
+    }
+    
+    /* now find the start node */
+    if(xmlSecAppCmdLineParamGetString(&nodeIdParam) != NULL) {
+	xmlAttrPtr attr;
+	    
+	attr = xmlGetID(data->doc, BAD_CAST xmlSecAppCmdLineParamGetString(&nodeIdParam));
+	if(attr == NULL) {
+	    fprintf(stderr, "Error: failed to find node with id=\"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&nodeIdParam));
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+	data->startNode = attr->parent;
+    } else if(xmlSecAppCmdLineParamGetString(&nodeNameParam) != NULL) {
+	xmlChar* name;
+	xmlChar* ns;
+	
+	name = xmlStrdup(BAD_CAST xmlSecAppCmdLineParamGetString(&nodeNameParam));
+	if(name == NULL) {
+	    fprintf(stderr, "Error: failed to duplicate node \"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&nodeNameParam));
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+	ns = (xmlChar*)strrchr((char*)name, ':');
+	if(ns != NULL) {
+	    (*(ns++)) = '\0';
+	}
+	
+	data->startNode = xmlSecFindNode(xmlDocGetRootElement(data->doc), name, ns);
+	if(data->startNode == NULL) {
+	    fprintf(stderr, "Error: failed to find node with name=\"%s\"\n", 
+		    name);
+	    xmlFree(name);
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+	xmlFree(name);
+    } else if(xmlSecAppCmdLineParamGetString(&nodeXPathParam) != NULL) {
+	xmlXPathContextPtr ctx = NULL;
+	xmlXPathObjectPtr obj = NULL;
+	
+	ctx = xmlXPathNewContext(data->doc);
+	if(ctx == NULL) {
+	    fprintf(stderr, "Error: failed to create xpath context\n");
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+	
+	obj = xmlXPathEval(BAD_CAST xmlSecAppCmdLineParamGetString(&nodeXPathParam), ctx);
+	if(obj == NULL) {
+	    fprintf(stderr, "Error: failed to evaluate xpath expression\n");
+	    xmlXPathFreeContext(ctx);
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+
+	if((obj->nodesetval == NULL) || (obj->nodesetval->nodeNr != 1)) {
+	    fprintf(stderr, "Error: xpath expression evaluation does not return a single node as expected\n");
+	    xmlXPathFreeObject(obj);
+	    xmlXPathFreeContext(ctx);
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+		
+	data->startNode = obj->nodesetval->nodeTab[0];
+	xmlXPathFreeContext(ctx);
+	xmlXPathFreeObject(obj);
+	
+    } else if(defStartNodeName != NULL) {
+	data->startNode = xmlSecFindNode(xmlDocGetRootElement(data->doc), defStartNodeName, defStartNodeNs);
+	if(data->startNode == NULL) {
+	    fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", 
+		    defStartNodeName);
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+    } else {
+	data->startNode = xmlDocGetRootElement(data->doc);
+	if(data->startNode == NULL) {
+	    fprintf(stderr, "Error: failed to get root element\n"); 
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);    
+	}
+    }
+    
+    return(data);
+}
+
+static void 
+xmlSecAppXmlDataDestroy(xmlSecAppXmlDataPtr data) {
+    if(data == NULL) {
+	fprintf(stderr, "Error: xml data is null\n");
+	return;
+    }
+    if(data->dtd != NULL) {
+	xmlFreeDtd(data->dtd);
+    }
+    if(data->doc != NULL) {
+	xmlFreeDoc(data->doc);
+    }
+    memset(data, 0, sizeof(xmlSecAppXmlData));
+    xmlFree(data);    
+}
 
 static xmlSecAppCommand 
 xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics, xmlSecAppCommand* subCommand) {
@@ -1289,5 +1623,30 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     }
     fprintf(stdout, "%s\n", bugs);
     fprintf(stdout, "%s\n", copyright);
+}
+
+static FILE* 
+xmlSecAppOpenFile(const char* filename) {
+    FILE* file;
+    
+    if((filename == NULL) || (strcmp(filename, "-") == 0)) {
+	return(stdout);
+    }
+    file = fopen(filename, "w");
+    if(file == NULL) {
+	fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
+	return(NULL);
+    }
+    
+    return(file);
+}
+
+static void 
+xmlSecAppCloseFile(FILE* file) {
+    if((file == NULL) || (file == stdout) || (file == stderr)) {
+	return;
+    }
+    
+    fclose(file);
 }
 

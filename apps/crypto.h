@@ -43,7 +43,7 @@ extern "C" {
 int	xmlSecAppCryptoInit					(const char* config);
 int	xmlSecAppCryptoShutdown					(void);
 
-xmlSecKeyPtr xmlSecAppCryptoKeyGenerate				(char* keyKlassAndSize,
+xmlSecKeyPtr xmlSecAppCryptoKeyGenerate				(const char* keyKlassAndSize,
 								 const char* name,
 								 xmlSecKeyDataType type);
 

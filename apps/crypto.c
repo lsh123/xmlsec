@@ -381,24 +381,12 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 int 
 xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* keyKlassAndSize, const char* name) {
     xmlSecKeyPtr key;
-    char* dup;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(keyKlassAndSize != NULL, -1);
     
-    dup = strdup(keyKlassAndSize);
-    if(dup == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "strdup",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(name));
-	return(-1);    
-    }
-    
-    key = xmlSecAppCryptoKeyGenerate(dup, name, xmlSecKeyDataTypePermanent);
+    key = xmlSecAppCryptoKeyGenerate(keyKlassAndSize, name, xmlSecKeyDataTypePermanent);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -406,10 +394,8 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(name));
-	free(dup);
 	return(-1);    
     }    
-    free(dup);
 
     ret = xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key);
     if(ret < 0) {
@@ -425,38 +411,53 @@ xmlSecAppCryptoSimpleKeysMngrKeyGenerate(xmlSecKeysMngrPtr mngr, const char* key
 }
 
 xmlSecKeyPtr 
-xmlSecAppCryptoKeyGenerate(char* keyKlassAndSize, const char* name, xmlSecKeyDataType type) {
+xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSecKeyDataType type) {
     xmlSecKeyPtr key;
+    char* buf;
     char* p;
     int size;
 
     xmlSecAssert2(keyKlassAndSize != NULL, NULL);
-    
+
+    buf = (char*) xmlStrdup(BAD_CAST keyKlassAndSize);
+    if(buf == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "strdup",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(name));
+	return(NULL);    
+    }
+        
     /* separate key klass and size */
-    p = strchr(keyKlassAndSize, '-');
+    p = strchr(buf, '-');
     if(p == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "key size is not specified %s", 
-		    xmlSecErrorsSafeString(keyKlassAndSize));
+		    xmlSecErrorsSafeString(buf));
+	xmlFree(buf);
 	return(NULL);
     }
     *(p++) = '\0';
     size = atoi(p);
     
-    key = xmlSecKeyGenerate(BAD_CAST keyKlassAndSize, BAD_CAST name, size, type);
+    key = xmlSecKeyGenerate(BAD_CAST buf, BAD_CAST name, size, type);
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecKeyGenerate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "klass=%s;size=%d",
-		    xmlSecErrorsSafeString(keyKlassAndSize), 
+		    xmlSecErrorsSafeString(buf), 
 		    size);
+	xmlFree(buf);
 	return(NULL);	
     }
+    xmlFree(buf);
     
     return(key);
 }

@@ -266,13 +266,12 @@ else
 		OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
 	    fi
 	    OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
-	else
-	    
+	else	    
 	    OPENSSL_INCLUDES_FOUND="no"
 	    OPENSSL_LIBS_FOUND="no"
 	    for dir in $ac_openssl_inc_dir; do
 		if test -f $dir/openssl/ssl.h; then
-		    ac_openssl_inc_folder="$dir/include"
+		    ac_openssl_inc_folder="$dir"
 		    dnl do not add -I/usr/include because compiler does it anyway
 		    if test "$dir" = "/usr/include" ; then
 			OPENSSL_CFLAGS=""
@@ -303,8 +302,8 @@ else
 	fi
     
 	dnl Check the OpenSSL version    
-	OLD_CPPFLAGS="-I$ac_openssl_inc_folder"
-	CPPFLAGS="$OPENSSL_CFLAGS"
+	OLD_CPPFLAGS=$CPPFLAGS
+	CPPFLAGS="-I$ac_openssl_inc_folder"
 	AC_EGREP_CPP(yes,[
 	    #include <openssl/opensslv.h>
 	    #if OPENSSL_VERSION_NUMBER >= 0x00906000L

@@ -20,6 +20,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/digests.h>
+#include <xmlsec/errors.h>
 
 /** 
  * Digest specific hi-level methods
@@ -36,40 +37,29 @@
 int 	
 xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode, 
 		 int removeOldContent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSignNode";
     unsigned char *buffer = NULL;
     size_t size = 0;
     xmlChar* resultString = NULL;
     int ret;
     
-    if(valueNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: valueNode is null\n",
-	    func);	
-#endif
-	return(-1);
-    }    
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(valueNode != NULL, -1);
         
     ret = xmlSecDigestSign(transform, &buffer, &size);
     if(ret < 0) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest sign failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDigestSign - %d", ret);
 	return(-1);	
     }
     
     if((buffer != NULL) && (size > 0)) {
 	resultString = xmlSecBase64Encode(buffer, size, -1);
 	if(resultString == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: base64 failed\n",
-		func);	
-#endif
-	return(-1);	
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64Encode");
+	    return(-1);	
 	}
     }
     
@@ -97,26 +87,18 @@ xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode,
  */
 int
 xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestVerifyNode";
     xmlChar *nodeContent;
     int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(valueNode != NULL, -1);
     
-    if(valueNode == NULL) {   
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: valueNode is null\n",
-	    func);	
-#endif
-	return(-1);
-    }
     
     nodeContent = xmlNodeGetContent(valueNode);
     if(nodeContent == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get node content\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    NULL);
 	return(-1);
     }
     
@@ -127,22 +109,18 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
     ret = xmlSecBase64Decode(nodeContent, (unsigned char *)nodeContent, 
 			     xmlStrlen(nodeContent) + 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 decode failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode - %d", ret);
 	xmlFree(nodeContent);
 	return(-1);
     }		     
 
     ret = xmlSecDigestVerify(transform, (unsigned char *)nodeContent, ret);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest verification failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDigestVerify - %d", ret);
 	xmlFree(nodeContent);
 	return(-1);
     }
@@ -162,15 +140,13 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
  */
 void
 xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSetPushMode";
     xmlSecDigestTransformPtr digest;    
 
+    xmlSecAssert(transform != NULL);    
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return;
     }
     digest = (xmlSecDigestTransformPtr)transform;
@@ -195,12 +171,11 @@ xmlSecDigestUpdate(xmlSecTransformPtr transform,
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestUpdate";
     xmlSecDigestTransformPtr digest;    
 
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return(-1);
     }
     digest = (xmlSecDigestTransformPtr)transform;
@@ -222,18 +197,17 @@ xmlSecDigestUpdate(xmlSecTransformPtr transform,
 int
 xmlSecDigestSign(xmlSecTransformPtr transform, 
 		 unsigned char **buffer, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSign";
     xmlSecDigestTransformPtr digest;    
 
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return(-1);
     }
     digest = (xmlSecDigestTransformPtr)transform;
+    
     if((digest->id->digestSign) != NULL) {
 	return((digest->id->digestSign)(digest, buffer, size)); 
     }
@@ -253,18 +227,18 @@ xmlSecDigestSign(xmlSecTransformPtr transform,
 int
 xmlSecDigestVerify(xmlSecTransformPtr transform,
 		const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestVerify";
     xmlSecDigestTransformPtr digest;    
 
+    xmlSecAssert2(transform != NULL, -1);
+
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return(-1);
     }
     digest = (xmlSecDigestTransformPtr)transform;
+
     if((digest->id->digestVerify) != NULL) {
         return((digest->id->digestVerify)(digest, buffer, size));
     }
@@ -288,18 +262,18 @@ xmlSecDigestVerify(xmlSecTransformPtr transform,
 int
 xmlSecDigestTransformRead(xmlSecBinTransformPtr transform, 
 			unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestTransformRead";
     xmlSecDigestTransformPtr digest;    
     int s;
     int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
     
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest) ||
-	(buf == NULL) || (size == 0)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or buf is null\n",
-	    func);	
-#endif
+    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return(-1);
     }
     digest = (xmlSecDigestTransformPtr)transform;
@@ -312,21 +286,17 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
     do {
 	s = ret = xmlSecBinTransformRead((xmlSecTransformPtr)digest->prev, buf, size);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: read from previous transform failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBinTransformRead - %d", ret);
 	    return(-1);
 	}
 	
 	ret = xmlSecDigestUpdate((xmlSecTransformPtr)transform, buf, s);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: digest update failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDigestUpdate - %d", ret);
 	    return(-1);
 	}	
     } while(s > 0);
@@ -337,19 +307,15 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
 	
 	ret = xmlSecDigestSign((xmlSecTransformPtr)transform, &res, &resSize);
 	if((ret < 0) || (res == NULL) || (resSize == 0)){
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: digest sign failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDigestSign - %d", ret);
 	    return(-1);
 	}	
 	if(resSize > size) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: buffer size is too small (%d bytes required)\n",
-		func, resSize);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_SIZE,
+			"%d bytes required (%d found)", resSize, size);
 	    return(-1);	    
 	}
 	memcpy(buf, res, resSize);
@@ -369,16 +335,14 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
 int
 xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform, 
                         const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestTransformWrite";
     xmlSecDigestTransformPtr digest;    
     int ret;
-    
+
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return(-1);
     }
     digest = (xmlSecDigestTransformPtr)transform;
@@ -390,11 +354,9 @@ xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform,
 
     ret = xmlSecDigestUpdate((xmlSecTransformPtr)transform, buf, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest update failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDigestUpdate - %d", ret);
 	return(-1);
     }	
     return(size);
@@ -410,16 +372,14 @@ xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform,
  */
 int
 xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestTransformFlush";
     xmlSecDigestTransformPtr digest;    
     int ret;
 
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeDigest");
 	return(-1);
     }
     digest = (xmlSecDigestTransformPtr)transform;
@@ -430,21 +390,17 @@ xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
 	
 	ret = xmlSecDigestSign((xmlSecTransformPtr)transform, &res, &resSize);
 	if((ret < 0) || (res == NULL) || (resSize == 0)){
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: digest sign failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDigestSign - %d", ret);
 	    return(-1);
 	}	
 	if(digest->next != NULL) {
 	    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)digest->next, res, resSize);
 	    if(ret < 0){
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: write to next transform failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecBinTransformWrite - %d", ret);
 		return(-1);
 	    }	    	    
 	}	
@@ -452,11 +408,9 @@ xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
 
     ret = xmlSecBinTransformFlush((xmlSecTransformPtr)digest->next);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: flush to next transform failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformFlush - %d", ret);
 	return(-1);
     }	    	    
     return(0);    

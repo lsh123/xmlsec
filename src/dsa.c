@@ -29,6 +29,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
 #include <xmlsec/base64.h>
+#include <xmlsec/errors.h>
 
 
 /**
@@ -132,15 +133,14 @@ xmlSecTransformId xmlSecSignDsaSha1 = (xmlSecTransformId)&xmlSecSignDsaSha1Id;
  */
 static xmlSecTransformPtr 
 xmlSecSignDsaSha1Create(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Create";
     xmlSecDigestTransformPtr digest;
-    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
     if(id != xmlSecSignDsaSha1){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignDsaSha1");
 	return(NULL);
     }
 
@@ -149,11 +149,9 @@ xmlSecSignDsaSha1Create(xmlSecTransformId id) {
      */
     digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_DSASHA1_TRANSFORM_SIZE);
     if(digest == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_DSASHA1_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_DSASHA1_TRANSFORM_SIZE);
@@ -175,15 +173,14 @@ xmlSecSignDsaSha1Create(xmlSecTransformId id) {
  */
 static void 
 xmlSecSignDsaSha1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Destroy";
     xmlSecDigestTransformPtr digest;
     
+    xmlSecAssert(transform!= NULL);
+    
     if(!xmlSecTransformCheckId(transform, xmlSecSignDsaSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignDsaSha1");
 	return;
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -209,14 +206,12 @@ xmlSecSignDsaSha1Destroy(xmlSecTransformPtr transform) {
 static int
 xmlSecSignDsaSha1Update(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Update";
+    xmlSecAssert2(digest != NULL, -1);
     
     if(!xmlSecTransformCheckId(digest, xmlSecSignDsaSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignDsaSha1");
 	return(-1);
     }    
     
@@ -244,19 +239,19 @@ xmlSecSignDsaSha1Update(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Sign";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     DSA_SIG *sig;
     int rSize, sSize;
         
+    xmlSecAssert2(digest != NULL, -1);
+
     if(!xmlSecTransformCheckId(digest, xmlSecSignDsaSha1) || 
       (xmlSecSignDsaSha1ContextDsa(digest) == NULL) ||
       ((xmlSecSignDsaSha1ContextDsa(digest)->priv_key) == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest is invalid or the DSA key is null or not private\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignDsaSha1");
 	return(-1);
     }    
     if(digest->status != xmlSecTransformStatusNone) {
@@ -267,11 +262,9 @@ xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
     sig = DSA_do_sign(buf, SHA_DIGEST_LENGTH, 
 		     xmlSecSignDsaSha1ContextDsa(digest));
     if(sig == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: DSA sign failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "DSA_do_sign");
 	return(-1);	    
     }
     
@@ -279,11 +272,10 @@ xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
     sSize = BN_num_bytes(sig->s);
     if((rSize > XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE) ||
        (sSize > XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE)) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: r or s is greate than expected %d\n", 
-	    XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE);
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "size(r)=%d or size(s)=%d > %d", rSize, sSize, XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE);
 	DSA_SIG_free(sig);
 	return(-1);
     }	
@@ -318,27 +310,25 @@ xmlSecSignDsaSha1Sign(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1Verify";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     DSA_SIG* sig;
     int ret;
         
+    xmlSecAssert2(digest != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
     if(!xmlSecTransformCheckId(digest, xmlSecSignDsaSha1) ||
        (xmlSecSignDsaSha1ContextDsa(digest) == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest is invalid or dsa key is null\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignDsaSha1");
 	return(-1);
     }    
-    if((buf == NULL) || (size != 2 * XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer is null or has an invalid size (%d)\n",
-	    func, size);	
-#endif 	    
-	digest->status = xmlSecTransformStatusFail;
+    if(size != 2 * XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "%d != %d", size, XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE);
 	return(-1);
     }
 
@@ -347,11 +337,9 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
 
     sig = DSA_SIG_new();
     if(sig == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create DSA_SIG\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "DSA_SIG_new");
 	return(-1);
     }
 	
@@ -359,11 +347,9 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
     sig->s = BN_bin2bn(buffer + XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE, 
 		       XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE, NULL);
     if((sig->r == NULL) || (sig->s == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to load DSA_SIG from digest\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "size(r)=%d or size(s)=%d > %d", sig->r, sig->s, XMLSEC_DSA_SHA1_HALF_DIGEST_SIZE);
 	DSA_SIG_free(sig); 
 	return(-1);
     }
@@ -375,11 +361,9 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
     } else if(ret == 0) {
 	digest->status = xmlSecTransformStatusFail;
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: DSA_do_verify failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "DSA_do_verify - %d", ret);
 	DSA_SIG_free(sig); 
 	return(-1);
     }
@@ -396,37 +380,34 @@ xmlSecSignDsaSha1Verify(xmlSecDigestTransformPtr digest,
  */																 
 static int
 xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignDsaSha1AddKey";
     xmlSecDigestTransformPtr digest;
     DSA *dsa;
     
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+    
     if(!xmlSecTransformCheckId(transform, xmlSecSignDsaSha1) || 
        !xmlSecKeyCheckId(key, xmlSecDsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    "xmlSecSignDsaSha1 and xmlSecDsaKey");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
 
     if(xmlSecGetDsaKey(key) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key dsa data is null\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    NULL);
 	return(-1);
     }
     
     dsa = xmlSecDsaDup(xmlSecGetDsaKey(key));
     if(dsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create dsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDsaDup");
 	return(-1);
     }
 
@@ -442,17 +423,9 @@ xmlSecSignDsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static 
 DSA* xmlSecDsaDup(DSA *dsa) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaDup";
     DSA *newDsa;
-        
-    if(dsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: dsa key is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    
+    xmlSecAssert2(dsa != NULL, NULL);        
     
     /* increment reference counter instead of coping */
 #ifdef XMLSEC_OPENSSL097
@@ -461,11 +434,9 @@ DSA* xmlSecDsaDup(DSA *dsa) {
 #else /* XMLSEC_OPENSSL097 */         
     newDsa = DSA_new();
     if(newDsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create new Dsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "DSA_new");
 	return(NULL);
     }
 
@@ -498,25 +469,21 @@ DSA* xmlSecDsaDup(DSA *dsa) {
  */
 static xmlSecKeyPtr	
 xmlSecDsaKeyCreate(xmlSecKeyId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyCreate";
     xmlSecKeyPtr key;
     
+    xmlSecAssert2(id != NULL, NULL);
     if(id != xmlSecDsaKey) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDsaKey");
 	return(NULL);	
     }
     
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -533,14 +500,12 @@ xmlSecDsaKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyDestroy";
-
+    xmlSecAssert(key != NULL);
+    
     if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDsaKey");
 	return;
     }
     
@@ -553,36 +518,31 @@ xmlSecDsaKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyDuplicate";
     xmlSecKeyPtr newKey;
     
+    xmlSecAssert2(key != NULL, NULL);
+    
     if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDsaKey");
 	return(NULL);
     }
     
     newKey = xmlSecDsaKeyCreate(key->id);
     if(newKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDsaKeyCreate");
 	return(NULL);
     }
     
     if(xmlSecGetDsaKey(key) != NULL) {
 	newKey->keyData = xmlSecDsaDup(xmlSecGetDsaKey(key));
 	if(newKey->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: key data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDsaDup");
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
@@ -603,49 +563,42 @@ xmlSecDsaKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecDsaKeyGenerate(xmlSecKeyPtr key, DSA *dsa) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyGenerate";
     int counter_ret;
     unsigned long h_ret;
     int ret;
     
+    xmlSecAssert2(key != NULL, -1);
+
     if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or context\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDsaKey");
 	return(-1);
     }
 
     if(dsa == NULL) {  	  
 	dsa = DSA_generate_parameters(1024,NULL,0,&counter_ret,&h_ret,NULL,NULL); 
 	if(dsa == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: DSA_generate_parameters failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"DSA_generate_parameters");
 	    return(-1);    
 	}
 
 	ret = DSA_generate_key(dsa);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: DSA_generate_key failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"DSA_generate_key - %d", ret);
 	    DSA_free(dsa);
 	    return(-1);    
 	}
     } else {
 	dsa =  xmlSecDsaDup(dsa); 
 	if(dsa == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: DSA duplication failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDsaDup");
 	    return(-1);    
 	}
     }
@@ -738,47 +691,41 @@ xmlSecDsaKeyGenerate(xmlSecKeyPtr key, DSA *dsa) {
  */
 static int
 xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyRead";
     xmlNodePtr cur;
     DSA *dsa;
     int privateKey = 0;
     
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey) || (node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or node is null\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDsaKey");
 	return(-1);
     }
 
     dsa = DSA_new();
     if(dsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create dsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "DSA_new");
 	return(-1);
     }
     
     cur = xmlSecGetNextElementNode(node->children);
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"P\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "P");
 	DSA_free(dsa);	
 	return(-1);
     }
     if(xmlSecNodeGetBNValue(cur, &(dsa->p)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"P\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeGetBNValue");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -786,20 +733,16 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
     /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"Q\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Q");
 	DSA_free(dsa);
 	return(-1);
     }
     if(xmlSecNodeGetBNValue(cur, &(dsa->q)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Q\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeGetBNValue");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -807,20 +750,16 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
     /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"G\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "G");
 	DSA_free(dsa);
 	return(-1);
     }
     if(xmlSecNodeGetBNValue(cur, &(dsa->g)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"G\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeGetBNValue");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -830,11 +769,9 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
         /* next is X node. It is REQUIRED for private key but
 	 * we are not sure exactly what do we read */
 	if(xmlSecNodeGetBNValue(cur, &(dsa->priv_key)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to convert element \"X\" value\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecNodeGetBNValue");
 	    DSA_free(dsa);
 	    return(-1);
 	}
@@ -844,20 +781,16 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
     /* next is Y node. */
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"Y\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Y");
 	DSA_free(dsa);
 	return(-1);
     }
     if(xmlSecNodeGetBNValue(cur, &(dsa->pub_key)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Y\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeGetBNValue");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -874,11 +807,9 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	 xmlGenericError(xmlGenericErrorContext,
-		"%s: unexpected node found\n",
-		func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "%s", (cur->name != NULL) ? (char*)cur->name : "NULL");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -907,16 +838,16 @@ xmlSecDsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDsaKeyWrite";
     xmlNodePtr cur;
     int ret;
     
-    if(!xmlSecKeyCheckId(key, xmlSecDsaKey) || (parent == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or parent is null\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+
+    if(!xmlSecKeyCheckId(key, xmlSecDsaKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDsaKey");
 	return(-1);
     }
     
@@ -924,60 +855,48 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     /* first is P node */
     cur = xmlSecAddChild(parent, BAD_CAST "P", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create \"P\" node\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"P\")");
 	return(-1);	
     }
     ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->p, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"P\" value\n",
-	    key);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetBNValue - %d", ret);
 	return(-1);
     }    
 
     /* next is Q node. */
     cur = xmlSecAddChild(parent, BAD_CAST "Q", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG 
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create \"Q\" node\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Q\")");	
 	return(-1);	
     }
     ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->q, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Q\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetBNValue - %d", ret);
 	return(-1);
     }
 
     /* next is G node. */
     cur = xmlSecAddChild(parent, BAD_CAST "G", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create \"G\" node\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"G\")");	
 	return(-1);	
     }
     ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->g, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"G\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetBNValue - %d", ret);
 	return(-1);
     }
 
@@ -986,20 +905,16 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 	(key->type == xmlSecKeyTypePrivate)) {
 	cur = xmlSecAddChild(parent, BAD_CAST "X", xmlSecNs);
 	if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to create \"X\" node\n",
-		func);
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"X\")");	
 	    return(-1);	
 	}
 	ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->priv_key, 1);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to convert element \"X\" value\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecNodeSetBNValue - %d", ret);
 	    return(-1);
 	}
     }
@@ -1007,20 +922,16 @@ xmlSecDsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     /* next is Y node. */
     cur = xmlSecAddChild(parent, BAD_CAST "Y", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create \"Y\" node\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"Y\")");	
 	return(-1);	
     }
     ret = xmlSecNodeSetBNValue(cur, xmlSecGetDsaKey(key)->pub_key, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Y\" value\n", 
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetBNValue - %d", ret);
 	return(-1);
     }
     return(0);

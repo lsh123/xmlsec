@@ -30,6 +30,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/io.h>
+#include <xmlsec/errors.h>
 
 
 
@@ -98,15 +99,14 @@ xmlSecTransformId xmlSecInputUri = (xmlSecTransformId)&xmlSecInputUriTransformId
  */
 static xmlSecTransformPtr 
 xmlSecInputUriTransformCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformCreate";
     xmlSecBinTransformPtr ptr;
 
-    if((id == NULL) || (id != xmlSecInputUri)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is null or id %d is not recognized\n",
-	    func, id);
-#endif 	    
+    xmlSecAssert2(id != NULL, NULL);
+
+    if(id != xmlSecInputUri) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecInputUri");
 	return(NULL);
     }
     
@@ -115,11 +115,9 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
      */
     ptr = (xmlSecBinTransformPtr) xmlMalloc(sizeof(xmlSecBinTransform));
     if(ptr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecBinTransform malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(ptr, 0, sizeof(xmlSecBinTransform));
@@ -136,15 +134,14 @@ xmlSecInputUriTransformCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformDestroy";
     xmlSecBinTransformPtr t;
+
+    xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecInputUri");
 	return;
     }
     
@@ -162,17 +159,17 @@ xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
  */
 int
 xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformOpen";
     xmlSecBinTransformPtr t;
     int i;
     char *unescaped;
         
-    if(!xmlSecTransformCheckId(transform, xmlSecInputUri) || (uri == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or uri == NULL\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(uri != NULL, -1);
+    
+    if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecInputUri");
 	return(-1);
     }
 
@@ -217,9 +214,9 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
     }
 
     if(t->data == NULL) {
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to open file \"%s\"\n", 
-	    func, uri);
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "%s", uri);
 	return(-1);
     }
     
@@ -237,16 +234,16 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
 static int
 xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform, 
 			 unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecInputUriTransformRead";
     xmlSecBinTransformPtr t;
     int ret;
     
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
     if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecInputUri");
 	return(-1);
     }
     
@@ -254,11 +251,9 @@ xmlSecInputUriTransformRead(xmlSecBinTransformPtr transform,
     if((t->data != NULL) && (xmlSecInputUriTransformReadClbk(t) != NULL)) {
 	ret = xmlSecInputUriTransformReadClbk(t)(t->data, (char*)buf, (int)size);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: transform read failed\n",
-	        func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_IO_FAILED,
+			NULL);
 	    return(-1);
 	}
 	return(ret);
@@ -354,7 +349,11 @@ int
 xmlSecRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
 	xmlInputOpenCallback openFunc, xmlInputReadCallback readFunc,
 	xmlInputCloseCallback closeFunc) {
+
     if (xmlSecInputCallbackNr >= MAX_INPUT_CALLBACK) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "too many input callbacks (>%d)", MAX_INPUT_CALLBACK);
 	return(-1);
     }
     xmlSecInputCallbackTable[xmlSecInputCallbackNr].matchcallback = matchFunc;

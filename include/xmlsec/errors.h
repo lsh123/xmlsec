@@ -26,6 +26,7 @@ extern "C" {
 #define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3	/* "crypto operation failed" */
 #define XMLSEC_ERRORS_R_XML_FAILED		 4	/* "xml operation failed" */
 #define XMLSEC_ERRORS_R_XSLT_FAILED		 5	/* "xslt operation failed" */
+#define XMLSEC_ERRORS_R_IO_FAILED		 6	/* "io operation failed" */
 
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 11	/* "invlaid transform" */
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 12	/* "invlaid transform data	" */
@@ -36,21 +37,14 @@ extern "C" {
 
 #define XMLSEC_ERRORS_R_INVALID_SIZE		 21	/* "invalid size" */
 #define XMLSEC_ERRORS_R_INVALID_DATA		 22	/* "invalid data" */
+#define XMLSEC_ERRORS_R_INVALID_NODE	 	 26	/* "invalid node" */
 #define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 23	/* "invalid node content" */
 #define XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE	 24	/* "invalid node attribute" */
 #define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 25	/* "node already present" */
+#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 27	/* "same document required" */
+#define XMLSEC_ERRORS_R_INVALID_NODE_NOT_FOUND 	 28	/* "node not found" */
 
 #define XMLSEC_ERRORS_R_ASSERTION		 31	/* "assertion" */
-
-/*
-#define XMLSEC_ERRORS_R_
-#define XMLSEC_ERRORS_R_
-#define XMLSEC_ERRORS_R_
-#define XMLSEC_ERRORS_R_
-#define XMLSEC_ERRORS_R_
-#define XMLSEC_ERRORS_R_
-*/
-
 
 /**
  * Error function
@@ -63,7 +57,7 @@ extern "C" {
 #define XMLSEC_ERRORS_HERE	__FILE__,__LINE__,__FUNCTION__
 
 
-void	xmlSecError		(const char* file, int line, const char* func,
+XMLSEC_EXPORT void xmlSecError	(const char* file, int line, const char* func,
 				 int reason, const char* msg, ...);
 
 /**

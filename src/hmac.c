@@ -29,6 +29,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/keysInternal.h>
 #include <xmlsec/base64.h>
+#include <xmlsec/errors.h>
 
 
 /**
@@ -208,17 +209,17 @@ xmlSecTransformId xmlSecMacHmacRipeMd160 = (xmlSecTransformId)&xmlSecMacHmacRipe
  */
 static xmlSecTransformPtr 
 xmlSecMacHmacCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacCreate";
     xmlSecDigestTransformPtr digest;
-    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
     if((id != xmlSecMacHmacSha1) && 	
 	(id != xmlSecMacHmacMd5) && 
 	(id != xmlSecMacHmacRipeMd160)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return(NULL);
     }
 
@@ -227,11 +228,9 @@ xmlSecMacHmacCreate(xmlSecTransformId id) {
      */
     digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_HMACSHA1_TRANSFORM_SIZE);
     if(digest == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_HMACSHA1_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_HMACSHA1_TRANSFORM_SIZE);
@@ -252,17 +251,17 @@ xmlSecMacHmacCreate(xmlSecTransformId id) {
  */
 static void 
 xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacDestroy";
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecMacHmacSha1) && 
        !xmlSecTransformCheckId(transform, xmlSecMacHmacRipeMd160) &&
        !xmlSecTransformCheckId(transform, xmlSecMacHmacMd5)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return;
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -303,19 +302,19 @@ xmlSecMacHmacDestroy(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacReadNode";
     xmlNodePtr cur;
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(transformNode!= NULL, -1);
     
-    if((!xmlSecTransformCheckId(transform, xmlSecMacHmacSha1) && 
+    if(!xmlSecTransformCheckId(transform, xmlSecMacHmacSha1) && 
         !xmlSecTransformCheckId(transform, xmlSecMacHmacRipeMd160) &&
-	!xmlSecTransformCheckId(transform, xmlSecMacHmacMd5)) || 
-    	(transformNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or transformNode is null\n",
-	    func);	
-#endif 	    
+	!xmlSecTransformCheckId(transform, xmlSecMacHmacMd5)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -335,11 +334,9 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     }
     
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-	 xmlGenericError(xmlGenericErrorContext,
-	    "%s: unexpected node \"%s\" found\n",
-	    func, cur->name);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_NOT_FOUND,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	return(-1);
     }
     return(0);    
@@ -353,36 +350,25 @@ xmlSecMacHmacReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  */
 int
 xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacAddOutputLength";
     xmlNodePtr node;
     char buf[32];
-        
-    if((transformNode == NULL) || (bitsLen == 0)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transformNode or bitsLen is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(bitsLen > 0, -1);
 
     node = xmlSecFindChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
     if(node != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: HMACOutputLength node already present\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "HMACOutputLength");
 	return(-1);
     }
     
     node = xmlSecAddChild(transformNode, BAD_CAST "HMACOutputLength", xmlSecDSigNs);
     if(node == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create HMACOutputLength node\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild");
 	return(-1);
     }    
     
@@ -400,18 +386,17 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
  *
  */
 static int
-xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest,
-			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacUpdate";
+xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest, const unsigned char *buffer, size_t size) {
+
+    xmlSecAssert2(digest != NULL, -1);
     
     if(!xmlSecTransformCheckId(digest, xmlSecMacHmacSha1) && 
 	!xmlSecTransformCheckId(digest, xmlSecMacHmacRipeMd160) &&
 	!xmlSecTransformCheckId(digest, xmlSecMacHmacMd5)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return(-1);
     }    
     
@@ -437,17 +422,17 @@ xmlSecMacHmacUpdate(xmlSecDigestTransformPtr digest,
 static int
 xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacSign";
     size_t digestSize = 0;
+
+    xmlSecAssert2(digest != NULL, -1);
         
     if(!xmlSecTransformCheckId(digest, xmlSecMacHmacSha1) && 
        !xmlSecTransformCheckId(digest, xmlSecMacHmacRipeMd160) &&
        !xmlSecTransformCheckId(digest, xmlSecMacHmacMd5)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return(-1);
     }    
     if(digest->status != xmlSecTransformStatusNone) {
@@ -478,17 +463,17 @@ xmlSecMacHmacSign(xmlSecDigestTransformPtr digest,
 static int
 xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacVerify";
     size_t digestSize = 0;
+
+    xmlSecAssert2(digest != NULL, -1);
     
     if(!xmlSecTransformCheckId(digest, xmlSecMacHmacSha1) && 
        !xmlSecTransformCheckId(digest, xmlSecMacHmacRipeMd160) &&
        !xmlSecTransformCheckId(digest, xmlSecMacHmacMd5)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return(-1);
     }    
 
@@ -519,17 +504,17 @@ xmlSecMacHmacVerify(xmlSecDigestTransformPtr digest,
  */																 
 static int
 xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMacHmacAddKey";
     xmlSecDigestTransformPtr digest;
     xmlSecHmacKeyDataPtr ptr;
     const EVP_MD *md = NULL;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
-    if((transform == NULL) || !xmlSecKeyCheckId(key, xmlSecHmacKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(-1);
     }    
 
@@ -537,11 +522,9 @@ xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     ptr = (xmlSecHmacKeyDataPtr)key->keyData;
 
     if(ptr->key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key data is null\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+		    NULL);
 	return(-1);
     }
     
@@ -552,11 +535,9 @@ xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     } else if(xmlSecTransformCheckId(transform, xmlSecMacHmacMd5)) {
 	md = EVP_md5();
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMacHmacSha1,xmlSecMacHmacMd5,xmlSecMacHmacRipeMd160");
 	return(-1);
     }
 
@@ -579,25 +560,22 @@ xmlSecMacHmacAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static xmlSecKeyPtr	
 xmlSecHmacKeyCreate(xmlSecKeyId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyCreate";
     xmlSecKeyPtr key;
     
-    if((id != xmlSecHmacKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+    xmlSecAssert2(id != NULL, NULL);
+
+    if(id != xmlSecHmacKey) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(NULL);	
     }
     
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -614,14 +592,12 @@ xmlSecHmacKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecHmacKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDestroy";
+    xmlSecAssert(key != NULL);
 
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return;
     }
     
@@ -635,25 +611,22 @@ xmlSecHmacKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDuplicate";
     xmlSecKeyPtr newKey;
+
+    xmlSecAssert2(key != NULL, NULL);
     
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(NULL);
     }
     
     newKey = xmlSecHmacKeyCreate(key->id);
     if(newKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecHmacKeyCreate");
 	return(NULL);
     }
     
@@ -663,11 +636,9 @@ xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
 	data = (xmlSecHmacKeyDataPtr)key->keyData;
 	newKey->keyData = xmlSecHmacKeyDataCreate(data->key, data->keySize);
 	if(newKey->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: key data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecHmacKeyDataCreate");
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
@@ -684,37 +655,32 @@ xmlSecHmacKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyGenerate";
     xmlSecHmacKeyDataPtr data;
     int ret;
+
+    xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) { 
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or context\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(-1);
     }
 
     data = xmlSecHmacKeyDataCreate(buf, size);
     if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key data creation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecHmacKeyDataCreate");
 	return(-1);    
     }
     if((buf == NULL) && (data->key != NULL)) {
 	/* generate the key */
 	ret = RAND_bytes(data->key, data->keySize);
 	if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to generate key\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"RAND_bytes - %d", ret);
 	    xmlSecHmacKeyDataDestroy(data);
 	    return(-1);    
 	}	
@@ -739,17 +705,16 @@ xmlSecHmacKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
  */
 static int
 xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyRead";
     xmlChar *str;
     int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     
-    if((!xmlSecKeyCheckId(key, xmlSecHmacKey)) || 
-	(node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or node is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(-1);
     }
 
@@ -761,33 +726,27 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     
     str = xmlNodeGetContent(node);
     if(str == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is \n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    NULL);
 	return(-1);
     }
     
     /* trick: decode into the same buffer */
     ret = xmlSecBase64Decode(str, (unsigned char*)str, xmlStrlen(str));
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 decode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode - %d", ret);
 	xmlFree(str);
 	return(-1);
     }
     
     key->keyData = xmlSecHmacKeyDataCreate((unsigned char*)str, ret);
     if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: data creation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecHmacKeyDataCreate");
 	xmlFree(str);
 	return(-1);
     }
@@ -806,16 +765,16 @@ xmlSecHmacKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyWrite";
     xmlSecHmacKeyDataPtr ptr;
     xmlChar *str;
     
-    if((!xmlSecKeyCheckId(key, xmlSecHmacKey)) || (parent == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or parent is null\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
+    
+    if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(-1);
     }
     ptr = (xmlSecHmacKeyDataPtr)key->keyData;
@@ -832,11 +791,9 @@ xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     
     str = xmlSecBase64Encode(ptr->key, ptr->keySize, 0);
     if(str == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 encode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	return(-1);
     }
     
@@ -857,14 +814,12 @@ xmlSecHmacKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
  */
 static  int
 xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyReadBinary";
+    xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecKeyCheckId(key, xmlSecHmacKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(-1);
     }
 
@@ -876,11 +831,9 @@ xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size)
     if((buf != NULL) && (size > 0)) {
 	key->keyData = xmlSecHmacKeyDataCreate(buf, size);
 	if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecHmacKeyDataCreate");
 	    return(-1);
 	}
 	key->type = xmlSecKeyTypePrivate;
@@ -902,16 +855,16 @@ xmlSecHmacKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size)
 static  int
 xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 			unsigned char **buf, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyWriteBinary";
     xmlSecHmacKeyDataPtr keyData;
         
-    if(!xmlSecKeyCheckId(key, xmlSecHmacKey) || 
-       (buf == NULL) || (size == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or buf, size is null\n",
-	    func);	
-#endif 	    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size != NULL, -1);
+
+    if(!xmlSecKeyCheckId(key, xmlSecHmacKey) || (key->keyData == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecHmacKey");
 	return(-1);
     }
     (*buf) = NULL;
@@ -920,22 +873,18 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
     
     
     keyData = (xmlSecHmacKeyDataPtr)key->keyData;
-    if((keyData == NULL) || (keyData->key == NULL) || (keyData->keySize <= 0)) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: invalid keyData\n",
-	    func);	
-#endif 	    
+    if((keyData->key == NULL) || (keyData->keySize <= 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+		    NULL);
 	return(-1);
     }
     
     (*buf) = (unsigned char *)xmlMalloc(sizeof(unsigned char) * keyData->keySize);
     if((*buf) == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate buffer\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(-1);
     }
     memcpy((*buf), keyData->key, keyData->keySize);
@@ -954,17 +903,14 @@ xmlSecHmacKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
  */
 xmlSecHmacKeyDataPtr	
 xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDataCreate";
     xmlSecHmacKeyDataPtr data;
     
     data = (xmlSecHmacKeyDataPtr) xmlMalloc(sizeof(xmlSecHmacKeyData) +
 		sizeof(unsigned char) * keySize);	    
     if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(data, 0,  sizeof(xmlSecHmacKeyData) + sizeof(unsigned char) * keySize); 
@@ -984,19 +930,9 @@ xmlSecHmacKeyDataCreate(const unsigned char *key, size_t keySize) {
  */
 void
 xmlSecHmacKeyDataDestroy(xmlSecHmacKeyDataPtr data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecHmacKeyDataDestroy";
-
-    if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: data is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
+    xmlSecAssert(data != NULL);
     
-    memset(data, 0, sizeof(struct _xmlSecHmacKeyData) +  
-		    sizeof(unsigned char) * (data->keySize));
+    memset(data, 0, sizeof(struct _xmlSecHmacKeyData) + sizeof(unsigned char) * (data->keySize));
     xmlFree(data);		    
 }
 

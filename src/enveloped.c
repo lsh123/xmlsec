@@ -22,6 +22,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/xpath.h>
+#include <xmlsec/errors.h>
 
 /* Enveloped transform */
 static xmlSecTransformPtr xmlSecTransformEnvelopedCreate(xmlSecTransformId id);
@@ -66,25 +67,22 @@ xmlSecTransformId xmlSecTransformEnveloped = (xmlSecTransformId)(&xmlSecTransfor
  */
 static xmlSecTransformPtr 
 xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedCreate";
     xmlSecXmlTransformPtr xmlTransform; 
     
+    xmlSecAssert2(id != NULL, NULL);
+    
     if(id != xmlSecTransformEnveloped){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformEnveloped");
 	return(NULL);
     }
     
     xmlTransform = (xmlSecXmlTransformPtr)xmlMalloc(sizeof(struct _xmlSecXmlTransform));
     if(xmlTransform == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate struct _xmlSecXmlTransform \n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(xmlTransform, 0,  sizeof(struct _xmlSecXmlTransform));
@@ -100,14 +98,13 @@ xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedDestroy";
+    
+    xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or transformNode is null\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformEnveloped");
 	return;
     }    
     memset(transform, 0,  sizeof(struct _xmlSecXmlTransform));  
@@ -122,16 +119,15 @@ xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
  */
 static int 
 xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedReadNode";
     xmlSecXmlTransformPtr xmlTransform;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(transformNode!= NULL, -1);
     
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
-       (transformNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or transformNode is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformEnveloped");
 	return(-1);
     }    
     xmlTransform = (xmlSecXmlTransformPtr)transform;
@@ -173,59 +169,52 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformEnvelopedExecute";
     xmlSecXmlTransformPtr xmlTransform;
     xmlNodePtr signature;
     xmlSecNodeSetPtr res;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctxDoc != NULL, -1);
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2((*doc) != NULL, -1);
+    xmlSecAssert2(nodes != NULL, -1);
     
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped) || 
-       (nodes == NULL) || (doc == NULL) || ((*doc) == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid or something else is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecTransformEnveloped");
 	return(-1);
     }    
     xmlTransform = (xmlSecXmlTransformPtr)transform;
 
-    if(((*doc) != ctxDoc) || (xmlTransform->here == NULL) || 
-	(xmlTransform->here->doc != (*doc))) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: enveloped transform works only on the same document\n",
-	    func);	
-#endif
+    if(((*doc) != ctxDoc) || (xmlTransform->here == NULL) || (xmlTransform->here->doc != (*doc))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED,
+		    "enveloped transform works only on the same document");
 	return(-1);
     }
 
     signature = xmlSecFindParent(xmlTransform->here, BAD_CAST "Signature", xmlSecDSigNs);
     if(signature == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: \"Signature\" node is not found\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_NOT_FOUND,
+		    "Signature");
 	return(-1);
     }
     
     res = xmlSecNodeSetGetChildren((*doc), signature, 1, 1);
     if(res == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create nodes set\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetGetChildren");
 	return(-1);
     }
 
     (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
     if((*nodes) == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add subset\n",
-	        func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetAdd");
 	xmlSecNodeSetDestroy(res);
 	return(-1);
     }

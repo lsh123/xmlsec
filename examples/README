@@ -3,7 +3,9 @@ This folder contains XML Security Library examples.
 1. Files List
 -------------------------
 
-    README.txt			This file.
+    README			This file.
+    autogen.sh			Run it first!
+    configure.in		Examples consiguration
     Makefile			Makefile for building all the examples
     rsakey.pem			Private PEM key file
     rsapub.pem			Public PEM key file
@@ -43,8 +45,13 @@ This folder contains XML Security Library examples.
 -------------------------
 
 Unixes:  
-    Just type 'make' (assuming that xmlsec, libxml and all other required 
-    libraries are already installed). This will build all the examples.
+    The usual (assuming that xmlsec, libxml and all other required 
+    libraries are already installed):
+	./autogen.sh
+	./configure
+	make    
+    This will build all the examples. Please note that you MUST run
+    ./autogen,sh first!!!
 
 Windows:
     - Add paths to include and library files for xmlsec, libxml2, libexslt and 

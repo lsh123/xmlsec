@@ -1,29 +1,13 @@
 #
 #
 #
-PROGRAMS	 = \
+bin_PROGRAMS = \
 	sign1 sign2 sign3 \
 	verify1 verify2 verify3 verify4 \
 	encrypt1 encrypt2 encrypt3 \
 	decrypt1 decrypt2 decrypt3
 
-cc	 	 = gcc
-CC	 	 = gcc
-LD	 	 = gcc
-
-CFLAGS		+= -g $(shell xmlsec-config --cflags)
-LDFLAGS		+= -g
-LIBS 		+= $(shell xmlsec-config --libs) 
-
-all: $(PROGRAMS)
-
-%: %.c 
-	$(cc) $< $(LDFLAGS) $(CFLAGS) -o $@ $(PROGRAM) $(LIBRARY) $(LIBS)
-
-clean:
-	@rm -rf $(PROGRAMS)
-
-check: $(PROGRAMS)
+check: $(bin_PROGRAMS)
 	./sign1    sign1-tmpl.xml    rsakey.pem
 	./sign2    sign2-doc.xml     rsakey.pem
 	./sign3    sign3-doc.xml     rsakey.pem rsacert.pem

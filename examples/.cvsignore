@@ -11,3 +11,14 @@ decrypt1
 decrypt2
 decrypt3
 .kdbgrc*
+Makefile
+Makefile.in
+libtool
+aclocal.m4
+auto*.cache
+config.h
+config.log
+config.status
+configure
+stamp-h1
+

@@ -29,6 +29,12 @@ int         <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>          
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl);
 int         <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
+int         <link linkend="xmlSecDSigCtxEnableReferenceTransform">xmlSecDSigCtxEnableReferenceTransform</link>
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
+int         <link linkend="xmlSecDSigCtxEnableSignatureTransform">xmlSecDSigCtxEnableSignatureTransform</link>
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
 <link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</link>
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
 void        <link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link>          (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
@@ -445,6 +451,52 @@ signature verification result) or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecDSigCtxEnableReferenceTransform">xmlSecDSigCtxEnableReferenceTransform ()</title>
+<programlisting>int         xmlSecDSigCtxEnableReferenceTransform
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
+<para>
+Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> elements processing.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
+<entry>	the transform klass.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigCtxEnableSignatureTransform">xmlSecDSigCtxEnableSignatureTransform ()</title>
+<programlisting>int         xmlSecDSigCtxEnableSignatureTransform
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
+<para>
+Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element processing.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><parameter>transformId</parameter>&nbsp;:</entry>
+<entry>	the transform klass.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer ()</title>
 <programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigCtxGetPreSignBuffer
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
@@ -536,6 +588,7 @@ node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtx">struct xmlSecDSigReferenceCtx</title>
 <programlisting>struct xmlSecDSigReferenceCtx {
+    void*			userData;
     xmlSecDSigCtxPtr		dsigCtx;
     xmlSecDSigReferenceOrigin	origin;
     xmlSecTransformCtx		transformCtx;
@@ -562,6 +615,12 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Refer
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
+<row>
+<entry>void *<structfield>userData</structfield></entry>
+<entry>			the pointer to user data (xmlsec and xmlsec-crypto libraries
+			never touches this).
+</entry>
+</row>
 <row>
 <entry><link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> <structfield>dsigCtx</structfield></entry>
 <entry>			the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.

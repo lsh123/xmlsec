@@ -137,6 +137,26 @@ xmldsig
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecDSigCtxEnableReferenceTransform ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@transformId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxEnableSignatureTransform ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@transformId: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecDSigCtxGetPreSignBuffer ##### -->
 <para>
 
@@ -177,6 +197,7 @@ xmldsig
 
 </para>
 
+@userData: 
 @dsigCtx: 
 @origin: 
 @transformCtx: 

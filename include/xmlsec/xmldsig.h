@@ -194,6 +194,8 @@ typedef enum  {
 
 /**
  * xmlSecDSigReferenceCtx:
+ * @userData:			the pointer to user data (xmlsec and xmlsec-crypto libraries
+ *				never touches this).
  * @dsigCtx:			the pointer to "parent" <dsig:Signature/> processing context.
  * @origin:			the signature origin (<dsig:SignedInfo/> or <dsig:Manifest/>).
  * @transformCtx:		the reference processing transforms context.
@@ -213,6 +215,7 @@ typedef enum  {
  * The <dsig:Reference/> processing context.
  */
 struct _xmlSecDSigReferenceCtx {
+    void*			userData;
     xmlSecDSigCtxPtr		dsigCtx;
     xmlSecDSigReferenceOrigin	origin;
     xmlSecTransformCtx		transformCtx;

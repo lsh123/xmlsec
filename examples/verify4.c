@@ -226,6 +226,12 @@ verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
         fprintf(stderr,"Error: failed to limit allowed reference transforms\n");
 	goto done;
     }
+
+    /* in addition, limit possible key data to valid X509 certificates only */
+    if(xmlSecPtrListAdd(&(dsigCtx->keyInfoReadCtx.enabledKeyData), BAD_CAST xmlSecKeyDataX509Id) < 0) {
+        fprintf(stderr,"Error: failed to limit allowed key data\n");
+	goto done;
+    }
     
     /* Verify signature */
     if(xmlSecDSigCtxVerify(dsigCtx, node) < 0) {

@@ -23,6 +23,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/keysmngr.h>
+#include <xmlsec/errors.h>
 
 
 /**
@@ -48,16 +49,13 @@ static void			xmlSecSimpleKeysDataDestroy	(xmlSecSimpleKeysDataPtr keysData);
  */
 xmlSecKeysMngrPtr	
 xmlSecSimpleKeysMngrCreate(void) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrCreate";
     xmlSecKeysMngrPtr mngr;
         
-    mngr = (xmlSecKeysMngrPtr)xmlMalloc(sizeof(xmlSecKeysMngr));
+    mngr = (xmlSecKeysMngrPtr)xmlMalloc(sizeof(xmlSecKeysMngr));    
     if(mngr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate xmlSecKeysMngr\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(mngr, 0, sizeof(xmlSecKeysMngr));
@@ -70,11 +68,9 @@ xmlSecSimpleKeysMngrCreate(void) {
     /* keys */
     mngr->keysData = xmlSecSimpleKeysDataCreate();       
     if(mngr->keysData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to creates keys data\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSimpleKeysDataCreate");
 	xmlSecSimpleKeysMngrDestroy(mngr);
 	return(NULL);
     }   
@@ -83,11 +79,9 @@ xmlSecSimpleKeysMngrCreate(void) {
 #ifndef XMLSEC_NO_X509
     mngr->x509Data = xmlSecX509StoreCreate();
     if(mngr->x509Data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to creates x509 data\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecX509StoreCreate");
 	xmlSecSimpleKeysMngrDestroy(mngr);
 	return(NULL);
     }   
@@ -106,16 +100,8 @@ xmlSecSimpleKeysMngrCreate(void) {
  */
 void
 xmlSecSimpleKeysMngrDestroy(xmlSecKeysMngrPtr mngr) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrDestroy";
-    
-    if(mngr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr is null\n",
-	    func);	
-#endif 	    
-	return;    
-    }
+    xmlSecAssert(mngr != NULL);    
+
     if(mngr->keysData != NULL) {
 	xmlSecSimpleKeysDataDestroy((xmlSecSimpleKeysDataPtr)(mngr->keysData));
     }
@@ -141,31 +127,21 @@ xmlSecKeyPtr
 xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED,
 			    const xmlChar *name, xmlSecKeyId id, xmlSecKeyType type, 
 			    xmlSecKeyUsage usage ATTRIBUTE_UNUSED) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrFindKey";
     xmlSecSimpleKeysDataPtr keysData;
     xmlSecKeyPtr key;
     size_t i;
-    
-    
-    if((mngr == NULL) || (mngr->keysData == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or keys data is null\n",
-	    func);	
-#endif 	    
-	return(NULL);    
-    }
-    keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
-    
+
+    xmlSecAssert2(mngr != NULL, NULL);
+    xmlSecAssert2(mngr->keysData != NULL, NULL);
+
+    keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);    
     for(i = 0; i < keysData->curSize; ++i) {
 	if(xmlSecVerifyKey(keysData->keys[i], name, id, type) == 1) {
 	    key = xmlSecKeyDuplicate(keysData->keys[i], xmlSecKeyOriginKeyManager);
 	    if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to duplicate the key\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecKeyDuplicate");
 		return(NULL);    
 	    }
 	    return(key);
@@ -185,29 +161,21 @@ xmlSecSimpleKeysMngrFindKey(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUS
  */
 int	
 xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrAddKey";
     xmlSecSimpleKeysDataPtr keysData;
 
-    if((mngr == NULL) || (mngr->keysData == NULL) || (key == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or key is null\n",
-	    func);	
-#endif 	    
-	return(-1);    
-    }
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(mngr->keysData != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
 
     keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
-    
+        
     if(keysData->maxSize == 0) {
 	keysData->keys = (xmlSecKeyPtr *) xmlMalloc(XMLSEC_SIMPLEKEYMNGR_DEFAULT *
 					    sizeof(xmlSecKeyPtr));
 	if(keysData->keys == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to allocate %d keys pointers\n",
-		func, XMLSEC_SIMPLEKEYMNGR_DEFAULT);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d bytes", XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr));
 	    return(-1);
 	}
 	memset(keysData->keys, 0, XMLSEC_SIMPLEKEYMNGR_DEFAULT * sizeof(xmlSecKeyPtr)); 
@@ -219,11 +187,9 @@ xmlSecSimpleKeysMngrAddKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
 	newMax = keysData->maxSize * 2;
 	newKeys = (xmlSecKeyPtr *) xmlRealloc(keysData->keys, newMax * sizeof(xmlSecKeyPtr));
 	if(newKeys == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to allocate %d keys pointers\n",
-		func, newMax);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d bytes", newMax * sizeof(xmlSecKeyPtr));
 	    return(-1);	
 	}
 	keysData->maxSize = newMax;
@@ -249,33 +215,23 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
     xmlNodePtr cur;
     xmlSecKeyPtr key;
     int ret;
-    
-    if((mngr == NULL) || (uri == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or uri is null\n",
-	    func);	
-#endif 	    
-	return(-1); 
-    }
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(uri != NULL, -1);
     
     doc = xmlParseFile(uri);
     if(doc == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to load keys from \"%s\"\n", 
-	    func, uri);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlParseFile");
 	return(-1);
     }
     
     root = xmlDocGetRootElement(doc);
     if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad root node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Keys");
 	xmlFreeDoc(doc);
 	return(-1);
     }
@@ -287,11 +243,9 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 	key = xmlSecKeyInfoNodeRead(cur, &keysMngr, NULL, xmlSecKeyIdUnknown,
 				    xmlSecKeyTypeAny, xmlSecKeyUsageAny);
 	if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to read KeyInfo\n", 
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyInfoNodeRead");
 	    if(strict) {
 		xmlFreeDoc(doc);
 		return(-1);	
@@ -299,11 +253,9 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 	} else {
 	    ret = xmlSecSimpleKeysMngrAddKey(mngr, key);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to add key\n", 
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecSimpleKeysMngrAddKey - %d", ret);
 		xmlSecKeyDestroy(key);
 		xmlFreeDoc(doc);
 		return(-1);	
@@ -313,11 +265,9 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
     }
     
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: unexpected node found\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*) cur->name : "NULL");
 	xmlFreeDoc(doc);
 	return(-1);	    
     }
@@ -335,7 +285,6 @@ xmlSecSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char *uri, int strict) {
 int
 xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr, 
 			const char *filename, xmlSecKeyType type) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrSave";
     xmlSecSimpleKeysDataPtr keysData;  
     xmlSecKeysMngr keysMngr;
     xmlDocPtr doc;
@@ -343,80 +292,63 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
     xmlNodePtr cur;
     int ret;
     size_t i;
-    
-    if((mngr == NULL) || (mngr->keysData == NULL) || (filename == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or filename is null\n",
-	    func);	
-#endif 	    
-	return(-1);    
-    }
-    keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
 
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(mngr->keysData != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    
+    keysData = (xmlSecSimpleKeysDataPtr)((mngr)->keysData);
     memset(&keysMngr, 0, sizeof(keysMngr));
     keysMngr.allowedOrigins = xmlSecKeyOriginKeyValue;
     
     /* create doc */
     doc = xmlNewDoc(BAD_CAST "1.0");
     if(doc == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create new doc\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewDoc");
 	return(-1);
     }
     
     /* create root node "Keys" */
     root = xmlNewDocNode(doc, NULL, BAD_CAST "Keys", NULL); 
     if(root == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create root doc node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewDocNode");
 	xmlFreeDoc(doc);
 	return(-1);
     }
     xmlDocSetRootElement(doc, root);
     if(xmlNewNs(root, xmlSecNs, NULL) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to add ns to node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNs");
 	xmlFreeDoc(doc); 
 	return(-1);
     }
     for(i = 0; i < keysData->curSize; ++i) {
 	cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecDSigNs);
 	if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to ad KeyInfo node\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"KeyInfo\")");
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}
 	
 	if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecDSigNs) == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add KeyName node\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"KeyName\")");
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}
 
 	if(xmlSecAddChild(cur, BAD_CAST "KeyValue", xmlSecDSigNs) == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to add KeyValue node\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"KeyValue\")");
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}
@@ -424,11 +356,9 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 #ifndef XMLSEC_NO_X509
 	if((keysData->keys[i]->x509Data != NULL)){
 	    if(xmlSecAddChild(cur, BAD_CAST "X509Data", xmlSecDSigNs) == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: failed to add KeyValue node\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecAddChild(\"X509Data\")");
 		xmlFreeDoc(doc); 
 		return(-1);
 	    }
@@ -437,11 +367,9 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
 
 	ret = xmlSecKeyInfoNodeWrite(cur, &keysMngr, NULL, keysData->keys[i], type);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to write KeyInfo node\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyInfoNodeWrite - %d", ret);
 	    xmlFreeDoc(doc); 
 	    return(-1);
 	}		
@@ -450,11 +378,9 @@ xmlSecSimpleKeysMngrSave(const xmlSecKeysMngrPtr mngr,
     /* now write result */
     ret = xmlSaveFormatFile(filename, doc, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to write file \"%s\"\n", 
-	    func, filename);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlSaveFormatFile(\"%s\") - %d", filename, ret);
 	xmlFreeDoc(doc); 
 	return(-1);
     }	   
@@ -477,28 +403,19 @@ xmlSecKeyPtr
 xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr, 
 			const char *keyfile, const char *keyPwd,
 			pem_password_cb *keyPwdCallback, int privateKey) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoadPemKey";
     xmlSecKeyPtr key = NULL;
     EVP_PKEY *pKey = NULL;    
     FILE *f;
     int ret;
-    
-    if((mngr == NULL) || (keyfile == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or key file is null\n",
-	    func);	
-#endif 	    
-	return(NULL);    
-    }
+
+    xmlSecAssert2(mngr != NULL, NULL);
+    xmlSecAssert2(keyfile != NULL, NULL);
     
     f = fopen(keyfile, "r");
     if(f == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to open file \"%s\"\n",
-	    func, keyfile);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\")", keyfile);
 	return(NULL);    
     }
     
@@ -508,11 +425,9 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
         pKey = PEM_read_PUBKEY(f, NULL, keyPwdCallback, (void*)keyPwd);
     }
     if(pKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to read key file \"%s\"\n",
-	    func, keyfile);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (privateKey) ? "PEM_read_PrivateKey" : "PEM_read_PUBKEY");
 	fclose(f);
 	return(NULL);    
     }
@@ -523,22 +438,18 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
     case EVP_PKEY_RSA:
 	key = xmlSecKeyCreate(xmlSecRsaKey, xmlSecKeyOriginX509);
 	if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create RSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyCreate(xmlSecRsaKey)");
 	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
 	}
 	
 	ret = xmlSecRsaKeyGenerate(key, pKey->pkey.rsa);
 	if(ret < 0) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to set RSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecRsaKeyGenerate - %d", ret);
 	    xmlSecKeyDestroy(key);
 	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
@@ -549,22 +460,18 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
     case EVP_PKEY_DSA:
 	key = xmlSecKeyCreate(xmlSecDsaKey, xmlSecKeyOriginX509);
 	if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create DSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyCreate(xmlSecDsaKey)");
 	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
 	}
 	
 	ret = xmlSecDsaKeyGenerate(key, pKey->pkey.dsa);
 	if(ret < 0) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to set DSA key\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDsaKeyGenerate - %d", ret);
 	    xmlSecKeyDestroy(key);
 	    EVP_PKEY_free(pKey);
 	    return(NULL);	    
@@ -572,11 +479,9 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
 	break;
 #endif /* XMLSEC_NO_DSA */	
     default:	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the key type %d is not supported\n",
-	    func, pKey->type);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "key type %d", pKey->type);
 	EVP_PKEY_free(pKey);
 	return(NULL);
     }
@@ -584,11 +489,9 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
     
     ret = xmlSecSimpleKeysMngrAddKey(mngr, key);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to add key to the keymanager\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSimpleKeysMngrAddKey - %d", ret);
 	xmlSecKeyDestroy(key);
 	return(NULL);
     }
@@ -601,16 +504,13 @@ xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr,
  */
 static xmlSecSimpleKeysDataPtr	
 xmlSecSimpleKeysDataCreate(void) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysDataCreate";    
     xmlSecSimpleKeysDataPtr keysData;
         
     keysData = (xmlSecSimpleKeysDataPtr)xmlMalloc(sizeof(xmlSecSimpleKeysData));
     if(keysData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate xmlSecSimpleKeysData\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);    
 	return(NULL);
     }
     memset(keysData, 0, sizeof(xmlSecSimpleKeysData));
@@ -619,16 +519,7 @@ xmlSecSimpleKeysDataCreate(void) {
 
 static void
 xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysDataDestroy";    
-
-    if(keysData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: keysData is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
+    xmlSecAssert(keysData != NULL);
 
     if(keysData->keys != NULL) {
 	size_t i;
@@ -652,16 +543,7 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNU
 			    xmlChar *subjectName, xmlChar *issuerName, 
 			    xmlChar *issuerSerial, xmlChar *ski, 
 			    xmlSecX509DataPtr cert) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrX509Find";
-    
-    if(mngr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(mngr != NULL, NULL);
     
     if(mngr->x509Data != NULL) {
 	return(xmlSecX509StoreFind((xmlSecX509StorePtr)mngr->x509Data, 
@@ -675,16 +557,8 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNU
 int	
 xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_UNUSED, 
 			       xmlSecX509DataPtr cert) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrX509Verify";
-
-    if(mngr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(cert != NULL, -1);
     
     if(mngr->x509Data != NULL) {
 	return(xmlSecX509StoreVerify((xmlSecX509StorePtr)mngr->x509Data, cert));
@@ -695,32 +569,18 @@ xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrPtr mngr, void *context ATTRIBUTE_U
 int
 xmlSecSimpleKeysMngrLoadPemCert(xmlSecKeysMngrPtr mngr, const char *filename,
 				int trusted) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoadPemCert";
-
-    if((mngr == NULL) || (mngr->x509Data == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or x509 data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(mngr->x509Data != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
     
     return(xmlSecX509StoreLoadPemCert((xmlSecX509StorePtr)mngr->x509Data, filename, trusted));
 }
 
 int	
 xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrAddCertsDir";
-
-    if((mngr == NULL) || (mngr->x509Data == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or x509 data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(mngr->x509Data != NULL, -1);
+    xmlSecAssert2(path != NULL, -1);
     
     return(xmlSecX509StoreAddCertsDir((xmlSecX509StorePtr)mngr->x509Data, path));
 }
@@ -728,26 +588,17 @@ xmlSecSimpleKeysMngrAddCertsDir(xmlSecKeysMngrPtr mngr, const char *path) {
 int	
 xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
 			    const char *filename, const char *pwd) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSimpleKeysMngrLoadPkcs12";
     xmlSecKeyPtr key;
     int ret;
-    
-    if((mngr == NULL) || (filename == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: mngr or filename is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
     
     key = xmlSecPKCS12ReadKey(filename, pwd);
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to read key from file \"%s\"\n",
-	    func, filename);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecPKCS12ReadKey(\"%s\")", filename);
 	return(-1);
     }
     
@@ -757,11 +608,9 @@ xmlSecSimpleKeysMngrLoadPkcs12(xmlSecKeysMngrPtr mngr, const char* name,
     
     ret = xmlSecSimpleKeysMngrAddKey(mngr, key);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to add key to the keymanager\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecSimpleKeysMngrAddKey - %d", ret);
 	xmlSecKeyDestroy(key);
 	return(-1);
     }

@@ -20,6 +20,7 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/membuf.h>
+#include <xmlsec/errors.h>
 
 static xmlSecTransformPtr xmlSecMemBufTransformCreate	(xmlSecTransformId id);
 static void		xmlSecMemBufTransformDestroy	(xmlSecTransformPtr transform);
@@ -63,15 +64,14 @@ xmlSecTransformId xmlSecMemBuf = (xmlSecTransformId)&xmlSecMemBufTransformId;
  */
 xmlBufferPtr
 xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformGetBuffer";
     xmlBufferPtr ptr;
-       
+
+    xmlSecAssert2(transform != NULL, NULL);
+    
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMemBuf");
 	return(NULL);
     }
     
@@ -90,15 +90,14 @@ xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
  */
 static xmlSecTransformPtr 
 xmlSecMemBufTransformCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformCreate";
     xmlSecBinTransformPtr ptr;
-    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
     if(id != xmlSecMemBuf){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMemBuf");
 	return(NULL);
     }
 
@@ -107,11 +106,9 @@ xmlSecMemBufTransformCreate(xmlSecTransformId id) {
      */
     ptr = (xmlSecBinTransformPtr) xmlMalloc(sizeof(xmlSecBinTransform));
     if(ptr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecBinTransform malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(ptr, 0, sizeof(xmlSecBinTransform));
@@ -128,14 +125,12 @@ xmlSecMemBufTransformCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformDestroy";
-            
+    xmlSecAssert(transform != NULL);
+                
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMemBuf");
 	return;
     }
     
@@ -158,15 +153,15 @@ xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
 static int
 xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform, 
 			unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformRead";
     int ret;
-       
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMemBuf");
 	return(-1);
     }
 
@@ -177,11 +172,9 @@ xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform,
     
     ret = xmlSecBinTransformRead((xmlSecTransformPtr)(transform->prev), buf, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: previous transform read failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformRead - %d", ret);
 	return(-1);
     }
     
@@ -193,11 +186,9 @@ xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform,
     if(transform->data == NULL) {
 	transform->data = xmlBufferCreate();
 	if(transform->data == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create xml buffer\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XML_FAILED,
+			"xmlBufferCreate");
 	    return(-1);
 	}
     }
@@ -217,16 +208,16 @@ xmlSecMemBufTransformRead(xmlSecBinTransformPtr transform,
 static int
 xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformWrite";
     xmlBufferPtr ptr;
     int ret;
             
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);    
+    
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMemBuf");
 	return(-1);
     }
 
@@ -238,11 +229,9 @@ xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform,
     if(transform->data == NULL) {
 	transform->data = ptr = xmlBufferCreate();
 	if(transform->data == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create xml buffer\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XML_FAILED,
+			"xmlBufferCreate");
 	    return(-1);
 	}
     } else {
@@ -257,11 +246,9 @@ xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform,
     
     ret = xmlSecBinTransformWrite((xmlSecTransformPtr)(transform->next), buf, size);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: next transform write failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformWrite - %d", ret);
 	return(-1);
     }
 
@@ -278,15 +265,14 @@ xmlSecMemBufTransformWrite(xmlSecBinTransformPtr transform,
  */
 static int
 xmlSecMemBufTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecMemBufTransformFlush";
     int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
         
     if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecMemBuf");
 	return(-1);
     }
     
@@ -297,11 +283,9 @@ xmlSecMemBufTransformFlush(xmlSecBinTransformPtr transform) {
 
     ret = xmlSecBinTransformFlush((xmlSecTransformPtr)(transform->next));
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: next transform flush failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformFlush");
 	return(-1);
     }
 

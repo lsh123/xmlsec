@@ -32,6 +32,7 @@
 #include <xmlsec/buffered.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/debug.h>
+#include <xmlsec/errors.h>
 
 
 /**
@@ -206,15 +207,14 @@ xmlSecTransformId xmlSecEncRsaOaep = (xmlSecTransformId)&xmlSecEncRsaOaepId;
  */
 static xmlSecTransformPtr 
 xmlSecSignRsaSha1Create(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Create";
     xmlSecDigestTransformPtr digest;
     
+    xmlSecAssert2(id != NULL, NULL);
+        
     if(id != xmlSecSignRsaSha1){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignRsaSha1");
 	return(NULL);
     }
 
@@ -223,11 +223,9 @@ xmlSecSignRsaSha1Create(xmlSecTransformId id) {
      */
     digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_RSASHA1_TRANSFORM_SIZE);
     if(digest == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_RSASHA1_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_RSASHA1_TRANSFORM_SIZE);
@@ -248,15 +246,14 @@ xmlSecSignRsaSha1Create(xmlSecTransformId id) {
  */
 static void 
 xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Destroy";
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecSignRsaSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignRsaSha1");
 	return;
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -284,14 +281,12 @@ xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
 static int
 xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Update";
+    xmlSecAssert2(digest != NULL, -1);
     
     if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignRsaSha1");
 	return(-1);
     }    
     
@@ -314,19 +309,19 @@ xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Sign";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     int ret;
+
+    xmlSecAssert2(digest != NULL, -1);
+    xmlSecAssert2(digest->digest != NULL, -1);
         
     if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1) || 
       (xmlSecSignRsaSha1ContextRsa(digest) == NULL) ||
-      ((xmlSecSignRsaSha1ContextRsa(digest)->d) == NULL) ||
-      (digest->digest == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest is invalid or the RSA key is null or not private\n",
-	    func);	
-#endif 	    
+      ((xmlSecSignRsaSha1ContextRsa(digest)->d) == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignRsaSha1");
 	return(-1);
     }    
     if(digest->status != xmlSecTransformStatusNone) {
@@ -338,11 +333,9 @@ xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
 		digest->digest, &(digest->digestSize), 
 		xmlSecSignRsaSha1ContextRsa(digest));
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: RSA sign failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RSA_sign - %d", ret);
 	return(-1);	    
     }
     
@@ -366,28 +359,20 @@ xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
 static int
 xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1Verify";
     unsigned char buf[SHA_DIGEST_LENGTH]; 
     int ret;
+
+    xmlSecAssert2(digest != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
         
     if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1) ||
        (xmlSecSignRsaSha1ContextRsa(digest) == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: digest is invalid or rsa key is null\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecSignRsaSha1");
 	return(-1);
     }    
-    if(buf == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer is null or has an invalid size (%d)\n",
-	    func, size);	
-#endif 	    
-	digest->status = xmlSecTransformStatusFail;
-	return(-1);
-    }
 
     SHA1_Final(buf, xmlSecSignRsaSha1Context(digest)); 
     
@@ -399,11 +384,9 @@ xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
     } else if(ret == 0) {
 	digest->status = xmlSecTransformStatusFail;
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: RSA_do_verify failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RSA_verify - %d", ret);
 	return(-1);
     }
     
@@ -418,48 +401,37 @@ xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
  */																 
 static int
 xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecSignRsaSha1AddKey";
     xmlSecDigestTransformPtr digest;
     RSA *rsa;
     void *digestBuf;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecSignRsaSha1) || 
-       !xmlSecKeyCheckId(key, xmlSecRsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+       !xmlSecKeyCheckId(key, xmlSecRsaKey) || 
+       (xmlSecGetRsaKey(key) == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    "xmlSecSignRsaSha1 and xmlSecRsaKey");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
 
-    if(xmlSecGetRsaKey(key) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key rsa data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-
     rsa = xmlSecRsaDup(xmlSecGetRsaKey(key));
     if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create rsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecRsaDup");
 	return(-1);
     }
 
     digestBuf = xmlMalloc(sizeof(unsigned char) * RSA_size(rsa));
     if(digestBuf == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate digest for the key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	RSA_free(rsa);
 	return(-1);
     }
@@ -483,17 +455,9 @@ xmlSecSignRsaSha1AddKey	(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static 
 RSA* xmlSecRsaDup(RSA *rsa) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaDup";
     RSA *newRsa;
     
-    if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: rsa key is null\n",
-	    func);	
-#endif 	    
-	return(NULL);
-    }
+    xmlSecAssert2(rsa != NULL, NULL);
 
     /* increment reference counter instead of coping if possible */
 #ifdef XMLSEC_OPENSSL097
@@ -503,11 +467,9 @@ RSA* xmlSecRsaDup(RSA *rsa) {
     
     newRsa = RSA_new();
     if(newRsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create rsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RSA_new");
 	return(NULL);
     }
 
@@ -531,25 +493,22 @@ RSA* xmlSecRsaDup(RSA *rsa) {
  */
 static xmlSecKeyPtr	
 xmlSecRsaKeyCreate(xmlSecKeyId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyCreate";
     xmlSecKeyPtr key;
     
+    xmlSecAssert2(id != NULL, NULL);
+    
     if(id != xmlSecRsaKey) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
 	return(NULL);	
     }
     
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -567,12 +526,12 @@ static void
 xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyDestroy";
 
+    xmlSecAssert(key != NULL);
+
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
 	return;
     }
     
@@ -586,36 +545,31 @@ xmlSecRsaKeyDestroy(xmlSecKeyPtr key) {
 
 static xmlSecKeyPtr	
 xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyDuplicate";
     xmlSecKeyPtr newKey;
+
+    xmlSecAssert2(key != NULL, NULL);
     
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
 	return(NULL);
     }
     
     newKey = xmlSecRsaKeyCreate(key->id);
     if(newKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecRsaKeyCreate");
 	return(NULL);
     }
     
     if(xmlSecGetRsaKey(key) != NULL) {
 	newKey->keyData = xmlSecRsaDup(xmlSecGetRsaKey(key));
 	if(newKey->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: key data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecRsaDup");
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
@@ -636,35 +590,30 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyGenerate";
+
+    xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or context\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
 	return(-1);
     }
 
     if(rsa == NULL) {    
 	rsa = RSA_generate_key(1024, 3, NULL, NULL); 
 	if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: RSA_generate_parameters failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"RSA_generate_key");
 	    return(-1);    
 	}
     } else {
 	rsa =  xmlSecRsaDup(rsa); 
 	if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: RSA duplication failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecRsaDup");
 	    return(-1);    
 	}
     }
@@ -725,47 +674,41 @@ xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {
  */
 static int
 xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyRead";
     xmlNodePtr cur;
     RSA *rsa;
     int privateKey = 0;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecRsaKey) || (node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or node is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
 	return(-1);
     }
 
     rsa = RSA_new();
     if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create rsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RSA_new");
 	return(-1);
     }    
     cur = xmlSecGetNextElementNode(node->children);
     
     /* first is Modulus node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "Modulus", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"Modulus\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Modulus");
 	RSA_free(rsa);	
 	return(-1);
     }
     if(xmlSecNodeGetBNValue(cur, &(rsa->n)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Modulus\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeGetBNValue(Modulus)");
 	RSA_free(rsa);
 	return(-1);
     }
@@ -773,20 +716,16 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 
     /* next is Exponent node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Exponent", xmlSecDSigNs))) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: required element \"Exponent\" missed\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "Exponent");
 	RSA_free(rsa);
 	return(-1);
     }
     if(xmlSecNodeGetBNValue(cur, &(rsa->e)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Exponent\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeGetBNValue(Exponent)");
 	RSA_free(rsa);
 	return(-1);
     }
@@ -796,11 +735,9 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
         /* next is X node. It is REQUIRED for private key but
 	 * we are not sure exactly what do we read */
 	if(xmlSecNodeGetBNValue(cur, &(rsa->d)) == NULL) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to convert element \"PrivateExponent\" value\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecNodeGetBNValue(PrivateExponent)");
 	    RSA_free(rsa);
 	    return(-1);
 	}
@@ -809,11 +746,9 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     }
 
     if(cur != NULL) {
-#ifdef XMLSEC_DEBUG    
-	 xmlGenericError(xmlGenericErrorContext,
-		"%s: unexpected node found\n",
-		func);
-#endif		
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
 	RSA_free(rsa);
 	return(-1);
     }
@@ -839,16 +774,16 @@ xmlSecRsaKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaKeyWrite";
     xmlNodePtr cur;
     int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(parent != NULL, -1);
     
-    if(!xmlSecKeyCheckId(key, xmlSecRsaKey) || (parent == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or parent is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecKeyCheckId(key, xmlSecRsaKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecRsaKey");
 	return(-1);
     }
     
@@ -856,40 +791,32 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     /* first is Modulus node */
     cur = xmlSecAddChild(parent, BAD_CAST "Modulus", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to create \"Modulus\" node\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Modulus)");
 	return(-1);	
     }
     ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->n, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Modulus\" value\n",
-	    key);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetBNValue(Modulus)");
 	return(-1);
     }    
 
     /* next is Exponent node. */
     cur = xmlSecAddChild(parent, BAD_CAST "Exponent", xmlSecDSigNs);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG 
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create \"Exponent\" node\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(Exponent)");
 	return(-1);	
     }
     ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->e, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to convert element \"Exponent\" value\n",
-	    func);
-#endif	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecNodeSetBNValue(Exponent)");
 	return(-1);
     }
 
@@ -898,20 +825,16 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
         (key->type == xmlSecKeyTypePrivate)) { 
 	cur = xmlSecAddChild(parent, BAD_CAST "PrivateExponent", xmlSecNs);
 	if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: failed to create \"PrivateExponent\" node\n",
-		func);
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(PrivateExponent)");
 	    return(-1);	
 	}
 	ret = xmlSecNodeSetBNValue(cur, xmlSecGetRsaKey(key)->d, 1);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG    
-	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to convert element \"PrivateExponent\" value\n",
-		func);
-#endif	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecNodeSetBNValue(PrivateExponent)");
 	    return(-1);
 	}
     }
@@ -928,15 +851,14 @@ xmlSecRsaKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     
 static xmlSecTransformPtr 
 xmlSecRsaPkcs1Create(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1Create";
     xmlSecBufferedTransformPtr buffered;
+
+    xmlSecAssert2(id != NULL, NULL);
     
     if(id != xmlSecEncRsaPkcs1){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaPkcs1");
 	return(NULL);
     }
 
@@ -945,11 +867,9 @@ xmlSecRsaPkcs1Create(xmlSecTransformId id) {
      */
     buffered = (xmlSecBufferedTransformPtr)xmlMalloc(sizeof(xmlSecBufferedTransform));
     if(buffered == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_RSASHA1_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -960,15 +880,14 @@ xmlSecRsaPkcs1Create(xmlSecTransformId id) {
 
 static void 	
 xmlSecRsaPkcs1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1Destroy";
     xmlSecBufferedTransformPtr buffered;
     
+    xmlSecAssert(transform != NULL);
+
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaPkcs1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaPkcs1");
 	return;
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -983,37 +902,28 @@ xmlSecRsaPkcs1Destroy(xmlSecTransformPtr transform) {
 
 static int
 xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1AddKey";
     xmlSecBufferedTransformPtr buffered;
     RSA *rsa;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaPkcs1) || 
-       !xmlSecKeyCheckId(key, xmlSecRsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+       !xmlSecKeyCheckId(key, xmlSecRsaKey) || 
+       (xmlSecGetRsaKey(key) == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    "xmlSecEncRsaPkcs1 and xmlSecRsaKey");
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
 
-    if(xmlSecGetRsaKey(key) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key rsa data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    } 
-
     rsa = xmlSecRsaDup(xmlSecGetRsaKey(key)); 
     if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: RSA duplication failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecRsaDup");
 	return(-1);    
     }
         
@@ -1026,18 +936,18 @@ xmlSecRsaPkcs1AddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaPkcs1Process";
     size_t size;
     int ret;    
+
+    xmlSecAssert2(buffered != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
     
     if(!xmlSecTransformCheckId(buffered, xmlSecEncRsaPkcs1) ||
-       xmlSecRsaPkcs1Rsa(buffered) == NULL ||
-       (buffer == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or buffer is invalid\n",
-	    func);	
-#endif 	    
+       (xmlSecRsaPkcs1Rsa(buffered) == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaPkcs1");
 	return(-1);
     }    
 
@@ -1054,19 +964,15 @@ xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer)
 				 xmlSecRsaPkcs1Rsa(buffered),
 				 RSA_PKCS1_PADDING);
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer size is different from expected\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "%d", size);
 	return(-1);	
     }
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encryption/decryption failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (buffered->encode) ? "RSA_public_encrypt" : "RSA_private_decrypt");
 	return(-1);	
     }
     buffer->use = ret;
@@ -1083,15 +989,14 @@ xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer)
     
 static xmlSecTransformPtr 
 xmlSecRsaOaepCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepCreate";
     xmlSecBufferedTransformPtr buffered;
+
+    xmlSecAssert2(id != NULL, NULL);
     
     if(id != xmlSecEncRsaOaep){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaOaep");
 	return(NULL);
     }
 
@@ -1100,11 +1005,9 @@ xmlSecRsaOaepCreate(xmlSecTransformId id) {
      */
     buffered = (xmlSecBufferedTransformPtr)xmlMalloc(sizeof(xmlSecBufferedTransform));
     if(buffered == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_RSASHA1_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -1115,15 +1018,14 @@ xmlSecRsaOaepCreate(xmlSecTransformId id) {
 
 static void 	
 xmlSecRsaOaepDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepDestroy";
     xmlSecBufferedTransformPtr buffered;
+
+    xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaOaep)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaOaep");
 	return;
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -1143,14 +1045,14 @@ static int
 xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepReadNode";
     xmlSecBufferedTransformPtr buffered;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(transformNode != NULL, -1);
     
-    if(!xmlSecTransformCheckId(transform, xmlSecEncRsaOaep) || 
-       (transformNode == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or transformNode is invalid\n",
-	    func);	
-#endif 	    
+    if(!xmlSecTransformCheckId(transform, xmlSecEncRsaOaep) ) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaOaep");
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -1168,46 +1070,34 @@ xmlSecRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
 int  	
 xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf, 
 			 size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEncRsaOaepAddParam";
     xmlNodePtr oaepParamNode;
     xmlChar *base64;
-        
-    if((transformNode == NULL) || (buf == NULL) || (size == 0)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transformNode or buff is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
 
     oaepParamNode = xmlSecFindChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
     if(oaepParamNode != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: OAEPParam node is already present\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "OAEPParam");
 	return(-1);    
     }
 
     oaepParamNode = xmlSecAddChild(transformNode, BAD_CAST "OAEPParam", xmlSecEncNs);
     if(oaepParamNode == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create OAEPParam node\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(OAEPParam)");
 	return(-1);    
     }
     
     base64 = xmlSecBase64Encode(buf, size, 0);
     if(base64 == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: base64 encode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	return(-1);    
     }
     
@@ -1218,37 +1108,28 @@ xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf,
 
 static int
 xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepAddKey";
     xmlSecBufferedTransformPtr buffered;
     RSA *rsa;
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncRsaOaep) || 
-       !xmlSecKeyCheckId(key, xmlSecRsaKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+       !xmlSecKeyCheckId(key, xmlSecRsaKey) ||
+       (xmlSecGetRsaKey(key) == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    "xmlSecEncRsaOaep and xmlSecRsaKey");
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
 
-    if(xmlSecGetRsaKey(key) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key rsa data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
-
     rsa = xmlSecRsaDup(xmlSecGetRsaKey(key));
     if(rsa == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create rsa key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecRsaDup");
 	return(-1);
     }
     transform->binData = rsa;
@@ -1257,19 +1138,20 @@ xmlSecRsaOaepAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecRsaOaepProcess";
     size_t size;
     int rsa_size = 0;
     int ret;    
     RSA *rsa;
+
+    xmlSecAssert2(buffered != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
     
     if(!xmlSecTransformCheckId(buffered, xmlSecEncRsaOaep) ||
-        xmlSecRsaOaepRsa(buffered) == NULL || (buffer == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or buffer is invalid\n",
-	    func);	
-#endif 	    
+        (xmlSecRsaOaepRsa(buffered) == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncRsaOaep");
 	return(-1);
     }    
     rsa = xmlSecRsaOaepRsa(buffered);
@@ -1287,11 +1169,9 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	                           (unsigned char*)xmlBufferContent(buffer), 
 				   rsa, RSA_PKCS1_OAEP_PADDING); 
 	    if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: encryption failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "RSA_public_encrypt - %d", ret);
 		return(-1);	
 	    }
 	} else {
@@ -1301,22 +1181,18 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 			    xmlBufferContent((xmlBufferPtr)buffered->data), 
 			    xmlBufferLength((xmlBufferPtr)buffered->data));
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: rsa-oaep padding failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "RSA_padding_add_PKCS1_OAEP - %d", ret);
 		return(-1);
 	    }	
 	    ret = RSA_public_encrypt(rsa_size, xmlBufferContent(buffer),
 				 (unsigned char*)xmlBufferContent(buffer), 
 				 rsa, RSA_NO_PADDING);
 	    if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: encryption failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "RSA_public_encrypt - %d");
 		return(-1);	
 	    }
 	}
@@ -1331,11 +1207,9 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	                           (unsigned char*)xmlBufferContent(buffer), 
 				   rsa, RSA_PKCS1_OAEP_PADDING); 
 	    if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: decryption failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "RSA_private_decrypt - %d", ret);
 		return(-1);	
 	    }
 	} else {
@@ -1345,11 +1219,9 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 				 (unsigned char*)xmlBufferContent(buffer), 
 				 rsa, RSA_NO_PADDING);
 	    if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: decryption failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "RSA_private_decrypt - %d", ret);
 		return(-1);	
 	    }
 	
@@ -1361,11 +1233,9 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	     */
 	    BN_init(&bn);
 	    if(BN_bin2bn(xmlBufferContent(buffer), ret, &bn) == NULL) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: bn conversion failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "BN_bin2bn");
 		return(-1);		    
 	    }
 	    ret = BN_bn2bin(&bn, (unsigned char*)xmlBufferContent(buffer));
@@ -1377,20 +1247,16 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 			    xmlBufferContent((xmlBufferPtr)buffered->data), 
 			    xmlBufferLength((xmlBufferPtr)buffered->data));
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: rsa-oaep padding check failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "RSA_padding_check_PKCS1_OAEP - %d", ret);
 		return(-1);
 	    }
 	}				    
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer size is different from expected\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "size %d != rsa size %d", size, rsa_size);
 	return(-1);	
     }
     buffer->use = ret;

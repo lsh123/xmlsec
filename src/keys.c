@@ -365,7 +365,6 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 #ifndef XMLSEC_NO_X509
 int		
 xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeyReadPemCert";
     int ret;
 
     xmlSecAssert2(key != NULL, -1);
@@ -397,10 +396,8 @@ xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
 xmlSecKeyPtr 		
 xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeysMngrPtr mngr, void *context,
 		xmlSecKeyId keyId, xmlSecKeyType keyType, xmlSecKeyUsage keyUsage) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecKeysMngrGetKey";
     xmlSecKeyPtr key = NULL;
         
-    xmlSecAssert2(keyInfoNode != NULL, NULL);
     xmlSecAssert2(mngr != NULL, NULL);
 
     if((key == NULL) && (keyInfoNode != NULL)) {

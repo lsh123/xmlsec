@@ -38,6 +38,7 @@ extern "C" {
 
 #define XMLSEC_ERRORS_R_INVALID_SIZE		 21	/* "invalid size" */
 #define XMLSEC_ERRORS_R_INVALID_DATA		 22	/* "invalid data" */
+#define XMLSEC_ERRORS_R_INVALID_TYPE		 22	/* "invalid type" */
 #define XMLSEC_ERRORS_R_INVALID_NODE	 	 26	/* "invalid node" */
 #define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 23	/* "invalid node content" */
 #define XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE	 24	/* "invalid node attribute" */

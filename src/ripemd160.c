@@ -22,6 +22,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
+#include <xmlsec/errors.h>
 
 static xmlSecTransformPtr xmlSecDigestRipemd160Create(xmlSecTransformId id);
 static void 	xmlSecDigestRipemd160Destroy	(xmlSecTransformPtr transform);
@@ -79,15 +80,14 @@ xmlSecTransformId xmlSecDigestRipemd160 = (xmlSecTransformId)&xmlSecDigestRipemd
  */
 static xmlSecTransformPtr 
 xmlSecDigestRipemd160Create(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestRipemd160Create";
     xmlSecDigestTransformPtr digest;
-    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
     if(id != xmlSecDigestRipemd160){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecDigestRipemd160");
 	return(NULL);
     }
 
@@ -96,11 +96,9 @@ xmlSecDigestRipemd160Create(xmlSecTransformId id) {
      */
     digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_RIPEMD160_TRANSFORM_SIZE);
     if(digest == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_RIPEMD160_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_RIPEMD160_TRANSFORM_SIZE);
@@ -123,15 +121,14 @@ xmlSecDigestRipemd160Create(xmlSecTransformId id) {
  */
 static void 	
 xmlSecDigestRipemd160Destroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestRipemd160Destroy";
     xmlSecDigestTransformPtr digest;
-    
+
+    xmlSecAssert(transform != NULL);
+        
     if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecDigestRipemd160");
 	return;
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -152,15 +149,14 @@ xmlSecDigestRipemd160Destroy(xmlSecTransformPtr transform) {
 static int 	
 xmlSecDigestRipemd160Update(xmlSecDigestTransformPtr transform,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestRipemd160Update";
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert2(transform != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecDigestRipemd160");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -185,15 +181,14 @@ xmlSecDigestRipemd160Update(xmlSecDigestTransformPtr transform,
 static int 	
 xmlSecDigestRipemd160Sign(xmlSecDigestTransformPtr transform,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestRipemd160Sign";
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert2(transform != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecDigestRipemd160");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -223,15 +218,14 @@ xmlSecDigestRipemd160Sign(xmlSecDigestTransformPtr transform,
 static int
 xmlSecDigestRipemd160Verify(xmlSecDigestTransformPtr transform,
 			 const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestRipemd160Verify";
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert2(transform != NULL, -1);
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestRipemd160)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecDigestRipemd160");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;

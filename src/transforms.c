@@ -55,8 +55,6 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
-#define XMLSEC_TRANSFORM_BINARY_CHUNK	64
-
 /**************************************************************************
  *
  * xmlSecTransform
@@ -217,12 +215,12 @@ xmlSecTransformValidate(xmlSecTransformPtr transform, const unsigned char* data,
 }
 
 int 
-xmlSecTransformExecute(xmlSecTransformPtr transform, size_t delta, xmlSecTransformCtxPtr transformCtx) {
+xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->execute != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    return((transform->id->execute)(transform, delta, transformCtx));
+    return((transform->id->execute)(transform, last, transformCtx));
 }
 
 /**
@@ -234,9 +232,6 @@ xmlSecTransformExecuteBin(xmlSecTransformPtr transform,
 		const unsigned char* in, size_t inSize, size_t* inRes,
 		unsigned char* out, size_t outSize, size_t* outRes) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-/* TODO????
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
-*/    
     xmlSecAssert2(inRes != NULL, -1);
     xmlSecAssert2(outRes != NULL, -1);
 
@@ -494,7 +489,6 @@ xmlSecTransformDefaultReadBin(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
         
     while(outRes == 0) {
 	if(((transform->binBufSize + XMLSEC_TRANSFORM_MIN_BLOCK_SIZE) < sizeof(transform->binBuf)) && 
@@ -561,7 +555,6 @@ xmlSecTransformDefaultWriteBin(xmlSecTransformPtr transform,
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
     if(buf == NULL) {
 	return(0);
@@ -614,7 +607,6 @@ xmlSecTransformDefaultFlushBin(xmlSecTransformPtr transform) {
     int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
     do {
 	if((transform->binBufSize > 0) && (transform->next != NULL)) {
@@ -677,9 +669,8 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
-    while(xmlSecBufferGetSize(&(transform->outBuf))) {
+    while(xmlSecBufferGetSize(&(transform->outBuf)) == 0) {
 	/* read chunk from previous transform (if exist) */
 	if((transform->prev != NULL) && !xmlSecTransformStatusIsDone(transform->prev->status)) {
 	    ret = xmlSecTransformReadBin(transform->prev, chunk, sizeof(chunk));
@@ -703,7 +694,7 @@ xmlSecTransformDefault2ReadBin(xmlSecTransformPtr transform,
 	}
 	
 	/* process the current data */
-	ret = xmlSecTransformExecute(transform, chunkSize, &ctx);
+	ret = xmlSecTransformExecute(transform, (chunkSize == 0) ? 1 : 0, &ctx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -751,7 +742,6 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
     for(;size > 0; size -= chunkSize) {
 	xmlSecAssert2(buf != NULL, -1);
@@ -770,7 +760,7 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 	}
 	
 	/* process the current data */
-	ret = xmlSecTransformExecute(transform, chunkSize, &ctx);
+	ret = xmlSecTransformExecute(transform, 0, &ctx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -806,13 +796,13 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 int
 xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
     xmlSecTransformCtx ctx; /* todo */
+    int ret;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
 
     while(1) {
 	/* process data */
-	ret = xmlSecTransformExecute(transform, 0, &ctx);
+	ret = xmlSecTransformExecute(transform, 1, &ctx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,

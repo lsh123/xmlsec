@@ -104,6 +104,11 @@ static int 		xmlSecBase64ExecuteBin			(xmlSecTransformPtr transform,
 								 unsigned char* out,
 								 size_t outSize,
 								 size_t* outRes);
+
+static int 		xmlSecBase64Execute			(xmlSecTransformPtr transform, 
+								 int last, 
+								 xmlSecTransformCtxPtr transformCtx);
+
 static xmlSecTransformKlass xmlSecBase64EncodeId = {
     BAD_CAST "base64-encode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
@@ -116,13 +121,13 @@ static xmlSecTransformKlass xmlSecBase64EncodeId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecBase64Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* binary data/methods */
-    xmlSecBase64ExecuteBin,		/* xmlSecTransformExecuteBinMethod executeBin; */
-    xmlSecTransformDefaultReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefaultWriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefaultFlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    NULL,				/* xmlSecTransformExecuteBinMethod executeBin; */
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
 
     /* xml/c14n methods */
     NULL,
@@ -235,6 +240,100 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 }
 
 static int 
+xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBase64CtxPtr ctx;
+    xmlSecBufferPtr in, out;
+    size_t inLen, outLen;
+    unsigned char buf[3 * XMLSEC_TRANSFORM_BINARY_CHUNK];
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecBase64GetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+
+    switch(transform->status) {
+	case xmlSecTransformStatusNone:
+	case xmlSecTransformStatusWorking:
+	    while(xmlSecBufferGetSize(in) > 0) {
+		/* find next chunk size */
+		inLen = xmlSecBufferGetSize(in);
+		if(inLen > XMLSEC_TRANSFORM_BINARY_CHUNK) {
+		    inLen = XMLSEC_TRANSFORM_BINARY_CHUNK;
+		}
+		
+		/* encode/decode the next chunk */
+		ret = xmlSecBase64CtxUpdate(ctx, xmlSecBufferGetData(in), inLen,
+					    buf, sizeof(buf));
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBase64CtxUpdate");
+		    return(-1);
+		}
+		outLen = ret;
+		
+		/* add encoded chunk to output */
+		ret = xmlSecBufferAppend(out, buf, outLen);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBufferAppend(%d)", outLen);
+		    return(-1);
+		}
+		
+		/* remove chunk from input */
+		ret = xmlSecBufferRemoveHead(in, inLen);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBufferRemoveHead(%d)", inLen);
+		    return(-1);
+		}
+	    }
+	    
+	    if(last) {
+		/* add from ctx buffer */
+		ret = xmlSecBase64CtxFinal(ctx, buf, sizeof(buf));
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBase64CtxFinal");
+		    return(-1);
+		}
+		outLen = ret;
+		
+		/* add encoded chunk to output */
+		ret = xmlSecBufferAppend(out, buf, outLen);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE, 
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBufferAppend(%d)", outLen);
+		    return(-1);
+		}
+		transform->status = xmlSecTransformStatusFinished;
+	    } else {
+		transform->status = xmlSecTransformStatusWorking;
+	    }
+	    break;
+	case xmlSecTransformStatusFinished:
+	    /* the only way we can get here is if there is no input */
+	    xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
+	    break;
+	default:
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"invalid transform status %d", transform->status);
+	    return(-1);
+    }
+    return(0);
+}
+
+static int 
 xmlSecBase64ExecuteBin(xmlSecTransformPtr transform, 
 		const unsigned char* in, size_t inSize, size_t* inRes,
 		unsigned char* out, size_t outSize, size_t* outRes) {
@@ -242,7 +341,6 @@ xmlSecBase64ExecuteBin(xmlSecTransformPtr transform,
     int ret;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode), -1);
-    xmlSecAssert2(!xmlSecTransformStatusIsDone(transform->status), -1);
     xmlSecAssert2(inRes != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outRes != NULL, -1);

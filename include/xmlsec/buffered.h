@@ -69,6 +69,8 @@ struct _xmlSecBufferedTransformIdStruct {
     xmlSecTransformNodeReadMethod	readNode;    
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
+    xmlSecTransformValidateMethod	validate;
+    xmlSecTransformExecuteMethod	execute;
     
     /* binary methods */
     xmlSecTransformExecuteBinMethod	executeBin;
@@ -115,6 +117,9 @@ struct _xmlSecBufferedTransform {
     /* xml specific */
     xmlNodePtr				hereNode;
     
+    xmlSecBuffer			inBuf;
+    xmlSecBuffer			outBuf;
+
     unsigned char			binBuf[XMLSEC_TRANSFORM_BUFFER_SIZE];
     size_t				binBufSize;
     size_t				processed;

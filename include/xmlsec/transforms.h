@@ -22,6 +22,10 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/nodeset.h>
 
+
+#define XMLSEC_TRANSFORM_BINARY_CHUNK	64
+
+
 #define XMLSEC_TRANSFORM_MIN_BLOCK_SIZE			32	/* should be less than XMLSEC_TRANSFORM_BUFFER_SIZE */
 #define XMLSEC_TRANSFORM_BUFFER_SIZE			64	/* should be greater than XMLSEC_TRANSFORM_MIN_BLOCK_SIZE */
 
@@ -95,7 +99,10 @@ struct _xmlSecTransform {
     
     /* xml specific */
     xmlNodePtr				hereNode;
-    
+
+    xmlSecBuffer			inBuf;
+    xmlSecBuffer			outBuf;
+        
     unsigned char			binBuf[XMLSEC_TRANSFORM_BUFFER_SIZE];
     size_t				binBufSize;
     size_t				processed;
@@ -116,6 +123,16 @@ XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int  			xmlSecTransformValidate	(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int  			xmlSecTransformExecute	(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
+
 XMLSEC_EXPORT int			xmlSecTransformExecuteBin(xmlSecTransformPtr transform,
 								 const unsigned char* in,
 								 size_t inSize,
@@ -139,12 +156,16 @@ XMLSEC_EXPORT int 			xmlSecTransformExecuteC14N(xmlSecTransformPtr transform,
 								 xmlSecNodeSetPtr nodes,
 								 xmlOutputBufferPtr buffer);
 
+
+
 XMLSEC_EXPORT void			xmlSecTransformDestroyAll(xmlSecTransformPtr transform);	
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddAfter	(xmlSecTransformPtr curTransform,
 								 xmlSecTransformPtr newTransform);
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr curTransform,
 								 xmlSecTransformPtr newTransform);
 XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
+
+
 
 XMLSEC_EXPORT int			xmlSecTransformDefaultReadBin	(xmlSecTransformPtr transform,
 								 unsigned char *buf,
@@ -153,6 +174,14 @@ XMLSEC_EXPORT int			xmlSecTransformDefaultWriteBin	(xmlSecTransformPtr transform
 								 const unsigned char *buf,
 								 size_t size);		
 XMLSEC_EXPORT int			xmlSecTransformDefaultFlushBin	(xmlSecTransformPtr transform);
+
+XMLSEC_EXPORT int			xmlSecTransformDefault2ReadBin	(xmlSecTransformPtr transform,
+								 unsigned char *buf,
+								 size_t size);		
+XMLSEC_EXPORT int			xmlSecTransformDefault2WriteBin	(xmlSecTransformPtr transform,
+								 const unsigned char *buf,
+								 size_t size);		
+XMLSEC_EXPORT int			xmlSecTransformDefault2FlushBin	(xmlSecTransformPtr transform);
 
 /**
  * xmlSecTransformIsValid:
@@ -315,6 +344,17 @@ typedef int  		(*xmlSecTransformSetKeyRequirements)	(xmlSecTransformPtr transfor
 typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 
+
+typedef int  		(*xmlSecTransformValidateMethod)	(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
+
 typedef int 		(*xmlSecTransformExecuteBinMethod)	(xmlSecTransformPtr transform, 
 								 const unsigned char* in,
 								 size_t inSize,
@@ -416,6 +456,9 @@ struct _xmlSecTransformKlass {
     xmlSecTransformNodeReadMethod	readNode;    
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
+    xmlSecTransformValidateMethod	validate;
+    xmlSecTransformExecuteMethod	execute;
+    
     
     /* binary methods */
     xmlSecTransformExecuteBinMethod	executeBin;

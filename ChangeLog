@@ -1,3 +1,10 @@
+Wed 16 Jul 2003 12:50:00 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
+    
+	* examples/myw32make.bat win32/mycfg-nss.bat: rename these
+	files to clear exec bit (John)
+
+	* man/Makefile.am: use "--no-info" option in help2man
+
 Mon Jul 14 11:06:16 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/api/sgml/version.sgml docs/download.html

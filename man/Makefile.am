@@ -39,7 +39,7 @@ xmlsec1.1:
 xmlsec1-config.1:
 	@chmod 766 $(XMLSEC_CONFIG_PROGRAM)
 	@rm -f xmlsec1-config.1
-	help2man --help-option=--help \
+	help2man --help-option=--help --no-info \
 		  --version-option=--version \
 		  $(XMLSEC_CONFIG_PROGRAM) > xmlsec1-config.1
 

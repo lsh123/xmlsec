@@ -1,6 +1,13 @@
+Thu Aug  7 11:38:43 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/openssl/app.h src/openssl/app.c:  added functions 
+	to read keys and certs in xmlsec-openssl from memory and BIOs 
+	(bug #119350, patch based on the code from Joachim)
+
 Wed Aug  6 08:57:20 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
-	* Makefile.am configure.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in xmlsec-openssl.pc.in xmlsecConf.sh.in:
+	* Makefile.am configure.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in 
+	xmlsec-openssl.pc.in xmlsecConf.sh.in:
 	config bug fixing and improvements from Roumen
 
 Mon Aug  4 19:39:52 2003  Aleksey Sanin  <aleksey@aleksey.com>i

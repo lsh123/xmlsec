@@ -61,9 +61,7 @@ xmlSecGnuTLSAppShutdown(void) {
 }
 
 xmlSecKeyPtr
-xmlSecGnuTLSAppPemKeyLoad(const char *keyfile, const char *keyPwd,
-			    void* keyPwdCallback, 
-			    int privateKey) {
+xmlSecGnuTLSAppPemKeyLoad(const char *keyfile, const char *keyPwd, void* keyPwdCallback) {
     xmlSecAssert2(keyfile != NULL, NULL);
     
     /* TODO */

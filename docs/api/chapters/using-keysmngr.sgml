@@ -44,14 +44,14 @@
 	</para>
 	<para>
 	     <example>
-		<title>Initializing keys manager and loading public keys from PEM files.</title>
+		<title>Initializing keys manager and loading keys from PEM files.</title>
 		<programlisting><![CDATA[
 /**
- * load_public_keys:
+ * load_keys:
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
  *
- * Creates simple keys manager and load public keys from #files in it.
+ * Creates simple keys manager and load PEM keys from #files in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -59,7 +59,7 @@
  * occurs.
  */
 xmlSecKeysMngrPtr 
-load_public_keys(char** files, int files_size) {
+load_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
@@ -86,9 +86,9 @@ load_public_keys(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 0);
+	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", files[i]);
+    	    fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
@@ -117,6 +117,236 @@ load_public_keys(char** files, int files_size) {
 		]]></programlisting>
 		<simpara><link linkend="xmlsec-example-dsig4">Full program listing</link></simpara>
 	    </example>
+	</para>
+    </sect2>
+
+    <sect2>
+	<title>Using keys manager for signatures/encryption.</title>
+	<para>Instead of specifiying signature or encryption key in the 
+	corresponding context object (<structfield>signKey</structfield> 
+	member of <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> 
+	structure or <structfield>encKey</structfield> member of 
+	<link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure), 
+	the application can use keys manager to select the
+	signature or encryption key. This is especialy useful
+	when you are encrypting or signing something with a session key
+	which is by itself should be encrypted. The key for the 
+	session key encryption in the 
+	<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;EncryptedKey/&gt;</ulink>
+	node could be selected using
+	<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> 
+	node in the template.
+	</para>
+	<para>
+	     <example>
+		<title>Encrypting file using a session key and a permanent key from keys manager.</title>
+		<programlisting><![CDATA[
+/**
+ * load_rsa_keys:
+ * @key_file:		the key filename.
+ *
+ * Creates simple keys manager and load RSA key from #key_file in it.
+ * The caller is responsible for destroing returned keys manager using
+ * @xmlSecKeysMngrDestroy.
+ *
+ * Returns the pointer to newly created keys manager or NULL if an error
+ * occurs.
+ */
+xmlSecKeysMngrPtr 
+load_rsa_keys(char* key_file) {
+    xmlSecKeysMngrPtr mngr;
+    xmlSecKeyPtr key;
+    
+    assert(key_file);
+    
+    /* create and initialize keys manager, we use a simple list based
+     * keys manager, implement your own xmlSecKeysStore klass if you need
+     * something more sophisticated 
+     */
+    mngr = xmlSecKeysMngrCreate();
+    if(mngr == NULL) {
+	fprintf(stderr, "Error: failed to create keys manager.\n");
+	return(NULL);
+    }
+    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) < 0) {
+	fprintf(stderr, "Error: failed to initialize keys manager.\n");
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }    
+    
+    /* load private RSA key */
+    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    if(key == NULL) {
+        fprintf(stderr,"Error: failed to load rsa key from file \"%s\"\n", key_file);
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
+    }
+
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        xmlSecKeyDestroy(key);	
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }
+	
+    /* add key to keys manager, from now on keys manager is responsible 
+     * for destroying key 
+     */
+    if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) < 0) {
+        fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
+        xmlSecKeyDestroy(key);
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
+    }
+
+    return(mngr);
+}
+
+/**
+ * encrypt_file:
+ * @mngr:		the pointer to keys manager.
+ * @xml_file:		the encryption template file name.
+ * @key_name:		the RSA key name.
+ *
+ * Encrypts #xml_file using a dynamicaly created template, a session DES key 
+ * and an RSA key from keys manager.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr encDataNode = NULL;
+    xmlNodePtr keyInfoNode = NULL;
+    xmlNodePtr encKeyNode = NULL;
+    xmlNodePtr keyInfoNode2 = NULL;
+    xmlSecEncCtxPtr encCtx = NULL;
+    int res = -1;
+    
+    assert(mngr);
+    assert(xml_file);
+    assert(key_name);
+
+    /* load template */
+    doc = xmlParseFile(xml_file);
+    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
+	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+	goto done;	
+    }
+    
+    /* create encryption template to encrypt XML file and replace 
+     * its content with encryption result */
+    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
+				NULL, xmlSecTypeEncElement, NULL, NULL);
+    if(encDataNode == NULL) {
+	fprintf(stderr, "Error: failed to create encryption template\n");
+	goto done;   
+    }
+
+    /* we want to put encrypted data in the <enc:CipherValue/> node */
+    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
+	goto done;   
+    }
+
+    /* add <dsig:KeyInfo/> */
+    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
+    if(keyInfoNode == NULL) {
+	fprintf(stderr, "Error: failed to add key info\n");
+	goto done;		
+    }
+
+    /* add <enc:EncryptedKey/> to store the encrypted session key */
+    encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
+				    xmlSecTransformRsaOaepId, 
+				    NULL, NULL, NULL);
+    if(encKeyNode == NULL) {
+	fprintf(stderr, "Error: failed to add key info\n");
+	goto done;		
+    }
+
+    /* we want to put encrypted key in the <enc:CipherValue/> node */
+    if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
+	fprintf(stderr, "Error: failed to add CipherValue node\n");
+	goto done;   
+    }
+
+    /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to <enc:EncryptedKey/> */
+    keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
+    if(keyInfoNode2 == NULL) {
+	fprintf(stderr, "Error: failed to add key info\n");
+	goto done;		
+    }
+    
+    /* set key name so we can lookup key when needed */
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, key_name) == NULL) {
+	fprintf(stderr, "Error: failed to add key name\n");
+	goto done;		
+    }
+
+    /* create encryption context */
+    encCtx = xmlSecEncCtxCreate(mngr);
+    if(encCtx == NULL) {
+        fprintf(stderr,"Error: failed to create encryption context\n");
+	goto done;
+    }
+
+    /* generate a Triple DES key */
+    encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
+    if(encCtx->encKey == NULL) {
+        fprintf(stderr,"Error: failed to generate session des key\n");
+	goto done;
+    }
+
+    /* encrypt the data */
+    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {
+        fprintf(stderr,"Error: encryption failed\n");
+	goto done;
+    }
+    
+    /* we template is inserted in the doc */
+    encDataNode = NULL;
+        
+    /* print encrypted data with document to stdout */
+    xmlDocDump(stdout, doc);
+    
+    /* success */
+    res = 0;
+
+done:    
+
+    /* cleanup */
+    if(encCtx != NULL) {
+	xmlSecEncCtxDestroy(encCtx);
+    }
+
+    if(encDataNode != NULL) {
+	xmlFreeNode(encDataNode);
+    }
+        
+    if(doc != NULL) {
+	xmlFreeDoc(doc); 
+    }
+    return(res);
+}
+
+		]]></programlisting>
+		<simpara><link linkend="xmlsec-example-enc3">Full program listing</link></simpara>
+	    </example>
+	</para>
+    </sect2>
+    
+    <sect2>
+	<title>Using keys manager for verification/decryption.</title>
+	<para>If more than one key could be used for signature or encryption,
+	then using <structfield>signKey</structfield> member of 
+	<link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure or 
+	<structfield>encKey</structfield> member of 
+	<link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure 
+	is not possible. Instead, the application should load known keys in 
+	the keys manager and use &lt;dsig:KeyName/&gt; element to specify 
+	the key name.
 	</para>
 	<para>
 	     <example>
@@ -198,7 +428,11 @@ load_des_keys(char** files, int files_size) {
 
     <sect2>
 	<title>Implementing a custom keys store.</title>
-	<para>TODO</para>
+	<para>In many cases, a simple built-in list based keys store
+	is not good enough. For example, XML Security Library (and 
+	the built-in simple keys store) have no synchronization and 
+	you'll need to implement a custom keys store if you want to 
+	add or remove keys while other threads use the store.</para>
 	<para>
 	     <example>
 		<title>Creating a custom keys manager.</title>
@@ -323,9 +557,9 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
-	key = xmlSecCryptoAppPemKeyLoad(name, NULL, NULL, 0);
+	key = xmlSecCryptoAppPemKeyLoad(name, NULL, NULL);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
+    	    fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", name);
 	    return(NULL);
 	}
     } else {

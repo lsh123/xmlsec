@@ -1648,7 +1648,7 @@ xmlSecAppLoadKeys(void) {
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
-		    value->paramNameValue, 1) < 0) {
+		    value->paramNameValue) < 0) {
 	    fprintf(stderr, "Error: failed to load private key from \"%s\".\n", 
 		    value->strListValue);
 	    return(-1);
@@ -1664,7 +1664,7 @@ xmlSecAppLoadKeys(void) {
 	} else if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(gKeysMngr, 
 		    value->strListValue, 
 		    xmlSecAppCmdLineParamGetString(&pwdParam),
-		    value->paramNameValue, 0) < 0) {
+		    value->paramNameValue) < 0) {
 	    fprintf(stderr, "Error: failed to load public key from \"%s\".\n", 
 		    value->strListValue);
 	    return(-1);

@@ -137,6 +137,17 @@ keysmngr
 @store: 
 
 
+<!-- ##### FUNCTION xmlSecKeyStoreFindKey ##### -->
+<para>
+
+</para>
+
+@store: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecKeyStoreGetName ##### -->
 <para>
 
@@ -193,6 +204,17 @@ keysmngr
 </para>
 
 @store: 
+
+
+<!-- ##### USER_FUNCTION xmlSecKeyStoreFindKeyMethod ##### -->
+<para>
+
+</para>
+
+@store: 
+@name: 
+@keyInfoCtx: 
+@Returns: 
 
 
 <!-- ##### STRUCT xmlSecKeyStoreKlass ##### -->

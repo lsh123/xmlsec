@@ -319,6 +319,7 @@ TODO
     &xmlsec-example-dsig4;
     &xmlsec-example-enc1;
     &xmlsec-example-enc2;
+    &xmlsec-example-enc3;
     &xmlsec-example-enc4;
     &xmlsec-example-enc5;
     &xmlsec-example-enc6;
@@ -331,6 +332,8 @@ TODO
     &xmlsec-example-enc1-res;
     &xmlsec-example-enc2-doc;
     &xmlsec-example-enc2-res;
+    &xmlsec-example-enc3-doc;
+    &xmlsec-example-enc3-res;
   </chapter>
   
   <chapter id="xmlsec-index">

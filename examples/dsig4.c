@@ -32,7 +32,7 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_public_keys(char** files, int files_size);
+xmlSecKeysMngrPtr load_keys(char** files, int files_size);
 int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
 
 int 
@@ -75,7 +75,7 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = load_public_keys(&(argv[2]), argc - 2);
+    mngr = load_keys(&(argv[2]), argc - 2);
     if(mngr == NULL) {
 	return(-1);
     }
@@ -108,11 +108,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_public_keys:
+ * load_keys:
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
  *
- * Creates simple keys manager and load public keys from #files in it.
+ * Creates simple keys manager and load PEM keys from #files in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -120,7 +120,7 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr 
-load_public_keys(char** files, int files_size) {
+load_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
@@ -147,9 +147,9 @@ load_public_keys(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 0);
+	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL);
 	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", files[i]);
+    	    fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
@@ -181,7 +181,7 @@ load_public_keys(char** files, int files_size) {
  * @mngr:		the pointer to keys manager.
  * @xml_file:		the signed XML file name.
  *
- * Verifies XML signature in #xml_file using public key from #key_file.
+ * Verifies XML signature in #xml_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */

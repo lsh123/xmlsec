@@ -22,9 +22,12 @@ This folder contains XML Security Library examples.
     enc2.c			Encrypting XML file using a dynamicaly created template
     enc2-doc.xml		An example XML file for encryption by enc2.c
     enc2-res.xml		The result of encryptin enc2-doc.xml by enc2.c
-    enc3.c			Decrypting binary data using a signle key
-    enc4.c			Decrypting binary data using keys manager
-    enc5.c			Decrypting binary file using custom keys manager
+    enc2.c			Encrypting XML file using a session DES key
+    enc2-doc.xml		An example XML file for encryption by enc3.c
+    enc2-res.xml		The result of encryptin enc3-doc.xml by enc3.c
+    enc4.c			Decrypting binary data using a signle key
+    enc5.c			Decrypting binary data using keys manager
+    enc6.c			Decrypting binary file using custom keys manager
 
 
 2. Building Examples 
@@ -64,4 +67,5 @@ folder with any other input files:
     $ ./enc5  enc2-res.xml   deskey.bin
     $ ./enc6  enc1-res.xml
     $ ./enc6  enc2-res.xml
+    $ ./enc6  enc3-res.xml
     

@@ -30,9 +30,11 @@ check: $(PROGRAMS)
 	./dsig4 dsig2-res.xml  rsapub.pem
 	./enc1  enc1-tmpl.xml  deskey.bin
 	./enc2  enc2-doc.xml   deskey.bin 
+	./enc3	enc3-doc.xml   rsakey.pem
 	./enc4  enc1-res.xml   deskey.bin
 	./enc4  enc2-res.xml   deskey.bin
 	./enc5  enc1-res.xml   deskey.bin
 	./enc5  enc2-res.xml   deskey.bin
 	./enc6  enc1-res.xml
 	./enc6  enc2-res.xml
+	./enc6  enc3-res.xml

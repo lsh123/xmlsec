@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-IO"></a>io</h1>
 <div class="REFNAMEDIV">
-<a name="AEN1856"></a><h2>Name</h2>io -- </div>
+<a name="AEN1878"></a><h2>Name</h2>io -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN1859"></a><h2>Synopsis</h2>
+<a name="AEN1881"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 void        <a href="xmlsec-io.html#XMLSECIOINIT">xmlSecIOInit</a>                    (void);
@@ -63,13 +63,13 @@ int         <a href="xmlsec-io.html#XMLSECTRANSFORMINPUTURIOPEN">xmlSecTransform
                                              const <font>xmlChar</font> *uri);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN1877"></a><h2>Description</h2>
+<a name="AEN1899"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN1880"></a><h2>Details</h2>
+<a name="AEN1902"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN1882"></a><h3>
+<a name="AEN1904"></a><h3>
 <a name="XMLSECIOINIT"></a>xmlSecIOInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOInit                    (void);</pre></td></tr></table>
 <p>The IO initialization (called from <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a> function).
@@ -78,7 +78,7 @@ Applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1889"></a><h3>
+<a name="AEN1911"></a><h3>
 <a name="XMLSECIOSHUTDOWN"></a>xmlSecIOShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOShutdown                (void);</pre></td></tr></table>
 <p>The IO clenaup (called from <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a> function).
@@ -87,7 +87,7 @@ Applications should not call this function directly.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1896"></a><h3>
+<a name="AEN1918"></a><h3>
 <a name="XMLSECIOCLEANUPCALLBACKS"></a>xmlSecIOCleanupCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIOCleanupCallbacks        (void);</pre></td></tr></table>
 <p>Clears the entire input callback table. this includes the
@@ -96,7 +96,7 @@ compiled-in I/O.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1902"></a><h3>
+<a name="AEN1924"></a><h3>
 <a name="XMLSECIOREGISTERDEFAULTCALLBACKS"></a>xmlSecIORegisterDefaultCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecIORegisterDefaultCallbacks
                                             (void);</pre></td></tr></table>
@@ -105,7 +105,7 @@ compiled-in I/O.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1908"></a><h3>
+<a name="AEN1930"></a><h3>
 <a name="XMLSECIOREGISTERCALLBACKS"></a>xmlSecIORegisterCallbacks ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecIORegisterCallbacks       (<font>xmlInputMatchCallback</font> matchFunc,
                                              <font>xmlInputOpenCallback</font> openFunc,
@@ -114,7 +114,7 @@ compiled-in I/O.</p>
 <p>Register a new set of I/O callback for handling parser input.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1918"></a><p></p>
+<a name="AEN1940"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -148,7 +148,7 @@ an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1943"></a><h3>
+<a name="AEN1965"></a><h3>
 <a name="XMLSECTRANSFORMINPUTURIID"></a>xmlSecTransformInputURIId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecTransformInputURIId</pre></td></tr></table>
 <p>The Input URI transform id.</p>
@@ -156,14 +156,14 @@ an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1949"></a><h3>
+<a name="AEN1971"></a><h3>
 <a name="XMLSECTRANSFORMINPUTURIGETKLASS"></a>xmlSecTransformInputURIGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformInputURIGetKlass
                                             (void);</pre></td></tr></table>
 <p>The input uri transform klass. Reads binary data from an uri.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1956"></a><p></p>
+<a name="AEN1978"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -174,14 +174,14 @@ an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN1965"></a><h3>
+<a name="AEN1987"></a><h3>
 <a name="XMLSECTRANSFORMINPUTURIOPEN"></a>xmlSecTransformInputURIOpen ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformInputURIOpen     (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              const <font>xmlChar</font> *uri);</pre></td></tr></table>
 <p>Opens the given <tt class="PARAMETER"><i>uri</i></tt> for reading.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN1974"></a><p></p>
+<a name="AEN1996"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">

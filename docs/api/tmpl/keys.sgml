@@ -275,7 +275,20 @@ keys
 
 </para>
 
+@dataId: 
+@sizeBits: 
+@type: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @klass: 
+@name: 
+
+
+<!-- ##### FUNCTION xmlSecKeyGenerateByName ##### -->
+<para>
+
+</para>
+
 @name: 
 @sizeBits: 
 @type: 

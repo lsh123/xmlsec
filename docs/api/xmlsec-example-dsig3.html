@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG3"></a>dsig3.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15370"></a><h2>Name</h2>dsig3.c -- Verifying a file using a signle key.</div>
+<a name="AEN15499"></a><h2>Name</h2>dsig3.c -- Verifying a file using a signle key.</div>
 <div class="REFSECT1">
-<a name="AEN15373"></a><h2>Example: Verifying a file using a signle key.</h2>
+<a name="AEN15502"></a><h2>Example: Verifying a file using a signle key.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15376"></a><p></p>
+<a name="AEN15505"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a file using a signle key.
  *
@@ -184,7 +184,7 @@ verify_file(const char* xml_file, const char* key_file) {
     }
 
     /* load public key */
-    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, 0);
+    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;

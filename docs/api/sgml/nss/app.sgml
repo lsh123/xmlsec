@@ -33,8 +33,7 @@ int         <link linkend="xmlSecNssAppKeysMngrAddCertsPath">xmlSecNssAppKeysMng
                                              const char *path);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppPemKeyLoad">xmlSecNssAppPemKeyLoad</link>         (const char *keyfile,
                                              const char *keyPwd,
-                                             void *keyPwdCallback,
-                                             int privateKey);
+                                             void *keyPwdCallback);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppPkcs12Load">xmlSecNssAppPkcs12Load</link>         (const char *filename,
                                              const char *pwd);
 int         <link linkend="xmlSecNssAppKeyPemCertLoad">xmlSecNssAppKeyPemCertLoad</link>      (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
@@ -100,8 +99,7 @@ int         <link linkend="xmlSecNssAppKeyPemCertLoad">xmlSecNssAppKeyPemCertLoa
 <title><anchor id="xmlSecNssAppPemKeyLoad">xmlSecNssAppPemKeyLoad ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecNssAppPemKeyLoad         (const char *keyfile,
                                              const char *keyPwd,
-                                             void *keyPwdCallback,
-                                             int privateKey);</programlisting>
+                                             void *keyPwdCallback);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecNssAppPkcs12Load">xmlSecNssAppPkcs12Load ()</title>

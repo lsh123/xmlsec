@@ -54,8 +54,10 @@ void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>        
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (const <link linkend="xmlChar">xmlChar</link> *klass,
-                                             const <link linkend="xmlChar">xmlChar</link> *name,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName</link>        (const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
@@ -647,8 +649,33 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGenerate">xmlSecKeyGenerate ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyGenerate              (const <link linkend="xmlChar">xmlChar</link> *klass,
-                                             const <link linkend="xmlChar">xmlChar</link> *name,
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyGenerate              (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             <link linkend="size-t">size_t</link> sizeBits,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Generates new key of requested klass <parameter>dataId</parameter> and <parameter>type</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
+<entry>		the requested key klass (rsa, dsa, aes, ...).
+</entry></row>
+<row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
+<entry>		the new key size (in bits!).
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry>		the new key type (session, permanent, ...).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created key or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName ()</title>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyGenerateByName        (const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -660,11 +687,8 @@ Generates new key of requested <parameter>klass</parameter> and <parameter>type<
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
-<entry>		the requested key klass name (rsa, dsa, aes, ...).
-</entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> 		the new key name (may be NULL).
+<entry>		the requested key klass name (rsa, dsa, aes, ...).
 </entry></row>
 <row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
 <entry>		the new key size (in bits!).

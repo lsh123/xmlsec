@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-NSS-APP"></a>app</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15059"></a><h2>Name</h2>app -- </div>
+<a name="AEN15188"></a><h2>Name</h2>app -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN15062"></a><h2>Synopsis</h2>
+<a name="AEN15191"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPINIT">xmlSecNssAppInit</a>                (const char *config);
@@ -66,39 +66,38 @@ int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYSMNGRADDCERTSPATH">xmlSe
                                              const char *path);
 <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-nss-app.html#XMLSECNSSAPPPEMKEYLOAD">xmlSecNssAppPemKeyLoad</a>         (const char *keyfile,
                                              const char *keyPwd,
-                                             void *keyPwdCallback,
-                                             int privateKey);
+                                             void *keyPwdCallback);
 <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-nss-app.html#XMLSECNSSAPPPKCS12LOAD">xmlSecNssAppPkcs12Load</a>         (const char *filename,
                                              const char *pwd);
 int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYPEMCERTLOAD">xmlSecNssAppKeyPemCertLoad</a>      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const char *filename);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN15087"></a><h2>Description</h2>
+<a name="AEN15216"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN15090"></a><h2>Details</h2>
+<a name="AEN15219"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN15092"></a><h3>
+<a name="AEN15221"></a><h3>
 <a name="XMLSECNSSAPPINIT"></a>xmlSecNssAppInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppInit                (const char *config);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15096"></a><h3>
+<a name="AEN15225"></a><h3>
 <a name="XMLSECNSSAPPSHUTDOWN"></a>xmlSecNssAppShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppShutdown            (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15100"></a><h3>
+<a name="AEN15229"></a><h3>
 <a name="XMLSECNSSAPPSIMPLEKEYSMNGRINIT"></a>xmlSecNssAppSimpleKeysMngrInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppSimpleKeysMngrInit  (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15105"></a><h3>
+<a name="AEN15234"></a><h3>
 <a name="XMLSECNSSAPPSIMPLEKEYSMNGRADOPTKEY"></a>xmlSecNssAppSimpleKeysMngrAdoptKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppSimpleKeysMngrAdoptKey
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -106,14 +105,14 @@ int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYPEMCERTLOAD">xmlSecNssAp
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15111"></a><h3>
+<a name="AEN15240"></a><h3>
 <a name="XMLSECNSSAPPSIMPLEKEYSMNGRLOAD"></a>xmlSecNssAppSimpleKeysMngrLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppSimpleKeysMngrLoad  (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *uri);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15116"></a><h3>
+<a name="AEN15245"></a><h3>
 <a name="XMLSECNSSAPPSIMPLEKEYSMNGRSAVE"></a>xmlSecNssAppSimpleKeysMngrSave ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppSimpleKeysMngrSave  (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
@@ -121,7 +120,7 @@ int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYPEMCERTLOAD">xmlSecNssAp
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15122"></a><h3>
+<a name="AEN15251"></a><h3>
 <a name="XMLSECNSSAPPKEYSMNGRPEMCERTLOAD"></a>xmlSecNssAppKeysMngrPemCertLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrPemCertLoad (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
@@ -129,7 +128,7 @@ int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYPEMCERTLOAD">xmlSecNssAp
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15127"></a><h3>
+<a name="AEN15256"></a><h3>
 <a name="XMLSECNSSAPPKEYSMNGRADDCERTSPATH"></a>xmlSecNssAppKeysMngrAddCertsPath ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeysMngrAddCertsPath
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -137,23 +136,22 @@ int         <a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYPEMCERTLOAD">xmlSecNssAp
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15132"></a><h3>
+<a name="AEN15261"></a><h3>
 <a name="XMLSECNSSAPPPEMKEYLOAD"></a>xmlSecNssAppPemKeyLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPemKeyLoad         (const char *keyfile,
                                              const char *keyPwd,
-                                             void *keyPwdCallback,
-                                             int privateKey);</pre></td></tr></table>
+                                             void *keyPwdCallback);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15137"></a><h3>
+<a name="AEN15266"></a><h3>
 <a name="XMLSECNSSAPPPKCS12LOAD"></a>xmlSecNssAppPkcs12Load ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecNssAppPkcs12Load         (const char *filename,
                                              const char *pwd);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN15142"></a><h3>
+<a name="AEN15271"></a><h3>
 <a name="XMLSECNSSAPPKEYPEMCERTLOAD"></a>xmlSecNssAppKeyPemCertLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssAppKeyPemCertLoad      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const char *filename);</pre></td></tr></table>

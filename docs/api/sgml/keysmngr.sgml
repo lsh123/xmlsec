@@ -36,6 +36,9 @@ struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 struct      <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
 <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link>      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);
 void        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link>          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 #define     <link linkend="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName</link>           (store)
 #define     <link linkend="xmlSecKeyStoreIsValid">xmlSecKeyStoreIsValid</link>           (store)
 #define     <link linkend="xmlSecKeyStoreCheckId">xmlSecKeyStoreCheckId</link>           (store, storeId)
@@ -44,6 +47,9 @@ void        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>  
 int         (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)
                                             (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
 void        (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyStoreFindKeyMethod">*xmlSecKeyStoreFindKeyMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 struct      <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
 #define     <link linkend="xmlSecKeyStoreKlassGetName">xmlSecKeyStoreKlassGetName</link>      (klass)
 #define     <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
@@ -371,6 +377,33 @@ Destroys the store created with <link linkend="xmlSecKeyStoreCreate">xmlSecKeySt
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyStoreFindKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Lookups key in the store. The caller is responsible for destroying 
+the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>		the pointer to keys store.
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>		the desired key name.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to a key or NULL if key is not found or an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName()</title>
 <programlisting>#define     xmlSecKeyStoreGetName(store)</programlisting>
 <para>
@@ -483,6 +516,33 @@ Keys store specific finalization (destroy) method.</para>
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
 <entry> 		the store.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyStoreFindKeyMethod">xmlSecKeyStoreFindKeyMethod ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyStoreFindKeyMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Keys store specific find method. The caller is responsible for destroying 
+the returned key using <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> 		the store.
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>		the desired key name.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> 	the pointer to key info context.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to a key or NULL if key is not found or an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

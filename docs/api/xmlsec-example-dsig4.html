@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-DSIG4"></a>dsig4.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15379"></a><h2>Name</h2>dsig4.c -- Verifying a file using keys manager.</div>
+<a name="AEN15508"></a><h2>Name</h2>dsig4.c -- Verifying a file using keys manager.</div>
 <div class="REFSECT1">
-<a name="AEN15382"></a><h2>Example: Verifying a file using keys manager.</h2>
+<a name="AEN15511"></a><h2>Example: Verifying a file using keys manager.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15385"></a><p></p>
+<a name="AEN15514"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a file using keys manager.
  *
@@ -82,7 +82,7 @@
 #include &lt;xmlsec/xmldsig.h&gt;
 #include &lt;xmlsec/crypto.h&gt;
 
-xmlSecKeysMngrPtr load_public_keys(char** files, int files_size);
+xmlSecKeysMngrPtr load_keys(char** files, int files_size);
 int verify_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
 
 int 
@@ -125,7 +125,7 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = load_public_keys(&amp;(argv[2]), argc - 2);
+    mngr = load_keys(&amp;(argv[2]), argc - 2);
     if(mngr == NULL) {
 	return(-1);
     }
@@ -158,11 +158,11 @@ main(int argc, char **argv) {
 }
 
 /**
- * load_public_keys:
+ * load_keys:
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
  *
- * Creates simple keys manager and load public keys from #files in it.
+ * Creates simple keys manager and load PEM keys from #files in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -170,7 +170,7 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr 
-load_public_keys(char** files, int files_size) {
+load_keys(char** files, int files_size) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
     int i;
@@ -197,9 +197,9 @@ load_public_keys(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 0);
+	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL);
 	if(key == NULL) {
-    	    fprintf(stderr,&quot;Error: failed to load public pem key from \&quot;%s\&quot;\n&quot;, files[i]);
+    	    fprintf(stderr,&quot;Error: failed to load pem key from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);
 	}
@@ -231,7 +231,7 @@ load_public_keys(char** files, int files_size) {
  * @mngr:		the pointer to keys manager.
  * @xml_file:		the signed XML file name.
  *
- * Verifies XML signature in #xml_file using public key from #key_file.
+ * Verifies XML signature in #xml_file.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */

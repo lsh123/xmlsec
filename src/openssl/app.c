@@ -85,9 +85,7 @@ xmlSecOpenSSLAppShutdown(void) {
 }
 
 xmlSecKeyPtr
-xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
-			    pem_password_cb *keyPwdCallback, 
-			    int privateKey) {
+xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd, pem_password_cb *keyPwdCallback) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data;
     EVP_PKEY *pKey = NULL;    
@@ -106,20 +104,22 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
 		    xmlSecErrorsSafeString(keyfile), errno);
 	return(NULL);    
     }
-    
-    if(privateKey) {
-	pKey = PEM_read_PrivateKey(f, NULL, keyPwdCallback, (void*)keyPwd);
-    } else {	
-        pKey = PEM_read_PUBKEY(f, NULL, keyPwdCallback, (void*)keyPwd);
-    }
+
+    /* try to read private key first */    
+    pKey = PEM_read_PrivateKey(f, NULL, keyPwdCallback, (void*)keyPwd);
     if(pKey == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    (privateKey) ? "PEM_read_PrivateKey" : "PEM_read_PUBKEY",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "file=%s", xmlSecErrorsSafeString(keyfile));
-	fclose(f);
-	return(NULL);    
+	/* go to start of the file and try to read public key */
+	rewind(f); 
+	pKey = PEM_read_PUBKEY(f, NULL, keyPwdCallback, (void*)keyPwd);
+	if(pKey == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"PEM_read_PrivateKey and PEM_read_PUBKEY",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"file=%s", xmlSecErrorsSafeString(keyfile));
+	    fclose(f);
+	    return(NULL);
+	}
     }
     fclose(f);
 

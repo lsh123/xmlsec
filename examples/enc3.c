@@ -36,8 +36,8 @@
 #include <xmlsec/templates.h>
 #include <xmlsec/crypto.h>
 
-xmlSecKeysMngrPtr load_rsa_keys(char** files, int files_size);
-int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file);
+xmlSecKeysMngrPtr load_rsa_keys(char* key_file);
+int encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name);
 
 int 
 main(int argc, char **argv) {
@@ -79,12 +79,13 @@ main(int argc, char **argv) {
     }
 
     /* create keys manager and load keys */
-    mngr = load_rsa_keys(&(argv[2]), argc - 2);
+    mngr = load_rsa_keys(argv[2]);
     if(mngr == NULL) {
 	return(-1);
     }
 
-    if(encrypt_file(mngr, argv[1]) < 0) {
+    /* we use key filename as key name here */
+    if(encrypt_file(mngr, argv[1], argv[2]) < 0) {
 	xmlSecKeysMngrDestroy(mngr);
 	return(-1);
     }    
@@ -112,10 +113,9 @@ main(int argc, char **argv) {
 
 /**
  * load_rsa_keys:
- * @files:		the list of filenames.
- * @files_size:		the number of filenames in #files.
+ * @key_file:		the key filename.
  *
- * Creates simple keys manager and load RSA keys from #files in it.
+ * Creates simple keys manager and load RSA key from #key_file in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -123,13 +123,11 @@ main(int argc, char **argv) {
  * occurs.
  */
 xmlSecKeysMngrPtr 
-load_rsa_keys(char** files, int files_size) {
+load_rsa_keys(char* key_file) {
     xmlSecKeysMngrPtr mngr;
     xmlSecKeyPtr key;
-    int i;
     
-    assert(files);
-    assert(files_size > 0);
+    assert(key_file);
     
     /* create and initialize keys manager, we use a simple list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
@@ -146,34 +144,30 @@ load_rsa_keys(char** files, int files_size) {
 	return(NULL);
     }    
     
-    for(i = 0; i < files_size; ++i) {
-	assert(files[i]);
+    /* load private RSA key */
+    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    if(key == NULL) {
+        fprintf(stderr,"Error: failed to load rsa key from file \"%s\"\n", key_file);
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
+    }
 
-	/* load private RSA key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, 1);
-	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load rsa key from file \"%s\"\n", files[i]);
-	    xmlSecKeysMngrDestroy(mngr);
-	    return(NULL);
-	}
-
-	/* set key name to the file name, this is just an example! */
-	if(xmlSecKeySetName(key, BAD_CAST files[i]) < 0) {
-    	    fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", files[i]);
-	    xmlSecKeyDestroy(key);
-	    xmlSecKeysMngrDestroy(mngr);
-	    return(NULL);
-	}
+    /* set key name to the file name, this is just an example! */
+    if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        xmlSecKeyDestroy(key);	
+	xmlSecKeysMngrDestroy(mngr);
+	return(NULL);
+    }
 	
-	/* add key to keys manager, from now on keys manager is responsible 
-	 * for destroying key 
-	 */
-	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) < 0) {
-    	    fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", files[i]);
-	    xmlSecKeyDestroy(key);
-	    xmlSecKeysMngrDestroy(mngr);
-	    return(NULL);
-	}
+    /* add key to keys manager, from now on keys manager is responsible 
+     * for destroying key 
+     */
+    if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) < 0) {
+        fprintf(stderr,"Error: failed to add key from \"%s\" to keys manager\n", key_file);
+        xmlSecKeyDestroy(key);
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
     }
 
     return(mngr);
@@ -183,6 +177,7 @@ load_rsa_keys(char** files, int files_size) {
  * encrypt_file:
  * @mngr:		the pointer to keys manager.
  * @xml_file:		the encryption template file name.
+ * @key_name:		the RSA key name.
  *
  * Encrypts #xml_file using a dynamicaly created template, a session DES key 
  * and an RSA key from keys manager.
@@ -190,7 +185,7 @@ load_rsa_keys(char** files, int files_size) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
+encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name) {
     xmlDocPtr doc = NULL;
     xmlNodePtr encDataNode = NULL;
     xmlNodePtr keyInfoNode = NULL;
@@ -201,6 +196,7 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     
     assert(mngr);
     assert(xml_file);
+    assert(key_name);
 
     /* load template */
     doc = xmlParseFile(xml_file);
@@ -247,13 +243,14 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file) {
     }
 
     /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to <enc:EncryptedKey/> */
-    keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
+    keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
 	fprintf(stderr, "Error: failed to add key info\n");
 	goto done;		
     }
-
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, NULL) == NULL) {
+    
+    /* set key name so we can lookup key when needed */
+    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, key_name) == NULL) {
 	fprintf(stderr, "Error: failed to add key name\n");
 	goto done;		
     }

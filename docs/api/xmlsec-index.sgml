@@ -324,6 +324,7 @@
 <listitem><para><link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyEmpty">xmlSecKeyEmpty</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link></para></listitem>
+<listitem><para><link linkend="xmlSecKeyGenerateByName">xmlSecKeyGenerateByName</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link></para></listitem>

@@ -37,8 +37,7 @@ int         <link linkend="xmlSecOpenSSLAppKeysMngrAddCertsPath">xmlSecOpenSSLAp
                                              const char *path);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppPemKeyLoad">xmlSecOpenSSLAppPemKeyLoad</link>     (const char *keyfile,
                                              const char *keyPwd,
-                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback,
-                                             int privateKey);
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppPkcs12Load">xmlSecOpenSSLAppPkcs12Load</link>     (const char *filename,
                                              const char *pwd);
 int         <link linkend="xmlSecOpenSSLAppKeyPemCertLoad">xmlSecOpenSSLAppKeyPemCertLoad</link>  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
@@ -108,8 +107,7 @@ int         <link linkend="xmlSecOpenSSLAppKeyPemCertLoad">xmlSecOpenSSLAppKeyPe
 <title><anchor id="xmlSecOpenSSLAppPemKeyLoad">xmlSecOpenSSLAppPemKeyLoad ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecOpenSSLAppPemKeyLoad     (const char *keyfile,
                                              const char *keyPwd,
-                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback,
-                                             int privateKey);</programlisting>
+                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLAppPkcs12Load">xmlSecOpenSSLAppPkcs12Load ()</title>

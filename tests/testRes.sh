@@ -10,7 +10,7 @@ grep 'in use' $logfiles | \
 echo "-------------------- ERRORS --------------------"
 grep 'ERROR SUMMARY' $logfiles | \
     sed 's/==.*==//' | \
-    sed 's/\(suppressed: .*\)//' | \
+    sed 's/(suppressed: .*//' | \
     sort -u
 
  

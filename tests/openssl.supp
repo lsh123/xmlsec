@@ -41,10 +41,32 @@
 }
 
 {
+   OpenSSL AES_encrypt(Value4)
+   Value4
+   fun:AES_encrypt
+   fun:AES_cbc_encrypt
+}
+
+{
    OpenSSL DES_encrypt*(Value4)
    Value4
    fun:DES_encrypt2
    fun:DES_encrypt3
 }
 
+{
+   OpenSSL RSA_padding_add_PKCS1_type_2(Cond)
+   Cond
+   fun:RSA_padding_add_PKCS1_type_2
+   fun:RSA_eay_public_encrypt
+}
+
 ##----------------------------------------------------------------------##
+
+## remove this!
+{
+   xmlsec xmlSecBase64CtxEncode (Value4)
+   Value4
+   fun:xmlSecBase64CtxEncode
+   fun:xmlSecBase64Ctx*
+}

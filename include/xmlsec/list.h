@@ -1,6 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * List of pointers.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -109,7 +110,7 @@ XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,
 
 /**************************************************************************
  *
- * xmlSecPtrListKlass
+ * List klass
  *
  *************************************************************************/
 /**
@@ -149,7 +150,6 @@ typedef void			(*xmlSecPtrDebugDumpItemMethod)	(xmlSecPtr ptr,
 
 /**
  * xmlSecPtrListKlass: 
- * 
  * @name:		the list klass name.
  * @duplicateItem:	the duplciate item method.
  * @destroyItem:	the destroy item method.
@@ -168,26 +168,13 @@ struct _xmlSecPtrListKlass {
 
 /**
  * xmlSecPtrListKlassGetName: 
- *
+ * @klass:		the list klass.
+ *2
+ 
  * Macro. Returns the list klass name.
  */
 #define xmlSecPtrListKlassGetName(klass) \
 	(((klass) != NULL) ? ((klass)->name) : NULL)
-
-
-/**************************************************************************
- *
- * xmlSecStaticObjectListKlass:
- *
- *************************************************************************/
-/**
- *  xmlSecStaticObjectListId:
- *
- * Static objects klass (no destroy or duplicate methods).
- */
-#define xmlSecStaticObjectListId \
-	xmlSecStaticObjectListGetKlass()
-XMLSEC_EXPORT xmlSecPtrListId	xmlSecStaticObjectListGetKlass	(void);
 
 /**************************************************************************
  *

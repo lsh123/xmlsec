@@ -1,6 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * General functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -25,7 +26,7 @@
  * xmlSecInit:
  *
  * Initializes XML Security Library. The depended libraries
- * (LibXML, LibXSLT and OpenSSL) must be initialized before.
+ * (LibXML and LibXSLT) must be initialized before.
  *
  * Returns 0 on success or a negative value otherwise.
  */

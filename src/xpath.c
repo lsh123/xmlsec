@@ -1,5 +1,5 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * XPath transform
  *
@@ -29,6 +29,8 @@
 /**************************************************************************
  *
  * xmlSecXPathHereFunction:
+ * @ctxt:		the ponter to XPath context.
+ * @nargs:		the arguments nubmer.
  *
  * The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. the only change is that 
@@ -629,7 +631,11 @@ static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
 };
 
 /**
+ * xmlSecTransformXPath2GetKlass:
+ * 
+ * The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).
  *
+ * Returns XPath2 transform klass.
  */
 xmlSecTransformId 
 xmlSecTransformXPath2GetKlass(void) {
@@ -770,13 +776,29 @@ static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
 };
 
 /**
- * http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt
+ * xmlSecTransformXPointerGetKlass:
+ * 
+ * The XPointer transform klass 
+ * (http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).
+ *
+ * Returns XPointer transform klass.
  */
 xmlSecTransformId 
 xmlSecTransformXPointerGetKlass(void) {
     return(&xmlSecTransformXPointerKlass);
 }
 
+/**
+ * xmlSecTransformXPointerSetExpr: 
+ * @transform:		the pointer to XPointer transform.
+ * @expr:		the XPointer expression.
+ * @nodeSetType:	the type of evaluated XPointer expression.
+ * @hereNode:		the pointer to "here" node.
+ *
+ * Sets the XPointer expression for an XPointer @transform.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr, 
 			    xmlSecNodeSetType  nodeSetType, xmlNodePtr hereNode) {

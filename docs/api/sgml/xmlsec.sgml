@@ -38,7 +38,7 @@ int         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                
 <programlisting>int         xmlSecInit                      (void);</programlisting>
 <para>
 Initializes XML Security Library. The depended libraries
-(LibXML, LibXSLT and OpenSSL) must be initialized before.</para>
+(LibXML and LibXSLT) must be initialized before.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">

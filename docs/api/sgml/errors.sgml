@@ -80,7 +80,6 @@ const char* <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>        
 #define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
 #define     <link linkend="xmlSecErrorsSafeString">xmlSecErrorsSafeString</link>          (str)
 #define     <link linkend="XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</link>
-const char* <link linkend="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage</link>      (void);
 void        <link linkend="xmlSecError">xmlSecError</link>                     (const char *file,
                                              int line,
                                              const char *func,
@@ -497,6 +496,8 @@ Feature is not implemented.</para>
 <programlisting>#define XMLSEC_ERRORS_MAX_NUMBER		256
 </programlisting>
 <para>
+The maximum xmlsec errors number.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -561,7 +562,7 @@ and applications must not call this function directly.</para>
 <title><anchor id="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback ()</title>
 <programlisting>void        xmlSecErrorsSetCallback         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);</programlisting>
 <para>
-Sets the errors callback function to <link linkend="callback">callback</link> that will be called 
+Sets the errors callback function to <parameter>callback</parameter> that will be called 
 every time an error occurs.</para>
 <para>
 
@@ -619,7 +620,7 @@ error reporting <link linkend="xmlGenericError">xmlGenericError</link> function.
 <title><anchor id="xmlSecErrorsGetCode">xmlSecErrorsGetCode ()</title>
 <programlisting>int         xmlSecErrorsGetCode             (<link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
-Gets the known error code at position <link linkend="pos">pos</link>.</para>
+Gets the known error code at position <parameter>pos</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -630,7 +631,7 @@ Gets the known error code at position <link linkend="pos">pos</link>.</para>
 <row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
 <entry>		the error position.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error code or 0 if <link linkend="pos">pos</link> is greater than 
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error code or 0 if <parameter>pos</parameter> is greater than 
 total number of known error codes.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
@@ -638,7 +639,7 @@ total number of known error codes.
 <title><anchor id="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg ()</title>
 <programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
-Gets the known error message at position <link linkend="pos">pos</link>.</para>
+Gets the known error message at position <parameter>pos</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -649,7 +650,7 @@ Gets the known error message at position <link linkend="pos">pos</link>.</para>
 <row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
 <entry>		the error position.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error message or NULL if <link linkend="pos">pos</link> is greater than 
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the known error message or NULL if <parameter>pos</parameter> is greater than 
 total number of known error codes.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
@@ -667,6 +668,8 @@ for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
 <title><anchor id="xmlSecErrorsSafeString">xmlSecErrorsSafeString()</title>
 <programlisting>#define     xmlSecErrorsSafeString(str)</programlisting>
 <para>
+Macro. Returns <parameter>str</parameter> if it is not NULL or pointer to "NULL" otherwise.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -674,33 +677,18 @@ for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>str</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the string.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</title>
-<programlisting>#define XMLSEC_ERRORS_NO_MESSAGE 		xmlSecErrorGetEmptyMessage()
+<programlisting>#define XMLSEC_ERRORS_NO_MESSAGE 		" "
 </programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage ()</title>
-<programlisting>const char* xmlSecErrorGetEmptyMessage      (void);</programlisting>
 <para>
 </para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>empty error message string.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecError">xmlSecError ()</title>
 <programlisting>void        xmlSecError                     (const char *file,

@@ -73,7 +73,7 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN		0x00000004
 
 /** 
- * XMLSEC_KEYINFO_FLAGS_STOP_ON_KEYVALUE_UNKNOWN_CHILD:
+ * XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD:
  *
  * If flags is set then we abort if an unknown <dsig:KeyValue /> 
  * child is found.
@@ -97,7 +97,7 @@ typedef enum {
 #define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF	0x00000020
 
 /** 
- * XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD:
+ * XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD:
  *
  * If flags is set then we abort if an unknown <dsig:X509Data /> 
  * child is found.

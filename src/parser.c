@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * XML Parser transform
+ * XML Parser transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -90,6 +90,9 @@ static xmlSecTransformKlass xmlSecParserKlass = {
 /**
  * xmlSecTransformXmlParserGetKlass:
  *
+ * The XML parser transform.
+ *
+ * Returns XML parser transform klass.
  */
 xmlSecTransformId 
 xmlSecTransformXmlParserGetKlass(void) {
@@ -380,7 +383,7 @@ typedef struct _xmlSecExtMemoryParserCtx {
 
 /** 
  * xmlSecParseFile:
- * @filename: the filename.
+ * @filename: 		the filename.
  *
  * Loads XML Doc from file @filename. We need a special version because of 
  * c14n issue. The code is copied from xmlSAXParseFileWithData() function.
@@ -459,14 +462,14 @@ xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
 
 /**
  * xmlSecParseMemoryExt:
- * @prefix: the first part of the input.
- * @prefixSize: the size of the first part of the input.
- * @buffer: the second part of the input.
- * @bufferSize: the size of the second part of the input.
- * @postfix: the third part of the input.
- * @postfixSize: the size of the third part of the input.
+ * @prefix: 		the first part of the input.
+ * @prefixSize: 	the size of the first part of the input.
+ * @buffer: 		the second part of the input.
+ * @bufferSize: 	the size of the second part of the input.
+ * @postfix: 		the third part of the input.
+ * @postfixSize: 	the size of the third part of the input.
  *
- * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix. '
+ * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix. 
  *
  * Returns pointer to the loaded XML document or NULL if an error occurs.
  */
@@ -512,9 +515,9 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
 
 /**
  * xmlSecParseMemory:
- * @buffer: the input buffer.
- * @size: the input buffer size.
- * @recovery: the flag.
+ * @buffer: 		the input buffer.
+ * @size: 		the input buffer size.
+ * @recovery: 		the flag.
  *
  * Loads XML Doc from memory. We need a special version because of 
  * c14n issue. The code is copied from xmlSAXParseMemory() function.

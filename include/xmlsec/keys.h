@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Keys Base: forward declarations
+ * Keys.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

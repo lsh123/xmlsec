@@ -1,5 +1,5 @@
 /** 
- * XML Security Library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * The Transforms Element (http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
  * 

@@ -1,5 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
+ *
+ * Key data.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -238,11 +240,11 @@ XMLSEC_EXPORT void		xmlSecKeyDataDebugXmlDump	(xmlSecKeyDataPtr data,
 								 FILE *output);
 XMLSEC_EXPORT int		xmlSecKeyDataXmlRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 xmlNodePtr dataNode,
+								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataXmlWrite		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 xmlNodePtr dataNode,
+								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
@@ -325,7 +327,7 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
 
 /** 
  * xmlSecKeyDataInitMethod:
- * @data: 		the data.
+ * @data: 		the pointer to key data.
  *
  * Key data specific initialization method.
  *
@@ -335,7 +337,8 @@ typedef int			(*xmlSecKeyDataInitMethod)	(xmlSecKeyDataPtr data);
 
 /** 
  * xmlSecKeyDataDuplicateMethod:
- * @data: 		the data.
+ * @dst: 		the pointer to destination key data.
+ * @src: 		the poiniter to source key data.
  *
  * Key data specific duplication (copy) method.
  *
@@ -369,7 +372,7 @@ typedef int			(*xmlSecKeyDataXmlReadMethod)	(xmlSecKeyDataId id,
 								 xmlNodePtr node,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 /** 
- * xmlSecKeyDataWriteXmlMethod:
+ * xmlSecKeyDataXmlWriteMethod:
  * @id: 		the data id.
  * @key: 		the key.
  * @node: 		the pointer to data's value XML node.
@@ -401,7 +404,7 @@ typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
 								 size_t bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 /** 
- * xmlSecKeyDataWriteBinMethod:
+ * xmlSecKeyDataBinWriteMethod:
  * @id: 		the data id.
  * @key: 		the key.
  * @buf: 		the output buffer.
@@ -420,9 +423,9 @@ typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
 
 /** 
  * xmlSecKeyDataGenerateMethod:
- * @data: 		the data.
+ * @data: 		the pointer to key data.
  * @sizeBits: 		the key data specific size.
- & @type:		the required key type (session/permanent, etc.)
+ * @type:		the required key type (session/permanent, etc.)
  *
  * Key data specific method for generating new key data.
  *
@@ -444,7 +447,7 @@ typedef xmlSecKeyDataType	(*xmlSecKeyDataGetTypeMethod)	(xmlSecKeyDataPtr data);
 
 /** 
  * xmlSecKeyDataGetSizeMethod:
- * @data: 		the data.
+ * @data: 		the pointer to key data.
  *
  * Key data specific method to get the key size.
  *
@@ -454,7 +457,7 @@ typedef size_t			(*xmlSecKeyDataGetSizeMethod)	(xmlSecKeyDataPtr data);
 
 /** 
  * xmlSecKeyDataGetIdentifierMethod:
- * @data: 		the data.
+ * @data: 		the pointer to key data.
  *
  * Key data specific method to get the key data identifier string (for example,
  * X509 data identifier is the subject of the verified cert).

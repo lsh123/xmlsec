@@ -239,21 +239,6 @@ list
 @klass: 
 
 
-<!-- ##### MACRO xmlSecStaticObjectListId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecStaticObjectListGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecStringListId ##### -->
 <para>
 

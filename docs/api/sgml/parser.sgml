@@ -57,7 +57,7 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData">xmlS
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry> the filename.
+<entry> 		the filename.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
 </entry></row>
@@ -78,13 +78,13 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXPars
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> the input buffer.
+<entry> 		the input buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the input buffer size.
+<entry> 		the input buffer size.
 </entry></row>
 <row><entry align="right"><parameter>recovery</parameter>&nbsp;:</entry>
-<entry> the flag.
+<entry> 		the flag.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
 </entry></row>
@@ -98,7 +98,7 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXPars
                                              unsigned char *postfix,
                                              <link linkend="size-t">size_t</link> postfixSize);</programlisting>
 <para>
-Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter>buffer</parameter> and <parameter>postfix</parameter>. '</para>
+Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter>buffer</parameter> and <parameter>postfix</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -107,22 +107,22 @@ Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>prefix</parameter>&nbsp;:</entry>
-<entry> the first part of the input.
+<entry> 		the first part of the input.
 </entry></row>
 <row><entry align="right"><parameter>prefixSize</parameter>&nbsp;:</entry>
-<entry> the size of the first part of the input.
+<entry> 	the size of the first part of the input.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> the second part of the input.
+<entry> 		the second part of the input.
 </entry></row>
 <row><entry align="right"><parameter>bufferSize</parameter>&nbsp;:</entry>
-<entry> the size of the second part of the input.
+<entry> 	the size of the second part of the input.
 </entry></row>
 <row><entry align="right"><parameter>postfix</parameter>&nbsp;:</entry>
-<entry> the third part of the input.
+<entry> 		the third part of the input.
 </entry></row>
 <row><entry align="right"><parameter>postfixSize</parameter>&nbsp;:</entry>
-<entry> the size of the third part of the input.
+<entry> 	the size of the third part of the input.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
 </entry></row>
@@ -140,7 +140,7 @@ The XML Parser transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXmlParserGetKlass
                                             (void);</programlisting>
 <para>
-</para>
+The XML parser transform.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -148,9 +148,7 @@ The XML Parser transform klass.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XML parser transform klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

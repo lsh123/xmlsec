@@ -70,8 +70,8 @@
  * @key:		the pointer to result key object.
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Parses the <dsig:KeyInfo/> element #keyInfoNode, extracts the key data
- * and stores into #key.
+ * Parses the <dsig:KeyInfo/> element @keyInfoNode, extracts the key data
+ * and stores into @key.
  *
  * Returns 0 on success or -1 if an error occurs.
  */
@@ -143,7 +143,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
  * @key:		the pointer to key object.
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Writes the #key into the <dsig:KeyInfo/> element template #keyInfoNode.
+ * Writes the @key into the <dsig:KeyInfo/> element template @keyInfoNode.
  *
  * Returns 0 on success or -1 if an error occurs.
  */
@@ -255,7 +255,7 @@ xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
  * xmlSecKeyInfoCtxDestroy:
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Destroys #keyInfoCtx object created with #xmlSecKeyInfoCtxCreate function.
+ * Destroys @keyInfoCtx object created with #xmlSecKeyInfoCtxCreate function.
  */
 void 
 xmlSecKeyInfoCtxDestroy(xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -330,7 +330,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
  * xmlSecKeyInfoCtxFinalize:
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  *
- * Cleans up the #keyInfoCtx initialized with #xmlSecKeyInfoCtxInitialize
+ * Cleans up the @keyInfoCtx initialized with #xmlSecKeyInfoCtxInitialize
  * function.
  */
 void 
@@ -354,7 +354,7 @@ xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * xmlSecKeyInfoCtxReset:
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  * 
- * Resets the #keyInfoCtx state. User settings are not changed.
+ * Resets the @keyInfoCtx state. User settings are not changed.
  */
 void 
 xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -448,7 +448,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * @dst:		the pointer to destination context object.
  * @src:		the pointer to source context object.
  *
- * Copies user preferences from #src context to #dst context.
+ * Copies user preferences from @src context to @dst context.
  *  
  * Returns 0 on success and a negative value if an error occurs.
  */
@@ -531,7 +531,7 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  * @output:		the output file pointer.
  *
- * Prints user settings and current context state to #output.
+ * Prints user settings and current context state to @output.
  */
 void 
 xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
@@ -571,11 +571,11 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 }
 
 /** 
- * 
+ * xmlSecKeyInfoCtxDebugXmlDump:
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> element processing context.
  * @output:		the output file pointer.
  *
- * Prints user settings and current context state in XML format to #output. 
+ * Prints user settings and current context state in XML format to @output. 
  */
 void 
 xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
@@ -1031,7 +1031,7 @@ static int			xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /** 
- * xmlSecKeyDataRetrievalGetKlass:
+ * xmlSecKeyDataRetrievalMethodGetKlass:
  *
  * The <dsig:RetrievalMethod/> element key data klass 
  * (http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod):

@@ -100,7 +100,7 @@ xmlSecBufferDestroy(xmlSecBufferPtr buf) {
  * @buf:		the pointer to buffer object.
  * @size:		the initial buffer size.
  *
- * Initializes buffer object #buf. Caller is responsible for calling
+ * Initializes buffer object @buf. Caller is responsible for calling
  * #xmlSecBufferFinalize function to free allocated resources.
  * 
  * Returns 0 on success or a negative value if an error occurs.
@@ -136,12 +136,10 @@ xmlSecBufferFinalize(xmlSecBufferPtr buf) {
 }
 
 /**
- *
+ * xmlSecBufferEmpty:
  * @buf:		the pointer to buffer object.
  *
- *
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * Empties the buffer.
  */
 void
 xmlSecBufferEmpty(xmlSecBufferPtr buf) {
@@ -156,12 +154,12 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
 }
 
 /**
- *
+ * xmlSecBufferGetData:
  * @buf:		the pointer to buffer object.
  *
+ * Gets pointer to buffer's data.
  *
- *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns pointer to buffer's data.
  */
 unsigned char* 
 xmlSecBufferGetData(xmlSecBufferPtr buf) {
@@ -176,7 +174,7 @@ xmlSecBufferGetData(xmlSecBufferPtr buf) {
  * @data:		the data.
  * @size:		the data size.
  *
- * Sets the value of the buffer to #data.
+ * Sets the value of the buffer to @data.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -228,7 +226,7 @@ xmlSecBufferGetSize(xmlSecBufferPtr buf) {
  * @size:		the new data size.
  *
  * Sets new buffer data size. If necessary, buffer grows to 
- * have at least #size bytes. 
+ * have at least @size bytes. 
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -274,7 +272,7 @@ xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
  * @size:		the new maximum size.
  *
  * Sets new buffer maximum size. If necessary, buffer grows to 
- * have at least #size bytes. 
+ * have at least @size bytes. 
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -328,7 +326,7 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
  * @data:		the data.
  * @size:		the data size.
  *
- * Appends the #data after the current data stored in the buffer.
+ * Appends the @data after the current data stored in the buffer.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -364,7 +362,7 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) 
  * @data:		the data.
  * @size:		the data size.
  *
- * Prepends the #data before the current data stored in the buffer.
+ * Prepends the @data before the current data stored in the buffer.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -400,7 +398,7 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const unsigned char* data, size_t size)
  * @buf:		the pointer to buffer object.
  * @size:		the number of bytes to be removed.
  *
- * Removes #size bytes from the beginning of the current buffer.
+ * Removes @size bytes from the beginning of the current buffer.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -428,7 +426,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, size_t size) {
  * @buf:		the pointer to buffer object.
  * @size:		the number of bytes to be removed.
  *
- * Removes #size bytes from the end of current buffer.
+ * Removes @size bytes from the end of current buffer.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
@@ -453,7 +451,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, size_t size) {
  * @buf:		the pointer to buffer object.
  * @node:		the pointer to node.
  *
- * Reads the content of the #node, base64 decodes it and stores the
+ * Reads the content of the @node, base64 decodes it and stores the
  * result in the buffer.
  *
  * Returns 0 on success or a negative value if an error occurs.
@@ -522,7 +520,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
  * @node:		the pointer to a node.
  * @columns:		the max line size fro base64 encoded data.
  *
- * Sets the content of the #node to the base64 encoded buffer data.
+ * Sets the content of the @node to the base64 encoded buffer data.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */

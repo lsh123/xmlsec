@@ -1,32 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * XSLT Transform (http://www.w3.org/TR/xmldsig-core/#sec-XSLT)
- *
- * The normative specification for XSL Transformations is [XSLT]. 
- * Specification of a namespace-qualified stylesheet element, which MUST be 
- * the sole child of the Transform element, indicates that the specified style 
- * sheet should be used. Whether this instantiates in-line processing of local 
- * XSLT declarations within the resource is determined by the XSLT processing 
- * model; the ordered application of multiple stylesheet may require multiple 
- * Transforms. No special provision is made for the identification of a remote 
- * stylesheet at a given URI because it can be communicated via an  xsl:include 
- * or  xsl:import within the stylesheet child of the Transform.
- *
- * This transform requires an octet stream as input. If the actual input is an 
- * XPath node-set, then the signature application should attempt to convert it 
- * to octets (apply Canonical XML]) as described in the Reference Processing 
- * Model (section 4.3.3.2).]
- *
- * The output of this transform is an octet stream. The processing rules for 
- * the XSL style sheet or transform element are stated in the XSLT specification
- * [XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml 
- * for XML and HTML. As XSLT implementations do not produce consistent 
- * serializations of their output, we further RECOMMEND inserting a transform 
- * after the XSLT transform to canonicalize the output. These steps will help 
- * to ensure interoperability of the resulting signatures among applications 
- * that support the XSLT transform. Note that if the output is actually HTML, 
- * then the result of these steps is logically equivalent [XHTML].
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -120,6 +95,38 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformXsltGetKlass:
+ *
+ * XSLT transform klass (http://www.w3.org/TR/xmldsig-core/#sec-XSLT):
+ *
+ * The normative specification for XSL Transformations is [XSLT]. 
+ * Specification of a namespace-qualified stylesheet element, which MUST be 
+ * the sole child of the Transform element, indicates that the specified style 
+ * sheet should be used. Whether this instantiates in-line processing of local 
+ * XSLT declarations within the resource is determined by the XSLT processing 
+ * model; the ordered application of multiple stylesheet may require multiple 
+ * Transforms. No special provision is made for the identification of a remote 
+ * stylesheet at a given URI because it can be communicated via an  xsl:include 
+ * or  xsl:import within the stylesheet child of the Transform.
+ *
+ * This transform requires an octet stream as input. If the actual input is an 
+ * XPath node-set, then the signature application should attempt to convert it 
+ * to octets (apply Canonical XML]) as described in the Reference Processing 
+ * Model (section 4.3.3.2).]
+ *
+ * The output of this transform is an octet stream. The processing rules for 
+ * the XSL style sheet or transform element are stated in the XSLT specification
+ * [XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml 
+ * for XML and HTML. As XSLT implementations do not produce consistent 
+ * serializations of their output, we further RECOMMEND inserting a transform 
+ * after the XSLT transform to canonicalize the output. These steps will help 
+ * to ensure interoperability of the resulting signatures among applications 
+ * that support the XSLT transform. Note that if the output is actually HTML, 
+ * then the result of these steps is logically equivalent [XHTML].
+ *
+ * Returns pointer to XSLT transform klass.
+ */
 xmlSecTransformId 
 xmlSecTransformXsltGetKlass(void) {
     return(&xmlSecXsltKlass);

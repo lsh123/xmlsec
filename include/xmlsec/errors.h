@@ -275,6 +275,11 @@ extern "C" {
 #define XMLSEC_ERRORS_R_TRANSFORM_DISABLED	111
 #define XMLSEC_ERRORS_R_KEYDATA_DISABLED	112
 
+/**
+ * XMLSEC_ERRORS_MAX_NUMBER:
+ * 
+ * The maximum xmlsec errors number.
+ */
 #define XMLSEC_ERRORS_MAX_NUMBER		256
 
 
@@ -342,10 +347,23 @@ XMLSEC_EXPORT_VAR int xmlSecPrintErrorMessages;
 #define XMLSEC_ERRORS_PRINTF_ATTRIBUTE 		
 #endif /* __GNUC__ */
 
+/**
+ * xmlSecErrorsSafeString:
+ * @str:		the string.
+ * 
+ * Macro. Returns @str if it is not NULL or pointer to "NULL" otherwise.
+ */
 #define xmlSecErrorsSafeString(str) \
 	(((str) != NULL) ? ((char*)(str)) : (char*)"NULL")
-#define XMLSEC_ERRORS_NO_MESSAGE 		xmlSecErrorGetEmptyMessage()
-XMLSEC_EXPORT const char* xmlSecErrorGetEmptyMessage	(void);
+
+/** 
+ * XMLSEC_ERRORS_NO_MESSAGE:
+ * 
+ * Returns empty error message " ".
+ */
+#define XMLSEC_ERRORS_NO_MESSAGE 		" "
+
+
 XMLSEC_EXPORT void xmlSecError				(const char* file, 
 							 int line, 
 							 const char* func,

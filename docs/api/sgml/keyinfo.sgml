@@ -78,8 +78,8 @@ void        <link linkend="xmlSecKeyInfoCtxDebugXmlDump">xmlSecKeyInfoCtxDebugXm
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <link linkend="keyInfoNode">keyInfoNode</link>, extracts the key data
-and stores into <link linkend="key">key</link>.</para>
+Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
+and stores into <parameter>key</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -105,7 +105,7 @@ and stores into <link linkend="key">key</link>.</para>
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Writes the <link linkend="key">key</link> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <link linkend="keyInfoNode">keyInfoNode</link>.</para>
+Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <parameter>keyInfoNode</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -167,7 +167,7 @@ element even when key is already found.</para>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD		0x00000002
 </programlisting>
 <para>
-If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509Data ">&lt;dsig:X509Data /&gt;</ulink> 
+If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -186,6 +186,9 @@ If flags is set then we abort if an unknown key name
 <title><anchor id="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</title>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD	0x00000008
 </programlisting>
+<para>
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> 
+child is found.</para>
 <para>
 
 </para></refsect2>
@@ -213,6 +216,9 @@ element does not match the real key data type.</para>
 <title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</title>
 <programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD	0x00000100
 </programlisting>
+<para>
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_X509Data ">&lt;dsig:X509Data /&gt;</ulink> 
+child is found.</para>
 <para>
 
 </para></refsect2>
@@ -440,7 +446,7 @@ function.</para>
 <title><anchor id="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy ()</title>
 <programlisting>void        xmlSecKeyInfoCtxDestroy         (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Destroys <link linkend="keyInfoCtx">keyInfoCtx</link> object created with <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link> function.</para>
+Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -479,7 +485,7 @@ responsible for cleaning it up by <link linkend="xmlSecKeyInfoCtxFinalize">xmlSe
 <title><anchor id="xmlSecKeyInfoCtxFinalize">xmlSecKeyInfoCtxFinalize ()</title>
 <programlisting>void        xmlSecKeyInfoCtxFinalize        (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Cleans up the <link linkend="keyInfoCtx">keyInfoCtx</link> initialized with <link linkend="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize</link>
+Cleans up the <parameter>keyInfoCtx</parameter> initialized with <link linkend="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize</link>
 function.</para>
 <para>
 
@@ -496,7 +502,7 @@ function.</para>
 <title><anchor id="xmlSecKeyInfoCtxReset">xmlSecKeyInfoCtxReset ()</title>
 <programlisting>void        xmlSecKeyInfoCtxReset           (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Resets the <link linkend="keyInfoCtx">keyInfoCtx</link> state. User settings are not changed.</para>
+Resets the <parameter>keyInfoCtx</parameter> state. User settings are not changed.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -513,7 +519,7 @@ Resets the <link linkend="keyInfoCtx">keyInfoCtx</link> state. User settings are
 <programlisting>int         xmlSecKeyInfoCtxCopyUserPref    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> dst,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> src);</programlisting>
 <para>
-Copies user preferences from <link linkend="src">src</link> context to <link linkend="dst">dst</link> context.</para>
+Copies user preferences from <parameter>src</parameter> context to <parameter>dst</parameter> context.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -554,7 +560,7 @@ of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/
 <programlisting>void        xmlSecKeyInfoCtxDebugDump       (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-Prints user settings and current context state to <link linkend="output">output</link>.</para>
+Prints user settings and current context state to <parameter>output</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -574,6 +580,8 @@ Prints user settings and current context state to <link linkend="output">output<
 <programlisting>void        xmlSecKeyInfoCtxDebugXmlDump    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
+Prints user settings and current context state in XML format to <parameter>output</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -581,12 +589,10 @@ Prints user settings and current context state to <link linkend="output">output<
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the output file pointer.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -666,15 +672,27 @@ The &lt;dsig:RetrievalMethod&gt; processing class.</para>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
                                             (void);</programlisting>
 <para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element key data klass 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-RetrievalMethod">sec-RetrievalMethod</link>):
+A RetrievalMethod element within KeyInfo is used to convey a reference to 
+KeyInfo information that is stored at another location. For example, 
+several signatures in a document might use a key verified by an X.509v3 
+certificate chain appearing once in the document or remotely outside the 
+document; each signature's KeyInfo can reference this chain using a single 
+RetrievalMethod element instead of including the entire chain with a 
+sequence of X509Certificate elements.
+</para>
+<para>
+RetrievalMethod uses the same syntax and dereferencing behavior as 
+Reference's URI and The Reference Processing Model.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element processing key data klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

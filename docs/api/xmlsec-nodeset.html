@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-NODESET"></a>nodeset</h1>
 <div class="REFNAMEDIV">
-<a name="AEN6930"></a><h2>Name</h2>nodeset -- </div>
+<a name="AEN7124"></a><h2>Name</h2>nodeset -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN6933"></a><h2>Synopsis</h2>
+<a name="AEN7127"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 enum        <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a>;
@@ -81,13 +81,13 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
                                              <font>FILE</font> *output);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN6979"></a><h2>Description</h2>
+<a name="AEN7173"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN6982"></a><h2>Details</h2>
+<a name="AEN7176"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN6984"></a><h3>
+<a name="AEN7178"></a><h3>
 <a name="XMLSECNODESETTYPE"></a>enum xmlSecNodeSetType</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlSecNodeSetNormal = 0,
@@ -101,7 +101,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 <p>The basic nodes sets types.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN6990"></a><p></p>
+<a name="AEN7184"></a><p></p>
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetNormal</tt></td>
@@ -141,7 +141,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7023"></a><h3>
+<a name="AEN7217"></a><h3>
 <a name="XMLSECNODESETOP"></a>enum xmlSecNodeSetOp</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef enum {
     xmlSecNodeSetIntersection = 0,
@@ -151,7 +151,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 <p>The simple nodes sets operations.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7029"></a><p></p>
+<a name="AEN7223"></a><p></p>
 <table border="0" width="100%" bgcolor="#F0F0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP"><tt class="LITERAL">xmlSecNodeSetIntersection</tt></td>
@@ -171,7 +171,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7046"></a><h3>
+<a name="AEN7240"></a><h3>
 <a name="XMLSECNODESET"></a>struct xmlSecNodeSet</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecNodeSet {
     xmlNodeSetPtr	nodes;
@@ -186,7 +186,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 <p>The enchanced nodes set.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7052"></a><p></p>
+<a name="AEN7246"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -243,7 +243,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7098"></a><h3>
+<a name="AEN7292"></a><h3>
 <a name="XMLSECNODESETWALKCALLBACK"></a>xmlSecNodeSetWalkCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecNodeSetWalkCallback)    (<font>xmlSecNodeSetPtr</font> nset,
                                              <font>xmlNodePtr</font> cur,
@@ -252,7 +252,7 @@ void        <a href="xmlsec-nodeset.html#XMLSECNODESETDEBUGDUMP">xmlSecNodeSetDe
 <p>The callback function called once per each node in the nodes set.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7107"></a><p></p>
+<a name="AEN7301"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -286,36 +286,36 @@ an walk procedure should be interrupted.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7134"></a><h3>
+<a name="AEN7328"></a><h3>
 <a name="XMLSECNODESETCREATE"></a>xmlSecNodeSetCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetCreate        (<font>xmlDocPtr</font> doc,
                                              <font>xmlNodeSetPtr</font> nodes,
                                              <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a> type);</pre></td></tr></table>
-<p>Creates new nodes set.</p>
+<p>Creates new nodes set. Caller is responsible for freeng returend object
+by calling <a href="xmlsec-nodeset.html#XMLSECNODESETDESTROY">xmlSecNodeSetDestroy</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7144"></a><p></p>
+<a name="AEN7339"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>doc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to parent XML document.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to parent XML document.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nodes</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the list of nodes.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the list of nodes.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>type</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the nodes set type.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the nodes set type.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP">pointer to newly allocated <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure 
-or NULL if an error occurs.</td>
+<td width="80%" align="LEFT" valign="TOP">pointer to newly allocated node set or NULL if an error occurs.</td>
 </tr>
 </tbody></table>
 <p></p>
@@ -323,40 +323,41 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7166"></a><h3>
+<a name="AEN7360"></a><h3>
 <a name="XMLSECNODESETDESTROY"></a>xmlSecNodeSetDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNodeSetDestroy            (<font>xmlSecNodeSetPtr</font> nset);</pre></td></tr></table>
-<p>Destroys the nodes set.</p>
+<p>Destroys the nodes set created with <a href="xmlsec-nodeset.html#XMLSECNODESETCREATE">xmlSecNodeSetCreate</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7173"></a><p></p>
+<a name="AEN7368"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to node set.</td>
 </tr></tbody></table>
 <p></p>
 </div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7183"></a><h3>
+<a name="AEN7377"></a><h3>
 <a name="XMLSECNODESETDOCDESTROY"></a>xmlSecNodeSetDocDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNodeSetDocDestroy         (<font>xmlSecNodeSetPtr</font> nset);</pre></td></tr></table>
+<p>Instructs node set to destroy nodes parent doc when node set is destroyed.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7189"></a><p></p>
+<a name="AEN7384"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to node set.</td>
 </tr></tbody></table>
 <p></p>
 </div>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7198"></a><h3>
+<a name="AEN7393"></a><h3>
 <a name="XMLSECNODESETCONTAINS"></a>xmlSecNodeSetContains ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetContains           (<font>xmlSecNodeSetPtr</font> nset,
                                              <font>xmlNodePtr</font> node,
@@ -364,22 +365,22 @@ or NULL if an error occurs.</td>
 <p>Checks whether the <tt class="PARAMETER"><i>node</i></tt> is in the nodes set or not.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7208"></a><p></p>
+<a name="AEN7403"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to node set.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>node</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to XML node to check.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to XML node to check.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>parent</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <tt class="PARAMETER"><i>node</i></tt> parent node.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to <tt class="PARAMETER"><i>node</i></tt> parent node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -393,7 +394,7 @@ and a negative value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7233"></a><h3>
+<a name="AEN7427"></a><h3>
 <a name="XMLSECNODESETADD"></a>xmlSecNodeSetAdd ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetAdd           (<font>xmlSecNodeSetPtr</font> nset,
                                              <font>xmlSecNodeSetPtr</font> newNSet,
@@ -401,22 +402,22 @@ and a negative value if an error occurs.</td>
 <p>Adds <tt class="PARAMETER"><i>newNSet</i></tt> to the <tt class="PARAMETER"><i>nset</i></tt> using operation <tt class="PARAMETER"><i>op</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7246"></a><p></p>
+<a name="AEN7440"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to currrent nodes set (or NULL).</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to currrent nodes set (or NULL).</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>newNSet</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to new nodes set.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to new nodes set.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>op</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the operation type.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the operation type.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -430,7 +431,7 @@ occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7267"></a><h3>
+<a name="AEN7461"></a><h3>
 <a name="XMLSECNODESETADDLIST"></a>xmlSecNodeSetAddList ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetAddList       (<font>xmlSecNodeSetPtr</font> nset,
                                              <font>xmlSecNodeSetPtr</font> newNSet,
@@ -438,22 +439,22 @@ occurs.</td>
 <p>Adds <tt class="PARAMETER"><i>newNSet</i></tt> to the <tt class="PARAMETER"><i>nset</i></tt> as child using operation <tt class="PARAMETER"><i>op</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7280"></a><p></p>
+<a name="AEN7474"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to currrent nodes set (or NULL).</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to currrent nodes set (or NULL).</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>newNSet</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to new nodes set.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to new nodes set.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>op</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the operation type.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the operation type.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -467,7 +468,7 @@ occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7301"></a><h3>
+<a name="AEN7495"></a><h3>
 <a name="XMLSECNODESETGETCHILDREN"></a>xmlSecNodeSetGetChildren ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecNodeSetPtr</font> xmlSecNodeSetGetChildren   (<font>xmlDocPtr</font> doc,
                                              const <font>xmlNodePtr</font> parent,
@@ -485,27 +486,27 @@ occurs.</td>
    and comment nodes.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7324"></a><p></p>
+<a name="AEN7518"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>doc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to an XML document.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to an XML document.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>parent</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to parent XML node.</td>
+<td width="80%" align="LEFT" valign="TOP">	 	the pointer to parent XML node.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>withComments</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the flag include  comments or not.</td>
+<td width="80%" align="LEFT" valign="TOP"> 	the flag include  comments or not.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>invert</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the &quot;invert&quot; flag.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the &quot;invert&quot; flag.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -519,7 +520,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7350"></a><h3>
+<a name="AEN7544"></a><h3>
 <a name="XMLSECNODESETWALK"></a>xmlSecNodeSetWalk ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetWalk               (<font>xmlSecNodeSetPtr</font> nset,
                                              <a href="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK">xmlSecNodeSetWalkCallback</a> walkFunc,
@@ -529,22 +530,22 @@ If the <tt class="PARAMETER"><i>walkFunc</i></tt> returns a negative value, then
 is interrupted.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7361"></a><p></p>
+<a name="AEN7555"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to node set.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>walkFunc</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the callback functions.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the callback functions.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the application specific data passed to the <tt class="PARAMETER"><i>walkFunc</i></tt>.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the application specific data passed to the <tt class="PARAMETER"><i>walkFunc</i></tt>.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -557,28 +558,29 @@ is interrupted.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7384"></a><h3>
+<a name="AEN7577"></a><h3>
 <a name="XMLSECNODESETDUMPTEXTNODES"></a>xmlSecNodeSetDumpTextNodes ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNodeSetDumpTextNodes      (<font>xmlSecNodeSetPtr</font> nset,
                                              <font>xmlOutputBufferPtr</font> out);</pre></td></tr></table>
+<p>Dumps content of all the text nodes from <tt class="PARAMETER"><i>nset</i></tt> to <tt class="PARAMETER"><i>out</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7391"></a><p></p>
+<a name="AEN7587"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to node set.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>out</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
+<td width="80%" align="LEFT" valign="TOP">		the output buffer.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
-<td width="80%" align="LEFT" valign="TOP"> </td>
+<td width="80%" align="LEFT" valign="TOP">0 on success or a negative value otherwise.</td>
 </tr>
 </tbody></table>
 <p></p>
@@ -586,24 +588,24 @@ is interrupted.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN7408"></a><h3>
+<a name="AEN7604"></a><h3>
 <a name="XMLSECNODESETDEBUGDUMP"></a>xmlSecNodeSetDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecNodeSetDebugDump          (<font>xmlSecNodeSetPtr</font> nset,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints information about <tt class="PARAMETER"><i>nset</i></tt> to the <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN7418"></a><p></p>
+<a name="AEN7614"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>nset</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSet</a> structure.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to node set.</td>
 </tr>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>output</i></tt> :</td>
-<td width="80%" align="LEFT" valign="TOP"> the pointer to FILE.</td>
+<td width="80%" align="LEFT" valign="TOP"> 		the pointer to output FILE.</td>
 </tr>
 </tbody></table>
 <p></p>

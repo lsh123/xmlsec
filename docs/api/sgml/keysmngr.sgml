@@ -89,20 +89,24 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <title><anchor id="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate ()</title>
 <programlisting><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> xmlSecKeysMngrCreate      (void);</programlisting>
 <para>
+Creates new keys manager. Caller is responsible for freeing it with 
+<link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link> function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated keys manager or NULL if 
+an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy ()</title>
 <programlisting>void        xmlSecKeysMngrDestroy           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<para>
+Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -111,9 +115,7 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to keys manager.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -123,6 +125,8 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
+Lookups key in the keys manager keys store and copies results to <parameter>key</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -130,20 +134,18 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to keys manager.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to destination key.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the desired key name.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -151,6 +153,8 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <programlisting>int         xmlSecKeysMngrAdoptKeysStore    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
+Adopts keys store in the keys manager <parameter>mngr</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -158,14 +162,12 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to keys manager.
 </entry></row>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to keys store.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -173,24 +175,7 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <programlisting><link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> xmlSecKeysMngrGetKeysStore
                                             (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore ()</title>
-<programlisting>int         xmlSecKeysMngrAdoptDataStore    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+Gets the keys store.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -199,14 +184,32 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to keys manager.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the keys store in the keys manager <parameter>mngr</parameter> or NULL if 
+there is no store or an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore ()</title>
+<programlisting>int         xmlSecKeysMngrAdoptDataStore    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<para>
+Adopts data store in the keys manager.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>		the pointer to keys manager.
 </entry></row>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to data store.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -215,6 +218,8 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
                                             (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);</programlisting>
 <para>
+Lookups the data store of given klass <parameter>id</parameter> in the keys manager.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -222,14 +227,13 @@ int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave<
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to keys manager.
 </entry></row>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the desired data store klass.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to data store or NULL if it is not found or an error
+occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -249,7 +253,7 @@ Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:K
 <entry> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
 an error occurs.
@@ -302,10 +306,10 @@ Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:K
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry> 
+<entry> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.	
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
 an error occurs.
@@ -350,7 +354,8 @@ The keys store.</para>
 <title><anchor id="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate ()</title>
 <programlisting><link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> xmlSecKeyStoreCreate      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);</programlisting>
 <para>
-Creates new store of the specified type <parameter>id</parameter>.</para>
+Creates new store of the specified klass <parameter>klass</parameter>. Caller is responsible
+for freeing the returned store by calling <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -359,17 +364,16 @@ Creates new store of the specified type <parameter>id</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the store id.
+<entry> 		the key store klass.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKeyStore">xmlSecKeyStore</link> structure
-or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated keys store or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy ()</title>
 <programlisting>void        xmlSecKeyStoreDestroy           (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-Destroys the store and frees all allocated memory.</para>
+Destroys the store created with <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -378,7 +382,7 @@ Destroys the store and frees all allocated memory.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKeyStore">xmlSecKeyStore</link> structure.
+<entry> 		the pointer to keys store. 
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -388,6 +392,8 @@ Destroys the store and frees all allocated memory.</para>
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
+Lookups key in the keys manager keys store and copies results to <parameter>key</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -395,20 +401,18 @@ Destroys the store and frees all allocated memory.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to keys store.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to destination key.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the desired key name.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -608,21 +612,23 @@ A simple keys store klass id.</para>
 <programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> xmlSecSimpleKeysStoreGetKlass
                                             (void);</programlisting>
 <para>
+The simple list based keys store klass.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>simple list based keys store klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey ()</title>
 <programlisting>int         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -631,14 +637,12 @@ A simple keys store klass id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to simple keys store.
 </entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -647,6 +651,8 @@ A simple keys store klass id.</para>
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
+Lookups key in the <parameter>store</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -654,17 +660,15 @@ A simple keys store klass id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to simple keys store.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the desired key name.
 </entry></row>
 <row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to key or NULL if key not found or an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -673,31 +677,7 @@ A simple keys store klass id.</para>
                                              const char *uri,
                                              <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave ()</title>
-<programlisting>int         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
-                                             const char *filename,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+Reads keys from an XML file.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -706,17 +686,41 @@ A simple keys store klass id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to simple keys store.
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>		the filename.
+</entry></row>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry>		the pointer to associated keys manager. 
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyStorePtr">xmlSecKeyStorePtr</link> store,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+Writes keys from <parameter>store</parameter> to an XML file.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>		the pointer to simple keys store.
 </entry></row>
 <row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the filename.
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the saved keys type (public, private, ...).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

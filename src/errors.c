@@ -96,7 +96,7 @@ xmlSecErrorsShutdown(void) {
  * xmlSecErrorsSetCallback:
  * @callback: 		the new errors callback function.
  *
- * Sets the errors callback function to #callback that will be called 
+ * Sets the errors callback function to @callback that will be called 
  * every time an error occurs.
  */
 void 
@@ -148,9 +148,9 @@ xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
  * xmlSecErrorsGetCode:
  * @pos:		the error position.
  * 
- * Gets the known error code at position #pos.
+ * Gets the known error code at position @pos.
  *
- * Returns the known error code or 0 if #pos is greater than 
+ * Returns the known error code or 0 if @pos is greater than 
  * total number of known error codes.
  */
 int 
@@ -166,9 +166,9 @@ xmlSecErrorsGetCode(size_t pos) {
  * xmlSecErrorsGetMsg:
  * @pos:		the error position.
  *
- * Gets the known error message at position #pos.
+ * Gets the known error message at position @pos.
  *
- * Returns the known error message or NULL if #pos is greater than 
+ * Returns the known error message or NULL if @pos is greater than 
  * total number of known error codes.
  */
 const char* 
@@ -178,17 +178,6 @@ xmlSecErrorsGetMsg(size_t pos) {
 	return(xmlSecErrorsTable[pos].errorMsg);
     }
     return(NULL);
-}
-
-/**
- * xmlSecErrorGetEmptyMessage:
- * 
- * Returns empty error message string.
- */
-const char* 
-xmlSecErrorGetEmptyMessage(void) {
-    static const char emptyMessage[] = " ";
-    return(emptyMessage);
 }
 
 /**

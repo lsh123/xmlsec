@@ -2814,7 +2814,7 @@ the encoded content of an element.</para>
                                             (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="size-t">size_t</link> lineSize);</programlisting>
 <para>
-Sets the max line size to <link linkend="lineSize">lineSize</link>.</para>
+Sets the max line size to <parameter>lineSize</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -3010,15 +3010,15 @@ http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPath2GetKlass
                                             (void);</programlisting>
 <para>
+The XPath2 transform (http://www.w3.org/TR/xmldsig-filter2/).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XPath2 transform klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -3032,15 +3032,16 @@ http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXPointerGetKlass
                                             (void);</programlisting>
 <para>
+The XPointer transform klass 
+(http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>XPointer transform klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -3050,6 +3051,8 @@ http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> nodeSetType,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> hereNode);</programlisting>
 <para>
+Sets the XPointer expression for an XPointer <parameter>transform</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -3057,20 +3060,18 @@ http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath">sec-XPath</link> for
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to XPointer transform.
 </entry></row>
 <row><entry align="right"><parameter>expr</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the XPointer expression.
 </entry></row>
 <row><entry align="right"><parameter>nodeSetType</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the type of evaluated XPointer expression.
 </entry></row>
 <row><entry align="right"><parameter>hereNode</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to "here" node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -3086,15 +3087,43 @@ The XSLT transform klass.</para>
 <programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXsltGetKlass
                                             (void);</programlisting>
 <para>
+XSLT transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XSLT">sec-XSLT</link>):
+</para>
+<para>
+The normative specification for XSL Transformations is [XSLT]. 
+Specification of a namespace-qualified stylesheet element, which MUST be 
+the sole child of the Transform element, indicates that the specified style 
+sheet should be used. Whether this instantiates in-line processing of local 
+XSLT declarations within the resource is determined by the XSLT processing 
+model; the ordered application of multiple stylesheet may require multiple 
+Transforms. No special provision is made for the identification of a remote 
+stylesheet at a given URI because it can be communicated via an  xsl:include 
+or  xsl:import within the stylesheet child of the Transform.
+</para>
+<para>
+This transform requires an octet stream as input. If the actual input is an 
+XPath node-set, then the signature application should attempt to convert it 
+to octets (apply Canonical XML]) as described in the Reference Processing 
+Model (section 4.3.3.2).]
+</para>
+<para>
+The output of this transform is an octet stream. The processing rules for 
+the XSL style sheet or transform element are stated in the XSLT specification
+[XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml 
+for XML and HTML. As XSLT implementations do not produce consistent 
+serializations of their output, we further RECOMMEND inserting a transform 
+after the XSLT transform to canonicalize the output. These steps will help 
+to ensure interoperability of the resulting signatures among applications 
+that support the XSLT transform. Note that if the output is actually HTML, 
+then the result of these steps is logically equivalent [XHTML].</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to XSLT transform klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

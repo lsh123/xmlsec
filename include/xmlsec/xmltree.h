@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Common XML Doc utility functions
+ * Common XML utility functions
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

@@ -180,6 +180,9 @@ The key requirements information.</para>
 <title><anchor id="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize ()</title>
 <programlisting>int         xmlSecKeyReqInitialize          (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
+Initialize key requirements object. Caller is responsible for
+cleaning it with <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link> function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -187,32 +190,17 @@ The key requirements information.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key requirements object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize ()</title>
 <programlisting>void        xmlSecKeyReqFinalize            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyReqReset">xmlSecKeyReqReset ()</title>
-<programlisting>void        xmlSecKeyReqReset               (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+Cleans the key requirements object initialized with <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>
+function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -221,15 +209,31 @@ The key requirements information.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key requirements object.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReqReset">xmlSecKeyReqReset ()</title>
+<programlisting>void        xmlSecKeyReqReset               (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+<para>
+Resets key requirements object for new key search.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
+<entry>		the pointer to key requirements object.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqCopy">xmlSecKeyReqCopy ()</title>
 <programlisting>int         xmlSecKeyReqCopy                (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> dst,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> src);</programlisting>
+<para>
+Copies key requirements from <parameter>src</parameter> object to <parameter>dst</parameter> object.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -238,14 +242,12 @@ The key requirements information.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to destination object.
 </entry></row>
 <row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to source object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -253,27 +255,7 @@ The key requirements information.</para>
 <programlisting>int         xmlSecKeyReqMatchKey            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue ()</title>
-<programlisting>int         xmlSecKeyReqMatchKeyValue       (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);</programlisting>
+Checks whether <parameter>key</parameter> matches key requirements <parameter>keyReq</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -282,14 +264,36 @@ The key requirements information.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key requirements object.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>		the pointer to key.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if key matches requirements, 0 if not and a negative value
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue ()</title>
+<programlisting>int         xmlSecKeyReqMatchKeyValue       (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);</programlisting>
+<para>
+Checks whether <parameter>keyValue</parameter> matches key requirements <parameter>keyReq</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
+<entry>		the pointer to key requirements.
 </entry></row>
 <row><entry align="right"><parameter>value</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key value.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if key value matches requirements, 0 if not and a negative value
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -349,7 +353,8 @@ The key.</para>
 <title><anchor id="xmlSecKeyCreate">xmlSecKeyCreate ()</title>
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (void);</programlisting>
 <para>
-Creates new key of the specified type <parameter>id</parameter>.</para>
+Allocates and initializes new key. Caller is responsible for 
+freeing returned object with <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -357,7 +362,7 @@ Creates new key of the specified type <parameter>id</parameter>.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <parameter>xmlSecKey</parameter> structure
 or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
@@ -365,7 +370,7 @@ or NULL if an error occurs.
 <title><anchor id="xmlSecKeyDestroy">xmlSecKeyDestroy ()</title>
 <programlisting>void        xmlSecKeyDestroy                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Destroys the key and frees all allocated memory.</para>
+Destroys the key created using <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -374,13 +379,15 @@ Destroys the key and frees all allocated memory.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+<entry> 		the pointer to key.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyEmpty">xmlSecKeyEmpty ()</title>
 <programlisting>void        xmlSecKeyEmpty                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
+Clears the <parameter>key</parameter> data.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -388,9 +395,7 @@ Destroys the key and frees all allocated memory.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to key.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -406,7 +411,7 @@ Creates a duplicate of the given <parameter>key</parameter>.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+<entry> 		the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
 or NULL if an error occurs.
@@ -417,6 +422,8 @@ or NULL if an error occurs.
 <programlisting>int         xmlSecKeyCopy                   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> keyDst,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> keySrc);</programlisting>
 <para>
+Copies key data from <parameter>keySrc</parameter> to <parameter>keyDst</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -424,19 +431,19 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keyDst</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the destination key.
 </entry></row>
 <row><entry align="right"><parameter>keySrc</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the source key.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetName">xmlSecKeyGetName ()</title>
 <programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecKeyGetName             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Gets key name (see also <link linkend="xmlSecKeySetName">xmlSecKeySetName</link> function).</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -445,11 +452,9 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>key name.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -457,6 +462,8 @@ or NULL if an error occurs.
 <programlisting>int         xmlSecKeySetName                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
 <para>
+Sets key name (see also <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link> function).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -464,37 +471,19 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the new key name.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetType">xmlSecKeyGetType ()</title>
 <programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> xmlSecKeyGetType          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyGetValue">xmlSecKeyGetValue ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetValue          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+Gets <parameter>key</parameter> type.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -503,11 +492,27 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>key type.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyGetValue">xmlSecKeyGetValue ()</title>
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetValue          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Gets key value (see also <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link> function).</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>		the pointer to key.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>key value (crypto material).
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -515,6 +520,8 @@ or NULL if an error occurs.
 <programlisting>int         xmlSecKeySetValue               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);</programlisting>
 <para>
+Sets key value (see also <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link> function).</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -522,14 +529,12 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>value</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the new value.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -537,6 +542,8 @@ or NULL if an error occurs.
 <programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetData           (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
+Gets key's data.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -544,14 +551,13 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the requested data klass.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>additional data associated with the <parameter>key</parameter> (see also 
+<link linkend="xmlSecKeyAdoptData">xmlSecKeyAdoptData</link> function).
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -559,27 +565,7 @@ or NULL if an error occurs.
 <programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyEnsureData        (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyAdoptData">xmlSecKeyAdoptData ()</title>
-<programlisting>int         xmlSecKeyAdoptData              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+If necessary, creates key data of <parameter>dataId</parameter> klass and adds to <parameter>key</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -588,14 +574,35 @@ or NULL if an error occurs.
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key.
+</entry></row>
+<row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
+<entry>		the requested data klass.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to key data or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyAdoptData">xmlSecKeyAdoptData ()</title>
+<programlisting>int         xmlSecKeyAdoptData              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Adds <parameter>data</parameter> to the <parameter>key</parameter>. The <parameter>data</parameter> object will be destroyed
+by <parameter>key</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key data.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -612,10 +619,10 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+<entry>		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry> the destination <link linkend="FILE-CAPS">FILE</link> pointer.
+<entry> 		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -632,10 +639,10 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+<entry>		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry> the destination <link linkend="FILE-CAPS">FILE</link> pointer.
+<entry> 		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -645,6 +652,8 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
+Generates new key of requested <parameter>klass</parameter> and <parameter>type</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -652,20 +661,18 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the requested key klass name (rsa, dsa, aes, ...).
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the new key name (may be NULL).
 </entry></row>
 <row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the new key size (in bits!).
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the new key type (session, permanent, ...).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created key or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -674,9 +681,7 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
-Checks whether the <parameter>key</parameter> matches the given criteria
-(key name is equal to <parameter>name</parameter>, key id is equal to <parameter>id</parameter>,
-key type is <parameter>type</parameter>).</para>
+Checks whether the <parameter>key</parameter> matches the given criteria.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -685,13 +690,13 @@ key type is <parameter>type</parameter>).</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+<entry> 		the pointer to key.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the pointer to key name (may be NULL).
+<entry> 		the pointer to key name (may be NULL).
 </entry></row>
 <row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to key requirements.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the key satisfies the given criteria or 0 otherwise.
 </entry></row>
@@ -701,6 +706,8 @@ key type is <parameter>type</parameter>).</para>
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadBinaryFile        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
                                              const char *filename);</programlisting>
 <para>
+Reads the key value of klass <parameter>dataId</parameter> from a binary file <parameter>filename</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -708,14 +715,12 @@ key type is <parameter>type</parameter>).</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the key value data klass.
 </entry></row>
 <row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the key binary filename.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created key or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -767,15 +772,15 @@ The keys list klass.</para>
 <title><anchor id="xmlSecKeyPtrListGetKlass">xmlSecKeyPtrListGetKlass ()</title>
 <programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyPtrListGetKlass    (void);</programlisting>
 <para>
+The keys list klass.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>keys list id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

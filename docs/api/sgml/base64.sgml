@@ -130,7 +130,7 @@ Initializes new base64 context.</para>
 <title><anchor id="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize ()</title>
 <programlisting>void        xmlSecBase64CtxFinalize         (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);</programlisting>
 <para>
-Frees all the resources allocated by <link linkend="ctx">ctx</link>.</para>
+Frees all the resources allocated by <parameter>ctx</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">

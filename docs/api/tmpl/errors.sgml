@@ -412,14 +412,6 @@ errors
 
 
 
-<!-- ##### FUNCTION xmlSecErrorGetEmptyMessage ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecError ##### -->
 <para>
 

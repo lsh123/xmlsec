@@ -1,5 +1,5 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Digital Signature" implementation
  *  http://www.w3.org/TR/xmldsig-core/

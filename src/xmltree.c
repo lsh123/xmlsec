@@ -1,5 +1,5 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Common XML Doc utility functions
  *
@@ -25,9 +25,9 @@
 
 /**
  * xmlSecFindChild:
- * @parent: the pointer to XML node.
- * @name: the name.
- * @ns: the namespace href (may be NULL).
+ * @parent: 		the pointer to XML node.
+ * @name: 		the name.
+ * @ns: 		the namespace href (may be NULL).
  *
  * Searches a direct child of the @parent node having given name and 
  * namespace href.
@@ -56,9 +56,9 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
 
 /**
  * xmlSecFindParent:
- * @cur: the pointer to an XML node.
- * @name: the name.
- * @ns: the namespace href (may be NULL).
+ * @cur: 		the pointer to an XML node.
+ * @name: 		the name.
+ * @ns: 		the namespace href (may be NULL).
  *
  * Searches the ancestors axis of the @cur node for a node having given name 
  * and namespace href.
@@ -81,9 +81,9 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
 
 /**
  * xmlSecFindNode:
- * @parent: the pointer to XML node.
- * @name: the name.
- * @ns: the namespace href (may be NULL).
+ * @parent: 		the pointer to XML node.
+ * @name: 		the name.
+ * @ns: 		the namespace href (may be NULL).
  *
  * Searches all children of the @parent node having given name and 
  * namespace href.
@@ -114,6 +114,14 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
     return(NULL);
 }
 
+/**
+ * xmlSecGetNodeNsHref:
+ * @cur:		the pointer to node.
+ *
+ * Get's node's namespace href.
+ *
+ * Returns node's namespace href.
+ */
 const xmlChar* 
 xmlSecGetNodeNsHref(const xmlNodePtr cur) {
     xmlNsPtr ns;
@@ -136,9 +144,9 @@ xmlSecGetNodeNsHref(const xmlNodePtr cur) {
 
 /** 
  * xmlSecCheckNodeName:
- * @cur: the pointer to an XML node.
- * @name: the name,
- * @ns: the namespace href.
+ * @cur: 		the pointer to an XML node.
+ * @name: 		the name,
+ * @ns: 		the namespace href.
  *
  * Checks that the node has a given name and a given namespace href.
  *
@@ -154,9 +162,9 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
 
 /**
  * xmlSecAddChild:
- * @parent: the pointer to an XML node.
- * @name: the new node name.
- * @ns: the new node namespace.
+ * @parent: 		the pointer to an XML node.
+ * @name: 		the new node name.
+ * @ns: 		the new node namespace.
  *
  * Adds a child to the node @parent with given @name and namespace @ns.
  *
@@ -222,9 +230,9 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 
 /**
  * xmlSecAddNextSibling
- * @node: the pointer to an XML node.
- * @name: the new node name.
- * @ns: the new node namespace.
+ * @node: 		the pointer to an XML node.
+ * @name: 		the new node name.
+ * @ns: 		the new node namespace.
  *
  * Adds next sibling to the node @node with given @name and namespace @ns.
  *
@@ -276,9 +284,9 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
 /**
  * xmlSecAddPrevSibling
- * @node: the pointer to an XML node.
- * @name: the new node name.
- * @ns: the new node namespace.
+ * @node: 		the pointer to an XML node.
+ * @name: 		the new node name.
+ * @ns: 		the new node namespace.
  *
  * Adds prev sibling to the node @node with given @name and namespace @ns.
  *
@@ -330,7 +338,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
 /**
  * xmlSecGetNextElementNode:
- * @cur: the pointer to an XML node.
+ * @cur: 		the pointer to an XML node.
  *
  * Seraches for the next element node.
  *
@@ -347,8 +355,8 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
 
 /**
  * xmlSecReplaceNode:
- * @node: the current node.
- * @newNode: the new node.
+ * @node: 		the current node.
+ * @newNode: 		the new node.
  * 
  * Swaps the @node and @newNode in the XML tree.
  *
@@ -408,8 +416,8 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 
 /**
  * xmlSecReplaceContent
- * @node: the current node.
- * @newNode: the new node.
+ * @node: 		the current node.
+ * @newNode: 		the new node.
  * 
  * Swaps the content of @node and @newNode.
  *
@@ -457,9 +465,9 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 
 /**
  * xmlSecReplaceNodeBuffer:
- * @node: the current node.
- * @buffer: the XML data.
- * @size: the XML data size.
+ * @node: 		the current node.
+ * @buffer: 		the XML data.
+ * @size: 		the XML data size.
  * 
  * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
@@ -515,9 +523,9 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
 
 /**
  * xmlSecAddIDs:
- * @doc: the pointer to an XML document.
- * @cur: the pointer to an XML node.
- * @ids: the pointer to a NULL terminated list of ID attributes.
+ * @doc: 		the pointer to an XML document.
+ * @cur: 		the pointer to an XML node.
+ * @ids: 		the pointer to a NULL terminated list of ID attributes.
  *
  * Walks thru all children of the @cur node and adds all attributes 
  * from the @ids list to the @doc document IDs attributes hash.

@@ -1,5 +1,5 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Memory buffer transform
  *
@@ -71,6 +71,13 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     NULL,					/* void* reserved1; */
 };
 
+/**
+ * xmlSecTransformMemBufGetKlass:
+ * 
+ * The memory buffer transorm (used to store the data that go through it).
+ *
+ * Returns memory buffer transform klass.
+ */
 xmlSecTransformId 
 xmlSecTransformMemBufGetKlass(void) {
     return(&xmlSecTransformMemBufKlass);
@@ -78,11 +85,11 @@ xmlSecTransformMemBufGetKlass(void) {
 
 /**
  * xmlSecTransformMemBufGetBuffer:
- * @transform: the pointer to memory buffer transform.
+ * @transform: 		the pointer to memory buffer transform.
  * 
- * Gets the memory transform buffer. 
+ * Gets the pointer to memory buffer transform buffer. 
  *
- * Returns pointer to the transform's xmlSecBufferPtr. 
+ * Returns pointer to the transform's #xmlSecBuffer. 
  */
 xmlSecBufferPtr
 xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {

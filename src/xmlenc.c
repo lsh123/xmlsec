@@ -1,5 +1,5 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Encryption" implementation
  *  http://www.w3.org/TR/xmlenc-core

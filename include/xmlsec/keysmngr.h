@@ -1,7 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * Simple Keys Manager
+ * Keys Manager
  * 
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -52,7 +52,7 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr	xmlSecKeysMngrGetDataStore	(xmlSecKeysMngrPt
 /**
  * xmlSecGetKeyCallback:
  * @keyInfoNode: 		the pointer to <dsig:KeyInfo/> node.
- * @keyInfoContext:		the pointer to <dsig:KeyInfo/> node processing context.
+ * @keyInfoCtx:			the pointer to <dsig:KeyInfo/> node processing context.
  *
  * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
  *

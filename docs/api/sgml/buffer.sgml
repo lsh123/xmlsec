@@ -198,7 +198,7 @@ Desrtoys buffer object created with <link linkend="xmlSecBufferCreate">xmlSecBuf
 <programlisting>int         xmlSecBufferInitialize          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Initializes buffer object <link linkend="buf">buf</link>. Caller is responsible for calling
+Initializes buffer object <parameter>buf</parameter>. Caller is responsible for calling
 <link linkend="xmlSecBufferFinalize">xmlSecBufferFinalize</link> function to free allocated resources.</para>
 <para>
 
@@ -237,6 +237,8 @@ function.</para>
 <title><anchor id="xmlSecBufferGetData">xmlSecBufferGetData ()</title>
 <programlisting>unsigned char* xmlSecBufferGetData          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
 <para>
+Gets pointer to buffer's data.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -244,11 +246,9 @@ function.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to buffer object.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to buffer's data.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -257,7 +257,7 @@ function.</para>
                                              unsigned char *data,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Sets the value of the buffer to <link linkend="data">data</link>.</para>
+Sets the value of the buffer to <parameter>data</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -301,7 +301,7 @@ Gets the current buffer data size.</para>
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
 Sets new buffer data size. If necessary, buffer grows to 
-have at least <link linkend="size">size</link> bytes.</para>
+have at least <parameter>size</parameter> bytes.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -342,7 +342,7 @@ Gets the maximum (allocated) buffer size.</para>
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
 Sets new buffer maximum size. If necessary, buffer grows to 
-have at least <link linkend="size">size</link> bytes.</para>
+have at least <parameter>size</parameter> bytes.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -363,6 +363,8 @@ have at least <link linkend="size">size</link> bytes.</para>
 <title><anchor id="xmlSecBufferEmpty">xmlSecBufferEmpty ()</title>
 <programlisting>void        xmlSecBufferEmpty               (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
 <para>
+Empties the buffer.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -370,9 +372,7 @@ have at least <link linkend="size">size</link> bytes.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to buffer object.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -381,7 +381,7 @@ have at least <link linkend="size">size</link> bytes.</para>
                                              unsigned char *data,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Appends the <link linkend="data">data</link> after the current data stored in the buffer.</para>
+Appends the <parameter>data</parameter> after the current data stored in the buffer.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -407,7 +407,7 @@ Appends the <link linkend="data">data</link> after the current data stored in th
                                              unsigned char *data,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Prepends the <link linkend="data">data</link> before the current data stored in the buffer.</para>
+Prepends the <parameter>data</parameter> before the current data stored in the buffer.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -432,7 +432,7 @@ Prepends the <link linkend="data">data</link> before the current data stored in 
 <programlisting>int         xmlSecBufferRemoveHead          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Removes <link linkend="size">size</link> bytes from the beginning of the current buffer.</para>
+Removes <parameter>size</parameter> bytes from the beginning of the current buffer.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -454,7 +454,7 @@ Removes <link linkend="size">size</link> bytes from the beginning of the current
 <programlisting>int         xmlSecBufferRemoveTail          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-Removes <link linkend="size">size</link> bytes from the end of current buffer.</para>
+Removes <parameter>size</parameter> bytes from the end of current buffer.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -477,7 +477,7 @@ Removes <link linkend="size">size</link> bytes from the end of current buffer.</
                                             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
 <para>
-Reads the content of the <link linkend="node">node</link>, base64 decodes it and stores the
+Reads the content of the <parameter>node</parameter>, base64 decodes it and stores the
 result in the buffer.</para>
 <para>
 
@@ -502,7 +502,7 @@ result in the buffer.</para>
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              int columns);</programlisting>
 <para>
-Sets the content of the <link linkend="node">node</link> to the base64 encoded buffer data.</para>
+Sets the content of the <parameter>node</parameter> to the base64 encoded buffer data.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">

@@ -86,6 +86,8 @@ Macro. Returns node's name.</para>
 <title><anchor id="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref ()</title>
 <programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecGetNodeNsHref          (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur);</programlisting>
 <para>
+Get's node's namespace href.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -93,11 +95,9 @@ Macro. Returns node's name.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>node's namespace href.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -115,13 +115,13 @@ Checks that the node has a given name and a given namespace href.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the name,
+<entry> 		the name,
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the namespace href.
+<entry> 		the namespace href.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the node matches or 0 otherwise.
 </entry></row>
@@ -139,7 +139,7 @@ Seraches for the next element node.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to next element node or NULL if it is not found.
 </entry></row>
@@ -160,13 +160,13 @@ namespace href.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> the pointer to XML node.
+<entry> 		the pointer to XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the name.
+<entry> 		the name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the namespace href (may be NULL).
+<entry> 		the namespace href (may be NULL).
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
 node is not found.
@@ -188,13 +188,13 @@ and namespace href.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the name.
+<entry> 		the name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the namespace href (may be NULL).
+<entry> 		the namespace href (may be NULL).
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
 node is not found.
@@ -216,13 +216,13 @@ namespace href.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> the pointer to XML node.
+<entry> 		the pointer to XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the name.
+<entry> 		the name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the namespace href (may be NULL).
+<entry> 		the namespace href (may be NULL).
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
 node is not found.
@@ -243,13 +243,13 @@ Adds a child to the node <parameter>parent</parameter> with given <parameter>nam
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the new node name.
+<entry> 		the new node name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the new node namespace.
+<entry> 		the new node namespace.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
 </entry></row>
@@ -269,13 +269,13 @@ Adds next sibling to the node <parameter>node</parameter> with given <parameter>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the new node name.
+<entry> 		the new node name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the new node namespace.
+<entry> 		the new node namespace.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
 </entry></row>
@@ -295,13 +295,13 @@ Adds prev sibling to the node <parameter>node</parameter> with given <parameter>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the new node name.
+<entry> 		the new node name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry> the new node namespace.
+<entry> 		the new node namespace.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
 </entry></row>
@@ -320,10 +320,10 @@ Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the 
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the current node.
+<entry> 		the current node.
 </entry></row>
 <row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
-<entry> the new node.
+<entry> 		the new node.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -342,10 +342,10 @@ Swaps the content of <parameter>node</parameter> and <parameter>newNode</paramet
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the current node.
+<entry> 		the current node.
 </entry></row>
 <row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
-<entry> the new node.
+<entry> 		the new node.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -365,13 +365,13 @@ Swaps the <parameter>node</parameter> and the parsed XML data from the <paramete
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry> the current node.
+<entry> 		the current node.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> the XML data.
+<entry> 		the XML data.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the XML data size.
+<entry> 		the XML data size.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
@@ -392,13 +392,13 @@ from the <parameter>ids</parameter> list to the <parameter>doc</parameter> docum
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML document.
+<entry> 		the pointer to an XML document.
 </entry></row>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> the pointer to an XML node.
+<entry> 		the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>ids</parameter>&nbsp;:</entry>
-<entry> the pointer to a NULL terminated list of ID attributes.
+<entry> 		the pointer to a NULL terminated list of ID attributes.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

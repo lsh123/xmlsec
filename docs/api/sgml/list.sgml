@@ -51,9 +51,6 @@ void        (<link linkend="xmlSecPtrDebugDumpItemMethod">*xmlSecPtrDebugDumpIte
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 #define     <link linkend="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName</link>       (klass)
-#define     <link linkend="xmlSecStaticObjectListId">xmlSecStaticObjectListId</link>
-<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecStaticObjectListGetKlass">xmlSecStaticObjectListGetKlass</link>
-                                            (void);
 #define     <link linkend="xmlSecStringListId">xmlSecStringListId</link>
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link>    (void);
 </synopsis>
@@ -133,6 +130,8 @@ The pointers list.</para>
                                             (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
                                              <link linkend="size-t">size_t</link> defInitialSize);</programlisting>
 <para>
+Sets new default allocation mode and minimal initial list size.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -140,12 +139,10 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>defAllocMode</parameter>&nbsp;:</entry>
-<entry>
+<entry>	the new default memory allocation mode.
 </entry></row>
 <row><entry align="right"><parameter>defInitialSize</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>	the new default minimal initial size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -153,6 +150,9 @@ The pointers list.</para>
 <programlisting>int         xmlSecPtrListInitialize         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
 <para>
+Initializes the list of given klass. Caller is responsible 
+for cleaning up by calling <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link> function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -160,20 +160,21 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to list.
 </entry></row>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the list klass.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListFinalize">xmlSecPtrListFinalize ()</title>
 <programlisting>void        xmlSecPtrListFinalize           (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
+Cleans up the list initialized with <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>
+function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -181,14 +182,15 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to list.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListCreate">xmlSecPtrListCreate ()</title>
 <programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListCreate        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
+<para>
+Creates new list object. Caller is responsible for freeing returned list
+by calling <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -197,16 +199,16 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry>
+<entry>			the list klass.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated list or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListDestroy">xmlSecPtrListDestroy ()</title>
 <programlisting>void        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<para>
+Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -215,15 +217,17 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to list.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListCopy">xmlSecPtrListCopy ()</title>
 <programlisting>int         xmlSecPtrListCopy               (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> dst,
                                              <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> src);</programlisting>
+<para>
+Copies <parameter>src</parameter> list items to <parameter>dst</parameter> list using <link linkend="duplicateItem">duplicateItem</link> method
+of the list klass. If <link linkend="duplicateItem">duplicateItem</link> method is NULL then 
+we jsut copy pointers to items.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -232,37 +236,19 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to destination list.
 </entry></row>
 <row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to source list.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate ()</title>
 <programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListDuplicate     (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListGetSize">xmlSecPtrListGetSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecPtrListGetSize            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+Creates a new copy of <parameter>list</parameter> and all its items.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -271,11 +257,27 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to list.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated list or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListGetSize">xmlSecPtrListGetSize ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecPtrListGetSize            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<para>
+Gets list size.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>		the pointer to list.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of itmes in <parameter>list</parameter>.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -283,27 +285,7 @@ The pointers list.</para>
 <programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   xmlSecPtrListGetItem            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListAdd">xmlSecPtrListAdd ()</title>
-<programlisting>int         xmlSecPtrListAdd                (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtr">xmlSecPtr</link> item);</programlisting>
+Gets item from the list.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -312,14 +294,35 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to list.
+</entry></row>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>		the item position.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the list item at position <parameter>pos</parameter> or NULL if <parameter>pos</parameter> is greater
+than the number of items in the list or an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListAdd">xmlSecPtrListAdd ()</title>
+<programlisting>int         xmlSecPtrListAdd                (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecPtr">xmlSecPtr</link> item);</programlisting>
+<para>
+Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>		the pointer to list.
 </entry></row>
 <row><entry align="right"><parameter>item</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the item.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -328,6 +331,9 @@ The pointers list.</para>
                                              <link linkend="xmlSecPtr">xmlSecPtr</link> item,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
+Sets the value of list item at position <parameter>pos</parameter>. The old value
+is destroyed.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -335,17 +341,15 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to list.
 </entry></row>
 <row><entry align="right"><parameter>item</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the item.
 </entry></row>
 <row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pos.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -353,6 +357,8 @@ The pointers list.</para>
 <programlisting>int         xmlSecPtrListRemove             (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
+Destroys list item at the position <parameter>pos</parameter> and sets it value to NULL.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -360,14 +366,12 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to list.
 </entry></row>
 <row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the position.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -375,25 +379,7 @@ The pointers list.</para>
 <programlisting>void        xmlSecPtrListDebugDump          (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump ()</title>
-<programlisting>void        xmlSecPtrListDebugXmlDump       (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -402,12 +388,30 @@ The pointers list.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to list.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to output FILE.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump ()</title>
+<programlisting>void        xmlSecPtrListDebugXmlDump       (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter> in XML format.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>		the pointer to list.
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -536,17 +540,40 @@ Prints debug information about <parameter>item</parameter> to <parameter>output<
 };
 </programlisting>
 <para>
-<parameter>name</parameter>:		the list klass name.
-<parameter>duplicateItem</parameter>:	the duplciate item method.
-<parameter>destroyItem</parameter>:	the destroy item method.
-<parameter>debugDumpItem</parameter>:	the debug dump item method.
-<parameter>debugXmlDumpItem</parameter>:	the debug dump item in xml format method.
-</para>
-<para>
 List klass.</para>
 <para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry>const <link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
+<entry>		the list klass name.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrDuplicateItemMethod">xmlSecPtrDuplicateItemMethod</link> <structfield>duplicateItem</structfield></entry>
+<entry>	the duplciate item method.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod</link> <structfield>destroyItem</structfield></entry>
+<entry>	the destroy item method.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link> <structfield>debugDumpItem</structfield></entry>
+<entry>	the debug dump item method.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link> <structfield>debugXmlDumpItem</structfield></entry>
+<entry>	the debug dump item in xml format method.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName()</title>
 <programlisting>#define     xmlSecPtrListKlassGetName(klass)</programlisting>
@@ -560,33 +587,8 @@ Macro. Returns the list klass name.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecStaticObjectListId">xmlSecStaticObjectListId</title>
-<programlisting>#define     xmlSecStaticObjectListId</programlisting>
-<para>
-Static objects klass (no destroy or duplicate methods).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecStaticObjectListGetKlass">xmlSecStaticObjectListGetKlass ()</title>
-<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecStaticObjectListGetKlass
-                                            (void);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<entry>		the list klass.
+2
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -601,15 +603,15 @@ Strings list klass.</para>
 <title><anchor id="xmlSecStringListGetKlass">xmlSecStringListGetKlass ()</title>
 <programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecStringListGetKlass    (void);</programlisting>
 <para>
+The strins list class.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>strings list klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

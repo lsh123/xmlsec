@@ -369,7 +369,7 @@ xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {
  * xmlSecBase64CtxFinalize:
  * @ctx:		the pointer to #xmlSecBase64Ctx structure,
  *
- * Frees all the resources allocated by #ctx.
+ * Frees all the resources allocated by @ctx.
  */
 void 
 xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
@@ -702,7 +702,7 @@ xmlSecTransformBase64GetKlass(void) {
  * @transform: 		the pointer to BASE64 encode transform.
  * @lineSize: 		the new max line size.
  *
- * Sets the max line size to #lineSize.
+ * Sets the max line size to @lineSize.
  */
 void
 xmlSecTransformBase64SetLineSize(xmlSecTransformPtr transform, size_t lineSize) {

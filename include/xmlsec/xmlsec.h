@@ -1,6 +1,7 @@
 /** 
- * XMLSec library
+ * XML Security Library (http://www.aleksey.com/xmlsec).
  *
+ * General functions and forward declarations.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.

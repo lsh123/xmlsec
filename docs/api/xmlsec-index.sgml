@@ -190,8 +190,6 @@
 <listitem><para><link linkend="xmlSecEncCtxUriEncrypt">xmlSecEncCtxUriEncrypt</link></para></listitem>
 <listitem><para><link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link></para></listitem>
 <listitem><para><link linkend="xmlSecEncCtxXmlEncrypt">xmlSecEncCtxXmlEncrypt</link></para></listitem>
-<listitem><para><link linkend="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage</link></para></listitem>
-<listitem><para><link linkend="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage</link></para></listitem>
 <listitem><para><link linkend="xmlSecError">xmlSecError</link></para></listitem>
 <listitem><para><link linkend="xmlSecError">xmlSecError</link></para></listitem>
 <listitem><para><link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link></para></listitem>
@@ -1180,10 +1178,6 @@
 <listitem><para><link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link></para></listitem>
-<listitem><para><link linkend="xmlSecStaticObjectListGetKlass">xmlSecStaticObjectListGetKlass</link></para></listitem>
-<listitem><para><link linkend="xmlSecStaticObjectListGetKlass">xmlSecStaticObjectListGetKlass</link></para></listitem>
-<listitem><para><link linkend="xmlSecStaticObjectListId">xmlSecStaticObjectListId</link></para></listitem>
-<listitem><para><link linkend="xmlSecStaticObjectListId">xmlSecStaticObjectListId</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecStringListId">xmlSecStringListId</link></para></listitem>

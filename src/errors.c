@@ -56,6 +56,16 @@ static ERR_STRING_DATA xmlSecStrReasons[]= {
   { 0,						NULL}
 };
 
+static ERR_STRING_DATA xmlSecStrLib[]= {
+  { ERR_PACK(XMLSEC_ERRORS_LIB,0,0),		"xmlsec routines"},
+  { 0,     					NULL}
+};
+ 
+static ERR_STRING_DATA xmlSecStrDefReason[]= {
+  { XMLSEC_ERRORS_LIB,				"xmlsec lib"},
+  { 0,						NULL}
+};
+
 static void xmlSecErrorsDefaultCallback		(const char* file, int line, 
 				    		 const char* func,
 						 int reason, const char* msg);
@@ -72,7 +82,9 @@ int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed
 void 
 xmlSecErrorsInit(void) {
     ERR_load_crypto_strings();
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrReasons);
+    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrLib); /* define xmlsec lib name */
+    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrDefReason); /* define default reason */
+    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrReasons); 
 }
 
 /** 

@@ -1,3 +1,8 @@
+Wed 04 Sep 2002 06:54:23 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+    
+	* src/errors.c: aplied a patch from Ferrell Moultrie (additional
+	errors strings for OpenSSL errors functions)		
+
 Tue 03 Sep 2002 06:24:57 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* xmlsec-config.in: fixed a bug when xslt is not available

@@ -422,7 +422,9 @@ elif test "z$with_gnutls" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
 	PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
 	    [GNUTLS_FOUND=yes],
 	    [GNUTLS_FOUND=no])
-	GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
+	if test "z$GNUTLS_FOUND" = "zyes" ; then 
+	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
+	fi
     fi
 fi
 

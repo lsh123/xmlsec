@@ -167,8 +167,6 @@ xmlSecGnuTLSTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifdef TODO
-
 #ifndef XMLSEC_NO_DES    
     if(xmlSecTransformRegister(xmlSecGnuTLSTransformDes3CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -207,7 +205,6 @@ xmlSecGnuTLSTransformsInit(void) {
     }
 #endif /* XMLSEC_NO_AES */
 
-#endif /* TODO */
     return(0);
 }
 

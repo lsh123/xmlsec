@@ -409,8 +409,18 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	goto done;	
     }
-    sk_X509_push(chain, tmpcert);
-
+    ret = sk_X509_push(chain, tmpcert);
+    if(ret < 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "sk_X509_push",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+	X509_free(tmpcert);
+	goto done;	
+    }
+    
     ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, cert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -419,7 +429,6 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "data=%s",
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-	X509_free(tmpcert);
 	goto done;
     }
     cert = NULL;

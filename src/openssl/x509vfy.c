@@ -198,7 +198,15 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
     /* add untrusted certs from the store */
     if(ctx->untrusted != NULL) {
 	for(i = 0; i < sk_X509_num(ctx->untrusted); ++i) { 
-	    sk_X509_push(certs2, sk_X509_value(ctx->untrusted, i));
+	    ret = sk_X509_push(certs2, sk_X509_value(ctx->untrusted, i));
+	    if(ret < 1) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			    "sk_X509_push",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		goto done;
+	    }
 	}
     }
     
@@ -398,7 +406,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 	xmlSecAssert2(ctx->untrusted != NULL, -1);
 
 	ret = sk_X509_push(ctx->untrusted, cert);
-	if(ret != 1) {
+	if(ret < 1) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			"sk_X509_push",

@@ -1,3 +1,8 @@
+Mon 07 Jul 2003 08:05:18 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* src/openssl/apps.c src/openssl/x509.c src/openssl/x509vfy.c: fixed
+	sk_push() return value check problem (reported by Roumen)
+
 Mon 07 Jul 2003 07:02:46 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
     
 	* Makefile.am: fixed test suite problem when builddir != sourcedir

@@ -17,6 +17,7 @@ keysmngr.h \
 list.h \
 membuf.h \
 nodeset.h \
+parser.h \
 strings.h \
 templates.h \
 transforms.h \

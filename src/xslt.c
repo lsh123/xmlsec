@@ -51,6 +51,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
 /**************************************************************************

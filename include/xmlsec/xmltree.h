@@ -21,17 +21,6 @@ extern "C" {
 #define xmlSecNodeGetName(node) \
     (((node)) ? ((const char*)((node)->name)) : NULL)
 
-XMLSEC_EXPORT xmlDocPtr		xmlSecParseFile		(const char *filename);
-XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemory	(const unsigned char *buffer, 
-							 size_t size,
-							 int recovery);
-XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix, 
-							 size_t prefixSize,
-							 const unsigned char *buffer, 
-							 size_t bufferSize, 
-							 const unsigned char *postfix, 
-							 size_t postfixSize);
-
 XMLSEC_EXPORT const xmlChar* 	xmlSecGetNodeNsHref	(const xmlNodePtr cur);
 XMLSEC_EXPORT int		xmlSecCheckNodeName	(const xmlNodePtr cur, 
 							 const xmlChar *name, 

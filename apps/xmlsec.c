@@ -33,6 +33,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
+#include <xmlsec/parser.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 

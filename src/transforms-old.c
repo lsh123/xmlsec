@@ -1,6 +1,6 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/membuf.h>
-
+#include <xmlsec/parser.h>
 
 /* internal functions */
 static int  xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri);

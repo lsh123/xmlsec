@@ -30,6 +30,7 @@ keysmngr.c \
 list.c \
 membuf.c \
 nodeset.c \
+parser.c \
 strings.c \
 templates.c \
 transforms.c \

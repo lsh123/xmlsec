@@ -69,6 +69,7 @@ struct _xmlSecXkmsCtx {
     xmlSecPtrList		keys;
 
     /* these are internal data, nobody should change that except us */
+    xmlNodePtr			opaqueClientDataNode;
     xmlNodePtr 			firtsMsgExtNode;
     xmlNodePtr 			firtsRespMechNode;
     xmlNodePtr 			firtsRespWithNode;

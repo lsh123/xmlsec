@@ -27,6 +27,20 @@ extern "C" {
 typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
 typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
 
+/**
+ * xmlSecX509Data:
+ * @verified: the cert that contains this key.
+ * @certs: the certs list used to verify the @verified cert.
+ * @crls: the crls list present in the key data.
+ *
+ * XML DSig data for the key.
+ */
+struct _xmlSecX509Data {
+    X509		*verified;
+    STACK_OF(X509) 	*certs;
+    STACK_OF(X509_CRL)  *crls;
+};
+
 XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataCreate		(void);
 XMLSEC_EXPORT void		xmlSecX509DataDestroy		(xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT size_t		xmlSecX509DataGetCertsNumber	(xmlSecX509DataPtr x509Data);

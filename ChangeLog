@@ -1,3 +1,8 @@
+Wed 25 Sep 2002 21:28:21 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/x509.h src/x509.c: opened xmlSecX509Data 
+	structure by request from Moultrie, Ferrell 
+
 Wed 04 Sep 2002 06:54:23 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
     
 	* src/errors.c: aplied a patch from Ferrell Moultrie (additional

@@ -33,12 +33,6 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/errors.h>
 
-struct _xmlSecX509Data {
-    X509		*verified;
-    STACK_OF(X509) 	*certs;
-    STACK_OF(X509_CRL)  *crls;
-};
-
 struct _xmlSecX509Store {
     X509_STORE		*xst;
     STACK_OF(X509)	*untrusted;

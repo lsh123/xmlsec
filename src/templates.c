@@ -31,7 +31,7 @@
  * xmlSecSignatureCreate:
  * @id: the node id (may be NULL).
  *
- * Creates new <dsig:Signature> node with the mantadory <dsig:SignatureValue> 
+ * Creates new <dsig:Signature> node with the mandatory <dsig:SignatureValue> 
  * child. The application is responsible for inserting the returned node
  * in the XML document. 
  *

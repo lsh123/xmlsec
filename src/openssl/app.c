@@ -79,7 +79,8 @@ xmlSecOpenSSLAppShutdown(void) {
 
 xmlSecKeyPtr
 xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
-			    pem_password_cb *keyPwdCallback, int privateKey) {
+			    pem_password_cb *keyPwdCallback, 
+			    int privateKey) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data;
     EVP_PKEY *pKey = NULL;    

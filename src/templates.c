@@ -1300,7 +1300,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
  * Adds <dsig:Transform/> node (and the parent <dsig:Transforms/> node
  * if required) to the <dsig:RetrievalMethod/> node @retrMethod.
  *
- * Returns the pointer to the newly created <dsig:dsig:Transforms/> node or
+ * Returns the pointer to the newly created <dsig:Transforms/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1403,6 +1403,212 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
 	return(NULL);	        	
     }    
     return(encKeyNode);    
+}
+
+/***********************************************************************
+ *
+ * <dsig:X509Data> node
+ *
+ **********************************************************************/ 
+/**
+ * xmlSecTmplX509DataAddIssuerSerial:
+ * @x509DataNode: 	the pointer to <dsig:X509Data/> node.
+ * 
+ * Adds <dsig:X509IssuerSerial/> node to the given <dsig:X509Data/> node.
+ *
+ * Returns the pointer to the newly created <dsig:X509IssuerSerial/> node or
+ * NULL if an error occurs.
+ */
+
+xmlNodePtr 
+xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+
+    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial));
+	return(NULL);
+    }    
+    
+    return (cur);
+}
+
+/**
+ * xmlSecTmplX509DataAddSubjectName:
+ * @x509DataNode: 	the pointer to <dsig:X509Data/> node.
+ * 
+ * Adds <dsig:X509SubjectName/> node to the given <dsig:X509Data/> node.
+ *
+ * Returns the pointer to the newly created <dsig:X509SubjectName/> node or
+ * NULL if an error occurs.
+ */
+
+xmlNodePtr 
+xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+
+    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeX509SubjectName),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeX509SubjectName));
+	return(NULL);
+    }    
+    
+    return (cur);
+}
+
+/**
+ * xmlSecTmplX509DataAddSKI:
+ * @x509DataNode: 	the pointer to <dsig:X509Data/> node.
+ * 
+ * Adds <dsig:X509SKI/> node to the given <dsig:X509Data/> node.
+ *
+ * Returns the pointer to the newly created <dsig:X509SKI/> node or
+ * NULL if an error occurs.
+ */
+
+xmlNodePtr 
+xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+
+    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeX509SKI),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeX509SKI));
+	return(NULL);
+    }    
+    
+    return (cur);
+}
+
+
+/**
+ * xmlSecTmplX509DataAddCertificate:
+ * @x509DataNode: 	the pointer to <dsig:X509Data/> node.
+ * 
+ * Adds <dsig:X509Certificate/> node to the given <dsig:X509Data/> node.
+ *
+ * Returns the pointer to the newly created <dsig:X509Certificate/> node or
+ * NULL if an error occurs.
+ */
+
+xmlNodePtr 
+xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+
+    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeX509Certificate),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
+	return(NULL);
+    }    
+    
+    return (cur);
+}
+
+/**
+ * xmlSecTmplX509DataAddCRL:
+ * @x509DataNode: 	the pointer to <dsig:X509Data/> node.
+ * 
+ * Adds <dsig:X509CRL/> node to the given <dsig:X509Data/> node.
+ *
+ * Returns the pointer to the newly created <dsig:X509CRL/> node or
+ * NULL if an error occurs.
+ */
+
+xmlNodePtr 
+xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
+    xmlNodePtr cur;
+
+    xmlSecAssert2(x509DataNode != NULL, NULL);
+
+    cur = xmlSecFindChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeX509CRL),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
+    if(cur == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeX509CRL));
+	return(NULL);
+    }    
+    
+    return (cur);
 }
 
 /*************************************************************************

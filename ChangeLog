@@ -1,4 +1,10 @@
 2005-02-22  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/index.html docs/news.html include/xmlsec/templates.h
+	src/templates.c: added functions to create <X509Data/> node 
+	children in the signature template
+
+2005-02-22  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* src/bn.c src/mscrypto/crypto.c src/mscrypto/x509.c 
         src/mscrypto/x509vfy.c tests/testDSig.sh 

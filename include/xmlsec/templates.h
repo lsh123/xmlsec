@@ -110,7 +110,18 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNod
 								 const xmlChar *id,
 								 const xmlChar *type,
 								 const xmlChar *recipient);
-    
+
+/***********************************************************************
+ *
+ * <dsig:X509Data> node
+ *
+ **********************************************************************/ 
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddIssuerSerial	(xmlNodePtr x509DataNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSubjectName	(xmlNodePtr x509DataNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSKI		(xmlNodePtr x509DataNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCertificate	(xmlNodePtr x509DataNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCRL		(xmlNodePtr x509DataNode);
+
 /***********************************************************************
  *
  * <dsig:Transform> node

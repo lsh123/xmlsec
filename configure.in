@@ -897,7 +897,7 @@ AC_ARG_WITH(html-dir,           [  --with-html-dir=PATH     path to installed do
 if test "z$with_html_dir" != "z" ; then
     XMLSEC_DOCDIR=$with_html_dir
 else
-    XMLSEC_DOCDIR=$datadir/doc/xmlsec1
+    XMLSEC_DOCDIR='$(datadir)/doc/xmlsec1'
 fi
 
 AC_MSG_RESULT($XMLSEC_DOCDIR)

@@ -1,7 +1,8 @@
 #!/bin/sh
 
-binfolder=../apps
-topfolder=.
+topfolder=$1
+xmlsec_app=$2
+
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testKeys.$timestamp-$$.tmp
 logfile=/tmp/testKeys.$timestamp-$$.log
@@ -23,7 +24,7 @@ echo "--- testKeys started ($timestamp) ---"
 echo "--- testKeys started ($timestamp) ---" >> $logfile
 
 printf "    Creating new keys                                    "
-$binfolder/xmlsec keys \
+$xmlsec_app keys \
     --gen-hmac "test-hmac-sha1" \
     --gen-rsa "test-rsa" \
     --gen-dsa "test-dsa" \

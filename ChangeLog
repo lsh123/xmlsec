@@ -1,3 +1,10 @@
+Thu Jul 11 19:30:31 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* Makefile.am configure.in xmlsec.spec.in xmlsec.pc xmlsec.pc.in:
+	Add pkgconfig script
+	
+	* tests/Makefile.am tests/testDSig.sh tests/testEnc.sh tests/testKeys.sh:
+	more fixes for dist
+
 Thu Jul 11 17:17:22 2002 Aleksey Sanin  <aleksey@aleksey.com> 
 	* configure.in src/Makefile.am tests/Makefile.am: fixed
 	minor dist bugs

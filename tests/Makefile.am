@@ -1,6 +1,6 @@
 NULL =
 
-DEPS = $(top_builddir)/apps/xmlsec
+XMLSEC_APP = $(top_builddir)/apps/xmlsec
 
 EXTRA_DIST = \
 	testDSig.sh \
@@ -16,7 +16,7 @@ EXTRA_DIST = \
 	01-geuerp-xfilter2 \
 	$(NULL)
 
-check: $(DEPS)
+check: $(XMLSEC_APP)
 	@echo "-------------------------- ATTENTION -----------------------------------"
 	@echo "--- 1) Some of the following tests use resources located on external ---"
 	@echo "--- HTTP servers. If you have no Internet connection or the external ---"
@@ -26,15 +26,15 @@ check: $(DEPS)
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
 if XMLSEC_WITH_SKM_TEST
-	@$(top_srcdir)/tests/testKeys.sh
+	@$(top_srcdir)/tests/testKeys.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
 endif 	
 if XMLSEC_WITH_XMLDSIG_TEST	
-	@$(top_srcdir)/tests/testDSig.sh
+	@$(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
 endif	
 if XMLSEC_WITH_XMLENC_TEST
-	@$(top_srcdir)/tests/testEnc.sh
+	@$(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
 endif
 

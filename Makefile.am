@@ -16,8 +16,12 @@ EXTRA_DIST = \
 	xmlsec.spec.in \
 	xmlsec-config.in \
 	xmlsecConf.sh \
+	xmlsec.pc \
+	xmlsec.pc.in \
 	$(NULL)
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = xmlsec.pc
 
 api-doc:
 	@cd docs/api;make

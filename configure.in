@@ -145,7 +145,7 @@ OPENSSL_WITHOUT="no"
 OPENSSL_MIN_VERSION="0.9.6"
 OPENSSL_VERSION=""
 OPENSSL_PREFIX=""
-OPENSSL_CFLAG=""
+OPENSSL_CFLAGS=""
 OPENSSL_LIBS=""
 OPENSSL_LDADDS=""
 AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
@@ -468,6 +468,7 @@ Makefile
 xmlsecConf.sh
 xmlsec-config
 xmlsec.spec
+xmlsec.pc
 include/Makefile
 include/xmlsec/Makefile
 include/xmlsec/version.h

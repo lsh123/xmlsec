@@ -85,6 +85,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\strings.obj \
 	$(XMLSEC_INTDIR)\templates.obj \
 	$(XMLSEC_INTDIR)\transforms.obj \
+	$(XMLSEC_INTDIR)\x509.obj \
 	$(XMLSEC_INTDIR)\xkms.obj \
 	$(XMLSEC_INTDIR)\xmldsig.obj \
 	$(XMLSEC_INTDIR)\xmlenc.obj \
@@ -112,6 +113,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\strings.obj \
 	$(XMLSEC_INTDIR_A)\templates.obj \
 	$(XMLSEC_INTDIR_A)\transforms.obj \
+	$(XMLSEC_INTDIR_A)\x509.obj \
 	$(XMLSEC_INTDIR_A)\xkms.obj \
 	$(XMLSEC_INTDIR_A)\xmldsig.obj \
 	$(XMLSEC_INTDIR_A)\xmlenc.obj \

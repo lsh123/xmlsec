@@ -1,3 +1,11 @@
+8/4/2003
+       1.  NSS needs to provide a way to convert a DER integer string to
+           an ASCII decimal string. Once NSS is fixed, the function
+           xmlSecNssASN1IntegerWrite in src/nss/x509.c needs to be 
+           implemented. Updated the following related NSS & xmlsec bugs.
+	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=212864
+           xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118633
+
 7/28/2003
        1. RSA Encryption/Decryption using PKCS#1 v1.5 padding not currently
           exposed in NSS. This causes some tests to fail.

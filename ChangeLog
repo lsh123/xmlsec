@@ -1,3 +1,12 @@
+Mon Aug  4 19:39:52 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/Makefile.am include/xmlsec/x509.h src/Makefile.am 
+	src/x509.c src/openssl/x509.c win32/Makefile.msvc: moved code for 
+	reading X509Data node content from xmlsec-openssl to xmlsec-core
+	to allow sharing with xmlsec-nss
+	* src/nss/README src/nss/x509.c: added X509Data templates support
+	for xmslec-nss (bug #118636, based on patch from Tej)
+
 Mon 04 Aug 2003 04:06:02 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* docs: rebuilding docs to get nss api reference

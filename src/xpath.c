@@ -239,7 +239,8 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 			NULL,
 			"xmlXPathEvalExpression",
 			XMLSEC_ERRORS_R_XML_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"expr=%s", 
+			xmlSecErrorsSafeString(data->expr));
 	    return(NULL);
 	}
 	break;
@@ -250,7 +251,8 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
 			NULL,
 			"xmlXPtrEval",
 			XMLSEC_ERRORS_R_XML_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"expr=%s", 
+			xmlSecErrorsSafeString(data->expr));
 	    return(NULL);
 	}
 	break;

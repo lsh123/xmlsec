@@ -23,11 +23,10 @@ xmlsec1_SOURCES = \
     cmdline.c cmdline.h \
     $(NULL)
 
-if XMLSEC_DYNAMIC_LINKING
-xmlsec1_LDFLAGS = 
-else 
-xmlsec1_LDFLAGS = -static
-endif
+
+xmlsec1_LDFLAGS = \
+    @XMLSEC_STATIC_BINARIES@ \
+    $(NULL)
 
 xmlsec1_LDADD = \
     $(DEPS) \

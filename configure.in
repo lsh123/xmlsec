@@ -189,6 +189,7 @@ XMLSEC_CRYPTO_LIST=""
 XMLSEC_CRYPTO_DISABLED_LIST=""
 XMLSEC_CRYPTO_LIB=""
 XMLSEC_CRYPTO_CFLAGS=""
+XMLSEC_CRYPTO_CFLAGS_APP=""
 XMLSEC_CRYPTO_LIBS=""
 XMLSEC_CRYPTO_LDADDS=""
 
@@ -198,14 +199,14 @@ dnl ==========================================================================
 ac_openssl_lib_dir="/usr/local/lib /usr/lib /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
 ac_openssl_inc_dir="/usr/local/include /usr/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
 
-XMLSEC_OPENSSL_DEFINES=""
 OPENSSL_WITHOUT="yes"
 OPENSSL_MIN_VERSION="0.9.6"
 OPENSSL_VERSION=""
 OPENSSL_PREFIX=""
-OPENSSL_CFLAGS=""
+OPENSSL_CFLAGS="-DXMLSEC_CRYPTO=\\\"openssl\\\" -DXMLSEC_CRYPTO_OPENSSL=1"
 OPENSSL_LIBS=""
 OPENSSL_LDADDS=""
+OPENSSL_CRYPTO_LIB="xmlsec1-openssl"
 AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
 AC_ARG_WITH(openssl, [  --with-openssl=[PFX]      openssl location])
 if test "$with_openssl" = "no" ; then
@@ -215,7 +216,7 @@ if test "$with_openssl" = "no" ; then
 else
     if test "$with_openssl" != "" ; then
 	OPENSSL_PREFIX=$with_openssl
-	OPENSSL_CFLAGS="-I$OPENSSL_PREFIX/include"
+	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$OPENSSL_PREFIX/include"
 	OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
 	OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
 	OPENSSL_INCLUDES_FOUND="yes"
@@ -227,9 +228,9 @@ else
 	    if test -f $dir/openssl/ssl.h; then
 		dnl do not add -I/usr/include because compiler does it anyway
 		if test "$dir" = "/usr/include" ; then
-		    OPENSSL_CFLAGS=""
+		    OPENSSL_CFLAGS="$OPENSSL_CFLAGS "
 		else
-		    OPENSSL_CFLAGS="-I$dir"
+		    OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$dir"
 		fi
 		OPENSSL_INCLUDES_FOUND="yes"
 		break
@@ -276,7 +277,7 @@ else
 	    OPENSSL_VERSION="0.9.7"
 	],[
 	    OPENSSL_VERSION="0.9.6"
-	    XMLSEC_OPENSSL_DEFINES="$XMLSEC_OPENSSL_DEFINES -DXMLSEC_OPENSSL_096=1"
+	    OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_096=1"
 	])    
 	CPPFLAGS=$OLD_CPPFLAGS
 	OPENSSL_WITHOUT="no"
@@ -285,8 +286,8 @@ else
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="openssl"
-    	    XMLSEC_CRYPTO_LIB="xmlsec1-openssl"
-	    XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
+    	    XMLSEC_CRYPTO_LIB="$OPENSSL_CRYPTO_LIB"
+	    XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS"
 	    XMLSEC_CRYPTO_LIBS="$OPENSSL_LIBS"
 	    XMLSEC_CRYPTO_LDADDS="$OPENSSL_LDADDS"
 	fi	
@@ -305,20 +306,21 @@ AC_SUBST(OPENSSL_PREFIX)
 AC_SUBST(OPENSSL_CFLAGS)
 AC_SUBST(OPENSSL_LIBS)
 AC_SUBST(OPENSSL_LDADDS)
-AC_SUBST(XMLSEC_OPENSSL_DEFINES)
+AC_SUBST(OPENSSL_CRYPTO_LIB)
 
 dnl ==========================================================================
 dnl See if we can find GnuTLS
 dnl ==========================================================================
-XMLSEC_GNUTLS_DEFINES=""
 GNUTLS_CONFIG="libgnutls-config"
 GNUTLS_WITHOUT="no"
 GNUTLS_MIN_VERSION="0.8.1"
 GNUTLS_VERSION=""
 GNUTLS_PREFIX=""
-GNUTLS_CFLAGS=""
+GNUTLS_CFLAGS="-DXMLSEC_CRYPTO=\\\"gnutls\\\" -DXMLSEC_CRYPTO_GNUTLS=1"
 GNUTLS_LIBS=""
 GNUTLS_LDADDS=""
+GNUTLS_CRYPTO_LIB="xmlsec1-gnutls"
+
 AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
 AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]       gnutls location])
 if test "$with_gnutls" = "no" ; then
@@ -341,8 +343,8 @@ else
 	minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
 	if test "$vers" -ge "$minvers"
 	then
-    	    GNUTLS_LIBS="`$GNUTLS_CONFIG --libs`"
-	    GNUTLS_CFLAGS="`$GNUTLS_CONFIG --cflags`"
+	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS `$GNUTLS_CONFIG --cflags`"
+    	    GNUTLS_LIBS="$GNUTLS_LIBS `$GNUTLS_CONFIG --libs`"
 	    GNUTLS_VERSION="`$GNUTLS_CONFIG --version`"
 	else
     	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $PACKAGE)
@@ -356,8 +358,8 @@ else
 	if test "z$XMLSEC_CRYPTO" = "z"
 	then
 	    XMLSEC_CRYPTO="gnutls"
-    	    XMLSEC_CRYPTO_LIB="xmlsec1-gnutls"
-	    XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
+    	    XMLSEC_CRYPTO_LIB="$GNUTLS_CRYPTO_LIB"
+	    XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS"
 	    XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
 	    XMLSEC_CRYPTO_LDADDS="$GNUTLS_LDADDS"
 	fi	
@@ -376,7 +378,7 @@ AC_SUBST(GNUTLS_PREFIX)
 AC_SUBST(GNUTLS_CFLAGS)
 AC_SUBST(GNUTLS_LIBS)
 AC_SUBST(GNUTLS_LDADDS)
-AC_SUBST(XMLSEC_GNUTLS_DEFINES)
+AC_SUBST(GNUTLS_CRYPTO_LIB)
 
 dnl ==========================================================================
 dnl See if we can find NSS and NSPR
@@ -397,17 +399,17 @@ dnl   2 overrides 1
 dnl
 dnl ==========================================================================
     
-XMLSEC_NSS_DEFINES=""
 NSS_WITHOUT="no"
 NSS_MIN_VERSION="3.2"
 NSS_VERSION=""
-NSS_CFLAGS=""
+NSS_CFLAGS="-DXMLSEC_CRYPTO=\\\"nss\\\" -DXMLSEC_CRYPTO_NSS=1"
 NSS_LIBS=""
 NSS_LDADDS=""
 NSS_PREFIX=""
 NSPR_PREFIX=""
 NSS_LIBS_LIST="-lnss3"
 NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
+NSS_CRYPTO_LIB="xmlsec1-nss"
 
 dnl if nss is disabled, bail out early
 AC_ARG_WITH(nss, [  --with-nss=[PFX]          nss location])
@@ -518,12 +520,12 @@ else
 
     if test "$with_nss" != "" ; then
        NSS_PREFIX="$with_nss"
-       NSS_CFLAGS="-I$with_nss/include"
+       NSS_CFLAGS="$NSS_CFLAGS -I$with_nss/include"
        if test "$with_gnu_ld" = yes
        then
-          NSS_LIBS="-Wl,-rpath-link -Wl,$with_nss/lib -L$with_nss/lib $NSS_LIBS_LIST"
+          NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$with_nss/lib -L$with_nss/lib $NSS_LIBS_LIST"
        else
-          NSS_LIBS="-L$with_nss/lib $NSS_LIBS_LIST"
+          NSS_LIBS="$NSS_LIBS -L$with_nss/lib $NSS_LIBS_LIST"
        fi
        NSS_LDADDS="-L$with_nss/lib $NSS_LIBS_LIST"
        NSS_INCLUDES_FOUND="yes"
@@ -535,9 +537,9 @@ else
           if test -f $dir/nss/nss.h; then
              dnl do not add -I/usr/include because compiler does it anyway
              if test "$dir" = "/usr/include" ; then
-                NSS_CFLAGS=""
+                NSS_CFLAGS="$NSS_CFLAGS"
              else
-                NSS_CFLAGS="-I$dir/nss"
+                NSS_CFLAGS="$NSS_CFLAGS -I$dir/nss"
              fi
              NSS_INCLUDES_FOUND="yes"
              NSS_NSS_H="$dir/nss/nss.h"
@@ -613,8 +615,8 @@ else
        if test "z$XMLSEC_CRYPTO" = "z"
        then
          XMLSEC_CRYPTO="nss"
-         XMLSEC_CRYPTO_LIB="xmlsec1-nss"
-         XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS -DXMLSEC_CRYPTO_NSS=1"
+         XMLSEC_CRYPTO_LIB="$NSS_CRYPTO_LIB"
+         XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS"
          XMLSEC_CRYPTO_LIBS="$NSS_LIBS"
          XMLSEC_CRYPTO_LDADDS="$NSS_LDADDS"
        fi
@@ -634,7 +636,7 @@ AC_SUBST(NSS_LIBS_LIST)
 AC_SUBST(NSPR_LIBS_LIST)
 AC_SUBST(NSS_PREFIX)
 AC_SUBST(NSPR_PREFIX)
-AC_SUBST(XMLSEC_NSS_DEFINES)
+AC_SUBST(NSS_CRYPTO_LIB)
 
 dnl ==========================================================================
 dnl Do we have a crypto library?
@@ -891,7 +893,7 @@ AC_SUBST(XMLSEC_STATIC_BINARIES)
 dnl ==========================================================================
 dnl Final steps: xmlsec config
 dnl ==========================================================================
-XMLSEC_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1 $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
+XMLSEC_CFLAGS="$XMLSEC_DEFINES -I${includedir}/xmlsec1 $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS"
 XMLSEC_LIBS="-L${libdir} -l$XMLSEC_CRYPTO_LIB -lxmlsec1 $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
 
 AC_SUBST(XMLSEC_CFLAGS)

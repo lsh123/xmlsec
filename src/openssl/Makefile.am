@@ -8,7 +8,6 @@ INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(XMLSEC_OPENSSL_DEFINES) \
 	$(OPENSSL_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \

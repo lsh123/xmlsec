@@ -1,3 +1,10 @@
+Tue May 27 20:12:41 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in xmlsec-config.in xmlsecConf.sh.in
+	src/gnutls/Makefile.am src/nss/Makefile.am src/openssl/Makefile.am:
+	change xmlsec-config script to let user specify crypto engine
+	(requested by John Belmonte)
+
 Sun May 25 22:01:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c docs/xmlsec-man.html man/xmlsec1-config.1 man/xmlsec1.1: 

@@ -39,6 +39,15 @@ const xmlChar xmlSecHrefAes192Cbc[]	= "http://www.w3.org/2001/04/xmlenc#aes192-c
 const xmlChar xmlSecNameAes256Cbc[]	= "aes256-cbc";
 const xmlChar xmlSecHrefAes256Cbc[]	= "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
 
+const xmlChar xmlSecNameKWAes128[]	= "kw-aes128";
+const xmlChar xmlSecHrefKWAes128[]	= "http://www.w3.org/2001/04/xmlenc#kw-aes128";
+
+const xmlChar xmlSecNameKWAes192[]	= "kw-aes192";
+const xmlChar xmlSecHrefKWAes192[]	= "http://www.w3.org/2001/04/xmlenc#kw-aes192";
+
+const xmlChar xmlSecNameKWAes256[]	= "kw-aes256";
+const xmlChar xmlSecHrefKWAes256[]	= "http://www.w3.org/2001/04/xmlenc#kw-aes256";
+
 /*************************************************************************
  *
  * DES strings

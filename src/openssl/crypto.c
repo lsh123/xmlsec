@@ -250,19 +250,19 @@ xmlSecOpenSSLTransformsInit(void) {
 	return(-1);
     }
 
-    if(xmlSecTransformRegister(xmlSecKWAes128) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes128Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes128 key wrapper transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecKWAes192) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes192Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes192 key wrapper transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecKWAes256) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformKWAes256Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes256 key wrapper transform");

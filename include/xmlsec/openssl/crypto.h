@@ -63,26 +63,31 @@ XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformAes192CbcGetKlass(void);
 #define xmlSecOpenSSLTransformAes256CbcId	xmlSecOpenSSLTransformAes256CbcGetKlass()
 XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformAes256CbcGetKlass(void);
 
+/**
+ * xmlSecOpenSSLTransformKWAes128Id:
+ * 
+ * The AES 128 key wrap transform id.
+ */
+#define xmlSecOpenSSLTransformKWAes128Id	xmlSecOpenSSLTransformKWAes128GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformKWAes128GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformKWAes192Id:
+ * 
+ * The AES 192 key wrap transform id.
+ */
+#define xmlSecOpenSSLTransformKWAes192Id	xmlSecOpenSSLTransformKWAes192GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformKWAes192GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformKWAes256Id:
+ * 
+ * The AES 256 key wrap transform id.
+ */
+#define xmlSecOpenSSLTransformKWAes256Id	xmlSecOpenSSLTransformKWAes256GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformKWAes256GetKlass(void);
 
 
-/**
- * xmlSecKWAes128:
- * 
- * The AES with 128 bits key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes128;
-/**
- * xmlSecKWAes192:
- * 
- * The AES with 192 bits key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes192;
-/**
- * xmlSecKWAes256:
- * 
- * The AES with 256 bits key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes256;
 #endif /* XMLSEC_NO_AES */
 
 /********************************************************************
@@ -110,11 +115,12 @@ XMLSEC_EXPORT	int		xmlSecOpenSSLKeyDataDesValueSet		(xmlSecKeyDataPtr data,
 XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformDes3CbcGetKlass	(void);
 
 /**
- * xmlSecKWDes3Cbc:
+ * xmlSecOpenSSLTransformKWDes3Id:
  * 
- * The DES3-CBC key wrap transform id.
+ * The DES3 CBC cipher transform id.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWDes3Cbc;
+#define xmlSecOpenSSLTransformKWDes3Id		xmlSecOpenSSLTransformKWDes3GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass	(void);
 #endif /* XMLSEC_NO_DES */
 
 /********************************************************************

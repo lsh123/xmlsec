@@ -28,6 +28,15 @@ api-doc:
 api-doc-clean:
 	@cd docs/api;make clean
 
+check-km:
+	@cd tests;make check-km
+
+check-dsig:
+	@cd tests;make check-dsig
+
+check-enc:
+	@cd tests;make check-enc
+
 memcheck:
 	@export DEBUG_MEMORY=1;make check
 

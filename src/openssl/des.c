@@ -25,14 +25,14 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/buffered.h> 
-#include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
 #define XMLSEC_OPENSSL_DES3_KEY_LENGTH				24
+#define XMLSEC_OPENSSL_DES3_IV_LENGTH				8
+#define XMLSEC_OPENSSL_DES3_BLOCK_LENGTH			8
 
 /**************************************************************************
  *
@@ -399,17 +399,22 @@ static int  	xmlSecOpenSSLKWDes3Encode			(const unsigned char *key,
 								 size_t keySize,
 								 const unsigned char *in,
 								 size_t inSize,
-								 unsigned char *out);
+								 unsigned char *out,
+								 size_t outSize);
 static int  	xmlSecOpenSSLKWDes3Decode			(const unsigned char *key,
 							         size_t keySize,
 								 const unsigned char *in,
 								 size_t inSize,
-								 unsigned char *out);
+								 unsigned char *out,
+								 size_t outSize);
 static int	xmlSecOpenSSLKWDes3Encrypt			(const unsigned char *key, 
+								 size_t keySize,
 						    		 const unsigned char *iv,
+								 size_t ivSize,
 								 const unsigned char *in, 
 								 size_t inSize,
-								 unsigned char *out, 
+								 unsigned char *out,
+								 size_t outSize, 
 								 int enc);
 static int 	xmlSecOpenSSLKWDes3BufferReverse		(unsigned char *buf, 
 								 size_t size);
@@ -539,16 +544,111 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int 
 xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBufferPtr in, out, key;
+    size_t inSize, outSize, keySize;
+    int ret;
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id), -1);
-    xmlSecAssert2(xmlSecOpenSSLKWDes3GetKey(transform) != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
+
+    key = xmlSecOpenSSLKWDes3GetKey(transform);
+    xmlSecAssert2(key != NULL, -1);
+
+    keySize = xmlSecBufferGetSize(key);
+    xmlSecAssert2(keySize == XMLSEC_OPENSSL_DES3_KEY_LENGTH, -1);
     
-    /* TODO */    
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+    inSize = xmlSecBufferGetSize(in);
+    outSize = xmlSecBufferGetSize(out);    
+    xmlSecAssert2(outSize == 0, -1);
+    
+    if(transform->status == xmlSecTransformStatusNone) {
+	transform->status = xmlSecTransformStatusWorking;
+    } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+	/* just do nothing */
+    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+	if((inSize % XMLSEC_OPENSSL_DES3_BLOCK_LENGTH) != 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_SIZE,
+			"%d bytes - not %d bytes aligned", 
+			inSize, XMLSEC_OPENSSL_DES3_BLOCK_LENGTH);
+	    return(-1);
+	}	
+	
+	if(transform->encode) {
+	    /* the encoded key might be 16 bytes longer plus one block just in case */
+	    outSize = inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH +
+			       XMLSEC_OPENSSL_DES3_BLOCK_LENGTH +
+			       XMLSEC_OPENSSL_DES3_BLOCK_LENGTH;
+	} else {
+	    outSize = inSize + XMLSEC_OPENSSL_DES3_BLOCK_LENGTH;
+	}
+
+	ret = xmlSecBufferSetMaxSize(out, outSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferSetMaxSize(%d)", outSize);
+	    return(-1);
+	}
+
+	if(transform->encode) {
+	    ret = xmlSecOpenSSLKWDes3Encode(xmlSecBufferGetData(key), keySize,
+					    xmlSecBufferGetData(in), inSize,
+					    xmlSecBufferGetData(out), outSize);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecOpenSSLKWDes3Encode");
+		return(-1);
+	    }
+	    outSize = ret;
+	} else {
+	    ret = xmlSecOpenSSLKWDes3Decode(xmlSecBufferGetData(key), keySize,
+					    xmlSecBufferGetData(in), inSize,
+					    xmlSecBufferGetData(out), outSize);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecOpenSSLKWDes3Decode");
+		return(-1);
+	    }
+	    outSize = ret;
+	}
+
+	ret = xmlSecBufferSetSize(out, outSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferSetSize(%d)", outSize);
+	    return(-1);
+	}
+	
+	ret = xmlSecBufferRemoveHead(in, inSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferRemoveHead(%d)", inSize);
+	    return(-1);
+	}
+	
+	transform->status = xmlSecTransformStatusFinished;
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+	/* the only way we can get here is if there is no input */
+	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+    } else {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "invalid transform status %d", transform->status);
+	return(-1);
+    }
     return(0);
 }
 
-static unsigned char xmlSecOpenSSLKWDes3Iv[] = { 0x4a, 0xdd, 0xa2, 0x2c, 
-					  0x79, 0xe8, 0x21, 0x05 };
+static unsigned char xmlSecOpenSSLKWDes3Iv[XMLSEC_OPENSSL_DES3_IV_LENGTH] = { 
+    0x4a, 0xdd, 0xa2, 0x2c, 0x79, 0xe8, 0x21, 0x05 
+};
 /**
  * CMS Triple DES Key Wrap
  *
@@ -575,9 +675,9 @@ static unsigned char xmlSecOpenSSLKWDes3Iv[] = { 0x4a, 0xdd, 0xa2, 0x2c,
 static int  	
 xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
 			const unsigned char *in, size_t inSize,
-			unsigned char *out) {
+			unsigned char *out, size_t outSize) {
     unsigned char sha1[SHA_DIGEST_LENGTH];    
-    unsigned char iv[8];
+    unsigned char iv[XMLSEC_OPENSSL_DES3_IV_LENGTH];
     size_t s;    
     int ret;
 
@@ -586,6 +686,7 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= inSize + 16, -1);
 
     /* step 2: calculate sha1 and CMS */
     if(SHA1(in, inSize, sha1) == NULL) {
@@ -596,10 +697,11 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
     }
 
     /* step 3: construct WKCKS */
-    memcpy(out + inSize, sha1, 8);
+    memcpy(out, in, inSize);
+    memcpy(out + inSize, sha1, XMLSEC_OPENSSL_DES3_BLOCK_LENGTH);
     
     /* step 4: generate random iv */
-    ret = RAND_bytes(iv, 8);
+    ret = RAND_bytes(iv, XMLSEC_OPENSSL_DES3_IV_LENGTH);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -608,7 +710,10 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
     }	
 
     /* step 5: first encryption, result is TEMP1 */
-    ret = xmlSecOpenSSLKWDes3Encrypt(key, iv, out, inSize + 8, out, 1);
+    ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
+				    iv, XMLSEC_OPENSSL_DES3_IV_LENGTH, 
+				    out, inSize + XMLSEC_OPENSSL_DES3_BLOCK_LENGTH, 
+				    out, outSize, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -617,9 +722,10 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
     }
 
     /* step 6: construct TEMP2=IV || TEMP1 */
-    memmove(out + 8, out, inSize + 8);
-    memcpy(out, iv, 8);
-    s = ret + 8; 
+    memmove(out + XMLSEC_OPENSSL_DES3_IV_LENGTH, out, 
+	    inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH);
+    memcpy(out, iv, XMLSEC_OPENSSL_DES3_IV_LENGTH);
+    s = ret + XMLSEC_OPENSSL_DES3_IV_LENGTH; 
     
     /* step 7: reverse octets order, result is TEMP3 */
     ret = xmlSecOpenSSLKWDes3BufferReverse(out, s);
@@ -631,7 +737,9 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
     }
 
     /* step 8: second encryption with static IV */
-    ret = xmlSecOpenSSLKWDes3Encrypt(key, xmlSecOpenSSLKWDes3Iv, out, s, out, 1);
+    ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
+				    xmlSecOpenSSLKWDes3Iv, XMLSEC_OPENSSL_DES3_IV_LENGTH,
+				    out, s, out, outSize, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -671,7 +779,7 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
 static int  	
 xmlSecOpenSSLKWDes3Decode(const unsigned char *key, size_t keySize,
 			const unsigned char *in, size_t inSize,
-			unsigned char *out) {
+			unsigned char *out, size_t outSize) {
     unsigned char sha1[SHA_DIGEST_LENGTH];    
     size_t s;    
     int ret;
@@ -681,10 +789,13 @@ xmlSecOpenSSLKWDes3Decode(const unsigned char *key, size_t keySize,
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= inSize, -1);
 
     /* step 2: first decryption with static IV, result is TEMP3 */
-    ret = xmlSecOpenSSLKWDes3Encrypt(key, xmlSecOpenSSLKWDes3Iv, in, inSize, out, 0);
-    if((ret < 0) || (ret < 8)) {
+    ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
+				    xmlSecOpenSSLKWDes3Iv, XMLSEC_OPENSSL_DES3_IV_LENGTH,
+				    in, inSize, out, outSize, 0);
+    if((ret < 0) || (ret < XMLSEC_OPENSSL_DES3_IV_LENGTH)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLKWDes3Encrypt - %d", ret);
@@ -702,47 +813,55 @@ xmlSecOpenSSLKWDes3Decode(const unsigned char *key, size_t keySize,
     }
 
     /* steps 4 and 5: get IV and decrypt second time, result is WKCKS */
-    ret = xmlSecOpenSSLKWDes3Encrypt(key, out, out + 8, s - 8, out, 0);
-    if((ret < 0) || (ret < 8)) {
+    ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
+				     out, XMLSEC_OPENSSL_DES3_IV_LENGTH,
+				     out + XMLSEC_OPENSSL_DES3_IV_LENGTH, 
+				     s - XMLSEC_OPENSSL_DES3_IV_LENGTH, 
+				     out, outSize, 0);
+    if((ret < 0) || (ret < XMLSEC_OPENSSL_DES3_BLOCK_LENGTH)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecOpenSSLKWDes3Encrypt - %d", ret);
 	return(-1);	    
     }
-    s = ret; 
+    s = ret - XMLSEC_OPENSSL_DES3_BLOCK_LENGTH; 
     
     /* steps 6 and 7: calculate SHA1 and validate it */
-    if(SHA1(out, s - 8, sha1) == NULL) {
+    if(SHA1(out, s, sha1) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "SHA1");
 	return(-1);	    
     }
 
-    if(memcmp(sha1, out + s - 8, 8) != 0) {
+    if(memcmp(sha1, out + s, XMLSEC_OPENSSL_DES3_BLOCK_LENGTH) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "SHA1 does not match");
 	return(-1);	    
     }
     
-    return(s - 8);
+    return(s);
 }
 
 static int
-xmlSecOpenSSLKWDes3Encrypt(const unsigned char *key, const unsigned char *iv,
-                const unsigned char *in, size_t inSize,
-	        unsigned char *out, int enc) {
+xmlSecOpenSSLKWDes3Encrypt(const unsigned char *key, size_t keySize,
+			   const unsigned char *iv, size_t ivSize,
+            		   const unsigned char *in, size_t inSize,
+	        	   unsigned char *out, size_t outSize, int enc) {
     EVP_CIPHER_CTX cipherCtx;
     int updateLen;
     int finalLen;
     int ret;
     
     xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize == (size_t)EVP_CIPHER_key_length(EVP_des_ede3_cbc()), -1);
     xmlSecAssert2(iv != NULL, -1);
+    xmlSecAssert2(ivSize == (size_t)EVP_CIPHER_iv_length(EVP_des_ede3_cbc()), -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= inSize, -1);
     
     EVP_CIPHER_CTX_init(&cipherCtx);
     ret = EVP_CipherInit(&cipherCtx, EVP_des_ede3_cbc(), key, iv, enc);  

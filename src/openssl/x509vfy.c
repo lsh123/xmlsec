@@ -857,6 +857,7 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 	if(len > 0) {
 	    ++str; --len;
 	    if((*str) == '\"') {
+		++str; --len;
 		valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len, 
 					value, sizeof(value), '"', 1);	
 		if(valueLen < 0) {
@@ -868,6 +869,20 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 		    X509_NAME_free(nm);
 		    return(NULL);
     		}
+		
+		/* skip quote */
+		if((len <= 0) || ((*str) != '\"')) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				NULL,
+				NULL,
+				XMLSEC_ERRORS_R_INVALID_DATA,
+				"quote is expected:%s",
+				xmlSecErrorsSafeString(str));
+		    X509_NAME_free(nm);
+		    return(NULL);
+		}
+                ++str; --len;
+
 		/* skip spaces before comma or semicolon */
 		while((len > 0) && isspace(*str)) {
 		    ++str; --len;
@@ -877,7 +892,8 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
 				NULL,
 				NULL,
 				XMLSEC_ERRORS_R_INVALID_DATA,
-				"comma is expected");
+				"comma is expected:%s",
+				xmlSecErrorsSafeString(str));
 		    X509_NAME_free(nm);
 		    return(NULL);
 		}

@@ -1,3 +1,8 @@
+2004-10-14  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/openssl/x509vfy.c: fixed bug #155329 (parsing quoted values
+    	in the certificate subject)
+
 2004-09-18  Aleksey Sanin  <aleksey@aleksey.com>
 	* config.h.in configure.in inlude/xmlsec/private.h src/xmltree.c:
 	use xmlParseInNodeContext function to parse encrypted text in 

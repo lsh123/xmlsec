@@ -1,3 +1,7 @@
+Mon Feb  9 08:54:50 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xmltree.c: allow decryption of an empty node
+
 Mon Jan 26 11:48:42 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in docs/download.html docs/index.html docs/news.html

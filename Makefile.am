@@ -15,6 +15,9 @@ DISTCLEANFILES = \
 	xmlsec1.pc \
 	xmlsec1-config \
 	xmlsec1.spec \
+	stamp-h2 \
+	stamp-h3 \
+	stamp-h4 \
 	$NULL
 
 EXTRA_DIST = \
@@ -61,16 +64,16 @@ check-info:
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
 check-km: $(TEST_APP)
-	@(cd $(abs_top_srcdir);\
-	$(SHELL) ./tests/testKeys.sh ./tests $(abs_top_builddir)/$(TEST_APP) der)
+	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir); \
+	$(SHELL) ./tests/testKeys.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der)
 
 check-dsig: $(TEST_APP)
-	@(cd $(abs_top_srcdir);\
-	$(SHELL) ./tests/testDSig.sh ./tests $(abs_top_builddir)/$(TEST_APP) der pkcs8)
+	@(ABS_BUILDDIR=`pwd`; cd $(top_srcdir); \
+	$(SHELL) ./tests/testDSig.sh ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der pkcs8)
 
 check-enc: $(TEST_APP)
-	@(cd $(abs_top_srcdir);\
-	$(SHELL) ./tests/testEnc.sh ./tests $(abs_top_builddir)/$(TEST_APP) der pkcs8)
+	@(ABS_BUILDDIR="`pwd`"; cd $(top_srcdir); \
+	$(SHELL) ./tests/testEnc.sh ./tests $$ABS_BUILDDIR/$(TEST_APP) der pkcs8)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

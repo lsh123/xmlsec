@@ -137,7 +137,43 @@
       function returns 0 <b>and</b> the <code>result</code> member
       of the returned <code>xmlSecDSigResult</code> structure is equal
       to <code>xmlSecTransformStatusOk</code>.
-      
+      <h4>3.2. I am trying to sign an XML document and I have a warning
+      about "empty nodes set". Should I worry about this?</h4>
+      Most likely <b>yes</b>. When it's not an error from specification
+      point of view, I can hardly imagine a real world case that 
+      requires signing an empty nodes set (i.e. signing an empty string).
+      Most likely, you have this error because you are trying to 
+      use ID attribute and you do not provide a DTD for the document.
+      For example, the following Reference element:
+        <blockquote><code>
+	  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;&gt;<br>
+	  &lt;Root&gt;<br>
+	  &nbsp;&nbsp;&lt;Data Id=&quot;1234&quot;&gt;<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;The data I want to sign<br>
+	  &nbsp;&nbsp;&lt;/Data&gt;<br>
+	  &nbsp;&nbsp;&lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+	  &nbsp;&nbsp;...<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;&lt;Reference URI=&quot;#1234&quot;&gt;<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/Reference&gt;<br>
+	  &nbsp;&nbsp;...<br>
+	  &nbsp;&nbsp;&lt;/Signature&gt;<br>
+	  &lt;/Root&gt;<br>
+	</code></blockquote>
+      always results in an empty nodes set (an an empty string signed!) unless
+      you have a DTD that declares <code>Id</code> attribute of the 
+      <code>Data</code> element to be an ID attribute:
+        <blockquote><code>
+	&lt;!DOCTYPE test [<br>
+	&nbsp;&lt;!ATTLIST Data Id ID #IMPLIED&gt;<br>
+	]&gt;<br>
+	</code></blockquote>
+      If you are using XML Security Library in your application (not the xmlsec
+      command line utility!) then you can do a "hack" and tell LibXML2 (and
+      XMLSec) which attributes are ID attributes by calling <code>xmlAddID</code>
+      function. However, this might make you signature non-interoperable
+      with other XMLDSig implementations.
+      <p>	  
       <p><a href="bugs.html">Aleksey Sanin</a></p>
       </td>
   </tr>

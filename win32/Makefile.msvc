@@ -263,8 +263,8 @@ LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
 
 
 
-SOLIBS = $(LIBS) libxml2.lib $(XMLSEC_CRYPTO_SOLIBS)
-ALIBS = $(LIBS) libxml2_a.lib $(XMLSEC_CRYPTO_ALIBS)
+SOLIBS = $(LIBS) libxml2.lib 
+ALIBS = $(LIBS) libxml2_a.lib 
 !if "$(WITH_ICONV)" == "1"
 SOLIBS = $(SOLIBS) iconv.lib
 ALIBS = $(ALIBS) iconv_a.lib
@@ -277,10 +277,10 @@ ALIBS = $(ALIBS) libxslt_a.lib
 # XmlSec and friends executables.
 !if "$(STATIC)" == "1"
 APPS = $(BINDIR)\xmlseca.exe
-APPLIBS = $(ALIBS) 
+APPLIBS = $(ALIBS) $(XMLSEC_CRYPTO_ALIBS)
 !else
 APPS = $(BINDIR)\xmlsec.exe
-APPLIBS = $(SOLIBS)
+APPLIBS = $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 !endif
 
 all : xmlsec xmlseca apps
@@ -394,7 +394,7 @@ $(BINDIR)\$(XMLSEC_A) : $(BINDIR) $(XMLSEC_OBJS_A)
 $(BINDIR)\$(XMLSEC_CRYPTO_SO) : $(BINDIR) $(XMLSEC_CRYPTO_OBJS)
 	$(LD) $(LDFLAGS) /DLL /VERSION:$(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR) \
 		/IMPLIB:$(BINDIR)\$(XMLSEC_CRYPTO_IMP) /OUT:$(BINDIR)\$(XMLSEC_CRYPTO_SO) \
-		$(XMLSEC_CRYPTO_OBJS) $(XMLSEC_IMP) $(SOLIBS)
+		$(XMLSEC_CRYPTO_OBJS) $(XMLSEC_IMP) $(SOLIBS) $(XMLSEC_CRYPTO_SOLIBS)
 
 # Creates the xmlsec-crypto archive.
 $(BINDIR)\$(XMLSEC_CRYPTO_A) : $(BINDIR) $(XMLSEC_CRYPTO_OBJS_A)

@@ -1,0 +1,41 @@
+README
+
+1. Files list
+
+ cakey.pem	Root CA private key
+ cacert.pem  	Root CA
+ ca2key.pem	Second-level CA private key
+ ca2cert.pem 	Second-level CA
+ dsakey.pem	DSA private key
+ dsacert.pem 	DSA privte key cert
+ rsakey.pem	RSA private key
+ rsacert.pem 	RSA privte key cert
+ hmackey.bin	HMAC key ('secret')
+
+2. How certificates were generated:
+
+ A. Create new CA 
+    > CA.pl -newca
+    > cp ./demoCA/cacert.pem .
+    > cp ./demoCA/private/cakey.pem .
+    > openssl x509 -text -in cacert.pem
+
+ B. Generate RSA key and second level CA
+    > openssl genrsa -out ca2key.pem
+    > openssl req -new -key ca2key.pem -out ca2req.pem
+    > openssl ca -cert cacert.pem -keyfile cakey.pem \
+	    -out ca2cert.pem -infiles ca2req.pem
+    > openssl verify -CAfile cacert.pem ca2cert.pem
+
+ C. Sign DSA key with second level CA
+    > openssl req -new -key dsakey.pem -out dsareq.pem
+    > openssl ca -cert ca2cert.pem -keyfile ca2key.pem \
+	    -out dsacert.pem -infiles dsareq.pem
+    > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
+
+ D. Sign RSA key with second level CA
+    > openssl req -new -key rsakey.pem -out rsareq.pem
+    > openssl ca -cert ca2cert.pem -keyfile ca2key.pem \
+	    -out rsacert.pem -infiles rsareq.pem
+    > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
+

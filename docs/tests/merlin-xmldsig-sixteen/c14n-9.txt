@@ -1,0 +1,4 @@
+<Reference xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:foo="http://www.usps.gov/foo" Id="reference-1" Type="http://www.w3.org/2000/09/xmldsig#Reference" URI="#manifest-reference-1">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>7eI/P8mppgkqXqW0+at2UGj06qs=</DigestValue>
+        </Reference>

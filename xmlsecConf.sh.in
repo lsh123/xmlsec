@@ -1,0 +1,8 @@
+#
+# Configuration file for using the XML library in GNOME applications
+#
+XMLSEC_LIBDIR="@XMLSEC_LIBDIR@"
+XMLSEC_LIBS="@XMLSEC_LIBS@"
+XMLSEC_INCLUDEDIR="@XMLSEC_INCLUDEDIR@"
+MODULE_VERSION="xmlsec-@VERSION@"
+

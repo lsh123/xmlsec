@@ -1,0 +1,124 @@
+<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:foo="http://www.usps.gov/foo">
+        <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></CanonicalizationMethod>
+        <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"></SignatureMethod>
+        <Reference URI="http://www.w3.org/TR/xml-stylesheet">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>60NvZvtdTB+7UnlLp/H24p7h4bs=</DigestValue>
+        </Reference>
+        <Reference URI="http://xmldsig.pothole.com/xml-stylesheet.txt">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#base64"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>60NvZvtdTB+7UnlLp/H24p7h4bs=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-1">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+              <XPath>
+                self::text()
+              </XPath>
+            </Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>zyjp8GJOX69990Kkqw8ioPXGExk=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116">
+              <XPath xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+                ancestor-or-self::dsig:SignedInfo
+                  and
+                count(ancestor-or-self::dsig:Reference |
+                      here()/ancestor::dsig:Reference[1]) &gt;
+                count(ancestor-or-self::dsig:Reference)
+                  or
+                count(ancestor-or-self::node() |
+                      id('notaries')) =
+                count(ancestor-or-self::node())
+              </XPath>
+            </Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>DkRNHKuQgDiTy9XAAMGbyydg3BI=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-2">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#base64"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>zyjp8GJOX69990Kkqw8ioPXGExk=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Manifest" URI="#manifest-1">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>X9dMPL0KeDZXh9GE3vLcOtPsYjI=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#signature-properties-1">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>7tHLZrC0kqOhPCiYu/WusgG4tBo=</DigestValue>
+        </Reference>
+        <Reference URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>zbVZy3ycg7CyFcPzNs0C6bA3qio=</DigestValue>
+        </Reference>
+        <Reference URI="">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>zbVZy3ycg7CyFcPzNs0C6bA3qio=</DigestValue>
+        </Reference>
+        <Reference URI="#xpointer(/)">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>zbVZy3ycg7CyFcPzNs0C6bA3qio=</DigestValue>
+        </Reference>
+        <Reference URI="#xpointer(/)">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>ar0/7EQyRfUZmrPPcTQFdVCt2PY=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-3">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>0aW4L0GoFzYUo4gyZSfoyZBhpuc=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#object-3">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>0aW4L0GoFzYUo4gyZSfoyZBhpuc=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#xpointer(id('object-3'))">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>0aW4L0GoFzYUo4gyZSfoyZBhpuc=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Object" URI="#xpointer(id('object-3'))">
+          <Transforms>
+            <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></Transform>
+          </Transforms>
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>1puYWb36Z5TIDmEIVd/JLR3iD8Y=</DigestValue>
+        </Reference>
+        <Reference Type="http://www.w3.org/2000/09/xmldsig#Reference" URI="#reference-2">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>MMtXLCswiEDurKMgg2r+vBPlk8Q=</DigestValue>
+        </Reference>
+        <Reference Id="reference-1" Type="http://www.w3.org/2000/09/xmldsig#Reference" URI="#manifest-reference-1">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>7eI/P8mppgkqXqW0+at2UGj06qs=</DigestValue>
+        </Reference>
+        <Reference Id="reference-2" Type="http://www.w3.org/2000/09/xmldsig#Reference" URI="#reference-1">
+          <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+          <DigestValue>l/bqIouk6Gs8eEjG0Tad0MJJgWw=</DigestValue>
+        </Reference>
+      </SignedInfo>

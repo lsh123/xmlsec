@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo>
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+    <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1" />
+    <Reference URI="http://merlin.org/xmldsig/xml-stylesheet.b64">
+      <Transforms>
+        <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#base64" />
+      </Transforms>
+      <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <DigestValue>60NvZvtdTB+7UnlLp/H24p7h4bs=</DigestValue>
+    </Reference>
+  </SignedInfo>
+  <SignatureValue>
+    OsH9A1jTNLmEldLmsPLlog6Gdw4YV8SiqD96GwYLAfMBqbk5o3waOg==
+  </SignatureValue>
+  <KeyInfo>
+    <KeyValue>
+      <DSAKeyValue>
+        <P>
+          imup6lmki4rAmUstKb/xdBRMWNtQ+pDN97ZnLA9X3lKbkEHtYFyjQ3uActgVSJ75
+          iVRuKxz4Cb5RzVm25EaKmKq8rif1MtBIi6jjDJxmIdNaEKG9zVTf9giJx1N9I0t3
+          oh1fAVZDSrzKzJGQ2WvDfIfFHdJMtB3C0VKGmLZR7Xk=
+        </P>
+        <Q>
+          xDve3j7sEnh4rIzM5gK+5/gxxFU=
+        </Q>
+        <G>
+          NLugAf6IZJxo3BCOi5yrGEVwtlEzXcnndXhd0Tz38CnQKc4SEupm4PyP5TmLvK64
+          TDfOD7sno/W5oI1KZdimfW2c4r/6waNzZSvicMOWhLYY621Nn6njBc8VNwoxWpzC
+          XhKm70b8+D4YZMn/eU5DN8dvhTv/bNK21FfJqjp033U=
+        </G>
+        <Y>
+          W7dOmH/vWqocVCiqaxj6soxVXfR8XpMdY2Zv4Amjr3n81geyOLb6IZ+l7MUbdp85
+          29DQzuoVTthVpB9X4JKCprZIzifOTM1PFflTBzjx7egJwJWAIVdWyiIPjke6Va+w
+          uV2n4Rl/cgCvrXK5cTov5C/Bpaf6o+qrrDGFBLLZTF4=
+        </Y>
+      </DSAKeyValue>
+    </KeyValue>
+  </KeyInfo>
+</Signature>

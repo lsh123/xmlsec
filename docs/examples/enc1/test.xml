@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<EncryptedKey xmlns="http://www.w3.org/2001/04/xmlenc#">
+<EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<KeyName>test-rsa-key</KeyName>
+</KeyInfo>
+<CipherData>
+<CipherValue>
+e/ZzNhgrwUFJP0Zp2V5OBzRVunHysixnU+m8ss1bwDsUZjNhFh1wELn0PqlqaI3U
++vTQUjEFPrnyZT4rSQjppwS1tBNoU/3LLRpSdBOZtrWyYYreM/FoQzYulJTc4dcA
+DY3QJhOgfOCKZKThDdVcpNaIYQXsb8j81/UWgrUsrq+buahcVTIUyS+l1JKGblnx
+IdwOQILcvc3uHyRge6MzFqV9zUrktI194zZ3XaLCU4Vwsgc0d5Pmldg4r4oq9rhc
+q3+60y49k5/ddvpuxfWJfdACk0iPohcpQLIH15eeQbMA+9yWcEEFcAjt33F/uKBv
++y9Agh3xcq4Xdbdu9e+ZJQ==
+</CipherValue>
+</CipherData>
+</EncryptedKey>
+</KeyInfo>
+<CipherData>
+<CipherValue>
+9CjRVGqQkGbzCz2gw042NNwsH+ZhvwHp4pdEka4eT5c=
+</CipherValue>
+</CipherData>
+<EncryptionProperties>
+<EncryptionProperty Id="Classified" Level="Top secret"/>
+</EncryptionProperties>
+</EncryptedData>

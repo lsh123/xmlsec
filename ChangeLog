@@ -1,0 +1,22 @@
+Sat 30 Mar 2002 12:55:30 AM PST Aleksey Sanin <aleksey@aleksey.com>
+    * Finished x509 supprot
+    * Added functions to create signature "on-the-fly"
+    * Updated examples and docs
+    * Fixed header files installation bug
+Wed 27 Mar 2002 11:20:42 PM PST Aleksey Sanin <aleksey@aleksey.com> 
+    * Added x509 verification support and a skeleton for x509 
+      x509 based sigantures
+    
+Tue 26 Mar 2002 06:30:10 PM PST Aleksey Sanin <aleksey@aleksey.com>
+    * The result of operation (sign/verify) is returned in the
+      list of xmlDSigSignature objects. Application can examine
+      the key and signature method, content just before digesting or
+      signing, etc. and decide what to do with it.
+    * The Transform and KeyInfo code was significantly re-written and 
+      separated from the XMLDSig code with a goal to reuse in in 
+      XML Signature or whatever.
+    * Added support for RetrievalMethod and Manifests (pretty simple
+      adter the first change because both are based on Transforms)
+    * Added XSLT support (based on libxslt from Daniel Veillard)
+    
+      

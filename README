@@ -1,0 +1,15 @@
+XMLSec Library
+----------------------------------------------
+
+XMLSec library provides C based implementation for following
+standards:
+    * XML Signature Syntax and Processing 
+      http://www.w3.org/TR/xmldsig-core
+    * XML Encryption Syntax and Processing (not finished yet)
+      http://www.w3.org/TR/xmlenc-core/    
+XMLSec is based on well known LibXML (http://xmlsoft.org), LibXSLT
+(http://xmlsoft.org/XSLT)  and OpenSSL (http://www.openssl.org) libraries.
+
+This code is released under the MIT Licence see the Copyright file.
+
+Aleksey Sanin <aleksey@aleksey.com>

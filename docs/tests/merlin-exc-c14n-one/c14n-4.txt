@@ -1,0 +1,36 @@
+<dsig:SignedInfo xmlns:dsig="http://www.w3.org/2000/09/xmldsig#">
+      <dsig:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></dsig:CanonicalizationMethod>
+      <dsig:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"></dsig:SignatureMethod>
+      <dsig:Reference URI="#xpointer(id('to-be-signed'))">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></dsig:Transform>
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></dsig:DigestMethod>
+        <dsig:DigestValue>7yOTjUu+9oEhShgyIIXDLjQ08aY=</dsig:DigestValue>
+      </dsig:Reference>
+      <dsig:Reference URI="#xpointer(id('to-be-signed'))">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+            <InclusiveNamespaces xmlns="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="bar #default"></InclusiveNamespaces>
+          </dsig:Transform>
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></dsig:DigestMethod>
+        <dsig:DigestValue>09xMy0RTQM1Q91demYe/0F6AGXo=</dsig:DigestValue>
+      </dsig:Reference>
+      <dsig:Reference URI="#xpointer(id('to-be-signed'))">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"></dsig:Transform>
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></dsig:DigestMethod>
+        <dsig:DigestValue>ZQH+SkCN8c5y0feAr+aRTZDwyvY=</dsig:DigestValue>
+      </dsig:Reference>
+      <dsig:Reference URI="#xpointer(id('to-be-signed'))">
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments">
+            <InclusiveNamespaces xmlns="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="bar #default"></InclusiveNamespaces>
+          </dsig:Transform>
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></dsig:DigestMethod>
+        <dsig:DigestValue>a1cTqBgbqpUt6bMJN4C6zFtnoyo=</dsig:DigestValue>
+      </dsig:Reference>
+    </dsig:SignedInfo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Letter>
+    Hello, World!    
+    <Info Id="SomeData">
+	<!-- Commentary -->
+	<Data1> Some data </Data1>
+	<Data2> More data </Data2>
+    </Info>
+<Something>Some important data</Something><Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<SignedInfo>
+<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+<Reference Id="reference-1" URI="#xpointer(id('SomeData'))">
+<Transforms>
+<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#WithComments"/>
+</Transforms>
+<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+<DigestValue>x/tL8hKZQyExW6ba0pi5h8eWRCc=</DigestValue>
+</Reference>
+</SignedInfo>
+<SignatureValue>uwYbk29Juoe8B0eCW6aAjw4t+QBT7oQsjAmQnu8fFQPNy0RwP6pWNA==</SignatureValue>
+<KeyInfo Id="">
+<KeyValue>
+<DSAKeyValue>
+<P>
+imW6KYBPYXAf6itSAuYs1aLPfs8/vBEiusv/pl1XMiuMvB7vyiJgSj8/NTkRci/U
+X/rVXv8rbCRjvYFX3x5/53f4hc6HKz7JQI4qqB7Fl5N86zp+BsQxNQ4tzous9S2H
+Td2/zdTwVsvO+H9l3FahmVp/m2IHE4W27JYoF49qP10=
+</P>
+<Q>
+v/xzWqjRviekk2rMW3wpYspT9Us=
+</Q>
+<G>
+UIyzUDlLe6uCCgF4Rh98fiKZvg64UJ4FM5L+WbCSMmVsFN06fTwxy3naPPOCzzou
+fsHv/Bve2gvrDvd078oXWJJf9A44pIZnJkdjEhm2RsDFpXNq0tPKZFcjVsdmqg4M
+X6YNuwpvZuTwSoDG5u1QMN0mmH9gmbIT3j9x4MO+7EY=
+</G>
+<Y>
+On+KBJE3q1TRhG9RspNX01VI5C0VzSy4N/QyC4YzEENoq3GJkKHIYq+grq9ZqV9x
+g2Geo/3mqhdcENOtYRmWEfOZJj18oukD6TNceYRZ4HjHjK3WY3wK2OV6QOly+k3f
+xgEQpP/7IlCka5YICLuHXrbqjn5b0XcK9L2GDtWOyjs=
+</Y>
+</DSAKeyValue>
+</KeyValue>
+</KeyInfo>
+</Signature></Letter>

@@ -1,0 +1,84 @@
+Summary: Library providing support for "XML Signature" and "XML Encryption" standards
+Name: xmlsec
+Version: @VERSION@
+Release: 1
+License: MIT
+Group: Development/Libraries
+Vendor: Aleksey Sanin <aleksey@aleksey.com>
+Distribution:  Aleksey Sanin <aleksey@aleksey.com>
+Packager: Aleksey Sanin <aleksey@aleksey.com>
+Source: ftp://ftp.aleksey.com/pub/xmlsec/releases/xmlsec-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+URL: http://www.aleksey.com/xmlsec
+Requires: libxml2 >= @LIBXML_MIN_VERSION@
+Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+Requires: openssl >= @OPENSSL_MIN_VERSION@
+Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
+BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
+BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
+Prefix: %{_prefix}
+Docdir: %{_docdir}
+
+%description
+XML Security Library is a C library based on LibXML2  and OpenSSL. 
+The library was created with a goal to support major XML security 
+standards "XML Digital Signature" and "XML Encryption". 
+It is released under the MIT Licence (see the Copyright file in the 
+distribution for details).
+
+%prep
+%setup -q
+
+%build
+# Needed for snapshot releases.
+if [ ! -f configure ]; then
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%endif
+else
+%ifarch alpha
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --host=alpha-redhat-linux --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%else
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --sysconfdir="/etc" --mandir=%{_mandir}
+%endif
+fi
+if [ "$SMP" != "" ]; then
+  (make "MAKE=make -k -j $SMP"; exit 0)
+  make
+else
+  make
+fi
+
+%install
+rm -rf $RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/usr/bin
+mkdir -p $RPM_BUILD_ROOT/usr/include
+mkdir -p $RPM_BUILD_ROOT/usr/lib
+mkdir -p $RPM_BUILD_ROOT/usr/man/man1
+make prefix=$RPM_BUILD_ROOT%{prefix} mandir=$RPM_BUILD_ROOT%{_mandir} install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%files 
+%defattr(-, root, root)
+
+%doc AUTHORS ChangeLog NEWS README Copyright
+%doc docs/* 
+%{prefix}/lib/lib*.so.*
+%{prefix}/lib/lib*.so
+%{prefix}/lib/*a
+%{prefix}/bin/xmlsec
+%{prefix}/bin/xmlsec-config
+%{prefix}/include/*
+
+%changelog

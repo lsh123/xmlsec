@@ -1,0 +1,56 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 1 (0x1)
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=US, ST=California, L=Sunnyvale, O=http://www.aleksey.com/xmlsec, CN=Aleksey Sanin/Email=aleksey@aleksey.com
+        Validity
+            Not Before: Mar 27 19:07:49 2002 GMT
+            Not After : Mar 27 19:07:49 2003 GMT
+        Subject: C=US, ST=California, O=http://www.aleksey.com/xmlsec, OU=Second Cert, CN=Aleksey Sanin/Email=aleksey@aleksey.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+            RSA Public Key: (512 bit)
+                Modulus (512 bit):
+                    00:bc:0d:81:1a:f9:e1:f8:3c:ec:4c:12:42:47:08:
+                    9f:ab:17:8f:eb:a3:11:97:ca:49:db:0e:06:8d:53:
+                    ff:e1:f0:93:9b:5b:95:91:48:79:7f:ab:28:39:5b:
+                    7a:72:40:7a:fb:d0:97:00:2d:52:a2:ed:9e:ad:73:
+                    86:74:31:09:dd
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                44:F2:1B:B5:20:A3:11:52:8D:1C:D9:80:EC:29:7B:72:D9:14:F1:93
+            X509v3 Authority Key Identifier: 
+                DirName:/C=US/ST=California/L=Sunnyvale/O=http://www.aleksey.com/xmlsec/CN=Aleksey Sanin/Email=aleksey@aleksey.com
+                serial:00
+
+    Signature Algorithm: md5WithRSAEncryption
+        8c:ba:85:23:74:da:e5:9f:99:88:f2:5d:e7:95:3a:07:1c:53:
+        08:8d:74:bf:63:35:23:2e:6e:49:5c:cf:64:da:f2:f6:75:4e:
+        2e:e0:fe:32:78:d1:2f:8e:93:d3:fa:fb:a6:ff:a5:b4:fd:15:
+        3d:3e:c7:71:28:2a:81:7a:74:75
+-----BEGIN CERTIFICATE-----
+MIIDOzCCAuWgAwIBAgIBATANBgkqhkiG9w0BAQQFADCBmjELMAkGA1UEBhMCVVMx
+EzARBgNVBAgTCkNhbGlmb3JuaWExEjAQBgNVBAcTCVN1bm55dmFsZTEmMCQGA1UE
+ChMdaHR0cDovL3d3dy5hbGVrc2V5LmNvbS94bWxzZWMxFjAUBgNVBAMTDUFsZWtz
+ZXkgU2FuaW4xIjAgBgkqhkiG9w0BCQEWE2FsZWtzZXlAYWxla3NleS5jb20wHhcN
+MDIwMzI3MTkwNzQ5WhcNMDMwMzI3MTkwNzQ5WjCBnDELMAkGA1UEBhMCVVMxEzAR
+BgNVBAgTCkNhbGlmb3JuaWExJjAkBgNVBAoTHWh0dHA6Ly93d3cuYWxla3NleS5j
+b20veG1sc2VjMRQwEgYDVQQLEwtTZWNvbmQgQ2VydDEWMBQGA1UEAxMNQWxla3Nl
+eSBTYW5pbjEiMCAGCSqGSIb3DQEJARYTYWxla3NleUBhbGVrc2V5LmNvbTBcMA0G
+CSqGSIb3DQEBAQUAA0sAMEgCQQC8DYEa+eH4POxMEkJHCJ+rF4/roxGXyknbDgaN
+U//h8JObW5WRSHl/qyg5W3pyQHr70JcALVKi7Z6tc4Z0MQndAgMBAAGjggEQMIIB
+DDAJBgNVHRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVuU1NMIEdlbmVyYXRlZCBD
+ZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQURPIbtSCjEVKNHNmA7Cl7ctkU8ZMwgbEGA1Ud
+IwSBqTCBpqGBoKSBnTCBmjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3Ju
+aWExEjAQBgNVBAcTCVN1bm55dmFsZTEmMCQGA1UEChMdaHR0cDovL3d3dy5hbGVr
+c2V5LmNvbS94bWxzZWMxFjAUBgNVBAMTDUFsZWtzZXkgU2FuaW4xIjAgBgkqhkiG
+9w0BCQEWE2FsZWtzZXlAYWxla3NleS5jb22CAQAwDQYJKoZIhvcNAQEEBQADQQCM
+uoUjdNrln5mI8l3nlToHHFMIjXS/YzUjLm5JXM9k2vL2dU4u4P4yeNEvjpPT+vum
+/6W0/RU9PsdxKCqBenR1
+-----END CERTIFICATE-----

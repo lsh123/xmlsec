@@ -1,0 +1,4 @@
+<Notaries xmlns:foo="http://www.usps.gov/foo" Id="notaries">
+    <Notary name="Great, A. T."></Notary>
+    <Notary name="Hun, A. T."></Notary>
+  </Notaries>

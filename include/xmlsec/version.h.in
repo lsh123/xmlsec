@@ -1,0 +1,30 @@
+/** 
+ * XMLSec library
+ *
+ * Version information
+ *
+ * See Copyright for the status of this software.
+ * 
+ * Author: Aleksey Sanin <aleksey@aleksey.com>
+ */
+#ifndef __XMLSEC_VERSION_H__
+#define __XMLSEC_VERSION_H__    
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */ 
+
+#define XMLSEC_VERSION			"@XMLSEC_VERSION@"
+#define XMLSEC_VERSION_MAJOR		@XMLSEC_VERSION_MAJOR@
+#define XMLSEC_VERSION_MINOR		@XMLSEC_VERSION_MINOR@
+#define XMLSEC_VERSION_SUBMINOR		@XMLSEC_VERSION_SUBMINOR@
+
+#define XMLSEC_VERSION_INFO		"@XMLSEC_VERSION_INFO@"
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* __XMLSEC_VERSION_H__ */
+

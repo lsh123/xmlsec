@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<Keys xmlns="http://www.w3.org/2000/09/xmldsig#">
+
+<KeyInfo>
+    <KeyName>bob</KeyName>
+    <KeyValue>
+	<DESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4Cg==
+	</DESKeyValue>
+    </KeyValue>
+</KeyInfo>
+
+<KeyInfo>
+    <KeyName>job</KeyName>
+    <KeyValue>
+	<AESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    YWJjZGVmZ2hpamtsbW5vcAo=
+	</AESKeyValue>
+    </KeyValue>
+</KeyInfo>
+
+<KeyInfo>
+    <KeyName>jeb</KeyName>
+    <KeyValue>
+	<AESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4Cg==
+	</AESKeyValue>
+    </KeyValue>
+</KeyInfo>
+
+<KeyInfo>
+    <KeyName>jed</KeyName>
+    <KeyValue>
+	<AESKeyValue xmlns="http://www.w3.org/2001/04/xmlenc#">
+	    YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXowMTIzNDUK
+	</AESKeyValue>
+    </KeyValue>
+</KeyInfo>
+
+
+</Keys>

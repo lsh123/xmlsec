@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>XML Security Library: News</title>
+</head>
+  <body>
+         
+<table width="100%">
+       <tbody>
+         <tr>
+
+    <!-- top navigation menu start -->
+    <td valign="top" align="left" width="210">  
+      <img src="logo.gif" alt="XML Security Library" width="200" height="100">         
+      <p>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+	<li><a href="download.html">Download</a></li>
+	<li><a href="news.html">News</a></li>
+	<li><a href="xmldsig.html">XML Digital Signature</a></li>
+	<ul>
+	    <li><a href="xmldsig-interop.html">Interop report</a></li>
+	    <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
+	</ul>
+	<li><a href="xmlenc.html">XML Encryption</a></li>
+    	<ul>
+ 	    <li><a href="xmlenc-interop.html">Interop report</a>
+            </li>
+        </ul>	
+	<li><a href="c14n.html">XML Canonicalization</a></li>
+	<li><a href="bugs.html">Reporting Bugs</a></li>   
+        <li><a href="http://www.aleksey.com/pipermail/xmlsec/2002/thread.html">xmlsec@aleksey.com archive</a></li>
+	<br><br>     
+	<li><a href="http://xmlsoft.org/">LibXML</a></li>
+	<li><a href="http://xmlsoft.org/XSLT/">LibXSLT</a></li>
+	<li><a href="http://www.openssl.org/">OpenSSL</a></li>
+	<br><br>     
+      </ul>
+    </td>
+    <!-- top navigation menu end -->
+
+   <td valign="Top" align="Left">                               	
+      <div align="Center">                                   
+      <h1>XML Security Library News</h1>
+      </div>
+   
+    
+      <ul>
+	<li>April 19 2002<br>
+	 Minor release <a href="download.html">XMLSec 0.0.4</a> with main
+	 goal to fix broken RPM:<br>
+	 - The RPM is recompiled using OpenSSL 0.9.6. The previous 
+	 version was compiled with OpenSSL 0.9.7 but I got few complains
+	 that there are no RPMs for 0.9.7 yet. The downsides of using 0.9.6 are
+	 some functionality limitations for XML Encryption (no AES support,
+	 incorrect padding mode for DES, etc.). If you want to use
+	 XML Encryption it is better to compile the library from sources
+	 and use OpenSSL 0.9.7<br>
+	 - The testDSig, testEnc and testKeys scripts merged into standalone
+	 &quot;xmlsec&quot; application.<br>
+	 - A couple minor bugs fixed.<br>
+	</li>
+	<br>
+	<li>April 17 2002<br>
+	Installed <a href="http://www.aleksey.com/pipermail/xmlsec/2002/thread.html">
+	xmlsec mailing list.</a><br>
+	</li>
+	<br>
+        <li>April 16 2002<br>
+	 A lot of changes and time for new release <a href="download.html">XMLSec 0.0.3</a>:<br>
+	 - The first release that includes <a href="xmlenc.html">XML Encryption support</a>! 
+	 The bad news is that most of new features require <a href="download.html">OpenSSL 0.9.7</a> which is 
+	 not officially released yet.<br>
+	 - Options to enable/disable support for particular algorithms were
+	 added to the <code>./configure</code> script.<br>
+	 - All transforms header files were consolidated in transforms.h
+         <br>
+         </li>
+	 <br>
+         <li>April 6 2002<br>
+	 The <a href="download.html">RPM packages</a> are now available.<br>
+         <br>
+	 </li>
+          <li>April 5 2002<br>
+ Test suite updates and new minor release <a href="download.html">XML Security Library 0.0.2a.</a>
+          <br>
+ New <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0017.html">
+ interoperability tests</a>
+  were provided by Merlin Hughes. XML Security Library successfully passed 
+          <b>all tests </b>after small test program tweaking and adding workaround 
+for <a href="http://groups.google.com/groups?hl=en&amp;threadm=96uofi%2417gh%241%40FreeBSD.csie.NCTU.edu.tw&amp;rnum=2&amp;prev=/groups%3Fq%3DX509_STORE_add_crl%26hl%3Den%26selm%3D96uofi%252417gh%25241%2540FreeBSD.csie.NCTU.edu.tw%26rnum%3D2">
+ OpenSSL CRL problem.</a>
+ These new tests are included into the distribution and previous Merlin's
+test suites  are removed. Because of these changes I decided to generate
+a new package that also will include the <a href="xmldsig-verifier.html">
+Online XML  Digital Signature Verifier</a>
+ code.<br>
+           <br>
+         </li>
+         <li>April 3 2002<br>
+  The <a href="xmldsig-verifier.html">Online XML Digital Signature Verifier</a>
+   is available! You can use this tool to verify your XML Digital Signatures
+ from online Web form or using a simple Perl script. The idea was stolen
+from           <a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/0006.html">
+  Manoj K. Srivastava.</a><br>
+           <br>
+          </li>
+          <li>March 31 2002&nbsp;<br>
+   Some major changes and a time for new release: <a href="download.html">
+ XML Security Library 0.0.2</a>
+ . Now XML Security Library supports <b>all</b> MUST/SHOULD/MAY <a href="xmldsig-interop.html">
+   features</a>
+   from XMLDSig standard!<br>
+    - Added X509 certificates and certificate chains support<br>
+    - The detailed signature generation/verification results are made available 
+ to the application (see <a href="example-dsig3.html">example 3</a>
+  )<br>
+   - RetrievalMethod, Manifests and <a href="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt">
+   additional algorithms</a>
+   are added<br>
+   - The Transforms and KeyInfo code was significantly re-writen with a goal 
+ to separate it from XMLDSig logic for better re-usability (in XML Encryption,
+ etc.)<br>
+           <br>
+           </li>
+            <li>March 18 2002<br>
+      - Fixed wrong way shift of the DSA digest result bug found by Philipp 
+ G&uuml;hring.  This bug is critical and I have to do a <a href="download/xmlsec-0.0.1a.tar.gz">
+      new build.</a>
+             <br>
+      - Added "--with-pedantic" configuration option and fixed all but "unused
+   variable" warnings (bug reported by Daniel Veillard).<br>
+           <br>
+             </li>
+             <li>March 17 2002<br>
+      The <a href="download.html">XML Security Library 0.0.1</a>
+       is released and available for download! Please try it out and send 
+me  your comments/suggestions. </li>
+                                       
+      </ul>
+
+    <p>
+    <a href="bugs.html">Aleksey Sanin</a>
+ </td>
+ </tr>
+                   
+  </tbody>     
+</table>
+         
+</body>
+</html>

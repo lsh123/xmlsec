@@ -1,0 +1,5 @@
+<dsig:Object xmlns="urn:foo" xmlns:bar="urn:bar" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" Id="to-be-signed">
+      <bar:Baz>
+        
+      </bar:Baz>
+    </dsig:Object>

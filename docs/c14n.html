@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>XML Security Library: Canonicalization</title>
+</head>
+<body>
+
+<table width="100%">
+<tr>
+
+    <!-- top navigation menu start -->
+    <td valign="top" align="left" width="210">  
+      <img src="logo.gif" alt="XML Security Library" width="200" height="100">         
+      <p>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+	<li><a href="download.html">Download</a></li>
+	<li><a href="news.html">News</a></li>
+	<li><a href="xmldsig.html">XML Digital Signature</a></li>
+	<ul>
+	    <li><a href="xmldsig-interop.html">Interop report</a></li>
+	    <li><a href="xmldsig-verifier.html">Online Verifier</a></li>
+	</ul>
+	<li><a href="xmlenc.html">XML Encryption</a></li>
+    	<ul>
+ 	    <li><a href="xmlenc-interop.html">Interop report</a>
+            </li>
+        </ul>	
+	<li><a href="c14n.html">XML Canonicalization</a></li>
+	<li><a href="bugs.html">Reporting Bugs</a></li>   
+        <li><a href="http://www.aleksey.com/pipermail/xmlsec/2002/thread.html">xmlsec@aleksey.com archive</a></li>
+	<br><br>     
+	<li><a href="http://xmlsoft.org/">LibXML</a></li>
+	<li><a href="http://xmlsoft.org/XSLT/">LibXSLT</a></li>
+	<li><a href="http://www.openssl.org/">OpenSSL</a></li>
+	<br><br>     
+      </ul>
+    </td>
+    <!-- top navigation menu end -->
+
+<td valign="top" align="left">
+
+<div align="Center">
+<h2>Canonical XML / Exclusive Canonical XML</h2>
+</div>
+Both <a href="http://www.w3.org/TR/xmldsig-core">XML Signature</a>
+ and <a href="http://www.w3.org/TR/xmlenc-core/">XML
+Encryption</a>
+ use XML Canonicalization standards to produce canonical form of the original
+XML document. Except for limitations regarding a few unusual cases, if two
+documents have the same canonical form, then the two documents are logically 
+equivalent within the given application context. Implementation of both these
+standards were included in libxml2 library because these algorithms could
+be interested for other applications as well.
+<ul>
+  <li><a href="http://www.w3.org/TR/xml-c14n">Canonical XML</a>
+   (included in libxml2) </li>
+  <li><a href="http://www.w3.org/TR/xml-exc-c14n">Exclusive Canonical XML</a>
+   (included in libxml2)</li>
+</ul>
+
+    <p>
+    <a href="bugs.html">Aleksey Sanin</a>
+</td></tr>
+</table>
+</body>
+</html>

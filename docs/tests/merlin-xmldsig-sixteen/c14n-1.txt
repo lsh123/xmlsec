@@ -1,0 +1,5 @@
+<SignatureProperties xmlns="http://www.w3.org/2000/09/xmldsig#" xmlns:foo="http://www.usps.gov/foo" Id="signature-properties-1">
+          <SignatureProperty Target="#signature">
+            <SignerAddress xmlns="urn:demo"><IP>192.168.21.138</IP></SignerAddress>
+          </SignatureProperty>
+        </SignatureProperties>

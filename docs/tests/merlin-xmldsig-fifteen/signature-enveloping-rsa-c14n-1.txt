@@ -1,0 +1,8 @@
+<SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></CanonicalizationMethod>
+    <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></SignatureMethod>
+    <Reference URI="#object">
+      <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+      <DigestValue>7/XTsHaBSOnJ/jXD5v0zL6VKYsk=</DigestValue>
+    </Reference>
+  </SignedInfo>

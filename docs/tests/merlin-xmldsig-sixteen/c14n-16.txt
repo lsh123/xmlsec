@@ -1,0 +1,13 @@
+<Envelope xmlns="http://www.usps.gov/" xmlns:foo="http://www.usps.gov/foo">
+  <DearSir>foo</DearSir>
+  <Body>bar</Body>
+  <YoursSincerely>
+    
+  </YoursSincerely>
+  <PostScript>bar</PostScript>
+  <Notaries xmlns="" Id="notaries">
+    <Notary name="Great, A. T."></Notary>
+    <Notary name="Hun, A. T."></Notary>
+  </Notaries>
+  
+</Envelope>

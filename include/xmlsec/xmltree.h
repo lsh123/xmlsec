@@ -67,6 +67,9 @@ XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 
 XMLSEC_EXPORT xmlDocPtr		xmlSecCreateTree	(const xmlChar* rootNodeName,
 							 const xmlChar* rootNodeNs);
+XMLSEC_EXPORT int		xmlSecIsEmptyNode	(xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecIsEmptyString	(const xmlChar* str);
+
 /**
  * xmlSecIsHex:
  * @c: 			the character.

@@ -137,6 +137,14 @@ typedef enum {
  */
 #define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
 
+/** 
+ * XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE:
+ *
+ * If the flag is set then we'll stop when we found an empty node.
+ * Otherwise we just ignore it.
+ */
+#define XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE			0x00002000
+
 /**		
  * xmlSecKeyInfoCtx:
  * @userData:		the pointer to user data (xmlsec and xmlsec-crypto 

@@ -204,6 +204,11 @@ execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
     "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
     "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
 
+execDSigTest "aleksey-xmldsig-01/x509data-test" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
+    "--pkcs12 tests/keys/rsakey.p12 --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     ""
     

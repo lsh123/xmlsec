@@ -1,3 +1,15 @@
+Mon Jul 28 12:02:40 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/keyinfo.h: added XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE flag
+	* include/xmlsec/xmltree.h src/xmltree.c: added xmlSecIsEmptyNode and 
+	xmlSecIsEmptyString functions
+	* src/openssl/x509.c: added an ability to write complex X509Data node
+	content (based on patch from Roumen)
+	* tests/testDSig.sh tests/aleksey-xmldsig-01/x509data-test.*: new test for
+	complex X509Data node writing
+	* tests/keys/ca2key.p12 tests/keys/dsakey.p12 tests/keys/rsakey.p12: new 
+	pkcs12 keys for tests
+
 Sun 20 Jul 2003 08:10:53 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* apps/ include/ src/ docs/api/ Copyright: updated copyrights

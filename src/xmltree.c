@@ -616,4 +616,48 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     return(doc);
 }
 
+/**
+ * xmlSecIsEmptyNode:
+ * @node:		the node to check
+ *
+ * Checks whethere the @node is empty (i.e. has only whitespaces children).
+ *
+ * Returns 1 if @node is empty, 0 otherwise or a negative value if an error occurs.
+ */
+int 
+xmlSecIsEmptyNode(xmlNodePtr node) {
+    xmlChar* content;
+    int res;
+    
+    xmlSecAssert2(node != NULL, -1);
+    
+    content = xmlNodeGetContent(node);
+    if(content == NULL) {
+	return(1);
+    }
+    
+    res = xmlSecIsEmptyString(content);
+    xmlFree(content);
+    return(res);
+}
+
+/**
+ * xmlSecIsEmptyString:
+ * @str:		the string to check
+ *
+ * Checks whethere the @str is empty (i.e. has only whitespaces children).
+ *
+ * Returns 1 if @str is empty, 0 otherwise or a negative value if an error occurs.
+ */
+int 
+xmlSecIsEmptyString(const xmlChar* str) {
+    xmlSecAssert2(str != NULL, -1);
+    
+    for( ;*str != '\0'; ++str) {
+	if(!isspace((int)(*str))) {
+	    return(0);
+	}
+    }
+    return(1);
+}
 

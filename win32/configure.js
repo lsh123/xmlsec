@@ -88,8 +88,8 @@ function usage()
 	txt += "Options can be specified in the form <option>=<value>, where the value is\n";
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
-	txt += "  ctypto:     Crypto engine: \"openssl\", \"openssl_096\", \"nss\" (\"" + withCrypto + "\");\n"
- 	txt += "  xslt:       LibXSLT is not used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
+	txt += "  crypto:     Crypto engine: \"openssl\", \"openssl_096\", \"nss\" (\"" + withCrypto + "\");\n"
+ 	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";

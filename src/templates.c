@@ -1764,7 +1764,6 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
 			xmlSecErrorsSafeString(prefix));
 	    return(-1);
 	}
-        xmlSetNs(parentNode, ns);
     }
     return(0);
 }

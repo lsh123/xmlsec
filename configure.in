@@ -342,19 +342,19 @@ AC_SUBST(XMLSEC_GNUTLS_DEFINES)
 dnl ==========================================================================
 dnl See if we can find NSS
 dnl ==========================================================================
-ac_mozilla_name=mozilla-1.2.1
-ac_nss_lib_dir="/usr/lib /usr/local/lib /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
-ac_nss_inc_dir="/usr/include /usr/local/include /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
     
 XMLSEC_NSS_DEFINES=""
 NSS_WITHOUT="no"
-NSS_MIN_VERSION="3.6.0"
+NSS_MIN_VERSION="1.2.1"
 NSS_VERSION=""
 NSS_PREFIX=""
 NSS_CFLAGS=""
 NSS_LIBS=""
 NSS_LDADDS=""
 NSS_LIBS_LIST="-lnss3 -lnspr4 -lplds4 -lplc4"
+ac_mozilla_name=mozilla-$NSS_MIN_VERSION
+ac_nss_lib_dir="/usr/lib /usr/local/lib /usr/lib/$ac_mozilla_name /usr/local/lib/$ac_mozilla_name"
+ac_nss_inc_dir="/usr/include /usr/local/include /usr/include/$ac_mozilla_name /usr/local/include/$ac_mozilla_name"
 AC_MSG_CHECKING(for nss libraries >= $NSS_MIN_VERSION) 
 AC_ARG_WITH(nss, [  --with-nss=[PFX]    nss location])
 if test "$with_nss" = "no" ; then

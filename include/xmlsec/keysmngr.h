@@ -35,8 +35,7 @@ typedef const struct _xmlSecKeyStoreKlass 		xmlSecKeyStoreKlass,
 XMLSEC_EXPORT xmlSecKeysMngrPtr 	xmlSecKeysMngrCreate		(void);
 XMLSEC_EXPORT void			xmlSecKeysMngrDestroy		(xmlSecKeysMngrPtr mngr);
 
-XMLSEC_EXPORT int			xmlSecKeysMngrFindKey		(xmlSecKeysMngrPtr mngr,
-									 xmlSecKeyPtr key,
+XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeysMngrFindKey		(xmlSecKeysMngrPtr mngr,
 									 const xmlChar* name,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -104,8 +103,7 @@ struct _xmlSecKeyStore {
 
 XMLSEC_EXPORT xmlSecKeyStorePtr xmlSecKeyStoreCreate		(xmlSecKeyStoreId id);
 XMLSEC_EXPORT void		xmlSecKeyStoreDestroy		(xmlSecKeyStorePtr store);
-XMLSEC_EXPORT int		xmlSecKeyStoreFind		(xmlSecKeyStorePtr store,
-								 xmlSecKeyPtr key,
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyStoreFindKey		(xmlSecKeyStorePtr store,
 								 const xmlChar* name,
  								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 /**
@@ -181,18 +179,17 @@ typedef int			(*xmlSecKeyStoreInitializeMethod)	(xmlSecKeyStorePtr store);
 typedef void			(*xmlSecKeyStoreFinalizeMethod)		(xmlSecKeyStorePtr store);
 
 /** 
- * xmlSecKeyStoreFindMethod:
+ * xmlSecKeyStoreFindKeyMethod:
  * @store: 		the store.
- * @key: 		the destination key.
  * @name:		the desired key name.
  * @keyInfoCtx: 	the pointer to key info context.
  *
- * Keys store specific find method.
+ * Keys store specific find method. The caller is responsible for destroying 
+ * the returned key using #xmlSecKeyDestroy method.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns the pointer to a key or NULL if key is not found or an error occurs.
  */
-typedef int			(*xmlSecKeyStoreFindMethod)	(xmlSecKeyStorePtr store,
-								 xmlSecKeyPtr key,
+typedef xmlSecKeyPtr		(*xmlSecKeyStoreFindKeyMethod)	(xmlSecKeyStorePtr store,
 								 const xmlChar* name,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -219,7 +216,7 @@ struct _xmlSecKeyStoreKlass {
     /* constructors/destructor */
     xmlSecKeyStoreInitializeMethod	initialize;
     xmlSecKeyStoreFinalizeMethod	finalize;
-    xmlSecKeyStoreFindMethod		find;
+    xmlSecKeyStoreFindKeyMethod		findKey;
 
     /* for the future */
     void*				reserved0;
@@ -250,9 +247,6 @@ struct _xmlSecKeyStoreKlass {
 XMLSEC_EXPORT xmlSecKeyStoreId		xmlSecSimpleKeysStoreGetKlass	(void);
 XMLSEC_EXPORT int			xmlSecSimpleKeysStoreAdoptKey	(xmlSecKeyStorePtr store,
 									 xmlSecKeyPtr key);
-XMLSEC_EXPORT xmlSecKeyPtr		xmlSecSimpleKeysStoreFindKey	(xmlSecKeyStorePtr store,
-									 const xmlChar* name,
-									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int			xmlSecSimpleKeysStoreLoad 	(xmlSecKeyStorePtr store,
 									 const char *uri,
 									 xmlSecKeysMngrPtr keysMngr);

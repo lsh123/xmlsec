@@ -36,10 +36,11 @@ keysmngr
 </para>
 
 @mngr: 
-@key: 
 @name: 
 @keyInfoCtx: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@key: 
 
 
 <!-- ##### FUNCTION xmlSecKeysMngrAdoptKeysStore ##### -->
@@ -136,18 +137,6 @@ keysmngr
 @store: 
 
 
-<!-- ##### FUNCTION xmlSecKeyStoreFind ##### -->
-<para>
-
-</para>
-
-@store: 
-@key: 
-@name: 
-@keyInfoCtx: 
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecKeyStoreGetName ##### -->
 <para>
 
@@ -206,18 +195,6 @@ keysmngr
 @store: 
 
 
-<!-- ##### USER_FUNCTION xmlSecKeyStoreFindMethod ##### -->
-<para>
-
-</para>
-
-@store: 
-@key: 
-@name: 
-@keyInfoCtx: 
-@Returns: 
-
-
 <!-- ##### STRUCT xmlSecKeyStoreKlass ##### -->
 <para>
 
@@ -228,7 +205,7 @@ keysmngr
 @name: 
 @initialize: 
 @finalize: 
-@find: 
+@findKey: 
 @reserved0: 
 @reserved1: 
 
@@ -262,17 +239,6 @@ keysmngr
 
 @store: 
 @key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysStoreFindKey ##### -->
-<para>
-
-</para>
-
-@store: 
-@name: 
-@keyInfoCtx: 
 @Returns: 
 
 

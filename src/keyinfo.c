@@ -735,15 +735,26 @@ xmlSecKeyDataNameXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, 
 
     /* try to find key in the manager */
     if((xmlSecKeyGetValue(key) == NULL) && (keyInfoCtx->keysMngr != NULL)) {
-	ret = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, key, newName, keyInfoCtx);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			"xmlSecKeysMngrFindKey",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE); 
-	    xmlFree(newName);
-	    return(-1);
+	xmlSecKeyPtr tmpKey;
+
+	tmpKey = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, newName, keyInfoCtx);
+	if(tmpKey != NULL) {
+	    /* erase any current information in the key */
+	    xmlSecKeyEmpty(key);
+	    
+	    /* and copy what we've found */
+	    ret = xmlSecKeyCopy(key, tmpKey);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+			    "xmlSecKeyCopy",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE); 
+		xmlSecKeyDestroy(tmpKey);
+		xmlFree(newName);
+		return(-1);
+	    }
+	    xmlSecKeyDestroy(tmpKey);
 	}
     }		
     

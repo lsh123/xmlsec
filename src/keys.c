@@ -869,6 +869,8 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
+    
+    /* first try to read data from <dsig:KeyInfo/> node */
     key = xmlSecKeyCreate();
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -878,7 +880,7 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);
     }
-    
+
     if(keyInfoNode != NULL) {
 	ret = xmlSecKeyInfoNodeRead(keyInfoNode, key, keyInfoCtx);
 	if(ret < 0) {
@@ -894,24 +896,25 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	    return(key);
 	}
     }	
+    xmlSecKeyDestroy(key);
     
+    /* if we have keys manager, try it */
     if(keyInfoCtx->keysMngr != NULL) {
-	ret = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, key, NULL, keyInfoCtx);
-	if(ret < 0) {
+	key = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, NULL, keyInfoCtx);
+	if(key == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecKeysMngrFindKey",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecKeyDestroy(key);
 	    return(NULL);
 	}
 	if(xmlSecKeyGetValue(key) != NULL) {
 	    return(key);
 	}
+	xmlSecKeyDestroy(key);
     }
     
-    xmlSecKeyDestroy(key);
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
 		NULL,

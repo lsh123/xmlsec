@@ -229,7 +229,7 @@ create_files_keys_mngr(void) {
 	return(NULL);
     }
 
-    /* set the get key callback */    
+    /* set the get key callback */
     mngr->getKey = xmlSecKeysMngrGetKey;
     return(mngr);
 }
@@ -241,8 +241,7 @@ create_files_keys_mngr(void) {
  * Attention: this probably not a good solution for high traffic systems.
  * 
  ***************************************************************************/
-static int			files_keys_store_find_key	(xmlSecKeyStorePtr store,
-								 xmlSecKeyPtr key,
+static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
 								 const xmlChar* name,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static xmlSecKeyStoreKlass files_keys_store_klass = {
@@ -251,7 +250,7 @@ static xmlSecKeyStoreKlass files_keys_store_klass = {
     BAD_CAST "files-based-keys-store",	/* const xmlChar* name; */         
     NULL,				/* xmlSecKeyStoreInitializeMethod initialize; */
     NULL,				/* xmlSecKeyStoreFinalizeMethod finalize; */
-    files_keys_store_find_key,		/* xmlSecKeyStoreFindMethod find; */
+    files_keys_store_find_key,		/* xmlSecKeyStoreFindKeyMethod findKey; */
 
     /* reserved for the future */
     NULL,				/* void* reserved0; */
@@ -277,66 +276,47 @@ files_keys_store_get_klass(void) {
  * @name:		the desired key name.
  * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> node processing context.
  *  
- * Lookups key in the @store.
+ * Lookups key in the @store. The caller is responsible for destroying
+ * returned key with #xmlSecKeyDestroy function.
  *
  * Returns pointer to key or NULL if key not found or an error occurs.
  */
-static int
-files_keys_store_find_key(xmlSecKeyStorePtr store,  xmlSecKeyPtr key, 
-			const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecPtrListPtr list;
-    xmlSecKeyPtr tmpKey = NULL;
-    size_t pos, size;
-    int ret;
+static xmlSecKeyPtr
+files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyPtr key;
     
     assert(store);
-    assert(key);
     assert(keyInfoCtx);
 
     /* it's possible to do not have the key name or desired key type 
      * but we could do nothing in this case */
     if((name == NULL) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataIdUnknown)){
-	return(0);
+	return(NULL);
     }
     
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
-	tmpKey = xmlSecCryptoAppPemKeyLoad(name, NULL, NULL, 0);
-	if(tmpKey == NULL) {
+	key = xmlSecCryptoAppPemKeyLoad(name, NULL, NULL, 0);
+	if(key == NULL) {
     	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
-	    return(-1);
+	    return(NULL);
 	}
     } else {
 	/* otherwise it's a binary key, if key is not found then it's an error (is it?) */
-	tmpKey = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
-	if(tmpKey == NULL) {
+	key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
+	if(key == NULL) {
     	    fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
-	    return(-1);
+	    return(NULL);
 	}
     }
-
-    /* erase any current information in the key because we don't care
-     * about the data in the <dsig:KeyInfo/> other than key name
-     */
-    xmlSecKeyEmpty(key);
-    
-    /* and copy the key from keys storage */
-    ret = xmlSecKeyCopy(key, tmpKey);
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to copy key \"%s\"\n", name);
-	xmlSecKeyDestroy(tmpKey);
-	return(-1);
-    }
-    
-    /* destroy our key */
-    xmlSecKeyDestroy(tmpKey);
 
     /* set key name */
     if(xmlSecKeySetName(key, name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
-        return(-1);	
+        xmlSecKeyDestroy(key);
+        return(NULL);	
     }
 
-    return(0);
+    return(key);
 }
 

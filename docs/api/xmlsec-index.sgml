@@ -382,8 +382,8 @@
 <listitem><para><link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyStoreFinalizeMethod">xmlSecKeyStoreFinalizeMethod</link></para></listitem>
-<listitem><para><link linkend="xmlSecKeyStoreFindMethod">xmlSecKeyStoreFindMethod</link></para></listitem>
-<listitem><para><link linkend="xmlSecKeyStoreFind">xmlSecKeyStoreFind</link></para></listitem>
+<listitem><para><link linkend="xmlSecKeyStoreFindKeyMethod">xmlSecKeyStoreFindKeyMethod</link></para></listitem>
+<listitem><para><link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyStoreIdUnknown">xmlSecKeyStoreIdUnknown</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyStoreInitializeMethod">xmlSecKeyStoreInitializeMethod</link></para></listitem>
@@ -582,7 +582,6 @@
 <listitem><para><link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link></para></listitem>
 <listitem><para><link linkend="xmlSecShutdown">xmlSecShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link></para></listitem>
-<listitem><para><link linkend="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link></para></listitem>
 <listitem><para><link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link></para></listitem>

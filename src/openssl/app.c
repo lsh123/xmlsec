@@ -588,11 +588,11 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 	return(-1);
     }
     
-    ret = xmlSecSimpleKeysStoreLoad(store, uri);
+    ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecSimpleKeysStoreLoad",
+		    "	xmlSecSimpleKeysStoreLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=%s", xmlSecErrorsSafeString(uri));
 	return(-1);

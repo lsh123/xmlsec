@@ -306,7 +306,8 @@ xmlSecSimpleKeysStoreFindKey(xmlSecKeyDataStorePtr store, const xmlChar* name,
 }
 
 int
-xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
+xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri, 
+			    xmlSecKeysMngrPtr keysMngr) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNodePtr cur;
@@ -364,6 +365,7 @@ xmlSecSimpleKeysStoreLoad(xmlSecKeyDataStorePtr store, const char *uri) {
 	}
 	
 	keyInfoCtx.mode 		= xmlSecKeyInfoModeRead;
+	keyInfoCtx.keysMngr		= keysMngr;
 	keyInfoCtx.stopWhenKeyFound	= 0;
         keyInfoCtx.keyReq.keyId		= xmlSecKeyDataIdUnknown;
 	keyInfoCtx.keyReq.keyType	= xmlSecKeyDataTypeAny;

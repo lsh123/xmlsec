@@ -33,7 +33,8 @@ XMLSEC_EXPORT xmlSecKeyPtr		xmlSecSimpleKeysStoreFindKey	(xmlSecKeyDataStorePtr 
 									 const xmlChar* name,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int			xmlSecSimpleKeysStoreLoad 	(xmlSecKeyDataStorePtr store,
-									 const char *uri);
+									 const char *uri,
+									 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT int			xmlSecSimpleKeysStoreSave	(xmlSecKeyDataStorePtr store, 
 									 const char *filename,
 									 xmlSecKeyDataType type);

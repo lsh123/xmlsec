@@ -12,10 +12,8 @@ BuildRoot: %{_tmppath}/@PACKAGE@-%{version}-root
 URL: http://www.aleksey.com/xmlsec
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
-Requires: openssl >= @OPENSSL_MIN_VERSION@
 BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
 BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
-BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
 Prefix: %{_prefix}
 Docdir: %{_docdir}
 
@@ -37,6 +35,33 @@ Requires: zlib-devel
 Libraries, includes, etc. you can use to develop applications with XML Digital 
 Signatures and XML Encryption support.
 
+%package openssl
+Summary: OpenSSL crypto plugin for XML Security Library
+Group: Development/Libraries 
+Requires: xmlsec1 = %{version}
+Requires: libxml2 >= @LIBXML_MIN_VERSION@
+Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+Requires: openssl >= @OPENSSL_MIN_VERSION@
+BuildRequires: openssl-devel >= @OPENSSL_MIN_VERSION@
+
+%description openssl
+OpenSSL plugin for XML Security Library provides OpenSSL based crypto services
+for the xmlsec library
+
+%package openssl-devel
+Summary: OpenSSL crypto plugin for XML Security Library
+Group: Development/Libraries 
+Requires: xmlsec1 = %{version}
+Requires: xmlsec1-devel = %{version}
+Requires: xmlsec1-openssl = %{version}
+Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
+Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
+Requires: openssl >= @OPENSSL_MIN_VERSION@
+Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
+
+%description openssl-devel
+Libraries, includes, etc. for developing XML Security applications with OpenSSL
+
 %package nss
 Summary: NSS crypto plugin for XML Security Library
 Group: Development/Libraries 
@@ -44,6 +69,7 @@ Requires: xmlsec1 = %{version}
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
 Requires: mozilla-nss >= @MOZILLA_MIN_VERSION@
+BuildRequires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
 
 %description nss
 NSS plugin for XML Security Library provides NSS based crypto services
@@ -58,11 +84,9 @@ Requires: xmlsec1-nss = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Requires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
-Requires: zlib-devel 
 
 %description nss-devel
 Libraries, includes, etc. for developing XML Security applications with NSS
-
 
 %prep
 %setup -q
@@ -112,8 +136,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{prefix}/lib/libxmlsec1.so.*
 %{prefix}/lib/libxmlsec1.so
-%{prefix}/lib/libxmlsec1-openssl.so.*
-%{prefix}/lib/libxmlsec1-openssl.so
 %{prefix}/bin/xmlsec1
 
 %files devel
@@ -121,15 +143,25 @@ rm -rf $RPM_BUILD_ROOT
 
 %{prefix}/bin/xmlsec1-config
 %{prefix}/include/xmlsec1/xmlsec/*.h
-%{prefix}/include/xmlsec1/xmlsec/openssl/*.h
 %{prefix}/lib/libxmlsec1.*a
-%{prefix}/lib/libxmlsec1-openssl.*a
 %{prefix}/lib/pkgconfig/xmlsec1.pc
-%{prefix}/lib/pkgconfig/xmlsec1-openssl.pc
 %{prefix}/lib/xmlsec1Conf.sh
 %{prefix}/share/doc/xmlsec1/* 
 %doc AUTHORS HACKING ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec1-config.1*
+
+%files openssl
+%defattr(-, root, root)  
+
+%{prefix}/lib/libxmlsec1-openssl.so.*
+%{prefix}/lib/libxmlsec1-openssl.so
+
+%files openssl-devel
+%defattr(-, root, root)  
+
+%{prefix}/include/xmlsec1/xmlsec/openssl/*.h
+%{prefix}/lib/libxmlsec1-openssl.*a
+%{prefix}/lib/pkgconfig/xmlsec1-openssl.pc
 
 %files nss
 %defattr(-, root, root)  

@@ -97,14 +97,6 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
  **************************************************************/
 static xmlSecTransformPtr xmlSecBase64Create			(xmlSecTransformId id);
 static void		xmlSecBase64Destroy			(xmlSecTransformPtr transform);
-static int 		xmlSecBase64ExecuteBin			(xmlSecTransformPtr transform,
-								 const unsigned char* in,
-								 size_t inSize,
-								 size_t* inRes,
-								 unsigned char* out,
-								 size_t outSize,
-								 size_t* outRes);
-
 static int 		xmlSecBase64Execute			(xmlSecTransformPtr transform, 
 								 int last, 
 								 xmlSecTransformCtxPtr transformCtx);
@@ -332,77 +324,6 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     }
     return(0);
 }
-
-static int 
-xmlSecBase64ExecuteBin(xmlSecTransformPtr transform, 
-		const unsigned char* in, size_t inSize, size_t* inRes,
-		unsigned char* out, size_t outSize, size_t* outRes) {
-    xmlSecBase64CtxPtr ctx;
-    int ret;
-    
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode), -1);
-    xmlSecAssert2(inRes != NULL, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outRes != NULL, -1);
-    
-    ctx = xmlSecBase64GetCtx(transform);
-    xmlSecAssert2(ctx != NULL, -1);
-    
-    transform->status = xmlSecTransformStatusWorking;
-    if(inSize > 0) {
-	xmlSecAssert2(in != NULL, -1);
-	
-	while((inSize > 0) && (outSize > 0)) {	    
-	    ret = xmlSecBase64CtxPush(ctx, in, inSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBase64CtxPush");
-		return(-1);
-	    }
-	    xmlSecAssert2((size_t)ret <= inSize, -1);
-	    in += ret;
-	    inSize -= ret;
-	    (*inRes) += ret;
-
-	    ret = xmlSecBase64CtxPop(ctx, out, outSize, 0);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBase64CtxPop");
-		return(-1);
-	    } else if(ret == 0) {
-		break;
-	    }
-	    xmlSecAssert2((size_t)ret <= outSize, -1);
-	    out += ret;
-	    outSize -= ret;
-	    (*outRes) += ret;
-	}
-    } else {
-	while(outSize > 0) {
-	    ret = xmlSecBase64CtxPop(ctx, out, outSize, 1);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBase64CtxPop");
-		return(-1);
-	    } else if(ret == 0) {
-		break;
-	    }	
-	    xmlSecAssert2((size_t)ret <= outSize, -1);
-	    out += ret;
-	    outSize -= ret;
-	    (*outRes) += ret;
-	}
-	if((*outRes) == 0) {
-	    transform->status = xmlSecTransformStatusFinished;
-	}
-    }
-    
-    return(0);
-}
-
 
 /************************************************************************
  *

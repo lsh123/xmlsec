@@ -1,52 +1,35 @@
-/**
- * RSA transform
- */
-static xmlSecTransformPtr xmlSecSignRsaSha1Create(xmlSecTransformId id);
-static void 		xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform);
-static int  		xmlSecSignRsaSha1SetKeyReq(xmlSecTransformPtr transform, 
-						 xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int  		xmlSecSignRsaSha1SetKey	(xmlSecTransformPtr transform, 
-						 xmlSecKeyPtr key);
-static int 		xmlSecSignRsaSha1Update	(xmlSecDigestTransformPtr digest,
-						 const unsigned char *buffer,
-						 size_t size);
-static int 		xmlSecSignRsaSha1Sign	(xmlSecDigestTransformPtr digest,
-						 unsigned char **buffer,
-						 size_t *size);
-static int 		xmlSecSignRsaSha1Verify	(xmlSecDigestTransformPtr digest,
-						 const unsigned char *buffer,
-						 size_t size);
-
-struct _xmlSecDigestTransformIdStruct xmlSecSignRsaSha1Id = {
-    /* same as xmlSecTransformId */    
-    BAD_CAST "sign-rsa-sha1",
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageSignatureMethod,		/* xmlSecTransformUsage usage; */
-    BAD_CAST "http://www.w3.org/2000/09/xmldsig#rsa-sha1", /* xmlChar *href; */
+static RSA*
+xmlSecOpenSSLRsaDup(RSA* rsa) {
+    RSA *newRsa;
     
-    xmlSecSignRsaSha1Create,		/* xmlSecTransformCreateMethod create; */
-    xmlSecSignRsaSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
-    NULL,				/* xmlSecTransformReadNodeMethod read; */
-    xmlSecSignRsaSha1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecSignRsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
-    
-    /* xmlSecTransform data/methods */
-    NULL,
-    xmlSecDigestTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecDigestTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecDigestTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecAssert2(rsa != NULL, NULL);
 
-    NULL,
-    NULL,
-        
-    /* xmlSecDigestTransform data/methods */
-    xmlSecSignRsaSha1Update,		/* xmlSecDigestUpdateMethod digestUpdate; */
-    xmlSecSignRsaSha1Sign,		/* xmlSecDigestSignMethod digestSign; */
-    xmlSecSignRsaSha1Verify		/* xmlSecDigestVerifyMethod digestVerify; */
-};
-xmlSecTransformId xmlSecSignRsaSha1 = (xmlSecTransformId)&xmlSecSignRsaSha1Id;
+    /* increment reference counter instead of coping if possible */
+#ifndef XMLSEC_OPENSSL096
+    RSA_up_ref(rsa);
+    newRsa =  rsa;
+#else /* XMLSEC_OPENSSL096 */     
+    
+    newRsa = RSA_new();
+    if(newRsa == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RSA_new");
+	return(NULL);
+    }
+
+    if(rsa->n != NULL) {
+	newRsa->n = BN_dup(rsa->n);
+    }
+    if(rsa->e != NULL) {
+	newRsa->e = BN_dup(rsa->e);
+    }
+    if(rsa->d != NULL) {
+	newRsa->d = BN_dup(rsa->d);
+    }
+#endif /* XMLSEC_OPENSSL096 */     
+    return(newRsa);
+}
 
 /**
  * RSA-PKCS1 
@@ -133,257 +116,6 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaOaepId = {
 };
 xmlSecTransformId xmlSecEncRsaOaep = (xmlSecTransformId)&xmlSecEncRsaOaepId;
 
-/**
- * RSA-SHA1 transform
- */
-#define XMLSEC_RSASHA1_TRANSFORM_SIZE \
-    (sizeof(xmlSecDigestTransform) + sizeof(SHA_CTX))
-#define xmlSecSignRsaSha1Context(t) \
-    ((SHA_CTX*)(((xmlSecDigestTransformPtr)( t ))->digestData))
-#define xmlSecSignRsaSha1ContextRsa(t) \
-    ((RSA*)(((xmlSecDigestTransformPtr)( t ))->reserved1))
-
-
-/**
- * xmlSecSignRsaSha1Create:
- */
-static xmlSecTransformPtr 
-xmlSecSignRsaSha1Create(xmlSecTransformId id) {
-    xmlSecDigestTransformPtr digest;
-    
-    xmlSecAssert2(id != NULL, NULL);
-        
-    if(id != xmlSecSignRsaSha1){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecSignRsaSha1");
-	return(NULL);
-    }
-
-    /*
-     * Allocate a new xmlSecTransform and fill the fields.
-     */
-    digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_RSASHA1_TRANSFORM_SIZE);
-    if(digest == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", XMLSEC_RSASHA1_TRANSFORM_SIZE);
-	return(NULL);
-    }
-    memset(digest, 0, XMLSEC_RSASHA1_TRANSFORM_SIZE);
-    
-    digest->id = id;
-    digest->digestData = ((unsigned char*)digest) + sizeof(xmlSecDigestTransform);
-
-    SHA1_Init(xmlSecSignRsaSha1Context(digest)); 
-    return((xmlSecTransformPtr)digest);
-}
-
-/**
- * xmlSecSignRsaSha1Destroy:
- */
-static void 
-xmlSecSignRsaSha1Destroy(xmlSecTransformPtr transform) {
-    xmlSecDigestTransformPtr digest;
-
-    xmlSecAssert(transform != NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecSignRsaSha1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecSignRsaSha1");
-	return;
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-
-    if(xmlSecSignRsaSha1ContextRsa(transform) != NULL) {
-	RSA_free(xmlSecSignRsaSha1ContextRsa(transform));
-    }
-    
-    if(digest->digest != NULL) {
-	memset(digest->digest, 0, digest->digestSize);
-	xmlFree(digest->digest);
-    }    
-        
-    memset(digest, 0, XMLSEC_RSASHA1_TRANSFORM_SIZE);
-    xmlFree(digest);
-}
-
-/**
- * xmlSecSignRsaSha1Update:
- */
-static int
-xmlSecSignRsaSha1Update(xmlSecDigestTransformPtr digest,
-			const unsigned char *buffer, size_t size) {
-    xmlSecAssert2(digest != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecSignRsaSha1");
-	return(-1);
-    }    
-    
-    if((buffer == NULL) || (size == 0) || (digest->status != xmlSecTransformStatusNone)) {
-	/* nothing to update */
-	return(0);
-    }
-    
-    SHA1_Update(xmlSecSignRsaSha1Context(digest), buffer, size); 
-    return(0);
-}
-
-/**
- * xmlSecSignRsaSha1Sign:
- */
-static int
-xmlSecSignRsaSha1Sign(xmlSecDigestTransformPtr digest,
-			unsigned char **buffer, size_t *size) {
-    unsigned char buf[SHA_DIGEST_LENGTH]; 
-    int ret;
-
-    xmlSecAssert2(digest != NULL, -1);
-    xmlSecAssert2(digest->digest != NULL, -1);
-        
-    if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1) || 
-      (xmlSecSignRsaSha1ContextRsa(digest) == NULL) ||
-      ((xmlSecSignRsaSha1ContextRsa(digest)->d) == NULL)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecSignRsaSha1");
-	return(-1);
-    }    
-    if(digest->status != xmlSecTransformStatusNone) {
-	return(0);
-    }    
-    SHA1_Final(buf, xmlSecSignRsaSha1Context(digest)); 
-    
-    ret = RSA_sign(NID_sha1, buf, SHA_DIGEST_LENGTH, 
-		digest->digest, &(digest->digestSize), 
-		xmlSecSignRsaSha1ContextRsa(digest));
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "RSA_sign - %d", ret);
-	return(-1);	    
-    }
-    
-    if(buffer != NULL) {
-	(*buffer) = digest->digest;
-    }        
-    if(size != NULL) {
-	(*size) = digest->digestSize;
-    }        
-    digest->status = xmlSecTransformStatusOk;
-    return(0);
-}
-
-/**
- * xmlSecSignRsaSha1Verify:
- */
-static int
-xmlSecSignRsaSha1Verify(xmlSecDigestTransformPtr digest,
-			const unsigned char *buffer, size_t size) {
-    unsigned char buf[SHA_DIGEST_LENGTH]; 
-    int ret;
-
-    xmlSecAssert2(digest != NULL, -1);
-    xmlSecAssert2(buffer != NULL, -1);
-        
-    if(!xmlSecTransformCheckId(digest, xmlSecSignRsaSha1) ||
-       (xmlSecSignRsaSha1ContextRsa(digest) == NULL)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecSignRsaSha1");
-	return(-1);
-    }    
-
-    SHA1_Final(buf, xmlSecSignRsaSha1Context(digest)); 
-    
-    ret = RSA_verify(NID_sha1, buf, SHA_DIGEST_LENGTH, 
-		     (unsigned char *)buffer, size, 
-		     xmlSecSignRsaSha1ContextRsa(digest));
-    if(ret == 1) {
-	digest->status = xmlSecTransformStatusOk;
-    } else if(ret == 0) {
-	digest->status = xmlSecTransformStatusFail;
-    } else {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "RSA_verify - %d", ret);
-	return(-1);
-    }
-    
-    return(0);
-}
-
-static int  
-xmlSecSignRsaSha1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecSignRsaSha1), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    keyInfoCtx->keyId 	 = xmlSecKeyDataRsaValueId;
-    
-    if(transform->encode) {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePrivate;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
-    } else {
-        keyInfoCtx->keyType  = xmlSecKeyDataTypePublic;
-	keyInfoCtx->keyUsage = xmlSecKeyUsageVerify;
-    }
-    return(0);
-}
-
-/**
- * xmlSecSignRsaSha1SetKey:
- */
-static int
-xmlSecSignRsaSha1SetKey	(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecDigestTransformPtr digest;
-    RSA *rsa;
-    void *digestBuf;
-
-    xmlSecAssert2(transform != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataRsaValueId), -1);
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecSignRsaSha1), -1);
-
-    digest = (xmlSecDigestTransformPtr)transform;
-    rsa = xmlSecOpenSSLKeyDataRsaValueGet(key->value);
-    xmlSecAssert2(rsa != NULL, -1);
-
-    /* set key */
-    if(xmlSecSignRsaSha1ContextRsa(transform) != NULL) {
-	RSA_free(xmlSecSignRsaSha1ContextRsa(transform));
-    }    
-    transform->reserved1 = xmlSecOpenSSLRsaDup(rsa);
-    if(transform->reserved1 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLRsaDup");
-	return(-1);
-    }
-
-    /* create digest buffer */
-    digestBuf = xmlMalloc(sizeof(unsigned char) * RSA_size(rsa));
-    if(digestBuf == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(unsigned char) * RSA_size(rsa));
-	return(-1);
-    }    
-    if(digest->digest != NULL) {
-	memset(digest->digest, 0, digest->digestSize);
-	xmlFree(digest->digest);  
-    }    
-    digest->digest = digestBuf;
-    digest->digestSize = RSA_size(rsa);
-        
-    return(0);
-}
 
 /**************************************************************************
  *
@@ -475,7 +207,7 @@ xmlSecRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncRsaPkcs1), -1);
     
     buffered = (xmlSecBufferedTransformPtr)transform;
-    rsa = xmlSecOpenSSLKeyDataRsaValueGet(key->value);
+    rsa = xmlSecOpenSSLKeyDataRsaValueGetRsa(key->value);
     xmlSecAssert2(rsa != NULL, -1);
 
     if(xmlSecRsaPkcs1Rsa(buffered) != NULL) {
@@ -697,7 +429,7 @@ xmlSecRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncRsaOaep), -1);
     
     buffered = (xmlSecBufferedTransformPtr)transform;
-    rsa = xmlSecOpenSSLKeyDataRsaValueGet(key->value);
+    rsa = xmlSecOpenSSLKeyDataRsaValueGetRsa(key->value);
     xmlSecAssert2(rsa != NULL, -1);
 
     if(xmlSecRsaOaepRsa(buffered) != NULL) {

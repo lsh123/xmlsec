@@ -198,7 +198,7 @@ xmlSecOpenSSLTransformsInit(void) {
 
     /* signature */ 
 #ifndef XMLSEC_NO_DSA
-    if(xmlSecTransformRegister(xmlSecSignDsaSha1) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformDsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register dsa/sha1 transform");
@@ -207,7 +207,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #endif /* XMLSEC_NO_DSA */    
 
 #ifndef XMLSEC_NO_RSA
-    if(xmlSecTransformRegister(xmlSecSignRsaSha1) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformRsaSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register rsa/sha1 transform");

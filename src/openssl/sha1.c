@@ -145,7 +145,5 @@ xmlSecOpenSSLSha1Destroy(xmlSecTransformPtr transform) {
     xmlFree(transform);
 }
 
-
-
 #endif /* XMLSEC_NO_SHA1 */
 

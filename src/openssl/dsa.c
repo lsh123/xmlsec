@@ -31,6 +31,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/bn.h>
 
 /**************************************************************************
@@ -168,71 +169,76 @@ xmlSecOpenSSLKeyDataDsaValueGetKlass(void) {
 }
 
 int
-xmlSecOpenSSLKeyDataDsaValueSet(xmlSecKeyDataPtr data, DSA* dsa) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), -1);
-
-    /* destroy the old one */
-    if(data->reserved0 != NULL) {
-	DSA_free((DSA*)(data->reserved0));
-	data->reserved0 = NULL;
-    }    
+xmlSecOpenSSLKeyDataDsaValueAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
+    EVP_PKEY* pKey = NULL;
+    int ret;
     
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), -1);
+    
+    /* construct new EVP_PKEY */
     if(dsa != NULL) {
-	data->reserved0 = xmlSecOpenSSLDsaDup(dsa);
-	if(data->reserved0 == NULL) {
+	pKey = EVP_PKEY_new();
+	if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLDsaDup");
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"EVP_PKEY_new");
 	    return(-1);
 	}
+	
+	ret = EVP_PKEY_assign_DSA(pKey, dsa);
+	if(ret != 1) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"EVP_PKEY_assign_DSA");
+	    return(-1);
+	}	
+    }
+    
+    ret = xmlSecOpenSSLKeyDataDsaValueAdoptEvp(data, pKey);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataDsaValueAdoptEvp");
+	if(pKey != NULL) {
+	    EVP_PKEY_free(pKey);
+	}
+	return(-1);
     }
     return(0);    
 }
 
 DSA* 
-xmlSecOpenSSLKeyDataDsaValueGet(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataDsaValueGetDsa(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), NULL);
     
-    return((DSA*)(data->reserved0));
+    pKey = xmlSecOpenSSLKeyDataDsaValueGetEvp(data);
+    xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_DSA), NULL);
+    
+    return((pKey != NULL) ? pKey->pkey.dsa : (DSA*)NULL);
 }
 
-static DSA*
-xmlSecOpenSSLDsaDup(DSA* dsa) {
-    DSA* newDsa;
+int 
+xmlSecOpenSSLKeyDataDsaValueAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), -1);
+    xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_DSA), -1);
     
-    xmlSecAssert2(dsa != NULL, NULL);
+    /* destroy the old one */
+    if(data->reserved0 != NULL) {
+	EVP_PKEY_free((EVP_PKEY*)(data->reserved0));
+	data->reserved0 = NULL;
+    }    
+    
+    data->reserved0 = pKey;
+    return(0);
+}
 
-    /* increment reference counter instead of coping if possible */
-#ifndef XMLSEC_OPENSSL096
-    DSA_up_ref(dsa);
-    newDsa =  dsa;
-#else /* XMLSEC_OPENSSL096 */         
-    newDsa = DSA_new();
-    if(newDsa == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "DSA_new");
-	return(NULL);
-    }
+EVP_PKEY* 
+xmlSecOpenSSLKeyDataDsaValueGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), NULL);
 
-    if(dsa->p != NULL) {
-	newDsa->p = BN_dup(dsa->p);
-    }
-    if(dsa->q != NULL) {
-	newDsa->q = BN_dup(dsa->q);
-    }
-    if(dsa->g != NULL) {
-	newDsa->g = BN_dup(dsa->g);
-    }
-    if(dsa->priv_key != NULL) {
-	newDsa->priv_key = BN_dup(dsa->priv_key);
-    }
-    if(dsa->pub_key != NULL) {
-	newDsa->pub_key = BN_dup(dsa->pub_key);
-    }
-#endif /* XMLSEC_OPENSSL096 */         
-
-    return(newDsa);
+    return((EVP_PKEY*)(data->reserved0));
 }
 
 static int
@@ -244,17 +250,30 @@ xmlSecOpenSSLKeyDataDsaValueInitialize(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataDsaValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    EVP_PKEY* pKeySrc;
+    EVP_PKEY* pKeyDst = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataDsaValueId), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataDsaValueId), -1);
 
-    /* copy data */    
-    ret = xmlSecOpenSSLKeyDataDsaValueSet(dst, xmlSecOpenSSLKeyDataDsaValueGet(src));
+    pKeySrc = xmlSecOpenSSLKeyDataDsaValueGetEvp(src);
+    if(pKeySrc != NULL) {
+	pKeyDst = xmlSecOpenSSLEvpKeyDup(pKeySrc);
+	if(pKeyDst == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpDupKey");
+	    return(-1);
+	}	
+    } 
+    
+    ret = xmlSecOpenSSLKeyDataDsaValueAdoptEvp(dst, pKeyDst);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaValueSet");
+		    "xmlSecOpenSSLKeyDataDsaValueAdoptEvp");
+	EVP_PKEY_free(pKeyDst);
 	return(-1);
     }
 
@@ -268,11 +287,11 @@ xmlSecOpenSSLKeyDataDsaValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId));
     
     /* destroy buffer */
-    ret = xmlSecOpenSSLKeyDataDsaValueSet(data, NULL);
+    ret = xmlSecOpenSSLKeyDataDsaValueAdoptEvp(data, NULL);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaValueSet");
+		    "xmlSecOpenSSLKeyDataDsaAdoptEvp");
     }
 }
 
@@ -414,11 +433,11 @@ xmlSecOpenSSLKeyDataDsaValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	return(-1);
     }
 
-    ret = xmlSecOpenSSLKeyDataDsaValueSet(data, dsa);
+    ret = xmlSecOpenSSLKeyDataDsaValueAdoptDsa(data, dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaValueSet");
+		    "xmlSecOpenSSLKeyDataDsaValueAdoptDsa");
 	xmlSecKeyDataDestroy(data);
 	DSA_free(dsa);
 	return(-1);
@@ -430,10 +449,8 @@ xmlSecOpenSSLKeyDataDsaValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeySetValue");
 	xmlSecKeyDataDestroy(data);
-	DSA_free(dsa);
 	return(-1);	
     }
-    DSA_free(dsa);
 
     return(0);
 }
@@ -452,7 +469,7 @@ xmlSecOpenSSLKeyDataDsaValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    dsa = xmlSecOpenSSLKeyDataDsaValueGet(key->value);
+    dsa = xmlSecOpenSSLKeyDataDsaValueGetDsa(key->value);
     xmlSecAssert2(dsa != NULL, -1);
     
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyType) == 0) {
@@ -575,11 +592,11 @@ xmlSecOpenSSLKeyDataDsaValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
 	return(-1);    
     }
 
-    ret = xmlSecOpenSSLKeyDataDsaValueSet(data, dsa);
+    ret = xmlSecOpenSSLKeyDataDsaValueAdoptDsa(data, dsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataDsaValueSet");
+		    "xmlSecOpenSSLKeyDataDsaValueAdoptDsa");
 	DSA_free(dsa);
 	return(-1);
     }
@@ -593,7 +610,7 @@ xmlSecOpenSSLKeyDataDsaValueGetType(xmlSecKeyDataPtr data) {
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), xmlSecKeyDataTypeUnknown);
     
-    dsa = xmlSecOpenSSLKeyDataDsaValueGet(data);
+    dsa = xmlSecOpenSSLKeyDataDsaValueGetDsa(data);
     if((dsa != NULL) && (dsa->p != NULL) && (dsa->q != NULL) && 
        (dsa->g != NULL) && (dsa->pub_key != NULL)) {
        
@@ -613,7 +630,7 @@ xmlSecOpenSSLKeyDataDsaValueGetSize(xmlSecKeyDataPtr data) {
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataDsaValueId), 0);
 
-    dsa = xmlSecOpenSSLKeyDataDsaValueGet(data);
+    dsa = xmlSecOpenSSLKeyDataDsaValueGetDsa(data);
     if((dsa != NULL) && (dsa->p != NULL)) {
 	return(BN_num_bits(dsa->p));
     }    
@@ -638,7 +655,181 @@ xmlSecOpenSSLKeyDataDsaValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 	    xmlSecOpenSSLKeyDataDsaValueGetSize(data));
 }
 
-#include "dsa-old.c"
+/****************************************************************************
+ *
+ * DSA-SHA1 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformPtr xmlSecOpenSSLDsaSha1Create		(xmlSecTransformId id);
+static void 	xmlSecOpenSSLDsaSha1Destroy			(xmlSecTransformPtr transform);
+
+
+static int 	xmlSecOpenSSLDsaSha1Initialize			(xmlSecTransformPtr transform);
+static void 	xmlSecOpenSSLDsaSha1Finalize			(xmlSecTransformPtr transform);
+static int  	xmlSecOpenSSLDsaSha1SetKeyReq			(xmlSecTransformPtr transform, 
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int  	xmlSecOpenSSLDsaSha1SetKey			(xmlSecTransformPtr transform, 
+								 xmlSecKeyPtr key);
+static int  	xmlSecOpenSSLDsaSha1Verify			(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+static int  	xmlSecOpenSSLDsaSha1Execute			(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
+static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
+    xmlSecNameDsaSha1,
+    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
+    xmlSecHrefDsaSha1, 			/* xmlChar *href; */
+    
+    xmlSecOpenSSLDsaSha1Create,		/* xmlSecTransformCreateMethod create; */
+    xmlSecOpenSSLDsaSha1Destroy,	/* xmlSecTransformDestroyMethod destroy; */
+    NULL,				/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLDsaSha1SetKeyReq,	/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLDsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLDsaSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLDsaSha1Execute,	/* xmlSecTransformExecuteMethod execute; */
+    
+    /* xmlSecTransform data/methods */
+    NULL,
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+
+    NULL,
+    NULL,
+};
+
+xmlSecTransformId 
+xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
+    return(&xmlSecOpenSSLDsaSha1Klass);
+}
+
+
+static int 
+xmlSecOpenSSLDsaSha1Initialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
+    
+    return(xmlSecOpenSSLEvpSignatureInitialize(transform, EVP_dss1()));
+}
+
+static void 
+xmlSecOpenSSLDsaSha1Finalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id));
+
+    xmlSecOpenSSLEvpSignatureFinalize(transform);
+}
+
+static int  
+xmlSecOpenSSLDsaSha1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    keyInfoCtx->keyId 	     = xmlSecKeyDataDsaValueId;
+    if(transform->encode) {
+        keyInfoCtx->keyType  = xmlSecKeyDataTypePrivate;
+	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
+    } else {
+        keyInfoCtx->keyType  = xmlSecKeyDataTypePublic;
+	keyInfoCtx->keyUsage = xmlSecKeyUsageVerify;
+    }
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLDsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    EVP_PKEY* pKey;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataDsaValueId), -1);
+    
+    pKey = xmlSecOpenSSLKeyDataDsaValueGetEvp(key->value);
+    if(pKey == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataDsaValueGetEvpKey");
+	return(-1);
+    }
+    
+    ret = xmlSecOpenSSLEvpSignatureSetKey(transform, pKey);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpSignatureSetKey");
+	return(-1);
+    }
+    
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLDsaSha1Verify(xmlSecTransformPtr transform, const unsigned char* data,
+		    size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
+
+    return(xmlSecOpenSSLEvpSignatureVerify(transform, data, dataSize, transformCtx));
+}
+
+static int 
+xmlSecOpenSSLDsaSha1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id), -1);
+    
+    return(xmlSecOpenSSLEvpSignatureExecute(transform, last, transformCtx));
+}
+
+/****************************************************************************/
+
+/**
+ * xmlSecOpenSSLDsaSha1Create:
+ */ 
+static xmlSecTransformPtr 
+xmlSecOpenSSLDsaSha1Create(xmlSecTransformId id) {
+    xmlSecTransformPtr transform;
+    int ret;
+        
+    xmlSecAssert2(id == xmlSecOpenSSLTransformDsaSha1Id, NULL);        
+    
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", sizeof(xmlSecTransform));
+	return(NULL);
+    }
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    transform->id = id;
+
+    ret = xmlSecOpenSSLDsaSha1Initialize(transform);	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLDsaSha1Initialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    return(transform);
+}
+
+/**
+ * xmlSecOpenSSLDsaSha1Destroy:
+ */ 
+static void 	
+xmlSecOpenSSLDsaSha1Destroy(xmlSecTransformPtr transform) {
+
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id));
+
+    xmlSecOpenSSLDsaSha1Finalize(transform);
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
+}
 
 #endif /* XMLSEC_NO_DSA */
 

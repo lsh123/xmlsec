@@ -54,13 +54,32 @@ XMLSEC_EXPORT int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform,
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
 
+/******************************************************************************
+ *
+ * EVP Signature transforms
+ *
+ *****************************************************************************/
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureInitialize	(xmlSecTransformPtr transform,
+								 const EVP_MD* digest);
+XMLSEC_EXPORT void	xmlSecOpenSSLEvpSignatureFinalize	(xmlSecTransformPtr transform);
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureSetKey		(xmlSecTransformPtr transform,
+								 EVP_PKEY* pKey);
+XMLSEC_EXPORT int  	xmlSecOpenSSLEvpSignatureVerify		(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureExecute	(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
 
 /******************************************************************************
  *
  * EVP helper functions
  *
  *****************************************************************************/
-XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecOpenSSLEvpParseKey	(EVP_PKEY *pKey);
+XMLSEC_EXPORT EVP_PKEY*	xmlSecOpenSSLEvpKeyDup			(EVP_PKEY* pKey);
+XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecOpenSSLEvpKeyAdopt	(EVP_PKEY *pKey);
 
 
 #ifdef __cplusplus

@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include <openssl/rsa.h>
+#include <openssl/evp.h>
 #include <openssl/sha.h>
 #include <openssl/objects.h>
 
@@ -27,13 +28,13 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/digests.h>
 #include <xmlsec/buffered.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/bn.h>
 
 /**************************************************************************
@@ -141,65 +142,76 @@ xmlSecOpenSSLKeyDataRsaValueGetKlass(void) {
 }
 
 int
-xmlSecOpenSSLKeyDataRsaValueSet(xmlSecKeyDataPtr data, RSA* rsa) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), -1);
-
-    /* destroy the old one */
-    if(data->reserved0 != NULL) {
-	RSA_free((RSA*)(data->reserved0));
-	data->reserved0 = NULL;
-    }    
+xmlSecOpenSSLKeyDataRsaValueAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
+    EVP_PKEY* pKey = NULL;
+    int ret;
     
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), -1);
+    
+    /* construct new EVP_PKEY */
     if(rsa != NULL) {
-	data->reserved0 = xmlSecOpenSSLRsaDup(rsa);
-	if(data->reserved0 == NULL) {
+	pKey = EVP_PKEY_new();
+	if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLRsaDup");
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"EVP_PKEY_new");
 	    return(-1);
 	}
+	
+	ret = EVP_PKEY_assign_RSA(pKey, rsa);
+	if(ret != 1) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"EVP_PKEY_assign_RSA");
+	    return(-1);
+	}	
+    }
+    
+    ret = xmlSecOpenSSLKeyDataRsaValueAdoptEvp(data, pKey);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataRsaValueAdoptEvp");
+	if(pKey != NULL) {
+	    EVP_PKEY_free(pKey);
+	}
+	return(-1);
     }
     return(0);    
 }
 
 RSA* 
-xmlSecOpenSSLKeyDataRsaValueGet(xmlSecKeyDataPtr data) {
+xmlSecOpenSSLKeyDataRsaValueGetRsa(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+    
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), NULL);
     
-    return((RSA*)(data->reserved0));
+    pKey = xmlSecOpenSSLKeyDataRsaValueGetEvp(data);
+    xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_RSA), NULL);
+    
+    return((pKey != NULL) ? pKey->pkey.rsa : (RSA*)NULL);
 }
 
-static RSA*
-xmlSecOpenSSLRsaDup(RSA* rsa) {
-    RSA *newRsa;
+int 
+xmlSecOpenSSLKeyDataRsaValueAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), -1);
+    xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_RSA), -1);
     
-    xmlSecAssert2(rsa != NULL, NULL);
-
-    /* increment reference counter instead of coping if possible */
-#ifndef XMLSEC_OPENSSL096
-    RSA_up_ref(rsa);
-    newRsa =  rsa;
-#else /* XMLSEC_OPENSSL096 */     
+    /* destroy the old one */
+    if(data->reserved0 != NULL) {
+	EVP_PKEY_free((EVP_PKEY*)(data->reserved0));
+	data->reserved0 = NULL;
+    }    
     
-    newRsa = RSA_new();
-    if(newRsa == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "RSA_new");
-	return(NULL);
-    }
+    data->reserved0 = pKey;
+    return(0);
+}
 
-    if(rsa->n != NULL) {
-	newRsa->n = BN_dup(rsa->n);
-    }
-    if(rsa->e != NULL) {
-	newRsa->e = BN_dup(rsa->e);
-    }
-    if(rsa->d != NULL) {
-	newRsa->d = BN_dup(rsa->d);
-    }
-#endif /* XMLSEC_OPENSSL096 */     
-    return(newRsa);
+EVP_PKEY* 
+xmlSecOpenSSLKeyDataRsaValueGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), NULL);
+
+    return((EVP_PKEY*)(data->reserved0));
 }
 
 static int
@@ -211,17 +223,30 @@ xmlSecOpenSSLKeyDataRsaValueInitialize(xmlSecKeyDataPtr data) {
 
 static int
 xmlSecOpenSSLKeyDataRsaValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    EVP_PKEY* pKeySrc;
+    EVP_PKEY* pKeyDst = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecKeyDataRsaValueId), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecKeyDataRsaValueId), -1);
 
-    /* copy data */
-    ret = xmlSecOpenSSLKeyDataRsaValueSet(dst, xmlSecOpenSSLKeyDataRsaValueGet(src));
+    pKeySrc = xmlSecOpenSSLKeyDataRsaValueGetEvp(src);
+    if(pKeySrc != NULL) {
+	pKeyDst = xmlSecOpenSSLEvpKeyDup(pKeySrc);
+	if(pKeyDst == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpDupKey");
+	    return(-1);
+	}	
+    } 
+    
+    ret = xmlSecOpenSSLKeyDataRsaValueAdoptEvp(dst, pKeyDst);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataRsaValueSet");
+		    "xmlSecOpenSSLKeyDataRsaValueAdoptEvp");
+	EVP_PKEY_free(pKeyDst);
 	return(-1);
     }
 
@@ -235,11 +260,11 @@ xmlSecOpenSSLKeyDataRsaValueFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId));
     
     /* destroy buffer */
-    ret = xmlSecOpenSSLKeyDataRsaValueSet(data, NULL);
+    ret = xmlSecOpenSSLKeyDataRsaValueAdoptEvp(data, NULL);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataRsaValueSet");
+		    "xmlSecOpenSSLKeyDataRsaAdoptEvp");
     }
 }
 
@@ -337,11 +362,11 @@ xmlSecOpenSSLKeyDataRsaValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	return(-1);
     }
 
-    ret = xmlSecOpenSSLKeyDataRsaValueSet(data, rsa);
+    ret = xmlSecOpenSSLKeyDataRsaValueAdoptRsa(data, rsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataRsaValueSet");
+		    "xmlSecOpenSSLKeyDataRsaValueAdopt");
 	xmlSecKeyDataDestroy(data);
 	RSA_free(rsa);
 	return(-1);
@@ -353,10 +378,8 @@ xmlSecOpenSSLKeyDataRsaValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeySetValue");
 	xmlSecKeyDataDestroy(data);
-	RSA_free(rsa);
 	return(-1);	
     }
-    RSA_free(rsa);
 
     return(0);
 }
@@ -375,7 +398,7 @@ xmlSecOpenSSLKeyDataRsaValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    rsa = xmlSecOpenSSLKeyDataRsaValueGet(key->value);
+    rsa = xmlSecOpenSSLKeyDataRsaValueGetRsa(key->value);
     xmlSecAssert2(rsa != NULL, -1);
     
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyType) == 0) {
@@ -452,11 +475,11 @@ xmlSecOpenSSLKeyDataRsaValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
 	return(-1);    
     }
 
-    ret = xmlSecOpenSSLKeyDataRsaValueSet(data, rsa);
+    ret = xmlSecOpenSSLKeyDataRsaValueAdoptRsa(data, rsa);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataRsaValueSet");
+		    "xmlSecOpenSSLKeyDataRsaValueAdopt");
 	RSA_free(rsa);
 	return(-1);
     }
@@ -470,7 +493,7 @@ xmlSecOpenSSLKeyDataRsaValueGetType(xmlSecKeyDataPtr data) {
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), xmlSecKeyDataTypeUnknown);
     
-    rsa = xmlSecOpenSSLKeyDataRsaValueGet(data);
+    rsa = xmlSecOpenSSLKeyDataRsaValueGetRsa(data);
     if((rsa != NULL) && (rsa->n != NULL) && (rsa->e != NULL)) {
 	if(rsa->d != NULL) {
 	    return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
@@ -488,7 +511,7 @@ xmlSecOpenSSLKeyDataRsaValueGetSize(xmlSecKeyDataPtr data) {
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataRsaValueId), 0);
 
-    rsa = xmlSecOpenSSLKeyDataRsaValueGet(data);
+    rsa = xmlSecOpenSSLKeyDataRsaValueGetRsa(data);
     if((rsa != NULL) && (rsa->n != NULL)) {
 	return(BN_num_bits(rsa->n));
     }    
@@ -512,6 +535,183 @@ xmlSecOpenSSLKeyDataRsaValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     fprintf(output, "<RSAKeyValue size=\"%d\" />\n", 
 	    xmlSecOpenSSLKeyDataRsaValueGetSize(data));
 }
+
+/****************************************************************************
+ *
+ * RSA-SHA1 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformPtr xmlSecOpenSSLRsaSha1Create		(xmlSecTransformId id);
+static void 	xmlSecOpenSSLRsaSha1Destroy			(xmlSecTransformPtr transform);
+
+
+static int 	xmlSecOpenSSLRsaSha1Initialize			(xmlSecTransformPtr transform);
+static void 	xmlSecOpenSSLRsaSha1Finalize			(xmlSecTransformPtr transform);
+static int  	xmlSecOpenSSLRsaSha1SetKeyReq			(xmlSecTransformPtr transform, 
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int  	xmlSecOpenSSLRsaSha1SetKey			(xmlSecTransformPtr transform, 
+								 xmlSecKeyPtr key);
+static int  	xmlSecOpenSSLRsaSha1Verify			(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+static int  	xmlSecOpenSSLRsaSha1Execute			(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
+static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
+    xmlSecNameRsaSha1,
+    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
+    xmlSecHrefRsaSha1, 			/* xmlChar *href; */
+    
+    xmlSecOpenSSLRsaSha1Create,		/* xmlSecTransformCreateMethod create; */
+    xmlSecOpenSSLRsaSha1Destroy,	/* xmlSecTransformDestroyMethod destroy; */
+    NULL,				/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLRsaSha1SetKeyReq,	/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLRsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLRsaSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLRsaSha1Execute,	/* xmlSecTransformExecuteMethod execute; */
+    
+    /* xmlSecTransform data/methods */
+    NULL,
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+
+    NULL,
+    NULL,
+};
+
+xmlSecTransformId 
+xmlSecOpenSSLTransformRsaSha1GetKlass(void) {
+    return(&xmlSecOpenSSLRsaSha1Klass);
+}
+
+
+static int 
+xmlSecOpenSSLRsaSha1Initialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id), -1);
+    
+    return(xmlSecOpenSSLEvpSignatureInitialize(transform, EVP_sha1()));
+}
+
+static void 
+xmlSecOpenSSLRsaSha1Finalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id));
+
+    xmlSecOpenSSLEvpSignatureFinalize(transform);
+}
+
+static int  
+xmlSecOpenSSLRsaSha1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id), -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    keyInfoCtx->keyId 	     = xmlSecKeyDataRsaValueId;
+    if(transform->encode) {
+        keyInfoCtx->keyType  = xmlSecKeyDataTypePrivate;
+	keyInfoCtx->keyUsage = xmlSecKeyUsageSign;
+    } else {
+        keyInfoCtx->keyType  = xmlSecKeyDataTypePublic;
+	keyInfoCtx->keyUsage = xmlSecKeyUsageVerify;
+    }
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLRsaSha1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    EVP_PKEY* pKey;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataRsaValueId), -1);
+    
+    pKey = xmlSecOpenSSLKeyDataRsaValueGetEvp(key->value);
+    if(pKey == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataRsaValueGetEvpKey");
+	return(-1);
+    }
+    
+    ret = xmlSecOpenSSLEvpSignatureSetKey(transform, pKey);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpSignatureSetKey");
+	return(-1);
+    }
+    
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLRsaSha1Verify(xmlSecTransformPtr transform, const unsigned char* data,
+		    size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id), -1);
+
+    return(xmlSecOpenSSLEvpSignatureVerify(transform, data, dataSize, transformCtx));
+}
+
+static int 
+xmlSecOpenSSLRsaSha1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id), -1);
+    
+    return(xmlSecOpenSSLEvpSignatureExecute(transform, last, transformCtx));
+}
+
+/****************************************************************************/
+
+/**
+ * xmlSecOpenSSLRsaSha1Create:
+ */ 
+static xmlSecTransformPtr 
+xmlSecOpenSSLRsaSha1Create(xmlSecTransformId id) {
+    xmlSecTransformPtr transform;
+    int ret;
+        
+    xmlSecAssert2(id == xmlSecOpenSSLTransformRsaSha1Id, NULL);        
+    
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", sizeof(xmlSecTransform));
+	return(NULL);
+    }
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    transform->id = id;
+
+    ret = xmlSecOpenSSLRsaSha1Initialize(transform);	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLRsaSha1Initialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    return(transform);
+}
+
+/**
+ * xmlSecOpenSSLRsaSha1Destroy:
+ */ 
+static void 	
+xmlSecOpenSSLRsaSha1Destroy(xmlSecTransformPtr transform) {
+
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id));
+
+    xmlSecOpenSSLRsaSha1Finalize(transform);
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
+}
+
 
 #include "rsa-old.c"
 

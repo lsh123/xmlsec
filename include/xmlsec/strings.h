@@ -71,6 +71,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDSAKeyValue[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDsaSha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha1[];
+
 /*************************************************************************
  *
  * HMAC strings
@@ -107,6 +110,9 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRipemd160[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRSAKeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha1[];
 
 /*************************************************************************
  *

@@ -1,3 +1,42 @@
+static DSA*
+xmlSecOpenSSLDsaDup(DSA* dsa) {
+    DSA* newDsa;
+    
+    xmlSecAssert2(dsa != NULL, NULL);
+
+    /* increment reference counter instead of coping if possible */
+#ifndef XMLSEC_OPENSSL096
+    DSA_up_ref(dsa);
+    newDsa =  dsa;
+#else /* XMLSEC_OPENSSL096 */         
+    newDsa = DSA_new();
+    if(newDsa == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "DSA_new");
+	return(NULL);
+    }
+
+    if(dsa->p != NULL) {
+	newDsa->p = BN_dup(dsa->p);
+    }
+    if(dsa->q != NULL) {
+	newDsa->q = BN_dup(dsa->q);
+    }
+    if(dsa->g != NULL) {
+	newDsa->g = BN_dup(dsa->g);
+    }
+    if(dsa->priv_key != NULL) {
+	newDsa->priv_key = BN_dup(dsa->priv_key);
+    }
+    if(dsa->pub_key != NULL) {
+	newDsa->pub_key = BN_dup(dsa->pub_key);
+    }
+#endif /* XMLSEC_OPENSSL096 */         
+
+    return(newDsa);
+}
+
 /**
  * DSA transform
  */
@@ -310,7 +349,7 @@ xmlSecSignDsaSha1SetKey	(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecSignDsaSha1), -1);
 
     digest = (xmlSecDigestTransformPtr)transform;
-    dsa = xmlSecOpenSSLKeyDataDsaValueGet(key->value);
+    dsa = xmlSecOpenSSLKeyDataDsaValueGetDsa(key->value);
     xmlSecAssert2(dsa != NULL, -1);
 
     if(xmlSecSignDsaSha1ContextDsa(transform) != NULL) {

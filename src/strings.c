@@ -48,6 +48,9 @@ const xmlChar xmlSecNameDSAKeyValue[]	= "dsa";
 const xmlChar xmlSecNodeDSAKeyValue[]	= "DSAKeyValue";
 const xmlChar xmlSecHrefDSAKeyValue[]	= "http://www.w3.org/2000/09/xmldsig#DSAKeyValue";
 
+const xmlChar xmlSecNameDsaSha1[]	= "dsa-sha1";
+const xmlChar xmlSecHrefDsaSha1[]	= "http://www.w3.org/2000/09/xmldsig#dsa-sha1";
+
 /*************************************************************************
  *
  * HMAC strings
@@ -84,6 +87,9 @@ const xmlChar xmlSecHrefRipemd160[]	= "http://www.w3.org/2001/04/xmlenc#ripemd16
 const xmlChar xmlSecNameRSAKeyValue[]	= "rsa";
 const xmlChar xmlSecNodeRSAKeyValue[]	= "RSAKeyValue";
 const xmlChar xmlSecHrefRSAKeyValue[]	= "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
+
+const xmlChar xmlSecNameRsaSha1[]	= "rsa-sha1";
+const xmlChar xmlSecHrefRsaSha1[]	= "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
 
 /*************************************************************************
  *

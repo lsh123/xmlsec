@@ -1,11 +1,18 @@
 2005-02-28  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/mscrypto/certkeys.c: WinNT 4.0 support (based on the OO.org patch)
+
+2005-02-28  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/mscrypto/certkeys.c: preparation for WinNT 4.0 support
 
 2005-02-28  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/mscrypto/x509.c: enable private key search for
 	a given certificate (based on the OO.org patch)
 
 2005-02-27  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/mscrypto/certkeys.c: use default context when 
 	getting public key from a cert (based on the OO.org patch)
 	* src/mscrypto/x509vfy.c: search both trusted and untrusted 
@@ -13,6 +20,7 @@
 	when certs chain is constructed (based on the OO.org patch)
 
 2005-02-27  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* include/xmlsec/mscrypto/app.h include/xmlsec/mscrypto/x509.h
 	src/mscrypto/app.c src/mscrypto/x509vfy.c:
 	added function to add custom MS cert stores

@@ -34,6 +34,30 @@
  *************************************************************************/
 typedef struct _xmlSecMSCryptoKeyDataCtx xmlSecMSCryptoKeyDataCtx, 
 						*xmlSecMSCryptoKeyDataCtxPtr;
+
+#ifdef XMLSEC_MSCRYPTO_NT4
+/*-
+ * A wrapper of HCRYPTKEY, a reference countor is introduced, the function is
+ * the same as CryptDuplicateKey. Because the CryptDuplicateKey is not support
+ * by WINNT 4.0, the wrapper will enable the library work on WINNT 4.0
+ */
+struct _mscrypt_key {
+	HCRYPTKEY hKey ;
+	volatile LONG refcnt ;
+} ;
+
+/*-
+ * A wrapper of HCRYPTPROV, a reference countor is introduced, the function is
+ * the same as CryptContextAddRef. Because the CryptContextAddRef is not support
+ * by WINNT 4.0, the wrapper will enable the library work on WINNT 4.0
+ */
+struct _mscrypt_prov {
+	HCRYPTPROV hProv ;
+    BOOL fCallerFreeProv ;
+	volatile LONG refcnt ;
+} ;
+#endif /* XMLSEC_MSCRYPTO_NT4 */
+
 /*
  * Since MSCrypto does not provide direct handles to private keys, we support
  * only private keys linked to a certificate context. The certificate context
@@ -42,16 +66,22 @@ typedef struct _xmlSecMSCryptoKeyDataCtx xmlSecMSCryptoKeyDataCtx,
  * now is however directed to certificates.  Wouter
  */
 struct _xmlSecMSCryptoKeyDataCtx {
+#ifndef XMLSEC_MSCRYPTO_NT4
     HCRYPTPROV		hProv;
     BOOL		    fCallerFreeProv;
+    HCRYPTKEY		hKey;
+#else /* XMLSEC_MSCRYPTO_NT4 */
+	struct _mscrypt_prov* p_prov ;
+    struct _mscrypt_key*  p_key ;   
+#endif /* XMLSEC_MSCRYPTO_NT4 */
+    PCCERT_CONTEXT	pCert;
     LPCTSTR		    providerName;
     DWORD		    providerType;
-    PCCERT_CONTEXT	pCert;
     DWORD		    dwKeySpec;
-    HCRYPTKEY		hKey;
     xmlSecKeyDataType	type;
 };	    
 
+#ifndef XMLSEC_MSCRYPTO_NT4
 
 /******************************** Provider *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (ctx)->hProv
@@ -155,6 +185,148 @@ xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecM
 
     return(0);
 }
+
+#else /* XMLSEC_MSCRYPTO_NT4 */
+
+/******************************** Provider *****************************************/
+#define xmlSecMSCryptoKeyDataCtxGetProvider(ctx)            (((ctx)->p_prov) ? ((ctx)->p_prov->hProv) : 0)
+
+static void
+xmlSecMSCryptoKeyDataCtxCreateProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+	ctx->p_prov = (struct _mscrypt_prov*)xmlMalloc(sizeof(struct _mscrypt_prov));
+	if(ctx->p_prov == NULL ) {
+		xmlSecError( XMLSEC_ERRORS_HERE,
+			"mscrypt_create_prov" ,
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE
+		);
+	}
+    memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
+}
+
+static void
+xmlSecMSCryptoKeyDataCtxDestroyProvider(xmlSecMSCryptoKeyDataCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+ 
+	if(ctx->p_prov != NULL) {
+		if(InterlockedDecrement(&(ctx->p_prov->refcnt)) <= 0) {
+			if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
+				CryptReleaseContext(ctx->p_prov->hProv, 0) ;
+			}
+            memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
+			xmlFree(ctx->p_prov) ;
+		}
+        ctx->p_prov = NULL;
+	}
+}
+
+static void
+xmlSecMSCryptoKeyDataCtxSetProvider(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTPROV hProv, BOOL fCallerFreeProv)
+{
+    xmlSecAssert(ctx != NULL);
+ 
+    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
+
+    if((ctx->p_prov != NULL) && (ctx->p_prov->refcnt == 1)) {
+		if((ctx->p_prov->hProv != 0) && (ctx->p_prov->fCallerFreeProv)) {
+			CryptReleaseContext(ctx->p_prov->hProv, 0) ;
+		}
+        memset(ctx->p_prov, 0, sizeof(struct _mscrypt_prov));
+    } else {
+        xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
+        xmlSecMSCryptoKeyDataCtxCreateProvider(ctx);
+    }
+
+    ctx->p_prov->hProv = hProv;
+    ctx->p_prov->fCallerFreeProv = fCallerFreeProv;
+    ctx->p_prov->refcnt = 1;
+}
+
+static int
+xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecMSCryptoKeyDataCtxPtr ctxSrc) {
+    xmlSecAssert2(ctxDst != NULL, -1);
+    xmlSecAssert2(ctxSrc != NULL, -1);
+
+    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctxDst);
+
+    if (ctxSrc->p_prov != NULL) {
+        ctxDst->p_prov = ctxSrc->p_prov;
+        InterlockedIncrement(&(ctxDst->p_prov->refcnt));
+    }
+
+    return(0);
+}
+
+/********************************  Key  *****************************************/
+#define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            (((ctx)->p_key) ? ((ctx)->p_key->hKey) : 0)
+
+static void
+xmlSecMSCryptoKeyDataCtxCreateKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+
+	ctx->p_key = (struct _mscrypt_key*)xmlMalloc(sizeof(struct _mscrypt_key));
+	if(ctx->p_key == NULL ) {
+		xmlSecError( XMLSEC_ERRORS_HERE,
+			"mscrypt_create_key" ,
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE
+		);
+	}
+    memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
+}
+
+static void
+xmlSecMSCryptoKeyDataCtxDestroyKey(xmlSecMSCryptoKeyDataCtxPtr ctx) {
+    xmlSecAssert(ctx != NULL);
+    
+	if(ctx->p_key != NULL) {
+		if(InterlockedDecrement(&(ctx->p_key->refcnt)) <= 0) {
+			if(ctx->p_key->hKey != 0) {
+				CryptDestroyKey(ctx->p_key->hKey) ;
+			}
+            memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
+			xmlFree(ctx->p_key) ;
+		}
+        ctx->p_key = NULL;
+	}
+}
+
+static void
+xmlSecMSCryptoKeyDataCtxSetKey(xmlSecMSCryptoKeyDataCtxPtr ctx, HCRYPTKEY hKey) {
+    xmlSecAssert(ctx != NULL);
+
+    if((ctx->p_key != NULL) && (ctx->p_key->refcnt == 1)) {
+		if(ctx->p_key->hKey != 0) {
+			CryptDestroyKey(ctx->p_key->hKey) ;
+		}
+        memset(ctx->p_key, 0, sizeof(struct _mscrypt_key));
+    } else {
+        xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
+        xmlSecMSCryptoKeyDataCtxCreateKey(ctx);
+    }
+    ctx->p_key->hKey = hKey;
+    ctx->p_key->refcnt = 1;
+}
+
+static int
+xmlSecMSCryptoKeyDataCtxDuplicateKey(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xmlSecMSCryptoKeyDataCtxPtr ctxSrc) {
+    xmlSecAssert2(ctxDst != NULL, -1);
+    xmlSecAssert2(ctxSrc != NULL, -1);
+
+    xmlSecMSCryptoKeyDataCtxDestroyKey(ctxDst);
+    if (ctxSrc->p_key != NULL) {
+        ctxDst->p_key = ctxSrc->p_key;
+        InterlockedIncrement(&(ctxDst->p_key->refcnt));
+    }
+
+    return(0);
+}
+
+#endif /* XMLSEC_MSCRYPTO_NT4 */
 
 /******************************** Cert *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetCert(ctx)            ((ctx)->pCert)

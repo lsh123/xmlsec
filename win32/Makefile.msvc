@@ -316,6 +316,11 @@ CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2
 CFLAGS 			= $(CFLAGS) /DXMLSEC_NO_XSLT=1
 !endif
 
+!if "$(WITH_NT4)" == "1"
+CFLAGS 			= $(CFLAGS) /DXMLSEC_MSCRYPTO_NT4=1
+!else 
+!endif
+
 APP_CFLAGS		= /D "XMLSEC_CRYPTO=\"$(XMLSEC_CRYPTO)\""
 !if "$(WITH_DL)" == "1"
 CFLAGS 			= $(CFLAGS) /D LTDL_OBJDIR=\"\" /D LTDL_SHLIB_EXT=\".dll\"

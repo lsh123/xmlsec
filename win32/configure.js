@@ -45,6 +45,7 @@ var withNss = 0;
 var withMSCrypto = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
+var withNT4 = 0;
 
 /* Win32 build options. */
 var buildDebug = 0;
@@ -98,6 +99,7 @@ function usage()
 	txt += "              \"openssl_096\", \"nss\", \"mscrypto\" (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
+ 	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4? "yes" : "no")  + ")\n";	
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link libxmlsec statically to xmlsec (" + (buildStatic? "yes" : "no")  + ")\n";
@@ -159,6 +161,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);	
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
+	vf.WriteLine("WITH_NT4=" + (withNT4 ? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
 	vf.WriteLine("WITH_DL=" + (buildWithDLSupport ? "1" : "0"));
@@ -248,6 +251,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			withLibXSLT = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "iconv")
 			withIconv = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "nt4")
+			withNT4 = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "debug")
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
@@ -351,6 +356,7 @@ txtOut += "           Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "      Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
 txtOut += "       Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
 txtOut += "         Use iconv: " + boolToStr(withIconv) + "\n";
+txtOut += "    NT 4.0 support: " + boolToStr(withNT4) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";

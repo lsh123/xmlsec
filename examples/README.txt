@@ -47,7 +47,14 @@ Unixes:
     libraries are already installed). This will build all the examples.
 
 Windows:
-    There is no easy solution for you. Check the README file in the top level 
+    - Add paths to include and library files for xmlsec, libxml2, libexslt and 
+    openssl or nss to the environment variables INCLUDE and LIB.
+    - Edit 'Makefile.w32' file and specify correct crypto engine (openssl or 
+    nss for now). You can also specify necessary include and library paths
+    or change from static linking to using DLLs.
+    - Run 'nmake -f Makefile.w32'
+
+    If something does not work, check the README file in the top level 
     "win32" folder and have fun :)
     
 Other platforms:

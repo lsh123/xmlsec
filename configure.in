@@ -161,25 +161,37 @@ else
 	OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
 	OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
     else
+	OPENSSL_INCLUDES_FOUND="no"
+	OPENSSL_LIBS_FOUND="no"
 	for dir in $ac_openssl_inc_dir; do
 	    if test -f $dir/openssl/ssl.h; then
-		OPENSSL_CFLAGS="-I$dir"
+		dnl do not add -I/usr/include because compiler does it anyway
+		if test "$dir" = "/usr/include" ; then
+		    OPENSSL_CFLAGS=""
+		else
+		    OPENSSL_CFLAGS="-I$dir"
+		fi
+		OPENSSL_INCLUDES_FOUND="yes"
 		break
 	    fi
 	done
-	if test "$OPENSSL_CFLAGS" = ""; then
-	    AC_MSG_ERROR(openssl is required for $PACKAGE)
-	fi
 
 	for dir in $ac_openssl_lib_dir; do
 	    if test -f $dir/libcrypto.a; then
-		OPENSSL_LIBS="-L$dir -lcrypto"
+		dnl do not add -L/usr/lib because compiler does it anyway
+		if test "$dir" = "/usr/lib" ; then
+		    OPENSSL_LIBS="-lcrypto"
+		else
+		    OPENSSL_LIBS="-L$dir -lcrypto"
+		fi
+		OPENSSL_LIBS_FOUND="yes"
 		OPENSSL_LDADDS="$dir/libcrypto.a"
 		ac_found_openssl_lib_dir=$dir
 		break;
 	    fi
 	done
-	if test "$OPENSSL_LDADDS" = ""; then
+	if test "$OPENSSL_INCLUDES_FOUND" = "no" -o "$OPENSSL_LIBS_FOUND" = "no" ;
+	then
 	    AC_MSG_ERROR(openssl is required for $PACKAGE)
 	fi
     fi

@@ -1,3 +1,9 @@
+Wed Oct 30 17:14:03 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* config.h.in configure.in: do not add -I/usr/include
+	or -L/usr/lib if OpenSSL happens to be there
+	(patch proposed by Scott Cantor)
+
 Mon Oct 21 11:28:01 CEST 2002 Igor Zlatkovic <igor@stud.fh-frankfurt.de>
 
 	* include/xmlsec/errors.h: fixed the __FUNCTION__ macro logic

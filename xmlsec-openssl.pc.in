@@ -7,5 +7,5 @@ Name: xmlsec-openssl
 Version: @VERSION@-openssl
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ 
-Cflags: @XMLSEC_OPENSSL_CFLAGS@ @CFLAGS@
-Libs: @XMLSEC_OPENSSL_LIBS@ @LIBS@
+Cflags: @XMLSEC_OPENSSL_CFLAGS@
+Libs: @XMLSEC_OPENSSL_LIBS@

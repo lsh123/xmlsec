@@ -29,7 +29,7 @@ EXTRA_DIST = \
 	NEWS \
 	ChangeLog \
 	Copyright \
-	xmlsec.pc.in xmlsec-openssl.pc.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in\
+	xmlsec-openssl.pc.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in\
 	xmlsec-config.in \
 	xmlsecConf.sh.in \
 	xmlsec.spec.in \
@@ -42,6 +42,9 @@ EXTRA_DIST = \
 EXTRA_CLEAN = \
 	examples \
 	$(NULL)
+
+xmlsec1.pc: xmlsec1-@XMLSEC_CRYPTO@.pc
+	@(ln -s xmlsec1-@XMLSEC_CRYPTO@.pc xmlsec1.pc)
 
 docs: docs-man
 	@(cd docs; $(MAKE) docs)

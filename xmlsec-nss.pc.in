@@ -6,6 +6,6 @@ includedir=@pkgincludedir@
 Name: xmlsec-nss
 Version: @VERSION@-nss
 Description: XML Security Library implements XML Signature and XML Encryption standards
-Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ 
-Cflags: @XMLSEC_NSS_CFLAGS@ @CFLAGS@
-Libs: @XMLSEC_NSS_LIBS@ @LIBS@
+Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ mozilla-nss >= @MOZILLA_MIN_VERSION@
+Cflags: @XMLSEC_NSS_CFLAGS@
+Libs: @XMLSEC_NSS_LIBS@

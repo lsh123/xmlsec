@@ -1442,18 +1442,17 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
     cur = xmlSecFindChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecNodeGetName(transformNode),
-		    "xmlSecFindChild",
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces),
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces));
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     cur = xmlSecAddChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecNodeGetName(transformNode),
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(transformNode)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "node=%s",

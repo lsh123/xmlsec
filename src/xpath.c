@@ -86,7 +86,7 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecXPathData)=%d",
 		    sizeof(xmlSecXPathData));
@@ -153,9 +153,9 @@ xmlSecXPathDataSetExpr(xmlSecXPathDataPtr data, const xmlChar* expr) {
     data->expr = xmlStrdup(expr);
     if(data->expr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlMalloc",
 		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL,
+		    XMLSEC_ERRORS_R_STRDUP_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
@@ -522,7 +522,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s",
+		    "expected=%s",
 		    xmlSecErrorsSafeString(xmlSecNodeXPath));
 	return(-1);
     }
@@ -568,7 +568,7 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     if(tmp == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "size=%d",
 		    xmlStrlen(data->expr) + strlen(xpathPattern) + 1);
@@ -701,10 +701,10 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
 	if(op == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlGetProp",
+			xmlSecErrorsSafeString(xmlSecAttrFilter),
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"attr=%s",
-			xmlSecErrorsSafeString(xmlSecAttrFilter));
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	    return(-1);
 	}
         if(xmlStrEqual(op, xmlSecXPath2FilterIntersect)) {
@@ -716,7 +716,7 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
 	} else {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			NULL,
+			xmlSecErrorsSafeString(xmlSecAttrFilter),
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 			"filter=%s", 
 			xmlSecErrorsSafeString(op));
@@ -879,7 +879,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s",
+		    "expected=%s",
 		    xmlSecErrorsSafeString(xmlSecNodeXPath));
 	return(-1);
     }

@@ -225,7 +225,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "status=%d", transform->status);
 	return(-1);
     }
@@ -394,7 +394,7 @@ xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
 		    "status=%d", transform->status);
 	return(-1);
     }

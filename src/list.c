@@ -62,7 +62,7 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
     if(list == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecPtrListKlassGetName(id)),
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecPtrList)=%d", 
 		    sizeof(xmlSecPtrList));
@@ -72,7 +72,7 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
     ret = xmlSecPtrListInitialize(list, id);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(id->name),
+		    xmlSecErrorsSafeString(xmlSecPtrListKlassGetName(id)),
 		    "xmlSecPtrListInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -188,7 +188,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(src)),
 		    "xmlSecPtrListEnsureSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", src->use);
+		    "size=%d", src->use);
 	return(-1);
     }
 
@@ -308,7 +308,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlSecPtrListAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", list->use + 1);
+		    "size=%d", list->use + 1);
 	return(-1);
     }
     
@@ -444,7 +444,7 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
     if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
-		    "xmlRealloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecPtr)*%d=%d", 
 		    newSize, sizeof(xmlSecPtr) * newSize);

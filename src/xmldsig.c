@@ -70,7 +70,7 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     if(dsigCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecDSigCtx)=%d", 
 		    sizeof(xmlSecDSigCtx));
@@ -320,8 +320,8 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     if((dsigCtx->result == NULL) || (xmlSecBufferGetData(dsigCtx->result) == NULL)) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "todo",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_RESULT,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
@@ -625,7 +625,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "the binary c14n transforms are not supported yet",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
@@ -713,7 +713,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s",
+		    "expected=%s",
 		    xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
 	return(-1);
     }	
@@ -766,7 +766,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s",
+		    "expected=%s",
 		    xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
 	return(-1);
     }	
@@ -823,16 +823,16 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Reference");
+		    XMLSEC_ERRORS_R_DSIG_NO_REFERENCES,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 
     /* if there is something left than it's an error */
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -1047,7 +1047,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }    
@@ -1254,7 +1254,7 @@ xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin
     if(dsigRefCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecDSigReferenceCtx)=%d", 
 		    sizeof(xmlSecDSigReferenceCtx));
@@ -1508,7 +1508,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "%s",
+		    "expected=%s",
 		    xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
 	return(-1);
     }	
@@ -1532,7 +1532,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    xmlSecNodeGetName(cur),
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);

@@ -539,7 +539,8 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 					NULL,
 					"xmlGetID",
 					XMLSEC_ERRORS_R_INVALID_DATA,
-					"id=%s already defined", name);
+					"id=%s already defined", 
+					xmlSecErrorsSafeString(name));
 			}
 			xmlFree(name);
 		    }		    

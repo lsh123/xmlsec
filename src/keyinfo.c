@@ -1152,7 +1152,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    xmlSecNodeGetName(cur),
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;

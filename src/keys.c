@@ -164,8 +164,8 @@ xmlSecKeyCreate(void)  {
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(xmlSecKey));
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
-		    "xmlMalloc",
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecKey)=%d", 
 		    sizeof(xmlSecKey));
@@ -235,9 +235,9 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
 	keyDst->name = xmlStrdup(keySrc->name);
 	if(keyDst->name == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKey",
-			"xmlStrdup",
-		        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			NULL,
+			NULL,
+		        XMLSEC_ERRORS_R_STRDUP_FAILED,
 			"len=%d", xmlStrlen(keySrc->name));
 	    return(-1);	
         }
@@ -247,7 +247,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
 	keyDst->value = xmlSecKeyDataDuplicate(keySrc->value);
 	if(keyDst->value == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKey",
+			NULL,
 			"xmlSecKeyDataDuplicate",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -259,7 +259,7 @@ xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
 	keyDst->dataList = xmlSecPtrListDuplicate(keySrc->dataList);
 	if(keyDst->dataList == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKey",
+			NULL,
 			"xmlSecPtrListDuplicate",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
@@ -290,7 +290,7 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
     newKey = xmlSecKeyCreate();
     if(newKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
+		    NULL,
 		    "xmlSecKeyCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -300,7 +300,7 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
     ret = xmlSecKeyCopy(newKey, key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
+		    NULL,
 		    "xmlSecKeyCopy",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -390,10 +390,10 @@ xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
 	key->name = xmlStrdup(name);
 	if(key->name == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKey",
-			"xmlStrdup",
-		        XMLSEC_ERRORS_R_MALLOC_FAILED,
-			"%d", xmlStrlen(name));
+			NULL,
+			NULL,
+		        XMLSEC_ERRORS_R_STRDUP_FAILED,
+			"len=%d", xmlStrlen(name));
 	    return(-1);	    
 	}	
     }
@@ -497,22 +497,22 @@ xmlSecKeyEnsureData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
     data = xmlSecKeyDataCreate(dataId);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
+		    NULL,
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", 
-		    dataId->name);
+		    "dataId=%s", 
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)));
 	return(NULL);
     }
 	
     ret = xmlSecKeyAdoptData(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
+		    NULL,
 		    "xmlSecKeyAdoptData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s",
-		    dataId->name);
+		    "dataId=%s", 
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)));
 	xmlSecKeyDataDestroy(data);
 	return(NULL);
     }
@@ -551,10 +551,10 @@ xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
 	key->dataList = xmlSecPtrListCreate(xmlSecKeyDataListId);
 	if(key->dataList == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecKey",
+			NULL,
 			"xmlSecPtrListCreate",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyDataListId");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -738,10 +738,10 @@ xmlSecKeyGenerateByName(const xmlChar* name, size_t sizeBits, xmlSecKeyDataType 
     dataId = xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), name, xmlSecKeyDataUsageAny);
     if(dataId == xmlSecKeyDataIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecKey",
-		    "xmlSecKeyDataIdListFindByName",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s", name);
+		    NULL,
+		    xmlSecErrorsSafeString(name),
+		    XMLSEC_ERRORS_R_DATA_NOT_FOUND,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);    
     }
     
@@ -773,7 +773,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     ret = xmlSecBufferInitialize(&buffer, 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecBufferInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -783,9 +783,9 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     f = fopen(filename, "r");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "fopen",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_R_IO_FAILED,
 		    "filename=%s", 
 		    xmlSecErrorsSafeString(filename));
 	xmlSecBufferFinalize(&buffer);
@@ -800,9 +800,9 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 	    break;
 	} else {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
+			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 			"fread",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_R_IO_FAILED,
 			"filename=%s", 
 			xmlSecErrorsSafeString(filename));
 	    fclose(f);
@@ -816,7 +816,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     key = xmlSecKeyCreate();
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -827,7 +827,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     ret = xmlSecKeyInfoCtxInitialize(&keyInfoCtx, NULL);    
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyInfoCtxInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -843,7 +843,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 			&keyInfoCtx);	
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
+		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 		    "xmlSecKeyDataBinRead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -891,10 +891,11 @@ xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	ret = xmlSecKeyInfoNodeRead(keyInfoNode, key, keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecNodeGetName(keyInfoNode),
+			NULL,
 			"xmlSecKeyInfoNodeRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(keyInfoNode)));
 	    xmlSecKeyDestroy(key);
 	    return(NULL);
 	}

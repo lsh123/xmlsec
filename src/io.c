@@ -63,7 +63,7 @@ xmlSecIOCallbackCreate(xmlInputMatchCallback matchFunc, xmlInputOpenCallback ope
     if(callbacks == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecIOCallback)=%d", 
 		    sizeof(xmlSecIOCallback));

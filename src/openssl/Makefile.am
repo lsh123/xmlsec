@@ -44,5 +44,4 @@ libxmlsec1_openssl_la_LIBADD = \
         
 libxmlsec1_openssl_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
-	-rpath $(pkglibdir) \
 	$(NULL)

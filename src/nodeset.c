@@ -53,8 +53,8 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
     nset = (xmlSecNodeSetPtr)xmlMalloc(sizeof(xmlSecNodeSet));
     if(nset == NULL) { 
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
-		    "xmlMalloc",
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecNodeSet)=%d",
 		    sizeof(xmlSecNodeSet));
@@ -180,7 +180,7 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
 	return(1);
     default:
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
+		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
 		    "type=%d", nset->type);
@@ -233,10 +233,10 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
 	    break;
 	default:
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			"xmlSecNodeSet",
 			NULL,
-			XMLSEC_ERRORS_R_INVALID_TYPE,
-			"operation-type=%d", cur->op);
+			NULL,
+			XMLSEC_ERRORS_R_INVALID_OPERATION,
+			"operation=%d", cur->op);
 	    return(-1);
 	}
 	cur = cur->next;
@@ -294,7 +294,7 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
     tmp1 = xmlSecNodeSetCreate(newNSet->doc, NULL, xmlSecNodeSetList);
     if(tmp1 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
+		    NULL,
 		    "xmlSecNodeSetCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -305,7 +305,7 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
     tmp2 = xmlSecNodeSetAdd(nset, tmp1, op);
     if(tmp2 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
+		    NULL,
 		    "xmlSecNodeSetAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -462,7 +462,7 @@ xmlSecNodeSetGetChildren(xmlDocPtr doc, const xmlNodePtr parent, int withComment
     nodes = xmlXPathNodeSetCreate(parent);
     if(nodes == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
+		    NULL,
 		    "xmlXPathNodeSetCreate",
 		    XMLSEC_ERRORS_R_XML_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
@@ -558,7 +558,7 @@ xmlSecNodeSetDebugDump(xmlSecNodeSetPtr nset, FILE *output) {
     default:
 	fprintf(output, "(unknown=%d)\n", nset->type);
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlSecNodeSet",
+		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
 		    "type=%d", nset->type);

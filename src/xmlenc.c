@@ -62,7 +62,7 @@ xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     if(encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecEncCtx)=%d", 
 		    sizeof(xmlSecEncCtx));
@@ -517,7 +517,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
 		    "xmlSecTransformCtxSetUri",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=%s",
-		    uri);
+		    xmlSecErrorsSafeString(uri));
 	return(-1);
     }
 
@@ -657,10 +657,9 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlNodeGetContent",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(encCtx->cipherValueNode)),
 			XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(encCtx->cipherValueNode)));
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(NULL);
 	}	
 	dataSize = xmlStrlen(data);
@@ -818,8 +817,8 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* if there is something left than it's an error */
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -1008,7 +1007,7 @@ xmlSecEncCtxCipherDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
@@ -1060,8 +1059,8 @@ xmlSecEncCtxCipherReferenceNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     /* if there is something left than it's an error */
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);

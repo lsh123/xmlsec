@@ -36,5 +36,4 @@ libxmlsec1_gnutls_la_LIBADD = \
         
 libxmlsec1_gnutls_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
-	-rpath $(pkglibdir) \
 	$(NULL)

@@ -147,7 +147,8 @@ xmlSecTransformIdsRegister(xmlSecTransformId id) {
 		    NULL,
 		    "xmlSecPtrListAdd",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)));
         return(-1);
     }
     
@@ -324,7 +325,7 @@ xmlSecTransformCtxCreate(void) {
     if(ctx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "size=%d", sizeof(xmlSecTransformCtx)); 
 	return(NULL);
@@ -464,7 +465,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     if(ret < 0) { 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecPtrListCCCopy",
+		    "xmlSecPtrListCopy",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -803,7 +804,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
-		    "uri=\"%s\"", xmlSecErrorsSafeString(uri));
+		    "uri=\"%s\"", 
+		    xmlSecErrorsSafeString(uri));
 	return(-1);
     }
 
@@ -819,8 +821,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	if(ctx->uri == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlStrdup",
-			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			NULL,
+			XMLSEC_ERRORS_R_STRDUP_FAILED,
 			"size=%d", xmlStrlen(uri)); 
 	    return(-1);
 	}
@@ -831,8 +833,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	if(ctx->xptrExpr == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlStrdup",
-			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			NULL,
+			XMLSEC_ERRORS_R_STRDUP_FAILED,
 			"size=%d", xmlStrlen(uri)); 
 	    return(-1);
 	}
@@ -844,8 +846,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     if(ctx->uri == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlStrndup",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL,
+		    XMLSEC_ERRORS_R_STRDUP_FAILED,
 		    "size=%d", xptr - uri); 
 	return(-1);
     }
@@ -854,8 +856,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     if(ctx->xptrExpr == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlStrdup",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL,
+		    XMLSEC_ERRORS_R_STRDUP_FAILED,
 		    "size=%d", xmlStrlen(xptr)); 
 	return(-1);
     }
@@ -888,7 +890,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	if(buf == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlMalloc",
+			NULL,
 			XMLSEC_ERRORS_R_MALLOC_FAILED,
 			"size=%d", size);
 	    return(-1);	    
@@ -1349,7 +1351,7 @@ xmlSecTransformCreate(xmlSecTransformId id) {
     if(transform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "size=%d", id->objSize); 
 	return(NULL);
@@ -1458,10 +1460,10 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     if(href == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlGetProp",
+		    xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
 		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	return(NULL);		
     }
     
@@ -2160,7 +2162,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char*
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform->next)),
 			    "xmlSecTransformPushBin",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "final=%d;outSize=%d", final,outSize);
+			    "final=%d;outSize=%d", final, outSize);
 		return(-1);
 	    }
 	}
@@ -2732,7 +2734,7 @@ xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferMode mode, xmlSecTransformP
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlMalloc",
+		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "size=%d", sizeof(xmlSecTransformIOBuffer)); 
 	return(NULL);

@@ -109,7 +109,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED,
-		    NULL);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     

@@ -100,6 +100,34 @@ extern "C" {
 #define XMLSEC_ERRORS_R_INVALID_DATA		 19
 
 /**
+ * XMLSEC_ERRORS_R_INVALID_RESULT:
+ *
+ * Invalid result.
+ */
+#define XMLSEC_ERRORS_R_INVALID_RESULT		 19
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_TYPE:
+ * 
+ * Invalid type.
+ */
+#define XMLSEC_ERRORS_R_INVALID_TYPE		 21
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_OPERATION:
+ * 
+ * Invalid operation.
+ */
+#define XMLSEC_ERRORS_R_INVALID_OPERATION		 21
+
+/**
+ * XMLSEC_ERRORS_R_INVALID_STATUS:
+ *
+ * Invalid status.
+ */
+#define XMLSEC_ERRORS_R_INVALID_STATUS 52
+
+/**
  * XMLSEC_ERRORS_R_INVALID_NODE:
  * 
  * Invalid node (error subject is the node name).
@@ -148,12 +176,6 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10
 
-/**
- * XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS:
- *
- * Invalid transform status.
- */
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_STATUS 52
 
 /**
  * XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED:
@@ -168,6 +190,13 @@ extern "C" {
  * Key data is invalid.
  */
 #define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
+
+/**
+ * XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST:
+ *
+ * The key data is already exist.
+ */
+#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST	 14
 
 /**
  * XMLSEC_ERRORS_R_INVALID_KEY_SIZE:
@@ -196,8 +225,14 @@ extern "C" {
  *
  * Max EncryptedKey level reached.
  */
-#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 56
+#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 	56
 
+/**
+ * XMLSEC_ERRORS_R_DATA_NOT_FOUND:
+ *
+ * Data is not found (error subject is the data name).
+ */
+#define XMLSEC_ERRORS_R_DATA_NOT_FOUND			56
 
 
 
@@ -240,12 +275,6 @@ extern "C" {
  * Key not found.
  */
 #define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17
-/**
- * XMLSEC_ERRORS_R_INVALID_TYPE:
- * 
- * Invalid type.
- */
-#define XMLSEC_ERRORS_R_INVALID_TYPE		 21
 /**
  * XMLSEC_ERRORS_R_INVALID_USAGE:
  * 
@@ -301,12 +330,22 @@ extern "C" {
  * "Not valid after" verification failed.
  */
 #define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 46
+
+/**
+ * XMLSEC_ERRORS_R_DSIG_NO_REFERENCES:
+ *
+ * The <dsig:Reference> nodes not found.
+ */
+#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES 	 51
+
 /**
  * XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE:
  *
  * The <dsig:Reference> validation failed.
  */
 #define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
+
+
 /**
  * XMLSEC_ERRORS_R_DATA_NOT_MATCH:
  *
@@ -332,10 +371,6 @@ extern "C" {
  * Invalid assertion.
  */
 #define XMLSEC_ERRORS_R_ASSERTION		 100
-
-#define XMLSEC_ERRORS_R_INVALID_STATUS		91
-
-    
 
 #define XMLSEC_ERRORS_R_TRANSFORM_DISABLED	111
 #define XMLSEC_ERRORS_R_KEYDATA_DISABLED	112

@@ -451,7 +451,6 @@ else
     NSS_NSS_H=""
 
     dnl process the mozilla options if any
-
     if test "z$with_mozilla_version" != "z" ; then
         MOZILLA_VERSION=$with_mozilla_version
     fi
@@ -592,6 +591,7 @@ else
              yes
           #endif
         ],[
+	  XMLSEC_NO_NSS="0"
     	  AC_MSG_RESULT(yes ('$NSS_VERSION'))
         ],[
           NSS_INCLUDES_FOUND="no"
@@ -606,13 +606,13 @@ else
        if test "z$NSPR_EXPLICIT" = "zyes" ; then 
           AC_MSG_ERROR(You need atleast version 4.0 of NSPR as a pre-requisite for NSS in this version of $PACKAGE)
        fi
-    elif test "z$NSS_INCLUDES_FOUND" != "zyes" -o "z$NSS_LIBS_FOUND" != "zyes" ; then
+    fi 
+    
+    if test "z$NSS_INCLUDES_FOUND" != "zyes" -o "z$NSS_LIBS_FOUND" != "zyes" ; then
        if test "z$NSS_EXPLICIT" = "zyes" ; then 
          AC_MSG_ERROR(You need atleast version 3.2 of NSS for this version of $PACKAGE)
        fi
-    else 
-       XMLSEC_NO_NSS="0"
-    fi
+    fi 
     
     if test "z$XMLSEC_NO_NSS" != "z1" ; then
        NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"

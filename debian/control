@@ -1,0 +1,42 @@
+Source: libxmlsec
+Section: text
+Priority: optional
+Maintainer: John V. Belmonte <jvb@prairienet.org>
+Build-Depends: debhelper (>> 3.0.0), libc6-dev, libssl-dev, libxml2-dev, libxslt1-dev
+Standards-Version: 3.5.2
+
+Package: libxmlsec0-dev
+Section: devel
+Architecture: any
+Depends: libxmlsec0 (= ${Source-Version}), libc6-dev, libssl-dev, libxml2-dev, libxslt1-dev
+Provides: libxmlsec-dev
+Conflicts: libxmlsec-dev
+Description: Development files for the XML security library
+ XML Security Library is a C library based on LibXML2 and OpenSSL.
+ The library was created with a goal to support major XML security standards:
+ .
+    * XML Signature
+    * XML Encryption
+    * Canonical XML
+    * Exclusive Canonical XML
+
+Package: libxmlsec0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: XML security library
+ XML Security Library is a C library based on LibXML2 and OpenSSL.
+ The library was created with a goal to support major XML security standards:
+ .
+    * XML Signature
+    * XML Encryption
+    * Canonical XML
+    * Exclusive Canonical XML
+
+Package: xmlsec
+Section: text
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: XML security command line processor
+ This is a command line tool that allows transforms to and from XML according
+ to the XML Signature and XML Encryption standards.

@@ -1,0 +1,7 @@
+    * move examples dir to root of doc dir.  (There is an issue with making
+        symlink from the html dir.  Executable permission of sample scripts
+        have been disabled).
+    * set up doc-base
+
+
+ -- John V. Belmonte <jvb@prairienet.org>

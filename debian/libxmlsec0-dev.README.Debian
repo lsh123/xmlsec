@@ -1,0 +1,9 @@
+libxmlsec-dev for Debian
+------------------------
+
+UPSTREAM PACKAGE ISSUES
+
+    * no xmlsec-config manpage
+    * no libxmlsec manpage
+
+ -- John V. Belmonte <jvb@prairienet.org>

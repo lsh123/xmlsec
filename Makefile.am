@@ -8,6 +8,7 @@ EXTRA_DIST = \
 	win32 \
 	globals.h \
 	docs \
+	debian \
 	NEWS \
 	ChangeLog \
 	Copyright \

@@ -88,6 +88,13 @@ The internal transform's functions.
 @dontDestroy: 
 @data: 
 
+<!-- ##### FUNCTION xmlSecTransformsInit ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION xmlSecTransformsNodeRead ##### -->
 <para>
 
@@ -95,6 +102,15 @@ The internal transform's functions.
 
 @state: 
 @transformsNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformFind ##### -->
+<para>
+
+</para>
+
+@href: 
 @Returns: 
 
 

@@ -22,7 +22,6 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/base64.h>
 
 typedef struct _xmlSecExtMemoryParserCtx {
     const unsigned char 	*prefix;
@@ -298,6 +297,26 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
     return(NULL);
 }
 
+const xmlChar* 
+xmlSecGetNodeNsHref(const xmlNodePtr cur) {
+    xmlNsPtr ns;
+    
+    xmlSecAssert2(cur != NULL, NULL);
+    
+    /* do we have a namespace in the node? */
+    if(cur->ns != NULL) {
+	return(cur->ns->href);
+    }
+    
+    /* search for default namespace */
+    ns = xmlSearchNs(cur->doc, cur, NULL);
+    if(ns != NULL) {
+	return(ns->href);
+    }
+	
+    return(NULL);
+}
+
 /** 
  * xmlSecCheckNodeName:
  * @cur: the pointer to an XML node.
@@ -310,22 +329,10 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
  */
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
+    xmlSecAssert2(cur != NULL, 0);
     
-    if((cur != NULL) && xmlStrEqual(cur->name, name)) {
-	if(cur->ns == NULL && ns == NULL) {
-	    return(1);
-	} else if(cur->ns == NULL) {
-	    xmlNsPtr tmp;
-
-	    tmp = xmlSearchNs(cur->doc, cur, NULL);
-	    if(tmp != NULL && xmlStrEqual(tmp->href, ns)) {
-		return(1);
-	    }
-	} else if(xmlStrEqual(cur->ns->href, ns)){
-	    return(1);	
-	}
-    } 
-    return(0);   
+    return(xmlStrEqual(cur->name, name) && 
+	   xmlStrEqual(xmlSecGetNodeNsHref(cur), ns));
 }
 
 /**
@@ -373,6 +380,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
 	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
+	    xmlSetNs(cur, nsPtr);
 	}
     }
     
@@ -711,59 +719,5 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 	}
 	children = children->next;
     }
-}
-
-int 		
-xmlSecGetBase64NodeContent(xmlNodePtr node, unsigned char** data, size_t* dataSize) {
-    xmlChar* value;
-    int ret;
-    
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize != NULL, -1);
-    
-    (*data) = NULL;
-    (*dataSize) = 0;
-
-    value = xmlNodeGetContent(node);
-    if(value == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    " ");
-	return(-1);
-    }
-    
-    /* usual trick: decode into the same buffer */
-    ret = xmlSecBase64Decode(value, (unsigned char*)value, xmlStrlen(value));
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Decode");
-	xmlFree(value);
-	return(-1);
-    }
-    
-    (*data) = (unsigned char*)value;
-    (*dataSize) = ret;
-    return(0);
-}
-
-int
-xmlSecSetBase64NodeContent(xmlNodePtr node, const unsigned char* data, size_t dataSize) {
-    xmlChar* value;
-    
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(data != NULL, -1);
-    
-    value = xmlSecBase64Encode(data, dataSize, 0);
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64Encode");
-	return(-1);
-    }
-    xmlNodeSetContent(node, value);
-    xmlFree(value);
-    return(0);
 }
 

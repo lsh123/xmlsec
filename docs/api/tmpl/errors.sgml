@@ -17,6 +17,20 @@ function.
 
 </para>
 
+<!-- ##### MACRO XMLSEC_ERRORS_LIB ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_FUNCTION ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO XMLSEC_ERRORS_R_MALLOC_FAILED ##### -->
 <para>
 
@@ -251,6 +265,20 @@ function.
 @func: 
 @reason: 
 @msg: 
+
+
+<!-- ##### FUNCTION xmlSecErrorsInit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecErrorsShutdown ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION xmlSecErrorsSetCallback ##### -->

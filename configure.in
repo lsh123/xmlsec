@@ -3,32 +3,10 @@ AC_INIT(src/xmlsec.c)
 PACKAGE=xmlsec
 XMLSEC_VERSION_MAJOR=0
 XMLSEC_VERSION_MINOR=0
-XMLSEC_VERSION_SUBMINOR=10
+XMLSEC_VERSION_SUBMINOR=12
 XMLSEC_VERSION=$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBMINOR
 VERSION=$XMLSEC_VERSION
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
-
-dnl
-dnl Crypto engine and crypto features defaults
-dnl
-XMLSEC_CRYPTO=""
-XMLSEC_CRYPTO_VERSION=""
-XMLSEC_CRYPTO_LIB=""
-XMLSEC_CRYPTO_CFLAGS=""
-XMLSEC_CRYPTO_LIBS=""
-XMLSEC_CRYPTO_LDADDS=""
-
-XMLSEC_NO_SHA1=""
-XMLSEC_NO_RIPEMD160=""
-XMLSEC_NO_HMAC=""
-XMLSEC_NO_AES=""
-XMLSEC_NO_DES=""
-XMLSEC_NO_DSA=""
-XMLSEC_NO_RSA=""
-XMLSEC_NO_X509=""
-XMLSEC_NO_PGP=""
-XMLSEC_NO_XMLDSIG=""
-XMLSEC_NO_XMLENC=""
 
 AC_SUBST(XMLSEC_VERSION)
 AC_SUBST(XMLSEC_VERSION_MAJOR)
@@ -76,12 +54,12 @@ LIBXML_CONFIG="xml2-config"
 LIBXML_PREFIX=""
 LIBXML_CFLAG=""
 LIBXML_LIBS=""
-AC_MSG_CHECKING(for LibXML2 libraries >= $LIBXML_MIN_VERSION) 
-AC_ARG_WITH(libxml, [  --with-libxml=[PFX]       LibXML2 location])
+AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
+AC_ARG_WITH(libxml, [  --with-libxml=[PFX]     libxml2 location])
 if test "$with_libxml" = "no" ; then
     AC_MSG_ERROR(libxml2 is required for $PACKAGE)
 else
-    if test "x$with_libxml" != "x" ; then
+    if test "$with_libxml" != "" ; then
 	LIBXML_PREFIX=$with_libxml
 	LIBXML_CONFIG=$LIBXML_PREFIX/bin/$LIBXML_CONFIG
     fi
@@ -118,20 +96,20 @@ LIBXSLT_CONFIG="xslt-config"
 LIBXSLT_PREFIX=""
 LIBXSLT_CFLAGS=""
 LIBXSLT_LIBS=""
-AC_MSG_CHECKING(for LibXSLT libraries >= $LIBXSLT_MIN_VERSION) 
-AC_ARG_WITH(libxslt, [  --with-libxslt=[PFX]      LibXSLT location])
+AC_MSG_CHECKING(for libxslt libraries >= $LIBXSLT_MIN_VERSION) 
+AC_ARG_WITH(libxslt, [  --with-libxslt=[PFX]    libxslt location])
 if test "$with_libxslt" = "no" ; then
     LIBXSLT_WITHOUT="yes"
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XSLT=1"
     AC_MSG_RESULT(no)
 else
-    if test "x$with_libxslt" != "x" ; then
+    if test "$with_libxslt" != "" ; then
 	LIBXSLT_PREFIX=$with_libxslt
 	LIBXSLT_CONFIG=$LIBXSLT_PREFIX/bin/$LIBXSLT_CONFIG
     fi
     if ! $LIBXSLT_CONFIG --version > /dev/null 2>&1
     then
-	if test "x$with_libxslt" != "x" ; then
+	if test "$with_libxslt" != "" ; then
 	    AC_MSG_ERROR(Unable to find libxslt at '$with_libxslt')
 	else 
 	    LIBXSLT_WITHOUT="yes"
@@ -159,191 +137,91 @@ AC_SUBST(LIBXSLT_CONFIG)
 AC_SUBST(LIBXSLT_CFLAGS)
 AC_SUBST(LIBXSLT_LIBS)
 
-
-
 dnl ==========================================================================
-dnl See if NSS engine is specified
+dnl See if we can find OpenSSL
 dnl ==========================================================================
-NSS_WITHOUT="no"
-NSS_MIN_VERSION="0.0.0"
-NSS_VERSION=""
-NSS_PREFIX=""
-NSS_CFLAGS=""
-NSS_LIBS=""
-NSS_LDADDS=""
-if test "x$XMLSEC_CRYPTO" = "x" ; then
-    AC_MSG_CHECKING(for NSS libraries >= $NSS_MIN_VERSION) 
-    AC_ARG_WITH(nss, [  --with-nss=PFX          NSS location])
-    if test "$with_nss" = "no" -o "x$with_nss" = "x" ; then
-	AC_MSG_RESULT(no)
-    else
-	if test "x$with_nss" != "x" ; then
-	    NSS_PREFIX=$with_nss
-	    dnl do not add -I/usr/include and -L/usr/lib because 
-	    dnl compiler does it anyway
-	    if test "$NSS_PREFIX" = "/usr" ; then
-		NSS_CFLAGS=""
-		NSS_LIBS="-lcrypto"
-	    else
-		NSS_CFLAGS="-I$NSS_PREFIX/include"
-		NSS_LIBS="-L$NSS_PREFIX/lib"
-	    fi
-	    NSS_LDADDS="$NSS_PREFIX/lib/libcrypto.a"
-	fi
-    
-	dnl todo: Check the NSS version    
-	NSS_VERSION="0.0.0"
+ac_openssl_lib_dir="/usr/lib /usr/local/lib /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
+ac_openssl_inc_dir="/usr/include /usr/local/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
 
-	NSS_WITHOUT="no"
-    
-	XMLSEC_CRYPTO="nss"
-	XMLSEC_CRYPTO_VERSION="$NSS_VERSION"
-	XMLSEC_CRYPTO_LIB="xmlsec-nss"
-	XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$NSS_LIBS"
-	XMLSEC_CRYPTO_LDADDS="$NSS_LDADDS"
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_CRYPTO_NSS=1"
-
-	dnl todo: nothing is implemented for NSS yet
-	dnl when the method is implemented corresponding
-	dnl line should be removed from here
-	XMLSEC_NO_SHA1="1"
-	XMLSEC_NO_RIPEMD160="1"
-	XMLSEC_NO_HMAC="1"
-	XMLSEC_NO_AES="1"
-	XMLSEC_NO_DES="1"
-	XMLSEC_NO_DSA="1"
-	XMLSEC_NO_RSA="1"
-	XMLSEC_NO_X509="1"
-	XMLSEC_NO_PGP="1"
-
-	AC_MSG_RESULT(yes ('$NSS_VERSION' ))
-    fi
-fi
-AC_SUBST(NSS_WITHOUT)
-AC_SUBST(NSS_MIN_VERSION)
-AC_SUBST(NSS_VERSION)
-AC_SUBST(NSS_CONFIG)	
-AC_SUBST(NSS_PREFIX)
-AC_SUBST(NSS_CFLAGS)
-AC_SUBST(NSS_LIBS)
-AC_SUBST(NSS_LDADDS)
-
-dnl ==========================================================================
-dnl See if we can find OpenSSL if no other crypto engine specified
-dnl ==========================================================================
-OPENSSL_WITHOUT="yes"
+OPENSSL_WITHOUT="no"
 OPENSSL_MIN_VERSION="0.9.6"
 OPENSSL_VERSION=""
 OPENSSL_PREFIX=""
 OPENSSL_CFLAGS=""
 OPENSSL_LIBS=""
 OPENSSL_LDADDS=""
-AC_MSG_CHECKING(for OpenSSL libraries >= $OPENSSL_MIN_VERSION) 
-AC_ARG_WITH(openssl, [  --with-openssl=[PFX]      OpenSSL location])
-if test "x$XMLSEC_CRYPTO" != "x" ; then
-    if test "$with_openssl" = "no" -o "x$with_openssl" = "x" ; then
-	AC_MSG_RESULT(no)
+AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
+AC_ARG_WITH(openssl, [  --with-openssl=[PFX]    openssl location])
+if test "$with_openssl" = "no" ; then
+    AC_MSG_ERROR(openssl is required for $PACKAGE)
+else
+    if test "$with_openssl" != "" ; then
+	OPENSSL_PREFIX=$with_openssl
+	OPENSSL_CFLAGS="-I$OPENSSL_PREFIX/include"
+	OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
+	OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
     else
-	AC_MSG_ERROR($XMLSEC_CRYPTO engine is already specified)
-    fi
-else 
-    ac_openssl_lib_dir="/usr/lib /usr/local/lib /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
-    ac_openssl_inc_dir="/usr/include /usr/local/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
-
-    if test "$with_openssl" = "no" ; then
-	AC_MSG_ERROR(at least one crypto engine is required for $PACKAGE)
-    else
-	ac_openssl_inc_folder=""
-	if test "x$with_openssl" != "x" ; then
-	    OPENSSL_PREFIX=$with_openssl
-	    ac_openssl_inc_folder="$OPENSSL_PREFIX/include"
-	    dnl do not add -I/usr/include and -L/usr/lib because 
-	    dnl compiler does it anyway
-	    if test "$OPENSSL_PREFIX" = "/usr" ; then
-		OPENSSL_CFLAGS=""
-		OPENSSL_LIBS="-lcrypto"
-	    else
-		OPENSSL_CFLAGS="-I$OPENSSL_PREFIX/include"
-		OPENSSL_LIBS="-L$OPENSSL_PREFIX/lib -lcrypto"
-	    fi
-	    OPENSSL_LDADDS="$OPENSSL_PREFIX/lib/libcrypto.a"
-	else	    
-	    OPENSSL_INCLUDES_FOUND="no"
-	    OPENSSL_LIBS_FOUND="no"
-	    for dir in $ac_openssl_inc_dir; do
-		if test -f $dir/openssl/ssl.h; then
-		    ac_openssl_inc_folder="$dir"
-		    dnl do not add -I/usr/include because compiler does it anyway
-		    if test "$dir" = "/usr/include" ; then
-			OPENSSL_CFLAGS=""
-		    else
-			OPENSSL_CFLAGS="-I$dir"
-		    fi
-		    OPENSSL_INCLUDES_FOUND="yes"
-		    break
-	        fi
-	    done
-	    for dir in $ac_openssl_lib_dir; do
-		if test -f $dir/libcrypto.a; then
-		    dnl do not add -L/usr/lib because compiler does it anyway
-		    if test "$dir" = "/usr/lib" ; then
-			OPENSSL_LIBS="-lcrypto"
-		    else
-			OPENSSL_LIBS="-L$dir -lcrypto"
-		    fi
-		    OPENSSL_LIBS_FOUND="yes"
-		    OPENSSL_LDADDS="$dir/libcrypto.a"
-		    ac_found_openssl_lib_dir=$dir
-		    break;
+	OPENSSL_INCLUDES_FOUND="no"
+	OPENSSL_LIBS_FOUND="no"
+	for dir in $ac_openssl_inc_dir; do
+	    if test -f $dir/openssl/ssl.h; then
+		dnl do not add -I/usr/include because compiler does it anyway
+		if test "$dir" = "/usr/include" ; then
+		    OPENSSL_CFLAGS=""
+		else
+		    OPENSSL_CFLAGS="-I$dir"
 		fi
-	    done
-	    if test "$OPENSSL_INCLUDES_FOUND" = "no" -o "$OPENSSL_LIBS_FOUND" = "no" ; then
-		AC_MSG_ERROR(openssl is required for $PACKAGE)
+		OPENSSL_INCLUDES_FOUND="yes"
+		break
 	    fi
+	done
+
+	for dir in $ac_openssl_lib_dir; do
+	    if test -f $dir/libcrypto.a; then
+		dnl do not add -L/usr/lib because compiler does it anyway
+		if test "$dir" = "/usr/lib" ; then
+		    OPENSSL_LIBS="-lcrypto"
+		else
+		    OPENSSL_LIBS="-L$dir -lcrypto"
+		fi
+		OPENSSL_LIBS_FOUND="yes"
+		OPENSSL_LDADDS="$dir/libcrypto.a"
+		ac_found_openssl_lib_dir=$dir
+		break;
+	    fi
+	done
+	if test "$OPENSSL_INCLUDES_FOUND" = "no" -o "$OPENSSL_LIBS_FOUND" = "no" ;
+	then
+	    AC_MSG_ERROR(openssl is required for $PACKAGE)
 	fi
-    
-	dnl Check the OpenSSL version    
-	OLD_CPPFLAGS=$CPPFLAGS
-	CPPFLAGS="-I$ac_openssl_inc_folder"
-	AC_EGREP_CPP(yes,[
-	    #include <openssl/opensslv.h>
-	    #if OPENSSL_VERSION_NUMBER >= 0x00906000L
-		yes
-	    #endif
-	],[
-	    OPENSSL_VERSION="0.9.6"
-	],[
-    	    AC_MSG_ERROR(You need at least OpenSSL 0.9.6 for this version of $PACKAGE)
-	]) 
-	AC_EGREP_CPP(yes,[
-	    #include <openssl/opensslv.h>
-	    #if OPENSSL_VERSION_NUMBER >= 0x00907000L
-		yes
-	    #endif
-	],[
-	    OPENSSL_VERSION="0.9.7"
-	],[
-	    OPENSSL_VERSION="0.9.6"
-	    OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL096=1"
-	    dnl AES is not supported by OpenSSL 0.9.6
-	    XMLSEC_NO_AES="1"
-	])    
-	CPPFLAGS=$OLD_CPPFLAGS
-
-	OPENSSL_WITHOUT="no"
-    
-	XMLSEC_CRYPTO="openssl"
-	XMLSEC_CRYPTO_VERSION="$OPENSSL_VERFSION"
-	XMLSEC_CRYPTO_LIB="xmlsec-openssl"
-	XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$OPENSSL_LIBS"
-	XMLSEC_CRYPTO_LDADDS="$OPENSSL_LDADDS"
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_CRYPTO_OPENSSL=1"
-	XMLSEC_NO_PGP="1"
-
-	AC_MSG_RESULT(yes ('$OPENSSL_VERSION' ))
     fi
+    
+    dnl Check the OpenSSL version    
+    OLD_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$OPENSSL_CFLAGS"
+    AC_EGREP_CPP(yes,[
+	#include <openssl/opensslv.h>
+	#if OPENSSL_VERSION_NUMBER >= 0x00906000L
+	    yes
+	#endif
+    ],[
+	OPENSSL_VERSION="0.9.6"
+    ],[
+        AC_MSG_ERROR(You need at least OpenSSL 0.9.6 for this version of $PACKAGE)
+    ]) 
+    AC_EGREP_CPP(yes,[
+	#include <openssl/opensslv.h>
+	#if OPENSSL_VERSION_NUMBER >= 0x00907000L
+	    yes
+	#endif
+    ],[
+	OPENSSL_VERSION="0.9.7"
+    ],[
+	OPENSSL_VERSION="0.9.6"
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_OPENSSL096=1"
+    ])    
+    CPPFLAGS=$OLD_CPPFLAGS
+    AC_MSG_RESULT(yes ('$OPENSSL_VERSION' ))
 fi
 AC_SUBST(OPENSSL_WITHOUT)
 AC_SUBST(OPENSSL_MIN_VERSION)
@@ -359,17 +237,13 @@ dnl See do we need SHA1 suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for SHA1 support) 
 AC_ARG_ENABLE(sha1,   [  --enable-sha1           enable SHA1 support (yes)])
-if test "$enable_sha1" = "yes" -a "$XMLSEC_NO_SHA1" = "1" ; then
-    AC_MSG_ERROR(SHA1 support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_sha1" = "no" -o "$XMLSEC_NO_SHA1" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA1=1"
-        XMLSEC_NO_SHA1="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_SHA1="0"
-        AC_MSG_RESULT(yes)
-    fi
+if test "$enable_sha1" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA1=1"
+    XMLSEC_NO_SHA1="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_SHA1="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_SHA1)
 
@@ -378,17 +252,13 @@ dnl See do we need RIPEMD-160 suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support) 
 AC_ARG_ENABLE(ripemd160,   [  --enable-ripemd160      enable RIPEMD-160 support (yes)])
-if test "$enable_ripemd160" = "yes" -a "$XMLSEC_NO_RIPEMD160" = "1" ; then
-    AC_MSG_ERROR(RIPEMD-160 support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_ripemd160" = "no" -o "$XMLSEC_NO_RIPEMD160" = "1"  ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RIPEMD160=1"
-	XMLSEC_NO_RIPEMD160="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_RIPEMD160="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_ripemd160" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RIPEMD160=1"
+    XMLSEC_NO_RIPEMD160="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_RIPEMD160="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_RIPEMD160)
 
@@ -397,17 +267,13 @@ dnl See do we need HMAC suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for HMAC support) 
 AC_ARG_ENABLE(hmac,   [  --enable-hmac           enable HMAC support (yes)])
-if test "$enable_hmac" = "yes" -a "$XMLSEC_NO_HMAC" = "1" ; then
-    AC_MSG_ERROR(HMAC support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_hmac" = "no" -o "$XMLSEC_NO_HMAC" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HMAC=1"
-	XMLSEC_NO_HMAC="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_HMAC="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_hmac" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_HMAC=1"
+    XMLSEC_NO_HMAC="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_HMAC="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_HMAC)
 
@@ -416,17 +282,13 @@ dnl See do we need DSA suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for DSA support) 
 AC_ARG_ENABLE(dsa,   [  --enable-dsa            enable DSA support (yes)])
-if test "$enable_dsa" = "yes" -a "$XMLSEC_NO_DSA" = "1" ; then
-    AC_MSG_ERROR(DSA support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_dsa" = "no" -o "$XMLSEC_NO_DSA" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
-	XMLSEC_NO_DSA="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_DSA="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_dsa" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DSA=1"
+    XMLSEC_NO_DSA="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_DSA="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_DSA)
 
@@ -435,115 +297,85 @@ dnl See do we need RSA suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for RSA support) 
 AC_ARG_ENABLE(rsa,   [  --enable-rsa            enable RSA support (yes)])
-if test "$enable_rsa" = "yes" -a "$XMLSEC_NO_RSA" = "1" ; then
-    AC_MSG_ERROR(RSA support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_rsa" = "no" -o "$XMLSEC_NO_RSA" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA=1"
-	XMLSEC_NO_RSA="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_RSA="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_rsa" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_RSA=1"
+    XMLSEC_NO_RSA="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_RSA="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_RSA)
 
+dnl ==========================================================================
+dnl See do we need x509 suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for x509 support) 
+AC_ARG_ENABLE(x509,   [  --enable-x509           enable x509 support (yes)])
+if test "$enable_x509" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_X509=1"
+    XMLSEC_NO_X509="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_X509="0"
+    AC_MSG_RESULT(yes)
+fi    
+AC_SUBST(XMLSEC_NO_X509)
 
 dnl ==========================================================================
 dnl See do we need DES suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for DES support) 
 AC_ARG_ENABLE(des,   [  --enable-des            enable DES support (yes)])
-if test "$enable_des" = "yes" -a "$XMLSEC_NO_DES" = "1" ; then
-    AC_MSG_ERROR(DES support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_des" = "no" -o "$XMLSEC_NO_DES" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
-	XMLSEC_NO_DES="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_DES="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_des" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_DES=1"
+    XMLSEC_NO_DES="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_DES="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_DES)
 
 dnl ==========================================================================
 dnl See do we need AES suport
 dnl ==========================================================================
-AC_MSG_CHECKING(for AES support) 
+AC_MSG_CHECKING(for AES support (OpenSSL >= 0.9.7 is required)) 
 AC_ARG_ENABLE(aes,   [  --enable-aes            enable AES support (OpenSSL >= 0.9.7 is required)])
-if test "$enable_aes" = "yes" -a "$XMLSEC_NO_AES" = "1" ; then
-    AC_MSG_ERROR(AES support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_aes" = "no" -o "$XMLSEC_NO_AES" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
-	XMLSEC_NO_AES="1"
-	AC_MSG_RESULT(no)
-    else
+if test "$enable_aes" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
+    XMLSEC_NO_AES="1"
+    AC_MSG_RESULT(no)
+else
+    if test "$OPENSSL_VERSION" = "0.9.7" ; then
 	XMLSEC_NO_AES="0"
 	AC_MSG_RESULT(yes)
+    else 
+	if test "$enable_aes" = "yes" ; then 
+	    AC_MSG_ERROR(OpenSSL >= 0.9.7 is required for AES support)
+	else
+	    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_AES=1"
+	    XMLSEC_NO_AES="1"
+	    AC_MSG_RESULT(no)
+	fi
     fi
 fi    
 AC_SUBST(XMLSEC_NO_AES)
-
-dnl ==========================================================================
-dnl See do we need X509 suport
-dnl ==========================================================================
-AC_MSG_CHECKING(for X509 support) 
-AC_ARG_ENABLE(x509,   [  --enable-x509           enable X509 support (yes)])
-if test "$enable_x509" = "yes" -a "$XMLSEC_NO_X509" = "1" ; then
-    AC_MSG_ERROR(x509 support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_x509" = "no" -o "$XMLSEC_NO_X509" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_X509=1"
-	XMLSEC_NO_X509="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_X509="0"
-	AC_MSG_RESULT(yes)
-    fi
-fi    
-AC_SUBST(XMLSEC_NO_X509)
-
-dnl ==========================================================================
-dnl See do we need PGP suport
-dnl ==========================================================================
-AC_MSG_CHECKING(for PGP support) 
-AC_ARG_ENABLE(pgp,   [  --enable-pgp            enable PGP support (yes)])
-if test "$enable_pgp" = "yes" -a "$XMLSEC_NO_PGP" = "1" ; then
-    AC_MSG_ERROR(pgp support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_pgp" = "no" -o "$XMLSEC_NO_PGP" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_PGP=1"
-	XMLSEC_NO_PGP="1"
-	AC_MSG_RESULT(no)
-    else
-	XMLSEC_NO_PGP="0"
-	AC_MSG_RESULT(yes)
-    fi
-fi    
-AC_SUBST(XMLSEC_NO_PGP)
 
 dnl ==========================================================================
 dnl See do we need XMLDSig suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLDSig support) 
 AC_ARG_ENABLE(xmldsig,   [  --enable-xmldsig        enable XMLDSig support (yes)])
-if test "$enable_xmldsig" = "yes" -a "$XMLSEC_NO_XMLDSIG" = "1" ; then
-    AC_MSG_ERROR(XMLDSig support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_xmldsig" = "no" -o "$XMLSEC_NO_XMLDSIG" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLDSIG=1"
-	AM_CONDITIONAL(XMLSEC_WITH_XMLDSIG_TEST, test "1" = "0" )
-	XMLSEC_NO_XMLDSIG="1"
-	AC_MSG_RESULT(no)
-    else
-	AM_CONDITIONAL(XMLSEC_WITH_XMLDSIG_TEST, test "1" = "1" )
-	XMLSEC_NO_XMLDSIG="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_xmldsig" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLDSIG=1"
+    AM_CONDITIONAL(XMLSEC_WITH_XMLDSIG_TEST, test "1" = "0" )
+    XMLSEC_NO_XMLDSIG="1"
+    AC_MSG_RESULT(no)
+else
+    AM_CONDITIONAL(XMLSEC_WITH_XMLDSIG_TEST, test "1" = "1" )
+    XMLSEC_NO_XMLDSIG="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_XMLDSIG)
 
@@ -552,19 +384,15 @@ dnl See do we need XMLEnc suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLEnc support) 
 AC_ARG_ENABLE(xmlenc,   [  --enable-xmlenc         enable XMLEnc support (yes)])
-if test "$enable_xmlenc" = "yes" -a "$XMLSEC_NO_XMLENC" = "1" ; then
-    AC_MSG_ERROR(XMLEnc support is disabled for $XMLSEC_CRYPTO version $XMLSEC_CRYPTO_VERSION)
-else     
-    if test "$enable_xmlenc" = "no" -o "$XMLSEC_NO_XMLENC" = "1" ; then
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLENC=1"
-	AM_CONDITIONAL(XMLSEC_WITH_XMLENC_TEST, test "1" = "0" )
-	XMLSEC_NO_XMLENC="1"
-	AC_MSG_RESULT(no)
-    else
-	AM_CONDITIONAL(XMLSEC_WITH_XMLENC_TEST, test "1" = "1" )
-        XMLSEC_NO_XMLENC="0"
-	AC_MSG_RESULT(yes)
-    fi
+if test "$enable_xmlenc" = "no" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XMLENC=1"
+    AM_CONDITIONAL(XMLSEC_WITH_XMLENC_TEST, test "1" = "0" )
+    XMLSEC_NO_XMLENC="1"
+    AC_MSG_RESULT(no)
+else
+    AM_CONDITIONAL(XMLSEC_WITH_XMLENC_TEST, test "1" = "1" )
+    XMLSEC_NO_XMLENC="0"
+    AC_MSG_RESULT(yes)
 fi    
 AC_SUBST(XMLSEC_NO_XMLENC)
 
@@ -588,8 +416,8 @@ dnl ==========================================================================
 AC_MSG_CHECKING(for pedantic compilation) 
 AC_ARG_ENABLE(pedantic,   [  --enable-pedantic       enable pedantic compilation flags (no)])
 if test "$enable_pedantic" = "yes" ; then
-    dnl XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
-    XMLSEC_PEDANTIC="-pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    dnl    XMLSEC_PEDANTIC="-pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
+    XMLSEC_PEDANTIC="-pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls"
     CFLAGS="$CFLAGS $XMLSEC_PEDANTIC"
     AC_MSG_RESULT(yes)
 else
@@ -600,7 +428,7 @@ dnl ==========================================================================
 dnl Profiling 
 dnl ==========================================================================
 AC_MSG_CHECKING(for profiling) 
-AC_ARG_ENABLE(profiling,   [  --enable-profiling      enable profiling compilation flags (no)])
+AC_ARG_ENABLE(profiling,   [  --enable-profiling       enable profiling compilation flags (no)])
 if test "$enable_profiling" = "yes" ; then
     CFLAGS="$CFLAGS -pg"
     AC_MSG_RESULT(yes)
@@ -611,7 +439,7 @@ fi
 dnl ==========================================================================
 dnl Dynamic linking
 dnl ==========================================================================
-AC_ARG_ENABLE(dynamic,   [  --enable-dynamic        enable dynamic linking of the xmlsec utility (no)])
+AC_ARG_ENABLE(dynamic,   [  --enable-dynamic       enable dynamic linking of the xmlsec utility (no)])
 AM_CONDITIONAL(XMLSEC_DYNAMIC_LINKING, test "$enable_dynamic" = "yes")
 
 dnl ==========================================================================
@@ -624,19 +452,11 @@ AC_SUBST(XMLSEC_LIBDIR)
 AC_SUBST(XMLSEC_INCLUDEDIR)
 AC_SUBST(XMLSEC_LIBS)
 
-AC_SUBST(XMLSEC_CRYPTO)
-AC_SUBST(XMLSEC_CRYPTO_VERSION)
-AC_SUBST(XMLSEC_CRYPTO_LIB)
-AC_SUBST(XMLSEC_CRYPTO_CFLAGS)
-AC_SUBST(XMLSEC_CRYPTO_LIBS)
-AC_SUBST(XMLSEC_CRYPTO_LDADDS)
-
 CFLAGS="$CFLAGS $XMLSEC_DEFINES"
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 AC_SUBST(XMLSEC_DEFINES)
-
 
 dnl ==========================================================================
 dnl Which files to process
@@ -653,15 +473,12 @@ xmlsec.pc
 include/Makefile
 include/xmlsec/Makefile
 include/xmlsec/openssl/Makefile
-include/xmlsec/nss/Makefile
 include/xmlsec/version.h
 src/Makefile
 src/openssl/Makefile
-src/nss/Makefile
 apps/Makefile
 tests/Makefile
 man/Makefile
 docs/api/Makefile
 ])
-
 

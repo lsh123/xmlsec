@@ -14,6 +14,71 @@ The simple keys manager implementation.
 
 </para>
 
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrDestroy ##### -->
+<para>
+
+</para>
+
+@mngr: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrFindKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@name: 
+@id: 
+@type: 
+@usage: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@keyType: 
+@keyUsage: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrAddKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@strict: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrSave ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPemKey ##### -->
 <para>
 
@@ -22,9 +87,67 @@ The simple keys manager implementation.
 @mngr: 
 @keyfile: 
 @keyPwd: 
+@keyPwdCallback: 
 @privateKey: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@keyPwdCallback: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrX509Find ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@subjectName: 
+@issuerName: 
+@issuerSerial: 
+@ski: 
+@cert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrX509Verify ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@cert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPemCert ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@trusted: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrAddCertsDir ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPkcs12 ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@name: 
+@filename: 
+@pwd: 
+@Returns: 
 
 

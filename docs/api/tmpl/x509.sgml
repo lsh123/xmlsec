@@ -14,21 +14,150 @@ The X509 certificates functions.
 
 </para>
 
+<!-- ##### FUNCTION xmlSecX509DataCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataDestroy ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataGetCertsNumber ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataGetCrlsNumber ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataReadDerCert ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@buf: 
+@size: 
+@base64: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataWriteDerCert ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataReadDerCrl ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@buf: 
+@size: 
+@base64: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataWriteDerCrl ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataReadPemCert ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataDup ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataCreateKey ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509DataDebugDump ##### -->
+<para>
+
+</para>
+
+@x509Data: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecX509StoreCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509StoreDestroy ##### -->
+<para>
+
+</para>
+
+@store: 
+
+
 <!-- ##### FUNCTION xmlSecX509StoreFind ##### -->
 <para>
 
 </para>
 
 @store: 
-@data: 
-@keysMngrCtx: 
 @subjectName: 
 @issuerName: 
 @issuerSerial: 
 @ski: 
+@x509Data: 
 @Returns: 
 <!-- # Unused Parameters # -->
-@x509Data: 
 @skit: 
 
 
@@ -38,11 +167,29 @@ The X509 certificates functions.
 </para>
 
 @store: 
-@data: 
-@keysMngrCtx: 
-@Returns: 
-<!-- # Unused Parameters # -->
 @x509Data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509StoreLoadPemCert ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@trusted: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecX509StoreAddCertsDir ##### -->
+<para>
+
+</para>
+
+@store: 
+@path: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecPKCS12ReadKey ##### -->

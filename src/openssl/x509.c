@@ -20,465 +20,1186 @@
 
 #include <libxml/tree.h>
 #include <openssl/evp.h>
+#include <openssl/pem.h>
 #include <openssl/x509.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
-#include <openssl/pkcs12.h>
-#include <openssl/pem.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keysInternal.h>
+#include <xmlsec/keyinfo.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/base64.h>
 #include <xmlsec/x509.h>
-#include <xmlsec/openssl/evp.h>
-#include <xmlsec/openssl/keysmngr.h>
-#include <xmlsec/openssl/x509.h>
 #include <xmlsec/errors.h>
 
+#include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
+#include <xmlsec/openssl/x509.h>
 
-/************************************************************************
+/*************************************************************************
  *
- * Low-level x509 functions 
+ * X509 utility functions
  *
- ***********************************************************************/
-static X509*			xmlSecOpenSSLX509Find		(STACK_OF(X509) *certs,
-								 xmlChar *subjectName,
-								 xmlChar *issuerName, 
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-static 	X509*			xmlSecOpenSSLX509FindNextChainCert(STACK_OF(X509) *chain, 
-								 X509 *cert);
-static int			xmlSecOpenSSL509VerifyCertAgainstCrls	
-								(STACK_OF(X509_CRL) *crls, 
-								 X509* cert);
-static X509_NAME *		xmlSecOpenSSLX509NameRead	(unsigned char *str, 
-								 int len);
-static int 			xmlSecOpenSSLX509NameStringRead	(unsigned char **str, 
-								 int *strLen, 
-								 unsigned char *res, 
-								 int resLen, 
-								 unsigned char delim, 
-								 int ingoreTrailingSpaces);
-static int			xmlSecOpenSSLX509NamesCompare	(X509_NAME *a,
-								 X509_NAME *b);
-static int 			xmlSecOpenSSLX509_NAME_cmp	(const X509_NAME *a, 
-								 const X509_NAME *b);
-static int 			xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, 
-								 const X509_NAME_ENTRY **b);
-static void			xmlSecOpenSSLX509CtxError	(X509_STORE_CTX* xsc);
+ ************************************************************************/
+static int		xmlSecOpenSSLX509DataNodeRead		(xmlSecKeyDataPtr data,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLX509CertificateNodeRead	(xmlSecKeyDataPtr data,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLX509SubjectNameNodeRead	(xmlSecKeyDataPtr data,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLX509IssuerSerialNodeRead	(xmlSecKeyDataPtr data,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLX509SKINodeRead		(xmlSecKeyDataPtr data,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLX509CRLNodeRead		(xmlSecKeyDataPtr data,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, 
+								xmlSecKeyPtr key,
+								xmlSecKeyInfoCtxPtr keyInfoCtx);
+static xmlSecKeyDataPtr	xmlSecOpenSSLX509CertGetKey		(X509* cert);
+static X509*		xmlSecOpenSSLX509CertDerRead		(const unsigned char* buf, 
+								 size_t size);
+static X509*		xmlSecOpenSSLX509CertBase64DerRead	(xmlChar* buf);
+static xmlChar*		xmlSecOpenSSLX509CertBase64DerWrite	(X509* cert, 
+								 int base64LineWrap);
+static X509_CRL*	xmlSecOpenSSLX509CrlDerRead		(unsigned char* buf, 
+								 size_t size);
+static X509_CRL*	xmlSecOpenSSLX509CrlBase64DerRead	(xmlChar* buf);
+static xmlChar*		xmlSecOpenSSLX509CrlBase64DerWrite	(X509_CRL* crl, 
+								 int base64LineWrap);
+static void		xmlSecOpenSSLX509CertDebugDump		(X509* cert, 
+								 FILE* output);
+static void		xmlSecOpenSSLX509CertDebugXmlDump	(X509* cert, 
+								 FILE* output);
 
-
-/*********************************************************************
+/**************************************************************************
  *
- * OpenSSL X509 Data
+ * <dsig:X509Data> processing
  *
- *********************************************************************/
-static void		xmlSecOpenSSLX509DataKlassInit		(xmlSecObjKlassPtr klass);
-static int		xmlSecOpenSSLX509DataConstructor	(xmlSecObjKlassPtr klass, 
-							    	 xmlSecObjPtr obj);
-static int		xmlSecOpenSSLX509DataDuplicator		(xmlSecObjKlassPtr klass, 
-								 xmlSecObjPtr dst, 
-							         xmlSecObjPtr src);
-static void		xmlSecOpenSSLX509DataDestructor		(xmlSecObjKlassPtr klass, 
-								 xmlSecObjPtr obj);
-static int 		xmlSecOpenSSLX509DataAddObject		(xmlSecX509DataPtr data,
-								 const unsigned char* buf,
-								 size_t size,
-								 xmlSecX509ObjectType type);
-static int		xmlSecOpenSSLX509DataGetObject		(xmlSecX509DataPtr data,
-								 unsigned char** buf,
-								 size_t* size,
-								 xmlSecX509ObjectType type,
-								 size_t pos);
-static xmlChar*		xmlSecOpenSSLX509DataGetObjectName	(xmlSecX509DataPtr data,
-								 xmlSecX509ObjectType type,
-								 size_t pos);
-static int		xmlSecOpenSSLX509DataAddDerCert		(xmlSecOpenSSLX509DataPtr openSslData, 
-								 const unsigned char *buf, size_t size);
-static int		xmlSecOpenSSLX509DataAddDerCrl		(xmlSecOpenSSLX509DataPtr openSslData, 
-								 const unsigned char *buf, size_t size);
-static int		xmlSecOpenSSLX509DataWriteDerCert	(xmlSecOpenSSLX509DataPtr openSslData, 
-								 X509* cert, 
-								 unsigned char** buf, 
-								 size_t* size);
-static int		xmlSecOpenSSLX509DataWriteDerCrl	(xmlSecOpenSSLX509DataPtr openSslData, 
-								 X509_CRL* crl,
-								 unsigned char** buf, 
-								 size_t* size);
-static int		xmlSecOpenSSLX509DataAddCert		(xmlSecOpenSSLX509DataPtr openSslData,
-								 X509 *cert);
-static int		xmlSecOpenSSLX509DataAddVerifiedCert	(xmlSecOpenSSLX509DataPtr openSslData,
-								 X509 *cert);
-static int		xmlSecOpenSSLX509DataAddCrl		(xmlSecOpenSSLX509DataPtr openSslData,
-								 X509_CRL *crl);
-static xmlSecKeyPtr	 xmlSecOpenSSLX509DataGetKey		(xmlSecOpenSSLX509DataPtr openSslData,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx, 
-								 STACK_OF(X509)* verified);
+ *
+ * The X509Data  Element (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
+ *
+ * An X509Data element within KeyInfo contains one or more identifiers of keys 
+ * or X509 certificates (or certificates' identifiers or a revocation list). 
+ * The content of X509Data is:
+ *
+ *  1. At least one element, from the following set of element types; any of these may appear together or more than once iff (if and only if) each instance describes or is related to the same certificate:
+ *  2.
+ *    * The X509IssuerSerial element, which contains an X.509 issuer 
+ *	distinguished name/serial number pair that SHOULD be compliant 
+ *	with RFC2253 [LDAP-DN],
+ *    * The X509SubjectName element, which contains an X.509 subject 
+ *	distinguished name that SHOULD be compliant with RFC2253 [LDAP-DN],
+ *    * The X509SKI element, which contains the base64 encoded plain (i.e. 
+ *	non-DER-encoded) value of a X509 V.3 SubjectKeyIdentifier extension.
+ *    * The X509Certificate element, which contains a base64-encoded [X509v3] 
+ *	certificate, and
+ *    * Elements from an external namespace which accompanies/complements any 
+ *	of the elements above.
+ *    * The X509CRL element, which contains a base64-encoded certificate 
+ *	revocation list (CRL) [X509v3].
+ *
+ * Any X509IssuerSerial, X509SKI, and X509SubjectName elements that appear 
+ * MUST refer to the certificate or certificates containing the validation key.
+ * All such elements that refer to a particular individual certificate MUST be 
+ * grouped inside a single X509Data element and if the certificate to which 
+ * they refer appears, it MUST also be in that X509Data element.
+ *
+ * Any X509IssuerSerial, X509SKI, and X509SubjectName elements that relate to 
+ * the same key but different certificates MUST be grouped within a single 
+ * KeyInfo but MAY occur in multiple X509Data elements.
+ *
+ * All certificates appearing in an X509Data element MUST relate to the 
+ * validation key by either containing it or being part of a certification 
+ * chain that terminates in a certificate containing the validation key.
+ *
+ * No ordering is implied by the above constraints.
+ *
+ * Note, there is no direct provision for a PKCS#7 encoded "bag" of 
+ * certificates or CRLs. However, a set of certificates and CRLs can occur 
+ * within an X509Data element and multiple X509Data elements can occur in a 
+ * KeyInfo. Whenever multiple certificates occur in an X509Data element, at 
+ * least one such certificate must contain the public key which verifies the 
+ * signature.
+ *
+ * Schema Definition
+ *
+ *  <element name="X509Data" type="ds:X509DataType"/> 
+ *  <complexType name="X509DataType">
+ *    <sequence maxOccurs="unbounded">
+ *      <choice>
+ *        <element name="X509IssuerSerial" type="ds:X509IssuerSerialType"/>
+ *        <element name="X509SKI" type="base64Binary"/>
+ *        <element name="X509SubjectName" type="string"/>
+ *        <element name="X509Certificate" type="base64Binary"/>
+ *        <element name="X509CRL" type="base64Binary"/>
+ *        <any namespace="##other" processContents="lax"/>
+ *      </choice>
+ *    </sequence>
+ *  </complexType>
+ *  <complexType name="X509IssuerSerialType"> 
+ *    <sequence> 
+ *       <element name="X509IssuerName" type="string"/> 
+ *       <element name="X509SerialNumber" type="integer"/> 
+ *     </sequence>
+ *  </complexType>
+ *
+ *  DTD
+ *
+ *    <!ELEMENT X509Data ((X509IssuerSerial | X509SKI | X509SubjectName |
+ *                          X509Certificate | X509CRL)+ %X509.ANY;)>
+ *    <!ELEMENT X509IssuerSerial (X509IssuerName, X509SerialNumber) >
+ *    <!ELEMENT X509IssuerName (#PCDATA) >
+ *    <!ELEMENT X509SubjectName (#PCDATA) >
+ *    <!ELEMENT X509SerialNumber (#PCDATA) >
+ *    <!ELEMENT X509SKI (#PCDATA) >
+ *    <!ELEMENT X509Certificate (#PCDATA) >
+ *    <!ELEMENT X509CRL (#PCDATA) >
+ 
+ *
+ *************************************************************************/
+static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataX509Create		(xmlSecKeyDataId id);
+static xmlSecKeyDataPtr	xmlSecOpenSSLKeyDataX509Duplicate	(xmlSecKeyDataPtr data);
+static void		xmlSecOpenSSLKeyDataX509Destroy		(xmlSecKeyDataPtr data);
+static int		xmlSecOpenSSLKeyDataX509XmlRead		(xmlSecKeyDataId id,
+								 xmlSecKeyPtr key,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecOpenSSLKeyDataX509XmlWrite	(xmlSecKeyDataId id,
+								 xmlSecKeyPtr key,
+								 xmlNodePtr node,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataX509GetType	(xmlSecKeyDataPtr data);
+static const xmlChar*	xmlSecOpenSSLKeyDataX509GetIdentifier	(xmlSecKeyDataPtr data);
+
+static void		xmlSecOpenSSLKeyDataX509DebugDump	(xmlSecKeyDataPtr data,
+								 FILE* output);
+static void		xmlSecOpenSSLKeyDataX509DebugXmlDump	(xmlSecKeyDataPtr data,
+								 FILE* output);
 
 
-xmlSecObjKlassPtr
-xmlSecOpenSSLX509DataKlassGet(void) {
-    static xmlSecObjKlassPtr klass = NULL;
-    static xmlSecOpenSSLX509DataKlass kklass;
+
+static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataX509Klass = {
+    /* data */
+    xmlSecNameX509Data,
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+						/* xmlSecKeyDataUsage usage; */
+    xmlSecHrefX509Data,				/* const xmlChar* href; */
+    xmlSecNodeX509Data,				/* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
     
-    if(klass == NULL) {
-	static xmlSecObjKlassInfo kklassInfo = {
-	    /* klass data */
-	    sizeof(xmlSecOpenSSLX509DataKlass),
-	    "xmlSecOpenSSLX509Data",
-	    xmlSecOpenSSLX509DataKlassInit,	/* xmlSecObjKlassInitMethod */
-	    NULL,				/* xmlSecObjKlassFinalizeMethod */
-	    
-	    /* obj info */
-	    sizeof(xmlSecOpenSSLX509Data),
-	    xmlSecOpenSSLX509DataConstructor,	/* xmlSecObjKlassConstructorMethod */
-	    xmlSecOpenSSLX509DataDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
-	    xmlSecOpenSSLX509DataDestructor,	/* xmlSecObjKlassDestructorMethod */
-	};
-	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
-    				       &kklassInfo, xmlSecX509DataKlassId); 
-    } 
-    return(klass);   
+    /* constructors/destructor */
+    xmlSecOpenSSLKeyDataX509Create,		/* xmlSecKeyDataCreateMethod create; */
+    xmlSecOpenSSLKeyDataX509Duplicate,		/* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataX509Destroy,		/* xmlSecKeyDataDestroyMethod destroy; */
+    NULL,					/* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLKeyDataX509GetType, 		/* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,					/* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecOpenSSLKeyDataX509GetIdentifier,	/* xmlSecKeyDataGetIdentifier getIdentifier; */    
+
+    /* read/write */
+    xmlSecOpenSSLKeyDataX509XmlRead,		/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecOpenSSLKeyDataX509XmlWrite,		/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,					/* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,					/* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLKeyDataX509DebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataX509DebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+};
+
+xmlSecKeyDataId 
+xmlSecOpenSSLKeyDataX509GetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataX509Klass);
 }
 
-int
-xmlSecOpenSSLX509DataAddPemCert(xmlSecOpenSSLX509DataPtr openSslData, const char *filename,
-				xmlSecX509ObjectType type) {
-    X509* cert;
-    X509_CRL* crl;
-    FILE *f;
-    int ret = 0;
+/**
+ * xmlSecKeyData mapping for X509 data:
+ * reserved0 --> all certs 		: STACK_OF(X509)*
+ * reserved1 --> all crls  		: STACK_OF(X509_CRL)*
+ * reserved2 --> verified cert		: X509*
+ * reserved3 --> verified cert subject  : xmlChar*
+ */
+#define  xmlSecOpenSSLKeyDataX509GetAllCerts(data) \
+	((( data ) != NULL) ? ((STACK_OF(X509)*) (( data )->reserved0) ) : NULL)
+#define  xmlSecOpenSSLKeyDataX509GetAllCrls(data) \
+	((( data ) != NULL) ? ((STACK_OF(X509_CRL)*) (( data )->reserved1) ) : NULL)
+#define  xmlSecOpenSSLKeyDataX509GetVerifiedCert(data) \
+	((( data ) != NULL) ? ((X509*) (( data )->reserved2) ) : NULL)
+#define  xmlSecOpenSSLKeyDataX509GetVerifiedCertSubject(data) \
+	((( data ) != NULL) ? ((xmlChar*) (( data )->reserved3) ) : NULL)
 
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
+ 
+X509* 	
+xmlSecOpenSSLKeyDataX509GetVerified(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+
+    return(xmlSecOpenSSLKeyDataX509GetVerifiedCert(data));
+}
+
+int 
+xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data, X509* cert) {
+    STACK_OF(X509)* certs;
+    int ret;
     
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	return(-1);    
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(cert != NULL, -1);
+    
+    certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
+    if(certs == NULL) {
+	certs = sk_X509_new_null();
+	if(certs == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"sk_X509_new_null");
+	    return(-1);	
+	}
+	data->reserved0 = certs;
     }
+    
+    ret = sk_X509_push(certs, cert);
+    if(ret < 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "sk_X509_push");
+	return(-1);	
+    }
+        
+    return(0);
+}
 
-    switch(type) {
-    case xmlSecX509ObjectTypeCert:
-    case xmlSecX509ObjectTypeVerifiedCert:
-	cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
+X509* 
+xmlSecOpenSSLKeyDataX509GetCert(xmlSecKeyDataPtr data, size_t pos) {
+    STACK_OF(X509)* certs;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+
+    certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
+    xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2((int)pos < sk_X509_num(certs), NULL);
+
+    return(sk_X509_value(certs, pos));
+}
+
+size_t 	
+xmlSecOpenSSLKeyDataX509GetCertsNumber(xmlSecKeyDataPtr data) {
+    STACK_OF(X509)* certs;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), 0);
+
+    certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
+    return((certs != NULL) ? sk_X509_num(certs) : 0);
+}
+
+int 
+xmlSecOpenSSLKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, X509_CRL* crl) {
+    STACK_OF(X509_CRL)* crls;
+    int ret;
+    
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(crl != NULL, -1);
+    
+    crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
+    if(crls == NULL) {
+	crls = sk_X509_CRL_new_null();
+	if(crls == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"sk_X509_CRL_new_null");
+	    return(-1);	
+	}
+	data->reserved1 = crls;
+    }
+    
+    ret = sk_X509_CRL_push(crls, crl);
+    if(ret < 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "sk_X509_CRL_push");
+	return(-1);	
+    }
+        
+    return(0);
+}
+
+X509_CRL* 
+xmlSecOpenSSLKeyDataX509GetCrl(xmlSecKeyDataPtr data, size_t pos) {
+    STACK_OF(X509_CRL)* crls;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+
+    crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
+    xmlSecAssert2(crls != NULL, NULL);
+    xmlSecAssert2((int)pos < sk_X509_CRL_num(crls), NULL);
+
+    return(sk_X509_CRL_value(crls, pos));
+}
+
+size_t 
+xmlSecOpenSSLKeyDataX509GetCrlsNumber(xmlSecKeyDataPtr data) {
+    STACK_OF(X509_CRL)* crls;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), 0);
+
+    crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
+    return((crls != NULL) ? sk_X509_CRL_num(crls) : 0);
+}
+
+static xmlSecKeyDataPtr	
+xmlSecOpenSSLKeyDataX509Create(xmlSecKeyDataId id) {
+    xmlSecKeyDataPtr data;
+
+    xmlSecAssert2(id == xmlSecKeyDataX509Id, NULL);
+    
+    /* Allocate a new xmlSecKeyData and fill the fields. */
+    data = (xmlSecKeyDataPtr)xmlMalloc(sizeof(xmlSecKeyData));
+    if(data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecKeyData)=%d", 
+		    sizeof(xmlSecKeyData));
+	return(NULL);
+    }
+    memset(data, 0, sizeof(xmlSecKeyData));    
+    data->id = id;
+
+    return(data);
+}
+
+static xmlSecKeyDataPtr	
+xmlSecOpenSSLKeyDataX509Duplicate(xmlSecKeyDataPtr data) {
+    xmlSecKeyDataPtr newData;
+    X509* cert;
+    X509* cert2;
+    X509_CRL* crl;
+    X509_CRL* crl2;
+    size_t size, pos;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+    
+    /* create object */
+    newData = xmlSecKeyDataCreate(data->id);
+    if(newData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataCreate");
+	return(NULL);
+    }
+    
+    /* copy certs */
+    size = xmlSecOpenSSLKeyDataX509GetCertsNumber(data);
+    for(pos = 0; pos < size; ++pos) {
+	cert = xmlSecOpenSSLKeyDataX509GetCert(data, pos);
 	if(cert == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"PEM_read_X509_AUX(filename=%s)", filename);
-	    fclose(f);
-	    return(-1);    
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509GetCert(%d)", pos);
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
 	}
-	if(type == xmlSecX509ObjectTypeCert) {
-	    ret = xmlSecOpenSSLX509DataAddCert(openSslData, cert);
-	} else {
-	    ret = xmlSecOpenSSLX509DataAddVerifiedCert(openSslData, cert);
-	}
-	break;
-    case xmlSecX509ObjectTypeCrl:
-	crl = PEM_read_X509_CRL(f, NULL, NULL, NULL);
-	if(crl == NULL) {
+	
+	cert2 = X509_dup(cert);
+	if(cert2 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"PEM_read_X509_CRL_AUX(filename=%s)", filename);
-	    fclose(f);
-	    return(-1);    
-	}    	
-	ret = xmlSecOpenSSLX509DataAddCrl(openSslData, crl);
-	break;
-    case xmlSecX509ObjectTypeTrustedCert:
+			"X509_dup");
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
+	
+	ret = xmlSecOpenSSLKeyDataX509AdoptCert(newData, cert2);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509AdoptCert");
+	    X509_free(cert2);
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
+    }
+
+    /* copy crls */
+    size = xmlSecOpenSSLKeyDataX509GetCrlsNumber(data);
+    for(pos = 0; pos < size; ++pos) {
+	crl = xmlSecOpenSSLKeyDataX509GetCrl(data, pos);
+	if(crl == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509GetCrl(%d)", pos);
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
+	
+	crl2 = X509_CRL_dup(crl);
+	if(crl2 == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"X509_CRL_dup");
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
+	
+	ret = xmlSecOpenSSLKeyDataX509AdoptCrl(newData, crl2);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509AdoptCrl");
+	    X509_CRL_free(crl2);
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
+    }
+
+    /* copy verified cert if exist */
+    cert = xmlSecOpenSSLKeyDataX509GetVerified(data);
+    if(cert != NULL) {
+	cert2 = X509_dup(cert);
+	if(cert2 == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"X509_dup");
+	    xmlSecKeyDataDestroy(newData);
+	    return(NULL);
+	}
+	newData->reserved2 = cert2;
+    }
+    
+    /* 
+     * we don't copy verified cert subject because we can 
+     * re-create it from verified cert if needed
+     */
+    return(newData);
+}
+
+static void
+xmlSecOpenSSLKeyDataX509Destroy(xmlSecKeyDataPtr data) {
+    STACK_OF(X509)* certs;
+    STACK_OF(X509_CRL)* crls;
+    X509* cert;
+
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id));
+
+    certs = xmlSecOpenSSLKeyDataX509GetAllCerts(data);
+    if(certs != NULL) {
+	sk_X509_pop_free(certs, X509_free); 	
+    }
+
+    crls = xmlSecOpenSSLKeyDataX509GetAllCrls(data);
+    if(crls != NULL) {
+	sk_X509_CRL_pop_free(crls, X509_CRL_free); 	
+    }
+
+    cert = xmlSecOpenSSLKeyDataX509GetVerified(data);
+    if(cert != NULL) {
+	X509_free(cert);
+    }
+    
+    memset(data, 0, sizeof(xmlSecKeyData));    
+    xmlFree(data);        
+}
+
+static int
+xmlSecOpenSSLKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+				xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr data;
+    int ret;
+    
+    xmlSecAssert2(id == xmlSecKeyDataX509Id, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    
+    data = xmlSecKeyEnsureData(key, id);
+    if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecX509ObjectTypeTrustedCert");
-	fclose(f);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyEnsureData(xmlSecKeyDataX509Id)");
 	return(-1);
     }
+    
+    ret = xmlSecOpenSSLX509DataNodeRead(data, node, keyInfoCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "type=%d failed", type);
-	fclose(f);
+		    "xmlSecOpenSSLX509DataNodeRead");
 	return(-1);
     }
-    fclose(f);
+
+    ret = xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509VerifyAndExtractKey");
+	return(-1);
+    }
     return(0);
 }
 
+static int 
+xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+				xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr data;
+    xmlNodePtr cur;
+    xmlChar* buf;
+    X509* cert;
+    X509_CRL* crl;
+    size_t size, pos;
+    				
+    xmlSecAssert2(id == xmlSecKeyDataX509Id, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    /* todo: flag in ctx remove all existing content */
+    if(0) {
+        xmlNodeSetContent(node, NULL);
+    }
+
+    data = xmlSecKeyGetData(key, id);
+    if(data == NULL) {
+	/* no x509 data in the key */
+	return(0);	
+    }
+
+    /* write certs */
+    size = xmlSecOpenSSLKeyDataX509GetCertsNumber(data);
+    for(pos = 0; pos < size; ++pos) {
+	cert = xmlSecOpenSSLKeyDataX509GetCert(data, pos);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509GetCert(%d)", pos);
+	    return(-1);
+	}
+	
+	/* todo: set base64 size from context */
+	buf = xmlSecOpenSSLX509CertBase64DerWrite(cert, 60); 
+	if(buf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecX509DataWriteDerCert");
+	    return(-1);
+	}
+	
+	cur = xmlSecAddChild(node, BAD_CAST "X509Certificate", xmlSecDSigNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"X509Certificate\")");    
+	    xmlFree(buf);
+	    return(-1);	
+	}
+	/* todo: add \n around base64 data - from context */
+	/* todo: add errors check */
+	xmlNodeSetContent(cur, BAD_CAST "\n");
+	xmlNodeSetContent(cur, buf);
+	xmlFree(buf);
+    }    
+
+    /* write crls */
+    size = xmlSecOpenSSLKeyDataX509GetCrlsNumber(data);
+    for(pos = 0; pos < size; ++pos) {
+	crl = xmlSecOpenSSLKeyDataX509GetCrl(data, pos);
+	if(crl == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509GetCrl(%d)", pos);
+	    return(-1);
+	}
+	
+	/* todo: set base64 size from context */
+	buf = xmlSecOpenSSLX509CrlBase64DerWrite(crl, 60); 
+	if(buf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLX509CrlBase64DerWrite");
+	    return(-1);
+	}
+	
+	cur = xmlSecAddChild(node, BAD_CAST "X509CRL", xmlSecDSigNs);
+	if(cur == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAddChild(\"X509CRL\")");    
+	    xmlFree(buf);
+	    return(-1);	
+	}
+	/* todo: add \n around base64 data - from context */
+	/* todo: add errors check */
+	xmlNodeSetContent(cur, BAD_CAST "\n");
+	xmlNodeSetContent(cur, buf);	
+    }    
+    
+    return(0);
+}
+
+
+static xmlSecKeyDataType
+xmlSecOpenSSLKeyDataX509GetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), xmlSecKeyDataTypeUnknown);
+
+    /* TODO: return verified/not verified status */    
+    return(xmlSecKeyDataTypeUnknown);
+}
+
+static const xmlChar*
+xmlSecOpenSSLKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), NULL);
+    
+    /* TODO */    
+    return(NULL);
+}
+
+static void 
+xmlSecOpenSSLKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    X509* cert;
+    size_t size, pos;
+
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== X509 Data:\n");
+    cert = xmlSecOpenSSLKeyDataX509GetVerifiedCert(data);
+    if(cert != NULL) {
+	fprintf(output, "==== Verified Certificate:\n");
+	xmlSecOpenSSLX509CertDebugDump(cert, output);
+    }
+    
+    size = xmlSecOpenSSLKeyDataX509GetCertsNumber(data);
+    for(pos = 0; pos < size; ++pos) {
+	cert = xmlSecOpenSSLKeyDataX509GetCert(data, pos);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509GetCert(%d)", pos);
+	    return;
+	}
+	fprintf(output, "==== Certificate:\n");
+	xmlSecOpenSSLX509CertDebugDump(cert, output);
+    }
+    
+    /* we don't print out crls */
+}
 
 static void
-xmlSecOpenSSLX509DataKlassInit(xmlSecObjKlassPtr klass) {
-    xmlSecX509DataKlassPtr dataKlass = (xmlSecX509DataKlassPtr)klass;
-    
-    xmlSecAssert(dataKlass != NULL);
+xmlSecOpenSSLKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    X509* cert;
+    size_t size, pos;
 
-    dataKlass->addObject	= xmlSecOpenSSLX509DataAddObject;
-    dataKlass->getObject	= xmlSecOpenSSLX509DataGetObject; 
-    dataKlass->getObjectName	= xmlSecOpenSSLX509DataGetObjectName;
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<X509Data>\n");
+    cert = xmlSecOpenSSLKeyDataX509GetVerifiedCert(data);
+    if(cert != NULL) {
+	fprintf(output, "<VerifiedCertificate>\n");
+	xmlSecOpenSSLX509CertDebugXmlDump(cert, output);
+	fprintf(output, "</VerifiedCertificate>\n");
+    }
+    
+    size = xmlSecOpenSSLKeyDataX509GetCertsNumber(data);
+    for(pos = 0; pos < size; ++pos) {
+	cert = xmlSecOpenSSLKeyDataX509GetCert(data, pos);
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509GetCert(%d)", pos);
+	    return;
+	}
+	fprintf(output, "<Certificate>\n");
+	xmlSecOpenSSLX509CertDebugXmlDump(cert, output);
+	fprintf(output, "</Certificate>\n");
+    }
+    
+    /* we don't print out crls */
+    fprintf(output, "</X509Data>\n");
 }
 
+
 static int
-xmlSecOpenSSLX509DataConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
-		xmlSecObjPtr obj) {
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(obj);
+xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlNodePtr cur; 
+    int ret;
+        
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
     
-    xmlSecAssert2(openSslData != NULL, -1);
-    
+    for(cur = xmlSecGetNextElementNode(node->children);
+	cur != NULL;
+	cur = xmlSecGetNextElementNode(cur->next)) {
+	
+	ret = 0;
+	if(xmlSecCheckNodeName(cur, BAD_CAST "X509Certificate", xmlSecDSigNs)) {
+	    ret = xmlSecOpenSSLX509CertificateNodeRead(data, cur, keyInfoCtx);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SubjectName", xmlSecDSigNs)) {
+	    ret = xmlSecOpenSSLX509SubjectNameNodeRead(data, cur, keyInfoCtx);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerSerial", xmlSecDSigNs)) {
+	    ret = xmlSecOpenSSLX509IssuerSerialNodeRead(data, cur, keyInfoCtx);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SKI", xmlSecDSigNs)) {
+	    ret = xmlSecOpenSSLX509SKINodeRead(data, cur, keyInfoCtx);
+	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509CRL", xmlSecDSigNs)) {
+	    ret = xmlSecOpenSSLX509CRLNodeRead(data, cur, keyInfoCtx);
+	} else if(0) {
+	    /* todo: laxi schema validation: ignore unknown nodes */	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_NODE,
+			"name=\"%s\"", cur->name);
+	    return(-1);
+	}
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"%d", ret);
+	    return(-1);  
+	}	
+    }
     return(0);
 }
 
 static int
-xmlSecOpenSSLX509DataDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
-		    xmlSecObjPtr dst, xmlSecObjPtr src) {
-    xmlSecOpenSSLX509DataPtr openSslDataDst = xmlSecOpenSSLX509DataCast(dst);
-    xmlSecOpenSSLX509DataPtr openSslDataSrc = xmlSecOpenSSLX509DataCast(src);
+xmlSecOpenSSLX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {	
+    xmlChar *content;
+    X509* cert;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    content = xmlNodeGetContent(node);
+    if(content == NULL){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Certificate");
+	return(-1);
+    }
+
+    cert = xmlSecOpenSSLX509CertBase64DerRead(content);
+    if(cert == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLX509CertBase64DerRead");
+	xmlFree(content);
+	return(-1);
+    }    
+    
+    ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	X509_free(cert);
+	xmlFree(content);
+	return(-1);
+    }
+     
+    xmlFree(content);
+    return(0);
+}
+
+static int		
+xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {	
+    xmlSecKeyDataStorePtr x509Store;
+    xmlChar* subject;
+    X509* cert;
+    X509* cert2;
     int ret;
     
-    xmlSecAssert2(openSslDataDst != NULL, -1);
-    xmlSecAssert2(openSslDataSrc != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
 
-    /**
-     * Duplicate certs
-     */
-    if(openSslDataSrc->certs != NULL) {        
-    	X509 *cert;
-	X509 *newCert;
-	int i;
-	
-	for(i = 0; i < openSslDataSrc->certs->num; ++i) { 
-	    cert = ((X509**)(openSslDataSrc->certs->data))[i];
-	    newCert = X509_dup(cert);
-	    if(newCert == NULL) {
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)");
+	return(-1);
+    }
+
+    subject = xmlNodeGetContent(node);
+    if(subject == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Subject");
+	return(-1);
+    }
+
+    cert = xmlSecOpenSSLX509StoreFindCert(x509Store, subject, NULL, NULL, NULL, keyInfoCtx);
+    if(cert == NULL){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+		    " ");
+	xmlFree(subject);
+	return((keyInfoCtx->failIfCertNotFound) ? -1 : 0);
+    }
+
+    cert2 = X509_dup(cert);
+    if(cert2 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_dup");
+	xmlFree(subject);
+	return(-1);
+    }
+    
+    ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert2);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	X509_free(cert2);
+	xmlFree(subject);
+	return(-1);
+    }
+    
+    xmlFree(subject);
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr x509Store;
+    xmlNodePtr cur;
+    xmlChar *issuerName;
+    xmlChar *issuerSerial;    
+    X509* cert;
+    X509* cert2;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)");
+	return(-1);
+    }
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* the first is required node X509IssuerName */
+    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerName", xmlSecDSigNs)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "X509IssuerName");
+	return(-1);
+    }    
+    issuerName = xmlNodeGetContent(cur);
+    if(issuerName == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509IssuerName");    
+	return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next); 
+
+    /* next is required node X509SerialNumber */
+    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509SerialNumber", xmlSecDSigNs)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+		    "X509SerialNumber");
+	xmlFree(issuerName);
+	return(-1);
+    }    
+    issuerSerial = xmlNodeGetContent(cur);
+    if(issuerSerial == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509SerialNumber");
+	xmlFree(issuerName);
+	return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next); 
+
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    (cur->name != NULL) ? (char*)cur->name : "NULL");
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
+	return(-1);
+    }
+
+    cert = xmlSecOpenSSLX509StoreFindCert(x509Store, NULL, issuerName, issuerSerial, NULL, keyInfoCtx);
+    if(cert == NULL){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+		    " ");
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
+	return((keyInfoCtx->failIfCertNotFound) ? -1 : 0);    
+    }
+
+    cert2 = X509_dup(cert);
+    if(cert2 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_dup");
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
+	return(-1);
+    }
+
+    ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert2);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	X509_free(cert2);
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
+	return(-1);
+    }
+    
+    xmlFree(issuerSerial);
+    xmlFree(issuerName);
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr x509Store;
+    xmlChar* ski;
+    X509* cert;
+    X509* cert2;
+    int ret;
+    
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)");
+	return(-1);
+    }
+    
+    ski = xmlNodeGetContent(node);
+    if(ski == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509SKI");
+	return(-1);
+    }
+
+    cert = xmlSecOpenSSLX509StoreFindCert(x509Store, NULL, NULL, NULL, ski, keyInfoCtx);
+    if(cert == NULL){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
+		    " ");
+	xmlFree(ski);
+	return((keyInfoCtx->failIfCertNotFound) ? -1 : 0);    
+    }
+
+    cert2 = X509_dup(cert);
+    if(cert2 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_dup");
+	xmlFree(ski);
+	return(-1);
+    }
+
+    ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert2);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	X509_free(cert2);
+	xmlFree(ski);
+	return(-1);
+    }
+    
+    xmlFree(ski);
+    return(0);
+}
+
+static int 
+xmlSecOpenSSLX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlChar *content;
+    X509_CRL* crl;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    content = xmlNodeGetContent(node);
+    if(content == NULL){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    "X509Certificate");
+	return(-1);
+    }
+
+    crl = xmlSecOpenSSLX509CrlBase64DerRead(content);
+    if(crl == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLX509CrlBase64DerRead");
+	xmlFree(content);
+	return(-1);
+    }    
+    
+    ret = xmlSecOpenSSLKeyDataX509AdoptCrl(data, crl);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCrl");
+	X509_CRL_free(crl);
+	xmlFree(content);
+	return(-1);
+    }
+     
+    xmlFree(content);
+    return(0);
+}
+
+static int
+xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr key,
+				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataStorePtr x509Store;
+    int ret;
+    
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataX509Id), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+    xmlSecAssert2(keyInfoCtx->keysMngr != NULL, -1);
+
+    x509Store = xmlSecKeysMngrGetDataStore(keyInfoCtx->keysMngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrGetDataStore(xmlSecOpenSSLX509StoreId)");
+	return(-1);
+    }
+
+    /* todo: ctx flag to read certs w/o verification */
+    if((xmlSecOpenSSLKeyDataX509GetVerifiedCert(data) == NULL) &&
+       (xmlSecOpenSSLKeyDataX509GetAllCerts(data) != NULL) &&
+       (xmlSecKeyGetValue(key) == NULL)) {
+       
+	X509* verifiedCert;
+
+	verifiedCert = xmlSecOpenSSLX509StoreVerify(x509Store,
+			    xmlSecOpenSSLKeyDataX509GetAllCerts(data),
+			    xmlSecOpenSSLKeyDataX509GetAllCrls(data),
+			    keyInfoCtx);
+	if(verifiedCert != NULL) {
+	    xmlSecKeyDataPtr keyValue;
+
+	    data->reserved2 = X509_dup(verifiedCert);
+	    if(data->reserved2 == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    "X509_dup");
 		return(-1);
 	    }
-	    
-	    ret = xmlSecOpenSSLX509DataAddCert(openSslDataDst, newCert);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecOpenSSLX509DataAddCert");
-		return(-1);
-	    }
-	}
-    }
-    
-    if(openSslDataSrc->verified != NULL) {
-	openSslDataDst->verified = X509_dup(openSslDataSrc->verified);
-	if(openSslDataDst->verified == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"X509_dup");
-	    return(-1);
-	}
-    }
-    
-    /**
-     * Duplicate crls
-     */
-    if(openSslDataSrc->crls != NULL) {        
-    	X509_CRL *crl;
-	X509_CRL *newCrl;
-	int i;
 	
-	for(i = 0; i < openSslDataSrc->crls->num; ++i) { 
-	    crl = ((X509_CRL**)(openSslDataSrc->crls->data))[i];
-	    newCrl = X509_CRL_dup(crl);
-	    if(newCrl == NULL) {
+	    keyValue = xmlSecOpenSSLX509CertGetKey(verifiedCert);
+	    if(keyValue == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "X509_CRL_dup");
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecOpenSSLX509CertGetKey");
 		return(-1);
 	    }
 	    
-	    ret = xmlSecOpenSSLX509DataAddCrl(openSslDataDst, newCrl);
-	    if(ret < 0) {
+	    /* todo: verify that the key matches our expectations */
+	    
+	    ret = xmlSecKeySetValue(key, keyValue);
+    	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecOpenSSLX509DataAddCrl - %d", ret);
+			    "xmlSecKeySetValue");
 		return(-1);
-	    }
-	}
+	    }	    
+	}	
     }
     return(0);
 }
 
-static void
-xmlSecOpenSSLX509DataDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
-		    xmlSecObjPtr obj) {
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(obj);
+static xmlSecKeyDataPtr	
+xmlSecOpenSSLX509CertGetKey(X509* cert) {
+    xmlSecKeyDataPtr data;
+    EVP_PKEY *pKey = NULL;
     
-    xmlSecAssert(openSslData != NULL);
+    xmlSecAssert2(cert != NULL, NULL);
 
-    if(openSslData->certs != NULL) {	
-	sk_X509_pop_free(openSslData->certs, X509_free); 
-	openSslData->certs = NULL;
-    } 
-    
-    if(openSslData->verified != NULL) {
-	X509_free(openSslData->verified); 
-	openSslData->verified = NULL;
-    }
-    
-    if(openSslData->crls != NULL) {
-	sk_X509_CRL_pop_free(openSslData->crls, X509_CRL_free);
-	openSslData->crls = NULL;
-    }
-}
-
-static int
-xmlSecOpenSSLX509DataAddObject(xmlSecX509DataPtr data, const unsigned char* buf,
-			size_t size, xmlSecX509ObjectType type) {
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(data);
-    int ret = 0;
-    
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-
-    switch(type) {
-    case xmlSecX509ObjectTypeCert:
-	ret = xmlSecOpenSSLX509DataAddDerCert(openSslData, buf, size);
-	break;
-    case xmlSecX509ObjectTypeCrl:
-	ret = xmlSecOpenSSLX509DataAddDerCrl(openSslData, buf, size);
-	break;
-    case xmlSecX509ObjectTypeVerifiedCert:
+    pKey = X509_get_pubkey(cert);
+    if(pKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecX509ObjectTypeVerifiedCert");
-	return(-1);
-    case xmlSecX509ObjectTypeTrustedCert:
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecX509ObjectTypeTrustedCert");
-	return(-1);
-    }
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "type=%d failed", type);
-	return(-1);
-    }
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509DataGetObject(xmlSecX509DataPtr data, unsigned char** buf,
-			size_t* size, xmlSecX509ObjectType type, size_t pos) {
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(data);
-    int ret = 0;
-    
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(size != NULL, -1);
-
-    switch(type) {
-    case xmlSecX509ObjectTypeCert:
-	if((openSslData->certs == NULL) || 
-	   (sk_X509_num(openSslData->certs) >= (int)pos)) {
-	    return(0);
-	}
-	ret = xmlSecOpenSSLX509DataWriteDerCert(openSslData, 
-			    sk_X509_value(openSslData->certs, pos),
-			    buf, size);
-	break;
-    case xmlSecX509ObjectTypeCrl:
-	if((openSslData->crls == NULL) || 
-	   (sk_X509_CRL_num(openSslData->crls) >= (int)pos)) {
-	    return(0);
-	}
-	ret = xmlSecOpenSSLX509DataWriteDerCrl(openSslData, 
-			    sk_X509_CRL_value(openSslData->crls, pos),
-			    buf, size);
-	break;
-    case xmlSecX509ObjectTypeVerifiedCert:
-	if(openSslData->verified == NULL) {
-	    return(0);
-	}
-	ret = xmlSecOpenSSLX509DataWriteDerCert(openSslData, 
-			    openSslData->verified,
-			    buf, size);
-	break;
-    case xmlSecX509ObjectTypeTrustedCert:
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecX509ObjectTypeTrustedCert");
-	return(-1);
-    }
-    
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "type=%d failed", type);
-	return(-1);
-    }
-    return(0);
-}
-
-static xmlChar*		
-xmlSecOpenSSLX509DataGetObjectName(xmlSecX509DataPtr data, xmlSecX509ObjectType type, size_t pos) {
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(data);
-    char buf[1024];
-    char* name = NULL;
-    
-    xmlSecAssert2(openSslData != NULL, NULL);
-
-    switch(type) {
-    case xmlSecX509ObjectTypeCert:
-	if((openSslData->certs == NULL) || 
-	   (sk_X509_num(openSslData->certs) >= (int)pos)) {
-	    return(NULL);
-	}
-	name = X509_NAME_oneline(X509_get_subject_name(sk_X509_value(openSslData->certs, pos)), 
-			buf, sizeof(buf)); 
-	break;
-    case xmlSecX509ObjectTypeCrl:
-	if((openSslData->crls == NULL) || 
-	   (sk_X509_CRL_num(openSslData->crls) >= (int)pos)) {
-	    return(NULL);
-	}
-	name = X509_NAME_oneline(X509_CRL_get_issuer(sk_X509_CRL_value(openSslData->crls, pos)),
-			buf, sizeof(buf)); 
-	break;
-    case xmlSecX509ObjectTypeVerifiedCert:
-	if(openSslData->verified == NULL) {
-	    return(NULL);
-	}
-	name = X509_NAME_oneline(X509_get_subject_name(openSslData->verified), 
-			buf, sizeof(buf)); 
-	break;
-    case xmlSecX509ObjectTypeTrustedCert:
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecX509ObjectTypeTrustedCert");
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_get_pubkey");
 	return(NULL);
-    }
-    return(NULL);
+    }    
+
+    data = xmlSecOpenSSLParseEvpKey(pKey);
+    if(data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecParseEvpKey");
+	EVP_PKEY_free(pKey);
+	return(NULL);	    
+    }    
+    
+    EVP_PKEY_free(pKey);
+    return(data);
 }
 
-static int
-xmlSecOpenSSLX509DataAddDerCert(xmlSecOpenSSLX509DataPtr openSslData, 
-			const unsigned char *buf, size_t size) {
-    X509 *cert = NULL;
-    BIO *mem = NULL;
-    int res = -1;
+static X509*
+xmlSecOpenSSLX509CertBase64DerRead(xmlChar* buf) {
     int ret;
 
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(buf != NULL, NULL);
+    
+    /* usual trick with base64 decoding "in-place" */
+    ret = xmlSecBase64Decode(buf, (unsigned char*)buf, xmlStrlen(buf)); 
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode - %d", ret);
+	return(NULL);
+    }
+    
+    return(xmlSecOpenSSLX509CertDerRead((unsigned char*)buf, ret));
+}
+
+static X509*
+xmlSecOpenSSLX509CertDerRead(const unsigned char* buf, size_t size) {
+    X509 *cert = NULL;
+    BIO *mem = NULL;
+    int ret;
+
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(size > 0, NULL);
     
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BIO_new(BIO_s_mem)");
-	goto done;
+	return(NULL);
     }
     
     ret = BIO_write(mem, buf, size);
@@ -486,7 +1207,8 @@ xmlSecOpenSSLX509DataAddDerCert(xmlSecOpenSSLX509DataPtr openSslData,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BIO_write(BIO_s_mem)");
-	goto done;
+	BIO_free_all(mem);
+	return(NULL);
     }
 
     cert = d2i_X509_bio(mem, NULL);
@@ -494,46 +1216,91 @@ xmlSecOpenSSLX509DataAddDerCert(xmlSecOpenSSLX509DataPtr openSslData,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "d2i_X509_bio");
-	goto done;
+	BIO_free_all(mem);
+	return(NULL);
     }
 
-    ret = xmlSecOpenSSLX509DataAddCert(openSslData, cert);
+    BIO_free_all(mem);
+    return(cert);
+}
+
+static xmlChar*
+xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
+    xmlChar *res = NULL;
+    BIO *mem = NULL;
+    unsigned char *p = NULL;
+    long size;
+
+    xmlSecAssert2(cert != NULL, NULL);
+	
+    mem = BIO_new(BIO_s_mem());
+    if(mem == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_new(BIO_s_mem)");
+	return(NULL);
+    }
+
+    /* todo: add error checks */
+    i2d_X509_bio(mem, cert);
+    BIO_flush(mem);
+        
+    size = BIO_get_mem_data(mem, &p);
+    if((size <= 0) || (p == NULL)){
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "BIO_get_mem_data");
+	BIO_free_all(mem);
+	return(NULL);
+    }
+    
+    res = xmlSecBase64Encode(p, size, base64LineWrap);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
+	BIO_free_all(mem);
+	return(NULL);
+    }    
+
+    BIO_free_all(mem);
+    return(res);
+}
+
+
+static X509_CRL*
+xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
+    int ret;
+
+    xmlSecAssert2(buf != NULL, NULL);
+    
+    /* usual trick with base64 decoding "in-place" */
+    ret = xmlSecBase64Decode(buf, (unsigned char*)buf, xmlStrlen(buf)); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLX509DataAddCert - %d", ret);
-	goto done;
+		    "xmlSecBase64Decode - %d", ret);
+	return(NULL);
     }
-    cert = NULL;
-    res = 0;
     
-done:
-    if(cert != NULL) {
-	X509_free(cert);
-    }
-    if(mem != NULL) {
-	BIO_free_all(mem);
-    }
-    return(res);    
+    return(xmlSecOpenSSLX509CrlDerRead((unsigned char*)buf, ret));
 }
 
-static int
-xmlSecOpenSSLX509DataAddDerCrl(xmlSecOpenSSLX509DataPtr openSslData, 
-			const unsigned char *buf, size_t size) {
+static X509_CRL*
+xmlSecOpenSSLX509CrlDerRead(unsigned char* buf, size_t size) {
     X509_CRL *crl = NULL;
     BIO *mem = NULL;
-    int res = -1;
     int ret;
 
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(size > 0, NULL);
     
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BIO_new(BIO_s_mem)");
-	goto done;
+	return(NULL);
     }
     
     ret = BIO_write(mem, buf, size);
@@ -541,1239 +1308,211 @@ xmlSecOpenSSLX509DataAddDerCrl(xmlSecOpenSSLX509DataPtr openSslData,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BIO_write(BIO_s_mem)");
-	goto done;
+	BIO_free_all(mem);
+	return(NULL);
     }
 
     crl = d2i_X509_CRL_bio(mem, NULL);
     if(crl == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "d2i_X509_CRL_bio");
-	goto done;
-    }
-
-    ret = xmlSecOpenSSLX509DataAddCrl(openSslData, crl);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLX509DataAddCrl - %d", ret);
-	goto done;
-    }
-    crl = NULL;
-    res = 0;
-    
-done:
-    if(crl != NULL) {
-	X509_CRL_free(crl);
-    }
-    if(mem != NULL) {
+		    "d2i_X509_bio");
 	BIO_free_all(mem);
-    }
-    return(res);    
-}
-
-static int
-xmlSecOpenSSLX509DataWriteDerCert(xmlSecOpenSSLX509DataPtr openSslData, 
-			    X509* cert, unsigned char** buf, size_t* size) {
-    BIO *mem = NULL;
-
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(cert , -1);
-    xmlSecAssert2(buf , -1);
-    xmlSecAssert2(size , -1);
-    
-    mem = BIO_new(BIO_s_mem());
-    if(mem == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "BIO_new(BIO_s_mem)");
-	return(-1);
+	return(NULL);
     }
 
-    /* todo: add error checks */
-    i2d_X509_bio(mem, cert);
-    BIO_flush(mem);
-        
-    (*size) = BIO_get_mem_data(mem, buf);
-    if(((*size) <= 0) || ((*buf) == NULL)){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "BIO_get_mem_data");
-	BIO_free_all(mem);
-	return(-1);
-    }
-    
     BIO_free_all(mem);
-    return(0);
+    return(crl);
 }
 
-static int
-xmlSecOpenSSLX509DataWriteDerCrl(xmlSecOpenSSLX509DataPtr openSslData, 
-			    X509_CRL* crl, unsigned char** buf, size_t* size) {
+static xmlChar*
+xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
+    xmlChar *res = NULL;
     BIO *mem = NULL;
+    unsigned char *p = NULL;
+    long size;
 
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(crl , -1);
-    xmlSecAssert2(buf , -1);
-    xmlSecAssert2(size , -1);
-    
+    xmlSecAssert2(crl != NULL, NULL);
+	
     mem = BIO_new(BIO_s_mem());
     if(mem == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BIO_new(BIO_s_mem)");
-	return(-1);
+	return(NULL);
     }
 
     /* todo: add error checks */
     i2d_X509_CRL_bio(mem, crl);
     BIO_flush(mem);
         
-    (*size) = BIO_get_mem_data(mem, buf);
-    if(((*size) <= 0) || ((*buf) == NULL)){
+    size = BIO_get_mem_data(mem, &p);
+    if((size <= 0) || (p == NULL)){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "BIO_get_mem_data");
 	BIO_free_all(mem);
-	return(-1);
-    }
-    
-    BIO_free_all(mem);
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509DataAddCert(xmlSecOpenSSLX509DataPtr openSslData, X509 *cert) {
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(cert != NULL, -1);
-    
-    if(openSslData->certs == NULL) {
-	openSslData->certs = sk_X509_new_null();
-	if(openSslData->certs == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"sk_X509_new_null");
-	    return(-1);	
-	}
-    }
-    sk_X509_push(openSslData->certs, cert);
-        
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509DataAddVerifiedCert(xmlSecOpenSSLX509DataPtr openSslData, X509 *cert) {
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(cert != NULL, -1);
-    
-    if(openSslData->verified != NULL) {
-	X509_free(openSslData->verified);
-    }
-    openSslData->verified = cert;
-    
-    return(0);
-}
-
-
-static int
-xmlSecOpenSSLX509DataAddCrl(xmlSecOpenSSLX509DataPtr openSslData, X509_CRL *crl) {
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(crl != NULL, -1);
-
-    if(openSslData->crls == NULL) {
-	openSslData->crls = sk_X509_CRL_new_null();
-	if(openSslData->crls == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"sk_X509_CRL_new_null");
-	    return(-1);	
-	}
-    }
-    sk_X509_CRL_push(openSslData->crls, crl);
-    return(0);
-}
-
-static xmlSecKeyPtr
-xmlSecOpenSSLX509DataGetKey(xmlSecOpenSSLX509DataPtr openSslData, xmlSecKeysMngrCtxPtr keysMngrCtx, STACK_OF(X509)* verified) {
-    xmlSecKeyPtr key = NULL;
-    X509* cert = NULL;
-    int i;
-    
-    xmlSecAssert2(openSslData != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(verified != NULL, NULL);
-    
-    for(i = 0; ((i < verified->num) && (key == NULL)); ++i) {
-	cert = ((X509**)(verified->data))[0];
-	if(cert != NULL) {
-	    EVP_PKEY *pKey = NULL;
-	    
-	    pKey = X509_get_pubkey(cert);
-	    if(pKey == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "X509_get_pubkey");
-		/* hope for the best and continue with next cert in verified */
-		continue;
-	    }    
-
-	    key = xmlSecOpenSSLEvpParseKey(pKey);
-	    if(key == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecOpenSSLEvpParseKey");
-		EVP_PKEY_free(pKey);
-		/* hope for the best and continue with next cert in verified */
-		continue;
-	    }    
-	    EVP_PKEY_free(pKey);
-	}
-    }	    
-
-    /* now create x509 data */
-    if((key != NULL) && (cert != NULL)) {
-	xmlSecOpenSSLX509DataPtr data;
-
-	data = (xmlSecOpenSSLX509DataPtr)xmlSecObjDuplicate(xmlSecObjCast(openSslData));
-	if(data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecObjDuplicate(xmlSecObjCast(openSslData))");
-	    xmlSecKeyDestroy(key);
-	    return(NULL);
-	}
-	if(data->verified != NULL) {
-	    X509_free(data->verified); 
-	}
-	
-	data->verified = X509_dup(cert);
-	if(data->verified == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"X509_dup");
-	    xmlSecObjDelete(xmlSecObjCast(data));
-	    xmlSecKeyDestroy(key);
-	    return(NULL);
-	}
-	/* todo: shouldn't we remove trusted cert from the list of regular certs? */
-	if(key->x509Data != NULL) {
-	    xmlSecObjDelete(xmlSecObjCast(key->x509Data));
-	}	
-	key->x509Data = xmlSecX509DataCast(data);
-    }	    	    
-    return(key);
-
-}
-
-
-/*********************************************************************
- *
- * OpenSSL X509 store
- *
- *********************************************************************/
-static void		xmlSecOpenSSLX509StoreKlassInit		(xmlSecObjKlassPtr klass);
-static int		xmlSecOpenSSLX509StoreConstructor	(xmlSecObjKlassPtr klass, 
-							    	 xmlSecObjPtr obj);
-static int		xmlSecOpenSSLX509StoreDuplicator	(xmlSecObjKlassPtr klass, 
-								 xmlSecObjPtr dst, 
-							         xmlSecObjPtr src);
-static void		xmlSecOpenSSLX509StoreDestructor	(xmlSecObjKlassPtr klass, 
-								 xmlSecObjPtr obj);
-static int 		xmlSecOpenSSLX509StoreFind		(xmlSecX509StorePtr store, 
-								 xmlSecX509DataPtr data,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlChar *subjectName,
-								 xmlChar *issuerName,
-								 xmlChar *issuerSerial,
-								 xmlChar *ski);
-static int	 	xmlSecOpenSSLX509StoreVerify		(xmlSecX509StorePtr store, 
-								 xmlSecX509DataPtr data, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
-static int		xmlSecOpenSSLX509StoreVerifyCRL		(xmlSecOpenSSLX509StorePtr store, 
-								 X509_CRL *crl);
-static int		xmlSecOpenSSLX509StoreSetLookupFolder	(xmlSecX509StorePtr store,
-								 const char* folder);
-static int		xmlSecOpenSSLX509StoreLoadPemFile	(xmlSecX509StorePtr store,
-								 const char* filename,
-								 xmlSecX509ObjectType type);
-static int		xmlSecOpenSSLX509StoreLoadTrustedCert	(xmlSecOpenSSLX509StorePtr openSslStore,
-								 const char* filename);
-static int		xmlSecOpenSSLX509StoreLoadUntrustedCert	(xmlSecOpenSSLX509StorePtr openSslStore,
-								 const char* filename);
-static int		xmlSecOpenSSLX509StoreLoadCrl		(xmlSecOpenSSLX509StorePtr openSslStore,
-								 const char* filename);
-
-
-xmlSecObjKlassPtr
-xmlSecOpenSSLX509StoreKlassGet(void) {
-    static xmlSecObjKlassPtr klass = NULL;
-    static xmlSecOpenSSLX509StoreKlass kklass;
-    
-    if(klass == NULL) {
-	static xmlSecObjKlassInfo kklassInfo = {
-	    /* klass data */
-	    sizeof(xmlSecOpenSSLX509StoreKlass),
-	    "xmlSecOpenSSLX509Store",
-	    xmlSecOpenSSLX509StoreKlassInit,	/* xmlSecObjKlassInitMethod */
-	    NULL,				/* xmlSecObjKlassFinalizeMethod */
-	    
-	    /* obj info */
-	    sizeof(xmlSecOpenSSLX509Store),
-	    xmlSecOpenSSLX509StoreConstructor,	/* xmlSecObjKlassConstructorMethod */
-	    xmlSecOpenSSLX509StoreDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
-	    xmlSecOpenSSLX509StoreDestructor,	/* xmlSecObjKlassDestructorMethod */
-	};
-	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
-    				       &kklassInfo, xmlSecX509StoreKlassId); 
-    } 
-    return(klass);   
-}
-
-static void
-xmlSecOpenSSLX509StoreKlassInit(xmlSecObjKlassPtr klass) {
-    xmlSecX509StoreKlassPtr storeKlass = (xmlSecX509StoreKlassPtr)klass;
-    
-    xmlSecAssert(storeKlass != NULL);
-    storeKlass->find		= xmlSecOpenSSLX509StoreFind;
-    storeKlass->verify		= xmlSecOpenSSLX509StoreVerify; 
-    storeKlass->setLookupFolder	= xmlSecOpenSSLX509StoreSetLookupFolder;
-    storeKlass->loadPemFile	= xmlSecOpenSSLX509StoreLoadPemFile;    
-}
-
-static int
-xmlSecOpenSSLX509StoreConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
-		xmlSecObjPtr obj) {
-    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(obj);
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    
-    openSslStore->xst = X509_STORE_new();
-    if(openSslStore->xst == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_new");
-	return(-1);
-    }
-    if(!X509_STORE_set_default_paths(openSslStore->xst)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_set_default_paths");
-	return(-1);
-    }
-	
-    openSslStore->untrusted = sk_X509_new_null();
-    if(openSslStore->untrusted == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "sk_X509_new_null");
-	return(-1);
-    }    
-
-    openSslStore->crls = sk_X509_CRL_new_null();
-    if(openSslStore->crls == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "sk_X509_CRL_new_null");
-	return(-1);
-    }
-    
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509StoreDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
-		    xmlSecObjPtr dst, xmlSecObjPtr src) {
-    xmlSecOpenSSLX509StorePtr openSslStoreDst = xmlSecOpenSSLX509StoreCast(dst);
-    xmlSecOpenSSLX509StorePtr openSslStoreSrc = xmlSecOpenSSLX509StoreCast(src);
-    
-    xmlSecAssert2(openSslStoreDst != NULL, -1);
-    xmlSecAssert2(openSslStoreSrc != NULL, -1);
-    xmlSecAssert2("todo: not implemented" == NULL, -1);
-    
-    return(0);
-}
-
-static void
-xmlSecOpenSSLX509StoreDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
-		    xmlSecObjPtr obj) {
-    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(obj);
-    
-    xmlSecAssert(openSslStore != NULL);
-
-    if(openSslStore->xst != NULL) {
-	X509_STORE_free(openSslStore->xst);
-	openSslStore->xst = NULL;
-    }
-    if(openSslStore->untrusted != NULL) {
-	sk_X509_pop_free(openSslStore->untrusted, X509_free);
-	openSslStore->untrusted = NULL;
-    }
-    if(openSslStore->crls != NULL) {
-	sk_X509_CRL_pop_free(openSslStore->crls, X509_CRL_free);
-	openSslStore->crls = NULL;
-    }
-}
-
-static int
-xmlSecOpenSSLX509StoreFind(xmlSecX509StorePtr store, xmlSecX509DataPtr data,
-			xmlSecKeysMngrCtxPtr keysMngrCtx, xmlChar *subjectName,
-			xmlChar *issuerName, xmlChar *issuerSerial, xmlChar *ski) {
-    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(data);
-    int ret;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(keysMngrCtx != NULL, -1);
-
-    if(openSslStore->untrusted != NULL) {
-	X509 *certOrig = NULL;
-	X509 *certCopy = NULL;
-        
-	certOrig = xmlSecOpenSSLX509Find(openSslStore->untrusted, subjectName, 
-				    issuerName, issuerSerial, ski);
-	if(certOrig != NULL) {
-	    certCopy = X509_dup(certOrig);
-	    if(certCopy == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "X509_dup");
-		return(-1);
-	    }
-	    
-	    ret = xmlSecOpenSSLX509DataAddCert(openSslData, certCopy);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLX509DataAddCert - %d", ret);
-		X509_free(certCopy);
-		return(-1);	
-	    }
-	    
-	    return(1); /* cert was found */
-	}
-    }
-    return(0); /* cert was not found */
-}
-
-static int
-xmlSecOpenSSLX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr data, 
-			xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
-    xmlSecOpenSSLX509DataPtr openSslData = xmlSecOpenSSLX509DataCast(data);
-    STACK_OF(X509_CRL)* crls = NULL;
-    STACK_OF(X509)* certs = NULL;
-    STACK_OF(X509)* verified = NULL;
-    int res = -1;
-    int ret;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslStore->xst != NULL, -1);
-    xmlSecAssert2(openSslData != NULL, -1);
-    xmlSecAssert2(keysMngrCtx != NULL, -1);
-        
-    /*
-     * dup data crls, add crls from store, verify and remove "bad" ones
-     */
-    if(openSslData->crls != NULL) {
-	X509_CRL *crl;
-	int i;
-
-        crls = sk_X509_CRL_dup(openSslData->crls);
-	if(crls == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"sk_X509_CRL_dup");
-	    goto done;
-        }
-	if(openSslStore->crls != NULL) {
-	    for(i = 0; i < openSslStore->crls->num; ++i) { 
-		sk_X509_CRL_push(crls, ((X509_CRL**)(openSslStore->crls->data))[i]);
-	    }
-	}
-
-	for(i = 0; i < crls->num;) { 
-	    crl = ((X509_CRL**)(crls->data))[i];
-	    ret = xmlSecOpenSSLX509StoreVerifyCRL(openSslStore, crl);
-	    if(ret == 1) {
-		++i;
-	    } else if(ret == 0) {
-		sk_delete(crls, i);
-	    } else {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "xmlSecOpenSSLX509StoreVerifyCRL - %d", ret);
-		goto done;
-	    }
-	}
-    }
-	
-    /** 
-     * dup data certs, add untrusted certs from store and remove revoked certs
-     */ 
-    if(openSslData->certs != NULL) {
-	X509 *cert;
-	int i;
-	
-        certs = sk_X509_dup(openSslData->certs);
-	if(certs == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"sk_X509_dup");
-	    goto done;
-        }
-	if(openSslStore->untrusted != NULL) {
-	    for(i = 0; i < openSslStore->untrusted->num; ++i) { 
-		sk_X509_push(certs, ((X509**)(openSslStore->untrusted->data))[i]);
-	    }
-	}
-	
-	if(crls != NULL) {
-	    for(i = 0; i < certs->num;) { 
-		cert = ((X509**)(certs->data))[i];
-		ret = xmlSecOpenSSL509VerifyCertAgainstCrls(crls, cert);
-		if(ret == 1) {
-		    ++i;
-		} else if(ret == 0) {
-		    sk_X509_delete(certs, i);
-		} else {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecOpenSSL509VerifyCertAgainstCrls - %d", ret);
-		    goto done;
-		}
-	    }	    	    
-	}	
-    }	
-
-    /* check all certs and create verified certs stack stack */	
-    if(certs != NULL) {	
-	X509* cert;	
-	int i;
-	
-	verified = sk_X509_new_null();
-	if(verified == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"sk_X509_new_null");
-	    goto done;
-	}
-
-	for(i = 0; i < certs->num; ++i) { 
-	    cert = ((X509**)(certs->data))[i];
-	    if(xmlSecOpenSSLX509FindNextChainCert(certs, cert) == NULL) {
-		X509_STORE_CTX xsc; 
-    
-		X509_STORE_CTX_init (&xsc, openSslStore->xst, cert, certs);
-		if(keysMngrCtx->certsVerificationTime > 0) {
-		    X509_STORE_CTX_set_time(&xsc, 0, keysMngrCtx->certsVerificationTime);
-		}
-		ret = X509_verify_cert(&xsc); 
-		if(ret == 1) {
-		    sk_X509_push(verified, cert);
-		} else if(ret == 0) { 
-		    xmlSecOpenSSLX509CtxError(&xsc);
-		} else if(ret < 0) {
-		    int err;
-		    
-		    err = X509_STORE_CTX_get_error(&xsc);
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    	    "X509_verify_cert - %d (%s)", err,
-			    X509_verify_cert_error_string(err));
-		    /* hope for the best, may be will find another good cert */
-		}    		    
-		X509_STORE_CTX_cleanup (&xsc);  
-	    }
-	}
-    }
-    
-    /* finally create key and set it in the keys mngr ctx */
-    if((verified != NULL) && (verified->num > 0)) {
-	xmlSecKeyPtr key;
-		    
-	key = xmlSecOpenSSLX509DataGetKey(openSslData, keysMngrCtx, verified);
-	if(key == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    	"xmlSecOpenSSLX509DataGetKey");
-	    goto done;
-	}
-	xmlSecKeysMngrCtxSetCurKey(keysMngrCtx, key);
-	res = 1; /* valid cert was found and key created */
-    } else {
-	res = 0; /* valid cert was not found */
-    }    
-
-done:		
-    if(certs != NULL) {
-        sk_X509_free(certs);
-    }
-    if(verified != NULL) {
-        sk_X509_free(verified);
-    }
-    if(crls != NULL) {
-        sk_X509_free(crls);
-    }
-    return(res);
-}
-
-
-static int
-xmlSecOpenSSLX509StoreVerifyCRL(xmlSecOpenSSLX509StorePtr openSslStore, X509_CRL *crl) {
-    X509_STORE_CTX xsc; 
-    X509_OBJECT xobj;
-    EVP_PKEY *pkey;
-    int ret;  
-
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslStore->xst != NULL, -1);
-    xmlSecAssert2(crl != NULL, -1);
-    
-    X509_STORE_CTX_init(&xsc, openSslStore->xst, NULL, NULL);
-    ret = X509_STORE_get_by_subject(&xsc, X509_LU_X509, 
-				    X509_CRL_get_issuer(crl), &xobj);
-    if(ret <= 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_get_by_subject - %d", ret);
-	return(-1);
-    }
-    pkey = X509_get_pubkey(xobj.data.x509);
-    X509_OBJECT_free_contents(&xobj);
-    if(pkey == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_get_pubkey");
-	return(-1);
-    }
-    ret = X509_CRL_verify(crl, pkey);
-    EVP_PKEY_free(pkey);    
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_CRL_verify - %d", ret);
-    }
-    X509_STORE_CTX_cleanup (&xsc);  
-    return((ret == 1) ? 1 : 0);
-}
-
-static int
-xmlSecOpenSSLX509StoreSetLookupFolder(xmlSecX509StorePtr store, const char* folder) {
-    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
-    X509_LOOKUP *lookup = NULL;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslStore->xst != NULL, -1);
-    xmlSecAssert2(folder != NULL, -1);
-
-    lookup = X509_STORE_add_lookup(openSslStore->xst, X509_LOOKUP_hash_dir());
-    if(lookup == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_add_lookup");
-	return(-1);
-    }    
-    X509_LOOKUP_add_dir(lookup, folder, X509_FILETYPE_DEFAULT);
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509StoreLoadPemFile(xmlSecX509StorePtr store, const char* filename,
-			xmlSecX509ObjectType type) {
-    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
-    int ret = 0;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-
-    switch(type) {
-    case xmlSecX509ObjectTypeCert:
-	ret = xmlSecOpenSSLX509StoreLoadUntrustedCert(openSslStore, filename);
-	break;
-    case xmlSecX509ObjectTypeCrl:
-	ret = xmlSecOpenSSLX509StoreLoadCrl(openSslStore, filename);
-	break;
-    case xmlSecX509ObjectTypeVerifiedCert:
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "xmlSecX509ObjectTypeVerifiedCert");
-	return(-1);
-    case xmlSecX509ObjectTypeTrustedCert:
-	ret = xmlSecOpenSSLX509StoreLoadTrustedCert(openSslStore, filename);
-	break;
-    }
-    
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "type=%d failed", type);
-	return(-1);
-    }
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509StoreLoadTrustedCert(xmlSecOpenSSLX509StorePtr openSslStore, const char* filename) {
-    X509_LOOKUP *lookup = NULL; 
-    int ret;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslStore->xst != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-
-    lookup = X509_STORE_add_lookup(openSslStore->xst, X509_LOOKUP_file());
-    if(lookup == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_add_lookup");
-	return(-1);
-    }
-
-    ret = X509_LOOKUP_load_file(lookup, filename, X509_FILETYPE_PEM);
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_LOOKUP_load_file(%s) - %d", filename, ret);
-	return(-1);
-    }
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509StoreLoadUntrustedCert(xmlSecOpenSSLX509StorePtr openSslStore, const char* filename) {
-    FILE *f;
-    X509 *cert;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslStore->untrusted != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-    
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	return(-1);
-    }
-    
-    cert = PEM_read_X509(f, NULL, NULL, NULL);
-    fclose(f);
-    if(cert == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PEM_read_X509(filename=\"%s\")", filename);
-	return(-1);
-    }    
-	
-    sk_X509_push(openSslStore->untrusted, cert);
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509StoreLoadCrl(xmlSecOpenSSLX509StorePtr openSslStore, const char* filename) {
-    FILE *f;
-    X509_CRL *crl;
-    
-    xmlSecAssert2(openSslStore != NULL, -1);
-    xmlSecAssert2(openSslStore->crls != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-    
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	return(-1);
-    }
-    
-    crl = PEM_read_X509_CRL(f, NULL, NULL, NULL);
-    fclose(f);
-    if(crl == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PEM_read_X509_CRL(filename=\"%s\")", filename);
-	return(-1);
-    }
-	
-    sk_X509_CRL_push(openSslStore->crls, crl);
-    return(0);
-}
-
-
-/*****************************************************************************
- *
- * Low-level x509 functions
- *
- *****************************************************************************/
-static X509*		
-xmlSecOpenSSLX509Find(STACK_OF(X509) *certs, xmlChar *subjectName,
-			xmlChar *issuerName, xmlChar *issuerSerial,
-			xmlChar *ski) {
-    X509 *cert = NULL;
-    int i;
-
-    xmlSecAssert2(certs != NULL, NULL);
-    
-    /* todo: may be this is not the fastest way to search certs */
-    if(subjectName != NULL) {
-	X509_NAME *nm;
-	X509_NAME *subj;
-
-	nm = xmlSecOpenSSLX509NameRead(subjectName, xmlStrlen(subjectName));
-	if(nm == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLX509NameRead");
-	    return(NULL);    
-	}
-
-	for(i = 0; i < certs->num; ++i) {
-	    cert = ((X509**)(certs->data))[i];
-	    subj = X509_get_subject_name(cert);
-	    if(xmlSecOpenSSLX509NamesCompare(nm, subj) == 0) {
-		X509_NAME_free(nm);
-		return(cert);
-	    }	    
-	}
-	X509_NAME_free(nm);
-    } else if((issuerName != NULL) && (issuerSerial != NULL)) {
-	X509_NAME *nm;
-	X509_NAME *issuer;
-	BIGNUM *bn;
-	ASN1_INTEGER *serial;
-
-	nm = xmlSecOpenSSLX509NameRead(issuerName, xmlStrlen(issuerName));
-	if(nm == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLX509NameRead");
-	    return(NULL);    
-	}
-		
-	bn = BN_new();
-	if(bn == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"BN_new");
-	    X509_NAME_free(nm);
-	    return(NULL);    
-	}
-	if(BN_dec2bn(&bn, (char*)issuerSerial) == 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"BN_dec2bn");
-	    BN_free(bn);
-	    X509_NAME_free(nm);
-	    return(NULL);    
-	}
-	
-	serial = BN_to_ASN1_INTEGER(bn, NULL);
-	if(serial == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"BN_to_ASN1_INTEGER");
-	    BN_free(bn);
-	    X509_NAME_free(nm);
-	    return(NULL);    
-	}
-	BN_free(bn); 
-
-
-	for(i = 0; i < certs->num; ++i) {
-	    cert = ((X509**)(certs->data))[i];
-	    if(ASN1_INTEGER_cmp(X509_get_serialNumber(cert), serial) != 0) {
-		continue;
-	    } 
-	    issuer = X509_get_issuer_name(cert);
-	    if(xmlSecOpenSSLX509NamesCompare(nm, issuer) == 0) {
-		ASN1_INTEGER_free(serial);
-		X509_NAME_free(nm);
-		return(cert);
-	    }	    
-	}
-
-        X509_NAME_free(nm);
-	ASN1_INTEGER_free(serial);
-    } else if(ski != NULL) {
-	int len;
-	int index;
-	X509_EXTENSION *ext;
-	ASN1_OCTET_STRING *keyId;
-	
-	/* our usual trick with base64 decode */
-	len = xmlSecBase64Decode(ski, (unsigned char*)ski, xmlStrlen(ski));
-	if(len < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBase64Decode");
-	    return(NULL);    	
-	}
-	for(i = 0; i < certs->num; ++i) {
-	    cert = ((X509**)(certs->data))[i];
-	    index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1); 
-	    if((index >= 0)  && (ext = X509_get_ext(cert, index))) {
-		keyId = X509V3_EXT_d2i(ext);
-		if((keyId != NULL) && (keyId->length == len) && 
-				    (memcmp(keyId->data, ski, len) == 0)) {
-		    M_ASN1_OCTET_STRING_free(keyId);
-		    return(cert);
-		}
-		M_ASN1_OCTET_STRING_free(keyId);
-	    }
-	}	
-    }
-
-    return(NULL);
-}
-
-static X509*
-xmlSecOpenSSLX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
-    unsigned long certSubjHash;
-    int i;
-
-    xmlSecAssert2(chain != NULL, NULL);
-    xmlSecAssert2(cert != NULL, NULL);
-    
-    certSubjHash = X509_subject_name_hash(cert);
-    for(i = 0; i < chain->num; ++i) {
-	if((((X509**)(chain->data))[i] != cert) && 
-	   (X509_issuer_name_hash(((X509**)(chain->data))[i]) == certSubjHash)) {
-	    return(((X509**)(chain->data))[i]);
-	}
-    }
-    return(NULL);
-}
-
-static int
-xmlSecOpenSSL509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
-    X509_NAME *issuer;
-    X509_CRL *crl = NULL;
-    X509_REVOKED *revoked;
-    int i, n;
-    int ret;  
-
-    xmlSecAssert2(crls != NULL, -1);
-    xmlSecAssert2(cert != NULL, -1);
-    
-    /*
-     * Try to retrieve a CRL corresponding to the issuer of
-     * the current certificate 
-     */    
-    n = sk_num(crls);
-    for(i = 0; i < n; i++) {
-	crl = sk_X509_CRL_value(crls, i);     
-	issuer = X509_CRL_get_issuer(crl);
-	if(xmlSecOpenSSLX509NamesCompare(X509_CRL_get_issuer(crl), issuer) == 0) { 
-	    break;
-	}
-    }
-    if((i >= n) || (crl == NULL)){
-	/* no crls for this issuer */
-	return(1);
-    }
-
-    /* 
-     * Check date of CRL to make sure it's not expired 
-     * todo: shouldn't we check it against context verification time instead?
-     */
-    ret = X509_cmp_current_time(X509_CRL_get_nextUpdate(crl));
-    if (ret == 0) {
-	/* crl expired */
-	return(1);
-    }
-    
-    /* 
-     * Check if the current certificate is revoked by this CRL
-     */
-    n = sk_num(X509_CRL_get_REVOKED(crl));
-    for (i = 0; i < n; i++) {
-        revoked = (X509_REVOKED *)sk_value(X509_CRL_get_REVOKED(crl), i);
-        if (ASN1_INTEGER_cmp(revoked->serialNumber, X509_get_serialNumber(cert)) == 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_REVOKED,
-			" ");
-	    return(0);
-        }
-    }
-    return(1);    
-}
-
-static X509_NAME *
-xmlSecOpenSSLX509NameRead(unsigned char *str, int len) {
-    unsigned char name[256];
-    unsigned char value[256];
-    int nameLen, valueLen;
-    X509_NAME *nm;
-    int type = MBSTRING_ASC;
-
-    xmlSecAssert2(str != NULL, NULL);
-    
-    nm = X509_NAME_new();
-    if(nm == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_NAME_new");
 	return(NULL);
     }
     
-    while(len > 0) {
-	/* skip spaces after comma or semicolon */
-	while((len > 0) && isspace(*str)) {
-	    ++str; --len;
-	}
-
-	nameLen = xmlSecOpenSSLX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);	
-	if(nameLen < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLX509NameStringRead - %d", nameLen);
-	    X509_NAME_free(nm);
-	    return(NULL);
-	}
-	name[nameLen] = '\0';
-	if(len > 0) {
-	    ++str; --len;
-	    if((*str) == '\"') {
-		valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len, 
-					value, sizeof(value), '"', 1);	
-		if(valueLen < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecOpenSSLX509NameStringRead - %d", valueLen);
-		    X509_NAME_free(nm);
-		    return(NULL);
-    		}
-		/* skip spaces before comma or semicolon */
-		while((len > 0) && isspace(*str)) {
-		    ++str; --len;
-		}
-		if((len > 0) && ((*str) != ',')) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_INVALID_DATA,
-				"comma is expected");
-		    X509_NAME_free(nm);
-		    return(NULL);
-		}
-		if(len > 0) {
-		    ++str; --len;
-		}
-		type = MBSTRING_ASC;
-	    } else if((*str) == '#') {
-		/* TODO: read octect values */
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_INVALID_DATA,
-			    "reading octect values is not implemented yet");
-    	        X509_NAME_free(nm);
-		return(NULL);
-	    } else {
-		valueLen = xmlSecOpenSSLX509NameStringRead(&str, &len, 
-					value, sizeof(value), ',', 1);	
-		if(valueLen < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecOpenSSLX509NameStringRead - %d", valueLen);
-    	    	    X509_NAME_free(nm);
-		    return(NULL);
-    		}
-		type = MBSTRING_ASC;
-	    } 			
-	} else {
-	    valueLen = 0;
-	}
-	value[valueLen] = '\0';
-	if(len > 0) {
-	    ++str; --len;
-	}	
-	X509_NAME_add_entry_by_txt(nm, (char*)name, type, value, valueLen, -1, 0);
-    }
-    
-    return(nm);
-}
-
-static int 
-xmlSecOpenSSLX509NameStringRead(unsigned char **str, int *strLen, 
-			unsigned char *res, int resLen,
-			unsigned char delim, int ingoreTrailingSpaces) {
-    unsigned char *p, *q, *nonSpace; 
-
-    xmlSecAssert2(str != NULL, -1);
-    xmlSecAssert2(strLen != NULL, -1);
-    xmlSecAssert2(res != NULL, -1);
-    
-    p = (*str);
-    nonSpace = q = res;
-    while(((p - (*str)) < (*strLen)) && ((*p) != delim) && ((q - res) < resLen)) { 
-	if((*p) != '\\') {
-	    if(ingoreTrailingSpaces && !isspace(*p)) nonSpace = q;	
-	    *(q++) = *(p++);
-	} else {
-	    ++p;
-	    nonSpace = q;    
-	    if(xmlSecIsHex((*p))) {
-		if((p - (*str) + 1) >= (*strLen)) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_INVALID_DATA,
-				"two hex digits expected");
-	    	    return(-1);
-		}
-		*(q++) = xmlSecGetHex(p[0]) * 16 + xmlSecGetHex(p[1]);
-		p += 2;
-	    } else {
-		if(((++p) - (*str)) >= (*strLen)) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_INVALID_DATA,
-				"escaped symbol missed");
-		    return(-1);
-		}
-		*(q++) = *(p++); 
-	    }
-	}	    
-    }
-    if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
+    res = xmlSecBase64Encode(p, size, base64LineWrap);
+    if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_SIZE,
-		    "buffer is too small");
-	return(-1);
-    }
-    (*strLen) -= (p - (*str));
-    (*str) = p;
-    return((ingoreTrailingSpaces) ? nonSpace - res + 1 : q - res);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
+	BIO_free_all(mem);
+	return(NULL);
+    }    
+
+    BIO_free_all(mem);    
+    return(res);
 }
 
-static
-int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
-	{
-	int i,j;
-	X509_NAME_ENTRY *na,*nb;
+static void 
+xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
+    char buf[1024];
+    BIGNUM *bn = NULL;
 
-	xmlSecAssert2(a != NULL, -1);
-	xmlSecAssert2(b != NULL, 1);
-	
-	if (sk_X509_NAME_ENTRY_num(a->entries)
-	    != sk_X509_NAME_ENTRY_num(b->entries))
-		return sk_X509_NAME_ENTRY_num(a->entries)
-		  -sk_X509_NAME_ENTRY_num(b->entries);
-	for (i=sk_X509_NAME_ENTRY_num(a->entries)-1; i>=0; i--)
-		{
-		na=sk_X509_NAME_ENTRY_value(a->entries,i);
-		nb=sk_X509_NAME_ENTRY_value(b->entries,i);
-		j=na->value->length-nb->value->length;
-		if (j) return(j);
-		j=memcmp(na->value->data,nb->value->data,
-			na->value->length);
-		if (j) return(j);
-		}
+    xmlSecAssert(cert != NULL);
+    xmlSecAssert(output != NULL);
 
-	/* We will check the object types after checking the values
-	 * since the values will more often be different than the object
-	 * types. */
-	for (i=sk_X509_NAME_ENTRY_num(a->entries)-1; i>=0; i--)
-		{
-		na=sk_X509_NAME_ENTRY_value(a->entries,i);
-		nb=sk_X509_NAME_ENTRY_value(b->entries,i);
-		j=OBJ_cmp(na->object,nb->object);
-		if (j) return(j);
-		}
-	return(0);
-	}
+    fprintf(output, "==== Subject Name: %s\n", 
+	 X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))); 
+    fprintf(output, "==== Issuer Name: %s\n", 
+	 X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf))); 
+    fprintf(output, "==== Issuer Serial: ");
+    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
+    if(bn != NULL) {
+	BN_print_fp(output, bn);
+	BN_free(bn);
+	fprintf(output, "\n");
+    } else {
+	fprintf(output, "unknown\n");
+    }
+}
 
 
-/** 
- * xmlSecOpenSSLX509NamesCompare:
+static void 
+xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
+    char buf[1024];
+    BIGNUM *bn = NULL;
+
+    xmlSecAssert(cert != NULL);
+    xmlSecAssert(output != NULL);
+    
+    fprintf(output, "=== X509 Certificate\n");
+    fprintf(output, "==== Subject Name: %s\n", 
+	 X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))); 
+    fprintf(output, "==== Issuer Name: %s\n", 
+	 X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf))); 
+    fprintf(output, "==== Issuer Serial: ");
+    bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
+    if(bn != NULL) {
+	BN_print_fp(output, bn);
+	BN_free(bn);
+	fprintf(output, "\n");
+    } else {
+	fprintf(output, "unknown\n");
+    }
+}
+
+
+/**************************************************************************
  *
- * we have to sort X509_NAME entries to get correct results.
- * This is ugly but OpenSSL does not support it
- */
-static int		
-xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
-    X509_NAME *a1 = NULL;
-    X509_NAME *b1 = NULL;
+ * Raw X509 Certificate processing
+ *
+ *
+ *************************************************************************/
+static int		xmlSecOpenSSLKeyDataRawX509CertBinRead	(xmlSecKeyDataId id,
+								 xmlSecKeyPtr key,
+								 const unsigned char* buf,
+								 size_t bufSize,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+static const struct _xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRawX509CertKlass = {
+    /* data */
+    xmlSecNameRawX509Cert,
+    xmlSecKeyDataUsageRetrievalMethodNodeBin, 
+						/* xmlSecKeyDataUsage usage; */
+    xmlSecHrefRawX509Cert,			/* const xmlChar* href; */
+    NULL,					/* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
+    
+    /* constructors/destructor */
+    NULL,					/* xmlSecKeyDataCreateMethod create; */
+    NULL,					/* xmlSecKeyDataDuplicateMethod duplicate; */
+    NULL,					/* xmlSecKeyDataDestroyMethod destroy; */
+    NULL,					/* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    NULL,			 		/* xmlSecKeyDataGetTypeMethod getType; */
+    NULL,					/* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,					/* xmlSecKeyDataGetIdentifier getIdentifier; */    
+
+    /* read/write */
+    NULL,					/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,					/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLKeyDataRawX509CertBinRead,	/* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,					/* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    NULL,					/* xmlSecKeyDataDebugDumpMethod debugDump; */
+    NULL,					/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+};
+
+xmlSecKeyDataId 
+xmlSecOpenSSLKeyDataRawX509CertGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataRawX509CertKlass);
+}
+
+static int
+xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+				    const unsigned char* buf, size_t bufSize,
+				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyDataPtr data;
+    X509* cert;
     int ret;
     
-    xmlSecAssert2(a != NULL, -1);    
-    xmlSecAssert2(b != NULL, 1);    
-    
-    a1 = X509_NAME_dup(a);
-    if(a1 == NULL) {
+    xmlSecAssert2(id == xmlSecKeyDataRawX509CertId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    cert = xmlSecOpenSSLX509CertDerRead(buf, bufSize);
+    if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_NAME_dup");
-        return(-1);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLX509CertDerRead");
+	return(-1);
     }
-    b1 = X509_NAME_dup(b);
-    if(b1 == NULL) {
+
+    data = xmlSecKeyEnsureData(key, xmlSecKeyDataX509Id);
+    if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_NAME_dup");
-        return(1);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataCreate(xmlSecKeyDataX509Id)");
+	X509_free(cert);
+	return(-1);
     }
-        
-    /* sort both */
-    sk_X509_NAME_ENTRY_set_cmp_func(a1->entries, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
-    sk_X509_NAME_ENTRY_sort(a1->entries);
-    sk_X509_NAME_ENTRY_set_cmp_func(b1->entries, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
-    sk_X509_NAME_ENTRY_sort(b1->entries);
-
-    /* actually compare */
-    ret = xmlSecOpenSSLX509_NAME_cmp(a1, b1);
     
-    /* cleanup */
-    X509_NAME_free(a1);
-    X509_NAME_free(b1);
-    return(ret);
-}
-			
-static int 
-xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, const X509_NAME_ENTRY **b) {
-    xmlSecAssert2(a != NULL, -1);
-    xmlSecAssert2(b != NULL, 1);
-
-    return(OBJ_cmp((*a)->object, (*b)->object));
-}
-
-static void
-xmlSecOpenSSLX509CtxError(X509_STORE_CTX* xsc) {
-    X509* err_cert = NULL;
-    int err = 0, depth;
-    
-    xmlSecAssert(xsc != NULL); 
-
-    err_cert = X509_STORE_CTX_get_current_cert(xsc);
-    err	= X509_STORE_CTX_get_error(xsc);
-    depth = X509_STORE_CTX_get_error_depth(xsc);
-	
-    if((err != 0) && (err_cert != NULL)) {
-        char buf[256];
-        switch (err) {
-	    case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
-		X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-		        "error=%d (%s); issuer=\"%s\"", err,
-		        X509_verify_cert_error_string(err), buf);
-		break;
-	    case X509_V_ERR_CERT_NOT_YET_VALID:
-	    case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
-		break;
-	    case X509_V_ERR_CERT_HAS_EXPIRED:
-	    case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
-		break;
-	    default:			
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
-	}		    
+    ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	X509_free(cert);
+	return(-1);
     }
+
+    ret = xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(data, key, keyInfoCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509AdoptCert");
+	return(-1);
+    }
+    return(0);
 }
 
 #endif /* XMLSEC_NO_X509 */

@@ -9,11 +9,9 @@ logfile=/tmp/testDSig.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 
-valgrind_suppressions="$topfolder/openssl.supp"
-valgrind_options="--error-limit=no --leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppressions"
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind $valgrind_options"
-    export REPEAT=1
+    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
+    export REPEAT=3
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 
@@ -140,7 +138,7 @@ execDSigTest "merlin-xmldsig-twenty-three/signature" \
 
 execDSigTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--session-key-hmac --keys $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--session-hmac-192 --keys $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" 
     
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
@@ -185,6 +183,11 @@ execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
     "--trusted $topfolder/keys/cacert.pem --allowed x509 --verification-time 2002-10-02+10:00:00" 
+
+execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
+    "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
+    "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
+    "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd"
 
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     ""

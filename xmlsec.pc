@@ -1,11 +1,11 @@
-prefix=/usr/local
+prefix=/home/aleksey
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 Name: xmlsec
-Version: 0.0.10
+Version: 0.0.12
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= 2.4.24 libxslt >= 1.0.20 
-Cflags: -I${includedir}/xmlsec  -I/home/aleksey/include -I/home/aleksey/include -I/home/aleksey/include/libxml2 -I/home/aleksey/include/libxml2 -g -O2 -pedantic -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls  -DXMLSEC_CRYPTO_OPENSSL=1 -DXMLSEC_NO_PGP=1
-Libs: -L${libdir} -lxmlsec -lxmlsec-openssl  -L/home/aleksey/lib -lcrypto -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -L/home/aleksey/lib -lxml2 -lz -lm 
+Libs: -L${libdir} -lxmlsec -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -L/home/aleksey/lib -lxml2 -lz -lm  -L/home/aleksey/lib -lcrypto 
+Cflags: -g -O2 -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls  -I${includedir}/xmlsec -I/home/aleksey/include -I/home/aleksey/include/libxml2 -I/home/aleksey/include/libxml2  -I/home/aleksey/include

@@ -48,7 +48,7 @@ xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode,
     xmlChar* resultString = NULL;
     int ret;
     
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(valueNode != NULL, -1);
         
     ret = xmlSecDigestSign(transform, &buffer, &size);
@@ -96,7 +96,7 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
     xmlChar *nodeContent;
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(valueNode != NULL, -1);
     
     
@@ -148,13 +148,7 @@ void
 xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
     xmlSecDigestTransformPtr digest;    
 
-    xmlSecAssert(transform != NULL);    
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return;
-    }
+    xmlSecAssert(xmlSecTransformIsValid(transform));
     digest = (xmlSecDigestTransformPtr)transform;
 
     digest->pushModeEnabled = enabled;    
@@ -180,18 +174,14 @@ int
 xmlSecDigestUpdate(xmlSecTransformPtr transform,
 		   const unsigned char *buffer, size_t size) {
     xmlSecDigestTransformPtr digest;    
+    xmlSecDigestTransformId digestId;    
 
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     digest = (xmlSecDigestTransformPtr)transform;
+    digestId = (xmlSecDigestTransformId)transform->id;
 
-    if((digest->id->digestUpdate) != NULL) {
-	return((digest->id->digestUpdate)(digest, buffer, size));    
+    if((digestId->digestUpdate) != NULL) {
+	return((digestId->digestUpdate)(digest, buffer, size));    
     }
     return(0);
 }
@@ -212,18 +202,14 @@ int
 xmlSecDigestSign(xmlSecTransformPtr transform, 
 		 unsigned char **buffer, size_t *size) {
     xmlSecDigestTransformPtr digest;    
+    xmlSecDigestTransformId digestId;    
 
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     digest = (xmlSecDigestTransformPtr)transform;
+    digestId = (xmlSecDigestTransformId)transform->id;
     
-    if((digest->id->digestSign) != NULL) {
-	return((digest->id->digestSign)(digest, buffer, size)); 
+    if((digestId->digestSign) != NULL) {
+	return((digestId->digestSign)(digest, buffer, size)); 
     }
     return(0);    
 }
@@ -243,19 +229,14 @@ int
 xmlSecDigestVerify(xmlSecTransformPtr transform,
 		const unsigned char *buffer, size_t size) {
     xmlSecDigestTransformPtr digest;    
+    xmlSecDigestTransformId digestId;    
 
-    xmlSecAssert2(transform != NULL, -1);
-
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     digest = (xmlSecDigestTransformPtr)transform;
+    digestId = (xmlSecDigestTransformId)transform->id;
 
-    if((digest->id->digestVerify) != NULL) {
-        return((digest->id->digestVerify)(digest, buffer, size));
+    if((digestId->digestVerify) != NULL) {
+        return((digestId->digestVerify)(digest, buffer, size));
     }
     return(0);
 }
@@ -263,7 +244,7 @@ xmlSecDigestVerify(xmlSecTransformPtr transform,
 
 /*******************************************************************
  *
- * BinTransform methods to be used in the Id structure
+ * Transform methods to be used in the Id structure
  *
  ******************************************************************/
 /**
@@ -280,22 +261,16 @@ xmlSecDigestVerify(xmlSecTransformPtr transform,
  * if an error occurs.
  */
 int
-xmlSecDigestTransformRead(xmlSecBinTransformPtr transform, 
+xmlSecDigestTransformRead(xmlSecTransformPtr transform, 
 			unsigned char *buf, size_t size) {
     xmlSecDigestTransformPtr digest;    
     int s;
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(size > 0, -1);
     
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return(-1);
-    }
     digest = (xmlSecDigestTransformPtr)transform;
 
     if((digest->status != xmlSecTransformStatusNone) || (digest->prev == NULL)) {
@@ -304,11 +279,11 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
     }
     
     do {
-	s = ret = xmlSecBinTransformRead((xmlSecTransformPtr)digest->prev, buf, size);
+	s = ret = xmlSecTransformReadBin((xmlSecTransformPtr)digest->prev, buf, size);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBinTransformRead - %d", ret);
+			"xmlSecTransformRead - %d", ret);
 	    return(-1);
 	}
 	
@@ -355,18 +330,12 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
  * Returns 0 if success or a negative value otherwise.
  */
 int
-xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform, 
+xmlSecDigestTransformWrite(xmlSecTransformPtr transform, 
                         const unsigned char *buf, size_t size) {
     xmlSecDigestTransformPtr digest;    
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     digest = (xmlSecDigestTransformPtr)transform;
 
     if((digest->status != xmlSecTransformStatusNone) || (buf == NULL) || (size == 0)){
@@ -395,17 +364,11 @@ xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform,
  * Returns 0 if success or negative value otherwise.
  */
 int
-xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
+xmlSecDigestTransformFlush(xmlSecTransformPtr transform) {
     xmlSecDigestTransformPtr digest;    
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeDigest)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeDigest");
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     digest = (xmlSecDigestTransformPtr)transform;
 
     if(digest->pushModeEnabled) {
@@ -420,21 +383,21 @@ xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
 	    return(-1);
 	}	
 	if(digest->next != NULL) {
-	    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)digest->next, res, resSize);
+	    ret = xmlSecTransformWriteBin((xmlSecTransformPtr)digest->next, res, resSize);
 	    if(ret < 0){
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBinTransformWrite - %d", ret);
+			    "xmlSecTransformWrite - %d", ret);
 		return(-1);
 	    }	    	    
 	}	
     }
 
-    ret = xmlSecBinTransformFlush((xmlSecTransformPtr)digest->next);
+    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)digest->next);
     if(ret < 0){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformFlush - %d", ret);
+		    "xmlSecTransformFlush - %d", ret);
 	return(-1);
     }	    	    
     return(0);    

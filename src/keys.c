@@ -15,10 +15,9 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/list.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keysInternal.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
@@ -26,532 +25,22 @@
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>
 
-/*********************************************************************
- *
- * Keys store
- *
- *********************************************************************/
-xmlSecObjKlassPtr
-xmlSecKeysStoreKlassGet(void) {
-    static xmlSecObjKlassPtr klass = NULL;
-    static xmlSecKeysStoreKlass kklass;
-    
-    if(klass == NULL) {
-	static xmlSecObjKlassInfo kklassInfo = {
-	    /* klass data */
-	    sizeof(xmlSecKeysStoreKlass),
-	    "xmlSecKeysStore",
-	    NULL, 				/* xmlSecObjKlassInitMethod */
-	    NULL,				/* xmlSecObjKlassFinalizeMethod */
-	    
-    	    /* obj info */
-	    sizeof(xmlSecKeysStore),
-	    NULL,				/* xmlSecObjKlassConstructorMethod */
-	    NULL,				/* xmlSecObjKlassDuplicatorMethod */
-	    NULL,				/* xmlSecObjKlassDestructorMethod */
-	};
-	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
-				       &kklassInfo, xmlSecObjKlassId); 
-    } 
-    return(klass);   
-}
-
-xmlSecKeyPtr 	
-xmlSecKeysStoreFind(xmlSecKeysStorePtr store, xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(store);
-    xmlSecKeysStoreKlassPtr storeKlass = xmlSecKeysStoreKlassCast(klass);
-
-    xmlSecAssert2(store != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(storeKlass != NULL, NULL);
-
-    if(storeKlass->find != NULL) {
-	return(storeKlass->find(store, keysMngrCtx)); 
-    }
-    return(NULL);
-}
-
-
-/*********************************************************************
- *
- * Simple Keys store
- *
- *********************************************************************/
-static void		xmlSecSimpleKeysStoreKlassInit	(xmlSecObjKlassPtr klass);
-static int		xmlSecSimpleKeysStoreConstructor(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr obj);
-static int		xmlSecSimpleKeysStoreDuplicator	(xmlSecObjKlassPtr klass, 
-						         xmlSecObjPtr dst, 
-							 xmlSecObjPtr src);
-static void		xmlSecSimpleKeysStoreDestructor	(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr dst);
-static void		xmlSecSimpleKeysStoreDebugDump	(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static void		xmlSecSimpleKeysStoreDebugXmlDump(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static xmlSecKeyPtr 	xmlSecSimpleKeysStoreFindKey	(xmlSecKeysStorePtr keysStore, 
-							 xmlSecKeysMngrCtxPtr keysMngrCtx);
-
-xmlSecObjKlassPtr
-xmlSecSimpleKeysStoreKlassGet(void) {
-    static xmlSecObjKlassPtr klass = NULL;
-    static xmlSecSimpleKeysStoreKlass kklass;
-    
-    if(klass == NULL) {
-	static xmlSecObjKlassInfo kklassInfo = {
-	    /* klass data */
-	    sizeof(xmlSecSimpleKeysStoreKlass),
-	    "xmlSecSimpleKeysStore",
-	    xmlSecSimpleKeysStoreKlassInit, 	/* xmlSecObjKlassInitMethod */
-	    NULL,				/* xmlSecObjKlassFinalizeMethod */
-	    
-    	    /* obj info */
-	    sizeof(xmlSecSimpleKeysStore),
-	    xmlSecSimpleKeysStoreConstructor,	/* xmlSecObjKlassConstructorMethod */
-	    xmlSecSimpleKeysStoreDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
-	    xmlSecSimpleKeysStoreDestructor,	/* xmlSecObjKlassDestructorMethod */
-	};
-	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
-				       &kklassInfo, xmlSecKeysStoreKlassId); 
-    } 
-    return(klass);   
-}
 
 /**
- * xmlSecSimpleKeysStoreAddKey:
- * @store: the pointer to the simple keys manager.
- * @key: the pointer to the #xmlSecValue structure.
+ * xmlSecKeyCreate:
+ * @origin: the key origins.
  *
- * Adds new key to the key manager
+ * Creates new key of the specified type @id.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns the pointer to newly allocated #xmlSecKey structure
+ * or NULL if an error occurs.
  */
-int
-xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStorePtr store, xmlSecKeyPtr key) {
-    int ret;
-    
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(store->keys != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
-    
-    ret = xmlSecListFind(store->keys, key);
-    if(ret >= 0) {
-	/* todo: change error code */
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecListFind - key already present");
-	return(-1);		    
-    }
-    
-    ret = xmlSecListAppend(store->keys, key);
-    if(ret < 0) {
-    	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecListAppend - %d", ret);
-	return(-1);		    
-    }
-    return(0);
-}
-
-/**
- * xmlSecSimpleKeysStoreLoad:
- * @mngr: the pointer to the simple keys manager.
- * @uri: the keys file uri.
- * @strict: the flag which determines whether we stop after first error or not.
- *
- * Reads the XML keys files into simple keys manager.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecSimpleKeysStoreLoad(xmlSecSimpleKeysStorePtr store, const char *uri, int strict) {
-    xmlSecKeysMngrPtr keysMngr = NULL;
-    xmlSecKeysMngrCtxPtr keysMngrCtx = NULL;
-    xmlDocPtr doc = NULL;
-    xmlNodePtr root;
-    xmlNodePtr cur;
+xmlSecKeyPtr	
+xmlSecKeyCreate(void)  {
     xmlSecKeyPtr key;
-    int res = -1;
-    int ret;
-
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(uri != NULL, -1);
     
-    doc = xmlParseFile(uri);
-    if(doc == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlParseFile");
-	goto done;
-    }
-    
-    root = xmlDocGetRootElement(doc);
-    if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "Keys");
-	goto done;
-    }
-
-    keysMngr = (xmlSecKeysMngrPtr)xmlSecObjNew(xmlSecKeysMngrKlassId);
-    if(keysMngr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecObjNew(xmlSecKeysMngrKlassId)");
-	goto done;
-    }    
-    
-    keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);
-    if(keysMngrCtx == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrCtxCreate");
-	goto done;
-    }    
-    keysMngrCtx->allowedOrigins = xmlSecKeyOriginAll;
-
-    cur = xmlSecGetNextElementNode(root->children);
-    while(xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecNsDSig)) {  
-	key = xmlSecKeyInfoNodeRead(cur, keysMngrCtx);
-	if(key == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyInfoNodeRead");
-	    if(strict) {
-		goto done;
-	    }
-	} else {
-	    ret = xmlSecSimpleKeysStoreAddKey(store, key);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecSimpleKeysStoreAddKey - %d", ret);
-		xmlSecKeyDestroy(key);
-		goto done;
-	    }
-	}
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-    
-    if(cur != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    (cur->name != NULL) ? (char*) cur->name : "NULL");
-    	goto done;
-    }
-    res = 0;
-    
-done:
-    if(keysMngrCtx != NULL) {    
-        xmlSecObjDelete(xmlSecObjCast(keysMngrCtx));
-    }
-    if(keysMngr != NULL) {    
-        xmlSecObjDelete(xmlSecObjCast(keysMngr));
-    }
-    if(doc != NULL) {
-	xmlFreeDoc(doc);
-    }
-    return(res);
-}
-
-/**
- * xmlSecSimpleKeysStoreSave:
- * @store: the pointer to the simple keys manager.
- * @filename: the destination filename.
- * @type: the keys type (private/public).
- *
- * Writes all the keys from the simple keys manager to 
- * an XML file @filename.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecSimpleKeysStoreSave(xmlSecSimpleKeysStorePtr store, const char *filename) {
-    xmlSecKeysMngrPtr keysMngr = NULL;
-    xmlSecKeysMngrCtxPtr keysMngrCtx = NULL;
-    xmlDocPtr doc = NULL;
-    xmlSecKeyPtr key;
-    xmlNodePtr root;
-    xmlNodePtr cur;
-    int res = -1;
-    int ret;
-    size_t i;
-
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(store->keys != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-
-    /* create doc */
-    doc = xmlNewDoc(BAD_CAST "1.0");
-    if(doc == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewDoc");
-	goto done;
-    }
-    
-    /* create root node "Keys" */
-    root = xmlNewDocNode(doc, NULL, BAD_CAST "Keys", NULL); 
-    if(root == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewDocNode");
-	goto done;
-    }
-    xmlDocSetRootElement(doc, root);
-    if(xmlNewNs(root, xmlSecNs, NULL) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewNs");
-	goto done;
-    }
-
-    keysMngr = (xmlSecKeysMngrPtr)xmlSecObjNew(xmlSecKeysMngrKlassId);
-    if(keysMngr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecObjNew(xmlSecKeysMngrKlassId)");
-	goto done;
-    }    
-
-    keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);
-    if(keysMngrCtx == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeysMngrCtxCreate");
-	goto done;
-    }    
-    keysMngrCtx->allowedOrigins = xmlSecKeyOriginAll;
-
-    for(i = 0; i < xmlSecListGetSize(store->keys); ++i) {
-	key = xmlSecListGetData(store->keys, i);
-	if(key == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecListGetData(%d)", i);
-	    goto done;
-	}
-
-	cur = xmlSecAddChild(root, BAD_CAST "KeyInfo", xmlSecNsDSig);
-	if(cur == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(\"KeyInfo\")");
-	    goto done;
-	}
-	
-	if(xmlSecAddChild(cur, BAD_CAST "KeyName", xmlSecNsDSig) == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(\"KeyName\")");
-	    goto done;
-	}
-
-	if(xmlSecAddChild(cur, BAD_CAST "KeyValue", xmlSecNsDSig) == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(\"KeyValue\")");
-	    goto done;
-	}
-
-#ifndef XMLSEC_NO_X509
-	if((key->x509Data != NULL)){
-	    if(xmlSecAddChild(cur, BAD_CAST "X509Data", xmlSecNsDSig) == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecAddChild(\"X509Data\")");
-		goto done;
-	    }
-	}
-#endif /* XMLSEC_NO_X509 */	     
-
-	ret = xmlSecKeyInfoNodeWrite(cur, keysMngrCtx, key, xmlSecKeyValueTypeAny);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecKeyInfoNodeWrite - %d", ret);
-	    goto done;
-	}		
-    }    
-
-    /* now write result */
-    ret = xmlSaveFormatFile(filename, doc, 1);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlSaveFormatFile(\"%s\") - %d", filename, ret);
-	goto done;
-    }	   
-    res = 0;
-    
-done:    
-    if(keysMngrCtx != NULL) {
-        xmlSecObjDelete(xmlSecObjCast(keysMngrCtx));
-    }
-    if(keysMngr != NULL) {    
-        xmlSecObjDelete(xmlSecObjCast(keysMngr));
-    }
-    if(doc != NULL) {
-	xmlFreeDoc(doc);
-    }
-    return(res);
-}
-
-static void
-xmlSecSimpleKeysStoreKlassInit(xmlSecObjKlassPtr klass) {
-    xmlSecKeysStoreKlassPtr keysMngrKlass = (xmlSecKeysStoreKlassPtr)klass;
-
-    xmlSecAssert(keysMngrKlass != NULL);
-
-    klass->debugDump 		= xmlSecSimpleKeysStoreDebugDump;
-    klass->debugXmlDump 	= xmlSecSimpleKeysStoreDebugXmlDump;
-    keysMngrKlass->find		= xmlSecSimpleKeysStoreFindKey;
-}
-
-static int
-xmlSecSimpleKeysStoreConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
-			xmlSecObjPtr obj) {
-    xmlSecSimpleKeysStorePtr store = xmlSecSimpleKeysStoreCast(obj);
-
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(store->keys == NULL, -1);
-    
-    store->keys = xmlSecListNew();
-    if(store		->keys == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecListNew()");
-	return(-1);		    
-    }
-
-    return(0);
-}
-
-static int
-xmlSecSimpleKeysStoreDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
-			xmlSecObjPtr dst, xmlSecObjPtr src) {
-    xmlSecSimpleKeysStorePtr keysMngrDst = xmlSecSimpleKeysStoreCast(dst);
-    xmlSecSimpleKeysStorePtr keysMngrSrc = xmlSecSimpleKeysStoreCast(src);
-    xmlSecObjPtr tmp;
-    
-    xmlSecAssert2(keysMngrDst != NULL, -1);
-    xmlSecAssert2(keysMngrSrc != NULL, -1);
-    xmlSecAssert2(keysMngrSrc->keys != NULL, -1);
-    xmlSecAssert2(keysMngrDst->keys == NULL, -1);
-    
-    tmp = xmlSecObjDuplicate(xmlSecObjCast(keysMngrSrc->keys));
-    keysMngrDst->keys = xmlSecListCast(tmp);
-    if(keysMngrDst->keys == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecObjDuplicate(xmlSecObjCast(keysMngrSrc->keys))");
-	return(-1);		    
-    }
-    return(0);
-}
-
-static void
-xmlSecSimpleKeysStoreDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
-				    xmlSecObjPtr obj) {
-    xmlSecSimpleKeysStorePtr store = xmlSecSimpleKeysStoreCast(obj);
-
-    xmlSecAssert(store != NULL);
-    
-    if(store->keys != NULL) {
-	xmlSecPtr tmp;
-	size_t i;
-	
-	while((i = xmlSecListGetSize(store->keys)) > 0) {
-	    tmp = xmlSecListGetData(store->keys, i - 1);
-	    xmlSecListRemove(store->keys, i - 1);
-	    xmlSecAssert(tmp != NULL);
-		
-	    xmlSecKeyDestroy((xmlSecKeyPtr)tmp);
-	}
-        xmlSecObjDelete(xmlSecObjCast(store->keys));
-    }
-}
-    
-static void
-xmlSecSimpleKeysStoreDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecSimpleKeysStorePtr store = xmlSecSimpleKeysStoreCast(obj);
-
-    xmlSecAssert(output != NULL);
-    xmlSecAssert(store != NULL);
-    xmlSecAssert(store->keys != NULL);
-
-    xmlSecObjDebugIndent(output, level);
-    fprintf(output, "simple keys manager:\n");
-    xmlSecObjDebugDump(xmlSecObjCast(store->keys), output, level + 1);
-}
-
-static void
-xmlSecSimpleKeysStoreDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecSimpleKeysStorePtr store = xmlSecSimpleKeysStoreCast(obj);
-	    
-    xmlSecAssert(output != NULL);
-    xmlSecAssert(store != NULL);
-    xmlSecAssert(store->keys != NULL);
-
-    xmlSecObjDebugIndent(output, level);
-    fprintf(output, "<SimpleKeysStore>\n");
-    xmlSecObjDebugXmlDump(xmlSecObjCast(store->keys), output, level + 1);
-    xmlSecObjDebugIndent(output, level);
-    fprintf(output, "</SimpleKeysStore>\n");
-}
-
-static xmlSecKeyPtr 		
-xmlSecSimpleKeysStoreFindKey(xmlSecKeysStorePtr keysStore, xmlSecKeysMngrCtxPtr keysMngrCtx) {
-    xmlSecSimpleKeysStorePtr store = xmlSecSimpleKeysStoreCast(keysStore);
-    xmlSecKeyPtr tmp;
-    xmlSecKeyPtr key = NULL;
-    size_t i;
-
-    xmlSecAssert2(keysStore != NULL, NULL);
-    xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(store != NULL, NULL);
-    xmlSecAssert2(store->keys != NULL, NULL);
-
-    for(i = 0; i < xmlSecListGetSize(store->keys); ++i) {
-	tmp = xmlSecListGetData(store->keys, i);
-	if(tmp == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecListGetData(%d)", i);
-	    return(NULL);    
-	}
-
-	if(xmlSecKeyCheck(tmp, keysMngrCtx->keyName, 
-			       keysMngrCtx->keyId, 
-			       keysMngrCtx->keyType) == 1) {
-	    key = xmlSecKeyDuplicate(tmp);
-	    if(key == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecKeyDuplicate");
-		return(NULL);    
-	    }
-	    return(key);
-	}
-    }
-    return(NULL);
-}
-
-/***************************************************************************
- *
- * xmlSecKey
- *
- **************************************************************************/
-xmlSecKeyPtr
-xmlSecKeyCreate(xmlSecKeyValuePtr value, const xmlChar* name)  {
-    xmlSecKeyPtr key;
-
-    /*
-     * Allocate a new xmlSecKey and fill the fields.
-     */
-    key = (xmlSecKeyPtr) xmlMalloc(sizeof(xmlSecKey));
+    /* Allocate a new xmlSecKey and fill the fields. */
+    key = (xmlSecKeyPtr)xmlMalloc(sizeof(xmlSecKey));
     if(key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -559,98 +48,122 @@ xmlSecKeyCreate(xmlSecKeyValuePtr value, const xmlChar* name)  {
 		    sizeof(xmlSecKey));
 	return(NULL);
     }
-    memset(key, 0, sizeof(xmlSecKey));
-
-    /* dup value */    
-    if(value != NULL) {
-	key->value = xmlSecKeyValueDuplicate(value);
-	if(key->value == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyValueDuplicate");
-	    xmlSecKeyDestroy(key);
-	    return(NULL);	
-	}
-    }
-    /* dup name */    
-    if(name != NULL) {
-	key->name = xmlStrdup(name);
-	if(key->name == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "xmlStrdup(\"%s\")", name);
-	    xmlSecKeyDestroy(key);
-	    return(NULL);	
-	}
-    }
-    
-    return(key);    
+    memset(key, 0, sizeof(xmlSecKey));    
+    return(key);
 }
 
 void
-xmlSecKeyDestroy(xmlSecKeyPtr key) {
-    xmlSecAssert(key != NULL);
-
+xmlSecKeyEmpty(xmlSecKeyPtr key) {
+    xmlSecAssert(key != NULL);    
+    
     if(key->value != NULL) {
-	xmlSecKeyValueDestroy(key->value);
+	xmlSecKeyDataDestroy(key->value);
     }
     if(key->name != NULL) {
 	xmlFree(key->name);
     }
-
-    if(key->x509Data != NULL) {
-	xmlSecObjDelete(xmlSecObjCast(key->x509Data));
+    if(key->dataList != NULL) {
+	xmlSecPtrListDestroy(key->dataList);
     }
-    if(key->pgpData != NULL) {
-	xmlSecObjDelete(xmlSecObjCast(key->pgpData));
-    }
-
+    
     memset(key, 0, sizeof(xmlSecKey));
-    xmlFree(key);    
 }
 
-xmlSecKeyPtr
+/**
+ * xmlSecKeyDestroy:
+ * @key: the pointer to the #xmlSecKey structure.
+ *
+ * Destroys the key and frees all allocated memory. 
+ */
+void
+xmlSecKeyDestroy(xmlSecKeyPtr key) {
+    xmlSecAssert(key != NULL);    
+
+    xmlSecKeyEmpty(key);
+    xmlFree(key);
+}
+
+int 
+xmlSecKeyCopy(xmlSecKeyPtr keyDst, xmlSecKeyPtr keySrc) {
+    xmlSecAssert2(keyDst != NULL, -1);    
+    xmlSecAssert2(keySrc != NULL, -1);    
+    
+    /* empty destination */
+    xmlSecKeyEmpty(keyDst);
+
+    /* copy everything */    
+    if(keySrc->value != NULL) {
+	keyDst->value = xmlSecKeyDataDuplicate(keySrc->value);
+	if(keyDst->value == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyDataDuplicate(value)");
+	    return(-1);	
+        }
+    }
+    
+    if(keySrc->name != NULL) {
+	keyDst->name = xmlStrdup(keySrc->name);
+	if(keyDst->name == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d", xmlStrlen(keySrc->name));
+	    return(-1);	
+        }
+    }
+
+    if(keySrc->dataList != NULL) {
+	keyDst->dataList = xmlSecPtrListDuplicate(keySrc->dataList);
+	if(keyDst->dataList == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecPtrListDuplicate");
+	    return(-1);
+        }
+    }
+
+    return(0);
+}
+
+/**
+ * xmlSecKeyDuplicate:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @origin: the key origins.
+ *
+ * Creates a duplicate of the given @key.
+ *
+ * Returns the pointer to newly allocated #xmlSecKey structure
+ * or NULL if an error occurs.
+ */
+xmlSecKeyPtr	
 xmlSecKeyDuplicate(xmlSecKeyPtr key) {
-    xmlSecKeyPtr newKey = NULL;
+    xmlSecKeyPtr newKey;
+    int ret;
     
     xmlSecAssert2(key != NULL, NULL);
     
-    newKey = xmlSecKeyCreate(key->value, key->name);
+    newKey = xmlSecKeyCreate();
     if(newKey == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeyCreate");
 	return(NULL);	
     }
-
-    /* dup x509 */    
-    if(key->x509Data != NULL) {
-	newKey->x509Data = (xmlSecX509DataPtr)xmlSecObjDuplicate(xmlSecObjCast(key->x509Data));
-	if(newKey->x509Data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
+    
+    ret = xmlSecKeyCopy(newKey, key);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecObjDuplicate(x509Data)");
-	    xmlSecKeyDestroy(newKey);
-	    return(NULL);	
-	}
+		    "xmlSecKeyCopy");
+	xmlSecKeyDestroy(newKey);
+	return(NULL);	
     }
-
-    /* dup pgp */    
-    if(key->pgpData != NULL) {
-	newKey->pgpData = (xmlSecPgpDataPtr)xmlSecObjDuplicate(xmlSecObjCast(key->pgpData));
-	if(newKey->pgpData == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecObjDuplicate(pgpData)");
-	    xmlSecKeyDestroy(newKey);
-	    return(NULL);	
-	}
-    }
+    
     return(newKey);
 }
 
 /**
- * xmlSecKeyCheck:
+ * xmlSecKeyVerify:
  * @key: the pointer to the #xmlSecKey structure.
  * @name: the pointer to key name (may be NULL).
  * @id: the key id (may be "any").
@@ -663,33 +176,218 @@ xmlSecKeyDuplicate(xmlSecKeyPtr key) {
  * Returns 1 if the key satisfies the given criteria or 0 otherwise.
  */
 int
-xmlSecKeyCheck(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyValueId id, 
-		xmlSecKeyValueType type) {
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
+xmlSecKeyVerify(xmlSecKeyPtr key, const xmlChar *name, xmlSecKeyDataId id, xmlSecKeyDataType keyType) {
+    xmlSecAssert2(xmlSecKeyIsValid(key), -1);
 
-    /* todo: name is not an empty string */
-    if((name != NULL) && (!xmlStrEqual(key->name, name))) {
+    if((id != xmlSecKeyDataIdUnknown) && (id != key->value->id)) {
+	return(0);
+    }
+    if((xmlSecKeyGetType(key) & keyType) == 0) {
+	 return(0);
+    }
+    if((name != NULL) && (!xmlStrEqual(xmlSecKeyGetName(key), name))) {
+	return(0);
+    }
+    return(1);
+}
+
+xmlSecKeyDataType 
+xmlSecKeyGetType(xmlSecKeyPtr key) {
+    xmlSecKeyDataPtr data;
+    
+    xmlSecAssert2(key != NULL, xmlSecKeyDataTypeUnknown);
+
+    data = xmlSecKeyGetValue(key);
+    if(data == NULL) {
+	return(xmlSecKeyDataTypeUnknown);
+    }
+    return(xmlSecKeyDataGetType(data));
+}
+
+const xmlChar*	
+xmlSecKeyGetName(xmlSecKeyPtr key) {
+    xmlSecAssert2(key != NULL, NULL);
+
+    return(key->name);
+}
+
+int 
+xmlSecKeySetName(xmlSecKeyPtr key, const xmlChar* name) {
+    xmlSecAssert2(key != NULL, -1);
+
+    if(key->name != NULL) {
+	xmlFree(key->name);
+	key->name = NULL;
+    }
+    
+    if(name != NULL) {
+	key->name = xmlStrdup(name);
+	if(key->name == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d", xmlStrlen(name));
+	    return(-1);	    
+	}	
+    }
+    
+    return(0);
+}
+
+xmlSecKeyDataPtr 
+xmlSecKeyGetValue(xmlSecKeyPtr key) {
+    xmlSecAssert2(key != NULL, NULL);
+
+    return(key->value);
+}
+
+int 
+xmlSecKeySetValue(xmlSecKeyPtr key, xmlSecKeyDataPtr value) {
+    xmlSecAssert2(key != NULL, -1);
+
+    if(key->value != NULL) {
+	xmlSecKeyDataDestroy(key->value);
+	key->value = NULL;
+    }
+    key->value = value;
+    
+    return(0);
+}
+
+xmlSecKeyDataPtr 
+xmlSecKeyGetData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
+    
+    xmlSecAssert2(key != NULL, NULL);
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+
+    /* special cases */
+    if(dataId == xmlSecKeyDataValueId) {
+	return(key->value);
+    } else if(key->dataList != NULL) {
+	xmlSecKeyDataPtr tmp;
+	size_t pos, size;
+	
+	size = xmlSecPtrListGetSize(key->dataList);
+	for(pos = 0; pos < size; ++pos) {
+	    tmp = (xmlSecKeyDataPtr)xmlSecPtrListGetItem(key->dataList, pos);
+	    if((tmp != NULL) && (tmp->id == dataId)) {	
+		return(tmp);
+	    }
+	}
+    }
+    return(NULL);
+}
+
+xmlSecKeyDataPtr 
+xmlSecKeyEnsureData(xmlSecKeyPtr key, xmlSecKeyDataId dataId) {
+    xmlSecKeyDataPtr data;
+    int ret;
+        
+    xmlSecAssert2(key != NULL, NULL);
+    xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
+
+    data = xmlSecKeyGetData(key, dataId);
+    if(data != NULL) {
+	return(data);
+    }
+    
+    data = xmlSecKeyDataCreate(dataId);
+    if(data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataCreate(%s)", 
+		    dataId->name);
+	return(NULL);
+    }
+	
+    ret = xmlSecKeyAdoptData(key, data);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyAdoptData(%s)",
+		    dataId->name);
+	xmlSecKeyDataDestroy(data);
+	return(NULL);
+    }
+    
+    return(data);
+}
+
+int 
+xmlSecKeyAdoptData(xmlSecKeyPtr key, xmlSecKeyDataPtr data) {
+    xmlSecKeyDataPtr tmp;
+    size_t pos, size;
+    
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
+
+    /* special cases */
+    if(data->id == xmlSecKeyDataValueId) {
+	if(key->value != NULL) {
+	    xmlSecKeyDataDestroy(key->value);
+	}
+	key->value = data;
 	return(0);
     }
     
-    return(xmlSecKeyValueCheck(key->value, id, type));
+    if(key->dataList == NULL) {
+	key->dataList = xmlSecPtrListCreate(xmlSecKeyDataPtrListId);
+	if(key->dataList == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecPtrListCreate(xmlSecKeyDataPtrListId)");
+	    return(-1);
+	}
+    }
+
+	
+    size = xmlSecPtrListGetSize(key->dataList);
+    for(pos = 0; pos < size; ++pos) {
+	tmp = (xmlSecKeyDataPtr)xmlSecPtrListGetItem(key->dataList, pos);
+	if((tmp != NULL) && (tmp->id == data->id)) {	
+	    return(xmlSecPtrListSet(key->dataList, data, pos));
+	}
+    }
+    
+    return(xmlSecPtrListAdd(key->dataList, data));
 }
 
+/** 
+ * xmlSecKeyDebugDump:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @output: the destination #FILE pointer.
+ *
+ * Prints the information about the @key to the @output.
+ */
 void
 xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
-    int level = 0;
-    
     xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
-
+    
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    " ");
+	return;
+    }
     fprintf(output, "== KEY\n");
-    fprintf(output, "=== key name: %s\n", 
-	    (key->name != NULL) ? 
-	    (char*)(key->name) : "NULL"); 
-    if(key->value != NULL) {
-	xmlSecKeyValueDebugDump(key->value, output);
-    }	    
+    fprintf(output, "=== method: %s\n", 
+	    (key->value->id->dataNodeName != NULL) ? 
+	    (char*)(key->value->id->dataNodeName) : "NULL"); 
+
+    fprintf(output, "=== key type: ");
+    if((xmlSecKeyGetType(key) & xmlSecKeyDataTypeSymmetric) != 0) {
+	fprintf(output, "Symmetric\n");
+    } else if((xmlSecKeyGetType(key) & xmlSecKeyDataTypePrivate) != 0) {
+	fprintf(output, "Private\n");
+    } else if((xmlSecKeyGetType(key) & xmlSecKeyDataTypePublic) != 0) {
+	fprintf(output, "Public\n");
+    } else {
+	fprintf(output, "Unknown\n");
+    } 
+
+    if(key->name != NULL) {
+	fprintf(output, "=== keys name: %s\n", key->name);
+    }
     fprintf(output, "=== key origin:");
     if(key->origin & xmlSecKeyOriginKeyManager) {
 	fprintf(output, " KeyManager");
@@ -716,30 +414,54 @@ xmlSecKeyDebugDump(xmlSecKeyPtr key, FILE *output) {
 	fprintf(output, " PGP");
     }
     fprintf(output, "\n");
-
-    if(key->x509Data != NULL) {
-	xmlSecObjDebugDump(xmlSecObjCast(key->x509Data), output, level + 1);
+    
+    if(key->value != NULL) {
+	xmlSecKeyDataDebugDump(key->value, output);
     }
-    if(key->pgpData != NULL) {
-	xmlSecObjDebugDump(xmlSecObjCast(key->pgpData), output, level + 1);
-    }	
+    if(key->dataList != NULL) {
+	xmlSecPtrListDebugDump(key->dataList, output);
+    }
 }
 
+/** 
+ * xmlSecKeyDebugXmlDump:
+ * @key: the pointer to the #xmlSecKey structure.
+ * @output: the destination #FILE pointer.
+ *
+ * Prints the information about the @key to the @output in XML format.
+ */
 void
 xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
-    int level = 0;
-    
     xmlSecAssert(key != NULL);
     xmlSecAssert(output != NULL);
     
-    fprintf(output, "<KeyInfo>\n");
-    if(key->name != NULL) {
-	fprintf(output, "<KeyName>%s</KeyName>\n", 
-	        key->name);
+    if(!xmlSecKeyIsValid(key)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    " ");
+	return;
     }
-    if(key->value != NULL) {
-	xmlSecKeyValueDebugXmlDump(key->value, output);
-    }	    
+    fprintf(output, "<KeyInfo>\n");
+    if(key->value->id->dataNodeName != NULL) {
+        fprintf(output, "<KeyMethod>%s</KeyMethod>\n", 
+		key->value->id->dataNodeName); 
+    }
+
+    fprintf(output, "<KeyType>");
+    if((xmlSecKeyGetType(key) & xmlSecKeyDataTypeSymmetric) != 0) {
+	fprintf(output, "Symmetric\n");
+    } else if((xmlSecKeyGetType(key) & xmlSecKeyDataTypePrivate) != 0) {
+	fprintf(output, "Private\n");
+    } else if((xmlSecKeyGetType(key) & xmlSecKeyDataTypePublic) != 0) {
+	fprintf(output, "Public\n");
+    } else {
+	fprintf(output, "Unknown\n");
+    } 
+    fprintf(output, "</KeyType>\n");
+
+    if(key->name != NULL) {
+	fprintf(output, "<KeyName>%s</KeyName>\n", key->name);
+    }
     fprintf(output, "<KeyOrigins>\n");
     if(key->origin & xmlSecKeyOriginKeyManager) {
 	fprintf(output, "<KeyOrigin>KeyManager</KeyOrigin>\n");
@@ -766,16 +488,156 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
 	fprintf(output, "<KeyOrigin>PGP</KeyOrigin>\n");
     }
     fprintf(output, "</KeyOrigins>\n");
-    
-    if(key->x509Data != NULL) {
-	xmlSecObjDebugXmlDump(xmlSecObjCast(key->x509Data), output, level + 1);
+
+    if(key->value != NULL) {
+	xmlSecKeyDataDebugXmlDump(key->value, output);
     }
-    if(key->pgpData != NULL) {
-	xmlSecObjDebugXmlDump(xmlSecObjCast(key->pgpData), output, level + 1);
-    }	
+    if(key->dataList != NULL) {
+	xmlSecPtrListDebugXmlDump(key->dataList, output);
+    }
+
     fprintf(output, "</KeyInfo>\n"); 
 }
 
+xmlSecKeyPtr
+xmlSecKeyGenerate(const xmlChar* type, const xmlChar* name, size_t sizeBits) {
+    xmlSecKeyPtr key;
+    xmlSecKeyDataPtr data;
+    xmlSecKeyDataId dataId;
+    int ret;
+    
+    xmlSecAssert2(type != NULL, NULL);
+    
+    dataId = xmlSecKeyDataIdsFindByName(type, xmlSecKeyDataUsageAny);
+    if(dataId == xmlSecKeyDataIdUnknown) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataIdsFindByName(%s)", type);
+	return(NULL);    
+    }
+    
+    data = xmlSecKeyDataCreate(dataId);
+    if(data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataCreate");
+	return(NULL);    
+    }
 
+    ret = xmlSecKeyDataGenerate(data, sizeBits);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyDataGenerate(%d)", sizeBits);
+	xmlSecKeyDataDestroy(data);
+	return(NULL);    
+    }
+        
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyCreate");
+	xmlSecKeyDataDestroy(data);
+	return(NULL);    
+    }
+    
+    ret = xmlSecKeySetValue(key, data);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeySetValue");
+	xmlSecKeyDataDestroy(data);
+	xmlSecKeyDestroy(key);
+	return(NULL);    
+    }
+    
+    ret = xmlSecKeySetName(key, name);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeySetName");
+	xmlSecKeyDestroy(key);
+	return(NULL);    
+    }
+    
+    return(key);
+}
 
+/**
+ * xmlSecKeysMngrGetKey:
+ * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @keyInfoCtx: 
+ * 
+ * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
+ *
+ * Returns the pointer to key or NULL if the key is not found or 
+ * an error occurs.
+ */
+xmlSecKeyPtr 		
+xmlSecKeysMngrGetKey(xmlNodePtr keyInfoNode, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecKeyPtr key = NULL;
+    int ret;
+    
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeyCreate");
+	return(NULL);
+    }
+    
+    if(keyInfoNode != NULL) {
+	ret = xmlSecKeyInfoNodeRead(keyInfoNode, key, keyInfoCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeyInfoNodeRead");
+	    xmlSecKeyDestroy(key);
+	    return(NULL);
+	}
+	if(xmlSecKeyGetValue(key) != NULL) {
+	    return(key);
+	}
+    }	
+    
+    if((keyInfoCtx->keysMngr != NULL) && (keyInfoCtx->keysMngr->allowedOrigins & xmlSecKeyOriginKeyManager)) {
+	ret = xmlSecKeysMngrFindKey(keyInfoCtx->keysMngr, key, NULL, keyInfoCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecKeysMngrFindKey");
+	    xmlSecKeyDestroy(key);
+	    return(NULL);
+	}
+	if(xmlSecKeyGetValue(key) != NULL) {
+	    return(key);
+	}
+    }
+    
+    xmlSecKeyDestroy(key);
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		XMLSEC_ERRORS_R_KEY_NOT_FOUND,
+		" ");    
+    return(NULL);
+}
+
+/***********************************************************************
+ *
+ * Keys list
+ *
+ **********************************************************************/
+static const struct _xmlSecPtrListKlass xmlSecKeyPtrListKlass = {
+    (xmlSecPtrDuplicateItemMethod)xmlSecKeyDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    (xmlSecPtrDestroyItemMethod)xmlSecKeyDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDebugXmlDump,/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId 
+xmlSecKeyPtrListGetKlass(void) {
+    return(&xmlSecKeyPtrListKlass);
+}
 

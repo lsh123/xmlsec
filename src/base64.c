@@ -1,4 +1,4 @@
-/**		
+/**
  * XMLSec library
  *
  * Base64 encode/decode transform
@@ -16,7 +16,6 @@
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
@@ -45,6 +44,7 @@ static const unsigned char base64[] =
 #define	XMLSEC_BASE64_INPUT_BUFFER_SIZE		64
 #define	XMLSEC_BASE64_OUTPUT_BUFFER_SIZE	5*XMLSEC_BASE64_INPUT_BUFFER_SIZE
 
+#define xmlSecBase64Min(a, b)		(((a) < (b)) ? (a) : (b))
 #define xmlSecBase64Encode1(a) 		(base64[((int)(a) >> 2) & 0x3F])
 #define xmlSecBase64Encode2(a, b) 	(base64[(((int)(a) << 4) & 0x30) + ((((int)(b)) >> 4) & 0x0F)])
 #define xmlSecBase64Encode3(b, c) 	(base64[(((int)(b) << 2) & 0x3c) + ((((int)(c)) >> 6) & 0x03)])
@@ -58,7 +58,8 @@ static const unsigned char base64[] =
 					 (((ch) >= 'a') && ((ch) <= 'z')) || \
 					 (((ch) >= '0') && ((ch) <= '9')) || \
 					  ((ch) == '+') || ((ch) == '/')) 
-
+#define xmlSecIsBase64Space(ch)		(((ch) == ' ') || ((ch) == '\t') || \
+					 ((ch) == '\x0d') || ((ch) == '\x0a'))
 /**
  *
  * Base64 Context
@@ -71,6 +72,7 @@ struct _xmlSecBase64Ctx {
     unsigned char	in[4];
     unsigned char	out[16];
     size_t 		inPos;
+    size_t 		outPos;
     
     size_t		linePos;
     size_t		columns;    
@@ -80,13 +82,17 @@ struct _xmlSecBase64Ctx {
 
 static int		xmlSecBase64CtxEncode		(xmlSecBase64CtxPtr ctx);
 static int		xmlSecBase64CtxDecode		(xmlSecBase64CtxPtr ctx);
-
-
+static int		xmlSecBase64CtxPush		(xmlSecBase64CtxPtr ctx,
+							 const unsigned char* in,
+							 size_t inSize);
+static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
+							 unsigned char* out,
+							 size_t outSize,
+							 int final);
 
 
 static xmlSecTransformPtr xmlSecBase64Create		(xmlSecTransformId id);
 static void		xmlSecBase64Destroy		(xmlSecTransformPtr transform);
-static int  		xmlSecBase64Init		(xmlSecCipherTransformPtr transform);
 static int  		xmlSecBase64Update		(xmlSecCipherTransformPtr transform, 
 							 const unsigned char *buf, 
 							 size_t size);
@@ -94,6 +100,7 @@ static int  		xmlSecBase64Final		(xmlSecCipherTransformPtr transform);
 							 
 static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     /* same as xmlSecTransformId */    
+    BAD_CAST "base64-encode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
@@ -101,20 +108,20 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecBase64EncodeId = {
     xmlSecBase64Create, 		/* xmlSecTransformCreateMethod create; */
     xmlSecBase64Destroy,		/* xmlSecTransformDestroyMethod destroy; */
     NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
-    xmlSecKeyValueIdUnknown,
-    xmlSecKeyValueTypeAny,			/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypeAny,			/* xmlSecKeyValueType decryption; */
-    xmlSecBinTransformSubTypeCipher,
-    NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
-    xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
+    NULL,
+    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
 
+    /* xml/c14n methods */
+    NULL,
+    NULL,
+    
     /* xmlSecCipherTransform data/methods */
-    NULL,				/* xmlSecCipherGenerateIvMethod cipherUpdate; */
-    xmlSecBase64Init,			/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecBase64Update,			/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecBase64Final,			/* xmlSecCipherFinalMethod cipherFinal; */
     0,					/* size_t keySize; */
@@ -126,27 +133,28 @@ xmlSecTransformId xmlSecEncBase64Encode = (xmlSecTransformId)&xmlSecBase64Encode
 
 static const struct _xmlSecCipherTransformIdStruct xmlSecBase64DecodeId = {
     /* same as xmlSecTransformId */    
+    BAD_CAST "base64-decode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
-    xmlSecHrefBase64Decode,		/* const xmlChar href; */
+    xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
+    BAD_CAST "http://www.w3.org/2000/09/xmldsig#base64",	/* const xmlChar href; */
 
     xmlSecBase64Create, 		/* xmlSecTransformCreateMethod create; */
     xmlSecBase64Destroy,		/* xmlSecTransformDestroyMethod destroy; */
     NULL,				/* xmlSecTransformReadMethod read; */
+    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
-    xmlSecKeyValueIdUnknown,
-    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
-    xmlSecBinTransformSubTypeCipher,
-    NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
-    xmlSecCipherTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
+    NULL,
+    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+
+    /* xml/c14n methods */
+    NULL,
+    NULL,
 
     /* xmlSecCipherTransform data/methods */
-    NULL,				/* xmlSecCipherGenerateIvMethod cipherUpdate; */
-    xmlSecBase64Init,			/* xmlSecCipherInitMethod cipherUpdate; */
     xmlSecBase64Update,			/* xmlSecCipherUpdateMethod cipherUpdate; */
     xmlSecBase64Final,			/* xmlSecCipherFinalMethod cipherFinal; */
     0,					/* size_t keySize; */
@@ -177,14 +185,14 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
     xmlSecAssert(transform != NULL);
     
     if(!xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) ||
-       (transform->data == NULL)) {
+       (transform->reserved0 == NULL)) {
        
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
 		    "xmlSecEncBase64Encode");
 	return;
     }
-    ctx = (xmlSecBase64CtxPtr)(transform->data);
+    ctx = (xmlSecBase64CtxPtr)(transform->reserved0);
     ctx->columns = lineSize;    
 }
 
@@ -194,6 +202,7 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
 static xmlSecTransformPtr 
 xmlSecBase64Create(xmlSecTransformId id) {
     xmlSecCipherTransformPtr cipher;
+    xmlSecCipherTransformId cipherId;
     int encode;
     
     xmlSecAssert2(id != NULL, NULL);
@@ -223,13 +232,14 @@ xmlSecBase64Create(xmlSecTransformId id) {
 		 sizeof(unsigned char) * (XMLSEC_BASE64_INPUT_BUFFER_SIZE + 
 		 XMLSEC_BASE64_OUTPUT_BUFFER_SIZE));
 
-    cipher->id = (xmlSecCipherTransformId)id;
+    cipherId = (xmlSecCipherTransformId)id;
+    cipher->id = id;
     cipher->encode = encode;    
     cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecCipherTransform);
-    cipher->bufOut = cipher->bufIn + cipher->id->bufInSize;
+    cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
         
-    cipher->data = xmlSecBase64CtxCreate(encode, XMLSEC_BASE64_LINESIZE);    
-    if(cipher->data == NULL) {
+    cipher->reserved0 = xmlSecBase64CtxCreate(encode, XMLSEC_BASE64_LINESIZE);    
+    if(cipher->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecBase64CtxCreate");
@@ -259,8 +269,8 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
     }
     
     cipher = (xmlSecCipherTransformPtr) transform;
-    if(cipher->data != NULL) {
-	xmlSecBase64CtxDestroy((xmlSecBase64CtxPtr)transform->data);
+    if(cipher->reserved0 != NULL) {
+	xmlSecBase64CtxDestroy((xmlSecBase64CtxPtr)transform->reserved0);
     }    
     memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
 		      sizeof(unsigned char) * (XMLSEC_BASE64_INPUT_BUFFER_SIZE + 
@@ -269,41 +279,12 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecBase64Init:
- */
-static int
-xmlSecBase64Init(xmlSecCipherTransformPtr cipher) {
-    xmlSecBase64CtxPtr ctx;
-    int ret;
-    
-    xmlSecAssert2(cipher != NULL, -1);
-        
-    if(!xmlSecTransformCheckId(cipher, xmlSecEncBase64Encode) &&
-       !xmlSecTransformCheckId(cipher, xmlSecEncBase64Decode)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
-	return(-1);
-    }
-    
-    ctx = (xmlSecBase64CtxPtr)cipher->data;
-    ret = xmlSecBase64CtxInit(ctx);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64CtxInit");
-	return(-1);
-    }
-    return(ret);
-}
-
-/**
  * xmlSecBase64Update:
  */
 static int
 xmlSecBase64Update(xmlSecCipherTransformPtr cipher, 
 		 const unsigned char *buf, size_t size) {
+    xmlSecCipherTransformId cipherId;
     xmlSecBase64CtxPtr ctx;
     int ret;
     
@@ -321,20 +302,22 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
     if((buf == NULL) || (size == 0)) {
 	return(0);
     }
-    
-    ctx = (xmlSecBase64CtxPtr)cipher->data;
-    if(size > cipher->id->bufInSize) {
+
+
+    cipherId = (xmlSecCipherTransformId)cipher->id;
+    ctx = (xmlSecBase64CtxPtr)cipher->reserved0;
+    if(size > cipherId->bufInSize) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA,
 		    " ");
 	return(-1);
     }
     
-    ret = xmlSecBase64CtxUpdate(ctx, buf, size, cipher->bufOut, cipher->id->bufOutSize);
+    ret = xmlSecBase64CtxUpdate(ctx, buf, size, cipher->bufOut, cipherId->bufOutSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBase64CtxUpdate");
+		    " ");
 	return(-1);
     }
     return(ret);
@@ -342,6 +325,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
 
 static int
 xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
+    xmlSecCipherTransformId cipherId;
     xmlSecBase64CtxPtr ctx;
     int ret;
 
@@ -355,9 +339,10 @@ xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
 		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
 	return(-1);
     }    
-    ctx = (xmlSecBase64CtxPtr)cipher->data;
+    cipherId = (xmlSecCipherTransformId)cipher->id;
+    ctx = (xmlSecBase64CtxPtr)cipher->reserved0;
     
-    ret = xmlSecBase64CtxFinal(ctx, cipher->bufOut, cipher->id->bufOutSize);
+    ret = xmlSecBase64CtxFinal(ctx, cipher->bufOut, cipherId->bufOutSize);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -380,77 +365,176 @@ xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
  */
 static int
 xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
-    int outPos = 0;
-
     xmlSecAssert2(ctx != NULL, -1);    
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
 
-    if(ctx->inPos == 0) {
+    if(ctx->outPos > 0) {
+	return(ctx->outPos);
+    } else if(ctx->inPos == 0) {
 	return(0); /* nothing to encode */
     }
 
-    outPos = 0;    
     if(ctx->columns > 0 && ctx->columns <= ctx->linePos) {
-	ctx->out[outPos++] = '\n';
+	ctx->out[ctx->outPos++] = '\n';
 	ctx->linePos = 0;
     }
-    ctx->out[outPos++] = xmlSecBase64Encode1(ctx->in[0]);
     ++(ctx->linePos);
+    ctx->out[ctx->outPos++] = xmlSecBase64Encode1(ctx->in[0]);
 
     if(ctx->columns > 0 && ctx->columns <= ctx->linePos) {
-	ctx->out[outPos++] = '\n';
+	ctx->out[ctx->outPos++] = '\n';
 	ctx->linePos = 0;
     }
     ++(ctx->linePos);
-    ctx->out[outPos++] = xmlSecBase64Encode2(ctx->in[0], ctx->in[1]);
+    ctx->out[ctx->outPos++] = xmlSecBase64Encode2(ctx->in[0], ctx->in[1]);
 
     if(ctx->columns > 0 && ctx->columns <= ctx->linePos) {
-	ctx->out[outPos++] = '\n';
+	ctx->out[ctx->outPos++] = '\n';
 	ctx->linePos = 0;
     }
     ++(ctx->linePos);
-    ctx->out[outPos++] = (ctx->inPos > 1) ? xmlSecBase64Encode3(ctx->in[1], ctx->in[2]) : '=';
+    ctx->out[ctx->outPos++] = (ctx->inPos > 1) ? xmlSecBase64Encode3(ctx->in[1], ctx->in[2]) : '=';
 
     if(ctx->columns > 0 && ctx->columns <= ctx->linePos) {
-	ctx->out[outPos++] = '\n';
+	ctx->out[ctx->outPos++] = '\n';
 	ctx->linePos = 0;
     }
     ++(ctx->linePos);
-    ctx->out[outPos++] = (ctx->inPos > 2) ? xmlSecBase64Encode4(ctx->in[2]) : '=';
+    ctx->out[ctx->outPos++] = (ctx->inPos > 2) ? xmlSecBase64Encode4(ctx->in[2]) : '=';
     	    
     ctx->inPos = 0;    
-    return(outPos);
+    return(ctx->outPos);
 }
 
 /**
  * xmlSecBase64CtxDecode:
  */
 static int
-xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {
-    int outPos;
-    
+xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {    
     xmlSecAssert2(ctx != NULL, -1);
-    
-    outPos = 0;
-    if(ctx->inPos == 0) {
-	return(0); /* nothing to decode */
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+
+    if(ctx->outPos > 0) {
+	return(ctx->outPos);
+    } else if(ctx->inPos == 0) {
+	return(0); /* nothing to encode */
     }
+
     if(ctx->inPos < 2) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "only one or two equal signs are allowed at the end");
 	return(-1);
     }
-    ctx->out[outPos++] = xmlSecBase64Decode1(ctx->in[0], ctx->in[1]);
+    ctx->out[ctx->outPos++] = xmlSecBase64Decode1(ctx->in[0], ctx->in[1]);
 
     if(ctx->inPos > 2) {
-	ctx->out[outPos++] = xmlSecBase64Decode2(ctx->in[1], ctx->in[2]);
+	ctx->out[ctx->outPos++] = xmlSecBase64Decode2(ctx->in[1], ctx->in[2]);
 	if(ctx->inPos > 3) {
-	    ctx->out[outPos++] = xmlSecBase64Decode3(ctx->in[2], ctx->in[3]);
+	    ctx->out[ctx->outPos++] = xmlSecBase64Decode3(ctx->in[2], ctx->in[3]);
 	}
     }
     ctx->inPos = 0;
-    return(outPos);
+    return(ctx->outPos);
 }
+
+static int 
+xmlSecBase64CtxPush(xmlSecBase64CtxPtr ctx, const unsigned char* in, size_t inSize) {
+    size_t inBlockSize;
+        
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+    xmlSecAssert2(in != NULL, -1);
+    
+    inBlockSize = (ctx->encode) ? 3 : 4;
+    if(ctx->encode) {
+	if((ctx->inPos < inBlockSize) && (inSize > 0)) {
+	    inBlockSize = xmlSecBase64Min(inSize, (inBlockSize - ctx->inPos));
+	    memcpy(ctx->in + ctx->inPos, in, inBlockSize);
+	    ctx->inPos += inBlockSize;
+	    return(inBlockSize);
+	}
+    } else {
+	unsigned char ch;
+        size_t inPos;
+	
+	for(inPos = 0; (inPos < inSize) && (ctx->inPos < sizeof(ctx->in)); ++inPos) {
+	    ch = in[inPos];
+	    if(ctx->equalSigns > 0) {
+		if((ch == '=') && (ctx->equalSigns < 2)) {
+		    ++ctx->equalSigns;
+		} else if(!xmlSecIsBase64Space(ch)) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_INVALID_DATA,
+				"too many equal signs at the end or non space character after equal sign");
+		    return(-1);    
+		}
+	    } else if(ch == '=') {
+		++ctx->equalSigns;
+	    } else if(xmlSecIsBase64Char(ch)) {
+		if((ch >= 'A') && (ch <= 'Z')) {
+		    ctx->in[ctx->inPos++] = (ch - 'A');
+		} else if((ch >= 'a') && (ch <= 'z')) {
+		    ctx->in[ctx->inPos++] = 26 + (ch - 'a');
+		} else if((ch >= '0') && (ch <= '9')) {
+		    ctx->in[ctx->inPos++] = 52 + (ch - '0'); 
+		} else if(ch == '+') {
+		    ctx->in[ctx->inPos++] = 62;
+		} else if(ch == '/') {
+		    ctx->in[ctx->inPos++] = 63;
+		}
+	    } else if(!xmlSecIsBase64Space(ch)) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "non-base64 and non-space character \'%c\'", ch);
+		return(-1);    
+	    }
+	}
+	
+	return(inPos);
+    }
+    return(0);
+}
+
+static int 
+xmlSecBase64CtxPop(xmlSecBase64CtxPtr ctx, unsigned char* out, size_t outSize, int final) {
+    size_t inBlockSize;    
+    size_t outBlockSize;    
+    int ret;
+
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    inBlockSize = (ctx->encode) ? 3 : 4;
+    if((ctx->outPos == 0) && ((ctx->inPos >= inBlockSize) || final)) {
+	/* do encode/decode */
+	if(ctx->encode) {
+	    ret = xmlSecBase64CtxEncode(ctx);
+	} else {
+	    ret = xmlSecBase64CtxDecode(ctx);
+	}
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			(ctx->encode) ? "xmlSecBase64CtxEncode" : "xmlSecBase64CtxDecode");
+	    return(-1);
+	}
+    }
+    
+    outBlockSize = xmlSecBase64Min(ctx->outPos, outSize);
+    if(outBlockSize > 0) {
+	memcpy(out, ctx->out, outBlockSize);
+	ctx->outPos -= outBlockSize;
+    }
+    return(outBlockSize);
+}
+
+
 
 /**
  * xmlSecBase64CtxCreate:
@@ -501,22 +585,6 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
 }
 
 /**
- * xmlSecBase64CtxInit:
- * @ctx: the pointer to #xmlSecBase64Ctx structure
- *
- * Initializes the base64 input context.
- * 
- * Returns 0 on success or a negative value if an error occurs.
- */
-int
-xmlSecBase64CtxInit(xmlSecBase64CtxPtr ctx) {
-    xmlSecAssert2(ctx != NULL, -1);
-    
-    memset(ctx, 0, sizeof(xmlSecBase64Ctx));
-    return(0);
-}
-
-/**
  * xmlSecBase64CtxUpdate:
  * @ctx: the pointer to #xmlSecBase64Ctx structure
  * @in:	the input buffer
@@ -533,82 +601,35 @@ int
 xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 		     const unsigned char *in, size_t inLen, 
 		     unsigned char *out, size_t outLen) {
-    unsigned char ch;
     size_t inPos, outPos;
-    size_t size;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outLen > 0, -1);
     
-    if((in == NULL) || (inLen == 0)) {
-	return(0);
-    }    
-        
-    inPos = outPos = 0;
-    size = (ctx->encode) ? 3 : 4;
-    
-    /* if we have something in in process this first */
-    while(inPos < inLen) {
-	if(ctx->inPos >= size) {
-	    /* do encode/decode */
-	    if(ctx->encode) {
-		ret = xmlSecBase64CtxEncode(ctx);
-	    } else {
-		ret = xmlSecBase64CtxDecode(ctx);
-	    }
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    (ctx->encode) ? "xmlSecBase64CtxEncode" : "xmlSecBase64CtxDecode");
-		return(-1);
-	    }
-	    
-	    if(outPos + ret > outLen) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_INVALID_DATA,
-			    "buffer is too small (%d > %d)", 
-			    outPos + ret, outLen); 
-		return(-1);
-	    }	    
-	    memcpy(out + outPos, ctx->out, ret);
-	    outPos += ret;
+    for(inPos = outPos = 0; (inPos < inLen) && (outPos < outLen); ) {
+	ret = xmlSecBase64CtxPush(ctx, in + inPos, inLen - inPos);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64CtxPush");
+	    return(-1);
 	}
-	
-	/* read next char in the buffer */
-	ch = in[inPos++];
-	if(ctx->encode) {
-	    ctx->in[ctx->inPos++] = ch;
-	} else if(xmlSecIsBase64Char(ch)) {
-	    if(ctx->equalSigns != 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_INVALID_DATA,
-			    "only space characters are allowed after equal sign \'=\'");
-		return(-1);    
-	    }
-	    if((ch >= 'A') && (ch <= 'Z')) {
-		ctx->in[ctx->inPos++] = (ch - 'A');
-	    } else if((ch >= 'a') && (ch <= 'z')) {
-		ctx->in[ctx->inPos++] = 26 + (ch - 'a');
-	    } else if((ch >= '0') && (ch <= '9')) {
-		ctx->in[ctx->inPos++] = 52 + (ch - '0'); 
-	    } else if(ch == '+') {
-		ctx->in[ctx->inPos++] = 62;
-	    } else if(ch == '/') {
-		ctx->in[ctx->inPos++] = 63;
-	    }	    
-	} else if(ch == '='){
-	    if(ctx->equalSigns >= 2) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_INVALID_DATA,
-			    "too many equal signs at the end (most of two accepted)");
-		return(-1);    
-	    }
-	    ++ctx->equalSigns;
+	inPos += ret;
+
+	ret = xmlSecBase64CtxPop(ctx, out + outPos, outLen - outPos, 0);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64CtxPop");
+	    return(-1);
+	} else if(ret == 0) {
+	    break;
 	}
+	outPos += ret;
     }
-        
+
     return(outPos);
 }
 
@@ -627,52 +648,40 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
 int
 xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx, 
 		    unsigned char *out, size_t outLen) {
+    size_t outPos;
     int ret;
-    size_t size;
         
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);    
     xmlSecAssert2(outLen > 0, -1);    
 
-    /* zero uninitialized input bytes */
-    size = (ctx->encode) ? 3 : 4;
-    memset(ctx->in + ctx->inPos, 0, size - ctx->inPos);
-
-    /* do encode/decode */
-    if(ctx->encode) {
-	ret = xmlSecBase64CtxEncode(ctx);
-    } else {
-	ret = xmlSecBase64CtxDecode(ctx);
-    }
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    (ctx->encode) ? "xmlSecBase64CtxEncode" : "xmlSecBase64CtxDecode");
-	return(-1);
+    for(outPos = 0; (outPos < outLen); ) {
+	ret = xmlSecBase64CtxPop(ctx, out + outPos, outLen - outPos, 1);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64CtxPop");
+	    return(-1);
+	} else if(ret == 0) {
+	    break;
+	}
+	outPos += ret;
     }
 	    
     /* copy to out put buffer */
-    if((size_t)ret > outLen) {
+    if(outPos >= outLen) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
 		    "buffer is too small (%d > %d)", 
-		    ret, outLen); 
+		    outPos, outLen); 
 	return(-1);
     }	    
-    if(ret > 0) {
-	memcpy(out, ctx->out, ret);
-    }    
-#if 0
-    /* add \n at the end of decoding (todo: do we need it?) */
-    if(ctx->encode && (ctx->columns > 0) && ((ret + 1) < outLen)) {
-	out[ret++] = '\n';
-    }
-#endif    
+
     /* add \0 */
-    if((size_t)(ret + 1) < outLen) {
-	out[ret] = '\0';
+    if((outPos + 1) < outLen) {
+	out[outPos] = '\0';
     }
-    return(ret);
+    return(outPos);
 }
 
 /**

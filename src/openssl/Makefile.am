@@ -13,17 +13,18 @@ lib_LTLIBRARIES = libxmlsec-openssl.la
 
 libxmlsec_openssl_la_SOURCES =\
 aes.c \
+app.c \
 bn.c \
 crypto.c \
 des.c \
 dsa.c \
 evp.c \
 hmac.c \
-keysmngr.c \
 ripemd160.c \
 rsa.c \
 sha1.c \
 x509.c \
+x509vfy.c \
 $(NULL)
 
 libxmlsec_openssl_la_LIBADD = \

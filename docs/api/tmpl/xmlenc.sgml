@@ -20,7 +20,7 @@ standard implementation.
 
 </para>
 
-@keysMngrCtx: 
+@keysMngr: 
 @encryptionMethod: 
 @ignoreType: 
 
@@ -29,10 +29,8 @@ standard implementation.
 
 </para>
 
-@keysMngrCtx: 
-@Returns: 
-<!-- # Unused Parameters # -->
 @keysMngr: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecEncCtxDestroy ##### -->
@@ -49,14 +47,13 @@ standard implementation.
 </para>
 
 @ctx: 
+@context: 
 @key: 
 @encNode: 
 @buf: 
 @size: 
 @result: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@context: 
 
 
 <!-- ##### FUNCTION xmlSecEncryptUri ##### -->
@@ -65,13 +62,12 @@ standard implementation.
 </para>
 
 @ctx: 
+@context: 
 @key: 
 @encNode: 
 @uri: 
 @result: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@context: 
 
 
 <!-- ##### FUNCTION xmlSecEncryptXmlNode ##### -->
@@ -80,13 +76,12 @@ standard implementation.
 </para>
 
 @ctx: 
+@context: 
 @key: 
 @encNode: 
 @src: 
 @result: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@context: 
 
 
 <!-- ##### FUNCTION xmlSecDecrypt ##### -->
@@ -95,12 +90,12 @@ standard implementation.
 </para>
 
 @ctx: 
+@context: 
 @key: 
 @encNode: 
 @result: 
 @Returns: 
 <!-- # Unused Parameters # -->
-@context: 
 @encDataNode: 
 
 
@@ -110,6 +105,7 @@ standard implementation.
 </para>
 
 @ctx: 
+@context: 
 @self: 
 @encrypt: 
 @id: 
@@ -127,11 +123,10 @@ standard implementation.
 </para>
 
 @ctx: 
+@context: 
 @encrypt: 
 @node: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@context: 
 
 
 <!-- ##### FUNCTION xmlSecEncResultDestroy ##### -->

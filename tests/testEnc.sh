@@ -3,17 +3,14 @@
 topfolder=$1
 xmlsec_app=$2
 
-
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=/tmp/testEnc.$timestamp-$$.tmp
 logfile=/tmp/testEnc.$timestamp-$$.log
 script="$0"
 keysfile=$topfolder/keys.xml
 
-valgrind_suppressions="$topfolder/openssl.supp"
-valgrind_options="--error-limit=no --leak-check=yes --show-reachable=yes --num-callers=16 -v --suppressions=$valgrind_suppressions"
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind $valgrind_options"
+    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
     export REPEAT=1
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi
@@ -83,6 +80,11 @@ execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname" \
     "--keys $keysfile --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
     "--keys $keysfile"
 
+execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname2" \
+    "--keys $topfolder/keys/keys.xml" \
+    "--keys $keysfile --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname2.data" \
+    "--keys $keysfile"
+
 execEncTest "aleksey-xmlenc-01/enc-aes128cbc-keyname" \
     "--keys $topfolder/keys/keys.xml" \
     "--keys $keysfile --binary $topfolder/aleksey-xmlenc-01/enc-aes128cbc-keyname.data" \
@@ -115,7 +117,7 @@ execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname-element-root" \
 
 execEncTest "aleksey-xmlenc-01/enc-des3cbc-aes192-keyname" \
     "--keys $topfolder/keys/keys.xml --allowed keyname,enc-key" \
-    "--keys $keysfile  --session-key-des3  --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
+    "--keys $keysfile  --session-des-192  --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
     "--keys $keysfile"
 
 # Merlin's tests
@@ -135,29 +137,29 @@ execEncTest "merlin-xmlenc-five/encrypt-element-aes192-cbc-ref" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5" \
     "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-key-aes128 --privkey $topfolder/merlin-xmlenc-five/rsapriv.pem --xml $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase"  \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-aes-128 --privkey $topfolder/merlin-xmlenc-five/rsapriv.pem --xml $topfolder/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.data --node-id Purchase"  \
     "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem"
 execEncTest "merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p" \
     "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-key-des3 --privkey $topfolder/merlin-xmlenc-five/rsapriv.pem --binary $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data"  \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-des-192 --privkey $topfolder/merlin-xmlenc-five/rsapriv.pem --binary $topfolder/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.data"  \
     "--privkey $topfolder/merlin-xmlenc-five/rsapriv.pem"
 execEncTest "merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-key-aes256 --binary $topfolder/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.data" \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-aes-256 --binary $topfolder/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.data" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-key-aes128 --node-name urn:example:po:PaymentInfo --xml $topfolder/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.data" \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-aes-128 --node-name urn:example:po:PaymentInfo --xml $topfolder/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.data" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 
 execEncTest "merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-key-aes192 --binary $topfolder/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.data" \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --session-aes-192 --binary $topfolder/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.data" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 
 execEncTest "merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml  --session-key-des3 --node-name urn:example:po:PaymentInfo --xml $topfolder/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.data" \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml  --session-des-192 --node-name urn:example:po:PaymentInfo --xml $topfolder/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.data" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
         
 execEncTest "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" \

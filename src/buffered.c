@@ -41,22 +41,15 @@
  * if an error occurs.
  */
 int  	
-xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform, 
+xmlSecBufferedTransformRead(xmlSecTransformPtr transform, 
 			  unsigned char *buf, size_t size) {
     xmlSecBufferedTransformPtr buffered;
     size_t res = 0;
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
         
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeBuffered)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeBuffered");    
-	return(-1);
-    }
-    buffered = (xmlSecBufferedTransformPtr)transform;
-    
+    buffered = (xmlSecBufferedTransformPtr)transform;    
     if((buf == NULL) || (size == 0)) {
 	return(0);
     }
@@ -79,11 +72,11 @@ xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform,
 	    return(-1);
 	}
 	do {
-	    ret = xmlSecBinTransformRead((xmlSecTransformPtr)buffered->prev, buf, size);
+	    ret = xmlSecTransformReadBin((xmlSecTransformPtr)buffered->prev, buf, size);
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "xmlSecBinTransformRead");
+			    "xmlSecTransformRead");
 		return(-1);
 	    } else if(ret > 0) {
 		xmlBufferAdd(buffered->buffer, buf, ret);
@@ -127,20 +120,13 @@ xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform,
  * Returns 0 if success or a negative value otherwise.
  */
 int  	
-xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform, 
+xmlSecBufferedTransformWrite(xmlSecTransformPtr transform, 
                           const unsigned char *buf, size_t size) {
     xmlSecBufferedTransformPtr buffered;
 
-    xmlSecAssert2(transform != NULL, -1);
-        
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeBuffered)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeBuffered");
-	return(-1);
-    }
-    buffered = (xmlSecBufferedTransformPtr)transform;
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     
+    buffered = (xmlSecBufferedTransformPtr)transform;    
     if((buf == NULL) || (size == 0)) {
 	return(0);
     }
@@ -172,18 +158,11 @@ xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform,
  * Returns 0 if success or negative value otherwise.
  */
 int
-xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
+xmlSecBufferedTransformFlush(xmlSecTransformPtr transform) {
     xmlSecBufferedTransformPtr buffered;
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);    
-
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeBuffered)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeBuffered");
-	return(-1);
-    }
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     buffered = (xmlSecBufferedTransformPtr)transform;
     
     if((buffered->status != xmlSecTransformStatusNone) || 
@@ -200,13 +179,13 @@ xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
 	return(-1);
     }
     
-    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)buffered->next, 
+    ret = xmlSecTransformWriteBin((xmlSecTransformPtr)buffered->next, 
 				  xmlBufferContent(buffered->buffer), 
 				  xmlBufferLength(buffered->buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformWrite");
+		    "xmlSecTransformWrite");
 	return(-1);
     }	  
 
@@ -216,11 +195,11 @@ xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
     buffered->buffer = NULL;
 
     /* do not forget to flush next transform */
-    ret = xmlSecBinTransformFlush((xmlSecTransformPtr)buffered->next);
+    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)buffered->next);
     if(ret < 0){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformFlush");
+		    "xmlSecTransformFlush");
 	return(-1);
     }	  
     return(0);
@@ -253,22 +232,15 @@ xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
  * if an error occurs.
  */
 int 	
-xmlSecBufferedProcess(xmlSecBinTransformPtr transform, xmlBufferPtr buffer) {
+xmlSecBufferedProcess(xmlSecTransformPtr transform, xmlBufferPtr buffer) {
     xmlSecBufferedTransformPtr buffered;
 
-    xmlSecAssert2(transform != NULL, -1);    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(buffer != NULL, -1);
     
-    if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeBuffered)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecBinTransformSubTypeBuffered");
-	return(-1);
-    }
-
     buffered = (xmlSecBufferedTransformPtr)transform;
-    if(buffered->id->bufferedProcess != NULL) {
-	return(buffered->id->bufferedProcess(buffered, buffer));
+    if(((xmlSecBufferedTransformId)(buffered->id))->bufferedProcess != NULL) {
+	return(((xmlSecBufferedTransformId)(buffered->id))->bufferedProcess(buffered, buffer));
     }
     return(0);
 }

@@ -1,7 +1,7 @@
 ##----------------------------------------------------------------------##
-
+#
 # Errors to suppress by default with OpenSSL
-
+#
 # Format of this file is:
 # {
 #     name_of_suppression
@@ -61,12 +61,3 @@
    fun:RSA_eay_public_encrypt
 }
 
-##----------------------------------------------------------------------##
-
-## remove this!
-{
-   xmlsec xmlSecBase64CtxEncode (Value4)
-   Value4
-   fun:xmlSecBase64CtxEncode
-   fun:xmlSecBase64Ctx*
-}

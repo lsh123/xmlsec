@@ -17,9 +17,7 @@
 #include <openssl/sha.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keysInternal.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
@@ -41,25 +39,26 @@ static int 	xmlSecDigestSha1Verify		(xmlSecDigestTransformPtr transform,
 
 struct _xmlSecDigestTransformIdStruct xmlSecDigestSha1Id = {
     /* same as xmlSecTransformId */    
+    BAD_CAST "dgst-sha1",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecUsageDSigDigest,		/* xmlSecTransformUsage usage; */
-    xmlSecHrefDigestSha1, 		/* xmlChar *href; */
+    xmlSecTransformUsageDigestMethod,	/* xmlSecTransformUsage usage; */
+    BAD_CAST "http://www.w3.org/2000/09/xmldsig#sha1", /* xmlChar *href; */
     
     xmlSecDigestSha1Create,		/* xmlSecTransformCreateMethod create; */
     xmlSecDigestSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
     NULL,				/* xmlSecTransformReadNodeMethod read; */
+    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyValueIdUnknown,
-    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType encryption; */
-    xmlSecKeyValueTypeAny,		/* xmlSecKeyValueType decryption; */
-    xmlSecBinTransformSubTypeDigest,	/* xmlSecBinTransformSubType binSubType; */
-            
-    NULL,				/* xmlSecBinTransformAddKeyMethod addBinKey; */
-    xmlSecDigestTransformRead,		/* xmlSecBinTransformReadMethod readBin; */
-    xmlSecDigestTransformWrite,		/* xmlSecBinTransformWriteMethod writeBin; */
-    xmlSecDigestTransformFlush,		/* xmlSecBinTransformFlushMethod flushBin; */
-    
+    /* xmlSecTransform data/methods */
+    NULL,
+    xmlSecDigestTransformRead,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecDigestTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecDigestTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+
+    NULL,
+    NULL,
+        
     /* xmlSecDigestTransform data/methods */
     xmlSecDigestSha1Update,		/* xmlSecDigestUpdateMethod digestUpdate; */
     xmlSecDigestSha1Sign,		/* xmlSecDigestSignMethod digestSign; */
@@ -89,7 +88,7 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
     }
 
     /*
-     * Allocate a new xmlSecBinTransform and fill the fields.
+     * Allocate a new xmlSecTransform and fill the fields.
      */
     digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_SHA1_TRANSFORM_SIZE);
     if(digest == NULL) {
@@ -100,7 +99,7 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
     }
     memset(digest, 0, XMLSEC_SHA1_TRANSFORM_SIZE);
     
-    digest->id = (xmlSecDigestTransformId)id;
+    digest->id = id;
     digest->digestData = ((unsigned char*)digest) + sizeof(xmlSecDigestTransform);
     digest->digest = ((unsigned char*)digest->digestData) + sizeof(SHA_CTX);
     digest->digestSize = SHA_DIGEST_LENGTH;

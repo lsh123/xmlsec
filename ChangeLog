@@ -1,60 +1,73 @@
-Tue Nov 12 23:34:02 2002  Aleksey Sanin  <aleksey@aleksey.com>
+Sun Jan 26 22:04:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
-	* apps/xmlsec.c include/xmlsec/keyinfo.h 
-	include/xmlsec/keys.h include/xmlsec/keysmngr.h
-	include/xmlsec/keyvalue.h include/xmlsec/x509.h
-	include/xmlsec/xmldsig.h include/xmlsec/xmlenc.h
-	src/keyinfo.c src/keys.c src/keyvalue.c 
-	 src/xmldsig.c src/xmlenc.c src/openssl/aes.c 
-	src/openssl/des.c src/openssl/hmac.c src/openssl/keysmngr.c:
-	created xmlSecKeysMgrCtx structure 
+	* config.h.in configure.in include/xmlsec/version.h
+	docs/news.html docs/download.html docs/index.html
+	xmlsec.pc xmlsec.spec: preparation for 0.0.12 release
 
-Thu Nov  7 00:25:41 2002  Aleksey Sanin  <aleksey@aleksey.com>
-	* apps/xmlsec.c 
-	include/xmlsec/crypto.h include/xmlsec/keys.h 
-	include/xmlsec/x509.h include/xmlsec/xmlsec.h
-	src/keyinfo.c src/keys.c	
-	src/nss/keysmngr.c
-	include/xmlsec/openssl/bn.h include/xmlsec/openssl/errors.h
-	include/xmlsec/openssl/evp.h
-	src/openssl/aes.c src/openssl/bn.c 
-	src/openssl/crypto.c src/openssl/des.c
-	src/openssl/dsa.c src/openssl/evp.c
-	src/openssl/keysmngr.c src/openssl/rsa.c
-	src/openssl/x509.c:
-	internal functions re-naming to avoid conflicts between
-	crypto engines
+Sun Jan 26 21:39:56 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
-Wed Nov  6 15:45:35 2002  Aleksey Sanin  <aleksey@aleksey.com>
-
-	* include/xmlsec/keyinfo.h include/xmlsec/transforms.h
-	include/xmlsec/xmlsec.h include/xmlsec/xmltree.h
-	include/xmlsec/openssl/bn.h
-	src/base64.c src/c14n.c	src/enveloped.c src/keyinfo.c
-	src/transforms.c src/xmlsec.c src/xmltree.c 
-	src/xpath.c src/xslt.c
-	src/openssl/aes.c src/openssl/bn.c
-	src/openssl/des.c src/openssl/dsa.c
-	src/openssl/hmac.c src/openssl/ripemd160.c
-	src/openssl/rsa.c src/openssl/sha1.c: moved all XML code 
-	for keys and transforms to the core library
-
-Wed Nov  6 01:18:33 2002  Aleksey Sanin  <aleksey@aleksey.com>
-
-	* apps/Makefile.am config.h.in include/xmlsec/keys.h 
-	include/xmlsec/keysInternal.h include/xmlsec/transformsInternal.h
-	src/keyinfo.c src/keys.c src/openssl/crypto.c src/transforms.c
-	src/xmlsec.c: cleaning dependencies between the xmlsec and
-	xmlsec-crypto libraries
-
-Tue 05 Nov 2002 10:23:07 PM PST Aleksey Sanin  <aleksey@aleksey.com>
+	* include/xmlsec/digests.h src/hmac.c: fixed 91 bits HMAC
+	bug reported by Rich Salz and Jonathan Wenocur
+	* tests/aleksey-xmldsig-01/dtd-hmac-91.dtd
+	tests/aleksey-xmldsig-01/dtd-hmac-91.tmpl
+	tests/aleksey-xmldsig-01/dtd-hmac-91.xml
+	* tests/testDSig.sh: the test case for 91 bits HMAC bug
+	from Rich Salz and Jonathan Wenocur
+	* apps/xmlsec.c: fixing minor compile warnings for 
+	the external DTD patch
 	
-	* almost all files: major code refactoring - separating OpenSSL
-	dependend code in order to provide support for other 
-	crypto engines
-	* include/xmlsec/openssl src/openssl: the OpenSSL dependend
-	code is moved into these new folders
-	* include/xmlsec/nss src/nss: templates for NSS support
+Sun Jan 26 18:19:49 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/aes.c src/ciphers.c src/des.c: fixed bug with 
+	EVP ciphers for OpenSSL 0.9.7 when last block was not 
+	processed for padding
+	* tests/aleksey-xmlenc-01/enc-des3cbc-keyname2.data 
+	tests/aleksey-xmlenc-01/enc-des3cbc-keyname2.tmpl
+	tests/aleksey-xmlenc-01/enc-des3cbc-keyname2.xml
+	tests/testEnc.sh: new test case for the bug fixed above
+
+Wed Jan 22 11:37:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c man/xmlsec.xml: applied patch from Rich Salz
+	to allo external DTD specification for the xmlsec application
+
+Mon 30 Dec 2002 09:52:58 AM PST Aleksey Sanin <aleksey@aleksey.com
+	* configure.in docs/examples/dsig1/Makefile docs/examples/dsig2/Makefile
+	docs/examples/dsig3/Makefile docs/examples/dsig4/Makefile 
+	docs/examples/dsig5/Makefile docs/examples/enc1/Makefile
+	docs/examples/enc2/Makefile src/Makefile.am: fixed bug #102196 -- 
+	Sun CC does ot have -WAll and -ansi options
+	* include/xmlsec/errors.h: fixed bug #102194 -- Sun CC does not have
+	__FUNCTION__ macro
+
+Sat Dec 21 22:47:33 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: added "--node-xpath" option for specifing
+	the operation "start node" (code based on patch from 
+	Ferrell Moultrie (ISSAtlanta)
+	* src/transforms.c: fixed minor compilation warnings
+	* src/x509.c: certs and crls are base64 encoded with 60 characters 
+	lines size (bug #101523)
+
+Mon Dec  2 23:38:34 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* config.h.in configure.in include/xmlsec/version.h
+	docs/news.html docs/download.html docs/index.html
+	xmlsec.pc xmlsec.spec: new 0.0.11 release updates
+	* scripts/build_release.sh scripts/push_release.sh
+	scripts/test_release.sh: checking in build scripts I am using
+
+Thu Nov 28 11:57:17 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: print detailed help report only when
+	user requests it; don't fail if key is not generated
+	when algorithm is disabled
+	
+
+Thu Nov 28 10:44:06 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c: fixed a bug in numeric references evaluation 
+	reported by Ingo Fischer
 
 Wed Oct 30 17:14:03 2002  Aleksey Sanin  <aleksey@aleksey.com>
 

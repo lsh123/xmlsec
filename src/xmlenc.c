@@ -20,10 +20,8 @@
 #include <libxml/parser.h> 
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keysInternal.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
@@ -42,8 +40,8 @@ static const xmlChar*		xmlSecEncIds[] = { BAD_CAST "Id", NULL };
 
 typedef struct _xmlSecEncState {
     xmlSecEncCtxPtr		ctx;
-    xmlSecBinTransformPtr 	first;
-    xmlSecBinTransformPtr	last;
+    xmlSecTransformPtr 	first;
+    xmlSecTransformPtr	last;
     xmlNodePtr			cipherDataNode;
     int				encrypt;
     xmlChar 			*type;
@@ -67,10 +65,11 @@ static int			xmlSecEncStateAddTransform	(xmlSecEncStatePtr state,
 								 xmlSecTransformPtr transform);
 
 #define xmlSecEncResultIsValid(result) \
-	    ((( result ) != NULL) \
-	    && ((result)->ctx != NULL) \
-	    && ((result)->ctx->keysMngrCtx != NULL) \
-	    && ((result)->ctx->keysMngrCtx->keysMngr != NULL) )
+	    ((( result ) != NULL) && ((result)->ctx != NULL))
+#define xmlSecEncResultGetKeyCallback(result) \
+	    ( ( xmlSecEncResultIsValid((result)) ) ? \
+		((result)->ctx->keyInfoCtx.keysMngr->getKey) : \
+		NULL )
 
 
 static int			xmlSecEncryptedDataNodeRead	(xmlNodePtr encNode,
@@ -97,14 +96,14 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
  ***************************************************************************/
 /**
  * xmlSecEncCtxCreate:
- * @keysMngrCtx: the pointer to #xmlSecKeysMngrCtx structure.
+ * @keysMngr: the pointer to #xmlSecKeysMngr structure.
  * 
  * Creates new encryption context.
  *
  * Returns newly allocated #xmlSecEncCtx structure or NULL if an error occurs.
  */
 xmlSecEncCtxPtr		
-xmlSecEncCtxCreate(xmlSecKeysMngrCtxPtr keysMngrCtx) {
+xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     xmlSecEncCtxPtr ctx;
     
     /*
@@ -119,8 +118,8 @@ xmlSecEncCtxCreate(xmlSecKeysMngrCtxPtr keysMngrCtx) {
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecEncCtx));
-
-    ctx->keysMngrCtx = keysMngrCtx;
+    
+    ctx->keyInfoCtx.keysMngr = keysMngr;
     return(ctx);
 }
 
@@ -133,451 +132,11 @@ xmlSecEncCtxCreate(xmlSecKeysMngrCtxPtr keysMngrCtx) {
 void
 xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
-
+    
     memset(ctx, 0, sizeof(xmlSecEncCtx));
     xmlFree(ctx);
 }
 
-
-/**************************************************************************
- * 
- * Encryption Templates
- *
- *************************************************************************/
- 
-/** 
- * xmlSecEncDataCreate:
- * @id: the Id attribute (optional).
- * @type: the Type attribute (optional)
- * @mimeType: the MimeType attribute (optional)
- * @encoding: the Encoding attribute (optional)
- *
- * Creates new <enc:EncryptedData> node for encryption template. 
- *
- * Returns the pointer newly created  <enc:EncryptedData> node or NULL 
- * if an error occurs.
- */
-xmlNodePtr		
-xmlSecEncDataCreate(const xmlChar *id, const xmlChar *type,
-		    const xmlChar *mimeType, const xmlChar *encoding) {
-    xmlNodePtr encNode;
-    xmlNodePtr cipherData;
-    
-    encNode = xmlNewNode(NULL, BAD_CAST "EncryptedData");
-    if(encNode == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewNode(EncryptedData)");
-	return(NULL);	        
-    }
-    
-    if(xmlNewNs(encNode, xmlSecNsEnc, NULL) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlNewNs(xmlSecNsEnc)");
-	return(NULL);	        	
-    }
-    
-    if(id != NULL) {
-	xmlSetProp(encNode, BAD_CAST "Id", id);
-    }
-    if(type != NULL) {
-	xmlSetProp(encNode, BAD_CAST "Type", type);
-    }
-    if(mimeType != NULL) {
-	xmlSetProp(encNode, BAD_CAST "MimeType", mimeType);
-    }
-    if(encoding != NULL) {
-	xmlSetProp(encNode, BAD_CAST "Encoding", encoding);
-    }
-    
-    cipherData = xmlSecAddChild(encNode,  BAD_CAST "CipherData", xmlSecNsEnc);
-    if(cipherData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(CipherData)");
-	return(NULL);	        	
-    }
-    
-    return(encNode);
-}
-
-/** 
- * xmlSecEncDataDestroy:
- * @encNode: the pointer to <enc:EncryptedData> node.
- *
- * Destroys the <enc:EncryptedData> node @encNode.
- */
-void
-xmlSecEncDataDestroy(xmlNodePtr encNode) {
-    xmlSecAssert(encNode != NULL);
-
-    xmlUnlinkNode(encNode);
-    xmlFreeNode(encNode);
-}
-
-/** 
- * xmlSecEncDataAddEncMethod:
- * @encNode: the pointer to <enc:EncryptedData> node.
- * @encMethod: the encryption method id.
- *
- * Adds <enc:EncryptionMethod> node with specified encryption 
- * algorithm (@encMethodId) to the  <enc:EncryptedData> node @encNode.
- *
- * Returns the pointer to newly created <enc:EncryptionMethod> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr
-xmlSecEncDataAddEncMethod(xmlNodePtr encNode, xmlSecTransformId encMethod) {
-    xmlNodePtr encMethodNode;
-    xmlNodePtr tmp;
-    int ret;
-
-    xmlSecAssert2(encNode != NULL, NULL);
-    xmlSecAssert2(encMethod != NULL, NULL);
-    
-    encMethodNode = xmlSecFindChild(encNode, BAD_CAST "EncryptionMethod", xmlSecNsEnc);
-    if(encMethodNode != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "EncryptionMethod");
-	return(NULL);	
-    }
-    
-    tmp = xmlSecGetNextElementNode(encNode->children);
-    if(tmp == NULL) {
-	encMethodNode = xmlSecAddChild(encNode,  BAD_CAST "EncryptionMethod", xmlSecNsEnc);
-    } else {
-	encMethodNode = xmlSecAddPrevSibling(tmp,  BAD_CAST "EncryptionMethod", xmlSecNsEnc);
-    }    
-    if(encMethodNode == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(EncryptionMethod)");
-	return(NULL);	
-    }
-    
-    ret = xmlSecTransformNodeWrite(encMethodNode, encMethod);
-    if(ret < 0){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformNodeWrite(encMethodNode) - %d", ret);
-	xmlUnlinkNode(encMethodNode);
-	xmlFreeNode(encMethodNode);
-	return(NULL);	
-    }
-    return(encMethodNode);
-}
-
-/** 
- * xmlSecEncDataAddKeyInfo:
- * @encNode: the pointer to <enc:EncryptedData> node.
- *
- * Adds <dsig:KeyInfo> to the  <enc:EncryptedData> node @encNode.
- *
- * Returns the pointer to newly created <dsig:KeyInfo> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr
-xmlSecEncDataAddKeyInfo(xmlNodePtr encNode) {
-    xmlNodePtr keyInfo;
-    xmlNodePtr prev;
-    xmlNodePtr tmp;
-        
-    xmlSecAssert2(encNode != NULL, NULL);
-
-    keyInfo = xmlSecFindChild(encNode, BAD_CAST "KeyInfo", xmlSecNsDSig);
-    if(keyInfo != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "KeyInfo");
-	return(NULL);	
-    }
-    
-    prev = xmlSecFindChild(encNode, BAD_CAST "EncryptionMethod", xmlSecNsEnc);
-    tmp = xmlSecGetNextElementNode(encNode->children);
-    if(prev != NULL) {
-	keyInfo = xmlSecAddNextSibling(prev, BAD_CAST "KeyInfo", xmlSecNsDSig);
-    } else if(tmp == NULL) {
-	keyInfo = xmlSecAddChild(encNode, BAD_CAST "KeyInfo", xmlSecNsDSig);
-    } else {
-	keyInfo = xmlSecAddPrevSibling(tmp, BAD_CAST "KeyInfo", xmlSecNsDSig);
-    }
-    if(keyInfo == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(KeyInfo)");
-	return(NULL);	
-    }
-    return(keyInfo);
-}
-
-/** 
- * xmlSecEncDataAddEncProperties
- * @encNode: the pointer to <enc:EncryptedData> node.
- * @id: the Id attribute (optional).
- *
- * Adds <enc:EncryptionProperties> node to the <enc:EncryptedData> 
- * node @encNode.
- *
- * Returns the pointer to newly created <enc:EncryptionProperties> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr
-xmlSecEncDataAddEncProperties(xmlNodePtr encNode, const xmlChar *id) {
-    xmlNodePtr encProps;
-
-    xmlSecAssert2(encNode != NULL, NULL);
-
-    encProps = xmlSecFindChild(encNode, BAD_CAST "EncryptionProperties", xmlSecNsEnc);
-    if(encProps != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "EncryptionProperties");
-	return(NULL);	
-    }
-
-    encProps = xmlSecAddChild(encNode, BAD_CAST "EncryptionProperties", xmlSecNsEnc);
-    if(encProps == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(EncryptionProperties)");
-	return(NULL);	
-    }
-    if(id != NULL) {
-	xmlSetProp(encProps, BAD_CAST "Id", id);
-    }
-    
-    return(encProps);
-}
-
-/** 
- * xmlSecEncDataAddEncProperty:
- * @encNode: the pointer to <enc:EncryptedData> node.
- * @id: the Id attribute (optional).
- * @target: the Target attribute (optional).
- *
- * Adds <enc:EncryptionProperty> node (and the parent 
- * <enc:EncryptionProperties> node if required) to the 
- * <enc:EncryptedData> node @encNode.
- *
- * Returns the pointer to newly created <enc:EncryptionProperty> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr	
-xmlSecEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xmlChar *target) {
-    xmlNodePtr encProp;
-    xmlNodePtr encProps;
-        
-    xmlSecAssert2(encNode != NULL, NULL);
-
-    encProps = xmlSecFindChild(encNode, BAD_CAST "EncryptionProperties", xmlSecNsEnc);
-    if(encProps == NULL) {
-	encProps = xmlSecEncDataAddEncProperties(encNode, NULL);
-	if(encProps == NULL) { 
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecEncDataAddEncProperties");
-	    return(NULL);	
-	}
-    }
-
-    encProp = xmlSecAddChild(encProps, BAD_CAST "EncryptionProperty", xmlSecNsEnc);
-    if(encProp == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(EncryptionProperty)");
-	return(NULL);	
-    }
-    if(id != NULL) {
-	xmlSetProp(encProp, BAD_CAST "Id", id);
-    }
-    if(target != NULL) {
-	xmlSetProp(encProp, BAD_CAST "Target", target);
-    }
-    
-    return(encProp);
-}
-
-/** 
- * xmlSecEncDataAddCipherValue:
- * @encNode: the pointer to <enc:EncryptedData> node.
- *
- * Adds <enc:CipherValue> to the <enc:EncryptedData> node @encNode.
- *
- * Returns the pointer to newly created <enc:CipherValue> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr
-xmlSecEncDataAddCipherValue(xmlNodePtr encNode) {
-    xmlNodePtr cipherData;
-    xmlNodePtr cipherValue;
-    xmlNodePtr tmp;
-        
-    xmlSecAssert2(encNode != NULL, NULL);
-
-    cipherData = xmlSecFindChild(encNode, BAD_CAST "CipherData", xmlSecNsEnc);
-    if(cipherData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "CipherData");
-	return(NULL);	
-    }
-
-    tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherValue", xmlSecNsEnc);
-    if(tmp != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "CipherValue");
-	return(NULL);	
-    }
-
-    tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherReference", xmlSecNsEnc);
-    if(tmp != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "CipherReference");
-	return(NULL);	
-    }
-
-    cipherValue = xmlSecAddChild(cipherData, BAD_CAST "CipherValue", xmlSecNsEnc);
-    if(cipherValue == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(CipherValue)");
-	return(NULL);	
-    }    
-        
-    return(cipherValue);
-}
-
-/** 
- * xmlSecEncDataAddCipherReference:
- * @encNode: the pointer to <enc:EncryptedData> node.
- * @uri: the URI attribute (may be NULL).
- *
- * Adds <enc:CipherReference> node with specified URI attribute @uri
- * to the <enc:EncryptedData> node @encNode.
- *
- * Returns the pointer to newly created <enc:CipherReference> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr
-xmlSecEncDataAddCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
-    xmlNodePtr cipherRef;
-    xmlNodePtr cipherData;    
-    xmlNodePtr tmp;
-    
-    xmlSecAssert2(encNode != NULL, NULL);
-
-    cipherData = xmlSecFindChild(encNode, BAD_CAST "CipherData", xmlSecNsEnc);
-    if(cipherData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "CipherData");
-	return(NULL);	
-    }
-
-    tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherValue", xmlSecNsEnc);
-    if(tmp != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "CipherValue");
-	return(NULL);	
-    }
-
-    tmp = xmlSecFindChild(cipherData, BAD_CAST "CipherReference", xmlSecNsEnc);
-    if(tmp != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "CipherReference");
-	return(NULL);	
-    }
-
-    cipherRef = xmlSecAddChild(cipherData, BAD_CAST "CipherReference", xmlSecNsEnc);
-    if(cipherRef == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(CipherReference)");
-	return(NULL);	
-    }    
-    
-    if(uri != NULL) {
-	xmlSetProp(cipherRef, BAD_CAST "URI", uri);
-    }
-    
-    return(cipherRef);
-}
-
-/** 
- * xmlSecCipherReferenceAddTransform:
- * @encNode: the pointer to <enc:EncryptedData> node.
- * @transform: the transform id.
- *
- * Adds <dsig:Transform> node (and the parent <dsig:Transforms> node)
- * with specified transform methods @transform to the <enc:CipherReference>
- * child node of the <enc:EncryptedData> node @encNode.
- *
- * Returns the pointer to newly created <dsig:Transform> node or 
- * NULL if an error occurs.
- */
-xmlNodePtr
-xmlSecCipherReferenceAddTransform(xmlNodePtr encNode, 
-				  xmlSecTransformId transform) {
-    xmlNodePtr cipherData;
-    xmlNodePtr cipherRef;    
-    xmlNodePtr transforms;
-    xmlNodePtr cipherRefTransform;
-    int ret;
-
-    xmlSecAssert2(encNode != NULL, NULL);
-    xmlSecAssert2(transform != NULL, NULL);    
-
-    cipherData = xmlSecFindChild(encNode, BAD_CAST "CipherData", xmlSecNsEnc);
-    if(cipherData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "CipherData");
-	return(NULL);	
-    }
-
-    cipherRef = xmlSecFindChild(cipherData, BAD_CAST "CipherReference", xmlSecNsEnc);
-    if(cipherRef == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "CipherReference");
-	return(NULL);	
-    }
-
-    transforms = xmlSecFindChild(cipherRef, BAD_CAST "Transforms", xmlSecNsEnc);
-    if(transforms == NULL) {
-	transforms = xmlSecAddChild(cipherRef, BAD_CAST "Transforms", xmlSecNsEnc);
-	if(transforms == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecAddChild(Transforms)");
-	    return(NULL);	
-	}
-    }
-    
-    cipherRefTransform = xmlSecAddChild(transforms,  BAD_CAST "Transform", xmlSecNsDSig);
-    if(cipherRefTransform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(Transform)");
-	return(NULL);	
-    }
-    
-    ret = xmlSecTransformNodeWrite(cipherRefTransform, transform);
-    if(ret < 0){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformNodeWrite(cipherRefTransform) - %d", ret);
-	return(NULL);	
-    }
-    
-    return(cipherRefTransform);
-}
 
 
 /*************************************************************************
@@ -589,6 +148,8 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
 /**
  * xmlSecEncryptMemory:
  * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -603,7 +164,7 @@ xmlSecCipherReferenceAddTransform(xmlNodePtr encNode,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
+xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -614,7 +175,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
     xmlSecAssert2(buf != NULL, -1);    
     
-    res = xmlSecEncResultCreate(ctx, 1, encNode);
+    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -623,8 +184,6 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     }
     if(key != NULL) {
 	res->key = xmlSecKeyDuplicate(key);    
-	/* todo: check key */
-	res->key->origin = key->origin;    
     }
     
     /* add ids for Encrypted nodes */
@@ -643,20 +202,20 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     }
          
     /* encrypt the data */
-    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)state->first, buf, size);
+    ret = xmlSecTransformWriteBin((xmlSecTransformPtr)state->first, buf, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformWrite - %d", ret);
+		    "xmlSecTransformWrite - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
     }
-    ret = xmlSecBinTransformFlush((xmlSecTransformPtr)state->first);
+    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)state->first);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformFlush - %d", ret);
+		    "xmlSecTransformFlush - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -685,6 +244,8 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
 /**
  * xmlSecEncryptUri:
  * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -698,7 +259,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
+xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -711,7 +272,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
     xmlSecAssert2(uri != NULL, -1);    
 
-    res = xmlSecEncResultCreate(ctx, 1, encNode);
+    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -719,9 +280,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key);
-	/* todo: check key */
-	res->key->origin = key->origin;    
+	res->key = xmlSecKeyDuplicate(key);    
     }
 
     /* add ids for Encrypted nodes */
@@ -740,7 +299,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     }
     
     /* add the uri load at the beginning */
-    inputUri = xmlSecTransformCreate(xmlSecInputUri, 0, 0);
+    inputUri = xmlSecTransformCreate(xmlSecInputUri, 0);
     if(inputUri == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -774,12 +333,12 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
          
     /* encrypt the data */
     do {
-	ret = xmlSecBinTransformRead((xmlSecTransformPtr)state->last, buf, sizeof(buf));
+	ret = xmlSecTransformReadBin((xmlSecTransformPtr)state->last, buf, sizeof(buf));
     } while(ret > 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformRead - %d", ret);
+		    "xmlSecTransformRead - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -808,6 +367,8 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
 /**
  * xmlSecEncryptXmlNode:
  * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -821,7 +382,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
+xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state = NULL;
@@ -833,7 +394,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
     xmlSecAssert2(src != NULL, -1);    
 
-    res = xmlSecEncResultCreate(ctx, 1, encNode);
+    res = xmlSecEncResultCreate(ctx, context, 1, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -841,9 +402,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key);
-	/* todo: check key */
-	res->key->origin = key->origin;    
+	res->key = xmlSecKeyDuplicate(key);    
     }
 
     /* add ids for Encrypted nodes */
@@ -899,23 +458,23 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     }
         
     /* encrypt the data */
-    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)state->first, 
+    ret = xmlSecTransformWriteBin((xmlSecTransformPtr)state->first, 
 				  xmlBufferContent(buffer),
 				  xmlBufferLength(buffer));
     xmlBufferFree(buffer); buffer = NULL;
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformWrite - %d", ret);
+		    "xmlSecTransformWrite - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
     }
-    ret = xmlSecBinTransformFlush((xmlSecTransformPtr)state->first);
+    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)state->first);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformFlush - %d", ret);
+		    "xmlSecTransformFlush - %d", ret);
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	    	
@@ -978,6 +537,8 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
 /**
  * xmlSecDecrypt:
  * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
  *     will be used).   
  * @encNode: the pointer to encryption template (<enc:EncryptionData> node).
@@ -988,7 +549,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecDecrypt(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key, 
+xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
@@ -998,7 +559,7 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
     xmlSecAssert2(ctx != NULL, -1);    
 
     /* first of all, create result and encryption state objects */
-    res = xmlSecEncResultCreate(ctx, 0, encNode);
+    res = xmlSecEncResultCreate(ctx, context, 0, encNode);
     if(res == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1006,9 +567,7 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, xmlSecKeyPtr key,
 	return(-1);	    		
     }
     if(key != NULL) {
-	res->key = xmlSecKeyDuplicate(key);
-    	/* todo: check key */
-	res->key->origin = key->origin;    
+	res->key = xmlSecKeyDuplicate(key);    
     }
 
     /* add ids for Encrypted nodes */
@@ -1140,9 +699,9 @@ xmlSecEncStateDestroy(xmlSecEncStatePtr state) {
     xmlSecAssert(state != NULL);
 
     if(state->first != NULL) {
-	xmlSecBinTransformDestroyAll((xmlSecTransformPtr)state->first);
+	xmlSecTransformDestroyAll((xmlSecTransformPtr)state->first);
     } else if(state->last != NULL) {
-	xmlSecBinTransformDestroyAll((xmlSecTransformPtr)state->last);
+	xmlSecTransformDestroyAll((xmlSecTransformPtr)state->last);
     }
     
     memset(state, 0, sizeof(xmlSecEncState));
@@ -1203,14 +762,14 @@ xmlSecEncStateAddTransform(xmlSecEncStatePtr state,
 	return(-1);	    
     }
     if(state->last == NULL) {
-	state->first = state->last = (xmlSecBinTransformPtr)transform;
-    } else if(xmlSecBinTransformAddAfter((xmlSecTransformPtr)state->last, 
+	state->first = state->last = (xmlSecTransformPtr)transform;
+    } else if(xmlSecTransformAddAfter((xmlSecTransformPtr)state->last, 
 					 transform) != NULL) {
-	 state->last = (xmlSecBinTransformPtr)transform;
+	 state->last = (xmlSecTransformPtr)transform;
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformAddAfter");
+		    "xmlSecTransformAddAfter");
 	return(-1);	    
     }
     return(0);
@@ -1231,14 +790,14 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
 	return(-1);	    
     }
     if(state->first == NULL) {
-	state->first = state->last = (xmlSecBinTransformPtr)transform;
-    } else if(xmlSecBinTransformAddBefore((xmlSecTransformPtr)state->first, 
+	state->first = state->last = (xmlSecTransformPtr)transform;
+    } else if(xmlSecTransformAddBefore((xmlSecTransformPtr)state->first, 
 					  transform) != NULL) {
-	 state->first = (xmlSecBinTransformPtr)transform;
+	 state->first = (xmlSecTransformPtr)transform;
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformAddBefore");
+		    "xmlSecTransformAddBefore");
 	return(-1);	    
     }
     return(0);
@@ -1252,6 +811,8 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
 /**
  * xmlSecEncResultCreate:
  * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer to application specific data that will be 
+ *     passed to all callback functions.
  * @encrypt: the encrypt/decrypt flag.
  * @node: the pointer to <enc:EncryptedData> node.
  * 
@@ -1261,7 +822,7 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
  * if an error occurs.
  */ 		
 xmlSecEncResultPtr		
-xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, int encrypt, xmlNodePtr node) {
+xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
     xmlSecEncResultPtr result;
 
     xmlSecAssert2(ctx != NULL, NULL);    
@@ -1282,6 +843,7 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, int encrypt, xmlNodePtr node) {
     result->ctx = ctx;
     result->self = node;
     result->encrypt = encrypt;
+    result->context = context;
     return(result);
 }
 
@@ -1432,8 +994,6 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     xmlSecAssert2(encNode != NULL, -1);
     xmlSecAssert2(state!= NULL, -1);    
     xmlSecAssert2(result != NULL, -1);
-    xmlSecAssert2(result->ctx != NULL, -1);
-    xmlSecAssert2(result->ctx->keysMngrCtx != NULL, -1);
 
     result->id = xmlGetProp(encNode, BAD_CAST "Id");
     result->type = xmlGetProp(encNode, BAD_CAST "Type");
@@ -1442,13 +1002,12 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     cur = xmlSecGetNextElementNode(encNode->children);    
         
     /* first node is optional EncryptionMethod */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "EncryptionMethod", xmlSecNsEnc))) {
-	encryptionMethod = xmlSecTransformNodeRead(cur, xmlSecUsageEncryptionMethod, 0);
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "EncryptionMethod", xmlSecEncNs))) {
+	encryptionMethod = xmlSecTransformNodeRead(cur, xmlSecTransformUsageEncryptionMethod, 0);
 	cur = xmlSecGetNextElementNode(cur->next);
-    } else if((state->ctx != NULL) && (state->ctx->encryptionMethod != xmlSecTransformUnknown)){
+    } else if((state->ctx != NULL) && (state->ctx->encryptionMethod != xmlSecTransformIdUnknown)){
 	/* get encryption method from the context */
-	encryptionMethod = xmlSecTransformCreate(state->ctx->encryptionMethod,
-						xmlSecUsageEncryptionMethod, 0);
+	encryptionMethod = xmlSecTransformCreate(state->ctx->encryptionMethod, 0);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
@@ -1469,29 +1028,28 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	xmlSecTransformDestroy(encryptionMethod, 1); 
 	return(-1);
     }
-    xmlSecBinTransformSetEncrypt(encryptionMethod, state->encrypt);
+    encryptionMethod->encode = state->encrypt;
     result->encryptionMethod = encryptionMethod->id;
     
     /* next node is optional KeyInfo */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecNsDSig))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "KeyInfo", xmlSecDSigNs))) {
 	keyInfoNode = cur;
 	cur = xmlSecGetNextElementNode(cur->next);
     }    
 
     /* now we are ready to get key, KeyInfo node may be NULL! */
-    if(result->key == NULL) {
-	if(result->encrypt) {
-	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetEncKeyType(result->encryptionMethod);
-	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageEncrypt;
-	} else {
-	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetDecKeyType(result->encryptionMethod);
-	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageDecrypt;
-	}
-	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->encryptionMethod);
-	
-	result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
-					   result->ctx->keysMngrCtx,
-					   keyInfoNode);
+    if((result->key == NULL) && (xmlSecEncResultGetKeyCallback(result) != NULL)) {
+	xmlSecKeyInfoCtxPtr keyInfoCtx;
+
+	keyInfoCtx = &(result->ctx->keyInfoCtx);	
+	ret = xmlSecTransformSetKeyReq(encryptionMethod, keyInfoCtx);
+	if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformSetKeyReq");
+	    return(-1);
+	}		
+	result->key = (xmlSecEncResultGetKeyCallback(result))(keyInfoNode, keyInfoCtx);
     }    
     if(result->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1499,21 +1057,22 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 		    " ");
 	return(-1);
     }
-    ret = xmlSecBinTransformAddKey(encryptionMethod, result->key->value);
+    ret = xmlSecTransformSetKey(encryptionMethod, result->key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformAddKey - %d", ret);
+		    "xmlSecTransformAddKey - %d", ret);
 	return(-1);
     }
     if(result->encrypt && (keyInfoNode != NULL)) {
 	/* update KeyInfo! */
+	/* todo: do we want to write anything else??? */
+	result->ctx->keyInfoCtx.keyType = xmlSecKeyDataTypePublic;
 	ret = xmlSecKeyInfoNodeWrite(keyInfoNode, 
-			result->ctx->keysMngrCtx,
-		    	result->key, 
-			xmlSecBinTransformIdGetDecKeyType(result->encryptionMethod));
+		    		     result->key, 
+				     &result->ctx->keyInfoCtx);
 	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecKeyInfoNodeWrite - %d", ret);
 	    return(-1);
@@ -1521,7 +1080,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     }
 
     /* next is required CipherData node */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CipherData", xmlSecNsEnc))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "CipherData", xmlSecEncNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "CipherData");
@@ -1531,7 +1090,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is optional EncryptionProperties node (we simply ignore it) */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "EncryptionProperties", xmlSecNsEnc))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "EncryptionProperties", xmlSecEncNs))) {
 	cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -1540,7 +1099,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	xmlSecTransformPtr base64;
 	/* last transform for encryption is base64 encode */
 	
-	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0, 0);
+	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0);
 	if(base64 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1557,7 +1116,7 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	}
 	
 	/* add mem buf at the end */
-	memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0, 0);
+	memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0);
 	if(memBuf == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1602,7 +1161,7 @@ xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state,
     cur = xmlSecGetNextElementNode(cipherDataNode->children);
 
     /* CipherValue or CipherReference */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "CipherValue", xmlSecNsEnc))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "CipherValue", xmlSecEncNs))) {
 	ret = xmlSecCipherValueNodeRead(cur, state, result);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1611,7 +1170,7 @@ xmlSecCipherDataNodeRead(xmlNodePtr cipherDataNode, xmlSecEncStatePtr state,
 	    return(-1);
 	}
 	cur = xmlSecGetNextElementNode(cur->next);	
-    } else if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "CipherReference",  xmlSecNsEnc))) { 
+    } else if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "CipherReference",  xmlSecEncNs))) { 
 	ret = xmlSecCipherReferenceNodeRead(cur, state, result);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1645,7 +1204,7 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 
     cur = xmlSecGetNextElementNode(cipherDataNode->children);
     if(cur == NULL) {
-	cur = xmlSecAddChild(cipherDataNode, BAD_CAST "CipherValue", xmlSecNsEnc);
+	cur = xmlSecAddChild(cipherDataNode, BAD_CAST "CipherValue", xmlSecEncNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1656,12 +1215,12 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 	xmlNodeAddContentLen(cur, buf, size);
         xmlNodeAddContent(cur, BAD_CAST "\n");
 	return(0);
-    } else if(xmlSecCheckNodeName(cur, BAD_CAST "CipherValue", xmlSecNsEnc)) {
+    } else if(xmlSecCheckNodeName(cur, BAD_CAST "CipherValue", xmlSecEncNs)) {
         xmlNodeSetContent(cur, BAD_CAST "\n");
 	xmlNodeAddContentLen(cur, buf, size);
         xmlNodeAddContent(cur, BAD_CAST "\n");
 	cur = xmlSecGetNextElementNode(cur->next);
-    } else if(xmlSecCheckNodeName(cur, BAD_CAST "CipherReference", xmlSecNsEnc)) {
+    } else if(xmlSecCheckNodeName(cur, BAD_CAST "CipherReference", xmlSecEncNs)) {
 	/* do nothing! */
 	cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -1690,7 +1249,7 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     xmlSecAssert2(result != NULL, -1);
     
     /* first transform for decryption is base64 decode */	
-    base64 = xmlSecTransformCreate(xmlSecEncBase64Decode, 0, 0);
+    base64 = xmlSecTransformCreate(xmlSecEncBase64Decode, 0);
     if(base64 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1709,7 +1268,7 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
 
 
     /* add mem buf at the end */
-    memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0, 0);
+    memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0);
     if(memBuf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -1736,22 +1295,22 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     }
 	
     /* decrypt the data */
-    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)state->first, 
+    ret = xmlSecTransformWriteBin((xmlSecTransformPtr)state->first, 
 				  content, xmlStrlen(content));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformWrite - %d", ret);
+		    "xmlSecTransformWrite - %d", ret);
 	xmlFree(content);
 	return(-1);	    	
     }
 	
     /* flush everything */
-    ret = xmlSecBinTransformFlush((xmlSecTransformPtr)state->first);
+    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)state->first);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBinTransformWFlush - %d", ret);
+		    "xmlSecTransformWFlush - %d", ret);
 	xmlFree(content);
         return(-1);	    	
     }
@@ -1772,7 +1331,7 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
 static int			
 xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr state, 
 			      xmlSecEncResultPtr result) {
-    xmlSecBinTransformPtr transform;
+    xmlSecTransformPtr transform;
     xmlSecTransformStatePtr transState = NULL;
     xmlNodePtr cur;
     xmlChar *uri = NULL;
@@ -1794,7 +1353,7 @@ xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr 
     }	
     
     /* first is optional Transforms node */
-    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecNsEnc)) {
+    if((cur != NULL) && xmlSecCheckNodeName(cur, BAD_CAST "Transforms", xmlSecEncNs)) {
 	ret = xmlSecTransformsNodeRead(transState, cur);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1825,7 +1384,7 @@ xmlSecCipherReferenceNodeRead(xmlNodePtr cipherReferenceNode, xmlSecEncStatePtr 
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		        "xmlSecTransformStateUpdate - %d", ret);
-	    xmlSecBinTransformDestroyAll((xmlSecTransformPtr)transform);
+	    xmlSecTransformDestroyAll((xmlSecTransformPtr)transform);
 	    goto done;
 	}
     }

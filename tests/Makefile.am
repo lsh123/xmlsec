@@ -28,20 +28,15 @@ check: $(XMLSEC_APP)
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
 if XMLSEC_WITH_SKM_TEST
-	@rm -f /tmp/testKeys*.log
 	@$(top_srcdir)/tests/testKeys.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
 endif 	
 if XMLSEC_WITH_XMLDSIG_TEST	
-	@rm -f /tmp/testDSig*.log
-	@rm -f /tmp/testDSig*.tmp
 	@$(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
 endif	
 if XMLSEC_WITH_XMLENC_TEST
-	@rm -f /tmp/testEnc*.log
-	@rm -f /tmp/testEnc*.tmp
 	@$(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
 endif
-	@$(top_srcdir)/tests/testRes.sh
+

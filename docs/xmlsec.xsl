@@ -173,15 +173,6 @@
 		</xsl:otherwise>
 	    </xsl:choose>
 	    </td></tr>
-	    <tr><td>
-		<br/><br/>
-		<p>
-		<xsl:call-template name="linkto"> 
-		    <xsl:with-param name="href">bugs.html</xsl:with-param> 
-		    <xsl:with-param name="text">Aleksey Sanin</xsl:with-param> 
-		</xsl:call-template>
-		</p>
-	    </td></tr>
 	</table>
     </td>
 

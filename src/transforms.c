@@ -172,10 +172,11 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
     xmlSecBufferFinalize(&(transform->inBuf));
     xmlSecBufferFinalize(&(transform->outBuf));
 
-    if(transform->inNodes != NULL) {
-	xmlSecNodeSetDestroy(transform->inNodes);
-    }
-    if(transform->outNodes != NULL) {
+    /* we never destroy input nodes, output nodes
+     * are destroyed if and only if they are different
+     * from input nodes 
+     */
+    if((transform->outNodes != NULL) && (transform->outNodes != transform->inNodes)) {
 	xmlSecNodeSetDestroy(transform->outNodes);
     }
     if(transform->id->finalize != NULL) { 
@@ -818,23 +819,122 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
 int 
 xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes, 
 			    xmlSecTransformCtxPtr transformCtx) {
+    int ret;
+
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(transform->inNodes == NULL, -1);
+    xmlSecAssert2(transform->outNodes == NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-    
-    /* TODO */
+
+    /* execute our transform */
+    transform->inNodes = nodes;
+    ret = xmlSecTransformExecute(transform, 1, transformCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* push result to the next transform (if exist) */
+    if(transform->next != NULL) {
+	ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformPushXml",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }        
     return(0);
 }
 
 int xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, 
 			    xmlSecTransformCtxPtr transformCtx) {
+    int ret;
+    
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(transform->inNodes == NULL, -1);
+    xmlSecAssert2(transform->outNodes == NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
     
-    /* TODO */
+    /* pop result from the prev transform (if exist) */
+    if(transform->prev != NULL) {
+	ret = xmlSecTransformPopXml(transform->prev, &(transform->inNodes), transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformPopXml",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }        
+
+    /* execute our transform */
+    ret = xmlSecTransformExecute(transform, 1, transformCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* return result if requested */
+    if(nodes != NULL) {
+	(*nodes) = transform->outNodes;
+    }
+    
     return(0);
 }
+
+int  
+xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
+			    xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
+    xmlSecTransformCtx ctx;
+    int ret;
+    			    
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(ctxDoc != NULL, -1);
+    xmlSecAssert2(doc != NULL, -1);
+    xmlSecAssert2((*doc) != NULL, -1);
+    xmlSecAssert2(nodes != NULL, -1);
+    
+    memset(&ctx, 0, sizeof(ctx));
+
+    ctx.ctxDoc = ctxDoc;
+
+    /* execute our transform */
+    transform->inNodes = (*nodes);
+    ret = xmlSecTransformExecute(transform, 1, &ctx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformExecute",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    if(transform->outNodes != NULL) {
+	(*nodes)= transform->outNodes;
+	(*doc) 	= transform->outNodes->doc;
+	/* we don;t want to destroy the nodes set in transform */
+	transform->outNodes = NULL;
+    } else {
+	(*nodes)= NULL;
+	(*doc) 	= NULL;
+    }
+
+    return(0);    
+}
+
 
 
 #include "transforms-old.c"

@@ -30,17 +30,6 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NExclusive;
 XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NExclusiveWithComments;
 
 
-/********************************************************************
- *
- * Enveloped transform 
- *
- *******************************************************************/
-/**
- * xmlSecTransformEnveloped:
- * 
- * The "enveloped" transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformEnveloped;
 
 /********************************************************************
  *

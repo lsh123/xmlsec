@@ -90,7 +90,7 @@ typedef unsigned char			xmlSecTransformDataType;
  * The transform context.
  */
 struct _xmlSecTransformCtx {
-    int 	something;
+    xmlDocPtr		ctxDoc;
 };
 
 /**************************************************************************
@@ -168,6 +168,9 @@ XMLSEC_EXPORT int			xmlSecTransformPushXml	(xmlSecTransformPtr transform,
 XMLSEC_EXPORT int			xmlSecTransformPopXml	(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr* nodes,
 								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int 			xmlSecTransformExecute	(xmlSecTransformPtr transform, 
+								 int last, 
+								 xmlSecTransformCtxPtr transformCtx);
 
 
 XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
@@ -190,10 +193,10 @@ XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 
-XMLSEC_EXPORT int 			xmlSecTransformExecute	(xmlSecTransformPtr transform, 
-								 int last, 
-								 xmlSecTransformCtxPtr transformCtx);
-
+XMLSEC_EXPORT int 			xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform,
+								  xmlDocPtr ctxDoc,
+								  xmlDocPtr *doc,
+								  xmlSecNodeSetPtr *nodes);
 
 
 XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
@@ -570,6 +573,19 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
 XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr transform,
 									 size_t lineSize);
 
+/********************************************************************
+ *
+ * Enveloped transform 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformEnveloped:
+ * 
+ * The "enveloped" transform id.
+ */
+#define xmlSecTransformEnvelopedId \
+	xmlSecTransformEnvelopedGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformEnvelopedGetKlass	(void);
 
 /********************************************************************
  *

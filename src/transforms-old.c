@@ -31,7 +31,6 @@ xmlSecTransformsInit(void) {
     memset(xmlSecAllTransformIds, 0, sizeof(xmlSecAllTransformIds));
     xmlSecAllTransformIds[0] = xmlSecTransformIdUnknown;
     
-    /* encoding */
     if(xmlSecTransformRegister(xmlSecTransformBase64Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -41,6 +40,18 @@ xmlSecTransformsInit(void) {
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformBase64Id)));
 	return(-1);
     }
+
+    if(xmlSecTransformRegister(xmlSecTransformEnvelopedId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformRegister",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformEnvelopedId)));
+	return(-1);
+    }
+
+
 
     /* c14n methods */
     if(xmlSecTransformRegister(xmlSecC14NInclusive) < 0) {
@@ -80,16 +91,6 @@ xmlSecTransformsInit(void) {
 	return(-1);
     }
 
-    /* XML transforms */
-    if(xmlSecTransformRegister(xmlSecTransformEnveloped) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformRegister",	    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformEnveloped)));
-	return(-1);
-    }
     if(xmlSecTransformRegister(xmlSecTransformXPath) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -294,6 +295,8 @@ xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
 	return(NULL);		
     }
     
+    /* finally remember the transform node */    
+    transform->hereNode = transformNode;
     xmlFree(href);   
     return(transform);
 }

@@ -23,16 +23,17 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
-/* Enveloped transform */
-static int 	xmlSecTransformEnvelopedReadNode	(xmlSecTransformPtr transform,
-							 xmlNodePtr transformNode);
+/**************************************************************************
+ *
+ *  Enveloped transform 
+ *
+ *************************************************************************/
 static int 	xmlSecTransformEnvelopedExecute		(xmlSecTransformPtr transform,
-							 xmlDocPtr ctxDoc,
-							 xmlDocPtr *doc,
-							 xmlSecNodeSetPtr *nodes);
+							 int last, 
+							 xmlSecTransformCtxPtr transformCtx);
 
 
-struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
+static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
     sizeof(xmlSecTransform),		/* size_t objSize */
@@ -44,7 +45,7 @@ struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
     
     NULL,				/* xmlSecTransformInitializeMethod initialize; */
     NULL,				/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformEnvelopedReadNode,	/* xmlSecTransformReadNodeMethod read; */
+    NULL,				/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
@@ -53,33 +54,14 @@ struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
     NULL,				/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformEnvelopedExecute,	/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformEnvelopedExecute,	/* xmlSecTransformExecuteMethod executeXml; */
+    xmlSecTransformOldExecuteXml,	/* xmlSecTransformExecuteMethod executeXml; */
     NULL,				/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
-xmlSecTransformId xmlSecTransformEnveloped = (xmlSecTransformId)(&xmlSecTransformEnvelopedId);
-
-/****************************************************************************
- *
- * Enveloped transform 
- *
- ****************************************************************************/
 /**
- * xmlSecTransformEnvelopedReadNode:
- */
-static int 
-xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformEnveloped), -1);
-    xmlSecAssert2(transformNode!= NULL, -1);
-
-    transform->hereNode = transformNode;
-    return(0);
-}
-
-/**
- * xmlSecTransformEnvelopedExecute:
+ * xmlSecTransformEnvelopedGetKlass:
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature
  *
@@ -103,22 +85,23 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
  * MUST produce output in exactly the same manner as the XPath transform 
  * parameterized by the XPath expression above.
  */
+xmlSecTransformId 
+xmlSecTransformEnvelopedGetKlass(void) {
+    return(&xmlSecTransformEnvelopedKlass);
+}
+
 static int
-xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
-			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
-    xmlSecTransformPtr xmlTransform;
-    xmlNodePtr signature;
-    xmlSecNodeSetPtr res;
+xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, 
+				 xmlSecTransformCtxPtr transformCtx) {
+    xmlNodePtr node;
+    xmlSecNodeSetPtr children;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformEnveloped), -1);
-    xmlSecAssert2(ctxDoc != NULL, -1);
-    xmlSecAssert2(doc != NULL, -1);
-    xmlSecAssert2((*doc) != NULL, -1);
-    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformEnvelopedId), -1);
+    xmlSecAssert2(transform->hereNode != NULL, -1);
+    xmlSecAssert2(last != 0, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
     
-    xmlTransform = (xmlSecTransformPtr)transform;
-
-    if(((*doc) != ctxDoc) || (xmlTransform->hereNode == NULL) || (xmlTransform->hereNode->doc != (*doc))) {
+    if((transform->inNodes != NULL) && (transform->inNodes->doc != transform->hereNode->doc)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -126,37 +109,42 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
 		    "enveloped transform works only on the same document");
 	return(-1);
     }
-
-    signature = xmlSecFindParent(xmlTransform->hereNode, BAD_CAST "Signature", xmlSecDSigNs);
-    if(signature == NULL) {
+    
+    /* find signature node and get all its children in the nodes set */
+    node = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
+    if(node == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecFindParent",
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "<dsig:Signature>");
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeSignature));
 	return(-1);
     }
     
-    res = xmlSecNodeSetGetChildren((*doc), signature, 1, 1);
-    if(res == NULL) {
+    children = xmlSecNodeSetGetChildren(node->doc, node, 1, 1);
+    if(children == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecNodeSetGetChildren",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	return(-1);
     }
 
-    (*nodes) = xmlSecNodeSetAdd((*nodes), res, xmlSecNodeSetIntersection);
-    if((*nodes) == NULL) {
+    /* intersect <dsig:Signature> node children with input nodes (if exist) */
+    transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
+    if(transform->outNodes == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecNodeSetAdd",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecNodeSetDestroy(res);
+	xmlSecNodeSetDestroy(children);
 	return(-1);
     }
+    
     return(0);
 }
 

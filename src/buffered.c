@@ -32,15 +32,16 @@
  *
  ****************************************************************************/
 /**
- * xmlSecBufferedTransformRead
- * @transform: the buffered transform
- * @buf: the buffer
- * @size: the buffer size
+ * xmlSecBufferedTransformRead:
+ * @transform: the pointer to a buffered transform.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
  *
  * Reads the all data from previous transform and returns 
  * to the caller.
  *
- * Returns the number of bytes in the buffer or negative value.
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
  */
 int  	
 xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform, 
@@ -120,9 +121,9 @@ xmlSecBufferedTransformRead(xmlSecBinTransformPtr transform,
 
 /**
  * xmlSecBufferedTransformWrite:
- * @transform: the buffered transform 
- * @buf: the data buffer
- * @size: the data size
+ * @transform: the poiter to a buffered transform.
+ * @buf: the input data buffer.
+ * @size: the input data size.
  *
  * Adds the data to the internal buffer.
  * 
@@ -167,9 +168,9 @@ xmlSecBufferedTransformWrite(xmlSecBinTransformPtr transform,
 
 /**
  * xmlSecBufferedTransformFlush:
- * @transform: the buffered transform
+ * @transform: the pointer to a buffered transform.
  * 
- * Writes internal data to previos transform.
+ * Writes internal data to previous transform.
  * 
  * Returns 0 if success or negative value otherwise.
  */
@@ -230,7 +231,7 @@ xmlSecBufferedTransformFlush(xmlSecBinTransformPtr transform) {
 
 /** 
  * xmlSecBufferedDestroy
- * @transform: the buffered transform
+ * @buffered: the pointer to a buffered transform.
  *
  * Destroys the buffered transform.
  */
@@ -246,8 +247,8 @@ xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
 
 /** 
  * xmlSecBufferedProcess:
- * @transform: the buffered transform
- * @buffer: the buffered transform result
+ * @transform: the pointer to a buffered transform.
+ * @buffer: the buffered transform result,
  *
  * Executes buffered transform.
  *

@@ -36,7 +36,7 @@ typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTr
 #define xmlSecTransformUnknown			NULL
 
 /**
- * xmlSecTransformStatus:
+ * enum xmlSecTransformStatus:
  *
  * The transform execution result.
  */
@@ -342,7 +342,7 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecDigestSha1;
  *
  *******************************************************************/
 /** 
- * xmlSecXPath2TransformType:
+ * enum xmlSecXPath2TransformType:
  *
  * The XPath2 transform types: "union", "intersect", "subtract".
  */

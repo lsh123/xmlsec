@@ -127,8 +127,6 @@ xmlSecTransformStatusFail		/* an error occur */
 } xmlSecTransformStatus;
 </programlisting>
 <para>
-The transform execution result.</para>
-<para>
 
 </para></refsect2>
 <refsect2>
@@ -209,15 +207,15 @@ Sets the AES key to the given data or generates a new random key.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the AES key
+<entry> the pointer to AES key.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry> the AES key data or NULL if new key should be generated
+<entry> the pointer to AES key data or NULL if new key should be generated.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the AES key data size or 0 if new key should be generated   
+<entry> the AES key data size or 0 if new key should be generated.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or &lt; 0 value otherwise.  
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.  
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -252,6 +250,8 @@ The base64 decode transform id.</para>
 <programlisting>void        xmlSecBase64EncodeSetLineSize   (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              <link linkend="size-t">size_t</link> lineSize);</programlisting>
 <para>
+Sets the max line size to <parameter>lineSize</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -259,12 +259,10 @@ The base64 decode transform id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to BASE64 encode transform.
 </entry></row>
 <row><entry align="right"><parameter>lineSize</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> the new max line size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -308,7 +306,7 @@ The exclusive C14N with comments transform id.</para>
 <programlisting>int         xmlSecC14NExclAddInclNamespaces (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *prefixList);</programlisting>
 <para>
-Adds "inclusive" namespaces to the ExcC14N transform node</para>
+Adds "inclusive" namespaces to the ExcC14N transform node <parameter>transformNode</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -317,11 +315,11 @@ Adds "inclusive" namespaces to the ExcC14N transform node</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry> 	the exclusive c14n transform node
+<entry> the pointer to &lt;dsig:Transform&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>prefixList</parameter>&nbsp;:</entry>
-<entry> 	the white space delimited  list of namespace prefixes, 
-		where "<link linkend="default">default</link>" indicates the default namespace
+<entry> the white space delimited  list of namespace prefixes, 
+	where "<link linkend="default">default</link>" indicates the default namespace
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or a negative value otherwise.
 </entry></row>
@@ -359,7 +357,7 @@ The DES key id.</para>
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-</para>
+Reads the DES key from the input buffer or generates a new one.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -368,17 +366,15 @@ The DES key id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to DES key.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input key data (or NULL if new key should be generated).
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input biffer size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -404,7 +400,7 @@ The DSA signature key id.</para>
 <programlisting>int         xmlSecDsaKeyGenerate            (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="DSA-CAPS">DSA</link> *dsa);</programlisting>
 <para>
-</para>
+Sets the DSA key to geven value or generates a new one if <parameter>dsa</parameter> is NULL.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -413,14 +409,12 @@ The DSA signature key id.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to a DSA key.
 </entry></row>
 <row><entry align="right"><parameter>dsa</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to OpenSSL DSA key structure or NULL.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -634,8 +628,6 @@ xmlSecXPathTransformSubtract,		/* subtract */
 xmlSecXPathTransformUnion			/* union */
 } xmlSecXPath2TransformType;
 </programlisting>
-<para>
-The XPath2 transform types: "union", "intersect", "subtract".</para>
 <para>
 
 </para></refsect2>

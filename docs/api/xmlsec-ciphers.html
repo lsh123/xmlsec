@@ -121,7 +121,7 @@ NAME="XMLSEC-CIPHERS">ciphers.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN5014"
+NAME="AEN5022"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN5014"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN5017"><H2
+NAME="AEN5025"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -245,7 +245,7 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5045"
+NAME="AEN5053"
 ></A
 ><H2
 >Description</H2
@@ -255,14 +255,14 @@ NAME="AEN5045"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5048"
+NAME="AEN5056"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5050"
+NAME="AEN5058"
 ></A
 ><H3
 ><A
@@ -288,7 +288,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5055"
+NAME="AEN5063"
 ></A
 ><H3
 ><A
@@ -321,7 +321,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5062"><P
+NAME="AEN5070"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -409,7 +409,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5083"
+NAME="AEN5091"
 ></A
 ><H3
 ><A
@@ -437,7 +437,7 @@ HREF="XMLSECCIPHERTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5089"><P
+NAME="AEN5097"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -491,7 +491,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5102"
+NAME="AEN5110"
 ></A
 ><H3
 ><A
@@ -545,7 +545,7 @@ size_t				bufOutSize;
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5107"
+NAME="AEN5115"
 ></A
 ><H3
 ><A
@@ -574,13 +574,14 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
-></P
+>Reads data from previous transform, encrypts or decrypts them 
+and returns in the output buffer.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5115"><P
+NAME="AEN5123"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -605,7 +606,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to a cipher transform.</TD
 ></TR
 ><TR
 ><TD
@@ -622,7 +623,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the output buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -639,7 +640,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> tje output buffer size.</TD
 ></TR
 ><TR
 ><TD
@@ -657,7 +658,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of bytes in the buffer or negative value
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -668,7 +670,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5136"
+NAME="AEN5144"
 ></A
 ><H3
 ><A
@@ -697,13 +699,14 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
-></P
+>Encrypts or decrypts the input data and writes them 
+to the next transform.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5144"><P
+NAME="AEN5152"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -728,7 +731,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the poiter to a cipher transform.</TD
 ></TR
 ><TR
 ><TD
@@ -745,7 +748,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input data buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -762,7 +765,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input data size.</TD
 ></TR
 ><TR
 ><TD
@@ -780,7 +783,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 if success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -791,7 +794,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5165"
+NAME="AEN5173"
 ></A
 ><H3
 ><A
@@ -815,13 +818,13 @@ HREF="XMLSECBINTRANSFORMPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Writes the rest of data to previous transform.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5172"><P
+NAME="AEN5180"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -846,7 +849,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to a cipher transform.</TD
 ></TR
 ><TR
 ><TD
@@ -864,7 +867,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 if success or negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -875,7 +878,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5185"
+NAME="AEN5193"
 ></A
 ><H3
 ><A
@@ -904,13 +907,13 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
-></P
+>Encrypts/decrypts new piece of data.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5193"><P
+NAME="AEN5201"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -935,7 +938,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to EVP_* cipher transform. </TD
 ></TR
 ><TR
 ><TD
@@ -952,7 +955,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -969,7 +972,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input buffer size.</TD
 ></TR
 ><TR
 ><TD
@@ -987,7 +990,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of bytes processed or a negative value
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -998,7 +1002,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5214"
+NAME="AEN5222"
 ></A
 ><H3
 ><A
@@ -1022,13 +1026,13 @@ HREF="XMLSECCIPHERTRANSFORMPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Finalize encryption/decryption.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5221"><P
+NAME="AEN5229"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1053,7 +1057,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to EVP_* cipher transform. </TD
 ></TR
 ><TR
 ><TD
@@ -1071,7 +1075,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of bytes processed or a negative value
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1082,7 +1087,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5234"
+NAME="AEN5242"
 ></A
 ><H3
 ><A
@@ -1111,13 +1116,13 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
-></P
+>Encrypts/decrypts new piece of data.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5242"><P
+NAME="AEN5250"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1142,7 +1147,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to cipher transform. </TD
 ></TR
 ><TR
 ><TD
@@ -1159,7 +1164,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -1176,7 +1181,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input buffer size.</TD
 ></TR
 ><TR
 ><TD
@@ -1194,7 +1199,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of bytes processed or a negative value
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1205,7 +1211,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5263"
+NAME="AEN5271"
 ></A
 ><H3
 ><A
@@ -1229,13 +1235,13 @@ HREF="XMLSECTRANSFORMPTR"
 ></TR
 ></TABLE
 ><P
-></P
+>Finalize encryption/decryption.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5270"><P
+NAME="AEN5278"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1260,7 +1266,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to cipher transform. </TD
 ></TR
 ><TR
 ><TD
@@ -1278,7 +1284,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the number of bytes processed or a negative value
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE

@@ -98,11 +98,6 @@ xmlSecTransformId xmlSecC14NExclusiveWithComments = (xmlSecTransformId)&xmlSecC1
 
 /**
  * xmlSecC14NTransformCreate:
- * @id: the c14n transform id
- *
- * Creates new c14n trasnform.
- *
- * Returns created transform or NULL of an error occurs.
  */
 static xmlSecTransformPtr 
 xmlSecC14NTransformCreate(xmlSecTransformId id) {
@@ -137,9 +132,6 @@ xmlSecC14NTransformCreate(xmlSecTransformId id) {
 
 /** 
  * xmlSecC14NTransformDestroy
- * @transform: the C14N transform
- * 
- * Destroys the C14N transform.
  */
 static void
 xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
@@ -172,13 +164,7 @@ xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
 }
 
 /** 
- * xmlSecC14NTransformReadNode
- * @transform: the C14N transform 
- * @transformNode: the transform node
- *
- * Reads C14N transform node.
- *
- * Returns 0 if success or a negative values if an error occurs.
+ * xmlSecC14NTransformReadNode:
  */
 static int
 xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
@@ -277,52 +263,8 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     
 }
 
-/**
- * xmlSecC14NExclAddInclNamespaces:
- * @transformNode: 	the exclusive c14n transform node
- * @prefixList: 	the white space delimited  list of namespace prefixes, 
- *			where "#default" indicates the default namespace
- *
- * Adds "inclusive" namespaces to the ExcC14N transform node
- *
- * Returns 0 if success or a negative value otherwise.
- */
-int		
-xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
-    xmlNodePtr node;
-
-    xmlSecAssert2(transformNode != NULL, -1);    
-    xmlSecAssert2(prefixList != NULL, -1);
-
-    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
-    if(node != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "InclusiveNamespace");
-	return(-1);
-    }
-    
-    node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
-    if(node == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"InclusiveNamespaces\")");
-	return(-1);
-    }    
-    
-    xmlSetProp(node, BAD_CAST "PrefixList", prefixList);    
-    return(0);
-}
-
 /** 
- * xmlSecC14NTransformExec
- * @transform: 
- * @doc:
- * @nodes:
- * @buffer:
- *
- * Does the c14n on the input document/node set and writes the result
- * into the buffer
+ * xmlSecC14NTransformExec:
  */
 static int
 xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
@@ -374,4 +316,42 @@ xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
     }    
     return(0);
 }
+
+/**
+ * xmlSecC14NExclAddInclNamespaces:
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @prefixList: the white space delimited  list of namespace prefixes, 
+ *		where "#default" indicates the default namespace
+ *
+ * Adds "inclusive" namespaces to the ExcC14N transform node @transformNode.
+ *
+ * Returns 0 if success or a negative value otherwise.
+ */
+int		
+xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
+    xmlNodePtr node;
+
+    xmlSecAssert2(transformNode != NULL, -1);    
+    xmlSecAssert2(prefixList != NULL, -1);
+
+    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
+    if(node != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "InclusiveNamespace");
+	return(-1);
+    }
+    
+    node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
+    if(node == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"InclusiveNamespaces\")");
+	return(-1);
+    }    
+    
+    xmlSetProp(node, BAD_CAST "PrefixList", prefixList);    
+    return(0);
+}
+
 

@@ -121,7 +121,7 @@ NAME="XMLSEC-BUFFERED">buffered.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4827"
+NAME="AEN4835"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN4827"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4830"><H2
+NAME="AEN4838"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -217,7 +217,7 @@ HREF="XMLBUFFERPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4851"
+NAME="AEN4859"
 ></A
 ><H2
 >Description</H2
@@ -227,14 +227,14 @@ NAME="AEN4851"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4854"
+NAME="AEN4862"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4856"
+NAME="AEN4864"
 ></A
 ><H3
 ><A
@@ -260,7 +260,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4861"
+NAME="AEN4869"
 ></A
 ><H3
 ><A
@@ -292,7 +292,7 @@ HREF="XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4868"><P
+NAME="AEN4876"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -363,7 +363,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4885"
+NAME="AEN4893"
 ></A
 ><H3
 ><A
@@ -412,7 +412,7 @@ xmlSecBufferedProcessMethod		bufferedProcess;
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4890"
+NAME="AEN4898"
 ></A
 ><H3
 ><A
@@ -448,7 +448,7 @@ to the caller.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4898"><P
+NAME="AEN4906"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -473,7 +473,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffered transform</TD
+> the pointer to a buffered transform.</TD
 ></TR
 ><TR
 ><TD
@@ -490,7 +490,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffer</TD
+> the output buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -507,7 +507,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffer size</TD
+> the output buffer size.</TD
 ></TR
 ><TR
 ><TD
@@ -525,7 +525,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of bytes in the buffer or negative value.</TD
+>the number of bytes in the buffer or negative value
+if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -536,7 +537,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4919"
+NAME="AEN4927"
 ></A
 ><H3
 ><A
@@ -571,7 +572,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4927"><P
+NAME="AEN4935"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -596,7 +597,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffered transform </TD
+> the poiter to a buffered transform.</TD
 ></TR
 ><TR
 ><TD
@@ -613,7 +614,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the data buffer</TD
+> the input data buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -630,7 +631,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the data size</TD
+> the input data size.</TD
 ></TR
 ><TR
 ><TD
@@ -659,7 +660,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4948"
+NAME="AEN4956"
 ></A
 ><H3
 ><A
@@ -683,13 +684,13 @@ HREF="XMLSECBINTRANSFORMPTR"
 ></TR
 ></TABLE
 ><P
->Writes internal data to previos transform.</P
+>Writes internal data to previous transform.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4955"><P
+NAME="AEN4963"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -714,7 +715,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffered transform</TD
+> the pointer to a buffered transform.</TD
 ></TR
 ><TR
 ><TD
@@ -743,7 +744,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4968"
+NAME="AEN4976"
 ></A
 ><H3
 ><A
@@ -773,7 +774,7 @@ HREF="XMLSECBUFFEREDTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4975"><P
+NAME="AEN4983"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -798,7 +799,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to a buffered transform.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -809,7 +810,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4984"
+NAME="AEN4992"
 ></A
 ><H3
 ><A
@@ -843,7 +844,7 @@ HREF="XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4992"><P
+NAME="AEN5000"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -868,7 +869,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffered transform</TD
+> the pointer to a buffered transform.</TD
 ></TR
 ><TR
 ><TD
@@ -885,7 +886,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the buffered transform result</TD
+> the buffered transform result,</TD
 ></TR
 ><TR
 ><TD

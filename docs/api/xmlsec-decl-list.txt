@@ -407,22 +407,6 @@ xmlSecXPathHereFunction
 </SECTION>
 
 <SECTION>
-<FILE>nodeset</FILE>
-xmlSecNodeSetType
-xmlSecNodeSetOp
-xmlSecNodeSet
-xmlSecNodeSetWalkCallback
-xmlSecNodeSetCreate
-xmlSecNodeSetDestroy
-xmlSecNodeSetContains
-xmlSecNodeSetAdd
-xmlSecNodeSetAddList
-xmlSecNodeSetGetChildren
-xmlSecNodeSetWalk
-xmlSecNodeSetDebugDump
-</SECTION>
-
-<SECTION>
 <FILE>errors</FILE>
 XMLSEC_ERRORS_LIB
 XMLSEC_ERRORS_FUNCTION
@@ -467,5 +451,21 @@ XMLSEC_ERRORS_HERE
 xmlSecError
 xmlSecAssert
 xmlSecAssert2
+</SECTION>
+
+<SECTION>
+<FILE>nodeset</FILE>
+xmlSecNodeSetType
+xmlSecNodeSetOp
+xmlSecNodeSet
+xmlSecNodeSetWalkCallback
+xmlSecNodeSetCreate
+xmlSecNodeSetDestroy
+xmlSecNodeSetContains
+xmlSecNodeSetAdd
+xmlSecNodeSetAddList
+xmlSecNodeSetGetChildren
+xmlSecNodeSetWalk
+xmlSecNodeSetDebugDump
 </SECTION>
 

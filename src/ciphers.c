@@ -30,12 +30,16 @@
  * BinTransform methods to be used in the Id structure
  */
 /**
- * xmlSecCipherTransformRead
+ * xmlSecCipherTransformRead:
+ * @transform: the pointer to a cipher transform.
+ * @buf: the output buffer.
+ * @size: tje output buffer size.
  *
+ * Reads data from previous transform, encrypts or decrypts them 
+ * and returns in the output buffer.
  *
- *
- *
- *
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
  */
 int  	
 xmlSecCipherTransformRead(xmlSecBinTransformPtr transform, 
@@ -156,12 +160,15 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecCipherTransformWrite
+ * xmlSecCipherTransformWrite:
+ * @transform: the poiter to a cipher transform.
+ * @buf: the input data buffer.
+ * @size: the input data size.
  *
- *
- *
- *
- *
+ * Encrypts or decrypts the input data and writes them 
+ * to the next transform.
+ * 
+ * Returns 0 if success or a negative value otherwise.
  */
 int  	
 xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform, 
@@ -276,12 +283,12 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecCipherTransformFlush
- *
- *
- *
- *
- *
+ * xmlSecCipherTransformFlush:
+ * @transform: the pointer to a cipher transform.
+ * 
+ * Writes the rest of data to previous transform.
+ * 
+ * Returns 0 if success or negative value otherwise.
  */
 int
 xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
@@ -334,13 +341,21 @@ xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
 }
 
 
-/**
+/**********************************************************************
+ *
  * EVP Cipher methods
- */
+ *
+ *********************************************************************/
 /**
- * xmlSecEvpCipherUpdate
+ * xmlSecEvpCipherUpdate:
+ * @cipher: the pointer to EVP_* cipher transform. 
+ * @buffer: the input buffer.
+ * @size: the input buffer size.
  *
+ * Encrypts/decrypts new piece of data.
  *
+ * Returns the number of bytes processed or a negative value
+ * if an error occurs.
  */
 int 	
 xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
@@ -378,9 +393,13 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 }
 
 /**
- * xmlSecEvpCipherFinal
+ * xmlSecEvpCipherFinal:
+ * @cipher: the pointer to EVP_* cipher transform. 
  *
+ * Finalize encryption/decryption.
  *
+ * Returns the number of bytes processed or a negative value
+ * if an error occurs.
  */
 int 	
 xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
@@ -447,16 +466,19 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
  *
  ****************************************************************************/
 /**
- * xmlSecCipherUpdate
+ * xmlSecCipherUpdate:
+ * @transform: the pointer to cipher transform. 
+ * @buffer: the input buffer.
+ * @size: the input buffer size.
  *
+ * Encrypts/decrypts new piece of data.
  *
- *
- *
- *
+ * Returns the number of bytes processed or a negative value
+ * if an error occurs.
  */
 int 	
 xmlSecCipherUpdate(xmlSecTransformPtr transform,
-			const unsigned char *buffer, size_t size) {
+		const unsigned char *buffer, size_t size) {
     xmlSecCipherTransformPtr cipher;    
 
     xmlSecAssert2(transform != NULL, -1);
@@ -476,12 +498,13 @@ xmlSecCipherUpdate(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecCipherFinal
+ * xmlSecCipherFinal:
+ * @transform: the pointer to cipher transform. 
  *
+ * Finalize encryption/decryption.
  *
- *
- *
- *
+ * Returns the number of bytes processed or a negative value
+ * if an error occurs.
  */
 int 	
 xmlSecCipherFinal(xmlSecTransformPtr transform) {

@@ -121,7 +121,7 @@ NAME="XMLSEC-BN">bn.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4691"
+NAME="AEN4698"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN4691"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4694"><H2
+NAME="AEN4701"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -191,7 +191,7 @@ HREF="XMLNODEPTR"
 HREF="BIGNUM-CAPS"
 >BIGNUM</GTKDOCLINK
 > *a,
-                                             int addLineBreak);</PRE
+                                             int addLineBreaks);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -199,7 +199,7 @@ HREF="BIGNUM-CAPS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4711"
+NAME="AEN4718"
 ></A
 ><H2
 >Description</H2
@@ -209,14 +209,14 @@ NAME="AEN4711"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4714"
+NAME="AEN4721"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4716"
+NAME="AEN4723"
 ></A
 ><H3
 ><A
@@ -259,7 +259,7 @@ BIGNUM is created (caller is responsible for freeing it).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4726"><P
+NAME="AEN4733"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -284,7 +284,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->	the CryptoBinary string</TD
+> the CryptoBinary string.</TD
 ></TR
 ><TR
 ><TD
@@ -301,7 +301,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->		the buffer to store the result</TD
+> the buffer to store the result.</TD
 ></TR
 ><TR
 ><TD
@@ -331,7 +331,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4743"
+NAME="AEN4750"
 ></A
 ><H3
 ><A
@@ -362,13 +362,13 @@ HREF="BIGNUM-CAPS"
 (http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
 HREF="SEC-CRYPTOBINARY"
 >sec-CryptoBinary</GTKDOCLINK
->)</P
+>).</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4752"><P
+NAME="AEN4759"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -393,7 +393,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->		the pointer to BIGNUM</TD
+> the pointer to BIGNUM.</TD
 ></TR
 ><TR
 ><TD
@@ -412,7 +412,10 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >newly allocated string (caller is responsible for
-freeing it) or NULL if an error occurs.</TD
+freeing it using <GTKDOCLINK
+HREF="XMLFREE"
+>xmlFree</GTKDOCLINK
+>() function) or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -423,7 +426,7 @@ freeing it) or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4765"
+NAME="AEN4773"
 ></A
 ><H3
 ><A
@@ -466,7 +469,7 @@ BIGNUM is created (caller is responsible for freeing it).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4775"><P
+NAME="AEN4783"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -491,7 +494,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->	the node pointer</TD
+> the poitner to an XML node.</TD
 ></TR
 ><TR
 ><TD
@@ -508,7 +511,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->		the BIGNUM buffer</TD
+> the BIGNUM buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -538,7 +541,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4792"
+NAME="AEN4800"
 ></A
 ><H3
 ><A
@@ -562,7 +565,7 @@ HREF="XMLNODEPTR"
 HREF="BIGNUM-CAPS"
 >BIGNUM</GTKDOCLINK
 > *a,
-                                             int addLineBreak);</PRE
+                                             int addLineBreaks);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -580,7 +583,7 @@ before and after the CryptoBinary string.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4801"><P
+NAME="AEN4809"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -605,7 +608,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> 	the node pointer</TD
+> the pointer to an XML node.</TD
 ></TR
 ><TR
 ><TD
@@ -622,7 +625,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->		the BIGNUM</TD
+> the BIGNUM.</TD
 ></TR
 ><TR
 ><TD
@@ -632,14 +635,16 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->addLineBreak</I
+>addLineBreaks</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> if the flag is equal to 1 then 
+	linebreaks will be added before and after
+	new buffer content.</TD
 ></TR
 ><TR
 ><TD

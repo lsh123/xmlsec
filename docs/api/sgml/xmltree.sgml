@@ -160,7 +160,7 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Checks that the node has a given name and a given namespace href</para>
+Checks that the node has a given name and a given namespace href.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -169,25 +169,22 @@ Checks that the node has a given name and a given namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>
-dis * <parameter>name</parameter>:
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the name,
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry>
+<entry> the namespace href.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the node matches or 0 otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetNextElementNode">xmlSecGetNextElementNode ()</title>
 <programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecGetNextElementNode        (<link linkend="xmlNodePtr">xmlNodePtr</link> cur);</programlisting>
 <para>
-</para>
+Seraches for the next element node.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -196,11 +193,9 @@ dis * <parameter>name</parameter>:
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to next element node or NULL if it is not found.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -209,7 +204,8 @@ dis * <parameter>name</parameter>:
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Lookups a direct child of the node having given name and namespace href</para>
+Searches a direct child of the <parameter>parent</parameter> node having given name and 
+namespace href.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -218,17 +214,16 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry>
+<entry> the namespace href (may be NULL).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
+node is not found.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -237,6 +232,9 @@ Lookups a direct child of the node having given name and namespace href</para>
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
+Searches the ancestors axis of the <parameter>cur</parameter> node for a node having given name 
+and namespace href.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -244,17 +242,16 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry>
+<entry> the namespace href (may be NULL).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the found node or NULL if an error occurs or 
+node is not found.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -289,7 +286,7 @@ Lookups a direct child of the node having given name and namespace href</para>
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-</para>
+Adds a child to the node <parameter>parent</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -298,17 +295,15 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node namespace.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -317,7 +312,7 @@ Lookups a direct child of the node having given name and namespace href</para>
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-</para>
+Adds next sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -326,17 +321,15 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node namespace.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -345,7 +338,7 @@ Lookups a direct child of the node having given name and namespace href</para>
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-</para>
+Adds prev sibling to the node <parameter>node</parameter> with given <parameter>name</parameter> and namespace <parameter>ns</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -354,17 +347,15 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node name.
 </entry></row>
 <row><entry align="right"><parameter>ns</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node namespace.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the new node or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -372,7 +363,7 @@ Lookups a direct child of the node having given name and namespace href</para>
 <programlisting>int         xmlSecReplaceNode               (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);</programlisting>
 <para>
-</para>
+Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -381,14 +372,12 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the current node.
 </entry></row>
 <row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -396,7 +385,7 @@ Lookups a direct child of the node having given name and namespace href</para>
 <programlisting>int         xmlSecReplaceContent            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);</programlisting>
 <para>
-</para>
+Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -405,14 +394,12 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the current node.
 </entry></row>
 <row><entry align="right"><parameter>newNode</parameter>&nbsp;:</entry>
-<entry>
+<entry> the new node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -421,7 +408,7 @@ Lookups a direct child of the node having given name and namespace href</para>
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-</para>
+Swaps the <parameter>node</parameter> and the parsed XML data from the <parameter>buffer</parameter> in the XML tree.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -430,17 +417,15 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry> the current node.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry>
+<entry> the XML data.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the XML data size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -449,6 +434,9 @@ Lookups a direct child of the node having given name and namespace href</para>
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> **ids);</programlisting>
 <para>
+Walks thru all children of the <parameter>cur</parameter> node and adds all attributes 
+from the <parameter>ids</parameter> list to the <parameter>doc</parameter> document IDs attributes hash.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -456,15 +444,13 @@ Lookups a direct child of the node having given name and namespace href</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>doc</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML document.
 </entry></row>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>ids</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> the pointer to a NULL terminated list of ID attributes.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

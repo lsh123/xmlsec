@@ -50,7 +50,9 @@ The big numbers helper functions.
 
 @cur: 
 @a: 
-@addLineBreak: 
+@addLineBreaks: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@addLineBreak: 
 
 

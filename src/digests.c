@@ -22,17 +22,23 @@
 #include <xmlsec/digests.h>
 #include <xmlsec/errors.h>
 
-/** 
+/***********************************************************************
+ *
  * Digest specific hi-level methods
- */ 
+ *
+ **********************************************************************/
+  
 /**
  * xmlSecDigestSignNode:
- * @transform: 
- * @valueNode:
- * @removeOldContent:
+ * @transform: the pointer to a digest transform.
+ * @valueNode: the pointer to <dsig:DigestValue> node.
+ * @removeOldContent: the flag that indicates whether the previous
+ *             node content will be removed or not.
  *
  * Finalizes the digest result, signs it (if necessary), base64 encodes and
- * puts in the node content
+ * puts in the given node.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int 	
 xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode, 
@@ -77,13 +83,13 @@ xmlSecDigestSignNode(xmlSecTransformPtr transform, xmlNodePtr valueNode,
 
 /**
  * xmlSecDigestVerifyNode:
- * @transform:
- * @valueNode:
+ * @transform: the pointer to a digest transform.
+ * @valueNode: the pointer to a <dsig:DigestValue> node.
  *
  * Reads the node content, base64 decodes it, finalizes the digest result and
  * verifies that it does match with the content of the node.
- * This functions returns only operation status (ok, fail). Verification
- * status is stored in xmlSecTransform::state variable 
+ *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode) {
@@ -129,9 +135,9 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
 }
 
 /**
- * xmlSecDigestSetPushMode
- * @transform:
- * @enabled:
+ * xmlSecDigestSetPushMode:
+ * @transform: the pointer to a digests trasnform.
+ * @enabled: the new "push mode" flag.
  *
  * Sets the push more flag. If push mode is enabled then the digest is
  * finalized and send to next transform when 
@@ -154,16 +160,21 @@ xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
     digest->pushModeEnabled = enabled;    
 }
 
-/** 
- * Digest specific low-level methods
- */ 
-/**
- * xmlSecDigestUpdate
- * @transform:
- * @buffer:
- * @size:
+/************************************************************************
  *
- * Envelope for xmlSecDigestTransformId::digestUpdate
+ * Digest specific low-level methods
+ *
+ ***********************************************************************/ 
+/**
+ * xmlSecDigestUpdate:
+ * @transform: the pointer to a digests trasnform.
+ * @buffer: the input data.
+ * @size: the input data size.
+ *
+ * Updates data with the new chunk of data (wrapper for 
+ * xmlSecDigestTransformId::digestUpdate method).
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecDigestUpdate(xmlSecTransformPtr transform,
@@ -186,12 +197,16 @@ xmlSecDigestUpdate(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecDigestSign
- * @transform:
- * @buffer:
- * @size:
+ * xmlSecDigestSign:
+ * @transform: the pointer to a digests trasnform.
+ * @buffer: the pointer to the pointer to the output buffer.
+ * @size: the pointer to the output buffer size.
  *
- * Envelope for xmlSecDigestTransformId::digestSign
+ * Finalizes digest and writes the result into the allocated 
+ * buffer (wrapper for xmlSecDigestTransformId::digestSign function).
+ * Caller is responsble for freeing allocated buffer with xmlFree() function.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecDigestSign(xmlSecTransformPtr transform, 
@@ -214,14 +229,15 @@ xmlSecDigestSign(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecDigestVerify
- * @transform:
- * @buffer:
- * @size:
+ * xmlSecDigestVerify:
+ * @transform: the pointer to a digests trasnform.
+ * @buffer: the input buffer.
+ * @size: the input buffer size.
  *
- * Envelope for xmlSecDigestTransformId::digestVerify
- * This functions returns only operation status (ok, fail). Verification
- * status is stored in xmlSecTransform::state variable 
+ * Checks the computed digest and the data in the input buffer
+ * (wrapper for xmlSecDigestTransformId::digestVerify function).
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecDigestVerify(xmlSecTransformPtr transform,
@@ -245,18 +261,23 @@ xmlSecDigestVerify(xmlSecTransformPtr transform,
 }
 
 
-/**
+/*******************************************************************
+ *
  * BinTransform methods to be used in the Id structure
- */
+ *
+ ******************************************************************/
 /**
- * xmlSecDigestTransformRead
- * @transform:
- * @buf:
- * @size:
+ * xmlSecDigestTransformRead:
+ * @transform: the pointer to a digest transform.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
  *
  * Reads all data from previos transform and digests it. If the 
  * push mode enabled then the result is finalized and returned to the caller,
  * otherwise we return 0
+ *
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
  */
 int
 xmlSecDigestTransformRead(xmlSecBinTransformPtr transform, 
@@ -324,12 +345,14 @@ xmlSecDigestTransformRead(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecDigestTransformWrite
- * @transform:
- * @buf:
- * @size:
+ * xmlSecDigestTransformWrite:
+ * @transform: the poiter to a digests transform.
+ * @buf: the input data buffer.
+ * @size: the input data size.
+ *
+ * Adds new chunk of data to the digest.
  * 
- * Just Updates the digest with the data in the  buffer
+ * Returns 0 if success or a negative value otherwise.
  */
 int
 xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform, 
@@ -363,11 +386,13 @@ xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform,
 
 /**
  * xmlSecDigestTransformFlush
- * @transform:
+ * @transform: the pointer to a digests transform.
  *
  * If the push mode enabled then the function finalizes the result,
  * writes it to the next trasnform and calls flush for it. Otherwise,
  * it just calls flush for next trasnform
+ * 
+ * Returns 0 if success or negative value otherwise.
  */
 int
 xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
@@ -414,7 +439,4 @@ xmlSecDigestTransformFlush(xmlSecBinTransformPtr transform) {
     }	    	    
     return(0);    
 }
-
-
-
 

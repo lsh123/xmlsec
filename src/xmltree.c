@@ -34,10 +34,12 @@ typedef struct _xmlSecExtMemoryParserCtx {
 
 /* 
  * xmlSecParseFile:
- * @filename:
+ * @filename: the filename.
  *
- * Loads XML Doc from file. We need a special version because of 
+ * Loads XML Doc from file @filename. We need a special version because of 
  * c14n issue. The code is copied from xmlSAXParseFileWithData() function.
+ *
+ * Returns pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
@@ -77,7 +79,8 @@ xmlSecParseFile(const char *filename) {
     
 }
 
-static int xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
+static int 
+xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
     xmlSecExtMemoryParserCtxPtr ctx;
     size_t size;
 
@@ -111,9 +114,16 @@ static int xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
 
 /* 
  * xmlSecParseMemoryExt:
+ * @prefix: the first part of the input.
+ * @prefixSize: the size of the first part of the input.
+ * @buffer: the second part of the input.
+ * @bufferSize: the size of the second part of the input.
+ * @postfix: the third part of the input.
+ * @postfixSize: the size of the third part of the input.
  *
- * Loads XML Doc from memory. We need a special version because of 
- * c14n issue. The code is copied from xmlSAXParseMemory() function.
+ * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix. '
+ *
+ * Returns pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
@@ -155,10 +165,14 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
 
 /* 
  * xmlSecParseMemory:
- * @filename:
+ * @buffer: the input buffer.
+ * @size: the input buffer size.
+ * @recovery: the flag.
  *
  * Loads XML Doc from memory. We need a special version because of 
  * c14n issue. The code is copied from xmlSAXParseMemory() function.
+ *
+ * Returns pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
@@ -194,12 +208,15 @@ xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
 
 /**
  * xmlSecFindChild:
- * @parent:
- * @name:
- * @ns:
+ * @parent: the pointer to XML node.
+ * @name: the name.
+ * @ns: the namespace href (may be NULL).
  *
- * Lookups a direct child of the node having given name and namespace href
+ * Searches a direct child of the @parent node having given name and 
+ * namespace href.
  * 
+ * Returns the pointer to the found node or NULL if an error occurs or 
+ * node is not found.
  */
 xmlNodePtr
 xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
@@ -220,6 +237,18 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
     return(NULL);
 }
 
+/**
+ * xmlSecFindParent:
+ * @cur: the pointer to an XML node.
+ * @name: the name.
+ * @ns: the namespace href (may be NULL).
+ *
+ * Searches the ancestors axis of the @cur node for a node having given name 
+ * and namespace href.
+ * 
+ * Returns the pointer to the found node or NULL if an error occurs or 
+ * node is not found.
+ */
 xmlNodePtr
 xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
     xmlSecAssert2(cur != NULL, NULL);
@@ -233,6 +262,18 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
     return(NULL);
 }
 
+/**
+ * xmlSecFind:
+ * @parent: the pointer to XML node.
+ * @name: the name.
+ * @ns: the namespace href (may be NULL).
+ *
+ * Searches all children of the @parent node having given name and 
+ * namespace href.
+ * 
+ * Returns the pointer to the found node or NULL if an error occurs or 
+ * node is not found.
+ */
 xmlNodePtr		
 xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr cur;
@@ -256,16 +297,15 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
     return(NULL);
 }
 
-
-
-
 /** 
  * xmlSecCheckNodeName:
- * @cur:
-dis * @name:
- * @ns:
+ * @cur: the pointer to an XML node.
+ * @name: the name,
+ * @ns: the namespace href.
  *
- * Checks that the node has a given name and a given namespace href
+ * Checks that the node has a given name and a given namespace href.
+ *
+ * Returns 1 if the node matches or 0 otherwise.
  */
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
@@ -288,11 +328,14 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
 }
 
 /**
- * xmlSecAddChild
- * @parent:
- * @name:
- * @ns:
+ * xmlSecAddChild:
+ * @parent: the pointer to an XML node.
+ * @name: the new node name.
+ * @ns: the new node namespace.
  *
+ * Adds a child to the node @parent with given @name and namespace @ns.
+ *
+ * Returns pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr		
 xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
@@ -347,10 +390,13 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 
 /**
  * xmlSecAddNextSibling
- * @parent:
- * @name:
- * @ns:
+ * @node: the pointer to an XML node.
+ * @name: the new node name.
+ * @ns: the new node namespace.
  *
+ * Adds next sibling to the node @node with given @name and namespace @ns.
+ *
+ * Returns pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
@@ -394,10 +440,13 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
 /**
  * xmlSecAddPrevSibling
- * @parent:
- * @name:
- * @ns:
+ * @node: the pointer to an XML node.
+ * @name: the new node name.
+ * @ns: the new node namespace.
  *
+ * Adds prev sibling to the node @node with given @name and namespace @ns.
+ *
+ * Returns pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
@@ -440,10 +489,12 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSecGetNextElementNode
- * @cur:
+ * xmlSecGetNextElementNode:
+ * @cur: the pointer to an XML node.
  *
+ * Seraches for the next element node.
  *
+ * Returns the pointer to next element node or NULL if it is not found.
  */
 xmlNodePtr
 xmlSecGetNextElementNode(xmlNodePtr cur) {
@@ -455,11 +506,13 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
 }
 
 /**
- * xmlSecReplaceNode
+ * xmlSecReplaceNode:
+ * @node: the current node.
+ * @newNode: the new node.
+ * 
+ * Swaps the @node and @newNode in the XML tree.
  *
- *
- *
- *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
@@ -509,10 +562,12 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 
 /**
  * xmlSecReplaceContent
+ * @node: the current node.
+ * @newNode: the new node.
+ * 
+ * Swaps the content of @node and @newNode.
  *
- *
- *
- *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
@@ -550,14 +605,18 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 
 
 /**
- * xmlSecReplaceNodeBuffer
+ * xmlSecReplaceNodeBuffer:
+ * @node: the current node.
+ * @buffer: the XML data.
+ * @size: the XML data size.
+ * 
+ * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
- *
- *
- *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t size) {
+xmlSecReplaceNodeBuffer(xmlNodePtr node, 
+			const unsigned char *buffer, size_t size) {
     static const char dummyPrefix[] = "<dummy>";
     static const char dummyPostfix[] = "</dummy>";
     xmlDocPtr doc;
@@ -599,6 +658,15 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t siz
     return(0);
 }
 
+/**
+ * xmlSecAddIDs:
+ * @doc: the pointer to an XML document.
+ * @cur: the pointer to an XML node.
+ * @ids: the pointer to a NULL terminated list of ID attributes.
+ *
+ * Walks thru all children of the @cur node and adds all attributes 
+ * from the @ids list to the @doc document IDs attributes hash.
+ */
 void	
 xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
     xmlNodePtr children = NULL;

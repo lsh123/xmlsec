@@ -281,12 +281,7 @@ xmlSecTransformId xmlSecKWAes256 = (xmlSecTransformId)&xmlSecKWAes256Id;
  ***************************************************************************/
  
 /**
- * xmlSecAesCreate
- * @id: the AES transform id
- * 
- * Creates new AES transform object.
- *
- * Returns AES transform object or NULL if an error occurs.
+ * xmlSecAesCreate:
  */ 
 static xmlSecTransformPtr 
 xmlSecAesCreate(xmlSecTransformId id) {
@@ -337,10 +332,7 @@ xmlSecAesCreate(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecAesDestroy
- * @transform: the AES transform object.
- * 
- * Destroys AES transform object.
+ * xmlSecAesDestroy:
  */ 
 static void 	
 xmlSecAesDestroy(xmlSecTransformPtr transform) {
@@ -367,13 +359,7 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
 }
 
 /** 
- * xmlSecAesAddKey
- * @transform: the AES tranform
- * @key: the AES key
- *
- * Sets the AES key to the AES transform.
- *
- * Returns 0 for success or < 0 value otherwise.   
+ * xmlSecAesAddKey:
  */ 
 static int  	
 xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
@@ -434,12 +420,7 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     ((xmlSecAesKeyDataPtr)(((xmlSecBufferedTransformPtr)( t ))->binData))
     
 /**
- * xmlSecKWAesCreate
- * @id: the AES KW transform id
- * 
- * Creates new AES KW transform object.
- *
- * Returns AES KW transform object or NULL if an error occurs.
+ * xmlSecKWAesCreate:
  */ 
 static xmlSecTransformPtr 
 xmlSecKWAesCreate(xmlSecTransformId id) {    
@@ -475,10 +456,7 @@ xmlSecKWAesCreate(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecKWAesDestroy
- * @transform: the AES KW transform object.
- * 
- * Destroys AES KW transform object.
+ * xmlSecKWAesDestroy:
  */ 
 static void 	
 xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
@@ -506,13 +484,7 @@ xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
 }
 
 /** 
- * xmlSecKWAesAddKey
- * @transform: the AES KW tranform
- * @key: the AES key
- *
- * Sets the AES key to the AES KW transform.
- *
- * Returns 0 for success or < 0 value otherwise.   
+ * xmlSecKWAesAddKey:
  */ 
 static int
 xmlSecKWAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
@@ -559,12 +531,6 @@ xmlSecKWAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 
 /**
  * xmlSecKWAesProcess:
- * @buffered: the buffered transform
- * @buffer: the output buffer
- * 
- * Applies AES KW transform and places data into @buffer
- *
- * Returns 0 for success or < 0 value otherwise.
  */
 static int
 xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
@@ -630,14 +596,6 @@ static const unsigned char xmlSecKWAesMagicBlock[] = {
 					    	
 /**
  * xmlSecKWAesEncode:
- * @key: the AES key
- * @keySize: the AES key size
- * @buf: the data
- * @bufSize: the data size
- *
- * Encrypts data with AES for AES KW.
- *
- * Returns 0 for success or < 0 value otherwise.    
  */
 static int  	
 xmlSecKWAesEncode(const unsigned char *key, size_t keySize,
@@ -688,14 +646,6 @@ xmlSecKWAesEncode(const unsigned char *key, size_t keySize,
 
 /**
  * xmlSecKWAesDecode:
- * @key: the AES key
- * @keySize: the AES key size
- * @buf: the data
- * @bufSize: the data size
- *
- * Decrypts data with AES for AES KW.
- *
- * Returns 0 for success or < 0 value otherwise.    
  */
 static int  	
 xmlSecKWAesDecode(const unsigned char *key, size_t keySize,
@@ -760,13 +710,7 @@ xmlSecKWAesDecode(const unsigned char *key, size_t keySize,
  *************************************************************************/
 
 /**
- * xmlSecAesKeyCreate
- * @id: the key id
- *
- * Creates new AES key object.
- *
- * Returns pointer to created AES key object or NULL if
- * an error occur.
+ * xmlSecAesKeyCreate:
  */
 static xmlSecKeyPtr	
 xmlSecAesKeyCreate(xmlSecKeyId id) {
@@ -796,10 +740,7 @@ xmlSecAesKeyCreate(xmlSecKeyId id) {
 }
 
 /**
- * xmlSecAesKeyDestroy
- * @key: the AES key object
- *
- * Destroys AES key obect
+ * xmlSecAesKeyDestroy:
  */
 static void
 xmlSecAesKeyDestroy(xmlSecKeyPtr key) {
@@ -822,12 +763,6 @@ xmlSecAesKeyDestroy(xmlSecKeyPtr key) {
 
 /** 
  * xmlSecAesKeyDuplicate:
- * @key: the AES key.
- *
- * Creates a copy of AES key object.
- *
- * Returns pointer to created AES key object or NULL if
- * an error occur.
  */
 static xmlSecKeyPtr	
 xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
@@ -868,14 +803,14 @@ xmlSecAesKeyDuplicate(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecAesKeyGenerate
- * @key: the AES key
- * @buf: the AES key data or NULL if new key should be generated
- * @size: the AES key data size or 0 if new key should be generated   
+ * xmlSecAesKeyGenerate:
+ * @key: the pointer to AES key.
+ * @buf: the pointer to AES key data or NULL if new key should be generated.
+ * @size: the AES key data size or 0 if new key should be generated.
  *
  * Sets the AES key to the given data or generates a new random key.
  *
- * Returns 0 for success or < 0 value otherwise.  
+ * Returns 0 for success or a negative value otherwise.  
  */
 int		
 xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -922,13 +857,7 @@ xmlSecAesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 }
 
 /**
- * xmlSecAesKeyRead
- * @key: the AES key 
- * @node: the <AESKeyValue> node 
- * 
- * Reads AES key info from XML node.
- * 
- * Returns 0 for success or < 0 value otherwise.  
+ * xmlSecAesKeyRead:
  */
 static int
 xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
@@ -987,15 +916,7 @@ xmlSecAesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 }
 
 /**
- * xmlSecAesKeyWrite
- * @key: the AES key 
- * @type: the key type to write (should be xmlSecKeyTypePrivate or
- *        xmlSecKeyTypeAny).
- * @parent: the <AESKeyValue> node 
- * 
- * Reads AES key info from XML node.
- * 
- * Returns 0 for success or < 0 value otherwise.  
+ * xmlSecAesKeyWrite:
  */
 static int
 xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
@@ -1037,13 +958,6 @@ xmlSecAesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 
 /**
  * xmlSecAesKeyReadBinary:
- * @key: the AES key
- * @buf: the binary buffer
- * @size: the binary buffer size 
- *
- * Reads AES key from binary buffer.
- *
- * Returns 0 for success or < 0 value otherwise. 
  */
 static  int
 xmlSecAesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -1076,16 +990,6 @@ xmlSecAesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
 
 /**
  * xmlSecAesKeyWriteBinary:
- * @key: the AES key
- * @type: unused
- * @buf: the pointer to allocated buffer
- * @size: the size of allocated buffer
- *
- * Writes binary representation of AES key into allocated buffer.
- * The caller is responsible for destroying the returned buffer
- * by calling xmlFree().
- *
- * Returns 0 for success or < 0 value otherwise. 
  */
 static  int
 xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
@@ -1134,13 +1038,7 @@ xmlSecAesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
  *
  **************************************************************************/
 /**
- * xmlSecAesKeyDataCreate
- * @key: the AES key  
- * @keySize: the AES key size
- *
- * Creates new AES key data object.
- *
- * Returns pointer to AES key data object or NULL if an error occurs.
+ * xmlSecAesKeyDataCreate:
  */
 static xmlSecAesKeyDataPtr	
 xmlSecAesKeyDataCreate(const unsigned char *key, size_t keySize) {
@@ -1168,9 +1066,6 @@ xmlSecAesKeyDataCreate(const unsigned char *key, size_t keySize) {
 
 /**
  * xmlSecAesKeyDataDestroy:
- * @data: AES key data object
- * 
- * Destroys AES key data object.
  */
 static void
 xmlSecAesKeyDataDestroy(xmlSecAesKeyDataPtr data) {

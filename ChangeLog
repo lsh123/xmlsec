@@ -1,3 +1,11 @@
+Wed Aug 14 19:27:09 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/api/* include/xmlsec/base64.h include/xmlsec/bn.h 
+	include/xmlsec/transforms.h src/aes.c src/base64.c
+	src/bn.c src/buffered.c src/c14n.c src/ciphers.c
+	src/des.c src/digests.c src/dsa.c src/enveloped.c
+	src/xmltree.c: and more and more documentation
+
 Wed Aug 14 17:32:23 2002  Aleksey Sanin  <aleksey@aleksey.com>  
 
 	* docs/api/* include/xmlsec/transforms.h 

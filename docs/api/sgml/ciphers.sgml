@@ -143,7 +143,8 @@ size_t				bufOutSize;
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-</para>
+Reads data from previous transform, encrypts or decrypts them 
+and returns in the output buffer.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -152,17 +153,16 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to a cipher transform.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
+<entry> the output buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> tje output buffer size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes in the buffer or negative value
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -171,7 +171,8 @@ size_t				bufOutSize;
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-</para>
+Encrypts or decrypts the input data and writes them 
+to the next transform.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -180,24 +181,22 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the poiter to a cipher transform.
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input data buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input data size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCipherTransformFlush">xmlSecCipherTransformFlush ()</title>
 <programlisting>int         xmlSecCipherTransformFlush      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform);</programlisting>
 <para>
-</para>
+Writes the rest of data to previous transform.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -206,11 +205,9 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to a cipher transform.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -219,7 +216,7 @@ size_t				bufOutSize;
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-</para>
+Encrypts/decrypts new piece of data.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -228,24 +225,23 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cipher</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to EVP_* cipher transform. 
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input buffer size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes processed or a negative value
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEvpCipherFinal">xmlSecEvpCipherFinal ()</title>
 <programlisting>int         xmlSecEvpCipherFinal            (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> cipher);</programlisting>
 <para>
-</para>
+Finalize encryption/decryption.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -254,11 +250,10 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cipher</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to EVP_* cipher transform. 
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes processed or a negative value
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -267,7 +262,7 @@ size_t				bufOutSize;
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
-</para>
+Encrypts/decrypts new piece of data.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -276,24 +271,23 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to cipher transform. 
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input buffer.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the input buffer size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes processed or a negative value
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCipherFinal">xmlSecCipherFinal ()</title>
 <programlisting>int         xmlSecCipherFinal               (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
-</para>
+Finalize encryption/decryption.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -302,11 +296,10 @@ size_t				bufOutSize;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to cipher transform. 
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes processed or a negative value
+if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

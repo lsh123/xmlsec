@@ -28,7 +28,7 @@ XMLSEC_EXPORT BIGNUM*	xmlSecNodeGetBNValue		(const xmlNodePtr cur,
 							 BIGNUM **a);
 XMLSEC_EXPORT int	xmlSecNodeSetBNValue		(xmlNodePtr cur, 
 							 const BIGNUM *a,
-							 int addLineBreak);
+							 int addLineBreaks);
 
 #ifdef __cplusplus
 }

@@ -58,12 +58,7 @@ xmlSecTransformId xmlSecTransformEnveloped = (xmlSecTransformId)(&xmlSecTransfor
  *
  ****************************************************************************/
 /**
- * xmlSecTransformEnvelopedCreate
- * @id: the enveloped transform id
- * 
- * Creates new enveloped transform.
- *
- * Returns enveloped transform or NULL if an error occurs.
+ * xmlSecTransformEnvelopedCreate:
  */
 static xmlSecTransformPtr 
 xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
@@ -92,10 +87,7 @@ xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecTransformEnvelopedDestroy
- * @transform: the enveloped transform.  
- *
- * Destroys the enveloped trasnform.
+ * xmlSecTransformEnvelopedDestroy:
  */
 static void
 xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
@@ -113,10 +105,7 @@ xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecTransformEnvelopedReadNode
- * @transform:
- * @transformNode:
- *
+ * xmlSecTransformEnvelopedReadNode:
  */
 static int 
 xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
@@ -138,11 +127,7 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
 
 
 /**
- * xmlSecTransformEnvelopedExecute
- * @transform:
- * @ctxDoc:
- * @doc:
- * @nodes:
+ * xmlSecTransformEnvelopedExecute:
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature
  *
@@ -166,7 +151,6 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
  * MUST produce output in exactly the same manner as the XPath transform 
  * parameterized by the XPath expression above.
  */
-
 static int
 xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDoc,
 			     xmlDocPtr *doc, xmlSecNodeSetPtr *nodes) {
@@ -221,6 +205,4 @@ xmlSecTransformEnvelopedExecute(xmlSecXmlTransformPtr transform, xmlDocPtr ctxDo
     }
     return(0);
 }
-
-
 

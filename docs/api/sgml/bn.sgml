@@ -21,7 +21,7 @@
                                              <link linkend="BIGNUM-CAPS">BIGNUM</link> **a);
 int         <link linkend="xmlSecNodeSetBNValue">xmlSecNodeSetBNValue</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> cur,
                                              const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a,
-                                             int addLineBreak);
+                                             int addLineBreaks);
 </synopsis>
 </refsynopsisdiv>
 
@@ -55,10 +55,10 @@ BIGNUM is created (caller is responsible for freeing it).</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>str</parameter>&nbsp;:</entry>
-<entry>	the CryptoBinary string
+<entry> the CryptoBinary string.
 </entry></row>
 <row><entry align="right"><parameter>a</parameter>&nbsp;:</entry>
-<entry>		the buffer to store the result
+<entry> the buffer to store the result.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>a pointer to BIGNUM produced from CryptoBinary string
 or NULL if an error occurs.
@@ -69,7 +69,7 @@ or NULL if an error occurs.
 <programlisting><link linkend="xmlChar">xmlChar</link>*    xmlSecBN2CryptoBinary           (const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a);</programlisting>
 <para>
 Converts BIGNUM to CryptoBinary string
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary">sec-CryptoBinary</link>)</para>
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary">sec-CryptoBinary</link>).</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -78,10 +78,10 @@ Converts BIGNUM to CryptoBinary string
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>a</parameter>&nbsp;:</entry>
-<entry>		the pointer to BIGNUM
+<entry> the pointer to BIGNUM.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>newly allocated string (caller is responsible for
-freeing it) or NULL if an error occurs.
+freeing it using <link linkend="xmlFree">xmlFree</link>() function) or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -101,10 +101,10 @@ BIGNUM is created (caller is responsible for freeing it).</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry>	the node pointer
+<entry> the poitner to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>a</parameter>&nbsp;:</entry>
-<entry>		the BIGNUM buffer
+<entry> the BIGNUM buffer.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>a pointer to BIGNUM produced from CryptoBinary string
 or NULL if an error occurs.
@@ -114,7 +114,7 @@ or NULL if an error occurs.
 <title><anchor id="xmlSecNodeSetBNValue">xmlSecNodeSetBNValue ()</title>
 <programlisting>int         xmlSecNodeSetBNValue            (<link linkend="xmlNodePtr">xmlNodePtr</link> cur,
                                              const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a,
-                                             int addLineBreak);</programlisting>
+                                             int addLineBreaks);</programlisting>
 <para>
 Converts BIGNUM to CryptoBinary string
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary">sec-CryptoBinary</link>) 
@@ -129,13 +129,15 @@ before and after the CryptoBinary string.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
-<entry> 	the node pointer
+<entry> the pointer to an XML node.
 </entry></row>
 <row><entry align="right"><parameter>a</parameter>&nbsp;:</entry>
-<entry>		the BIGNUM
+<entry> the BIGNUM.
 </entry></row>
-<row><entry align="right"><parameter>addLineBreak</parameter>&nbsp;:</entry>
-<entry>
+<row><entry align="right"><parameter>addLineBreaks</parameter>&nbsp;:</entry>
+<entry> if the flag is equal to 1 then 
+	linebreaks will be added before and after
+	new buffer content.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or -1 otherwise.
 </entry></row>

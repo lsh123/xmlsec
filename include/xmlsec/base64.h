@@ -27,7 +27,7 @@ extern "C" {
 /**
  * Base64 Context
  */
-typedef struct _xmlSecBase64Ctx *xmlSecBase64CtxPtr;
+typedef struct _xmlSecBase64Ctx xmlSecBase64Ctx, *xmlSecBase64CtxPtr;
 XMLSEC_EXPORT xmlSecBase64CtxPtr xmlSecBase64CtxCreate	(int encode,
 							int columns);
 XMLSEC_EXPORT void		xmlSecBase64CtxDestroy	(xmlSecBase64CtxPtr ctx);

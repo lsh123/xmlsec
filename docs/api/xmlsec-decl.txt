@@ -51,7 +51,7 @@ const xmlNodePtr cur,BIGNUM **a
 <FUNCTION>
 <NAME>xmlSecNodeSetBNValue</NAME>
 <RETURNS>int 	</RETURNS>
-xmlNodePtr cur,const BIGNUM *a,int addLineBreak
+xmlNodePtr cur,const BIGNUM *a,int addLineBreaks
 </FUNCTION>
 <TYPEDEF>
 <NAME>xmlSecBufferedTransformId</NAME>
@@ -1885,87 +1885,6 @@ xmlDocPtr doc,xmlNodePtr cur,const xmlChar** ids
 <RETURNS>void  </RETURNS>
 xmlXPathParserContextPtr ctxt,int nargs
 </FUNCTION>
-<ENUM>
-<NAME>xmlSecNodeSetType</NAME>
-typedef enum {
-xmlSecNodeSetNormal = 0,
-xmlSecNodeSetInvert,
-xmlSecNodeSetTree,
-xmlSecNodeSetTreeWithoutComments,
-xmlSecNodeSetTreeInvert,
-xmlSecNodeSetTreeWithoutCommentsInvert,
-xmlSecNodeSetList
-} xmlSecNodeSetType;
-</ENUM>
-<ENUM>
-<NAME>xmlSecNodeSetOp</NAME>
-typedef enum {
-xmlSecNodeSetIntersection = 0,
-xmlSecNodeSetSubtraction,
-xmlSecNodeSetUnion
-} xmlSecNodeSetOp;
-</ENUM>
-<STRUCT>
-<NAME>xmlSecNodeSet</NAME>
-struct xmlSecNodeSet {
-xmlNodeSetPtr	nodes;
-xmlDocPtr		doc;
-xmlSecNodeSetType	type;
-xmlSecNodeSetOp	op;
-
-xmlSecNodeSetPtr	next;
-xmlSecNodeSetPtr	prev;
-xmlSecNodeSetPtr	children;
-};
-</STRUCT>
-<USER_FUNCTION>
-<NAME>xmlSecNodeSetWalkCallback</NAME>
-<RETURNS>int </RETURNS>
-xmlSecNodeSetPtr nset,
-							 xmlNodePtr cur,
-							 xmlNodePtr parent,
-							 void* data
-</USER_FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetCreate</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlDocPtr doc,xmlNodeSetPtr nodes,xmlSecNodeSetType type
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetDestroy</NAME>
-<RETURNS>void 	</RETURNS>
-xmlSecNodeSetPtr nset
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetContains</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlNodePtr node,xmlNodePtr parent
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetAdd</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetAddList</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetGetChildren</NAME>
-<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
-xmlDocPtr doc,const xmlNodePtr parent,int withComments,int invert
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetWalk</NAME>
-<RETURNS>int 	</RETURNS>
-xmlSecNodeSetPtr nset,xmlSecNodeSetWalkCallback func,void* data
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecNodeSetDebugDump</NAME>
-<RETURNS>void 	</RETURNS>
-xmlSecNodeSetPtr nset,FILE *output
-</FUNCTION>
 <MACRO>
 <NAME>XMLSEC_ERRORS_LIB</NAME>
 #define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
@@ -2157,3 +2076,84 @@ const char* file, int line,const char* func,int reason, const char* msg,...
 	    return(ret); \
 	} 
 </MACRO>
+<ENUM>
+<NAME>xmlSecNodeSetType</NAME>
+typedef enum {
+xmlSecNodeSetNormal = 0,
+xmlSecNodeSetInvert,
+xmlSecNodeSetTree,
+xmlSecNodeSetTreeWithoutComments,
+xmlSecNodeSetTreeInvert,
+xmlSecNodeSetTreeWithoutCommentsInvert,
+xmlSecNodeSetList
+} xmlSecNodeSetType;
+</ENUM>
+<ENUM>
+<NAME>xmlSecNodeSetOp</NAME>
+typedef enum {
+xmlSecNodeSetIntersection = 0,
+xmlSecNodeSetSubtraction,
+xmlSecNodeSetUnion
+} xmlSecNodeSetOp;
+</ENUM>
+<STRUCT>
+<NAME>xmlSecNodeSet</NAME>
+struct xmlSecNodeSet {
+xmlNodeSetPtr	nodes;
+xmlDocPtr		doc;
+xmlSecNodeSetType	type;
+xmlSecNodeSetOp	op;
+
+xmlSecNodeSetPtr	next;
+xmlSecNodeSetPtr	prev;
+xmlSecNodeSetPtr	children;
+};
+</STRUCT>
+<USER_FUNCTION>
+<NAME>xmlSecNodeSetWalkCallback</NAME>
+<RETURNS>int </RETURNS>
+xmlSecNodeSetPtr nset,
+							 xmlNodePtr cur,
+							 xmlNodePtr parent,
+							 void* data
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetCreate</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlDocPtr doc,xmlNodeSetPtr nodes,xmlSecNodeSetType type
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetDestroy</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecNodeSetPtr nset
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetContains</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlNodePtr node,xmlNodePtr parent
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetAdd</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetAddList</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlSecNodeSetPtr newNSet,xmlSecNodeSetOp op
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetGetChildren</NAME>
+<RETURNS>xmlSecNodeSetPtr 	</RETURNS>
+xmlDocPtr doc,const xmlNodePtr parent,int withComments,int invert
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetWalk</NAME>
+<RETURNS>int 	</RETURNS>
+xmlSecNodeSetPtr nset,xmlSecNodeSetWalkCallback func,void* data
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecNodeSetDebugDump</NAME>
+<RETURNS>void 	</RETURNS>
+xmlSecNodeSetPtr nset,FILE *output
+</FUNCTION>

@@ -53,7 +53,7 @@ int         <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>        
 <programlisting><link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> xmlSecBase64CtxCreate    (int encode,
                                              int columns);</programlisting>
 <para>
-Creates base64 context.</para>
+Creates new base64 context.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -62,14 +62,13 @@ Creates base64 context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encode</parameter>&nbsp;:</entry>
-<entry>	the encode/decode flag (1 - encode, 0 - decode) 
+<entry> the encode/decode flag (1 - encode, 0 - decode) 
 </entry></row>
 <row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
-<entry>	the number of columns (lines length) in the output
-	if this parameter is 0 then no line breaks inserted
+<entry> the max line length.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>a pointer to newly created base64 context (caller is responsible
-for deleting it using xmlSecBase64CtxDestroy) or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>a pointer to newly created <link linkend="xmlSecBase64Ctx">xmlSecBase64Ctx</link> structure
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -85,7 +84,7 @@ Destroys base64 context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>	the base64 context
+<entry> the pointer to <link linkend="xmlSecBase64Ctx">xmlSecBase64Ctx</link> structure.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -123,19 +122,19 @@ Encodes/decodes the next piece of data from input buffer.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>	the base64 context
+<entry> the pointer to <link linkend="xmlSecBase64Ctx">xmlSecBase64Ctx</link> structure
 </entry></row>
 <row><entry align="right"><parameter>in</parameter>&nbsp;:</entry>
-<entry>		the input buffer
+<entry>	the input buffer
 </entry></row>
 <row><entry align="right"><parameter>inLen</parameter>&nbsp;:</entry>
-<entry>	the input buffer size
+<entry> the input buffer size
 </entry></row>
 <row><entry align="right"><parameter>out</parameter>&nbsp;:</entry>
-<entry>	the output buffer
+<entry> the output buffer
 </entry></row>
 <row><entry align="right"><parameter>outLen</parameter>&nbsp;:</entry>
-<entry>	the output buffer size
+<entry> the output buffer size
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes written to output buffer or 
 -1 if an error occurs.
@@ -157,13 +156,13 @@ and finalizes the result.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
-<entry>	the base64 context
+<entry> the pointer to <link linkend="xmlSecBase64Ctx">xmlSecBase64Ctx</link> structure
 </entry></row>
 <row><entry align="right"><parameter>out</parameter>&nbsp;:</entry>
-<entry>	the output buffer
+<entry> the output buffer
 </entry></row>
 <row><entry align="right"><parameter>outLen</parameter>&nbsp;:</entry>
-<entry>	the output buffer size
+<entry> the output buffer size
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes written to output buffer or 
 -1 if an error occurs.
@@ -175,7 +174,9 @@ and finalizes the result.</para>
                                              <link linkend="size-t">size_t</link> len,
                                              int columns);</programlisting>
 <para>
-Encodes the data from input buffer and allocates the string for the result</para>
+Encodes the data from input buffer and allocates the string for the result.
+The caller is responsible for freeing returned buffer using
+<link linkend="xmlFree">xmlFree</link>() function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -184,17 +185,17 @@ Encodes the data from input buffer and allocates the string for the result</para
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>	the input buffer
+<entry> the input buffer.
 </entry></row>
 <row><entry align="right"><parameter>len</parameter>&nbsp;:</entry>
-<entry>	the input buffer size
+<entry> the input buffer size.
 </entry></row>
 <row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
-<entry>	the output max line length (if 0 then no line breaks
-	would be inserted)
+<entry> the output max line length (if 0 then no line breaks
+          would be inserted)
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>newly allocated string with base64 encoded data (caller is 
-responsibe for freeing it) or NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>newly allocated string with base64 encoded data 
+or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -213,16 +214,16 @@ the output buffer.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>str</parameter>&nbsp;:</entry>
-<entry>	the input buffer with base64 encoded string
+<entry> the input buffer with base64 encoded string
 </entry></row>
 <row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
-<entry>	the output buffer
+<entry> the output buffer
 </entry></row>
 <row><entry align="right"><parameter>len</parameter>&nbsp;:</entry>
-<entry>	the output buffer size
+<entry> the output buffer size
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes written to the output buffer or 
--1 if an error occurs 
+a negative value if an error occurs 
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

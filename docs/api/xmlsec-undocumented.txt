@@ -1,16 +1,11 @@
-61% symbol docs coverage.
-226 symbols documented.
-147 not documented.
+65% symbol docs coverage.
+243 symbols documented.
+130 not documented.
 
 
-xmlSecAddChild
-xmlSecAddIDs
-xmlSecAddNextSibling
-xmlSecAddPrevSibling
 xmlSecAssert
 xmlSecAssert2
 xmlSecBase64CtxInit
-xmlSecBase64EncodeSetLineSize
 xmlSecBinTransformAddKeyMethod
 xmlSecBinTransformCheckSubType
 xmlSecBinTransformFlushMethod
@@ -31,33 +26,22 @@ xmlSecC14NTransformExecute
 xmlSecC14NTransformExecuteMethod
 xmlSecC14NTransformId
 xmlSecC14NTransformIdStruct
-xmlSecCipherFinal
 xmlSecCipherFinalMethod
-xmlSecCipherTransformFlush
 xmlSecCipherTransformId
 xmlSecCipherTransformIdStruct
-xmlSecCipherTransformRead
-xmlSecCipherTransformWrite
-xmlSecCipherUpdate
 xmlSecCipherUpdateMethod
 xmlSecDSigCtx
 xmlSecDSigResult
-xmlSecDesKeyGenerate
 xmlSecDigestSignMethod
 xmlSecDigestTransformId
 xmlSecDigestTransformIdStruct
 xmlSecDigestUpdateMethod
 xmlSecDigestVerifyMethod
-xmlSecDsaKeyGenerate
 xmlSecEncCtx
 xmlSecEncResult
 xmlSecEncResultDestroy
 xmlSecEncRsaOaepAddParam
-xmlSecEvpCipherFinal
-xmlSecEvpCipherUpdate
 xmlSecFindNode
-xmlSecFindParent
-xmlSecGetNextElementNode
 xmlSecHmacAddOutputLength
 xmlSecHmacKeyGenerate
 xmlSecIOInit
@@ -100,9 +84,6 @@ xmlSecParseMemory
 xmlSecParseMemoryExt
 xmlSecReferenceResult
 xmlSecReferenceType
-xmlSecReplaceContent
-xmlSecReplaceNode
-xmlSecReplaceNodeBuffer
 xmlSecRsaKeyGenerate
 xmlSecTransformCheckId
 xmlSecTransformCheckType
@@ -115,6 +96,7 @@ xmlSecTransformIsValid
 xmlSecTransformReadNodeMethod
 xmlSecTransformResult
 xmlSecTransformStateCreate
+xmlSecTransformStatus
 xmlSecTransformType
 xmlSecTransformUsage
 xmlSecTransformXsltAdd
@@ -145,6 +127,7 @@ xmlSecX509StoreFind
 xmlSecX509StoreLoadPemCert
 xmlSecX509StorePtr
 xmlSecX509StoreVerify
+xmlSecXPath2TransformType
 xmlSecXmlTransformExecute
 xmlSecXmlTransformExecuteMethod
 xmlSecXmlTransformId

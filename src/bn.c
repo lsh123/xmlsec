@@ -22,13 +22,13 @@
 
 /**
  * xmlSecBN2CryptoBinary:
- * @a:		the pointer to BIGNUM
+ * @a: the pointer to BIGNUM.
  *
  * Converts BIGNUM to CryptoBinary string
- * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary) 
+ * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary).
  * 
  * Returns newly allocated string (caller is responsible for
- * freeing it) or NULL if an error occurs.
+ * freeing it using xmlFree() function) or NULL if an error occurs.
  */
 xmlChar*		
 xmlSecBN2CryptoBinary(const BIGNUM *a) {
@@ -83,8 +83,8 @@ xmlSecBN2CryptoBinary(const BIGNUM *a) {
 
 /**
  * xmlSecCryptoBinary2BN:
- * @str:	the CryptoBinary string
- * @a:		the buffer to store the result
+ * @str: the CryptoBinary string.
+ * @a: the buffer to store the result.
  *
  * Converts string from CryptoBinary format 
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary) 
@@ -148,8 +148,8 @@ xmlSecCryptoBinary2BN(const xmlChar *str, BIGNUM **a) {
 
 /**
  * xmlSecNodeGetBNValue:
- * @cur:	the node pointer
- * @a:		the BIGNUM buffer
+ * @cur: the poitner to an XML node.
+ * @a: the BIGNUM buffer.
  *
  * Converts the node content from CryptoBinary format 
  * (http://www.w3.org/TR/xmldsig-core/#sec-CryptoBinary) 
@@ -187,9 +187,9 @@ xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 
 /**
  * xmlSecNodeSetBNValue:
- * @cur: 	the node pointer
- * @a:		the BIGNUM
- * @addLineBreaks:	if the flag is equal to 1 then 
+ * @cur: the pointer to an XML node.
+ * @a: the BIGNUM.
+ * @addLineBreaks: if the flag is equal to 1 then 
  *		linebreaks will be added before and after
  *		new buffer content.
  *
@@ -201,7 +201,6 @@ xmlSecNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
  * 
  * Returns 0 on success or -1 otherwise.
  */
-
 int
 xmlSecNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {
     xmlChar* tmp;

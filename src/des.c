@@ -174,11 +174,7 @@ xmlSecTransformId xmlSecKWDes3Cbc = (xmlSecTransformId)&xmlSecKWDes3CbcId;
  * DES transform methods
  */
 /**
- * xmlSecDesCreate
- *
- *
- *
- *
+ * xmlSecDesCreate:
  */ 
 static xmlSecTransformPtr 
 xmlSecDesCreate(xmlSecTransformId id) {
@@ -225,11 +221,7 @@ xmlSecDesCreate(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecDesDestroy
- *
- *
- *
- *
+ * xmlSecDesDestroy:
  */ 
 static void 	
 xmlSecDesDestroy(xmlSecTransformPtr transform) {
@@ -252,11 +244,7 @@ xmlSecDesDestroy(xmlSecTransformPtr transform) {
 }
 
 /** 
- * xmlSecDesAddKey
- *
- *
- *
- *
+ * xmlSecDesAddKey:
  */ 
 static int  	
 xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
@@ -305,9 +293,11 @@ xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-/**
+/*********************************************************************
+ *
  * Triple DES Key Wrap
- */
+ *
+ ********************************************************************/
 #define xmlSecDes3KWKeyData(t) \
     ((xmlSecDesKeyDataPtr)(((xmlSecBufferedTransformPtr)( t ))->binData))
     
@@ -396,11 +386,13 @@ xmlSecDes3KWAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-/**
+/**********************************************************************
+ *
  * CMS Triple DES Key Wrap
  *
  * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap
- */
+ *
+ **********************************************************************/
 static int
 xmlSecDes3KWProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
     size_t size;
@@ -707,13 +699,14 @@ xmlSecBufferReverse(unsigned char *buf, size_t size) {
     return(0);
 }
 
-/**
- * DES key
- */
-/**
- * xmlSecDesKeyCreate
- * @id:
+/************************************************************************
  *
+ * DES key
+ *
+ ***********************************************************************/
+ 
+/**
+ * xmlSecDesKeyCreate:
  */
 static xmlSecKeyPtr	
 xmlSecDesKeyCreate(xmlSecKeyId id) {
@@ -743,10 +736,7 @@ xmlSecDesKeyCreate(xmlSecKeyId id) {
 }
 
 /**
- * xmlSecDesKeyDestroy
- * @key: the DES key
- *
- * Destroys DES key.
+ * xmlSecDesKeyDestroy:
  */
 static void
 xmlSecDesKeyDestroy(xmlSecKeyPtr key) {
@@ -806,9 +796,14 @@ xmlSecDesKeyDuplicate(xmlSecKeyPtr key) {
 }
 
 /**
- * xmlSecDesKeyGenerate
- * @key:
+ * xmlSecDesKeyGenerate:
+ * @key: the pointer to DES key.
+ * @buf: the input key data (or NULL if new key should be generated).
+ * @size: the input biffer size.
  *
+ * Reads the DES key from the input buffer or generates a new one.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
  */
 int		
 xmlSecDesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -854,11 +849,7 @@ xmlSecDesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 }
 
 /**
- * xmlSecDesKeyRead
- * @key:
- * @node:
- *
- *
+ * xmlSecDesKeyRead:
  */
 static int
 xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
@@ -916,14 +907,7 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
 }
 
 /**
- * xmlSecDesKeyWrite
- * @key: the DES key
- * @type: the key type (should be xmlSecKeyTypePrivate or xmlSecKeyTypeAny)
- * @parent: the DESKeyValue node
- *
- * Writes DES key value to the XML node.
- *
- * Returns 0 if success or a negative value otherwise.
+ * xmlSecDesKeyWrite:
  */
 static int
 xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
@@ -965,13 +949,6 @@ xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
 
 /**
  * xmlSecDesKeyReadBinary:
- * @key: the DES key
- * @buf: the key data
- * @size: the data size
- *
- * Reads DES key data from binary format.
- *
- * Returns 0 if success or a negative value otherwise.
  */
 static  int
 xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
@@ -1004,14 +981,6 @@ xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
 
 /**
  * xmlSecDesKeyWriteBinary:
- * @key: the DES key
- * @buf: the pointer to key data
- * @size: the pointer data size
- *
- * Writes DES key data to allocated binary buffer. The caller
- * is responsible for deleting the returned buffer using xmlFree().
- *
- * Returns 0 if success or a negative value otherwise.
  */
 static  int
 xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
@@ -1058,13 +1027,7 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
  *
  *************************************************************************/
 /**
- * xmlSecDesKeyDataCreate
- * @key: the DES key data
- * @keySize: the DES key data size
- *
- * Creates new DES key data object.
- *
- * Returns new DES key data object or NULL if an error occurs.
+ * xmlSecDesKeyDataCreate:
  */
 static xmlSecDesKeyDataPtr	
 xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
@@ -1091,10 +1054,7 @@ xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
 }
 
 /**
- * xmlSecDesKeyDataDestroy
- * @data: the DES key data
- *
- * Destroys DES key data.
+ * xmlSecDesKeyDataDestroy:
  */
 static void
 xmlSecDesKeyDataDestroy(xmlSecDesKeyDataPtr data) {

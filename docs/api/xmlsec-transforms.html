@@ -560,14 +560,12 @@ xmlSecTransformStatusFail		/* an error occur */
 ></TR
 ></TABLE
 ><P
->The transform execution result.</P
-><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3280"
+NAME="AEN3279"
 ></A
 ><H3
 ><A
@@ -595,7 +593,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3286"
+NAME="AEN3285"
 ></A
 ><H3
 ><A
@@ -623,7 +621,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3292"
+NAME="AEN3291"
 ></A
 ><H3
 ><A
@@ -651,7 +649,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3298"
+NAME="AEN3297"
 ></A
 ><H3
 ><A
@@ -679,7 +677,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3304"
+NAME="AEN3303"
 ></A
 ><H3
 ><A
@@ -707,7 +705,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3310"
+NAME="AEN3309"
 ></A
 ><H3
 ><A
@@ -735,7 +733,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3316"
+NAME="AEN3315"
 ></A
 ><H3
 ><A
@@ -763,7 +761,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3322"
+NAME="AEN3321"
 ></A
 ><H3
 ><A
@@ -798,7 +796,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3330"><P
+NAME="AEN3329"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -823,7 +821,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the AES key</TD
+> the pointer to AES key.</TD
 ></TR
 ><TR
 ><TD
@@ -840,7 +838,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the AES key data or NULL if new key should be generated</TD
+> the pointer to AES key data or NULL if new key should be generated.</TD
 ></TR
 ><TR
 ><TD
@@ -857,7 +855,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the AES key data size or 0 if new key should be generated   </TD
+> the AES key data size or 0 if new key should be generated.</TD
 ></TR
 ><TR
 ><TD
@@ -875,7 +873,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 for success or &lt; 0 value otherwise.  </TD
+>0 for success or a negative value otherwise.  </TD
 ></TR
 ></TBODY
 ></TABLE
@@ -886,7 +884,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3351"
+NAME="AEN3350"
 ></A
 ><H3
 ><A
@@ -914,7 +912,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3357"
+NAME="AEN3356"
 ></A
 ><H3
 ><A
@@ -942,7 +940,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3363"
+NAME="AEN3362"
 ></A
 ><H3
 ><A
@@ -970,7 +968,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3369"
+NAME="AEN3368"
 ></A
 ><H3
 ><A
@@ -998,11 +996,18 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
+>Sets the max line size to <TT
+CLASS="PARAMETER"
+><I
+>lineSize</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3376"><P
+NAME="AEN3377"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1027,7 +1032,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to BASE64 encode transform.</TD
 ></TR
 ><TR
 ><TD
@@ -1044,7 +1049,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the new max line size.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1055,7 +1060,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3389"
+NAME="AEN3390"
 ></A
 ><H3
 ><A
@@ -1083,7 +1088,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3395"
+NAME="AEN3396"
 ></A
 ><H3
 ><A
@@ -1111,7 +1116,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3401"
+NAME="AEN3402"
 ></A
 ><H3
 ><A
@@ -1139,7 +1144,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3407"
+NAME="AEN3408"
 ></A
 ><H3
 ><A
@@ -1167,7 +1172,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3413"
+NAME="AEN3414"
 ></A
 ><H3
 ><A
@@ -1195,13 +1200,18 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
->Adds "inclusive" namespaces to the ExcC14N transform node</P
+>Adds "inclusive" namespaces to the ExcC14N transform node <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3421"><P
+NAME="AEN3423"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1226,7 +1236,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> 	the exclusive c14n transform node</TD
+> the pointer to &lt;dsig:Transform&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1243,8 +1253,8 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> 	the white space delimited  list of namespace prefixes, 
-		where "<GTKDOCLINK
+> the white space delimited  list of namespace prefixes, 
+	where "<GTKDOCLINK
 HREF="DEFAULT"
 >default</GTKDOCLINK
 >" indicates the default namespace</TD
@@ -1276,7 +1286,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3439"
+NAME="AEN3441"
 ></A
 ><H3
 ><A
@@ -1304,7 +1314,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3445"
+NAME="AEN3447"
 ></A
 ><H3
 ><A
@@ -1332,7 +1342,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3451"
+NAME="AEN3453"
 ></A
 ><H3
 ><A
@@ -1360,7 +1370,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3457"
+NAME="AEN3459"
 ></A
 ><H3
 ><A
@@ -1389,13 +1399,13 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
-></P
+>Reads the DES key from the input buffer or generates a new one.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3465"><P
+NAME="AEN3467"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1420,7 +1430,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to DES key.</TD
 ></TR
 ><TR
 ><TD
@@ -1437,7 +1447,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input key data (or NULL if new key should be generated).</TD
 ></TR
 ><TR
 ><TD
@@ -1454,7 +1464,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input biffer size.</TD
 ></TR
 ><TR
 ><TD
@@ -1472,7 +1482,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1483,7 +1493,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3486"
+NAME="AEN3488"
 ></A
 ><H3
 ><A
@@ -1511,7 +1521,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3492"
+NAME="AEN3494"
 ></A
 ><H3
 ><A
@@ -1539,7 +1549,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3498"
+NAME="AEN3500"
 ></A
 ><H3
 ><A
@@ -1567,13 +1577,18 @@ HREF="DSA-CAPS"
 ></TR
 ></TABLE
 ><P
-></P
+>Sets the DSA key to geven value or generates a new one if <TT
+CLASS="PARAMETER"
+><I
+>dsa</I
+></TT
+> is NULL.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3506"><P
+NAME="AEN3509"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1598,7 +1613,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to a DSA key.</TD
 ></TR
 ><TR
 ><TD
@@ -1615,7 +1630,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to OpenSSL DSA key structure or NULL.</TD
 ></TR
 ><TR
 ><TD
@@ -1633,7 +1648,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1644,7 +1659,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3523"
+NAME="AEN3526"
 ></A
 ><H3
 ><A
@@ -1672,7 +1687,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3529"
+NAME="AEN3532"
 ></A
 ><H3
 ><A
@@ -1700,7 +1715,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3535"
+NAME="AEN3538"
 ></A
 ><H3
 ><A
@@ -1728,7 +1743,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3541"
+NAME="AEN3544"
 ></A
 ><H3
 ><A
@@ -1756,7 +1771,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3547"
+NAME="AEN3550"
 ></A
 ><H3
 ><A
@@ -1784,7 +1799,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3553"
+NAME="AEN3556"
 ></A
 ><H3
 ><A
@@ -1819,7 +1834,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3561"><P
+NAME="AEN3564"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1907,7 +1922,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3582"
+NAME="AEN3585"
 ></A
 ><H3
 ><A
@@ -1941,7 +1956,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3590"><P
+NAME="AEN3593"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2012,7 +2027,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3607"
+NAME="AEN3610"
 ></A
 ><H3
 ><A
@@ -2040,7 +2055,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3613"
+NAME="AEN3616"
 ></A
 ><H3
 ><A
@@ -2068,7 +2083,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3619"
+NAME="AEN3622"
 ></A
 ><H3
 ><A
@@ -2096,7 +2111,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3625"
+NAME="AEN3628"
 ></A
 ><H3
 ><A
@@ -2124,7 +2139,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3631"
+NAME="AEN3634"
 ></A
 ><H3
 ><A
@@ -2152,7 +2167,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3637"
+NAME="AEN3640"
 ></A
 ><H3
 ><A
@@ -2186,7 +2201,7 @@ HREF="RSA-CAPS"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3645"><P
+NAME="AEN3648"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2257,7 +2272,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3662"
+NAME="AEN3665"
 ></A
 ><H3
 ><A
@@ -2292,7 +2307,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3670"><P
+NAME="AEN3673"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2380,7 +2395,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3691"
+NAME="AEN3694"
 ></A
 ><H3
 ><A
@@ -2408,7 +2423,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3697"
+NAME="AEN3700"
 ></A
 ><H3
 ><A
@@ -2433,14 +2448,12 @@ xmlSecXPathTransformUnion			/* union */
 ></TR
 ></TABLE
 ><P
->The XPath2 transform types: "union", "intersect", "subtract".</P
-><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3703"
+NAME="AEN3705"
 ></A
 ><H3
 ><A
@@ -2468,7 +2481,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3709"
+NAME="AEN3711"
 ></A
 ><H3
 ><A
@@ -2496,7 +2509,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3715"
+NAME="AEN3717"
 ></A
 ><H3
 ><A
@@ -2524,7 +2537,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3721"
+NAME="AEN3723"
 ></A
 ><H3
 ><A
@@ -2568,7 +2581,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3731"><P
+NAME="AEN3733"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2656,7 +2669,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3752"
+NAME="AEN3754"
 ></A
 ><H3
 ><A
@@ -2704,7 +2717,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3763"><P
+NAME="AEN3765"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2809,7 +2822,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3788"
+NAME="AEN3790"
 ></A
 ><H3
 ><A
@@ -2853,7 +2866,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3798"><P
+NAME="AEN3800"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2941,7 +2954,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3819"
+NAME="AEN3821"
 ></A
 ><H3
 ><A
@@ -2969,7 +2982,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3825"
+NAME="AEN3827"
 ></A
 ><H3
 ><A
@@ -3003,7 +3016,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3833"><P
+NAME="AEN3835"><P
 ></P
 ><TABLE
 BORDER="0"

@@ -167,6 +167,15 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 }
 
+xmlSecBufferPtr 
+xmlSecDSigCtxPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
+    xmlSecAssert2(dsigCtx != NULL, NULL);
+    
+    return((dsigCtx->preSignMemBufMethod != NULL) ? 
+	    xmlSecTransformMemBufGetBuffer(dsigCtx->preSignMemBufMethod, 0):
+	    NULL);
+}
+
 int 
 xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     int ret;
@@ -563,8 +572,21 @@ xmlSecDSigCtxSignedInfoProcessNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 
     /* TODO: check that c14n method is allowed */
 
-    /* todo: insert membuf if requested */
-    
+    /* insert membuf if requested */
+    if(dsigCtx->storeSignatures != 0) {
+	xmlSecAssert2(dsigCtx->preSignMemBufMethod == NULL, -1);
+	dsigCtx->preSignMemBufMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->signTransformCtx), 
+						xmlSecTransformMemBufId);
+	if(dsigCtx->preSignMemBufMethod == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxCreateAndAppend",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
+	}
+    }
+        
     /* next node is required SignatureMethod. */
     cur = xmlSecGetNextElementNode(cur->next);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignatureMethod, xmlSecDSigNs))) {
@@ -764,22 +786,34 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 
     xmlSecTransformCtxDebugDump(&(dsigCtx->signTransformCtx), output);
     
+    fprintf(output, "== SignedInfo References List:\n");
+    xmlSecPtrListDebugDump(&(dsigCtx->references), output);
+
+    fprintf(output, "== Manifest References List:\n");
+    xmlSecPtrListDebugDump(&(dsigCtx->manifests), output);
+    
     if((dsigCtx->result != NULL) && 
        (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
 	fprintf(output, "== Result - start buffer:\n");
 	fwrite(xmlSecBufferGetData(dsigCtx->result), 
-	       xmlSecBufferGetSize(dsigCtx->result), 1,
-	       output);
+	       xmlSecBufferGetSize(dsigCtx->result), 
+	       1, output);
 	fprintf(output, "\n== Result - end buffer\n");
-    } else {
-	fprintf(output, "== Result: %d bytes\n",
-		xmlSecBufferGetSize(dsigCtx->result));
     }
-    
-    /* todo: preSignMemBufMethod */
-    /* todo: references and manifests */
+    if((dsigCtx->storeSignatures != 0) && 
+       (xmlSecDSigCtxPreSignBuffer(dsigCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)) != NULL)) {
+       
+	fprintf(output, "== PreSigned data - start buffer:\n");
+	fwrite(xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
+	       1, output);
+	fprintf(output, "\n== PreSigned data - end buffer\n");       
+    }
+        
     /* todo: sign key */
+    /* todo: sign method */
 }
 
 void 
@@ -817,22 +851,38 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 
     xmlSecTransformCtxDebugXmlDump(&(dsigCtx->signTransformCtx), output);
 
+    fprintf(output, "<SignedInfoReferences>\n");
+    xmlSecPtrListDebugXmlDump(&(dsigCtx->references), output);
+    fprintf(output, "</SignedInfoReferences>\n");
+
+    fprintf(output, "<ManifestReferences>\n");
+    xmlSecPtrListDebugXmlDump(&(dsigCtx->manifests), output);
+    fprintf(output, "</ManifestReferences>\n");
+
     if((dsigCtx->result != NULL) && 
        (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
 	fprintf(output, "<Result>");
 	fwrite(xmlSecBufferGetData(dsigCtx->result), 
-	       xmlSecBufferGetSize(dsigCtx->result), 1,
-	       output);
+	       xmlSecBufferGetSize(dsigCtx->result), 
+	       1, output);
 	fprintf(output, "</Result>\n");
-    } else {
-	fprintf(output, "<Result size=\"%d\" />\n",
-	       xmlSecBufferGetSize(dsigCtx->result));
+    }
+    if((dsigCtx->storeSignatures != 0) && 
+       (xmlSecDSigCtxPreSignBuffer(dsigCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)) != NULL)) {
+       
+	fprintf(output, "<PreSignedData>");
+	fwrite(xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
+	       1, output);
+	fprintf(output, "</PreSignedData>\n");       
     }
 
     /* todo: preSignMemBufMethod */
     /* todo: references and manifests */
     /* todo: sign key */
+    /* todo: sign method */
 
     if(dsigCtx->sign) {    
 	fprintf(output, "</SignatureContext>\n");
@@ -918,13 +968,6 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert(dsigRefCtx != NULL);
 
     xmlSecTransformCtxFinalize(&(dsigRefCtx->digestTransformCtx));
-
-    if(dsigRefCtx->c14nMethod != NULL) {
-	xmlSecTransformDestroy(dsigRefCtx->c14nMethod, 1);
-    }    
-    if(dsigRefCtx->digestMethod != NULL) {
-	xmlSecTransformDestroy(dsigRefCtx->digestMethod, 1);
-    }    
     if(dsigRefCtx->id != NULL) {
 	xmlFree(dsigRefCtx->id);
     }	
@@ -938,15 +981,254 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
 }
 
+xmlSecBufferPtr 
+xmlSecDSigReferenceCtxPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
+    xmlSecAssert2(dsigRefCtx != NULL, NULL);
+    
+    return((dsigRefCtx->preDigestMemBufMethod != NULL) ? 
+	    xmlSecTransformMemBufGetBuffer(dsigRefCtx->preDigestMemBufMethod, 0):
+	    NULL);
+}
+
+/**
+ * xmlSecDSigReferenceCtxProcessNode:
+ *
+ * The Reference Element (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
+ * 
+ * Reference is an element that may occur one or more times. It specifies 
+ * a digest algorithm and digest value, and optionally an identifier of the 
+ * object being signed, the type of the object, and/or a list of transforms 
+ * to be applied prior to digesting. The identification (URI) and transforms 
+ * describe how the digested content (i.e., the input to the digest method) 
+ * was created. The Type attribute facilitates the processing of referenced 
+ * data. For example, while this specification makes no requirements over 
+ * external data, an application may wish to signal that the referent is a 
+ * Manifest. An optional ID attribute permits a Reference to be referenced 
+ * from elsewhere.
+ *
+ * Schema Definition:
+ *
+ *  <element name="Reference" type="ds:ReferenceType"/>
+ *  <complexType name="ReferenceType">
+ *    <sequence> 
+ *      <element ref="ds:Transforms" minOccurs="0"/> 
+ *      <element ref="ds:DigestMethod"/> 
+ *      <element ref="ds:DigestValue"/> 
+ *    </sequence>
+ *    <attribute name="Id" type="ID" use="optional"/> 
+ *    <attribute name="URI" type="anyURI" use="optional"/> 
+ *    <attribute name="Type" type="anyURI" use="optional"/> 
+ *  </complexType>
+ *    
+ * DTD:
+ *    
+ *   <!ELEMENT Reference (Transforms?, DigestMethod, DigestValue)  >
+ *   <!ATTLIST Reference Id  ID  #IMPLIED
+ *   		URI CDATA   #IMPLIED
+ * 		Type    CDATA   #IMPLIED>
+ *
+ *
+ */
 int 
 xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr node) {
+    xmlSecTransformCtxPtr transformCtx;
+    xmlNodePtr digestValueNode;
+    xmlNodePtr cur;
     int ret;
     
     xmlSecAssert2(dsigRefCtx != NULL, -1);
+    xmlSecAssert2(dsigRefCtx->dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigRefCtx->digestMethod == NULL, -1);
+    xmlSecAssert2(dsigRefCtx->digestMethod == NULL, -1);
+    xmlSecAssert2(dsigRefCtx->preDigestMemBufMethod == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
 
-    /* TODO */
-    dsigRefCtx->status = xmlSecDSigStatusSucceeded;
+    transformCtx = &(dsigRefCtx->digestTransformCtx);
+
+    /* read attributes first */
+    dsigRefCtx->uri = xmlGetProp(node, xmlSecAttrURI);
+    dsigRefCtx->id  = xmlGetProp(node, xmlSecAttrId);
+    dsigRefCtx->type= xmlGetProp(node, xmlSecAttrType);
+
+#ifdef TODO
+    if(xmlSecUriTypeCheck(dsigRefCtx->dsigCtx->allowedReferenceUris, dsigRefCtx->uri) != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
+		    "uri=\"%s\"", xmlSecErrorsSafeString(dsigRefCtx->uri));
+	return(-1);
+    }
+#endif
+
+    /* set start URI */
+    if(dsigRefCtx->uri != NULL) {    
+        ret = xmlSecTransformCtxSetUri(transformCtx, dsigRefCtx->uri, node);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxSetUri",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"uri=%s",
+			xmlSecErrorsSafeString(dsigRefCtx->uri));
+	    return(-1);
+	}		
+    }
+
+    /* first is optional Transforms node */
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecDSigNs))) {
+	ret = xmlSecTransformCtxNodesListRead(transformCtx, 
+					cur, xmlSecTransformUsageDSigTransform);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxNodesListRead",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+	    return(-1);
+	}	
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* insert membuf if requested */
+    if(((dsigRefCtx->origin == xmlSecDSigReferenceOriginSignedInfo) &&
+	(dsigRefCtx->dsigCtx->storeReferences != 0)) ||
+       ((dsigRefCtx->origin == xmlSecDSigReferenceOriginManifest) &&
+	(dsigRefCtx->dsigCtx->storeManifests != 0))) {
+
+	xmlSecAssert2(dsigRefCtx->preDigestMemBufMethod == NULL, -1);
+	dsigRefCtx->preDigestMemBufMethod = xmlSecTransformCtxCreateAndAppend(
+					transformCtx, 
+					xmlSecTransformMemBufId);
+	if(dsigRefCtx->preDigestMemBufMethod == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxCreateAndAppend",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
+	    return(-1);
+	}
+    }
+        
+    /* next node is required DigestMethod. */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
+	return(-1);
+    }	
+    dsigRefCtx->digestMethod = xmlSecTransformCtxNodeRead(transformCtx, cur, 
+					xmlSecTransformUsageDigestMethod);
+    if(dsigRefCtx->digestMethod == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCtxNodeRead",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+	return(-1);	    
+    }
+    dsigRefCtx->digestMethod->encode = (dsigRefCtx->dsigCtx->sign != 0) ? 1 : 0;
+    /* TODO: check that digest method is allowed */
+
+    /* last node is required DigestValue */
+    cur = xmlSecGetNextElementNode(cur->next);     
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestValue, xmlSecDSigNs))) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeDigestValue));
+	return(-1);
+    }
+    digestValueNode = cur;
+    cur = xmlSecGetNextElementNode(cur->next);     
+
+    /* if we have something else then it's an error */
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecNodeGetName(cur),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* if we need to write result to xml node then we need base64 encode result */
+    if(dsigRefCtx->dsigCtx->sign != 0) {	
+	xmlSecTransformPtr base64Encode;
+	
+	/* we need to add base64 encode transform */
+	base64Encode = xmlSecTransformCtxCreateAndAppend(transformCtx, xmlSecTransformBase64Id);
+    	if(base64Encode == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxCreateAndAppend",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+	base64Encode->encode = 1;
+    }
+
+    /* finally get transforms results */
+    ret = xmlSecTransformCtxExecute(transformCtx, node->doc);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCtxExecute",
+	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }    
+    dsigRefCtx->result = transformCtx->result;
+
+    if(dsigRefCtx->dsigCtx->sign != 0) {
+	if((dsigRefCtx->result == NULL) || (xmlSecBufferGetData(dsigRefCtx->result) == NULL)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxExecute",
+	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+	
+	/* write signed data to xml */
+	xmlNodeSetContentLen(digestValueNode,
+			    xmlSecBufferGetData(dsigRefCtx->result),
+			    xmlSecBufferGetSize(dsigRefCtx->result));
+    
+	/* set success status and we are done */
+	dsigRefCtx->status = xmlSecDSigStatusSucceeded;
+    } else {
+	/* verify SignatureValue node content */
+	ret = xmlSecTransformVerifyNodeContent(dsigRefCtx->digestMethod, 
+			    digestValueNode, transformCtx);
+	if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformVerifyNodeContent",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    
+        /* set status and we are done */
+	if(dsigRefCtx->digestMethod->status == xmlSecTransformStatusOk) {
+	    dsigRefCtx->status = xmlSecDSigStatusSucceeded;
+	} else {
+    	    dsigRefCtx->status = xmlSecDSigStatusInvalid;
+	}
+    }
+
     return(0);
 }
 
@@ -982,12 +1264,19 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
     }
 
     /* todo: digestMethod */
-    /* todo: c14nMethod */
 
     xmlSecTransformCtxDebugDump(&(dsigRefCtx->digestTransformCtx), output);
 
-    /* todo: preSignMemBufMethod */
-    
+    if((xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)) != NULL)) {
+       
+	fprintf(output, "== PreDigest data - start buffer:\n");
+	fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
+	       1, output);
+	fprintf(output, "\n== PreDigest data - end buffer\n");       
+    }
+
     if((dsigRefCtx->result != NULL) && 
        (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
@@ -996,9 +1285,6 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
 	       xmlSecBufferGetSize(dsigRefCtx->result), 1,
 	       output);
 	fprintf(output, "\n== Result - end buffer\n");
-    } else {
-	fprintf(output, "== Result: %d bytes\n",
-		xmlSecBufferGetSize(dsigRefCtx->result));
     }
 }
 
@@ -1008,9 +1294,9 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
     xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
 
     if(dsigRefCtx->dsigCtx->sign) {    
-	fprintf(output, "<ReferenceCalculationContext \n");
+	fprintf(output, "<ReferenceCalculationContext ");
     } else {
-	fprintf(output, "<ReferenceVerificationContext \n");
+	fprintf(output, "<ReferenceVerificationContext ");
     }
     switch(dsigRefCtx->status) {
 	case xmlSecDSigStatusUnknown:
@@ -1035,7 +1321,6 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
     }
 
     /* todo: digestMethod */
-    /* todo: c14nMethod */
     xmlSecTransformCtxDebugXmlDump(&(dsigRefCtx->digestTransformCtx), output);
 
     if((dsigRefCtx->result != NULL) && 
@@ -1046,12 +1331,17 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
 	       xmlSecBufferGetSize(dsigRefCtx->result), 1,
 	       output);
 	fprintf(output, "</Result>\n");
-    } else {
-	fprintf(output, "<Result size=\"%d\" />\n",
-	       xmlSecBufferGetSize(dsigRefCtx->result));
     }
 
-    /* todo: preSignMemBufMethod */
+    if((xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)) != NULL)) {
+       
+	fprintf(output, "<PreDigestData>");
+	fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
+	       1, output);
+	fprintf(output, "</PreDigestData>\n");       
+    }
     if(dsigRefCtx->dsigCtx->sign) {    
 	fprintf(output, "</ReferenceCalculationContext>\n");
     } else {

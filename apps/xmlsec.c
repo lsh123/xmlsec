@@ -699,7 +699,7 @@ int main(int argc, const char **argv) {
     }
     command = xmlSecAppParseCommand(argv[1], &cmdLineTopics, &subCommand);
     if(command == xmlSecAppCommandUnknown) {
-	fprintf(stdout, "Error: unknown command \"%s\"\n", argv[1]);
+	fprintf(stderr, "Error: unknown command \"%s\"\n", argv[1]);
 	xmlSecAppPrintUsage();
 	goto fail;
     }
@@ -719,7 +719,7 @@ int main(int argc, const char **argv) {
     /* parse command line */
     pos = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, argv, argc, 2);
     if(pos < 0) {
-	fprintf(stdout, "Error: invalid parameters\n");
+	fprintf(stderr, "Error: invalid parameters\n");
 	xmlSecAppPrintUsage();
 	goto fail;
     }
@@ -732,21 +732,21 @@ int main(int argc, const char **argv) {
     
     /* we need to have some files at the end */
     if(pos >= argc) {
-	fprintf(stdout, "Error: <file> parameter is requried for this command\n");
+	fprintf(stderr, "Error: <file> parameter is requried for this command\n");
 	xmlSecAppPrintUsage();
 	goto fail;
     }
     
     /* now init the xmlsec and all other libs */
     if(xmlSecAppInit() < 0) {
-	fprintf(stdout, "Error: initialization failed\n");
+	fprintf(stderr, "Error: initialization failed\n");
 	xmlSecAppPrintUsage();
 	goto fail;
     }    
     
     /* load keys */
     if(xmlSecAppLoadKeys() < 0) {
-	fprintf(stdout, "Error: keys manager creation failed\n");
+	fprintf(stderr, "Error: keys manager creation failed\n");
 	xmlSecAppPrintUsage();
 	goto fail;
     }
@@ -765,20 +765,20 @@ int main(int argc, const char **argv) {
 	    switch(command) {
 	    case xmlSecAppCommandKeys:
     	        if(xmlSecAppCryptoSimpleKeysMngrSave(gKeysMngr, argv[i], xmlSecKeyDataTypeAny) < 0) {
-		    fprintf(stdout, "Error: failed to save keys to file \"%s\"\n", argv[i]);
+		    fprintf(stderr, "Error: failed to save keys to file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 		break;
 #ifndef XMLSEC_NO_XMLDSIG
 	    case xmlSecAppCommandSign:
     	        if(xmlSecAppSignFile(argv[i]) < 0) {
-		    fprintf(stdout, "Error: failed to sign file \"%s\"\n", argv[i]);
+		    fprintf(stderr, "Error: failed to sign file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 		break;
 	    case xmlSecAppCommandVerify:
     	        if(xmlSecAppVerifyFile(argv[i]) < 0) {
-		    fprintf(stdout, "Error: failed to verify file \"%s\"\n", argv[i]);
+		    fprintf(stderr, "Error: failed to verify file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 		break;
@@ -787,19 +787,19 @@ int main(int argc, const char **argv) {
 #ifndef XMLSEC_NO_XMLENC
 	    case xmlSecAppCommandEncrypt:
     	        if(xmlSecAppEncryptFile(argv[i]) < 0) {
-		    fprintf(stdout, "Error: failed to encrypt file with template \"%s\"\n", argv[i]);
+		    fprintf(stderr, "Error: failed to encrypt file with template \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 		break;
 	    case xmlSecAppCommandDecrypt:
     	        if(xmlSecAppDecryptFile(argv[i]) < 0) {
-		    fprintf(stdout, "Error: failed to decrypt file \"%s\"\n", argv[i]);
+		    fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
 		break;
 #endif /* XMLSEC_NO_XMLENC */
 	    default:
-		fprintf(stdout, "Error: invalid command %d\n", command);
+		fprintf(stderr, "Error: invalid command %d\n", command);
 		xmlSecAppPrintUsage();
 		goto fail;
 	    }
@@ -845,7 +845,7 @@ xmlSecAppSignFile(const char* filename) {
     
     if(xmlSecDSigCtxInitialize(&dsigCtx, gKeysMngr) < 0) {
 	fprintf(stderr, "Error: dsig context initialization failed\n");
-	goto done;
+	return(-1);
     }
     if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
 	fprintf(stderr, "Error: dsig context preparation failed\n");
@@ -906,7 +906,7 @@ xmlSecAppVerifyFile(const char* filename) {
 
     if(xmlSecDSigCtxInitialize(&dsigCtx, gKeysMngr) < 0) {
 	fprintf(stderr, "Error: dsig context initialization failed\n");
-	goto done;
+	return(-1);
     }
     if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
 	fprintf(stderr, "Error: dsig context preparation failed\n");
@@ -939,13 +939,13 @@ xmlSecAppVerifyFile(const char* filename) {
 	}
 	switch(dsigCtx.status) {
 	    case xmlSecDSigStatusUnknown:
-		fprintf(f, "ERROR\n");
+		fprintf(stderr, "ERROR\n");
 		break;
 	    case xmlSecDSigStatusSucceeded:
-		fprintf(f, "OK\n");
+		fprintf(stderr, "OK\n");
 		break;
 	    case xmlSecDSigStatusInvalid:
-		fprintf(f, "FAIL\n");
+		fprintf(stderr, "FAIL\n");
 		break;
 	}    
 	/* TODO: print stats about # of good/bad references */
@@ -1024,6 +1024,10 @@ xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     if(dsigCtx == NULL) {
 	return;
     }
+
+    if(xmlSecAppCmdLineParamIsSet(&printDebugParam) || xmlSecAppCmdLineParamIsSet(&printXmlDebugParam)) { 
+	print_debug = 0;
+    }
     
     /* print debug info if requested */
     if((print_debug != 0) || xmlSecAppCmdLineParamIsSet(&printDebugParam)) {
@@ -1071,7 +1075,7 @@ xmlSecAppEncryptFile(const char* filename) {
 
     if(xmlSecEncCtxInitialize(&encCtx, gKeysMngr) < 0) {
 	fprintf(stderr, "Error: enc context initialization failed\n");
-	goto done;
+	return(-1);
     }
     if(xmlSecAppPrepareEncCtx(&encCtx) < 0) {
 	fprintf(stderr, "Error: enc context preparation failed\n");
@@ -1166,7 +1170,7 @@ xmlSecAppDecryptFile(const char* filename) {
 
     if(xmlSecEncCtxInitialize(&encCtx, gKeysMngr) < 0) {
 	fprintf(stderr, "Error: enc context initialization failed\n");
-	goto done;
+	return(-1);
     }
     if(xmlSecAppPrepareEncCtx(&encCtx) < 0) {
 	fprintf(stderr, "Error: enc context preparation failed\n");

@@ -256,7 +256,6 @@ xmlSecAppCmdLineParamRead(xmlSecAppCmdLineParamPtr param, const char** argv, int
     switch(param->type) {
 	case xmlSecAppCmdLineParamTypeFlag:
 	    /* do nothing */
-	    ++pos;
 	    break;
 	case xmlSecAppCmdLineParamTypeString:
 	    if(pos + 1 >= argc) {

@@ -97,6 +97,7 @@ XMLSEC_EXPORT int		xmlSecDSigCtxSign		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlNodePtr tmpl);
 XMLSEC_EXPORT int		xmlSecDSigCtxVerify		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlNodePtr node);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecDSigCtxPreSignBuffer	(xmlSecDSigCtxPtr dsigCtx);
 XMLSEC_EXPORT void		xmlSecDSigCtxDebugDump		(xmlSecDSigCtxPtr dsigCtx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecDSigCtxDebugXmlDump	(xmlSecDSigCtxPtr dsigCtx,
@@ -126,7 +127,6 @@ struct _xmlSecDSigReferenceCtx {
     xmlSecDSigReferenceOrigin	origin;
     xmlSecTransformCtx		digestTransformCtx;
     xmlSecTransformPtr		digestMethod;
-    xmlSecTransformPtr		c14nMethod;
 
     xmlSecBufferPtr		result;
     xmlSecDSigStatus		status;
@@ -149,6 +149,7 @@ XMLSEC_EXPORT int		xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr ds
 XMLSEC_EXPORT void		xmlSecDSigReferenceCtxFinalize	(xmlSecDSigReferenceCtxPtr dsigRefCtx);
 XMLSEC_EXPORT int		xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, 
 								  xmlNodePtr node);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecDSigReferenceCtxPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx);
 XMLSEC_EXPORT void		xmlSecDSigReferenceCtxDebugDump	(xmlSecDSigReferenceCtxPtr dsigRefCtx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx,

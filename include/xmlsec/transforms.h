@@ -149,8 +149,8 @@ struct _xmlSecTransformCtx {
     xmlSecUriType		allowedUris;
     xmlSecTransformStatus	status;
     xmlChar*			uri;
-    xmlChar*			xpointerExpr;
-    
+    xmlChar*			xptrExpr;
+                
     xmlSecTransformPtr		first;
     xmlSecTransformPtr		last;
     xmlSecBufferPtr		result;

@@ -47,7 +47,7 @@
 </p>
 <hr>
 <a name="lbAB"> </a><h2>NAME</h2>
-<p>  xmlsec1 - manual page for xmlsec1 1.0.2 (openssl) <a name="lbAC"> </a> </p>
+<p>  xmlsec1 - manual page for xmlsec1 1.0.3 (openssl) <a name="lbAC"> </a> </p>
 <h2>SYNOPSIS</h2>
 <b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;file&gt;</i>] <a name="lbAD"> </a> </p>
 <h2>DESCRIPTION</h2>
@@ -165,6 +165,14 @@
 </dt>
 <dd> <dd>load private key from DER file and certificates that verify this key </dd>
 </dd>
+<dt> <b>--pkcs-pem[</b>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <dt></dt>
+</dt>
+<dd> <dd>load private key from PKCS8 PEM file and PEM certificates that verify this key </dd>
+</dd>
+<dt> <b>--pkcs8-der[</b>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <dt></dt>
+</dt>
+<dd> <dd>load private key from PKCS8 DER file and DER certificates that verify this key </dd>
+</dd>
 <dt> <b>--pubkey-pem[</b>:&lt;name&gt;] &lt;file&gt; <dt></dt>
 </dt>
 <dd> <dd>load public key from PEM file </dd>
@@ -273,7 +281,7 @@
 <dd> </dd>
 </dl>
 <hr>
-<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 03:37:21 GMT, June 02, 2003 </p>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 17:35:54 GMT, June 16, 2003 </p>
 </td></tr>
 <tr><td>
 <br><br><p><a href="bugs.html">Aleksey Sanin</a></p>

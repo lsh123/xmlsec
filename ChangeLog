@@ -1,3 +1,14 @@
+Mon Jun 16 10:43:34 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html docs/news.html 
+	docs/xmlsec-man.html include/xmlsec/version.h man/xmlsec1-config.1
+	man/xmlsec1.1: new 1.0.3 version preparation
+
+	* docs/Makefile.am docs/api-0.0.x/*: fixed second level links 
+	processing 
+
+	* docs/api/sgml/* docs/api/tmpl/* docs/api/*: added new API calls
+
 Mon Jun 16 09:20:53 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: fixed NSS config bug #115297

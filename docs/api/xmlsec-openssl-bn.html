@@ -60,9 +60,9 @@
 <h1>
 <a name="XMLSEC-OPENSSL-BN"></a>bn</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14942"></a><h2>Name</h2>bn -- </div>
+<a name="AEN14954"></a><h2>Name</h2>bn -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN14945"></a><h2>Synopsis</h2>
+<a name="AEN14957"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 <font>BIGNUM</font>*     <a href="xmlsec-openssl-bn.html#XMLSECOPENSSLNODEGETBNVALUE">xmlSecOpenSSLNodeGetBNValue</a>     (const <font>xmlNodePtr</font> cur,
@@ -72,13 +72,13 @@ int         <a href="xmlsec-openssl-bn.html#XMLSECOPENSSLNODESETBNVALUE">xmlSecO
                                              int addLineBreaks);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN14955"></a><h2>Description</h2>
+<a name="AEN14967"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN14958"></a><h2>Details</h2>
+<a name="AEN14970"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN14960"></a><h3>
+<a name="AEN14972"></a><h3>
 <a name="XMLSECOPENSSLNODEGETBNVALUE"></a>xmlSecOpenSSLNodeGetBNValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>BIGNUM</font>*     xmlSecOpenSSLNodeGetBNValue     (const <font>xmlNodePtr</font> cur,
                                              <font>BIGNUM</font> **a);</pre></td></tr></table>
@@ -90,15 +90,15 @@ BIGNUM is created (caller is responsible for freeing it).</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14971"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14983"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the poitner to an XML node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14976"><span style="white-space: nowrap"><tt class="PARAMETER"><i>a</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14988"><span style="white-space: nowrap"><tt class="PARAMETER"><i>a</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the BIGNUM buffer.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14981"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14993"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>a pointer to BIGNUM produced from CryptoBinary string
 or NULL if an error occurs.</p></td>
 </tr>
@@ -106,7 +106,7 @@ or NULL if an error occurs.</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14986"></a><h3>
+<a name="AEN14998"></a><h3>
 <a name="XMLSECOPENSSLNODESETBNVALUE"></a>xmlSecOpenSSLNodeSetBNValue ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLNodeSetBNValue     (<font>xmlNodePtr</font> cur,
                                              const <font>BIGNUM</font> *a,
@@ -120,21 +120,21 @@ before and after the CryptoBinary string.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14996"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15008"><span style="white-space: nowrap"><tt class="PARAMETER"><i>cur</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the pointer to an XML node.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15001"><span style="white-space: nowrap"><tt class="PARAMETER"><i>a</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15013"><span style="white-space: nowrap"><tt class="PARAMETER"><i>a</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> the BIGNUM.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15006"><span style="white-space: nowrap"><tt class="PARAMETER"><i>addLineBreaks</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15018"><span style="white-space: nowrap"><tt class="PARAMETER"><i>addLineBreaks</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> if the flag is equal to 1 then 
 	linebreaks will be added before and after
 	new buffer content.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15011"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN15023"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or -1 otherwise.</p></td>
 </tr>
 </tbody></table>

@@ -173,6 +173,36 @@
       XMLSec) which attributes are ID attributes by calling <code>xmlAddID</code>
       function. However, this might make you signature non-interoperable
       with other XMLDSig implementations.
+      <h4>3.3. I have a document signed with a certificate that is now expired.
+      Can I verify this signature using XML Security Library?</h4>
+      Yes, you can. However, you need to be carefull. Most likely you
+      do want to make sure that the certificate was not expired 
+      when the document was signed. The <a href="http://www.w3.org/Signature">XML 
+      Digital Signature</a> specification does not have a standard
+      way to include the signature timestamp. Which means that you need 
+      to define where to put timestamp by yourself. Please note, that 
+      the timestamp <b>must</b> be signed along with the other data.<br>
+      When you have design ready the implementation is simple:
+      <ul>
+        <li>Enable the custom expiration time check in the simple keys manager:<br>
+	<blockqoute><code>
+	<br>
+	xmlSecKeysMngrPtr keysMngr = xmlSecSimpleKeysMngrCreate();<br>
+	...<br>
+	xmlSecSimpleKeysMngrSetCertsFlags(keysMngr, X509_V_FLAG_USE_CHECK_TIME);<br>
+	<br>
+	</code></blockqoute>
+	<li>Extract the signature timestamp from the XML document.
+	<li>Assign the extracted timestamp to the 
+	<code>certsVerificationTime</code> member of the
+        <code>xmlSecDSigCtx</code> or <code>xmlEncCtx</code> structures. 
+	<li>Call <code>xmlSecDSigValidate</code> or <code>xmlSecDecrypt</code>
+	function as usual.
+      </ul> 
+      If you are using xmlsec command line utility then you can use 
+      <code>--verification-time &lt;time&gt;</code> option (where
+      <code>&lt;time&gt;</code> is the local system time in the 
+      "<code>YYYY-MM-DD HH:MM:SS</code>" format).
       <p>	  
       <p><a href="bugs.html">Aleksey Sanin</a></p>
       </td>

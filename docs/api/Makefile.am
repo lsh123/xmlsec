@@ -27,7 +27,8 @@ html: sgml xmlsec.sgml xmlsec-index
 #
 # Prepeare sgml files from sources for each library. We are also
 # doing some "magic" here by automatically adding links to XML DSig and 
-# XML Enc specification
+# XML Enc specification, we also remove "Ptr" from the end of the link
+# targets to make more references
 #
 sgml: templates
 	@gtkdoc-mkdb --module=xmlsec --main-sgml-file xmlsec.sgml \
@@ -48,7 +49,8 @@ sgml: templates
 	@(for i in `find sgml -name "*.sgml" -print` ; do \
 	    cat $$i | \
 		sed 's!\(&lt;dsig:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmldsig-core/#sec_\2\">\1\2\3</ulink>!g' | \
-		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec_\2\">\1\2\3</ulink>!g' > \
+		sed 's!\(&lt;enc:\)\([^/]*\)\(\/&gt;\)!<ulink URL=\"http://www.w3.org/TR/xmlenc-core/#sec_\2\">\1\2\3</ulink>!g' | \
+		sed 's!linkend=\"\(.*\)Ptr\"!linkend=\"\1\"!g' > \
 		$$i.tmp; \
 		mv -f $$i.tmp $$i; \
 	done);

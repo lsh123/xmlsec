@@ -17,8 +17,8 @@
 #define     <link linkend="xmlSecTransformMemBufId">xmlSecTransformMemBufId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass</link>
                                             (void);
-<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</link>
-                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);
+<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</link>
+                                            (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);
 </synopsis>
 </refsynopsisdiv>
 
@@ -61,8 +61,8 @@ The memory buffer transorm (used to store the data that go through it).</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer ()</title>
-<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecTransformMemBufGetBuffer
-                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform);</programlisting>
+<programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecTransformMemBufGetBuffer
+                                            (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
 Gets the pointer to memory buffer transform buffer.</para>
 <para>

@@ -48,7 +48,7 @@
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-transforms.html#XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS">XMLSEC_TRANSFORM_BINARY_CHUNK</a>
-<font>xmlSecPtrListPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDSGET">xmlSecTransformIdsGet</a>      (void);
+<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDSGET">xmlSecTransformIdsGet</a>      (void);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDSINIT">xmlSecTransformIdsInit</a>          (void);
 void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDSSHUTDOWN">xmlSecTransformIdsShutdown</a>      (void);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDSREGISTERDEFAULT">xmlSecTransformIdsRegisterDefault</a>
@@ -79,208 +79,208 @@ typedef     <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransfor
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGEENCRYPTIONMETHOD">xmlSecTransformUsageEncryptionMethod</a>
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGEANY">xmlSecTransformUsageAny</a>
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREEXECUTECALLBACK">*xmlSecTransformCtxPreExecuteCallback</a>)
-                                            (<font>xmlSecTransformCtxPtr</font> transformCtx);
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 struct      <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a>;
-<font>xmlSecTransformCtxPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATE">xmlSecTransformCtxCreate</a>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATE">xmlSecTransformCtxCreate</a>
                                             (void);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDESTROY">xmlSecTransformCtxDestroy</a>       (<font>xmlSecTransformCtxPtr</font> ctx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXINITIALIZE">xmlSecTransformCtxInitialize</a>    (<font>xmlSecTransformCtxPtr</font> ctx);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXFINALIZE">xmlSecTransformCtxFinalize</a>      (<font>xmlSecTransformCtxPtr</font> ctx);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXRESET">xmlSecTransformCtxReset</a>         (<font>xmlSecTransformCtxPtr</font> ctx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCOPYUSERPREF">xmlSecTransformCtxCopyUserPref</a>  (<font>xmlSecTransformCtxPtr</font> dst,
-                                             <font>xmlSecTransformCtxPtr</font> src);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXSETURI">xmlSecTransformCtxSetUri</a>        (<font>xmlSecTransformCtxPtr</font> ctx,
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDESTROY">xmlSecTransformCtxDestroy</a>       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXINITIALIZE">xmlSecTransformCtxInitialize</a>    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXFINALIZE">xmlSecTransformCtxFinalize</a>      (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXRESET">xmlSecTransformCtxReset</a>         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCOPYUSERPREF">xmlSecTransformCtxCopyUserPref</a>  (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> dst,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> src);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXSETURI">xmlSecTransformCtxSetUri</a>        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              const <font>xmlChar</font> *uri,
                                              <font>xmlNodePtr</font> hereNode);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXAPPEND">xmlSecTransformCtxAppend</a>        (<font>xmlSecTransformCtxPtr</font> ctx,
-                                             <font>xmlSecTransformPtr</font> transform);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREPEND">xmlSecTransformCtxPrepend</a>       (<font>xmlSecTransformCtxPtr</font> ctx,
-                                             <font>xmlSecTransformPtr</font> transform);
-<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATEANDAPPEND">xmlSecTransformCtxCreateAndAppend</a>
-                                            (<font>xmlSecTransformCtxPtr</font> ctx,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXAPPEND">xmlSecTransformCtxAppend</a>        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREPEND">xmlSecTransformCtxPrepend</a>       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATEANDAPPEND">xmlSecTransformCtxCreateAndAppend</a>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlSecTransformId</font> id);
-<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATEANDPREPEND">xmlSecTransformCtxCreateAndPrepend</a>
-                                            (<font>xmlSecTransformCtxPtr</font> ctx,
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXCREATEANDPREPEND">xmlSecTransformCtxCreateAndPrepend</a>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlSecTransformId</font> id);
-<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXNODEREAD">xmlSecTransformCtxNodeRead</a>
-                                            (<font>xmlSecTransformCtxPtr</font> ctx,
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXNODEREAD">xmlSecTransformCtxNodeRead</a>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlNodePtr</font> node,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXNODESLISTREAD">xmlSecTransformCtxNodesListRead</a> (<font>xmlSecTransformCtxPtr</font> ctx,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXNODESLISTREAD">xmlSecTransformCtxNodesListRead</a> (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlNodePtr</font> node,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREPARE">xmlSecTransformCtxPrepare</a>       (<font>xmlSecTransformCtxPtr</font> ctx,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREPARE">xmlSecTransformCtxPrepare</a>       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> inputDataType);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXBINARYEXECUTE">xmlSecTransformCtxBinaryExecute</a> (<font>xmlSecTransformCtxPtr</font> ctx,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXBINARYEXECUTE">xmlSecTransformCtxBinaryExecute</a> (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXURIEXECUTE">xmlSecTransformCtxUriExecute</a>    (<font>xmlSecTransformCtxPtr</font> ctx,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXURIEXECUTE">xmlSecTransformCtxUriExecute</a>    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              const <font>xmlChar</font> *uri);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXXMLEXECUTE">xmlSecTransformCtxXmlExecute</a>    (<font>xmlSecTransformCtxPtr</font> ctx,
-                                             <font>xmlSecNodeSetPtr</font> nodes);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXEXECUTE">xmlSecTransformCtxExecute</a>       (<font>xmlSecTransformCtxPtr</font> ctx,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXXMLEXECUTE">xmlSecTransformCtxXmlExecute</a>    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXEXECUTE">xmlSecTransformCtxExecute</a>       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlDocPtr</font> doc);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDEBUGDUMP">xmlSecTransformCtxDebugDump</a>     (<font>xmlSecTransformCtxPtr</font> ctx,
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDEBUGDUMP">xmlSecTransformCtxDebugDump</a>     (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDEBUGXMLDUMP">xmlSecTransformCtxDebugXmlDump</a>  (<font>xmlSecTransformCtxPtr</font> ctx,
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDEBUGXMLDUMP">xmlSecTransformCtxDebugXmlDump</a>  (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>FILE</font> *output);
 struct      <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a>;
-<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATE">xmlSecTransformCreate</a>    (<font>xmlSecTransformId</font> id);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROY">xmlSecTransformDestroy</a>          (<font>xmlSecTransformPtr</font> transform);
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATE">xmlSecTransformCreate</a>    (<font>xmlSecTransformId</font> id);
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDESTROY">xmlSecTransformDestroy</a>          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);
 <font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEREAD">xmlSecTransformNodeRead</a>  (<font>xmlNodePtr</font> node,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUMP">xmlSecTransformPump</a>             (<font>xmlSecTransformPtr</font> left,
-                                             <font>xmlSecTransformPtr</font> right,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEY">xmlSecTransformSetKey</a>           (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyPtr</font> key);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQ">xmlSecTransformSetKeyReq</a>        (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyReqPtr</font> keyReq);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFY">xmlSecTransformVerify</a>           (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUMP">xmlSecTransformPump</a>             (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> left,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> right,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEY">xmlSecTransformSetKey</a>           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQ">xmlSecTransformSetKeyReq</a>        (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFY">xmlSecTransformVerify</a>           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYNODECONTENT">xmlSecTransformVerifyNodeContent</a>
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMGETDATATYPE">xmlSecTransformGetDataType</a>
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBIN">xmlSecTransformPushBin</a>          (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBIN">xmlSecTransformPushBin</a>          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
                                              int final,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBIN">xmlSecTransformPopBin</a>           (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBIN">xmlSecTransformPopBin</a>           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> maxDataSize,
                                              <font>size_t</font> *dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXML">xmlSecTransformPushXml</a>          (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXML">xmlSecTransformPopXml</a>           (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> *nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTE">xmlSecTransformExecute</a>          (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXML">xmlSecTransformPushXml</a>          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXML">xmlSecTransformPopXml</a>           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTE">xmlSecTransformExecute</a>          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              int last,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEBUGDUMP">xmlSecTransformDebugDump</a>        (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEBUGDUMP">xmlSecTransformDebugDump</a>        (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEBUGXMLDUMP">xmlSecTransformDebugXmlDump</a>     (<font>xmlSecTransformPtr</font> transform,
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEBUGXMLDUMP">xmlSecTransformDebugXmlDump</a>     (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>FILE</font> *output);
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMGETNAME">xmlSecTransformGetName</a>          (transform)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMISVALID">xmlSecTransformIsValid</a>          (transform)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMCHECKTYPE">xmlSecTransformCheckType</a>        (transform, t)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMCHECKID">xmlSecTransformCheckId</a>          (transform, i)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMCHECKSIZE">xmlSecTransformCheckSize</a>        (transform, size)
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT">xmlSecTransformConnect</a>          (<font>xmlSecTransformPtr</font> left,
-                                             <font>xmlSecTransformPtr</font> right,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMADDAFTER">xmlSecTransformAddAfter</a>  (<font>xmlSecTransformPtr</font> curTransform,
-                                             <font>xmlSecTransformPtr</font> newTransform);
-<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMADDBEFORE">xmlSecTransformAddBefore</a> (<font>xmlSecTransformPtr</font> curTransform,
-                                             <font>xmlSecTransformPtr</font> newTransform);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMREMOVE">xmlSecTransformRemove</a>           (<font>xmlSecTransformPtr</font> transform);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT">xmlSecTransformConnect</a>          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> left,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> right,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMADDAFTER">xmlSecTransformAddAfter</a>  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> curTransform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> newTransform);
+<font>xmlSecTransformPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMADDBEFORE">xmlSecTransformAddBefore</a> (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> curTransform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> newTransform);
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMREMOVE">xmlSecTransformRemove</a>           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTGETDATATYPE">xmlSecTransformDefaultGetDataType</a>
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPUSHBIN">xmlSecTransformDefaultPushBin</a>   (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPUSHBIN">xmlSecTransformDefaultPushBin</a>   (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
                                              int final,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPOPBIN">xmlSecTransformDefaultPopBin</a>    (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPOPBIN">xmlSecTransformDefaultPopBin</a>    (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> maxDataSize,
                                              <font>size_t</font> *dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPUSHXML">xmlSecTransformDefaultPushXml</a>   (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPOPXML">xmlSecTransformDefaultPopXml</a>    (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> *nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPUSHXML">xmlSecTransformDefaultPushXml</a>   (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMDEFAULTPOPXML">xmlSecTransformDefaultPopXml</a>    (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 <font>xmlOutputBufferPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATEOUTPUTBUFFER">xmlSecTransformCreateOutputBuffer</a>
-                                            (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 <font>xmlParserInputBufferPtr</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMCREATEINPUTBUFFER">xmlSecTransformCreateInputBuffer</a>
-                                            (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMINITIALIZEMETHOD">*xmlSecTransformInitializeMethod</a>)
-                                            (<font>xmlSecTransformPtr</font> transform);
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);
 void        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMFINALIZEMETHOD">*xmlSecTransformFinalizeMethod</a>)
-                                            (<font>xmlSecTransformPtr</font> transform);
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> (<a href="xmlsec-transforms.html#XMLSECTRANSFORMGETDATATYPEMETHOD">*xmlSecTransformGetDataTypeMethod</a>)
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEREADMETHOD">*xmlSecTransformNodeReadMethod</a>)
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEWRITEMETHOD">*xmlSecTransformNodeWriteMethod</a>)
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQUIREMENTS">*xmlSecTransformSetKeyRequirements</a>)
-                                            (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyReqPtr</font> keyReq);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYMETHOD">*xmlSecTransformSetKeyMethod</a>)  (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyPtr</font> key);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">*xmlSecTransformVerifyMethod</a>)  (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYMETHOD">*xmlSecTransformSetKeyMethod</a>)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">*xmlSecTransformVerifyMethod</a>)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">*xmlSecTransformPushBinMethod</a>) (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">*xmlSecTransformPushBinMethod</a>) (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
                                              int final,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">*xmlSecTransformPopBinMethod</a>)  (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">*xmlSecTransformPopBinMethod</a>)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> maxDataSize,
                                              <font>size_t</font> *dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">*xmlSecTransformPushXmlMethod</a>) (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">*xmlSecTransformPopXmlMethod</a>)  (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> *nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
-int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">*xmlSecTransformExecuteMethod</a>) (<font>xmlSecTransformPtr</font> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">*xmlSecTransformPushXmlMethod</a>) (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">*xmlSecTransformPopXmlMethod</a>)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
+int         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">*xmlSecTransformExecuteMethod</a>) (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              int last,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);
 struct      <a href="xmlsec-transforms.html#XMLSECTRANSFORMKLASS">xmlSecTransformKlass</a>;
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMKLASSGETNAME">xmlSecTransformKlassGetName</a>     (klass)
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTID">xmlSecTransformIdListId</a>
 <font>xmlSecPtrListId</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTGETKLASS">xmlSecTransformIdListGetKlass</a>
                                             (void);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTFIND">xmlSecTransformIdListFind</a>       (<font>xmlSecPtrListPtr</font> list,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTFIND">xmlSecTransformIdListFind</a>       (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecTransformId</font> transformId);
 <font>xmlSecTransformId</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTFINDBYHREF">xmlSecTransformIdListFindByHref</a>
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *href,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);
 <font>xmlSecTransformId</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTFINDBYNAME">xmlSecTransformIdListFindByName</a>
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *name,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);
-void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTDEBUGDUMP">xmlSecTransformIdListDebugDump</a>  (<font>xmlSecPtrListPtr</font> list,
+void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTDEBUGDUMP">xmlSecTransformIdListDebugDump</a>  (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);
 void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDLISTDEBUGXMLDUMP">xmlSecTransformIdListDebugXmlDump</a>
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMIDUNKNOWN">xmlSecTransformIdUnknown</a>
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64ID">xmlSecTransformBase64Id</a>
 <font>xmlSecTransformId</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64GETKLASS">xmlSecTransformBase64GetKlass</a>
                                             (void);
 void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64SETLINESIZE">xmlSecTransformBase64SetLineSize</a>
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>size_t</font> lineSize);
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMINCLC14NID">xmlSecTransformInclC14NId</a>
 <font>xmlSecTransformId</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMINCLC14NGETKLASS">xmlSecTransformInclC14NGetKlass</a>
@@ -306,7 +306,7 @@ void        <a href="xmlsec-transforms.html#XMLSECTRANSFORMBASE64SETLINESIZE">xm
 #define     <a href="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTERID">xmlSecTransformXPointerId</a>
 <font>xmlSecTransformId</font> <a href="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTERGETKLASS">xmlSecTransformXPointerGetKlass</a>
                                             (void);
-int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTERSETEXPR">xmlSecTransformXPointerSetExpr</a>  (<font>xmlSecTransformPtr</font> transform,
+int         <a href="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTERSETEXPR">xmlSecTransformXPointerSetExpr</a>  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              const <font>xmlChar</font> *expr,
                                              <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a> nodeSetType,
                                              <font>xmlNodePtr</font> hereNode);
@@ -335,7 +335,7 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <div class="REFSECT2">
 <a name="AEN9313"></a><h3>
 <a name="XMLSECTRANSFORMIDSGET"></a>xmlSecTransformIdsGet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecTransformIdsGet      (void);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> xmlSecTransformIdsGet      (void);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9319"></a><p></p>
@@ -635,7 +635,7 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <a name="AEN9533"></a><h3>
 <a name="XMLSECTRANSFORMCTXPREEXECUTECALLBACK"></a>xmlSecTransformCtxPreExecuteCallback ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformCtxPreExecuteCallback)
-                                            (<font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The callback called after creating transforms chain but before
 starting data processing. Application can use this callback to
 do additional transforms chain verification or modification and
@@ -733,7 +733,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecBufferPtr</font> <tt class="STRUCTFIELD"><i>result</i></tt>
+<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <tt class="STRUCTFIELD"><i>result</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the pointer to transforms result buffer.</td>
 </tr>
@@ -757,13 +757,13 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>first</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>first</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the first transform in the chain.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>last</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>last</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the last transform in the chain.</td>
 </tr>
@@ -785,7 +785,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9629"></a><h3>
 <a name="XMLSECTRANSFORMCTXCREATE"></a>xmlSecTransformCtxCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformCtxPtr</font> xmlSecTransformCtxCreate
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> xmlSecTransformCtxCreate
                                             (void);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -802,7 +802,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9644"></a><h3>
 <a name="XMLSECTRANSFORMCTXDESTROY"></a>xmlSecTransformCtxDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxDestroy       (<font>xmlSecTransformCtxPtr</font> ctx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxDestroy       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9650"></a><p></p>
@@ -818,7 +818,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9659"></a><h3>
 <a name="XMLSECTRANSFORMCTXINITIALIZE"></a>xmlSecTransformCtxInitialize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxInitialize    (<font>xmlSecTransformCtxPtr</font> ctx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxInitialize    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9665"></a><p></p>
@@ -841,7 +841,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9678"></a><h3>
 <a name="XMLSECTRANSFORMCTXFINALIZE"></a>xmlSecTransformCtxFinalize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxFinalize      (<font>xmlSecTransformCtxPtr</font> ctx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxFinalize      (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9684"></a><p></p>
@@ -857,7 +857,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9693"></a><h3>
 <a name="XMLSECTRANSFORMCTXRESET"></a>xmlSecTransformCtxReset ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxReset         (<font>xmlSecTransformCtxPtr</font> ctx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxReset         (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9699"></a><p></p>
@@ -873,8 +873,8 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9708"></a><h3>
 <a name="XMLSECTRANSFORMCTXCOPYUSERPREF"></a>xmlSecTransformCtxCopyUserPref ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxCopyUserPref  (<font>xmlSecTransformCtxPtr</font> dst,
-                                             <font>xmlSecTransformCtxPtr</font> src);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxCopyUserPref  (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> dst,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> src);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9715"></a><p></p>
@@ -902,7 +902,7 @@ transforms chain will not be executed and xmlsec processing stops).</td>
 <div class="REFSECT2">
 <a name="AEN9732"></a><h3>
 <a name="XMLSECTRANSFORMCTXSETURI"></a>xmlSecTransformCtxSetUri ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxSetUri        (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxSetUri        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              const <font>xmlChar</font> *uri,
                                              <font>xmlNodePtr</font> hereNode);</pre></td></tr></table>
 <p>Parses uri and adds xpointer transforms if required.</p>
@@ -960,8 +960,8 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9770"></a><h3>
 <a name="XMLSECTRANSFORMCTXAPPEND"></a>xmlSecTransformCtxAppend ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxAppend        (<font>xmlSecTransformCtxPtr</font> ctx,
-                                             <font>xmlSecTransformPtr</font> transform);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxAppend        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9777"></a><p></p>
@@ -989,8 +989,8 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9794"></a><h3>
 <a name="XMLSECTRANSFORMCTXPREPEND"></a>xmlSecTransformCtxPrepend ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxPrepend       (<font>xmlSecTransformCtxPtr</font> ctx,
-                                             <font>xmlSecTransformPtr</font> transform);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxPrepend       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN9801"></a><p></p>
@@ -1018,8 +1018,8 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9818"></a><h3>
 <a name="XMLSECTRANSFORMCTXCREATEANDAPPEND"></a>xmlSecTransformCtxCreateAndAppend ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformCtxCreateAndAppend
-                                            (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> xmlSecTransformCtxCreateAndAppend
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlSecTransformId</font> id);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1048,8 +1048,8 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9843"></a><h3>
 <a name="XMLSECTRANSFORMCTXCREATEANDPREPEND"></a>xmlSecTransformCtxCreateAndPrepend ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformCtxCreateAndPrepend
-                                            (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> xmlSecTransformCtxCreateAndPrepend
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlSecTransformId</font> id);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1078,8 +1078,8 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9868"></a><h3>
 <a name="XMLSECTRANSFORMCTXNODEREAD"></a>xmlSecTransformCtxNodeRead ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformCtxNodeRead
-                                            (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> xmlSecTransformCtxNodeRead
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlNodePtr</font> node,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre></td></tr></table>
 <p></p>
@@ -1114,7 +1114,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9898"></a><h3>
 <a name="XMLSECTRANSFORMCTXNODESLISTREAD"></a>xmlSecTransformCtxNodesListRead ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxNodesListRead (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxNodesListRead (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlNodePtr</font> node,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre></td></tr></table>
 <p></p>
@@ -1149,7 +1149,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9927"></a><h3>
 <a name="XMLSECTRANSFORMCTXPREPARE"></a>xmlSecTransformCtxPrepare ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxPrepare       (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxPrepare       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> inputDataType);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1178,7 +1178,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9951"></a><h3>
 <a name="XMLSECTRANSFORMCTXBINARYEXECUTE"></a>xmlSecTransformCtxBinaryExecute ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxBinaryExecute (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxBinaryExecute (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize);</pre></td></tr></table>
 <p></p>
@@ -1213,7 +1213,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN9979"></a><h3>
 <a name="XMLSECTRANSFORMCTXURIEXECUTE"></a>xmlSecTransformCtxUriExecute ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxUriExecute    (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxUriExecute    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              const <font>xmlChar</font> *uri);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1242,8 +1242,8 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN10003"></a><h3>
 <a name="XMLSECTRANSFORMCTXXMLEXECUTE"></a>xmlSecTransformCtxXmlExecute ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxXmlExecute    (<font>xmlSecTransformCtxPtr</font> ctx,
-                                             <font>xmlSecNodeSetPtr</font> nodes);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxXmlExecute    (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10010"></a><p></p>
@@ -1271,7 +1271,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN10027"></a><h3>
 <a name="XMLSECTRANSFORMCTXEXECUTE"></a>xmlSecTransformCtxExecute ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxExecute       (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformCtxExecute       (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>xmlDocPtr</font> doc);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1300,7 +1300,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN10051"></a><h3>
 <a name="XMLSECTRANSFORMCTXDEBUGDUMP"></a>xmlSecTransformCtxDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxDebugDump     (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxDebugDump     (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1324,7 +1324,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN10071"></a><h3>
 <a name="XMLSECTRANSFORMCTXDEBUGXMLDUMP"></a>xmlSecTransformCtxDebugXmlDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxDebugXmlDump  (<font>xmlSecTransformCtxPtr</font> ctx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformCtxDebugXmlDump  (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1401,13 +1401,13 @@ all descendents including namespaces and attributes -- but not comments.</p>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>next</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>next</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the pointer to next transform in the chain.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>prev</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>prev</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the pointer to previous transform in the chain.</td>
 </tr>
@@ -1425,13 +1425,13 @@ all descendents including namespaces and attributes -- but not comments.</p>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecNodeSetPtr</font> <tt class="STRUCTFIELD"><i>inNodes</i></tt>
+<a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> <tt class="STRUCTFIELD"><i>inNodes</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the input XML nodes.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecNodeSetPtr</font> <tt class="STRUCTFIELD"><i>outNodes</i></tt>
+<a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> <tt class="STRUCTFIELD"><i>outNodes</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP"> </td>
 </tr>
@@ -1453,7 +1453,7 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <div class="REFSECT2">
 <a name="AEN10162"></a><h3>
 <a name="XMLSECTRANSFORMCREATE"></a>xmlSecTransformCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformCreate    (<font>xmlSecTransformId</font> id);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> xmlSecTransformCreate    (<font>xmlSecTransformId</font> id);</pre></td></tr></table>
 <p>Creates new transform from the transform id object.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1478,7 +1478,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10184"></a><h3>
 <a name="XMLSECTRANSFORMDESTROY"></a>xmlSecTransformDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDestroy          (<font>xmlSecTransformPtr</font> transform);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDestroy          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre></td></tr></table>
 <p>Destroys transform by calling appropriate transform specific function.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1497,7 +1497,7 @@ or NULL if an error occurs.</td>
 <a name="XMLSECTRANSFORMNODEREAD"></a>xmlSecTransformNodeRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformNodeRead  (<font>xmlNodePtr</font> node,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>Reads transform from the <tt class="PARAMETER"><i>node</i></tt> as follows:
    1) reads &quot;Algorithm&quot; attribute;
    2) checks the list of known algorithms;
@@ -1535,9 +1535,9 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10234"></a><h3>
 <a name="XMLSECTRANSFORMPUMP"></a>xmlSecTransformPump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPump             (<font>xmlSecTransformPtr</font> left,
-                                             <font>xmlSecTransformPtr</font> right,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPump             (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> left,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> right,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10242"></a><p></p>
@@ -1570,8 +1570,8 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10263"></a><h3>
 <a name="XMLSECTRANSFORMSETKEY"></a>xmlSecTransformSetKey ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformSetKey           (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformSetKey           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>Sets the key for binary transform (wrapper for transform specific 
 <font>setKey</font>() method).</p>
 <p></p>
@@ -1601,8 +1601,8 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10291"></a><h3>
 <a name="XMLSECTRANSFORMSETKEYREQ"></a>xmlSecTransformSetKeyReq ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformSetKeyReq        (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyReqPtr</font> keyReq);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformSetKeyReq        (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre></td></tr></table>
 <p>Sets the key for binary transform (wrapper for transform specific 
 <font>setKeyReq</font>() method).</p>
 <p></p>
@@ -1632,10 +1632,10 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10318"></a><h3>
 <a name="XMLSECTRANSFORMVERIFY"></a>xmlSecTransformVerify ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformVerify           (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformVerify           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10326"></a><p></p>
@@ -1674,9 +1674,9 @@ or NULL if an error occurs.</td>
 <a name="AEN10351"></a><h3>
 <a name="XMLSECTRANSFORMVERIFYNODECONTENT"></a>xmlSecTransformVerifyNodeContent ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformVerifyNodeContent
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10359"></a><p></p>
@@ -1710,9 +1710,9 @@ or NULL if an error occurs.</td>
 <a name="AEN10380"></a><h3>
 <a name="XMLSECTRANSFORMGETDATATYPE"></a>xmlSecTransformGetDataType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> xmlSecTransformGetDataType
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10389"></a><p></p>
@@ -1745,11 +1745,11 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10410"></a><h3>
 <a name="XMLSECTRANSFORMPUSHBIN"></a>xmlSecTransformPushBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPushBin          (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPushBin          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
                                              int final,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10418"></a><p></p>
@@ -1792,11 +1792,11 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10447"></a><h3>
 <a name="XMLSECTRANSFORMPOPBIN"></a>xmlSecTransformPopBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPopBin           (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPopBin           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> maxDataSize,
                                              <font>size_t</font> *dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10456"></a><p></p>
@@ -1839,9 +1839,9 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10485"></a><h3>
 <a name="XMLSECTRANSFORMPUSHXML"></a>xmlSecTransformPushXml ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPushXml          (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPushXml          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10493"></a><p></p>
@@ -1874,9 +1874,9 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10514"></a><h3>
 <a name="XMLSECTRANSFORMPOPXML"></a>xmlSecTransformPopXml ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPopXml           (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> *nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformPopXml           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10522"></a><p></p>
@@ -1909,9 +1909,9 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10543"></a><h3>
 <a name="XMLSECTRANSFORMEXECUTE"></a>xmlSecTransformExecute ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformExecute          (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformExecute          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              int last,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10550"></a><p></p>
@@ -1944,7 +1944,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10571"></a><h3>
 <a name="XMLSECTRANSFORMDEBUGDUMP"></a>xmlSecTransformDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDebugDump        (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDebugDump        (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1968,7 +1968,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN10591"></a><h3>
 <a name="XMLSECTRANSFORMDEBUGXMLDUMP"></a>xmlSecTransformDebugXmlDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDebugXmlDump     (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformDebugXmlDump     (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2101,9 +2101,9 @@ bytes or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN10705"></a><h3>
 <a name="XMLSECTRANSFORMCONNECT"></a>xmlSecTransformConnect ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformConnect          (<font>xmlSecTransformPtr</font> left,
-                                             <font>xmlSecTransformPtr</font> right,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformConnect          (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> left,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> right,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>
 <tt class="PARAMETER"><i>left</i></tt>:
 <tt class="PARAMETER"><i>right</i></tt>:</p>
@@ -2155,8 +2155,8 @@ processing instructions. The output of this transform is an octet stream.</p>
 <div class="REFSECT2">
 <a name="AEN10743"></a><h3>
 <a name="XMLSECTRANSFORMADDAFTER"></a>xmlSecTransformAddAfter ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformAddAfter  (<font>xmlSecTransformPtr</font> curTransform,
-                                             <font>xmlSecTransformPtr</font> newTransform);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformAddAfter  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> curTransform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> newTransform);</pre></td></tr></table>
 <p>Adds <tt class="PARAMETER"><i>newTransform</i></tt> after the <tt class="PARAMETER"><i>curTransform</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2185,8 +2185,8 @@ processing instructions. The output of this transform is an octet stream.</p>
 <div class="REFSECT2">
 <a name="AEN10771"></a><h3>
 <a name="XMLSECTRANSFORMADDBEFORE"></a>xmlSecTransformAddBefore ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformAddBefore (<font>xmlSecTransformPtr</font> curTransform,
-                                             <font>xmlSecTransformPtr</font> newTransform);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font> xmlSecTransformAddBefore (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> curTransform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> newTransform);</pre></td></tr></table>
 <p>Adds <tt class="PARAMETER"><i>newTransform</i></tt> before the <tt class="PARAMETER"><i>curTransform</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2215,7 +2215,7 @@ processing instructions. The output of this transform is an octet stream.</p>
 <div class="REFSECT2">
 <a name="AEN10799"></a><h3>
 <a name="XMLSECTRANSFORMREMOVE"></a>xmlSecTransformRemove ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformRemove           (<font>xmlSecTransformPtr</font> transform);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformRemove           (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre></td></tr></table>
 <p>Removes <tt class="PARAMETER"><i>transform</i></tt> from the chain. This method MUST be called by any 
 bin transform id destructor.</p>
 <p></p>
@@ -2234,9 +2234,9 @@ bin transform id destructor.</p>
 <a name="AEN10817"></a><h3>
 <a name="XMLSECTRANSFORMDEFAULTGETDATATYPE"></a>xmlSecTransformDefaultGetDataType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> xmlSecTransformDefaultGetDataType
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10826"></a><p></p>
@@ -2269,11 +2269,11 @@ bin transform id destructor.</p>
 <div class="REFSECT2">
 <a name="AEN10847"></a><h3>
 <a name="XMLSECTRANSFORMDEFAULTPUSHBIN"></a>xmlSecTransformDefaultPushBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPushBin   (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPushBin   (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
                                              int final,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10855"></a><p></p>
@@ -2316,11 +2316,11 @@ bin transform id destructor.</p>
 <div class="REFSECT2">
 <a name="AEN10884"></a><h3>
 <a name="XMLSECTRANSFORMDEFAULTPOPBIN"></a>xmlSecTransformDefaultPopBin ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPopBin    (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPopBin    (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> maxDataSize,
                                              <font>size_t</font> *dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10893"></a><p></p>
@@ -2363,9 +2363,9 @@ bin transform id destructor.</p>
 <div class="REFSECT2">
 <a name="AEN10922"></a><h3>
 <a name="XMLSECTRANSFORMDEFAULTPUSHXML"></a>xmlSecTransformDefaultPushXml ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPushXml   (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPushXml   (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10930"></a><p></p>
@@ -2398,9 +2398,9 @@ bin transform id destructor.</p>
 <div class="REFSECT2">
 <a name="AEN10951"></a><h3>
 <a name="XMLSECTRANSFORMDEFAULTPOPXML"></a>xmlSecTransformDefaultPopXml ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPopXml    (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> *nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformDefaultPopXml    (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10959"></a><p></p>
@@ -2434,8 +2434,8 @@ bin transform id destructor.</p>
 <a name="AEN10980"></a><h3>
 <a name="XMLSECTRANSFORMCREATEOUTPUTBUFFER"></a>xmlSecTransformCreateOutputBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlOutputBufferPtr</font> xmlSecTransformCreateOutputBuffer
-                                            (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN10988"></a><p></p>
@@ -2464,8 +2464,8 @@ bin transform id destructor.</p>
 <a name="AEN11005"></a><h3>
 <a name="XMLSECTRANSFORMCREATEINPUTBUFFER"></a>xmlSecTransformCreateInputBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlParserInputBufferPtr</font> xmlSecTransformCreateInputBuffer
-                                            (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN11013"></a><p></p>
@@ -2494,7 +2494,7 @@ bin transform id destructor.</p>
 <a name="AEN11030"></a><h3>
 <a name="XMLSECTRANSFORMINITIALIZEMETHOD"></a>xmlSecTransformInitializeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformInitializeMethod)
-                                            (<font>xmlSecTransformPtr</font> transform);</pre></td></tr></table>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre></td></tr></table>
 <p>The transform specific initialization method.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2519,7 +2519,7 @@ bin transform id destructor.</p>
 <a name="AEN11050"></a><h3>
 <a name="XMLSECTRANSFORMFINALIZEMETHOD"></a>xmlSecTransformFinalizeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecTransformFinalizeMethod)
-                                            (<font>xmlSecTransformPtr</font> transform);</pre></td></tr></table>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre></td></tr></table>
 <p>The transform specific destroy method.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2537,9 +2537,9 @@ bin transform id destructor.</p>
 <a name="AEN11066"></a><h3>
 <a name="XMLSECTRANSFORMGETDATATYPEMETHOD"></a>xmlSecTransformGetDataTypeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a> (*xmlSecTransformGetDataTypeMethod)
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to query information about transform
 data type in specified mode <font>mode</font>.</p>
 <p></p>
@@ -2575,9 +2575,9 @@ data type in specified mode <font>mode</font>.</p>
 <a name="AEN11098"></a><h3>
 <a name="XMLSECTRANSFORMNODEREADMETHOD"></a>xmlSecTransformNodeReadMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformNodeReadMethod)
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to read the transform data from 
 the <font>node</font>.</p>
 <p></p>
@@ -2613,9 +2613,9 @@ the <font>node</font>.</p>
 <a name="AEN11130"></a><h3>
 <a name="XMLSECTRANSFORMNODEWRITEMETHOD"></a>xmlSecTransformNodeWriteMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformNodeWriteMethod)
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to write transform information to an XML node <font>node</font>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2650,8 +2650,8 @@ the <font>node</font>.</p>
 <a name="AEN11162"></a><h3>
 <a name="XMLSECTRANSFORMSETKEYREQUIREMENTS"></a>xmlSecTransformSetKeyRequirements ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformSetKeyRequirements)
-                                            (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyReqPtr</font> keyReq);</pre></td></tr></table>
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre></td></tr></table>
 <p>Transform specific method to set transform's key requirements.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2680,8 +2680,8 @@ the <font>node</font>.</p>
 <div class="REFSECT2">
 <a name="AEN11187"></a><h3>
 <a name="XMLSECTRANSFORMSETKEYMETHOD"></a>xmlSecTransformSetKeyMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformSetKeyMethod)  (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformSetKeyMethod)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
 <p>The transform specific method to set the key for use.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2710,10 +2710,10 @@ the <font>node</font>.</p>
 <div class="REFSECT2">
 <a name="AEN11212"></a><h3>
 <a name="XMLSECTRANSFORMVERIFYMETHOD"></a>xmlSecTransformVerifyMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformVerifyMethod)  (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformVerifyMethod)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to verify transform processing results
 (used by digest and signature transforms). This method sets <font>status</font>
 member of the <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransform</a> structure to either <font>xmlSecTransformStatusOk</font>
@@ -2755,11 +2755,11 @@ if verification succeeded or <font>xmlSecTransformStatusFail</font> otherwise.</
 <div class="REFSECT2">
 <a name="AEN11251"></a><h3>
 <a name="XMLSECTRANSFORMPUSHBINMETHOD"></a>xmlSecTransformPushBinMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPushBinMethod) (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPushBinMethod) (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> dataSize,
                                              int final,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to process data from <font>data</font> and push
 result to the next transform in the chain.</p>
 <p></p>
@@ -2805,11 +2805,11 @@ result to the next transform in the chain.</p>
 <div class="REFSECT2">
 <a name="AEN11290"></a><h3>
 <a name="XMLSECTRANSFORMPOPBINMETHOD"></a>xmlSecTransformPopBinMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPopBinMethod)  (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPopBinMethod)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              unsigned char *data,
                                              <font>size_t</font> maxDataSize,
                                              <font>size_t</font> *dataSize,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to pop data from previous transform 
 in the chain and return result in the <font>data</font> buffer. The size of returned
 data is placed in the <font>dataSize</font>.</p>
@@ -2855,9 +2855,9 @@ data is placed in the <font>dataSize</font>.</p>
 <div class="REFSECT2">
 <a name="AEN11332"></a><h3>
 <a name="XMLSECTRANSFORMPUSHXMLMETHOD"></a>xmlSecTransformPushXmlMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPushXmlMethod) (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPushXmlMethod) (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to process <font>nodes</font> and push result to the next 
 transform in the chain.</p>
 <p></p>
@@ -2892,9 +2892,9 @@ transform in the chain.</p>
 <div class="REFSECT2">
 <a name="AEN11363"></a><h3>
 <a name="XMLSECTRANSFORMPOPXMLMETHOD"></a>xmlSecTransformPopXmlMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPopXmlMethod)  (<font>xmlSecTransformPtr</font> transform,
-                                             <font>xmlSecNodeSetPtr</font> *nodes,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformPopXmlMethod)  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
+                                             <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>The transform specific method to pop data from previous transform in the chain,
 process the data and return result in <font>nodes</font>.</p>
 <p></p>
@@ -2929,9 +2929,9 @@ process the data and return result in <font>nodes</font>.</p>
 <div class="REFSECT2">
 <a name="AEN11394"></a><h3>
 <a name="XMLSECTRANSFORMEXECUTEMETHOD"></a>xmlSecTransformExecuteMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformExecuteMethod) (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecTransformExecuteMethod) (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              int last,
-                                             <font>xmlSecTransformCtxPtr</font> transformCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre></td></tr></table>
 <p>Transform specific method to process a chunk of data.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -3171,7 +3171,7 @@ readNode:			the XML node read method.</td>
 <div class="REFSECT2">
 <a name="AEN11573"></a><h3>
 <a name="XMLSECTRANSFORMIDLISTFIND"></a>xmlSecTransformIdListFind ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformIdListFind       (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformIdListFind       (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecTransformId</font> transformId);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -3201,7 +3201,7 @@ readNode:			the XML node read method.</td>
 <a name="AEN11597"></a><h3>
 <a name="XMLSECTRANSFORMIDLISTFINDBYHREF"></a>xmlSecTransformIdListFindByHref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformIdListFindByHref
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *href,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre></td></tr></table>
 <p></p>
@@ -3237,7 +3237,7 @@ readNode:			the XML node read method.</td>
 <a name="AEN11627"></a><h3>
 <a name="XMLSECTRANSFORMIDLISTFINDBYNAME"></a>xmlSecTransformIdListFindByName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformIdListFindByName
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *name,
                                              <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre></td></tr></table>
 <p></p>
@@ -3272,7 +3272,7 @@ readNode:			the XML node read method.</td>
 <div class="REFSECT2">
 <a name="AEN11657"></a><h3>
 <a name="XMLSECTRANSFORMIDLISTDEBUGDUMP"></a>xmlSecTransformIdListDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformIdListDebugDump  (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformIdListDebugDump  (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -3297,7 +3297,7 @@ readNode:			the XML node read method.</td>
 <a name="AEN11677"></a><h3>
 <a name="XMLSECTRANSFORMIDLISTDEBUGXMLDUMP"></a>xmlSecTransformIdListDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformIdListDebugXmlDump
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -3361,7 +3361,7 @@ the encoded content of an element.</p>
 <a name="AEN11726"></a><h3>
 <a name="XMLSECTRANSFORMBASE64SETLINESIZE"></a>xmlSecTransformBase64SetLineSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecTransformBase64SetLineSize
-                                            (<font>xmlSecTransformPtr</font> transform,
+                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              <font>size_t</font> lineSize);</pre></td></tr></table>
 <p>Sets the max line size to <tt class="PARAMETER"><i>lineSize</i></tt>.</p>
 <p></p>
@@ -3617,7 +3617,7 @@ http://www.w3.org/TR/xmldsig-core/<font>sec-XPath</font> for more details.</p>
 <div class="REFSECT2">
 <a name="AEN11927"></a><h3>
 <a name="XMLSECTRANSFORMXPOINTERSETEXPR"></a>xmlSecTransformXPointerSetExpr ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformXPointerSetExpr  (<font>xmlSecTransformPtr</font> transform,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecTransformXPointerSetExpr  (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                              const <font>xmlChar</font> *expr,
                                              <a href="xmlsec-nodeset.html#XMLSECNODESETTYPE">xmlSecNodeSetType</a> nodeSetType,
                                              <font>xmlNodePtr</font> hereNode);</pre></td></tr></table>

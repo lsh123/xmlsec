@@ -15,38 +15,38 @@
 
 
 #define     <link linkend="xmlSecNodeGetName">xmlSecNodeGetName</link>               (node)
-const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link>          (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur);
-int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>             (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link>          (const <link linkend="xmlNode">xmlNodePtr</link> cur);
+int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>             (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecGetNextElementNode">xmlSecGetNextElementNode</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> cur);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindChild">xmlSecFindChild</link>                 (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecGetNextElementNode">xmlSecGetNextElementNode</link>        (<link linkend="xmlNode">xmlNodePtr</link> cur);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindChild">xmlSecFindChild</link>                 (const <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindParent">xmlSecFindParent</link>                (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindParent">xmlSecFindParent</link>                (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNode">xmlSecFindNode</link>                  (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecFindNode">xmlSecFindNode</link>                  (const <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChild">xmlSecAddChild</link>                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddChild">xmlSecAddChild</link>                  (<link linkend="xmlNode">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddNextSibling">xmlSecAddNextSibling</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddNextSibling">xmlSecAddNextSibling</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddPrevSibling">xmlSecAddPrevSibling</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecAddPrevSibling">xmlSecAddPrevSibling</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
-int         <link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link>               (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);
-int         <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);
-int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+int         <link linkend="xmlSecReplaceNode">xmlSecReplaceNode</link>               (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);
+int         <link linkend="xmlSecReplaceContent">xmlSecReplaceContent</link>            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);
+int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</link>         (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);
-void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> **ids);
 #define     <link linkend="xmlSecIsHex">xmlSecIsHex</link>                     (c)
 #define     <link linkend="xmlSecGetHex">xmlSecGetHex</link>                    (c)
@@ -84,7 +84,7 @@ Macro. Returns node's name.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref ()</title>
-<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecGetNodeNsHref          (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur);</programlisting>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecGetNodeNsHref          (const <link linkend="xmlNode">xmlNodePtr</link> cur);</programlisting>
 <para>
 Get's node's namespace href.</para>
 <para>
@@ -102,7 +102,7 @@ Get's node's namespace href.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCheckNodeName">xmlSecCheckNodeName ()</title>
-<programlisting>int         xmlSecCheckNodeName             (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<programlisting>int         xmlSecCheckNodeName             (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -128,7 +128,7 @@ Checks that the node has a given name and a given namespace href.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetNextElementNode">xmlSecGetNextElementNode ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecGetNextElementNode        (<link linkend="xmlNodePtr">xmlNodePtr</link> cur);</programlisting>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecGetNextElementNode        (<link linkend="xmlNode">xmlNodePtr</link> cur);</programlisting>
 <para>
 Seraches for the next element node.</para>
 <para>
@@ -146,7 +146,7 @@ Seraches for the next element node.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecFindChild">xmlSecFindChild ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindChild                 (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindChild                 (const <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -174,7 +174,7 @@ node is not found.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecFindParent">xmlSecFindParent ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindParent                (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindParent                (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -202,7 +202,7 @@ node is not found.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecFindNode">xmlSecFindNode ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNode                  (const <link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecFindNode                  (const <link linkend="xmlNode">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -230,7 +230,7 @@ node is not found.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddChild">xmlSecAddChild ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChild                  (<link linkend="xmlNodePtr">xmlNodePtr</link> parent,
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddChild                  (<link linkend="xmlNode">xmlNodePtr</link> parent,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -256,7 +256,7 @@ Adds a child to the node <parameter>parent</parameter> with given <parameter>nam
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddNextSibling">xmlSecAddNextSibling ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddNextSibling            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddNextSibling            (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -282,7 +282,7 @@ Adds next sibling to the node <parameter>node</parameter> with given <parameter>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddPrevSibling">xmlSecAddPrevSibling ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddPrevSibling            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecAddPrevSibling            (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
@@ -308,8 +308,8 @@ Adds prev sibling to the node <parameter>node</parameter> with given <parameter>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecReplaceNode">xmlSecReplaceNode ()</title>
-<programlisting>int         xmlSecReplaceNode               (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);</programlisting>
+<programlisting>int         xmlSecReplaceNode               (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);</programlisting>
 <para>
 Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the XML tree.</para>
 <para>
@@ -330,8 +330,8 @@ Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the 
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecReplaceContent">xmlSecReplaceContent ()</title>
-<programlisting>int         xmlSecReplaceContent            (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> newNode);</programlisting>
+<programlisting>int         xmlSecReplaceContent            (<link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlNode">xmlNodePtr</link> newNode);</programlisting>
 <para>
 Swaps the content of <parameter>node</parameter> and <parameter>newNode</parameter>.</para>
 <para>
@@ -352,7 +352,7 @@ Swaps the content of <parameter>node</parameter> and <parameter>newNode</paramet
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer ()</title>
-<programlisting>int         xmlSecReplaceNodeBuffer         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+<programlisting>int         xmlSecReplaceNodeBuffer         (<link linkend="xmlNode">xmlNodePtr</link> node,
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
@@ -378,8 +378,8 @@ Swaps the <parameter>node</parameter> and the parsed XML data from the <paramete
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecAddIDs">xmlSecAddIDs ()</title>
-<programlisting>void        xmlSecAddIDs                    (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<programlisting>void        xmlSecAddIDs                    (<link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> **ids);</programlisting>
 <para>
 Walks thru all children of the <parameter>cur</parameter> node and adds all attributes 

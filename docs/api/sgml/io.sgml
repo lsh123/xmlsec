@@ -26,7 +26,7 @@ int         <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks<
 #define     <link linkend="xmlSecTransformInputURIId">xmlSecTransformInputURIId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>     (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);
 </synopsis>
 </refsynopsisdiv>
@@ -137,7 +137,7 @@ The input uri transform klass. Reads binary data from an uri.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen ()</title>
-<programlisting>int         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+<programlisting>int         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
 Opens the given <parameter>uri</parameter> for reading.</para>

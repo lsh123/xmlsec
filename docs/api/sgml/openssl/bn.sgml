@@ -14,9 +14,9 @@
 
 
 
-<link linkend="BIGNUM-CAPS">BIGNUM</link>*     <link linkend="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</link>     (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<link linkend="BIGNUM-CAPS">BIGNUM</link>*     <link linkend="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</link>     (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="BIGNUM-CAPS">BIGNUM</link> **a);
-int         <link linkend="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+int         <link linkend="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue</link>     (<link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a,
                                              int addLineBreaks);
 </synopsis>
@@ -37,12 +37,12 @@ int         <link linkend="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNVa
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue ()</title>
-<programlisting><link linkend="BIGNUM-CAPS">BIGNUM</link>*     xmlSecOpenSSLNodeGetBNValue     (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<programlisting><link linkend="BIGNUM-CAPS">BIGNUM</link>*     xmlSecOpenSSLNodeGetBNValue     (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                              <link linkend="BIGNUM-CAPS">BIGNUM</link> **a);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue ()</title>
-<programlisting>int         xmlSecOpenSSLNodeSetBNValue     (<link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+<programlisting>int         xmlSecOpenSSLNodeSetBNValue     (<link linkend="xmlNode">xmlNodePtr</link> cur,
                                              const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a,
                                              int addLineBreaks);</programlisting>
 </refsect2>

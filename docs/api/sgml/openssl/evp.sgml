@@ -14,11 +14,11 @@
 
 
 
-int         <link linkend="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyDataAdoptEvp</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+int         <link linkend="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyDataAdoptEvp</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);
-<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLEvpKeyDataGetEvp">xmlSecOpenSSLEvpKeyDataGetEvp</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLEvpKeyDataGetEvp">xmlSecOpenSSLEvpKeyDataGetEvp</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecOpenSSLEvpKeyDup">xmlSecOpenSSLEvpKeyDup</link>          (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecOpenSSLEvpKeyAdopt">xmlSecOpenSSLEvpKeyAdopt</link>   (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecOpenSSLEvpKeyAdopt">xmlSecOpenSSLEvpKeyAdopt</link>   (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);
 </synopsis>
 </refsynopsisdiv>
 
@@ -37,12 +37,12 @@ int         <link linkend="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyD
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyDataAdoptEvp ()</title>
-<programlisting>int         xmlSecOpenSSLEvpKeyDataAdoptEvp (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<programlisting>int         xmlSecOpenSSLEvpKeyDataAdoptEvp (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyDataGetEvp">xmlSecOpenSSLEvpKeyDataGetEvp ()</title>
-<programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLEvpKeyDataGetEvp   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecOpenSSLEvpKeyDataGetEvp   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyDup">xmlSecOpenSSLEvpKeyDup ()</title>
@@ -50,7 +50,7 @@ int         <link linkend="xmlSecOpenSSLEvpKeyDataAdoptEvp">xmlSecOpenSSLEvpKeyD
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLEvpKeyAdopt">xmlSecOpenSSLEvpKeyAdopt ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecOpenSSLEvpKeyAdopt   (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
+<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecOpenSSLEvpKeyAdopt   (<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *pKey);</programlisting>
 </refsect2>
 
 </refsect1>

@@ -21,47 +21,47 @@ typedef     <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
 #define     <link linkend="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</link>
 #define     <link linkend="xmlSecKeyUsageAny">xmlSecKeyUsageAny</link>
 struct      <link linkend="xmlSecKeyReq">xmlSecKeyReq</link>;
-int         <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>          (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
-void        <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
-void        <link linkend="xmlSecKeyReqReset">xmlSecKeyReqReset</link>               (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
-int         <link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link>                (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> dst,
-                                             <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> src);
-int         <link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>       (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);
+int         <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>          (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
+void        <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
+void        <link linkend="xmlSecKeyReqReset">xmlSecKeyReqReset</link>               (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
+int         <link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link>                (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> dst,
+                                             <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> src);
+int         <link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>       (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);
 struct      <link linkend="xmlSecKey">xmlSecKey</link>;
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (void);
-void        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-void        <link linkend="xmlSecKeyEmpty">xmlSecKeyEmpty</link>                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecKeyCopy">xmlSecKeyCopy</link>                   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> keyDst,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> keySrc);
-const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link>             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecKeySetName">xmlSecKeySetName</link>                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (void);
+void        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+void        <link linkend="xmlSecKeyEmpty">xmlSecKeyEmpty</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecKeyCopy">xmlSecKeyCopy</link>                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> keyDst,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> keySrc);
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link>             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecKeySetName">xmlSecKeySetName</link>                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name);
-<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyGetType">xmlSecKeyGetType</link>          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link>          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link>               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link>           (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyGetType">xmlSecKeyGetType</link>          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link>          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link>               (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link>           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link>        (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link>        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
-int         <link linkend="xmlSecKeyAdoptData">xmlSecKeyAdoptData</link>              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+int         <link linkend="xmlSecKeyAdoptData">xmlSecKeyAdoptData</link>              (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>              (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>           (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (const <link linkend="xmlChar">xmlChar</link> *klass,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyGenerate">xmlSecKeyGenerate</link>              (const <link linkend="xmlChar">xmlChar</link> *klass,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+                                             <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
                                              const char *filename);
 #define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
 #define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
@@ -178,7 +178,7 @@ The key requirements information.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize ()</title>
-<programlisting>int         xmlSecKeyReqInitialize          (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+<programlisting>int         xmlSecKeyReqInitialize          (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
 Initialize key requirements object. Caller is responsible for
 cleaning it with <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link> function.</para>
@@ -197,7 +197,7 @@ cleaning it with <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize ()</title>
-<programlisting>void        xmlSecKeyReqFinalize            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+<programlisting>void        xmlSecKeyReqFinalize            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
 Cleans the key requirements object initialized with <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>
 function.</para>
@@ -214,7 +214,7 @@ function.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqReset">xmlSecKeyReqReset ()</title>
-<programlisting>void        xmlSecKeyReqReset               (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+<programlisting>void        xmlSecKeyReqReset               (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
 Resets key requirements object for new key search.</para>
 <para>
@@ -230,8 +230,8 @@ Resets key requirements object for new key search.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqCopy">xmlSecKeyReqCopy ()</title>
-<programlisting>int         xmlSecKeyReqCopy                (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> dst,
-                                             <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> src);</programlisting>
+<programlisting>int         xmlSecKeyReqCopy                (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> dst,
+                                             <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> src);</programlisting>
 <para>
 Copies key requirements from <parameter>src</parameter> object to <parameter>dst</parameter> object.</para>
 <para>
@@ -252,8 +252,8 @@ Copies key requirements from <parameter>src</parameter> object to <parameter>dst
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey ()</title>
-<programlisting>int         xmlSecKeyReqMatchKey            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting>int         xmlSecKeyReqMatchKey            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Checks whether <parameter>key</parameter> matches key requirements <parameter>keyReq</parameter>.</para>
 <para>
@@ -275,8 +275,8 @@ if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue ()</title>
-<programlisting>int         xmlSecKeyReqMatchKeyValue       (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);</programlisting>
+<programlisting>int         xmlSecKeyReqMatchKeyValue       (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);</programlisting>
 <para>
 Checks whether <parameter>keyValue</parameter> matches key requirements <parameter>keyReq</parameter>.</para>
 <para>
@@ -324,12 +324,12 @@ The key.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <structfield>value</structfield></entry>
+<entry><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <structfield>value</structfield></entry>
 <entry>		the key value.
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>dataList</structfield></entry>
+<entry><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <structfield>dataList</structfield></entry>
 <entry>		the key data list.
 </entry>
 </row>
@@ -351,7 +351,7 @@ The key.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyCreate">xmlSecKeyCreate ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (void);</programlisting>
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyCreate                (void);</programlisting>
 <para>
 Allocates and initializes new key. Caller is responsible for 
 freeing returned object with <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link> function.</para>
@@ -368,7 +368,7 @@ or NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDestroy">xmlSecKeyDestroy ()</title>
-<programlisting>void        xmlSecKeyDestroy                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting>void        xmlSecKeyDestroy                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Destroys the key created using <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link> function.</para>
 <para>
@@ -384,7 +384,7 @@ Destroys the key created using <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyEmpty">xmlSecKeyEmpty ()</title>
-<programlisting>void        xmlSecKeyEmpty                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting>void        xmlSecKeyEmpty                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Clears the <parameter>key</parameter> data.</para>
 <para>
@@ -400,7 +400,7 @@ Clears the <parameter>key</parameter> data.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDuplicate">xmlSecKeyDuplicate ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyDuplicate             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyDuplicate             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Creates a duplicate of the given <parameter>key</parameter>.</para>
 <para>
@@ -419,8 +419,8 @@ or NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyCopy">xmlSecKeyCopy ()</title>
-<programlisting>int         xmlSecKeyCopy                   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> keyDst,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> keySrc);</programlisting>
+<programlisting>int         xmlSecKeyCopy                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> keyDst,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> keySrc);</programlisting>
 <para>
 Copies key data from <parameter>keySrc</parameter> to <parameter>keyDst</parameter>.</para>
 <para>
@@ -441,7 +441,7 @@ Copies key data from <parameter>keySrc</parameter> to <parameter>keyDst</paramet
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetName">xmlSecKeyGetName ()</title>
-<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecKeyGetName             (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecKeyGetName             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Gets key name (see also <link linkend="xmlSecKeySetName">xmlSecKeySetName</link> function).</para>
 <para>
@@ -459,7 +459,7 @@ Gets key name (see also <link linkend="xmlSecKeySetName">xmlSecKeySetName</link>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeySetName">xmlSecKeySetName ()</title>
-<programlisting>int         xmlSecKeySetName                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<programlisting>int         xmlSecKeySetName                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
 <para>
 Sets key name (see also <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link> function).</para>
@@ -481,7 +481,7 @@ Sets key name (see also <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetType">xmlSecKeyGetType ()</title>
-<programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> xmlSecKeyGetType          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> xmlSecKeyGetType          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Gets <parameter>key</parameter> type.</para>
 <para>
@@ -499,7 +499,7 @@ Gets <parameter>key</parameter> type.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetValue">xmlSecKeyGetValue ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetValue          (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetValue          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Gets key value (see also <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link> function).</para>
 <para>
@@ -517,8 +517,8 @@ Gets key value (see also <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</li
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeySetValue">xmlSecKeySetValue ()</title>
-<programlisting>int         xmlSecKeySetValue               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);</programlisting>
+<programlisting>int         xmlSecKeySetValue               (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);</programlisting>
 <para>
 Sets key value (see also <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link> function).</para>
 <para>
@@ -539,7 +539,7 @@ Sets key value (see also <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</li
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetData">xmlSecKeyGetData ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetData           (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetData           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
 Gets key's data.</para>
@@ -562,7 +562,7 @@ Gets key's data.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyEnsureData">xmlSecKeyEnsureData ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyEnsureData        (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyEnsureData        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
 If necessary, creates key data of <parameter>dataId</parameter> klass and adds to <parameter>key</parameter>.</para>
@@ -584,8 +584,8 @@ If necessary, creates key data of <parameter>dataId</parameter> klass and adds t
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyAdoptData">xmlSecKeyAdoptData ()</title>
-<programlisting>int         xmlSecKeyAdoptData              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting>int         xmlSecKeyAdoptData              (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Adds <parameter>data</parameter> to the <parameter>key</parameter>. The <parameter>data</parameter> object will be destroyed
 by <parameter>key</parameter>.</para>
@@ -607,7 +607,7 @@ by <parameter>key</parameter>.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDebugDump">xmlSecKeyDebugDump ()</title>
-<programlisting>void        xmlSecKeyDebugDump              (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<programlisting>void        xmlSecKeyDebugDump              (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints the information about the <parameter>key</parameter> to the <parameter>output</parameter>.</para>
@@ -627,7 +627,7 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump ()</title>
-<programlisting>void        xmlSecKeyDebugXmlDump           (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<programlisting>void        xmlSecKeyDebugXmlDump           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints the information about the <parameter>key</parameter> to the <parameter>output</parameter> in XML format.</para>
@@ -647,7 +647,7 @@ Prints the information about the <parameter>key</parameter> to the <parameter>ou
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGenerate">xmlSecKeyGenerate ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyGenerate              (const <link linkend="xmlChar">xmlChar</link> *klass,
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyGenerate              (const <link linkend="xmlChar">xmlChar</link> *klass,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
@@ -677,9 +677,9 @@ Generates new key of requested <parameter>klass</parameter> and <parameter>type<
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyMatch">xmlSecKeyMatch ()</title>
-<programlisting>int         xmlSecKeyMatch                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+<programlisting>int         xmlSecKeyMatch                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+                                             <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
 Checks whether the <parameter>key</parameter> matches the given criteria.</para>
 <para>
@@ -703,7 +703,7 @@ Checks whether the <parameter>key</parameter> matches the given criteria.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyReadBinaryFile">xmlSecKeyReadBinaryFile ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadBinaryFile        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyReadBinaryFile        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId,
                                              const char *filename);</programlisting>
 <para>
 Reads the key value of klass <parameter>dataId</parameter> from a binary file <parameter>filename</parameter>.</para>

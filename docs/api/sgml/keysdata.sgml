@@ -35,80 +35,80 @@ typedef     <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>;
 #define     <link linkend="xmlSecKeyDataTypeSession">xmlSecKeyDataTypeSession</link>
 #define     <link linkend="xmlSecKeyDataTypePermanent">xmlSecKeyDataTypePermanent</link>
 #define     <link linkend="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</link>
-<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet</link>        (void);
+<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet</link>        (void);
 int         <link linkend="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit</link>            (void);
 void        <link linkend="xmlSecKeyDataIdsShutdown">xmlSecKeyDataIdsShutdown</link>        (void);
 int         <link linkend="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault</link> (void);
 int         <link linkend="xmlSecKeyDataIdsRegister">xmlSecKeyDataIdsRegister</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
 struct      <link linkend="xmlSecKeyData">xmlSecKeyData</link>;
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataCreate">xmlSecKeyDataCreate</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
-<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-void        <link linkend="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy</link>            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-int         <link linkend="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate</link>           (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataCreate">xmlSecKeyDataCreate</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate</link>     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+void        <link linkend="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy</link>            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate</link>           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyDataGetType">xmlSecKeyDataGetType</link>      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataGetSize">xmlSecKeyDataGetSize</link>            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyDataGetIdentifier">xmlSecKeyDataGetIdentifier</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-void        <link linkend="xmlSecKeyDataDebugDump">xmlSecKeyDataDebugDump</link>          (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyDataGetType">xmlSecKeyDataGetType</link>      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataGetSize">xmlSecKeyDataGetSize</link>            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyDataGetIdentifier">xmlSecKeyDataGetIdentifier</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+void        <link linkend="xmlSecKeyDataDebugDump">xmlSecKeyDataDebugDump</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecKeyDataDebugXmlDump">xmlSecKeyDataDebugXmlDump</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+void        <link linkend="xmlSecKeyDataDebugXmlDump">xmlSecKeyDataDebugXmlDump</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 int         <link linkend="xmlSecKeyDataXmlRead">xmlSecKeyDataXmlRead</link>            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeyDataXmlWrite">xmlSecKeyDataXmlWrite</link>           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeyDataBinRead">xmlSecKeyDataBinRead</link>            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeyDataBinWrite">xmlSecKeyDataBinWrite</link>           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 #define     <link linkend="xmlSecKeyDataGetName">xmlSecKeyDataGetName</link>            (data)
 #define     <link linkend="xmlSecKeyDataIsValid">xmlSecKeyDataIsValid</link>            (data)
 #define     <link linkend="xmlSecKeyDataCheckId">xmlSecKeyDataCheckId</link>            (data, dataId)
 #define     <link linkend="xmlSecKeyDataCheckUsage">xmlSecKeyDataCheckUsage</link>         (data, usg)
 #define     <link linkend="xmlSecKeyDataCheckSize">xmlSecKeyDataCheckSize</link>          (data, size)
 #define     <link linkend="xmlSecKeyDataIdUnknown">xmlSecKeyDataIdUnknown</link>
-int         (<link linkend="xmlSecKeyDataInitMethod">*xmlSecKeyDataInitMethod</link>)      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-int         (<link linkend="xmlSecKeyDataDuplicateMethod">*xmlSecKeyDataDuplicateMethod</link>) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);
-void        (<link linkend="xmlSecKeyDataFinalizeMethod">*xmlSecKeyDataFinalizeMethod</link>)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         (<link linkend="xmlSecKeyDataInitMethod">*xmlSecKeyDataInitMethod</link>)      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+int         (<link linkend="xmlSecKeyDataDuplicateMethod">*xmlSecKeyDataDuplicateMethod</link>) (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);
+void        (<link linkend="xmlSecKeyDataFinalizeMethod">*xmlSecKeyDataFinalizeMethod</link>)  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         (<link linkend="xmlSecKeyDataXmlReadMethod">*xmlSecKeyDataXmlReadMethod</link>)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         (<link linkend="xmlSecKeyDataXmlWriteMethod">*xmlSecKeyDataXmlWriteMethod</link>)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         (<link linkend="xmlSecKeyDataBinReadMethod">*xmlSecKeyDataBinReadMethod</link>)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         (<link linkend="xmlSecKeyDataBinWriteMethod">*xmlSecKeyDataBinWriteMethod</link>)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
-int         (<link linkend="xmlSecKeyDataGenerateMethod">*xmlSecKeyDataGenerateMethod</link>)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         (<link linkend="xmlSecKeyDataGenerateMethod">*xmlSecKeyDataGenerateMethod</link>)  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> (<link linkend="xmlSecKeyDataGetTypeMethod">*xmlSecKeyDataGetTypeMethod</link>)
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-<link linkend="size-t">size_t</link>      (<link linkend="xmlSecKeyDataGetSizeMethod">*xmlSecKeyDataGetSizeMethod</link>)   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="size-t">size_t</link>      (<link linkend="xmlSecKeyDataGetSizeMethod">*xmlSecKeyDataGetSizeMethod</link>)   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 const <link linkend="xmlChar">xmlChar</link>* (<link linkend="xmlSecKeyDataGetIdentifierMethod">*xmlSecKeyDataGetIdentifierMethod</link>)
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-void        (<link linkend="xmlSecKeyDataDebugDumpMethod">*xmlSecKeyDataDebugDumpMethod</link>) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+void        (<link linkend="xmlSecKeyDataDebugDumpMethod">*xmlSecKeyDataDebugDumpMethod</link>) (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecKeyDataKlass">xmlSecKeyDataKlass</link>;
 #define     <link linkend="xmlSecKeyDataKlassGetName">xmlSecKeyDataKlassGetName</link>       (klass)
@@ -116,79 +116,79 @@ struct      <link linkend="xmlSecKeyDataKlass">xmlSecKeyDataKlass</link>;
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataListGetKlass">xmlSecKeyDataListGetKlass</link>   (void);
 #define     <link linkend="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</link>
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataIdListGetKlass">xmlSecKeyDataIdListGetKlass</link> (void);
-int         <link linkend="xmlSecKeyDataIdListFind">xmlSecKeyDataIdListFind</link>         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+int         <link linkend="xmlSecKeyDataIdListFind">xmlSecKeyDataIdListFind</link>         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdListFindByNode">xmlSecKeyDataIdListFindByNode</link>
-                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *nodeName,
                                              const <link linkend="xmlChar">xmlChar</link> *nodeNs,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdListFindByHref">xmlSecKeyDataIdListFindByHref</link>
-                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *href,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdListFindByName">xmlSecKeyDataIdListFindByName</link>
-                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
-void        <link linkend="xmlSecKeyDataIdListDebugDump">xmlSecKeyDataIdListDebugDump</link>    (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+void        <link linkend="xmlSecKeyDataIdListDebugDump">xmlSecKeyDataIdListDebugDump</link>    (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecKeyDataIdListDebugXmlDump">xmlSecKeyDataIdListDebugXmlDump</link> (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+void        <link linkend="xmlSecKeyDataIdListDebugXmlDump">xmlSecKeyDataIdListDebugXmlDump</link> (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</link>
 int         <link linkend="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecKeyDataBinaryValueDuplicate">xmlSecKeyDataBinaryValueDuplicate</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);
 void        <link linkend="xmlSecKeyDataBinaryValueFinalize">xmlSecKeyDataBinaryValueFinalize</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecKeyDataBinaryValueXmlRead">xmlSecKeyDataBinaryValueXmlRead</link> (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeyDataBinaryValueXmlWrite">xmlSecKeyDataBinaryValueXmlWrite</link>
                                             (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeyDataBinaryValueBinRead">xmlSecKeyDataBinaryValueBinRead</link> (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 int         <link linkend="xmlSecKeyDataBinaryValueBinWrite">xmlSecKeyDataBinaryValueBinWrite</link>
                                             (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 void        <link linkend="xmlSecKeyDataBinaryValueDebugDump">xmlSecKeyDataBinaryValueDebugDump</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecKeyDataBinaryValueDebugXmlDump">xmlSecKeyDataBinaryValueDebugXmlDump</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataBinaryValueGetSize">xmlSecKeyDataBinaryValueGetSize</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
-<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecKeyDataBinaryValueGetBuffer">xmlSecKeyDataBinaryValueGetBuffer</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataBinaryValueGetSize">xmlSecKeyDataBinaryValueGetSize</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecKeyDataBinaryValueGetBuffer">xmlSecKeyDataBinaryValueGetBuffer</link>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 int         <link linkend="xmlSecKeyDataBinaryValueSetBuffer">xmlSecKeyDataBinaryValueSetBuffer</link>
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);
 struct      <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link>;
-<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate</link>
+<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate</link>
                                             (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);
-void        <link linkend="xmlSecKeyDataStoreDestroy">xmlSecKeyDataStoreDestroy</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+void        <link linkend="xmlSecKeyDataStoreDestroy">xmlSecKeyDataStoreDestroy</link>       (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
 #define     <link linkend="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName</link>       (store)
 #define     <link linkend="xmlSecKeyDataStoreIsValid">xmlSecKeyDataStoreIsValid</link>       (store)
 #define     <link linkend="xmlSecKeyDataStoreCheckId">xmlSecKeyDataStoreCheckId</link>       (store, storeId)
 #define     <link linkend="xmlSecKeyDataStoreCheckSize">xmlSecKeyDataStoreCheckSize</link>     (store, size)
 #define     <link linkend="xmlSecKeyDataStoreIdUnknown">xmlSecKeyDataStoreIdUnknown</link>
 int         (<link linkend="xmlSecKeyDataStoreInitializeMethod">*xmlSecKeyDataStoreInitializeMethod</link>)
-                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
 void        (<link linkend="xmlSecKeyDataStoreFinalizeMethod">*xmlSecKeyDataStoreFinalizeMethod</link>)
-                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
 struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</link>;
 #define     <link linkend="xmlSecKeyDataStoreKlassGetName">xmlSecKeyDataStoreKlassGetName</link>  (klass)
 #define     <link linkend="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</link>
@@ -401,7 +401,7 @@ Any key data.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet ()</title>
-<programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecKeyDataIdsGet        (void);</programlisting>
+<programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecKeyDataIdsGet        (void);</programlisting>
 <para>
 Gets global registered key data klasses list.</para>
 <para>
@@ -509,7 +509,7 @@ The key data: key value (crypto material), x509 data, pgp data, etc.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataCreate">xmlSecKeyDataCreate ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyDataCreate        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);</programlisting>
+<programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecKeyDataCreate        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);</programlisting>
 <para>
 Allocates and initializes new key data of the specified type <parameter>id</parameter>.
 Caller is responsible for destroing returend object with 
@@ -530,7 +530,7 @@ or NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate ()</title>
-<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyDataDuplicate     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyDataDuplicate     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Creates a duplicate of the given <parameter>data</parameter>. Caller is responsible for 
 destroing returend object with <link linkend="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy</link> function.</para>
@@ -550,7 +550,7 @@ or NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy ()</title>
-<programlisting>void        xmlSecKeyDataDestroy            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting>void        xmlSecKeyDataDestroy            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Destroys the data and frees all allocated memory.</para>
 <para>
@@ -566,7 +566,7 @@ Destroys the data and frees all allocated memory.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate ()</title>
-<programlisting>int         xmlSecKeyDataGenerate           (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<programlisting>int         xmlSecKeyDataGenerate           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -592,7 +592,7 @@ Generates new key data of given size and type.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGetType">xmlSecKeyDataGetType ()</title>
-<programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> xmlSecKeyDataGetType      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> xmlSecKeyDataGetType      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets key data type.</para>
 <para>
@@ -610,7 +610,7 @@ Gets key data type.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGetSize">xmlSecKeyDataGetSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataGetSize            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataGetSize            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets key data size.</para>
 <para>
@@ -628,7 +628,7 @@ Gets key data size.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGetIdentifier">xmlSecKeyDataGetIdentifier ()</title>
-<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecKeyDataGetIdentifier   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecKeyDataGetIdentifier   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets key data identifier string.</para>
 <para>
@@ -646,7 +646,7 @@ Gets key data identifier string.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDebugDump">xmlSecKeyDataDebugDump ()</title>
-<programlisting>void        xmlSecKeyDataDebugDump          (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<programlisting>void        xmlSecKeyDataDebugDump          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints key data debug info.</para>
@@ -666,7 +666,7 @@ Prints key data debug info.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDebugXmlDump">xmlSecKeyDataDebugXmlDump ()</title>
-<programlisting>void        xmlSecKeyDataDebugXmlDump       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<programlisting>void        xmlSecKeyDataDebugXmlDump       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints key data debug info in XML format.</para>
@@ -687,9 +687,9 @@ Prints key data debug info in XML format.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataXmlRead">xmlSecKeyDataXmlRead ()</title>
 <programlisting>int         xmlSecKeyDataXmlRead            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads the key data of klass <parameter>id</parameter> from XML <parameter>node</parameter> and adds them to <parameter>key</parameter>.</para>
 <para>
@@ -717,9 +717,9 @@ Reads the key data of klass <parameter>id</parameter> from XML <parameter>node</
 <refsect2>
 <title><anchor id="xmlSecKeyDataXmlWrite">xmlSecKeyDataXmlWrite ()</title>
 <programlisting>int         xmlSecKeyDataXmlWrite           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Writes the key data of klass <parameter>id</parameter> from <parameter>key</parameter> to an XML <parameter>node</parameter>.</para>
 <para>
@@ -747,10 +747,10 @@ Writes the key data of klass <parameter>id</parameter> from <parameter>key</para
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinRead">xmlSecKeyDataBinRead ()</title>
 <programlisting>int         xmlSecKeyDataBinRead            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads the key data of klass <parameter>id</parameter> from binary buffer <parameter>buf</parameter> to <parameter>key</parameter>.</para>
 <para>
@@ -781,10 +781,10 @@ Reads the key data of klass <parameter>id</parameter> from binary buffer <parame
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinWrite">xmlSecKeyDataBinWrite ()</title>
 <programlisting>int         xmlSecKeyDataBinWrite           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Writes the key data of klass <parameter>id</parameter> from the <parameter>key</parameter> to a binary buffer <parameter>buf</parameter>.</para>
 <para>
@@ -913,7 +913,7 @@ The "unknown" id.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataInitMethod">xmlSecKeyDataInitMethod ()</title>
-<programlisting>int         (*xmlSecKeyDataInitMethod)      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting>int         (*xmlSecKeyDataInitMethod)      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Key data specific initialization method.</para>
 <para>
@@ -931,8 +931,8 @@ Key data specific initialization method.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDuplicateMethod">xmlSecKeyDataDuplicateMethod ()</title>
-<programlisting>int         (*xmlSecKeyDataDuplicateMethod) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);</programlisting>
+<programlisting>int         (*xmlSecKeyDataDuplicateMethod) (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);</programlisting>
 <para>
 Key data specific duplication (copy) method.</para>
 <para>
@@ -953,7 +953,7 @@ Key data specific duplication (copy) method.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataFinalizeMethod">xmlSecKeyDataFinalizeMethod ()</title>
-<programlisting>void        (*xmlSecKeyDataFinalizeMethod)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting>void        (*xmlSecKeyDataFinalizeMethod)  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Key data specific finalization method. All the objects and resources allocated
 by the key data object must be freed inside this method.</para>
@@ -971,9 +971,9 @@ by the key data object must be freed inside this method.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataXmlReadMethod">xmlSecKeyDataXmlReadMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataXmlReadMethod)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Key data specific method for reading XML node.</para>
 <para>
@@ -1001,9 +1001,9 @@ Key data specific method for reading XML node.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataXmlWriteMethod">xmlSecKeyDataXmlWriteMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataXmlWriteMethod)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Key data specific method for writing XML node.</para>
 <para>
@@ -1031,10 +1031,10 @@ Key data specific method for writing XML node.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinReadMethod">xmlSecKeyDataBinReadMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataBinReadMethod)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Key data specific method for reading binary buffer.</para>
 <para>
@@ -1065,10 +1065,10 @@ Key data specific method for reading binary buffer.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinWriteMethod">xmlSecKeyDataBinWriteMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataBinWriteMethod)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Key data specific method for reading binary buffer.</para>
 <para>
@@ -1098,7 +1098,7 @@ Key data specific method for reading binary buffer.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGenerateMethod">xmlSecKeyDataGenerateMethod ()</title>
-<programlisting>int         (*xmlSecKeyDataGenerateMethod)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<programlisting>int         (*xmlSecKeyDataGenerateMethod)  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="size-t">size_t</link> sizeBits,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
@@ -1125,7 +1125,7 @@ Key data specific method for generating new key data.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGetTypeMethod">xmlSecKeyDataGetTypeMethod ()</title>
 <programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> (*xmlSecKeyDataGetTypeMethod)
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Key data specific method to get the key type.</para>
 <para>
@@ -1143,7 +1143,7 @@ Key data specific method to get the key type.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGetSizeMethod">xmlSecKeyDataGetSizeMethod ()</title>
-<programlisting><link linkend="size-t">size_t</link>      (*xmlSecKeyDataGetSizeMethod)   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="size-t">size_t</link>      (*xmlSecKeyDataGetSizeMethod)   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Key data specific method to get the key size.</para>
 <para>
@@ -1162,7 +1162,7 @@ Key data specific method to get the key size.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataGetIdentifierMethod">xmlSecKeyDataGetIdentifierMethod ()</title>
 <programlisting>const <link linkend="xmlChar">xmlChar</link>* (*xmlSecKeyDataGetIdentifierMethod)
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Key data specific method to get the key data identifier string (for example,
 X509 data identifier is the subject of the verified cert).</para>
@@ -1181,7 +1181,7 @@ X509 data identifier is the subject of the verified cert).</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataDebugDumpMethod">xmlSecKeyDataDebugDumpMethod ()</title>
-<programlisting>void        (*xmlSecKeyDataDebugDumpMethod) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+<programlisting>void        (*xmlSecKeyDataDebugDumpMethod) (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Key data specific method for printing debug info.</para>
@@ -1424,7 +1424,7 @@ The key data id list klass.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdListFind">xmlSecKeyDataIdListFind ()</title>
-<programlisting>int         xmlSecKeyDataIdListFind         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>int         xmlSecKeyDataIdListFind         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
 Lookups <parameter>dataId</parameter> in <parameter>list</parameter>.</para>
@@ -1448,7 +1448,7 @@ value if an error occurs.
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdListFindByNode">xmlSecKeyDataIdListFindByNode ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdListFindByNode
-                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *nodeName,
                                              const <link linkend="xmlChar">xmlChar</link> *nodeNs,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
@@ -1480,7 +1480,7 @@ Lookups data klass in the list with given <parameter>nodeName</parameter>, <para
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdListFindByHref">xmlSecKeyDataIdListFindByHref ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdListFindByHref
-                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *href,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
 <para>
@@ -1507,7 +1507,7 @@ Lookups data klass in the list with given <parameter>href</parameter> and <param
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdListFindByName">xmlSecKeyDataIdListFindByName ()</title>
 <programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdListFindByName
-                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
 <para>
@@ -1533,7 +1533,7 @@ Lookups data klass in the list with given <parameter>name</parameter> and <param
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdListDebugDump">xmlSecKeyDataIdListDebugDump ()</title>
-<programlisting>void        xmlSecKeyDataIdListDebugDump    (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>void        xmlSecKeyDataIdListDebugDump    (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints binary key data debug information to <parameter>output</parameter>.</para>
@@ -1553,7 +1553,7 @@ Prints binary key data debug information to <parameter>output</parameter>.</para
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdListDebugXmlDump">xmlSecKeyDataIdListDebugXmlDump ()</title>
-<programlisting>void        xmlSecKeyDataIdListDebugXmlDump (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>void        xmlSecKeyDataIdListDebugXmlDump (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints binary key data debug information to <parameter>output</parameter> in XML format.</para>
@@ -1582,7 +1582,7 @@ The binary key data object size.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueInitialize
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Initializes key data.</para>
 <para>
@@ -1601,8 +1601,8 @@ Initializes key data.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueDuplicate">xmlSecKeyDataBinaryValueDuplicate ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueDuplicate
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
-                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);</programlisting>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> src);</programlisting>
 <para>
 Copies binary key data from <parameter>src</parameter> to <parameter>dst</parameter>.</para>
 <para>
@@ -1624,7 +1624,7 @@ Copies binary key data from <parameter>src</parameter> to <parameter>dst</parame
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueFinalize">xmlSecKeyDataBinaryValueFinalize ()</title>
 <programlisting>void        xmlSecKeyDataBinaryValueFinalize
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Cleans up binary key data.</para>
 <para>
@@ -1641,9 +1641,9 @@ Cleans up binary key data.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueXmlRead">xmlSecKeyDataBinaryValueXmlRead ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueXmlRead (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads binary key data from <parameter>node</parameter> to the key by base64 decoding the <parameter>node</parameter> content.</para>
 <para>
@@ -1672,9 +1672,9 @@ Reads binary key data from <parameter>node</parameter> to the key by base64 deco
 <title><anchor id="xmlSecKeyDataBinaryValueXmlWrite">xmlSecKeyDataBinaryValueXmlWrite ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueXmlWrite
                                             (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Base64 encodes binary key data of klass <parameter>id</parameter> from the <parameter>key</parameter> and 
 sets to the <parameter>node</parameter> content.</para>
@@ -1703,10 +1703,10 @@ sets to the <parameter>node</parameter> content.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueBinRead">xmlSecKeyDataBinaryValueBinRead ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueBinRead (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Reads binary key data of the klass <parameter>id</parameter> from <parameter>buf</parameter> to the <parameter>key</parameter>.</para>
 <para>
@@ -1738,10 +1738,10 @@ Reads binary key data of the klass <parameter>id</parameter> from <parameter>buf
 <title><anchor id="xmlSecKeyDataBinaryValueBinWrite">xmlSecKeyDataBinaryValueBinWrite ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueBinWrite
                                             (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              unsigned char **buf,
                                              <link linkend="size-t">size_t</link> *bufSize,
-                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Writes binary key data of klass <parameter>id</parameter> from the <parameter>key</parameter> to <parameter>buf</parameter>.</para>
 <para>
@@ -1772,7 +1772,7 @@ Writes binary key data of klass <parameter>id</parameter> from the <parameter>ke
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueDebugDump">xmlSecKeyDataBinaryValueDebugDump ()</title>
 <programlisting>void        xmlSecKeyDataBinaryValueDebugDump
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints binary key data debug information to <parameter>output</parameter>.</para>
@@ -1793,7 +1793,7 @@ Prints binary key data debug information to <parameter>output</parameter>.</para
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueDebugXmlDump">xmlSecKeyDataBinaryValueDebugXmlDump ()</title>
 <programlisting>void        xmlSecKeyDataBinaryValueDebugXmlDump
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints binary key data debug information to <parameter>output</parameter> in XML format.</para>
@@ -1813,7 +1813,7 @@ Prints binary key data debug information to <parameter>output</parameter> in XML
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueGetSize">xmlSecKeyDataBinaryValueGetSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataBinaryValueGetSize (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataBinaryValueGetSize (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the binary key data size.</para>
 <para>
@@ -1831,8 +1831,8 @@ Gets the binary key data size.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueGetBuffer">xmlSecKeyDataBinaryValueGetBuffer ()</title>
-<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecKeyDataBinaryValueGetBuffer
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecKeyDataBinaryValueGetBuffer
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Gets the binary key data buffer.</para>
 <para>
@@ -1851,7 +1851,7 @@ Gets the binary key data buffer.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataBinaryValueSetBuffer">xmlSecKeyDataBinaryValueSetBuffer ()</title>
 <programlisting>int         xmlSecKeyDataBinaryValueSetBuffer
-                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> bufSize);</programlisting>
 <para>
@@ -1914,7 +1914,7 @@ information about trusted (root) certificates.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate ()</title>
-<programlisting><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> xmlSecKeyDataStoreCreate
+<programlisting><link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> xmlSecKeyDataStoreCreate
                                             (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);</programlisting>
 <para>
 Creates new key data store of the specified klass <parameter>id</parameter>. Caller is responsible
@@ -1935,7 +1935,7 @@ or NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStoreDestroy">xmlSecKeyDataStoreDestroy ()</title>
-<programlisting>void        xmlSecKeyDataStoreDestroy       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<programlisting>void        xmlSecKeyDataStoreDestroy       (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
 Destroys the key data store created with <link linkend="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate</link>
 function.</para>
@@ -2033,7 +2033,7 @@ The "unknown" id.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStoreInitializeMethod">xmlSecKeyDataStoreInitializeMethod ()</title>
 <programlisting>int         (*xmlSecKeyDataStoreInitializeMethod)
-                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
 Key data store specific initialization method.</para>
 <para>
@@ -2052,7 +2052,7 @@ Key data store specific initialization method.</para>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStoreFinalizeMethod">xmlSecKeyDataStoreFinalizeMethod ()</title>
 <programlisting>void        (*xmlSecKeyDataStoreFinalizeMethod)
-                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);</programlisting>
 <para>
 Key data store specific finalization (destroy) method.</para>
 <para>

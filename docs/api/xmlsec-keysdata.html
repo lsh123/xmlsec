@@ -68,80 +68,80 @@ typedef     <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPESESSION">xmlSecKeyDataTypeSession</a>
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPEPERMANENT">xmlSecKeyDataTypePermanent</a>
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPEANY">xmlSecKeyDataTypeAny</a>
-<font>xmlSecPtrListPtr</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDSGET">xmlSecKeyDataIdsGet</a>        (void);
+<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDSGET">xmlSecKeyDataIdsGet</a>        (void);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDSINIT">xmlSecKeyDataIdsInit</a>            (void);
 void        <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDSSHUTDOWN">xmlSecKeyDataIdsShutdown</a>        (void);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDSREGISTERDEFAULT">xmlSecKeyDataIdsRegisterDefault</a> (void);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDSREGISTER">xmlSecKeyDataIdsRegister</a>        (<font>xmlSecKeyDataId</font> id);
 struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyData</a>;
-<font>xmlSecKeyDataPtr</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATACREATE">xmlSecKeyDataCreate</a>        (<font>xmlSecKeyDataId</font> id);
-<font>xmlSecKeyDataPtr</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATADUPLICATE">xmlSecKeyDataDuplicate</a>     (<font>xmlSecKeyDataPtr</font> data);
-void        <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY">xmlSecKeyDataDestroy</a>            (<font>xmlSecKeyDataPtr</font> data);
-int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAGENERATE">xmlSecKeyDataGenerate</a>           (<font>xmlSecKeyDataPtr</font> data,
+<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <a href="xmlsec-keysdata.html#XMLSECKEYDATACREATE">xmlSecKeyDataCreate</a>        (<font>xmlSecKeyDataId</font> id);
+<font>xmlSecKeyDataPtr</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATADUPLICATE">xmlSecKeyDataDuplicate</a>     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+void        <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY">xmlSecKeyDataDestroy</a>            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAGENERATE">xmlSecKeyDataGenerate</a>           (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>size_t</font> sizeBits,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETTYPE">xmlSecKeyDataGetType</a>      (<font>xmlSecKeyDataPtr</font> data);
-<font>size_t</font>      <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETSIZE">xmlSecKeyDataGetSize</a>            (<font>xmlSecKeyDataPtr</font> data);
-const <font>xmlChar</font>* <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETIDENTIFIER">xmlSecKeyDataGetIdentifier</a>   (<font>xmlSecKeyDataPtr</font> data);
-void        <a href="xmlsec-keysdata.html#XMLSECKEYDATADEBUGDUMP">xmlSecKeyDataDebugDump</a>          (<font>xmlSecKeyDataPtr</font> data,
+<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETTYPE">xmlSecKeyDataGetType</a>      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>size_t</font>      <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETSIZE">xmlSecKeyDataGetSize</a>            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+const <font>xmlChar</font>* <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETIDENTIFIER">xmlSecKeyDataGetIdentifier</a>   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+void        <a href="xmlsec-keysdata.html#XMLSECKEYDATADEBUGDUMP">xmlSecKeyDataDebugDump</a>          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-keysdata.html#XMLSECKEYDATADEBUGXMLDUMP">xmlSecKeyDataDebugXmlDump</a>       (<font>xmlSecKeyDataPtr</font> data,
+void        <a href="xmlsec-keysdata.html#XMLSECKEYDATADEBUGXMLDUMP">xmlSecKeyDataDebugXmlDump</a>       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAXMLREAD">xmlSecKeyDataXmlRead</a>            (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAXMLWRITE">xmlSecKeyDataXmlWrite</a>           (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINREAD">xmlSecKeyDataBinRead</a>            (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINWRITE">xmlSecKeyDataBinWrite</a>           (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char **buf,
                                              <font>size_t</font> *bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATAGETNAME">xmlSecKeyDataGetName</a>            (data)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATAISVALID">xmlSecKeyDataIsValid</a>            (data)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATACHECKID">xmlSecKeyDataCheckId</a>            (data, dataId)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATACHECKUSAGE">xmlSecKeyDataCheckUsage</a>         (data, usg)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATACHECKSIZE">xmlSecKeyDataCheckSize</a>          (data, size)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDUNKNOWN">xmlSecKeyDataIdUnknown</a>
-int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATAINITMETHOD">*xmlSecKeyDataInitMethod</a>)      (<font>xmlSecKeyDataPtr</font> data);
-int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATADUPLICATEMETHOD">*xmlSecKeyDataDuplicateMethod</a>) (<font>xmlSecKeyDataPtr</font> dst,
-                                             <font>xmlSecKeyDataPtr</font> src);
-void        (<a href="xmlsec-keysdata.html#XMLSECKEYDATAFINALIZEMETHOD">*xmlSecKeyDataFinalizeMethod</a>)  (<font>xmlSecKeyDataPtr</font> data);
+int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATAINITMETHOD">*xmlSecKeyDataInitMethod</a>)      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATADUPLICATEMETHOD">*xmlSecKeyDataDuplicateMethod</a>) (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);
+void        (<a href="xmlsec-keysdata.html#XMLSECKEYDATAFINALIZEMETHOD">*xmlSecKeyDataFinalizeMethod</a>)  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
 int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATAXMLREADMETHOD">*xmlSecKeyDataXmlReadMethod</a>)   (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATAXMLWRITEMETHOD">*xmlSecKeyDataXmlWriteMethod</a>)  (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATABINREADMETHOD">*xmlSecKeyDataBinReadMethod</a>)   (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATABINWRITEMETHOD">*xmlSecKeyDataBinWriteMethod</a>)  (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char **buf,
                                              <font>size_t</font> *bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
-int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATAGENERATEMETHOD">*xmlSecKeyDataGenerateMethod</a>)  (<font>xmlSecKeyDataPtr</font> data,
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
+int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATAGENERATEMETHOD">*xmlSecKeyDataGenerateMethod</a>)  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>size_t</font> sizeBits,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
 <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATAGETTYPEMETHOD">*xmlSecKeyDataGetTypeMethod</a>)
-                                            (<font>xmlSecKeyDataPtr</font> data);
-<font>size_t</font>      (<a href="xmlsec-keysdata.html#XMLSECKEYDATAGETSIZEMETHOD">*xmlSecKeyDataGetSizeMethod</a>)   (<font>xmlSecKeyDataPtr</font> data);
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>size_t</font>      (<a href="xmlsec-keysdata.html#XMLSECKEYDATAGETSIZEMETHOD">*xmlSecKeyDataGetSizeMethod</a>)   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
 const <font>xmlChar</font>* (<a href="xmlsec-keysdata.html#XMLSECKEYDATAGETIDENTIFIERMETHOD">*xmlSecKeyDataGetIdentifierMethod</a>)
-                                            (<font>xmlSecKeyDataPtr</font> data);
-void        (<a href="xmlsec-keysdata.html#XMLSECKEYDATADEBUGDUMPMETHOD">*xmlSecKeyDataDebugDumpMethod</a>) (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+void        (<a href="xmlsec-keysdata.html#XMLSECKEYDATADEBUGDUMPMETHOD">*xmlSecKeyDataDebugDumpMethod</a>) (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);
 struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATAKLASS">xmlSecKeyDataKlass</a>;
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATAKLASSGETNAME">xmlSecKeyDataKlassGetName</a>       (klass)
@@ -149,79 +149,79 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATAKLASS">xmlSecKeyDataKlass
 <font>xmlSecPtrListId</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATALISTGETKLASS">xmlSecKeyDataListGetKlass</a>   (void);
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTID">xmlSecKeyDataIdListId</a>
 <font>xmlSecPtrListId</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTGETKLASS">xmlSecKeyDataIdListGetKlass</a> (void);
-int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTFIND">xmlSecKeyDataIdListFind</a>         (<font>xmlSecPtrListPtr</font> list,
+int         <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTFIND">xmlSecKeyDataIdListFind</a>         (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecKeyDataId</font> dataId);
 <font>xmlSecKeyDataId</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTFINDBYNODE">xmlSecKeyDataIdListFindByNode</a>
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a> usage);
 <font>xmlSecKeyDataId</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTFINDBYHREF">xmlSecKeyDataIdListFindByHref</a>
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *href,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a> usage);
 <font>xmlSecKeyDataId</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTFINDBYNAME">xmlSecKeyDataIdListFindByName</a>
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *name,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a> usage);
-void        <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTDEBUGDUMP">xmlSecKeyDataIdListDebugDump</a>    (<font>xmlSecPtrListPtr</font> list,
+void        <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTDEBUGDUMP">xmlSecKeyDataIdListDebugDump</a>    (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTDEBUGXMLDUMP">xmlSecKeyDataIdListDebugXmlDump</a> (<font>xmlSecPtrListPtr</font> list,
+void        <a href="xmlsec-keysdata.html#XMLSECKEYDATAIDLISTDEBUGXMLDUMP">xmlSecKeyDataIdListDebugXmlDump</a> (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYSIZE">xmlSecKeyDataBinarySize</a>
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEINITIALIZE">xmlSecKeyDataBinaryValueInitialize</a>
-                                            (<font>xmlSecKeyDataPtr</font> data);
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEDUPLICATE">xmlSecKeyDataBinaryValueDuplicate</a>
-                                            (<font>xmlSecKeyDataPtr</font> dst,
-                                             <font>xmlSecKeyDataPtr</font> src);
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);
 void        <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEFINALIZE">xmlSecKeyDataBinaryValueFinalize</a>
-                                            (<font>xmlSecKeyDataPtr</font> data);
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEXMLREAD">xmlSecKeyDataBinaryValueXmlRead</a> (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEXMLWRITE">xmlSecKeyDataBinaryValueXmlWrite</a>
                                             (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEBINREAD">xmlSecKeyDataBinaryValueBinRead</a> (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEBINWRITE">xmlSecKeyDataBinaryValueBinWrite</a>
                                             (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char **buf,
                                              <font>size_t</font> *bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);
 void        <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEDEBUGDUMP">xmlSecKeyDataBinaryValueDebugDump</a>
-                                            (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);
 void        <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEDEBUGXMLDUMP">xmlSecKeyDataBinaryValueDebugXmlDump</a>
-                                            (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);
-<font>size_t</font>      <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEGETSIZE">xmlSecKeyDataBinaryValueGetSize</a> (<font>xmlSecKeyDataPtr</font> data);
-<font>xmlSecBufferPtr</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEGETBUFFER">xmlSecKeyDataBinaryValueGetBuffer</a>
-                                            (<font>xmlSecKeyDataPtr</font> data);
+<font>size_t</font>      <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEGETSIZE">xmlSecKeyDataBinaryValueGetSize</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUEGETBUFFER">xmlSecKeyDataBinaryValueGetBuffer</a>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
 int         <a href="xmlsec-keysdata.html#XMLSECKEYDATABINARYVALUESETBUFFER">xmlSecKeyDataBinaryValueSetBuffer</a>
-                                            (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize);
 struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStore</a>;
-<font>xmlSecKeyDataStorePtr</font> <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORECREATE">xmlSecKeyDataStoreCreate</a>
+<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORECREATE">xmlSecKeyDataStoreCreate</a>
                                             (<font>xmlSecKeyDataStoreId</font> id);
-void        <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREDESTROY">xmlSecKeyDataStoreDestroy</a>       (<font>xmlSecKeyDataStorePtr</font> store);
+void        <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREDESTROY">xmlSecKeyDataStoreDestroy</a>       (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREGETNAME">xmlSecKeyDataStoreGetName</a>       (store)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREISVALID">xmlSecKeyDataStoreIsValid</a>       (store)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORECHECKID">xmlSecKeyDataStoreCheckId</a>       (store, storeId)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORECHECKSIZE">xmlSecKeyDataStoreCheckSize</a>     (store, size)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREIDUNKNOWN">xmlSecKeyDataStoreIdUnknown</a>
 int         (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREINITIALIZEMETHOD">*xmlSecKeyDataStoreInitializeMethod</a>)
-                                            (<font>xmlSecKeyDataStorePtr</font> store);
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);
 void        (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREFINALIZEMETHOD">*xmlSecKeyDataStoreFinalizeMethod</a>)
-                                            (<font>xmlSecKeyDataStorePtr</font> store);
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);
 struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyDataStoreKlass</a>;
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASSGETNAME">xmlSecKeyDataStoreKlassGetName</a>  (klass)
 #define     <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREPTRLISTID">xmlSecKeyDataStorePtrListId</a>
@@ -408,7 +408,7 @@ in any format.</p>
 <div class="REFSECT2">
 <a name="AEN2963"></a><h3>
 <a name="XMLSECKEYDATAIDSGET"></a>xmlSecKeyDataIdsGet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecKeyDataIdsGet        (void);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> xmlSecKeyDataIdsGet        (void);</pre></td></tr></table>
 <p>Gets global registered key data klasses list.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -529,7 +529,7 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec_KeyName" targe
 <div class="REFSECT2">
 <a name="AEN3065"></a><h3>
 <a name="XMLSECKEYDATACREATE"></a>xmlSecKeyDataCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyDataCreate        (<font>xmlSecKeyDataId</font> id);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecKeyDataCreate        (<font>xmlSecKeyDataId</font> id);</pre></td></tr></table>
 <p>Allocates and initializes new key data of the specified type <tt class="PARAMETER"><i>id</i></tt>.
 Caller is responsible for destroing returend object with 
 <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY">xmlSecKeyDataDestroy</a> function.</p>
@@ -556,7 +556,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3088"></a><h3>
 <a name="XMLSECKEYDATADUPLICATE"></a>xmlSecKeyDataDuplicate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyDataDuplicate     (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyDataDuplicate     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Creates a duplicate of the given <tt class="PARAMETER"><i>data</i></tt>. Caller is responsible for 
 destroing returend object with <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY">xmlSecKeyDataDestroy</a> function.</p>
 <p></p>
@@ -582,7 +582,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3111"></a><h3>
 <a name="XMLSECKEYDATADESTROY"></a>xmlSecKeyDataDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDestroy            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDestroy            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Destroys the data and frees all allocated memory.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -599,7 +599,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3127"></a><h3>
 <a name="XMLSECKEYDATAGENERATE"></a>xmlSecKeyDataGenerate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataGenerate           (<font>xmlSecKeyDataPtr</font> data,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataGenerate           (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>size_t</font> sizeBits,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 <p>Generates new key data of given size and type.</p>
@@ -635,7 +635,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3157"></a><h3>
 <a name="XMLSECKEYDATAGETTYPE"></a>xmlSecKeyDataGetType ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> xmlSecKeyDataGetType      (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> xmlSecKeyDataGetType      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets key data type.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -659,7 +659,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3178"></a><h3>
 <a name="XMLSECKEYDATAGETSIZE"></a>xmlSecKeyDataGetSize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecKeyDataGetSize            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecKeyDataGetSize            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets key data size.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -683,7 +683,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3199"></a><h3>
 <a name="XMLSECKEYDATAGETIDENTIFIER"></a>xmlSecKeyDataGetIdentifier ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecKeyDataGetIdentifier   (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecKeyDataGetIdentifier   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets key data identifier string.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -707,7 +707,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3220"></a><h3>
 <a name="XMLSECKEYDATADEBUGDUMP"></a>xmlSecKeyDataDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDebugDump          (<font>xmlSecKeyDataPtr</font> data,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDebugDump          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints key data debug info.</p>
 <p></p>
@@ -732,7 +732,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN3241"></a><h3>
 <a name="XMLSECKEYDATADEBUGXMLDUMP"></a>xmlSecKeyDataDebugXmlDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDebugXmlDump       (<font>xmlSecKeyDataPtr</font> data,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDebugXmlDump       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints key data debug info in XML format.</p>
 <p></p>
@@ -758,9 +758,9 @@ or NULL if an error occurs.</td>
 <a name="AEN3262"></a><h3>
 <a name="XMLSECKEYDATAXMLREAD"></a>xmlSecKeyDataXmlRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataXmlRead            (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Reads the key data of klass <tt class="PARAMETER"><i>id</i></tt> from XML <tt class="PARAMETER"><i>node</i></tt> and adds them to <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -800,9 +800,9 @@ or NULL if an error occurs.</td>
 <a name="AEN3301"></a><h3>
 <a name="XMLSECKEYDATAXMLWRITE"></a>xmlSecKeyDataXmlWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataXmlWrite           (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Writes the key data of klass <tt class="PARAMETER"><i>id</i></tt> from <tt class="PARAMETER"><i>key</i></tt> to an XML <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -842,10 +842,10 @@ or NULL if an error occurs.</td>
 <a name="AEN3340"></a><h3>
 <a name="XMLSECKEYDATABINREAD"></a>xmlSecKeyDataBinRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinRead            (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Reads the key data of klass <tt class="PARAMETER"><i>id</i></tt> from binary buffer <tt class="PARAMETER"><i>buf</i></tt> to <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -890,10 +890,10 @@ or NULL if an error occurs.</td>
 <a name="AEN3383"></a><h3>
 <a name="XMLSECKEYDATABINWRITE"></a>xmlSecKeyDataBinWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinWrite           (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char **buf,
                                              <font>size_t</font> *bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Writes the key data of klass <tt class="PARAMETER"><i>id</i></tt> from the <tt class="PARAMETER"><i>key</i></tt> to a binary buffer <tt class="PARAMETER"><i>buf</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1052,7 +1052,7 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN3529"></a><h3>
 <a name="XMLSECKEYDATAINITMETHOD"></a>xmlSecKeyDataInitMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataInitMethod)      (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataInitMethod)      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific initialization method.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1076,8 +1076,8 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN3549"></a><h3>
 <a name="XMLSECKEYDATADUPLICATEMETHOD"></a>xmlSecKeyDataDuplicateMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataDuplicateMethod) (<font>xmlSecKeyDataPtr</font> dst,
-                                             <font>xmlSecKeyDataPtr</font> src);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataDuplicateMethod) (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);</pre></td></tr></table>
 <p>Key data specific duplication (copy) method.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1106,7 +1106,7 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN3574"></a><h3>
 <a name="XMLSECKEYDATAFINALIZEMETHOD"></a>xmlSecKeyDataFinalizeMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataFinalizeMethod)  (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataFinalizeMethod)  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific finalization method. All the objects and resources allocated
 by the key data object must be freed inside this method.</p>
 <p></p>
@@ -1125,9 +1125,9 @@ by the key data object must be freed inside this method.</p>
 <a name="AEN3590"></a><h3>
 <a name="XMLSECKEYDATAXMLREADMETHOD"></a>xmlSecKeyDataXmlReadMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataXmlReadMethod)   (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Key data specific method for reading XML node.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1167,9 +1167,9 @@ by the key data object must be freed inside this method.</p>
 <a name="AEN3626"></a><h3>
 <a name="XMLSECKEYDATAXMLWRITEMETHOD"></a>xmlSecKeyDataXmlWriteMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataXmlWriteMethod)  (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Key data specific method for writing XML node.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1209,10 +1209,10 @@ by the key data object must be freed inside this method.</p>
 <a name="AEN3661"></a><h3>
 <a name="XMLSECKEYDATABINREADMETHOD"></a>xmlSecKeyDataBinReadMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataBinReadMethod)   (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Key data specific method for reading binary buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1257,10 +1257,10 @@ by the key data object must be freed inside this method.</p>
 <a name="AEN3701"></a><h3>
 <a name="XMLSECKEYDATABINWRITEMETHOD"></a>xmlSecKeyDataBinWriteMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataBinWriteMethod)  (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char **buf,
                                              <font>size_t</font> *bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Key data specific method for reading binary buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1304,7 +1304,7 @@ by the key data object must be freed inside this method.</p>
 <div class="REFSECT2">
 <a name="AEN3741"></a><h3>
 <a name="XMLSECKEYDATAGENERATEMETHOD"></a>xmlSecKeyDataGenerateMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataGenerateMethod)  (<font>xmlSecKeyDataPtr</font> data,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataGenerateMethod)  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>size_t</font> sizeBits,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 <p>Key data specific method for generating new key data.</p>
@@ -1341,7 +1341,7 @@ by the key data object must be freed inside this method.</p>
 <a name="AEN3771"></a><h3>
 <a name="XMLSECKEYDATAGETTYPEMETHOD"></a>xmlSecKeyDataGetTypeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> (*xmlSecKeyDataGetTypeMethod)
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific method to get the key type.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1365,7 +1365,7 @@ by the key data object must be freed inside this method.</p>
 <div class="REFSECT2">
 <a name="AEN3792"></a><h3>
 <a name="XMLSECKEYDATAGETSIZEMETHOD"></a>xmlSecKeyDataGetSizeMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      (*xmlSecKeyDataGetSizeMethod)   (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      (*xmlSecKeyDataGetSizeMethod)   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific method to get the key size.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1390,7 +1390,7 @@ by the key data object must be freed inside this method.</p>
 <a name="AEN3813"></a><h3>
 <a name="XMLSECKEYDATAGETIDENTIFIERMETHOD"></a>xmlSecKeyDataGetIdentifierMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* (*xmlSecKeyDataGetIdentifierMethod)
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific method to get the key data identifier string (for example,
 X509 data identifier is the subject of the verified cert).</p>
 <p></p>
@@ -1415,7 +1415,7 @@ X509 data identifier is the subject of the verified cert).</p>
 <div class="REFSECT2">
 <a name="AEN3834"></a><h3>
 <a name="XMLSECKEYDATADEBUGDUMPMETHOD"></a>xmlSecKeyDataDebugDumpMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataDebugDumpMethod) (<font>xmlSecKeyDataPtr</font> data,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataDebugDumpMethod) (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Key data specific method for printing debug info.</p>
 <p></p>
@@ -1682,7 +1682,7 @@ X509 data identifier is the subject of the verified cert).</p>
 <div class="REFSECT2">
 <a name="AEN4033"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFIND"></a>xmlSecKeyDataIdListFind ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataIdListFind         (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataIdListFind         (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecKeyDataId</font> dataId);</pre></td></tr></table>
 <p>Lookups <tt class="PARAMETER"><i>dataId</i></tt> in <tt class="PARAMETER"><i>list</i></tt>.</p>
 <p></p>
@@ -1714,7 +1714,7 @@ value if an error occurs.</td>
 <a name="AEN4062"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFINDBYNODE"></a>xmlSecKeyDataIdListFindByNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataIdListFindByNode
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *nodeName,
                                              const <font>xmlChar</font> *nodeNs,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a> usage);</pre></td></tr></table>
@@ -1758,7 +1758,7 @@ value if an error occurs.</td>
 <a name="AEN4102"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFINDBYHREF"></a>xmlSecKeyDataIdListFindByHref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataIdListFindByHref
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *href,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a> usage);</pre></td></tr></table>
 <p>Lookups data klass in the list with given <tt class="PARAMETER"><i>href</i></tt> and <tt class="PARAMETER"><i>usage</i></tt> in <tt class="PARAMETER"><i>list</i></tt>.</p>
@@ -1795,7 +1795,7 @@ value if an error occurs.</td>
 <a name="AEN4136"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFINDBYNAME"></a>xmlSecKeyDataIdListFindByName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataIdListFindByName
-                                            (<font>xmlSecPtrListPtr</font> list,
+                                            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              const <font>xmlChar</font> *name,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a> usage);</pre></td></tr></table>
 <p>Lookups data klass in the list with given <tt class="PARAMETER"><i>name</i></tt> and <tt class="PARAMETER"><i>usage</i></tt> in <tt class="PARAMETER"><i>list</i></tt>.</p>
@@ -1831,7 +1831,7 @@ value if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN4170"></a><h3>
 <a name="XMLSECKEYDATAIDLISTDEBUGDUMP"></a>xmlSecKeyDataIdListDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdListDebugDump    (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdListDebugDump    (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
@@ -1856,7 +1856,7 @@ value if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN4192"></a><h3>
 <a name="XMLSECKEYDATAIDLISTDEBUGXMLDUMP"></a>xmlSecKeyDataIdListDebugXmlDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdListDebugXmlDump (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdListDebugXmlDump (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
@@ -1890,7 +1890,7 @@ value if an error occurs.</td>
 <a name="AEN4220"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEINITIALIZE"></a>xmlSecKeyDataBinaryValueInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueInitialize
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Initializes key data.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1915,8 +1915,8 @@ value if an error occurs.</td>
 <a name="AEN4240"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEDUPLICATE"></a>xmlSecKeyDataBinaryValueDuplicate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueDuplicate
-                                            (<font>xmlSecKeyDataPtr</font> dst,
-                                             <font>xmlSecKeyDataPtr</font> src);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);</pre></td></tr></table>
 <p>Copies binary key data from <tt class="PARAMETER"><i>src</i></tt> to <tt class="PARAMETER"><i>dst</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1946,7 +1946,7 @@ value if an error occurs.</td>
 <a name="AEN4267"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEFINALIZE"></a>xmlSecKeyDataBinaryValueFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataBinaryValueFinalize
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Cleans up binary key data.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -1964,9 +1964,9 @@ value if an error occurs.</td>
 <a name="AEN4283"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEXMLREAD"></a>xmlSecKeyDataBinaryValueXmlRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueXmlRead (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Reads binary key data from <tt class="PARAMETER"><i>node</i></tt> to the key by base64 decoding the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2007,9 +2007,9 @@ value if an error occurs.</td>
 <a name="XMLSECKEYDATABINARYVALUEXMLWRITE"></a>xmlSecKeyDataBinaryValueXmlWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueXmlWrite
                                             (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              <font>xmlNodePtr</font> node,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Base64 encodes binary key data of klass <tt class="PARAMETER"><i>id</i></tt> from the <tt class="PARAMETER"><i>key</i></tt> and 
 sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p></p>
@@ -2050,10 +2050,10 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <a name="AEN4360"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEBINREAD"></a>xmlSecKeyDataBinaryValueBinRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueBinRead (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Reads binary key data of the klass <tt class="PARAMETER"><i>id</i></tt> from <tt class="PARAMETER"><i>buf</i></tt> to the <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2099,10 +2099,10 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <a name="XMLSECKEYDATABINARYVALUEBINWRITE"></a>xmlSecKeyDataBinaryValueBinWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueBinWrite
                                             (<font>xmlSecKeyDataId</font> id,
-                                             <font>xmlSecKeyPtr</font> key,
+                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              unsigned char **buf,
                                              <font>size_t</font> *bufSize,
-                                             <font>xmlSecKeyInfoCtxPtr</font> keyInfoCtx);</pre></td></tr></table>
+                                             <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre></td></tr></table>
 <p>Writes binary key data of klass <tt class="PARAMETER"><i>id</i></tt> from the <tt class="PARAMETER"><i>key</i></tt> to <tt class="PARAMETER"><i>buf</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2147,7 +2147,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <a name="AEN4446"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEDEBUGDUMP"></a>xmlSecKeyDataBinaryValueDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataBinaryValueDebugDump
-                                            (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
@@ -2173,7 +2173,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <a name="AEN4468"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEDEBUGXMLDUMP"></a>xmlSecKeyDataBinaryValueDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataBinaryValueDebugXmlDump
-                                            (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
@@ -2198,7 +2198,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <div class="REFSECT2">
 <a name="AEN4490"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEGETSIZE"></a>xmlSecKeyDataBinaryValueGetSize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecKeyDataBinaryValueGetSize (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecKeyDataBinaryValueGetSize (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets the binary key data size.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2222,8 +2222,8 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <div class="REFSECT2">
 <a name="AEN4511"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEGETBUFFER"></a>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecKeyDataBinaryValueGetBuffer
-                                            (<font>xmlSecKeyDataPtr</font> data);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> xmlSecKeyDataBinaryValueGetBuffer
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets the binary key data buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2248,7 +2248,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <a name="AEN4532"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUESETBUFFER"></a>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueSetBuffer
-                                            (<font>xmlSecKeyDataPtr</font> data,
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              unsigned char *buf,
                                              <font>size_t</font> bufSize);</pre></td></tr></table>
 <p>Sets the value of <tt class="PARAMETER"><i>data</i></tt> to <tt class="PARAMETER"><i>buf</i></tt>.</p>
@@ -2322,7 +2322,7 @@ information about trusted (root) certificates.</p>
 <div class="REFSECT2">
 <a name="AEN4588"></a><h3>
 <a name="XMLSECKEYDATASTORECREATE"></a>xmlSecKeyDataStoreCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataStorePtr</font> xmlSecKeyDataStoreCreate
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> xmlSecKeyDataStoreCreate
                                             (<font>xmlSecKeyDataStoreId</font> id);</pre></td></tr></table>
 <p>Creates new key data store of the specified klass <tt class="PARAMETER"><i>id</i></tt>. Caller is responsible
 for freeng returned object with <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREDESTROY">xmlSecKeyDataStoreDestroy</a> function.</p>
@@ -2349,7 +2349,7 @@ or NULL if an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN4611"></a><h3>
 <a name="XMLSECKEYDATASTOREDESTROY"></a>xmlSecKeyDataStoreDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataStoreDestroy       (<font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataStoreDestroy       (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre></td></tr></table>
 <p>Destroys the key data store created with <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORECREATE">xmlSecKeyDataStoreCreate</a>
 function.</p>
 <p></p>
@@ -2459,7 +2459,7 @@ or 0 otherwise.</p>
 <a name="AEN4710"></a><h3>
 <a name="XMLSECKEYDATASTOREINITIALIZEMETHOD"></a>xmlSecKeyDataStoreInitializeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataStoreInitializeMethod)
-                                            (<font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre></td></tr></table>
 <p>Key data store specific initialization method.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -2484,7 +2484,7 @@ or 0 otherwise.</p>
 <a name="AEN4730"></a><h3>
 <a name="XMLSECKEYDATASTOREFINALIZEMETHOD"></a>xmlSecKeyDataStoreFinalizeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataStoreFinalizeMethod)
-                                            (<font>xmlSecKeyDataStorePtr</font> store);</pre></td></tr></table>
+                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre></td></tr></table>
 <p>Key data store specific finalization (destroy) method.</p>
 <p></p>
 <div class="INFORMALTABLE">

@@ -15,19 +15,19 @@
 
 
 #define     <link linkend="XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</link>
-<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> <link linkend="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</link>    (int encode,
+<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> <link linkend="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</link>    (int encode,
                                              int columns);
-void        <link linkend="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</link>          (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);
-int         <link linkend="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize</link>       (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+void        <link linkend="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</link>          (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);
+int         <link linkend="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize</link>       (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
                                              int encode,
                                              int columns);
-void        <link linkend="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</link>         (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);
-int         <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>           (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+void        <link linkend="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</link>         (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);
+int         <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>           (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
                                              unsigned char *in,
                                              <link linkend="size-t">size_t</link> inSize,
                                              unsigned char *out,
                                              <link linkend="size-t">size_t</link> outSize);
-int         <link linkend="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</link>            (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+int         <link linkend="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</link>            (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
                                              unsigned char *out,
                                              <link linkend="size-t">size_t</link> outSize);
 <link linkend="xmlChar">xmlChar</link>*    <link linkend="xmlSecBase64Encode">xmlSecBase64Encode</link>              (unsigned char *buf,
@@ -63,7 +63,7 @@ The default maximum base64 encoded line size.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate ()</title>
-<programlisting><link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> xmlSecBase64CtxCreate    (int encode,
+<programlisting><link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> xmlSecBase64CtxCreate    (int encode,
                                              int columns);</programlisting>
 <para>
 Allocates and initializes new base64 context.</para>
@@ -86,7 +86,7 @@ or NULL if an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy ()</title>
-<programlisting>void        xmlSecBase64CtxDestroy          (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<programlisting>void        xmlSecBase64CtxDestroy          (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);</programlisting>
 <para>
 Destroys base64 context.</para>
 <para>
@@ -102,7 +102,7 @@ Destroys base64 context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize ()</title>
-<programlisting>int         xmlSecBase64CtxInitialize       (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+<programlisting>int         xmlSecBase64CtxInitialize       (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
                                              int encode,
                                              int columns);</programlisting>
 <para>
@@ -128,7 +128,7 @@ Initializes new base64 context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize ()</title>
-<programlisting>void        xmlSecBase64CtxFinalize         (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<programlisting>void        xmlSecBase64CtxFinalize         (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);</programlisting>
 <para>
 Frees all the resources allocated by <parameter>ctx</parameter>.</para>
 <para>
@@ -144,7 +144,7 @@ Frees all the resources allocated by <parameter>ctx</parameter>.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate ()</title>
-<programlisting>int         xmlSecBase64CtxUpdate           (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+<programlisting>int         xmlSecBase64CtxUpdate           (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
                                              unsigned char *in,
                                              <link linkend="size-t">size_t</link> inSize,
                                              unsigned char *out,
@@ -179,7 +179,7 @@ Encodes or decodes the next piece of data from input buffer.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal ()</title>
-<programlisting>int         xmlSecBase64CtxFinal            (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+<programlisting>int         xmlSecBase64CtxFinal            (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
                                              unsigned char *out,
                                              <link linkend="size-t">size_t</link> outSize);</programlisting>
 <para>

@@ -20,40 +20,40 @@ enum        <link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>;
 #define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</link>
 #define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link>
 struct      <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
-<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);
-int         <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>         (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>           (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);
-int         <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>               (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> tmpl);
-int         <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>             (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
-<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer</link>  (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);
-void        <link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link>          (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
+void        <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
+int         <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>         (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
+void        <link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>           (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
+int         <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>               (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> tmpl);
+int         <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);
+<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer</link>  (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
+void        <link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link>          (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump</link>       (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+void        <link linkend="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump</link>       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 enum        <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link>;
 struct      <link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtx</link>;
-<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> <link linkend="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</link>
-                                            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> <link linkend="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</link>
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);
-void        <link linkend="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</link>   (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
+void        <link linkend="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</link>   (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
 int         <link linkend="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</link>
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                             <link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                             <link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);
-void        <link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link>  (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
+void        <link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link>  (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
 int         <link linkend="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</link>
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
-<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer</link>
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
-void        <link linkend="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</link> (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);
+<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer</link>
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
+void        <link linkend="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</link> (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferenceCtxDebugXmlDump</link>
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecDSigReferenceCtxListId">xmlSecDSigReferenceCtxListId</link>
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecDSigReferenceCtxListGetKlass">xmlSecDSigReferenceCtxListGetKlass</link>
@@ -227,7 +227,7 @@ XML DSig processing context.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>enabledReferenceTransforms</structfield></entry>
+<entry><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <structfield>enabledReferenceTransforms</structfield></entry>
 <entry>	the list of transforms allowed in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </entry>
 </row>
@@ -252,7 +252,7 @@ XML DSig processing context.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>signKey</structfield></entry>
+<entry><link linkend="xmlSecKey">xmlSecKeyPtr</link> <structfield>signKey</structfield></entry>
 <entry>			the signature key; application may set <link linkend="signKey">signKey</link>
 			before calling <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link> or <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>
 			functions.
@@ -264,7 +264,7 @@ XML DSig processing context.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
+<entry><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
 <entry>			the pointer to signature (not valid for signature verificaction).
 </entry>
 </row>
@@ -274,23 +274,23 @@ XML DSig processing context.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>signMethod</structfield></entry>
+<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>signMethod</structfield></entry>
 <entry>			the pointer to signature transform.
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>c14nMethod</structfield></entry>
+<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>c14nMethod</structfield></entry>
 <entry>			the pointer to c14n transform.
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>preSignMemBufMethod</structfield></entry>
+<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>preSignMemBufMethod</structfield></entry>
 <entry>	the pointer to binary buffer right before signature
 			(valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link> flag is set).
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>signValueNode</structfield></entry>
+<entry><link linkend="xmlNode">xmlNodePtr</link> <structfield>signValueNode</structfield></entry>
 <entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink> node.
 </entry>
 </row>
@@ -322,7 +322,7 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate ()</title>
-<programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -340,7 +340,7 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy ()</title>
-<programlisting>void        xmlSecDSigCtxDestroy            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<programlisting>void        xmlSecDSigCtxDestroy            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -356,8 +356,8 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize ()</title>
-<programlisting>int         xmlSecDSigCtxInitialize         (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<programlisting>int         xmlSecDSigCtxInitialize         (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -378,7 +378,7 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize ()</title>
-<programlisting>void        xmlSecDSigCtxFinalize           (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<programlisting>void        xmlSecDSigCtxFinalize           (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -394,8 +394,8 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxSign">xmlSecDSigCtxSign ()</title>
-<programlisting>int         xmlSecDSigCtxSign               (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> tmpl);</programlisting>
+<programlisting>int         xmlSecDSigCtxSign               (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> tmpl);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -416,8 +416,8 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify ()</title>
-<programlisting>int         xmlSecDSigCtxVerify             (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<programlisting>int         xmlSecDSigCtxVerify             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -438,7 +438,7 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer ()</title>
-<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecDSigCtxPreSignBuffer  (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecDSigCtxPreSignBuffer  (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -456,7 +456,7 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump ()</title>
-<programlisting>void        xmlSecDSigCtxDebugDump          (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+<programlisting>void        xmlSecDSigCtxDebugDump          (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 
@@ -476,7 +476,7 @@ XML DSig processing context.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump ()</title>
-<programlisting>void        xmlSecDSigCtxDebugXmlDump       (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+<programlisting>void        xmlSecDSigCtxDebugXmlDump       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 
@@ -552,7 +552,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 <colspec colwidth="8*">
 <tbody>
 <row>
-<entry><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <structfield>dsigCtx</structfield></entry>
+<entry><link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> <structfield>dsigCtx</structfield></entry>
 <entry>			the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry>
 </row>
@@ -567,12 +567,12 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>digestMethod</structfield></entry>
+<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>digestMethod</structfield></entry>
 <entry>		the pointer to digest transform.
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
+<entry><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <structfield>result</structfield></entry>
 <entry>			the pointer to digest result.
 </entry>
 </row>
@@ -582,7 +582,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> <structfield>preDigestMemBufMethod</structfield></entry>
+<entry><link linkend="xmlSecTransform">xmlSecTransformPtr</link> <structfield>preDigestMemBufMethod</structfield></entry>
 <entry>	the pointer to binary buffer right before digest
 			(valid only if either
 			<link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</link> or
@@ -617,8 +617,8 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate ()</title>
-<programlisting><link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> xmlSecDSigReferenceCtxCreate
-                                            (<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+<programlisting><link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> xmlSecDSigReferenceCtxCreate
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
 <para>
 
@@ -640,7 +640,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy ()</title>
-<programlisting>void        xmlSecDSigReferenceCtxDestroy   (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<programlisting>void        xmlSecDSigReferenceCtxDestroy   (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -657,8 +657,8 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize ()</title>
 <programlisting>int         xmlSecDSigReferenceCtxInitialize
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                             <link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> dsigCtx,
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                             <link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
 <para>
 
@@ -683,7 +683,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize ()</title>
-<programlisting>void        xmlSecDSigReferenceCtxFinalize  (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<programlisting>void        xmlSecDSigReferenceCtxFinalize  (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -700,8 +700,8 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode ()</title>
 <programlisting>int         xmlSecDSigReferenceCtxProcessNode
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 The Reference Element (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Reference">sec-Reference</link>)
 </para>
@@ -759,8 +759,8 @@ DTD:
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer ()</title>
-<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecDSigReferenceCtxPreDigestBuffer
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigReferenceCtxPreDigestBuffer
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -778,7 +778,7 @@ DTD:
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump ()</title>
-<programlisting>void        xmlSecDSigReferenceCtxDebugDump (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+<programlisting>void        xmlSecDSigReferenceCtxDebugDump (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 
@@ -799,7 +799,7 @@ DTD:
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferenceCtxDebugXmlDump ()</title>
 <programlisting>void        xmlSecDSigReferenceCtxDebugXmlDump
-                                            (<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
+                                            (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 

@@ -53,40 +53,40 @@ enum        <a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS">xmlSecDSigStatus</a>;
 #define     <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</a>
 #define     <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</a>
 struct      <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>;
-<font>xmlSecDSigCtxPtr</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a>        (<font>xmlSecKeysMngrPtr</font> keysMngr);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a>            (<font>xmlSecDSigCtxPtr</font> dsigCtx);
-int         <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>         (<font>xmlSecDSigCtxPtr</font> dsigCtx,
-                                             <font>xmlSecKeysMngrPtr</font> keysMngr);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>           (<font>xmlSecDSigCtxPtr</font> dsigCtx);
-int         <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a>               (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<font>xmlSecDSigCtxPtr</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a>        (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a>            (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx);
+int         <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>         (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
+                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>           (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx);
+int         <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a>               (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>xmlNodePtr</font> tmpl);
-int         <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY">xmlSecDSigCtxVerify</a>             (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+int         <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY">xmlSecDSigCtxVerify</a>             (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>xmlNodePtr</font> node);
-<font>xmlSecBufferPtr</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXPRESIGNBUFFER">xmlSecDSigCtxPreSignBuffer</a>  (<font>xmlSecDSigCtxPtr</font> dsigCtx);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDEBUGDUMP">xmlSecDSigCtxDebugDump</a>          (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<font>xmlSecBufferPtr</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXPRESIGNBUFFER">xmlSecDSigCtxPreSignBuffer</a>  (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx);
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDEBUGDUMP">xmlSecDSigCtxDebugDump</a>          (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDEBUGXMLDUMP">xmlSecDSigCtxDebugXmlDump</a>       (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDEBUGXMLDUMP">xmlSecDSigCtxDebugXmlDump</a>       (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>FILE</font> *output);
 enum        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a>;
 struct      <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtx</a>;
-<font>xmlSecDSigReferenceCtxPtr</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXCREATE">xmlSecDSigReferenceCtxCreate</a>
-                                            (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXCREATE">xmlSecDSigReferenceCtxCreate</a>
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> origin);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDESTROY">xmlSecDSigReferenceCtxDestroy</a>   (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDESTROY">xmlSecDSigReferenceCtxDestroy</a>   (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx);
 int         <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXINITIALIZE">xmlSecDSigReferenceCtxInitialize</a>
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
-                                             <font>xmlSecDSigCtxPtr</font> dsigCtx,
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
+                                             <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> origin);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXFINALIZE">xmlSecDSigReferenceCtxFinalize</a>  (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXFINALIZE">xmlSecDSigReferenceCtxFinalize</a>  (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx);
 int         <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXPROCESSNODE">xmlSecDSigReferenceCtxProcessNode</a>
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
                                              <font>xmlNodePtr</font> node);
-<font>xmlSecBufferPtr</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXPREDIGESTBUFFER">xmlSecDSigReferenceCtxPreDigestBuffer</a>
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);
-void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDEBUGDUMP">xmlSecDSigReferenceCtxDebugDump</a> (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
+<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXPREDIGESTBUFFER">xmlSecDSigReferenceCtxPreDigestBuffer</a>
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx);
+void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDEBUGDUMP">xmlSecDSigReferenceCtxDebugDump</a> (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
                                              <font>FILE</font> *output);
 void        <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXDEBUGXMLDUMP">xmlSecDSigReferenceCtxDebugXmlDump</a>
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
                                              <font>FILE</font> *output);
 #define     <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXLISTID">xmlSecDSigReferenceCtxListId</a>
 <font>xmlSecPtrListId</font> <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXLISTGETKLASS">xmlSecDSigReferenceCtxListGetKlass</a>
@@ -245,7 +245,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecPtrListPtr</font> <tt class="STRUCTFIELD"><i>enabledReferenceTransforms</i></tt>
+<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <tt class="STRUCTFIELD"><i>enabledReferenceTransforms</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">	the list of transforms allowed in <a href="http://www.w3.org/TR/xmldsig-core/#sec_Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</td>
 </tr>
@@ -275,7 +275,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecKeyPtr</font> <tt class="STRUCTFIELD"><i>signKey</i></tt>
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <tt class="STRUCTFIELD"><i>signKey</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the signature key; application may set <font>signKey</font>
 			before calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a> or <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY">xmlSecDSigCtxVerify</a>
@@ -289,7 +289,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecBufferPtr</font> <tt class="STRUCTFIELD"><i>result</i></tt>
+<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <tt class="STRUCTFIELD"><i>result</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the pointer to signature (not valid for signature verificaction).</td>
 </tr>
@@ -301,19 +301,19 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>signMethod</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>signMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the pointer to signature transform.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>c14nMethod</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>c14nMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the pointer to c14n transform.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>preSignMemBufMethod</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>preSignMemBufMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">	the pointer to binary buffer right before signature
 			(valid only if <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</a> flag is set).</td>
@@ -360,7 +360,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12337"></a><h3>
 <a name="XMLSECDSIGCTXCREATE"></a>xmlSecDSigCtxCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecDSigCtxPtr</font> xmlSecDSigCtxCreate        (<font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecDSigCtxPtr</font> xmlSecDSigCtxCreate        (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12344"></a><p></p>
@@ -383,7 +383,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12357"></a><h3>
 <a name="XMLSECDSIGCTXDESTROY"></a>xmlSecDSigCtxDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDestroy            (<font>xmlSecDSigCtxPtr</font> dsigCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDestroy            (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12363"></a><p></p>
@@ -399,8 +399,8 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12372"></a><h3>
 <a name="XMLSECDSIGCTXINITIALIZE"></a>xmlSecDSigCtxInitialize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxInitialize         (<font>xmlSecDSigCtxPtr</font> dsigCtx,
-                                             <font>xmlSecKeysMngrPtr</font> keysMngr);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxInitialize         (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
+                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12379"></a><p></p>
@@ -428,7 +428,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12396"></a><h3>
 <a name="XMLSECDSIGCTXFINALIZE"></a>xmlSecDSigCtxFinalize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxFinalize           (<font>xmlSecDSigCtxPtr</font> dsigCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxFinalize           (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12402"></a><p></p>
@@ -444,7 +444,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12411"></a><h3>
 <a name="XMLSECDSIGCTXSIGN"></a>xmlSecDSigCtxSign ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxSign               (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxSign               (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>xmlNodePtr</font> tmpl);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -473,7 +473,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12435"></a><h3>
 <a name="XMLSECDSIGCTXVERIFY"></a>xmlSecDSigCtxVerify ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxVerify             (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigCtxVerify             (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>xmlNodePtr</font> node);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -502,7 +502,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12459"></a><h3>
 <a name="XMLSECDSIGCTXPRESIGNBUFFER"></a>xmlSecDSigCtxPreSignBuffer ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecDSigCtxPreSignBuffer  (<font>xmlSecDSigCtxPtr</font> dsigCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecDSigCtxPreSignBuffer  (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12466"></a><p></p>
@@ -525,7 +525,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12479"></a><h3>
 <a name="XMLSECDSIGCTXDEBUGDUMP"></a>xmlSecDSigCtxDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDebugDump          (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDebugDump          (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -549,7 +549,7 @@ element processing will be stored in <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 <div class="REFSECT2">
 <a name="AEN12499"></a><h3>
 <a name="XMLSECDSIGCTXDEBUGXMLDUMP"></a>xmlSecDSigCtxDebugXmlDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDebugXmlDump       (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigCtxDebugXmlDump       (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -623,7 +623,7 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecDSigCtxPtr</font> <tt class="STRUCTFIELD"><i>dsigCtx</i></tt>
+<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> <tt class="STRUCTFIELD"><i>dsigCtx</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the pointer to &quot;parent&quot; <a href="http://www.w3.org/TR/xmldsig-core/#sec_Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</td>
 </tr>
@@ -641,13 +641,13 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>digestMethod</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>digestMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">		the pointer to digest transform.</td>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecBufferPtr</font> <tt class="STRUCTFIELD"><i>result</i></tt>
+<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <tt class="STRUCTFIELD"><i>result</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the pointer to digest result.</td>
 </tr>
@@ -659,7 +659,7 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<font>xmlSecTransformPtr</font> <tt class="STRUCTFIELD"><i>preDigestMemBufMethod</i></tt>
+<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <tt class="STRUCTFIELD"><i>preDigestMemBufMethod</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">	the pointer to binary buffer right before digest
 			(valid only if either
@@ -702,8 +702,8 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 <div class="REFSECT2">
 <a name="AEN12619"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXCREATE"></a>xmlSecDSigReferenceCtxCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecDSigReferenceCtxPtr</font> xmlSecDSigReferenceCtxCreate
-                                            (<font>xmlSecDSigCtxPtr</font> dsigCtx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> xmlSecDSigReferenceCtxCreate
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> origin);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -732,7 +732,7 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 <div class="REFSECT2">
 <a name="AEN12644"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXDESTROY"></a>xmlSecDSigReferenceCtxDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDestroy   (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDestroy   (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12650"></a><p></p>
@@ -749,8 +749,8 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 <a name="AEN12659"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXINITIALIZE"></a>xmlSecDSigReferenceCtxInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigReferenceCtxInitialize
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
-                                             <font>xmlSecDSigCtxPtr</font> dsigCtx,
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
+                                             <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtxPtr</a> dsigCtx,
                                              <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN">xmlSecDSigReferenceOrigin</a> origin);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -784,7 +784,7 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 <div class="REFSECT2">
 <a name="AEN12688"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXFINALIZE"></a>xmlSecDSigReferenceCtxFinalize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxFinalize  (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxFinalize  (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12694"></a><p></p>
@@ -801,7 +801,7 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec_Manifest" target=
 <a name="AEN12703"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXPROCESSNODE"></a>xmlSecDSigReferenceCtxProcessNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecDSigReferenceCtxProcessNode
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
                                              <font>xmlNodePtr</font> node);</pre></td></tr></table>
 <p>The Reference Element (http://www.w3.org/TR/xmldsig-core/<font>sec-Reference</font>)</p>
 <p>Reference is an element that may occur one or more times. It specifies 
@@ -860,8 +860,8 @@ DTD:
 <div class="REFSECT2">
 <a name="AEN12735"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXPREDIGESTBUFFER"></a>xmlSecDSigReferenceCtxPreDigestBuffer ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecDSigReferenceCtxPreDigestBuffer
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> xmlSecDSigReferenceCtxPreDigestBuffer
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
 <a name="AEN12742"></a><p></p>
@@ -884,7 +884,7 @@ DTD:
 <div class="REFSECT2">
 <a name="AEN12755"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXDEBUGDUMP"></a>xmlSecDSigReferenceCtxDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDebugDump (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDebugDump (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">
@@ -909,7 +909,7 @@ DTD:
 <a name="AEN12775"></a><h3>
 <a name="XMLSECDSIGREFERENCECTXDEBUGXMLDUMP"></a>xmlSecDSigReferenceCtxDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecDSigReferenceCtxDebugXmlDump
-                                            (<font>xmlSecDSigReferenceCtxPtr</font> dsigRefCtx,
+                                            (<a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTX">xmlSecDSigReferenceCtxPtr</a> dsigRefCtx,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p></p>
 <div class="INFORMALTABLE">

@@ -47,40 +47,40 @@
 <a name="AEN6412"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
-typedef     <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>;
+typedef     <font>xmlSecPtr</font>;
 struct      <a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a>;
 void        <a href="xmlsec-list.html#XMLSECPTRLISTSETDEFAULTALLOCMODE">xmlSecPtrListSetDefaultAllocMode</a>
                                             (<a href="xmlsec-buffer.html#XMLSECALLOCMODE">xmlSecAllocMode</a> defAllocMode,
                                              <font>size_t</font> defInitialSize);
-int         <a href="xmlsec-list.html#XMLSECPTRLISTINITIALIZE">xmlSecPtrListInitialize</a>         (<font>xmlSecPtrListPtr</font> list,
+int         <a href="xmlsec-list.html#XMLSECPTRLISTINITIALIZE">xmlSecPtrListInitialize</a>         (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecPtrListId</font> id);
-void        <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE">xmlSecPtrListFinalize</a>           (<font>xmlSecPtrListPtr</font> list);
-<font>xmlSecPtrListPtr</font> <a href="xmlsec-list.html#XMLSECPTRLISTCREATE">xmlSecPtrListCreate</a>        (<font>xmlSecPtrListId</font> id);
-void        <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy</a>            (<font>xmlSecPtrListPtr</font> list);
-int         <a href="xmlsec-list.html#XMLSECPTRLISTCOPY">xmlSecPtrListCopy</a>               (<font>xmlSecPtrListPtr</font> dst,
-                                             <font>xmlSecPtrListPtr</font> src);
-<font>xmlSecPtrListPtr</font> <a href="xmlsec-list.html#XMLSECPTRLISTDUPLICATE">xmlSecPtrListDuplicate</a>     (<font>xmlSecPtrListPtr</font> list);
-<font>size_t</font>      <a href="xmlsec-list.html#XMLSECPTRLISTGETSIZE">xmlSecPtrListGetSize</a>            (<font>xmlSecPtrListPtr</font> list);
-<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   <a href="xmlsec-list.html#XMLSECPTRLISTGETITEM">xmlSecPtrListGetItem</a>            (<font>xmlSecPtrListPtr</font> list,
+void        <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE">xmlSecPtrListFinalize</a>           (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);
+<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <a href="xmlsec-list.html#XMLSECPTRLISTCREATE">xmlSecPtrListCreate</a>        (<font>xmlSecPtrListId</font> id);
+void        <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy</a>            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTCOPY">xmlSecPtrListCopy</a>               (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> dst,
+                                             <a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> src);
+<font>xmlSecPtrListPtr</font> <a href="xmlsec-list.html#XMLSECPTRLISTDUPLICATE">xmlSecPtrListDuplicate</a>     (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);
+<font>size_t</font>      <a href="xmlsec-list.html#XMLSECPTRLISTGETSIZE">xmlSecPtrListGetSize</a>            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);
+<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   <a href="xmlsec-list.html#XMLSECPTRLISTGETITEM">xmlSecPtrListGetItem</a>            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>size_t</font> pos);
-int         <a href="xmlsec-list.html#XMLSECPTRLISTADD">xmlSecPtrListAdd</a>                (<font>xmlSecPtrListPtr</font> list,
-                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item);
-int         <a href="xmlsec-list.html#XMLSECPTRLISTSET">xmlSecPtrListSet</a>                (<font>xmlSecPtrListPtr</font> list,
-                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item,
+int         <a href="xmlsec-list.html#XMLSECPTRLISTADD">xmlSecPtrListAdd</a>                (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
+                                             <font>xmlSecPtr</font> item);
+int         <a href="xmlsec-list.html#XMLSECPTRLISTSET">xmlSecPtrListSet</a>                (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
+                                             <font>xmlSecPtr</font> item,
                                              <font>size_t</font> pos);
-int         <a href="xmlsec-list.html#XMLSECPTRLISTREMOVE">xmlSecPtrListRemove</a>             (<font>xmlSecPtrListPtr</font> list,
+int         <a href="xmlsec-list.html#XMLSECPTRLISTREMOVE">xmlSecPtrListRemove</a>             (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>size_t</font> pos);
-void        <a href="xmlsec-list.html#XMLSECPTRLISTDEBUGDUMP">xmlSecPtrListDebugDump</a>          (<font>xmlSecPtrListPtr</font> list,
+void        <a href="xmlsec-list.html#XMLSECPTRLISTDEBUGDUMP">xmlSecPtrListDebugDump</a>          (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);
-void        <a href="xmlsec-list.html#XMLSECPTRLISTDEBUGXMLDUMP">xmlSecPtrListDebugXmlDump</a>       (<font>xmlSecPtrListPtr</font> list,
+void        <a href="xmlsec-list.html#XMLSECPTRLISTDEBUGXMLDUMP">xmlSecPtrListDebugXmlDump</a>       (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);
 #define     <a href="xmlsec-list.html#XMLSECPTRLISTGETNAME">xmlSecPtrListGetName</a>            (list)
 #define     <a href="xmlsec-list.html#XMLSECPTRLISTISVALID">xmlSecPtrListIsValid</a>            (list)
 #define     <a href="xmlsec-list.html#XMLSECPTRLISTCHECKID">xmlSecPtrListCheckId</a>            (list, dataId)
 #define     <a href="xmlsec-list.html#XMLSECPTRLISTIDUNKNOWN">xmlSecPtrListIdUnknown</a>
-<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   (<a href="xmlsec-list.html#XMLSECPTRDUPLICATEITEMMETHOD">*xmlSecPtrDuplicateItemMethod</a>) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);
-void        (<a href="xmlsec-list.html#XMLSECPTRDESTROYITEMMETHOD">*xmlSecPtrDestroyItemMethod</a>)   (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);
-void        (<a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD">*xmlSecPtrDebugDumpItemMethod</a>) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr,
+<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   (<a href="xmlsec-list.html#XMLSECPTRDUPLICATEITEMMETHOD">*xmlSecPtrDuplicateItemMethod</a>) (<font>xmlSecPtr</font> ptr);
+void        (<a href="xmlsec-list.html#XMLSECPTRDESTROYITEMMETHOD">*xmlSecPtrDestroyItemMethod</a>)   (<font>xmlSecPtr</font> ptr);
+void        (<a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD">*xmlSecPtrDebugDumpItemMethod</a>) (<font>xmlSecPtr</font> ptr,
                                              <font>FILE</font> *output);
 struct      <a href="xmlsec-list.html#XMLSECPTRLISTKLASS">xmlSecPtrListKlass</a>;
 #define     <a href="xmlsec-list.html#XMLSECPTRLISTKLASSGETNAME">xmlSecPtrListKlassGetName</a>       (klass)
@@ -125,7 +125,7 @@ struct      <a href="xmlsec-list.html#XMLSECPTRLISTKLASS">xmlSecPtrListKlass</a>
 </tr>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
-<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> *<tt class="STRUCTFIELD"><i>data</i></tt>
+<font>xmlSecPtr</font> *<tt class="STRUCTFIELD"><i>data</i></tt>
 </td>
 <td width="80%" align="LEFT" valign="TOP">			the list data.</td>
 </tr>
@@ -181,7 +181,7 @@ struct      <a href="xmlsec-list.html#XMLSECPTRLISTKLASS">xmlSecPtrListKlass</a>
 <div class="REFSECT2">
 <a name="AEN6544"></a><h3>
 <a name="XMLSECPTRLISTINITIALIZE"></a>xmlSecPtrListInitialize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListInitialize         (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListInitialize         (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecPtrListId</font> id);</pre></td></tr></table>
 <p>Initializes the list of given klass. Caller is responsible 
 for cleaning up by calling <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE">xmlSecPtrListFinalize</a> function.</p>
@@ -212,7 +212,7 @@ for cleaning up by calling <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE">xmlS
 <div class="REFSECT2">
 <a name="AEN6570"></a><h3>
 <a name="XMLSECPTRLISTFINALIZE"></a>xmlSecPtrListFinalize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListFinalize           (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListFinalize           (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);</pre></td></tr></table>
 <p>Cleans up the list initialized with <a href="xmlsec-list.html#XMLSECPTRLISTINITIALIZE">xmlSecPtrListInitialize</a>
 function.</p>
 <p></p>
@@ -230,7 +230,7 @@ function.</p>
 <div class="REFSECT2">
 <a name="AEN6587"></a><h3>
 <a name="XMLSECPTRLISTCREATE"></a>xmlSecPtrListCreate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecPtrListCreate        (<font>xmlSecPtrListId</font> id);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> xmlSecPtrListCreate        (<font>xmlSecPtrListId</font> id);</pre></td></tr></table>
 <p>Creates new list object. Caller is responsible for freeing returned list
 by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy</a> function.</p>
 <p></p>
@@ -255,7 +255,7 @@ by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy<
 <div class="REFSECT2">
 <a name="AEN6609"></a><h3>
 <a name="XMLSECPTRLISTDESTROY"></a>xmlSecPtrListDestroy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDestroy            (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDestroy            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);</pre></td></tr></table>
 <p>Destroys <tt class="PARAMETER"><i>list</i></tt> created with <a href="xmlsec-list.html#XMLSECPTRLISTCREATE">xmlSecPtrListCreate</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -272,8 +272,8 @@ by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy<
 <div class="REFSECT2">
 <a name="AEN6627"></a><h3>
 <a name="XMLSECPTRLISTCOPY"></a>xmlSecPtrListCopy ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListCopy               (<font>xmlSecPtrListPtr</font> dst,
-                                             <font>xmlSecPtrListPtr</font> src);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListCopy               (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> dst,
+                                             <a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> src);</pre></td></tr></table>
 <p>Copies <tt class="PARAMETER"><i>src</i></tt> list items to <tt class="PARAMETER"><i>dst</i></tt> list using <font>duplicateItem</font> method
 of the list klass. If <font>duplicateItem</font> method is NULL then 
 we jsut copy pointers to items.</p>
@@ -304,7 +304,7 @@ we jsut copy pointers to items.</p>
 <div class="REFSECT2">
 <a name="AEN6656"></a><h3>
 <a name="XMLSECPTRLISTDUPLICATE"></a>xmlSecPtrListDuplicate ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecPtrListDuplicate     (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListPtr</font> xmlSecPtrListDuplicate     (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);</pre></td></tr></table>
 <p>Creates a new copy of <tt class="PARAMETER"><i>list</i></tt> and all its items.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -328,7 +328,7 @@ we jsut copy pointers to items.</p>
 <div class="REFSECT2">
 <a name="AEN6678"></a><h3>
 <a name="XMLSECPTRLISTGETSIZE"></a>xmlSecPtrListGetSize ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecPtrListGetSize            (<font>xmlSecPtrListPtr</font> list);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecPtrListGetSize            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list);</pre></td></tr></table>
 <p>Gets list size.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -352,7 +352,7 @@ we jsut copy pointers to items.</p>
 <div class="REFSECT2">
 <a name="AEN6700"></a><h3>
 <a name="XMLSECPTRLISTGETITEM"></a>xmlSecPtrListGetItem ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   xmlSecPtrListGetItem            (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   xmlSecPtrListGetItem            (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>size_t</font> pos);</pre></td></tr></table>
 <p>Gets item from the list.</p>
 <p></p>
@@ -383,8 +383,8 @@ than the number of items in the list or an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN6728"></a><h3>
 <a name="XMLSECPTRLISTADD"></a>xmlSecPtrListAdd ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListAdd                (<font>xmlSecPtrListPtr</font> list,
-                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListAdd                (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
+                                             <font>xmlSecPtr</font> item);</pre></td></tr></table>
 <p>Adds <tt class="PARAMETER"><i>item</i></tt> to the end of the <tt class="PARAMETER"><i>list</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -413,8 +413,8 @@ than the number of items in the list or an error occurs.</td>
 <div class="REFSECT2">
 <a name="AEN6755"></a><h3>
 <a name="XMLSECPTRLISTSET"></a>xmlSecPtrListSet ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListSet                (<font>xmlSecPtrListPtr</font> list,
-                                             <a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> item,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListSet                (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
+                                             <font>xmlSecPtr</font> item,
                                              <font>size_t</font> pos);</pre></td></tr></table>
 <p>Sets the value of list item at position <tt class="PARAMETER"><i>pos</i></tt>. The old value
 is destroyed.</p>
@@ -450,7 +450,7 @@ is destroyed.</p>
 <div class="REFSECT2">
 <a name="AEN6786"></a><h3>
 <a name="XMLSECPTRLISTREMOVE"></a>xmlSecPtrListRemove ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListRemove             (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecPtrListRemove             (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>size_t</font> pos);</pre></td></tr></table>
 <p>Destroys list item at the position <tt class="PARAMETER"><i>pos</i></tt> and sets it value to NULL.</p>
 <p></p>
@@ -480,7 +480,7 @@ is destroyed.</p>
 <div class="REFSECT2">
 <a name="AEN6812"></a><h3>
 <a name="XMLSECPTRLISTDEBUGDUMP"></a>xmlSecPtrListDebugDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDebugDump          (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDebugDump          (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints debug information about <tt class="PARAMETER"><i>list</i></tt> to the <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
@@ -505,7 +505,7 @@ is destroyed.</p>
 <div class="REFSECT2">
 <a name="AEN6835"></a><h3>
 <a name="XMLSECPTRLISTDEBUGXMLDUMP"></a>xmlSecPtrListDebugXmlDump ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDebugXmlDump       (<font>xmlSecPtrListPtr</font> list,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecPtrListDebugXmlDump       (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints debug information about <tt class="PARAMETER"><i>list</i></tt> to the <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
@@ -597,7 +597,7 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN6918"></a><h3>
 <a name="XMLSECPTRDUPLICATEITEMMETHOD"></a>xmlSecPtrDuplicateItemMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   (*xmlSecPtrDuplicateItemMethod) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a>   (*xmlSecPtrDuplicateItemMethod) (<font>xmlSecPtr</font> ptr);</pre></td></tr></table>
 <p>Duplicates item <tt class="PARAMETER"><i>ptr</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -621,7 +621,7 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN6940"></a><h3>
 <a name="XMLSECPTRDESTROYITEMMETHOD"></a>xmlSecPtrDestroyItemMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecPtrDestroyItemMethod)   (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr);</pre></td></tr></table>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecPtrDestroyItemMethod)   (<font>xmlSecPtr</font> ptr);</pre></td></tr></table>
 <p>Destroys list item <tt class="PARAMETER"><i>ptr</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
@@ -638,7 +638,7 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="AEN6957"></a><h3>
 <a name="XMLSECPTRDEBUGDUMPITEMMETHOD"></a>xmlSecPtrDebugDumpItemMethod ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecPtrDebugDumpItemMethod) (<a href="xmlsec-list.html#XMLSECPTR">xmlSecPtr</a> ptr,
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecPtrDebugDumpItemMethod) (<font>xmlSecPtr</font> ptr,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints debug information about <tt class="PARAMETER"><i>item</i></tt> to <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>

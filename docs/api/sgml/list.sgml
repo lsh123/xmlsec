@@ -14,40 +14,40 @@
 
 
 
-typedef     <link linkend="xmlSecPtr">xmlSecPtr</link>;
+typedef     <link linkend="xmlSec">xmlSecPtr</link>;
 struct      <link linkend="xmlSecPtrList">xmlSecPtrList</link>;
 void        <link linkend="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode</link>
                                             (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
                                              <link linkend="size-t">size_t</link> defInitialSize);
-int         <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+int         <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
-void        <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>           (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
-<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link>        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
-void        <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link>            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
-int         <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>               (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> dst,
-                                             <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> src);
-<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
-<link linkend="size-t">size_t</link>      <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
-<link linkend="xmlSecPtr">xmlSecPtr</link>   <link linkend="xmlSecPtrListGetItem">xmlSecPtrListGetItem</link>            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+void        <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>           (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
+<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link>        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
+void        <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
+int         <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>               (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> dst,
+                                             <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);
+<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
+<link linkend="xmlSecPtr">xmlSecPtr</link>   <link linkend="xmlSecPtrListGetItem">xmlSecPtrListGetItem</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);
-int         <link linkend="xmlSecPtrListAdd">xmlSecPtrListAdd</link>                (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtr">xmlSecPtr</link> item);
-int         <link linkend="xmlSecPtrListSet">xmlSecPtrListSet</link>                (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtr">xmlSecPtr</link> item,
+int         <link linkend="xmlSecPtrListAdd">xmlSecPtrListAdd</link>                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSec">xmlSecPtr</link> item);
+int         <link linkend="xmlSecPtrListSet">xmlSecPtrListSet</link>                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSec">xmlSecPtr</link> item,
                                              <link linkend="size-t">size_t</link> pos);
-int         <link linkend="xmlSecPtrListRemove">xmlSecPtrListRemove</link>             (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+int         <link linkend="xmlSecPtrListRemove">xmlSecPtrListRemove</link>             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);
-void        <link linkend="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump</link>          (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+void        <link linkend="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump</link>          (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump</link>       (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+void        <link linkend="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump</link>       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecPtrListGetName">xmlSecPtrListGetName</link>            (list)
 #define     <link linkend="xmlSecPtrListIsValid">xmlSecPtrListIsValid</link>            (list)
 #define     <link linkend="xmlSecPtrListCheckId">xmlSecPtrListCheckId</link>            (list, dataId)
 #define     <link linkend="xmlSecPtrListIdUnknown">xmlSecPtrListIdUnknown</link>
-<link linkend="xmlSecPtr">xmlSecPtr</link>   (<link linkend="xmlSecPtrDuplicateItemMethod">*xmlSecPtrDuplicateItemMethod</link>) (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);
-void        (<link linkend="xmlSecPtrDestroyItemMethod">*xmlSecPtrDestroyItemMethod</link>)   (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);
-void        (<link linkend="xmlSecPtrDebugDumpItemMethod">*xmlSecPtrDebugDumpItemMethod</link>) (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr,
+<link linkend="xmlSecPtr">xmlSecPtr</link>   (<link linkend="xmlSecPtrDuplicateItemMethod">*xmlSecPtrDuplicateItemMethod</link>) (<link linkend="xmlSec">xmlSecPtr</link> ptr);
+void        (<link linkend="xmlSecPtrDestroyItemMethod">*xmlSecPtrDestroyItemMethod</link>)   (<link linkend="xmlSec">xmlSecPtr</link> ptr);
+void        (<link linkend="xmlSecPtrDebugDumpItemMethod">*xmlSecPtrDebugDumpItemMethod</link>) (<link linkend="xmlSec">xmlSecPtr</link> ptr,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 #define     <link linkend="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName</link>       (klass)
@@ -104,7 +104,7 @@ The pointers list.</para>
 </entry>
 </row>
 <row>
-<entry><link linkend="xmlSecPtr">xmlSecPtr</link> *<structfield>data</structfield></entry>
+<entry><link linkend="xmlSec">xmlSecPtr</link> *<structfield>data</structfield></entry>
 <entry>			the list data.
 </entry>
 </row>
@@ -147,7 +147,7 @@ Sets new default allocation mode and minimal initial list size.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListInitialize">xmlSecPtrListInitialize ()</title>
-<programlisting>int         xmlSecPtrListInitialize         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>int         xmlSecPtrListInitialize         (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
 <para>
 Initializes the list of given klass. Caller is responsible 
@@ -170,7 +170,7 @@ for cleaning up by calling <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFi
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListFinalize">xmlSecPtrListFinalize ()</title>
-<programlisting>void        xmlSecPtrListFinalize           (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<programlisting>void        xmlSecPtrListFinalize           (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
 Cleans up the list initialized with <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>
 function.</para>
@@ -187,7 +187,7 @@ function.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListCreate">xmlSecPtrListCreate ()</title>
-<programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListCreate        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
+<programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecPtrListCreate        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
 <para>
 Creates new list object. Caller is responsible for freeing returned list
 by calling <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link> function.</para>
@@ -206,7 +206,7 @@ by calling <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link> func
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListDestroy">xmlSecPtrListDestroy ()</title>
-<programlisting>void        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<programlisting>void        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
 Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link> function.</para>
 <para>
@@ -222,8 +222,8 @@ Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCr
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListCopy">xmlSecPtrListCopy ()</title>
-<programlisting>int         xmlSecPtrListCopy               (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> dst,
-                                             <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> src);</programlisting>
+<programlisting>int         xmlSecPtrListCopy               (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> dst,
+                                             <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);</programlisting>
 <para>
 Copies <parameter>src</parameter> list items to <parameter>dst</parameter> list using <link linkend="duplicateItem">duplicateItem</link> method
 of the list klass. If <link linkend="duplicateItem">duplicateItem</link> method is NULL then 
@@ -246,7 +246,7 @@ we jsut copy pointers to items.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate ()</title>
-<programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListDuplicate     (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListDuplicate     (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
 Creates a new copy of <parameter>list</parameter> and all its items.</para>
 <para>
@@ -264,7 +264,7 @@ Creates a new copy of <parameter>list</parameter> and all its items.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListGetSize">xmlSecPtrListGetSize ()</title>
-<programlisting><link linkend="size-t">size_t</link>      xmlSecPtrListGetSize            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecPtrListGetSize            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
 Gets list size.</para>
 <para>
@@ -282,7 +282,7 @@ Gets list size.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListGetItem">xmlSecPtrListGetItem ()</title>
-<programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   xmlSecPtrListGetItem            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   xmlSecPtrListGetItem            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
 Gets item from the list.</para>
@@ -305,8 +305,8 @@ than the number of items in the list or an error occurs.
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListAdd">xmlSecPtrListAdd ()</title>
-<programlisting>int         xmlSecPtrListAdd                (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtr">xmlSecPtr</link> item);</programlisting>
+<programlisting>int         xmlSecPtrListAdd                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSec">xmlSecPtr</link> item);</programlisting>
 <para>
 Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.</para>
 <para>
@@ -327,8 +327,8 @@ Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.<
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListSet">xmlSecPtrListSet ()</title>
-<programlisting>int         xmlSecPtrListSet                (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecPtr">xmlSecPtr</link> item,
+<programlisting>int         xmlSecPtrListSet                (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSec">xmlSecPtr</link> item,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
 Sets the value of list item at position <parameter>pos</parameter>. The old value
@@ -354,7 +354,7 @@ is destroyed.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListRemove">xmlSecPtrListRemove ()</title>
-<programlisting>int         xmlSecPtrListRemove             (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>int         xmlSecPtrListRemove             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
 Destroys list item at the position <parameter>pos</parameter> and sets it value to NULL.</para>
@@ -376,7 +376,7 @@ Destroys list item at the position <parameter>pos</parameter> and sets it value 
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump ()</title>
-<programlisting>void        xmlSecPtrListDebugDump          (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>void        xmlSecPtrListDebugDump          (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter>.</para>
@@ -396,7 +396,7 @@ Prints debug information about <parameter>list</parameter> to the <parameter>out
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump ()</title>
-<programlisting>void        xmlSecPtrListDebugXmlDump       (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+<programlisting>void        xmlSecPtrListDebugXmlDump       (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints debug information about <parameter>list</parameter> to the <parameter>output</parameter> in XML format.</para>
@@ -477,7 +477,7 @@ The "unknown" id.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrDuplicateItemMethod">xmlSecPtrDuplicateItemMethod ()</title>
-<programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   (*xmlSecPtrDuplicateItemMethod) (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);</programlisting>
+<programlisting><link linkend="xmlSecPtr">xmlSecPtr</link>   (*xmlSecPtrDuplicateItemMethod) (<link linkend="xmlSec">xmlSecPtr</link> ptr);</programlisting>
 <para>
 Duplicates item <parameter>ptr</parameter>.</para>
 <para>
@@ -495,7 +495,7 @@ Duplicates item <parameter>ptr</parameter>.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod ()</title>
-<programlisting>void        (*xmlSecPtrDestroyItemMethod)   (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr);</programlisting>
+<programlisting>void        (*xmlSecPtrDestroyItemMethod)   (<link linkend="xmlSec">xmlSecPtr</link> ptr);</programlisting>
 <para>
 Destroys list item <parameter>ptr</parameter>.</para>
 <para>
@@ -511,7 +511,7 @@ Destroys list item <parameter>ptr</parameter>.</para>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod ()</title>
-<programlisting>void        (*xmlSecPtrDebugDumpItemMethod) (<link linkend="xmlSecPtr">xmlSecPtr</link> ptr,
+<programlisting>void        (*xmlSecPtrDebugDumpItemMethod) (<link linkend="xmlSec">xmlSecPtr</link> ptr,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
 Prints debug information about <parameter>item</parameter> to <parameter>output</parameter>.</para>

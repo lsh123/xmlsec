@@ -78,10 +78,9 @@ LTDL_PARSE = \
 	sed s/ltdl_/xmlsec_ltdl_/g \
 	$(NULL)	
 
-xmlsec-ltdl.c xmlsec-ltdl.h: xmlsec-ltdl
-	
-  
-xmlsec-ltdl: xmlsec-ltdl.patch ltdl.c ltdl.h
+xmlsec-ltdl.c: ltdl.c xmlsec-ltdl.c 
+
+xmlsec-ltdl.c: ltdl.h xmlsec-ltdl.patch
 	@(cat ltdl.c | $(LTDL_PARSE) > xmlsec-ltdl.c && \
 	  cat ltdl.h | $(LTDL_PARSE) > xmlsec-ltdl.h && \
 	  patch -p0 < xmlsec-ltdl.patch)

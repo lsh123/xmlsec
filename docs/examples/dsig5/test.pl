@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+#!/bin/perl
 #
 # Read STDIN input and send it to 
 # XML Digital Signature Verifier 

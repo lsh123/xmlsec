@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>app</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library for GnuTLS API Reference" href="xmlsec-gnutls-ref.html">
+<link rel="PREVIOUS" title="XML Security Library for GnuTLS API Reference" href="xmlsec-gnutls-ref.html">
+<link rel="NEXT" title="crypto" href="xmlsec-gnutls-crypto.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-gnutls-crypto.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-GNUTLS-APP"></a>app</h1>
+<div class="REFNAMEDIV">
+<a name="AEN13844"></a><h2>Name</h2>app -- </div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN13847"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPINIT">xmlSecGnuTLSAppInit</a>             (const char *config);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSHUTDOWN">xmlSecGnuTLSAppShutdown</a>         (void);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSIMPLEKEYSMNGRINIT">xmlSecGnuTLSAppSimpleKeysMngrInit</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSIMPLEKEYSMNGRADOPTKEY">xmlSecGnuTLSAppSimpleKeysMngrAdoptKey</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             <font>xmlSecKeyPtr</font> key);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSIMPLEKEYSMNGRLOAD">xmlSecGnuTLSAppSimpleKeysMngrLoad</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *uri);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSIMPLEKEYSMNGRSAVE">xmlSecGnuTLSAppSimpleKeysMngrSave</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRPEMCERTLOAD">xmlSecGnuTLSAppKeysMngrPemCertLoad</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             int trusted);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRADDCERTSPATH">xmlSecGnuTLSAppKeysMngrAddCertsPath</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *path);
+<font>xmlSecKeyPtr</font> <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPPEMKEYLOAD">xmlSecGnuTLSAppPemKeyLoad</a>      (const char *keyfile,
+                                             const char *keyPwd,
+                                             void *keyPwdCallback,
+                                             int privateKey);
+<font>xmlSecKeyPtr</font> <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPPKCS12LOAD">xmlSecGnuTLSAppPkcs12Load</a>      (const char *filename,
+                                             const char *pwd);
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSecGnuTLSAppKeyPemCertLoad</a>   (<font>xmlSecKeyPtr</font> key,
+                                             const char *filename);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN13872"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN13875"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN13877"></a><h3>
+<a name="XMLSECGNUTLSAPPINIT"></a>xmlSecGnuTLSAppInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppInit             (const char *config);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13881"></a><h3>
+<a name="XMLSECGNUTLSAPPSHUTDOWN"></a>xmlSecGnuTLSAppShutdown ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppShutdown         (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13885"></a><h3>
+<a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRINIT"></a>xmlSecGnuTLSAppSimpleKeysMngrInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrInit
+                                            (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13890"></a><h3>
+<a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRADOPTKEY"></a>xmlSecGnuTLSAppSimpleKeysMngrAdoptKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrAdoptKey
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             <font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13896"></a><h3>
+<a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRLOAD"></a>xmlSecGnuTLSAppSimpleKeysMngrLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrLoad
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *uri);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13901"></a><h3>
+<a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRSAVE"></a>xmlSecGnuTLSAppSimpleKeysMngrSave ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrSave
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13907"></a><h3>
+<a name="XMLSECGNUTLSAPPKEYSMNGRPEMCERTLOAD"></a>xmlSecGnuTLSAppKeysMngrPemCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeysMngrPemCertLoad
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             int trusted);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13912"></a><h3>
+<a name="XMLSECGNUTLSAPPKEYSMNGRADDCERTSPATH"></a>xmlSecGnuTLSAppKeysMngrAddCertsPath ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeysMngrAddCertsPath
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *path);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13917"></a><h3>
+<a name="XMLSECGNUTLSAPPPEMKEYLOAD"></a>xmlSecGnuTLSAppPemKeyLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecGnuTLSAppPemKeyLoad      (const char *keyfile,
+                                             const char *keyPwd,
+                                             void *keyPwdCallback,
+                                             int privateKey);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13922"></a><h3>
+<a name="XMLSECGNUTLSAPPPKCS12LOAD"></a>xmlSecGnuTLSAppPkcs12Load ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecGnuTLSAppPkcs12Load      (const char *filename,
+                                             const char *pwd);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13927"></a><h3>
+<a name="XMLSECGNUTLSAPPKEYPEMCERTLOAD"></a>xmlSecGnuTLSAppKeyPemCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeyPemCertLoad   (<font>xmlSecKeyPtr</font> key,
+                                             const char *filename);</pre></td></tr></table>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-gnutls-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-gnutls-crypto.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library for GnuTLS API Reference</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>crypto</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

@@ -1,0 +1,122 @@
+<refentry id="xmlsec-nss-app">
+<refmeta>
+<refentrytitle>app</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-NSS Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>app</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+int         <link linkend="xmlSecNssAppInit">xmlSecNssAppInit</link>                (const char *config);
+int         <link linkend="xmlSecNssAppShutdown">xmlSecNssAppShutdown</link>            (void);
+int         <link linkend="xmlSecNssAppSimpleKeysMngrInit">xmlSecNssAppSimpleKeysMngrInit</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
+int         <link linkend="xmlSecNssAppSimpleKeysMngrAdoptKey">xmlSecNssAppSimpleKeysMngrAdoptKey</link>
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+int         <link linkend="xmlSecNssAppSimpleKeysMngrLoad">xmlSecNssAppSimpleKeysMngrLoad</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *uri);
+int         <link linkend="xmlSecNssAppSimpleKeysMngrSave">xmlSecNssAppSimpleKeysMngrSave</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+int         <link linkend="xmlSecNssAppKeysMngrPemCertLoad">xmlSecNssAppKeysMngrPemCertLoad</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             int trusted);
+int         <link linkend="xmlSecNssAppKeysMngrAddCertsPath">xmlSecNssAppKeysMngrAddCertsPath</link>
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *path);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppPemKeyLoad">xmlSecNssAppPemKeyLoad</link>         (const char *keyfile,
+                                             const char *keyPwd,
+                                             void *keyPwdCallback,
+                                             int privateKey);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecNssAppPkcs12Load">xmlSecNssAppPkcs12Load</link>         (const char *filename,
+                                             const char *pwd);
+int         <link linkend="xmlSecNssAppKeyPemCertLoad">xmlSecNssAppKeyPemCertLoad</link>      (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const char *filename);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecNssAppInit">xmlSecNssAppInit ()</title>
+<programlisting>int         xmlSecNssAppInit                (const char *config);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppShutdown">xmlSecNssAppShutdown ()</title>
+<programlisting>int         xmlSecNssAppShutdown            (void);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppSimpleKeysMngrInit">xmlSecNssAppSimpleKeysMngrInit ()</title>
+<programlisting>int         xmlSecNssAppSimpleKeysMngrInit  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppSimpleKeysMngrAdoptKey">xmlSecNssAppSimpleKeysMngrAdoptKey ()</title>
+<programlisting>int         xmlSecNssAppSimpleKeysMngrAdoptKey
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppSimpleKeysMngrLoad">xmlSecNssAppSimpleKeysMngrLoad ()</title>
+<programlisting>int         xmlSecNssAppSimpleKeysMngrLoad  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *uri);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppSimpleKeysMngrSave">xmlSecNssAppSimpleKeysMngrSave ()</title>
+<programlisting>int         xmlSecNssAppSimpleKeysMngrSave  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeysMngrPemCertLoad">xmlSecNssAppKeysMngrPemCertLoad ()</title>
+<programlisting>int         xmlSecNssAppKeysMngrPemCertLoad (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *filename,
+                                             int trusted);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeysMngrAddCertsPath">xmlSecNssAppKeysMngrAddCertsPath ()</title>
+<programlisting>int         xmlSecNssAppKeysMngrAddCertsPath
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             const char *path);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppPemKeyLoad">xmlSecNssAppPemKeyLoad ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecNssAppPemKeyLoad         (const char *keyfile,
+                                             const char *keyPwd,
+                                             void *keyPwdCallback,
+                                             int privateKey);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppPkcs12Load">xmlSecNssAppPkcs12Load ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecNssAppPkcs12Load         (const char *filename,
+                                             const char *pwd);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppKeyPemCertLoad">xmlSecNssAppKeyPemCertLoad ()</title>
+<programlisting>int         xmlSecNssAppKeyPemCertLoad      (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const char *filename);</programlisting>
+</refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

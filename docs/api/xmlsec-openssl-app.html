@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>app</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
+">
+<link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
+<link rel="UP" title="XML Security Library for OpenSLL API Reference" href="xmlsec-openssl-ref.html">
+<link rel="PREVIOUS" title="XML Security Library for OpenSLL API Reference" href="xmlsec-openssl-ref.html">
+<link rel="NEXT" title="bn" href="xmlsec-openssl-bn.html">
+</head>
+<body><table witdh="100%"><tr>
+<td valign="top" align="left" width="210">
+<img src="../logo.gif" alt="XML Security Library" border="0"><p></p>
+<ul>
+<li><a href="../index.html">Home</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../news.html">News</a></li>
+<li><a href="../documentation.html">Documentation</a></li>
+<li><a href="../faq.html">FAQ</a></li>
+<li><a href="../xmldsig.html">XML Digital Signature</a></li>
+<ul>
+<li><a href="../xmldsig-interop.html">Interop report</a></li>
+<li><a href="../xmldsig-verifier.html">Online Verifier</a></li>
+</ul>
+<li><a href="../xmlenc.html">XML Encryption</a></li>
+<ul><li><a href="../xmlenc-interop.html">Interop report</a></li></ul>
+<li><a href="../c14n.html">XML Canonicalization</a></li>
+<li><a href="../bugs.html">Reporting Bugs</a></li>
+<li><a href="http://www.aleksey.com/pipermail/xmlsec">Mailing list</a></li>
+<li><a href="../related.html">Related</a></li>
+</ul>
+<a href="http://xmlsoft.org/"><img src="../libxml2-logo.png" alt="LibXML2" border="0"></a><br><a href="http://xmlsoft.org/XSLT"><img src="../libxslt-logo.png" alt="LibXSLT" border="0"></a><br><a href="http://www.openssl.org/"><img src="../openssl-logo.png" alt="OpenSSL" border="0"></a>
+</td>
+<td><table width="100%">
+<tr><td valign="top" align="left" id="xmlsecContent">
+<div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-openssl-bn.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+</table></div>
+<h1>
+<a name="XMLSEC-OPENSSL-APP"></a>app</h1>
+<div class="REFNAMEDIV">
+<a name="AEN13125"></a><h2>Name</h2>app -- </div>
+<div class="REFSYNOPSISDIV">
+<a name="AEN13128"></a><h2>Synopsis</h2>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
+
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPINIT">xmlSecOpenSSLAppInit</a>            (const char *config);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSHUTDOWN">xmlSecOpenSSLAppShutdown</a>        (void);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT">xmlSecOpenSSLAppSimpleKeysMngrInit</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRADOPTKEY">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             <font>xmlSecKeyPtr</font> key);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRLOAD">xmlSecOpenSSLAppSimpleKeysMngrLoad</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *uri);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRSAVE">xmlSecOpenSSLAppSimpleKeysMngrSave</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRPEMCERTLOAD">xmlSecOpenSSLAppKeysMngrPemCertLoad</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             int trusted);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRADDCERTSPATH">xmlSecOpenSSLAppKeysMngrAddCertsPath</a>
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *path);
+<font>xmlSecKeyPtr</font> <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPEMKEYLOAD">xmlSecOpenSSLAppPemKeyLoad</a>     (const char *keyfile,
+                                             const char *keyPwd,
+                                             <font>pem_password_cb</font> *keyPwdCallback,
+                                             int privateKey);
+<font>xmlSecKeyPtr</font> <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPKCS12LOAD">xmlSecOpenSSLAppPkcs12Load</a>     (const char *filename,
+                                             const char *pwd);
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xmlSecOpenSSLAppKeyPemCertLoad</a>  (<font>xmlSecKeyPtr</font> key,
+                                             const char *filename);</pre></td></tr></table>
+</div>
+<div class="REFSECT1">
+<a name="AEN13154"></a><h2>Description</h2>
+<p></p>
+</div>
+<div class="REFSECT1">
+<a name="AEN13157"></a><h2>Details</h2>
+<div class="REFSECT2">
+<a name="AEN13159"></a><h3>
+<a name="XMLSECOPENSSLAPPINIT"></a>xmlSecOpenSSLAppInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppInit            (const char *config);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13163"></a><h3>
+<a name="XMLSECOPENSSLAPPSHUTDOWN"></a>xmlSecOpenSSLAppShutdown ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppShutdown        (void);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13167"></a><h3>
+<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT"></a>xmlSecOpenSSLAppSimpleKeysMngrInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrInit
+                                            (<font>xmlSecKeysMngrPtr</font> mngr);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13172"></a><h3>
+<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRADOPTKEY"></a>xmlSecOpenSSLAppSimpleKeysMngrAdoptKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrAdoptKey
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             <font>xmlSecKeyPtr</font> key);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13178"></a><h3>
+<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRLOAD"></a>xmlSecOpenSSLAppSimpleKeysMngrLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrLoad
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *uri);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13183"></a><h3>
+<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRSAVE"></a>xmlSecOpenSSLAppSimpleKeysMngrSave ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrSave
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13189"></a><h3>
+<a name="XMLSECOPENSSLAPPKEYSMNGRPEMCERTLOAD"></a>xmlSecOpenSSLAppKeysMngrPemCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrPemCertLoad
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *filename,
+                                             int trusted);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13194"></a><h3>
+<a name="XMLSECOPENSSLAPPKEYSMNGRADDCERTSPATH"></a>xmlSecOpenSSLAppKeysMngrAddCertsPath ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrAddCertsPath
+                                            (<font>xmlSecKeysMngrPtr</font> mngr,
+                                             const char *path);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13199"></a><h3>
+<a name="XMLSECOPENSSLAPPPEMKEYLOAD"></a>xmlSecOpenSSLAppPemKeyLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecOpenSSLAppPemKeyLoad     (const char *keyfile,
+                                             const char *keyPwd,
+                                             <font>pem_password_cb</font> *keyPwdCallback,
+                                             int privateKey);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13205"></a><h3>
+<a name="XMLSECOPENSSLAPPPKCS12LOAD"></a>xmlSecOpenSSLAppPkcs12Load ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecOpenSSLAppPkcs12Load     (const char *filename,
+                                             const char *pwd);</pre></td></tr></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="AEN13210"></a><h3>
+<a name="XMLSECOPENSSLAPPKEYPEMCERTLOAD"></a>xmlSecOpenSSLAppKeyPemCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeyPemCertLoad  (<font>xmlSecKeyPtr</font> key,
+                                             const char *filename);</pre></td></tr></table>
+</div>
+</div>
+<div class="NAVFOOTER">
+<br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
+<tr>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-openssl-ref.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-openssl-bn.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>XML Security Library for OpenSLL API Reference</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>bn</b></font></td>
+</tr>
+</table>
+</div>
+</td></tr>
+<tr><td>
+<br><br><p><a href="/bugs.html">Aleksey Sanin</a></p>
+</td></tr>
+</table></td>
+</tr></table></body>
+</html>

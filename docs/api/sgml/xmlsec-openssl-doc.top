@@ -1,0 +1,3 @@
+<!ENTITY xmlsec-openssl-crypto SYSTEM "sgml/crypto.sgml">
+<!ENTITY xmlsec-openssl-x509 SYSTEM "sgml/x509.sgml">
+<!ENTITY xmlsec-openssl-symbols SYSTEM "sgml/symbols.sgml">

@@ -1,0 +1,55 @@
+<refentry id="xmlsec-openssl-bn">
+<refmeta>
+<refentrytitle>bn</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC-OPENSSL Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>bn</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="BIGNUM-CAPS">BIGNUM</link>*     <link linkend="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</link>     (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             <link linkend="BIGNUM-CAPS">BIGNUM</link> **a);
+int         <link linkend="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a,
+                                             int addLineBreaks);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue ()</title>
+<programlisting><link linkend="BIGNUM-CAPS">BIGNUM</link>*     xmlSecOpenSSLNodeGetBNValue     (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             <link linkend="BIGNUM-CAPS">BIGNUM</link> **a);</programlisting>
+</refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLNodeSetBNValue">xmlSecOpenSSLNodeSetBNValue ()</title>
+<programlisting>int         xmlSecOpenSSLNodeSetBNValue     (<link linkend="xmlNodePtr">xmlNodePtr</link> cur,
+                                             const <link linkend="BIGNUM-CAPS">BIGNUM</link> *a,
+                                             int addLineBreaks);</programlisting>
+</refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

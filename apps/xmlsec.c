@@ -1033,12 +1033,12 @@ xmlSecAppEncryptFile(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	if(encCtx->replaced) {
+	if(encCtx->resultReplaced) {
 	    if(xmlSecAppWriteResult((data != NULL) ? data->doc : doc, NULL) < 0) {
 		goto done;
 	    }
 	} else {
-	    if(xmlSecAppWriteResult(NULL, encCtx->encResult) < 0) {
+	    if(xmlSecAppWriteResult(NULL, encCtx->result) < 0) {
 		goto done;
 	    }
 	}	
@@ -1094,12 +1094,12 @@ xmlSecAppDecryptFile(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	if(encCtx->replaced) {
+	if(encCtx->resultReplaced) {
 	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
 		goto done;
 	    }
 	} else {
-	    if(xmlSecAppWriteResult(NULL, encCtx->encResult) < 0) {
+	    if(xmlSecAppWriteResult(NULL, encCtx->result) < 0) {
 		goto done;
 	    }
 	}	

@@ -24,6 +24,17 @@
  * xmlSecBuffer
  *
  ****************************************************************************/
+static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
+static size_t gInitialSize = 1024;
+
+void 
+xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, size_t defInitialSize) {
+    xmlSecAssert(defInitialSize > 0);
+    
+    gAllocMode = defAllocMode;
+    gInitialSize = defInitialSize;
+}
+
 xmlSecBufferPtr 
 xmlSecBufferCreate(size_t size) {
     xmlSecBufferPtr buf;
@@ -66,7 +77,7 @@ xmlSecBufferInitialize(xmlSecBufferPtr buf, size_t size) {
 
     buf->data = NULL;
     buf->size = buf->maxSize = 0;
-    buf->allocMode = xmlSecAllocExact;
+    buf->allocMode = gAllocMode;
         
     return(xmlSecBufferSetMaxSize(buf, size));
 }
@@ -167,7 +178,7 @@ xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
 int 
 xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
     unsigned char* newData;
-    size_t newSize;
+    size_t newSize = 0;
     
     xmlSecAssert2(buf != NULL, -1);
     if(size <= buf->maxSize) {
@@ -175,19 +186,16 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
     }
     
     switch(buf->allocMode) {
-	case xmlSecAllocExact:
+	case xmlSecAllocModeExact:
 	    newSize = size + 8;
 	    break;
-	case xmlSecAllocDouble:
-	    newSize = 2 * size + 8;
+	case xmlSecAllocModeDouble:
+	    newSize = 2 * size + 32;
 	    break;
-	default:
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        "xmlSecBuffer",
-			NULL,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"unknown allocation mode %d", buf->allocMode);
-	    return(-1);
+    }
+
+    if(newSize < gInitialSize) {
+	newSize = gInitialSize;
     }
     
     newData = (unsigned char*)xmlRealloc(buf->data, newSize);

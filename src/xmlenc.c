@@ -167,7 +167,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl,
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->encResult == NULL, -1);
+    xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
 
@@ -197,8 +197,8 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl,
 	return(-1);
     }
 
-    ctx->encResult = ctx->encTransformCtx.result;
-    xmlSecAssert2(ctx->encResult != NULL, -1);
+    ctx->result = ctx->encTransformCtx.result;
+    xmlSecAssert2(ctx->result != NULL, -1);
     
     ret = xmlSecEncCtxCipherDataNodeWrite(ctx);
     if(ret < 0) {
@@ -219,7 +219,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->encResult == NULL, -1);
+    xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
@@ -286,8 +286,8 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
     /* close the buffer and flush everything */
     xmlOutputBufferClose(output);
 
-    ctx->encResult = ctx->encTransformCtx.result;
-    xmlSecAssert2(ctx->encResult != NULL, -1);
+    ctx->result = ctx->encTransformCtx.result;
+    xmlSecAssert2(ctx->result != NULL, -1);
     
     ret = xmlSecEncCtxCipherDataNodeWrite(ctx);
     if(ret < 0) {
@@ -311,7 +311,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
 			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	    return(-1);
 	}
-	ctx->replaced = 1;			       
+	ctx->resultReplaced = 1;			       
     } else if(xmlStrEqual(ctx->type, xmlSecTypeEncContent)) {
 	ret = xmlSecReplaceContent(node, tmpl);
 	if(ret < 0) {
@@ -323,7 +323,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, xmlNodePtr node) {
 			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	    return(-1);
 	}
-	ctx->replaced = 1;			       
+	ctx->resultReplaced = 1;			       
     } else {
 	/* we should've catached this error before */
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -342,7 +342,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, const xmlChar *uri)
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->encResult == NULL, -1);
+    xmlSecAssert2(ctx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
 
@@ -384,8 +384,8 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr ctx, xmlNodePtr tmpl, const xmlChar *uri)
 	return(-1);
     }
         
-    ctx->encResult = ctx->encTransformCtx.result;
-    xmlSecAssert2(ctx->encResult != NULL, -1);
+    ctx->result = ctx->encTransformCtx.result;
+    xmlSecAssert2(ctx->result != NULL, -1);
     
     ret = xmlSecEncCtxCipherDataNodeWrite(ctx);
     if(ret < 0) {
@@ -431,7 +431,7 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
 			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	    return(-1);	    	
 	}
-	ctx->replaced = 1;			       
+	ctx->resultReplaced = 1;			       
     } else if((ctx->type != NULL) && xmlStrEqual(ctx->type, xmlSecTypeEncContent)) {
 	/* replace the node with the buffer */
 	ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
@@ -444,7 +444,7 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
 			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
 	    return(-1);	    	
 	}	
-	ctx->replaced = 1;			       
+	ctx->resultReplaced = 1;			       
     }
     return(0);
 }
@@ -454,7 +454,7 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
     int ret;
     
     xmlSecAssert2(ctx != NULL, NULL);
-    xmlSecAssert2(ctx->encResult == NULL, NULL);
+    xmlSecAssert2(ctx->result == NULL, NULL);
     xmlSecAssert2(node != NULL, NULL);
 
     /* initialize context and add ID atributes to the list of known ids */    
@@ -515,10 +515,10 @@ xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr ctx, xmlNodePtr node) {
 	}
     }
     
-    ctx->encResult = ctx->encTransformCtx.result;
-    xmlSecAssert2(ctx->encResult != NULL, NULL);
+    ctx->result = ctx->encTransformCtx.result;
+    xmlSecAssert2(ctx->result != NULL, NULL);
     
-    return(ctx->encResult);
+    return(ctx->result);
 }
 
 static int 
@@ -727,17 +727,17 @@ xmlSecEncCtxCipherDataNodeWrite(xmlSecEncCtxPtr ctx) {
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->encResult != NULL, -1);
+    xmlSecAssert2(ctx->result != NULL, -1);
     xmlSecAssert2(ctx->encKey != NULL, -1);
     
     /* write encrypted data to xml (if requested) */
     if(ctx->cipherValueNode != NULL) {	
-	xmlSecAssert2(xmlSecBufferGetData(ctx->encResult) != NULL, -1);
+	xmlSecAssert2(xmlSecBufferGetData(ctx->result) != NULL, -1);
 
 	xmlNodeSetContentLen(ctx->cipherValueNode,
-			    xmlSecBufferGetData(ctx->encResult),
-			    xmlSecBufferGetSize(ctx->encResult));
-	ctx->replaced = 1;
+			    xmlSecBufferGetData(ctx->result),
+			    xmlSecBufferGetSize(ctx->result));
+	ctx->resultReplaced = 1;
     }
 
     /* update <dsig:KeyInfo/> node */
@@ -890,7 +890,7 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr ctx, FILE* output) {
 	    break;
     }
     fprintf(output, "== Status: %s\n",
-	    (ctx->replaced) ? "replaced" : "not-replaced" );
+	    (ctx->resultReplaced) ? "replaced" : "not-replaced" );
     if(ctx->id != NULL) {
 	fprintf(output, "== Id: \"%s\"\n", ctx->id);
     }
@@ -917,31 +917,24 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr ctx, FILE* output) {
 
     xmlSecTransformCtxDebugDump(&(ctx->encTransformCtx), output);
     
-    if((ctx->encResult != NULL) && 
-       (xmlSecBufferGetData(ctx->encResult) != NULL) && 
+    if((ctx->result != NULL) && 
+       (xmlSecBufferGetData(ctx->result) != NULL) && 
        (ctx->resultBase64Encoded != 0)) {
 
 	fprintf(output, "== Result - start buffer:\n");
-	fwrite(xmlSecBufferGetData(ctx->encResult), 
-	       xmlSecBufferGetSize(ctx->encResult), 1,
+	fwrite(xmlSecBufferGetData(ctx->result), 
+	       xmlSecBufferGetSize(ctx->result), 1,
 	       output);
 	fprintf(output, "\n== Result - end buffer\n");
     } else {
 	fprintf(output, "== Result: %d bytes\n",
-		xmlSecBufferGetSize(ctx->encResult));
+		xmlSecBufferGetSize(ctx->result));
     }
 }
 
 void 
 xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
-
-    if(ctx->encrypt) {    
-        fprintf(output, "<EncryptionContext>\n");
-    } else {
-        fprintf(output, "<DecryptionContext type=\"%s\">\n",
-	    (ctx->replaced) ? "replaced" : "not-replaced" );
-    }
 
     switch(ctx->mode) {
 	case xmlEncCtxModeEncryptedData:
@@ -959,7 +952,7 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
 	    }
 	    break;
     }
-    fprintf(output, "status=\"%s\" >\n", (ctx->replaced) ? "replaced" : "not-replaced" );
+    fprintf(output, "status=\"%s\" >\n", (ctx->resultReplaced) ? "replaced" : "not-replaced" );
 
     if(ctx->id != NULL) {
 	fprintf(output, "<Id>%s</Id>\n", ctx->id);
@@ -989,18 +982,18 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr ctx, FILE* output) {
     fprintf(output, "</KeyInfoWriteCtx>\n");
     xmlSecTransformCtxDebugXmlDump(&(ctx->encTransformCtx), output);
 
-    if((ctx->encResult != NULL) && 
-       (xmlSecBufferGetData(ctx->encResult) != NULL) && 
+    if((ctx->result != NULL) && 
+       (xmlSecBufferGetData(ctx->result) != NULL) && 
        (ctx->resultBase64Encoded != 0)) {
 
 	fprintf(output, "<Result>");
-	fwrite(xmlSecBufferGetData(ctx->encResult), 
-	       xmlSecBufferGetSize(ctx->encResult), 1,
+	fwrite(xmlSecBufferGetData(ctx->result), 
+	       xmlSecBufferGetSize(ctx->result), 1,
 	       output);
 	fprintf(output, "</Result>\n");
     } else {
 	fprintf(output, "<Result size=\"%d\" />\n",
-	       xmlSecBufferGetSize(ctx->encResult));
+	       xmlSecBufferGetSize(ctx->result));
     }
 
     switch(ctx->mode) {

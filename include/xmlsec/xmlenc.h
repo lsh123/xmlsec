@@ -58,16 +58,18 @@ struct _xmlSecEncCtx {
     xmlSecKeyPtr		encKey;
 
     /* these data are returned */
+    xmlSecBufferPtr		result;
+    int				resultBase64Encoded;
+    int				resultReplaced;
+    int				encrypt;
+
+    /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
     xmlChar*			type;
     xmlChar*			mimeType;
     xmlChar*			encoding;
     xmlChar*			recipient;
     xmlChar*			carriedKeyName;
-    int				encrypt;
-    xmlSecBufferPtr		encResult;
-    int				resultBase64Encoded;
-    int				replaced;
 
     /* these are internal data, nobody should change that except us */
     int				dontDestroyEncMethod;
@@ -75,6 +77,10 @@ struct _xmlSecEncCtx {
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;
     xmlNodePtr			cipherValueNode;
+    
+    /* reserved for future */
+    void*			reserved0;
+    void*			reserved1;
 };
 
 XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate		(xmlSecKeysMngrPtr keysMngr);

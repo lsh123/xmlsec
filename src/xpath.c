@@ -657,7 +657,7 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
     cur = xmlSecGetNextElementNode(node->children);  
     while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeXPath2, xmlSecXPath2Ns)) {
         /* read information from the node */
-	data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath);
+	data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath2);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -796,7 +796,7 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
     xmlSecAssert2(xmlSecPtrListCheckId(dataList, xmlSecXPathDataListId), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(dataList) == 0, -1);
 
-    data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath);
+    data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -864,7 +864,7 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     }
     
     /* read information from the node */
-    data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath);
+    data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

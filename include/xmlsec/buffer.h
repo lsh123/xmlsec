@@ -19,10 +19,10 @@ extern "C" {
 
 typedef struct _xmlSecBuffer				xmlSecBuffer, *xmlSecBufferPtr;
 
-enum xmlSecAllocMode{
-    xmlSecAllocExact = 0,
-    xmlSecAllocDouble
-};
+typedef enum {
+    xmlSecAllocModeExact = 0,
+    xmlSecAllocModeDouble
+} xmlSecAllocMode;
 
 /*****************************************************************************
  *
@@ -30,11 +30,14 @@ enum xmlSecAllocMode{
  *
  ****************************************************************************/
 struct _xmlSecBuffer {
-    unsigned char* 	 data;
-    size_t 		 size;
-    size_t		 maxSize;
-    enum xmlSecAllocMode allocMode;
+    unsigned char* 	data;
+    size_t 		size;
+    size_t		maxSize;
+    xmlSecAllocMode 	allocMode;
 };
+
+XMLSEC_EXPORT void		xmlSecBufferSetDefaultAllocMode	(xmlSecAllocMode defAllocMode,
+								 size_t defInitialSize);
 
 XMLSEC_EXPORT xmlSecBufferPtr	xmlSecBufferCreate		(size_t size);
 XMLSEC_EXPORT void		xmlSecBufferDestroy		(xmlSecBufferPtr buf);

@@ -21,6 +21,17 @@
 static int		xmlSecPtrListEnsureSize			(xmlSecPtrListPtr list,
 								 size_t size);
 								 
+static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
+static size_t gInitialSize = 64;
+
+void 
+xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, size_t defInitialSize) {
+    xmlSecAssert(defInitialSize > 0);
+    
+    gAllocMode = defAllocMode;
+    gInitialSize = defInitialSize;
+}
+
 int 
 xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
     xmlSecAssert2(id != xmlSecPtrListIdUnknown, -1);
@@ -28,6 +39,7 @@ xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
 
     memset(list, 0, sizeof(xmlSecPtrList));    
     list->id = id;
+    list->allocMode = gAllocMode;
     
     return(0);
 }
@@ -250,28 +262,41 @@ xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
 
 static int 
 xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, size_t size) {
-    void* tmp;
+    xmlSecPtr* newData;
+    size_t newSize = 0;
 
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     
     if(size < list->max) {
 	return(0);
     }
+
+    switch(list->allocMode) {
+	case xmlSecAllocModeExact:
+	    newSize = size + 8;
+	    break;
+	case xmlSecAllocModeDouble:
+	    newSize = 2 * size + 32;
+	    break;
+    }
     
-    /* TODO: add memory allocation strategy */
-    tmp = xmlRealloc(list->data, sizeof(xmlSecPtr) * size);
-    if(tmp == NULL) {
+    if(newSize < gInitialSize) {
+	newSize = gInitialSize;
+    }
+    
+    newData = (xmlSecPtr*)xmlRealloc(list->data, sizeof(xmlSecPtr) * newSize);
+    if(newData == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
 		    "xmlRealloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "sizeof(xmlSecPtr)*%d=%d", 
-		    size, sizeof(xmlSecPtr) * size);
+		    newSize, sizeof(xmlSecPtr) * newSize);
 	return(-1);
     }
     
-    list->data = (xmlSecPtr*)tmp;
-    list->max = size;
+    list->data = newData;
+    list->max = newSize;
     
     return(0);
 }

@@ -14,6 +14,7 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/buffer.h>
 
 typedef void*	xmlSecPtr;
 typedef const struct _xmlSecPtrListKlass	xmlSecPtrListKlass, *xmlSecPtrListId;
@@ -26,29 +27,34 @@ struct _xmlSecPtrList {
     xmlSecPtr*			data;
     size_t			use;
     size_t			max;
+    xmlSecAllocMode 		allocMode;
 };
 
-XMLSEC_EXPORT int		xmlSecPtrListInitialize	(xmlSecPtrListPtr list,
-							 xmlSecPtrListId id);
-XMLSEC_EXPORT void		xmlSecPtrListFinalize	(xmlSecPtrListPtr list);
-XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListCreate	(xmlSecPtrListId id);
-XMLSEC_EXPORT void		xmlSecPtrListDestroy	(xmlSecPtrListPtr list);
-XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate	(xmlSecPtrListPtr list);
+XMLSEC_EXPORT void		xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode,
+								 size_t defInitialSize);
 
-XMLSEC_EXPORT size_t		xmlSecPtrListGetSize	(xmlSecPtrListPtr list);
-XMLSEC_EXPORT xmlSecPtr		xmlSecPtrListGetItem	(xmlSecPtrListPtr list,
-							 size_t pos);
-XMLSEC_EXPORT int		xmlSecPtrListAdd	(xmlSecPtrListPtr list,
-							 xmlSecPtr item);
-XMLSEC_EXPORT int		xmlSecPtrListSet	(xmlSecPtrListPtr list,
-							 xmlSecPtr item,
-							 size_t pos);
-XMLSEC_EXPORT int		xmlSecPtrListRemove	(xmlSecPtrListPtr list,
-							 size_t pos);
-XMLSEC_EXPORT void		xmlSecPtrListDebugDump	(xmlSecPtrListPtr list,
-    							 FILE* output);
-XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list,
-							 FILE* output);
+
+XMLSEC_EXPORT int		xmlSecPtrListInitialize		(xmlSecPtrListPtr list,
+								 xmlSecPtrListId id);
+XMLSEC_EXPORT void		xmlSecPtrListFinalize		(xmlSecPtrListPtr list);
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListCreate		(xmlSecPtrListId id);
+XMLSEC_EXPORT void		xmlSecPtrListDestroy		(xmlSecPtrListPtr list);
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate		(xmlSecPtrListPtr list);
+
+XMLSEC_EXPORT size_t		xmlSecPtrListGetSize		(xmlSecPtrListPtr list);
+XMLSEC_EXPORT xmlSecPtr		xmlSecPtrListGetItem		(xmlSecPtrListPtr list,
+							         size_t pos);
+XMLSEC_EXPORT int		xmlSecPtrListAdd		(xmlSecPtrListPtr list,
+								 xmlSecPtr item);
+XMLSEC_EXPORT int		xmlSecPtrListSet		(xmlSecPtrListPtr list,
+								 xmlSecPtr item,
+								 size_t pos);
+XMLSEC_EXPORT int		xmlSecPtrListRemove		(xmlSecPtrListPtr list,
+							    	 size_t pos);
+XMLSEC_EXPORT void		xmlSecPtrListDebugDump		(xmlSecPtrListPtr list,
+    								 FILE* output);
+XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,
+								 FILE* output);
 #define xmlSecPtrListGetName(list) \
 	(((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
 

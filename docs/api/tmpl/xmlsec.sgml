@@ -20,16 +20,18 @@ xmlsec
 </para>
 
 
-<!-- ##### TYPEDEF xmlSecSize ##### -->
+<!-- ##### MACRO xmlSecSize ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### TYPEDEF xmlSecByte ##### -->
+
+<!-- ##### MACRO xmlSecByte ##### -->
 <para>
 
 </para>
+
 
 
 <!-- ##### FUNCTION xmlSecInit ##### -->

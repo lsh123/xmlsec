@@ -129,8 +129,8 @@ keys
 @value: 
 @dataList: 
 @usage: 
-@reserved0: 
-@reserved1: 
+@notValidBefore: 
+@notValidAfter: 
 
 <!-- ##### FUNCTION xmlSecKeyCreate ##### -->
 <para>

@@ -279,10 +279,8 @@ if an error occurs.
     xmlSecKeyDataPtr			value;
     xmlSecPtrListPtr			dataList;
     xmlSecKeyUsage			usage;
-    
-    /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    time_t				notValidBefore;
+    time_t				notValidAfter;    
 };
 </programlisting>
 <para>
@@ -311,13 +309,13 @@ The key.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved0</structfield></term>
-<listitem><simpara>		reserved for future.
+<term><link linkend="time-t">time_t</link> <structfield>notValidBefore</structfield></term>
+<listitem><simpara>	the start key validity interval.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>void *<structfield>reserved1</structfield></term>
-<listitem><simpara>		reserved for future.
+<term><link linkend="time-t">time_t</link> <structfield>notValidAfter</structfield></term>
+<listitem><simpara>	the end key validity interval.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>

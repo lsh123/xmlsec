@@ -60,26 +60,26 @@
 <h1>
 <a name="XMLSEC-XMLSEC"></a>xmlsec</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14034"></a><h2>Name</h2>xmlsec -- </div>
+<a name="AEN14036"></a><h2>Name</h2>xmlsec -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN14037"></a><h2>Synopsis</h2>
+<a name="AEN14039"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 typedef     <font>xmlSecPtr</font>;
-typedef     <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>;
-typedef     <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a>;
+#define     <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>
+#define     <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a>
 int         <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>                      (void);
 int         <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>                  (void);
 #define     <a href="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</a></pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN14046"></a><h2>Description</h2>
+<a name="AEN14048"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN14049"></a><h2>Details</h2>
+<a name="AEN14051"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN14051"></a><h3>
+<a name="AEN14053"></a><h3>
 <a name="XMLSECPTR"></a>xmlSecPtr</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef void*					xmlSecPtr;</pre></td></tr></table>
 <p>Void pointer.</p>
@@ -87,23 +87,25 @@ int         <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>      
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14057"></a><h3>
+<a name="AEN14059"></a><h3>
 <a name="XMLSECSIZE"></a>xmlSecSize</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned int				xmlSecSize;</pre></td></tr></table>
-<p>Size of something.</p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecSize</pre></td></tr></table>
+<p>Size of something. Should be typedef instead of define
+but it will break ABI (todo).</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14063"></a><h3>
+<a name="AEN14065"></a><h3>
 <a name="XMLSECBYTE"></a>xmlSecByte</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned char				xmlSecByte;</pre></td></tr></table>
-<p>One byte.</p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecByte				unsigned char</pre></td></tr></table>
+<p>One byte. Should be typedef instead of define
+but it will break ABI (todo).</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14069"></a><h3>
+<a name="AEN14071"></a><h3>
 <a name="XMLSECINIT"></a>xmlSecInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecInit                      (void);</pre></td></tr></table>
 <p>Initializes XML Security Library. The depended libraries
@@ -111,26 +113,26 @@ int         <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>      
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14076"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14078"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14081"></a><h3>
+<a name="AEN14083"></a><h3>
 <a name="XMLSECSHUTDOWN"></a>xmlSecShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecShutdown                  (void);</pre></td></tr></table>
 <p>Clean ups the XML Security Library.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14088"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14090"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14093"></a><h3>
+<a name="AEN14095"></a><h3>
 <a name="ATTRIBUTE-UNUSED-CAPS"></a>ATTRIBUTE_UNUSED</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     ATTRIBUTE_UNUSED</pre></td></tr></table>
 <p>Macro used to signal to GCC unused function parameters</p>

@@ -15,8 +15,8 @@
 
 
 typedef     <link linkend="xmlSec">xmlSecPtr</link>;
-typedef     <link linkend="xmlSecSize">xmlSecSize</link>;
-typedef     <link linkend="xmlSecByte">xmlSecByte</link>;
+#define     <link linkend="xmlSecSize">xmlSecSize</link>
+#define     <link linkend="xmlSecByte">xmlSecByte</link>
 int         <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
 int         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
 #define     <link linkend="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</link>
@@ -49,19 +49,20 @@ Void pointer.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecSize">xmlSecSize</title>
-<programlisting>typedef unsigned int				xmlSecSize;
-</programlisting>
+<programlisting>#define     xmlSecSize</programlisting>
 <para>
-Size of something.</para>
+Size of something. Should be typedef instead of define
+but it will break ABI (todo).</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecByte">xmlSecByte</title>
-<programlisting>typedef unsigned char				xmlSecByte;
+<programlisting>#define xmlSecByte				unsigned char
 </programlisting>
 <para>
-One byte.</para>
+One byte. Should be typedef instead of define
+but it will break ABI (todo).</para>
 <para>
 
 </para></refsect2>

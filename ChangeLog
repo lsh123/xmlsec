@@ -1,3 +1,10 @@
+Sun Jun  1 20:30:08 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html docs/news.html
+	docs/xmlsec-man.html include/xmlsec/version.h man/xmlsec1-config.1
+	man/xmlsec1.1: preparing 1.0.2 release.
+	* docs/xmldsig-verifier.html: point online verifier to web site
+
 Thu May 29 17:15:04 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/gnutls/Makefile.am src/nss/Makefile.am 

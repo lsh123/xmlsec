@@ -80,6 +80,11 @@ execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname" \
     "--keys $keysfile --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname.data" \
     "--keys $keysfile"
 
+execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname2" \
+    "--keys $topfolder/keys/keys.xml" \
+    "--keys $keysfile --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname2.data" \
+    "--keys $keysfile"
+
 execEncTest "aleksey-xmlenc-01/enc-aes128cbc-keyname" \
     "--keys $topfolder/keys/keys.xml" \
     "--keys $keysfile --binary $topfolder/aleksey-xmlenc-01/enc-aes128cbc-keyname.data" \

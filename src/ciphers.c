@@ -117,6 +117,15 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 				"EVP_DecryptInit - %d", ret);
 		    return(-1);    
 		}
+		/*
+		 * The padding used in XML Enc does not follow RFC 1423
+		 * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
+		 * it is possible to disable padding and do it by yourself
+		 * For OpenSSL 0.9.6 you have interop problems
+		 */
+#ifndef XMLSEC_OPENSSL096	
+		EVP_CIPHER_CTX_set_padding(&(cipher->cipherCtx), 0);    
+#endif /* XMLSEC_OPENSSL096 */	
 	    }	    
 	}
     }
@@ -247,6 +256,15 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
 				"EVP_DecryptInit - %d", ret);
 		    return(-1);    
 		}
+		/*
+		 * The padding used in XML Enc does not follow RFC 1423
+		 * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
+		 * it is possible to disable padding and do it by yourself
+		 * For OpenSSL 0.9.6 you have interop problems
+		 */
+#ifndef XMLSEC_OPENSSL096	
+		EVP_CIPHER_CTX_set_padding(&(cipher->cipherCtx), 0);    
+#endif /* XMLSEC_OPENSSL096 */	
 	    }	    
 	    if(size <= 0) {
 		return(0);
@@ -360,10 +378,13 @@ xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
 int 	
 xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 			 const unsigned char *buffer, size_t size) {
+    EVP_CIPHER_CTX* ctx;
+    unsigned char* buf;
     int res;
     int ret;
 
     xmlSecAssert2(cipher != NULL, -1);
+    xmlSecAssert2(cipher->bufOut != NULL, -1);
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
     
@@ -375,13 +396,64 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 	return(-1);
     }
 
+    ctx = &(cipher->cipherCtx);
     res = cipher->id->bufOutSize;
+    buf = cipher->bufOut;
+
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+    
     if(cipher->encode) {	
-	ret = EVP_EncryptUpdate(&(cipher->cipherCtx), 
-		cipher->bufOut, &res, (unsigned char *)buffer, size);    		 		 
+	ret = EVP_EncryptUpdate(ctx, buf, &res, 
+				(unsigned char *)buffer, size);    		 		 
     } else {
-	ret = EVP_DecryptUpdate(&(cipher->cipherCtx), 
-		cipher->bufOut, &res, (unsigned char *)buffer, size);    		 		 
+	/*
+	 * The padding used in XML Enc does not follow RFC 1423
+	 * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
+	 * it is possible to disable padding and do it by yourself
+	 * For OpenSSL 0.9.6 you have interop problems.
+	 *
+	 * The logic below is copied from EVP_DecryptUpdate() function.
+	 * This is a hack but it's the only way I can provide binary
+	 * compatibility with previous versions of xmlsec.
+	 * This needs to be fixed in the next XMLSEC API refresh.
+	 */
+#ifndef XMLSEC_OPENSSL096
+	int b = 0;
+	int fixLength = 0;
+	
+	b = ctx->cipher->block_size;
+	xmlSecAssert2(b <= sizeof ctx->final, -1);
+
+	if(ctx->final_used) {
+	    memcpy(buf, ctx->final, b);
+	    buf += b;
+	    fixLength = 1;
+	} else {
+	    fixLength = 0;
+	}
+#endif /* XMLSEC_OPENSSL096 */
+	ret = EVP_DecryptUpdate(ctx, buf, &res, 
+				(unsigned char *)buffer, size);    		 		 
+#ifndef XMLSEC_OPENSSL096
+	/*
+	 * The logic below is copied from EVP_DecryptUpdate() function.
+	 * This is a hack but it's the only way I can provide binary
+	 * compatibility with previous versions of xmlsec.
+	 * This needs to be fixed in the next XMLSEC API refresh.
+	 */
+	if(ret == 1) {
+	    if (b > 1 && !ctx->buf_len) {
+		res -= b;
+		ctx->final_used = 1;
+		memcpy(ctx->final, &buf[res], b);
+	    } else {
+		ctx->final_used = 0;
+	    }
+	    if (fixLength) {
+		res += b;
+	    }
+	}
+#endif /* XMLSEC_OPENSSL096 */
     }
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -403,10 +475,12 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
  */
 int 	
 xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
+    EVP_CIPHER_CTX* ctx;
     int res;
     int ret;
 
     xmlSecAssert2(cipher != NULL, -1);
+    xmlSecAssert2(cipher->bufOut != NULL, -1);
     
     if(!xmlSecBinTransformCheckSubType(cipher, xmlSecBinTransformSubTypeCipher) ||
         (cipher->cipherData == NULL)) {
@@ -416,37 +490,48 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 	return(-1);
     }
 
+    ctx = &(cipher->cipherCtx);
     res = cipher->id->bufOutSize;
+
+    xmlSecAssert2(ctx->cipher != NULL, -1);
+
     if(cipher->encode) {	
-	ret = EVP_EncryptFinal(&(cipher->cipherCtx), 
-		cipher->bufOut, &res);    		 		 
+	ret = EVP_EncryptFinal(ctx, cipher->bufOut, &res);    		 		 
     } else {
-	int b;
+	ret = EVP_DecryptFinal(ctx, cipher->bufOut, &res);    		 		 
 	/*
 	 * The padding used in XML Enc does not follow RFC 1423
 	 * and is not supported by OpenSSL. In the case of OpenSSL 0.9.7
 	 * it is possible to disable padding and do it by yourself
-	 * For OpenSSL 0.9.6 you have interop problems
+	 * For OpenSSL 0.9.6 you have interop problems.
+	 *
+	 * The logic below is copied from EVP_DecryptFinal() function.
+	 * This is a hack but it's the only way I can provide binary
+	 * compatibility with previous versions of xmlsec.
+	 * This needs to be fixed in the next XMLSEC API refresh.
 	 */
-#ifndef XMLSEC_OPENSSL096	
-	if(cipher->cipherCtx.cipher != NULL) {
-	    b = cipher->cipherCtx.cipher->block_size;
-	} else {
-	    b = 0;
-	}
-	EVP_CIPHER_CTX_set_padding(&(cipher->cipherCtx), 0);    
-#endif /* XMLSEC_OPENSSL096 */	
-	ret = EVP_DecryptFinal(&(cipher->cipherCtx), 
-		cipher->bufOut, &res);    		 		 
 #ifndef XMLSEC_OPENSSL096
 	if(ret == 1) {
-	    res = (b > 0) ? b - cipher->bufOut[b - 1] : 0;
-	    if(res < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_INVALID_DATA,
-			    "padding is greater than buffer");
-		return(-1);	
-	    }
+	    int b = 0;
+	    	    
+	    xmlSecAssert2(res == 0, -1);
+	    xmlSecAssert2(ctx->buf_len == 0, -1);
+	    xmlSecAssert2(ctx->final_used, -1);
+	    
+	    b = ctx->cipher->block_size;
+	    if(b > 1) {
+		xmlSecAssert2(b <= sizeof ctx->final, -1);
+		xmlSecAssert2(b <= cipher->id->bufOutSize, -1);
+		res = b - ctx->final[b - 1];
+		if(res > 0) {
+		    memcpy(cipher->bufOut, ctx->final, res);
+		} else if(res < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_INVALID_DATA,
+				"padding is greater than buffer");
+		    return(-1);	
+		}
+	    } 
 	}
 #endif /* XMLSEC_OPENSSL096 */			
     }

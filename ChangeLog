@@ -1,3 +1,13 @@
+Sun Jan 26 18:19:49 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/aes.c src/ciphers.c src/des.c: fixed bug with 
+	EVP ciphers for OpenSSL 0.9.7 when last block was not 
+	processed for padding
+	* tests/aleksey-xmlenc-01/enc-des3cbc-keyname2.data 
+	tests/aleksey-xmlenc-01/enc-des3cbc-keyname2.tmpl
+	tests/aleksey-xmlenc-01/enc-des3cbc-keyname2.xml
+	tests/testEnc.sh: new test case for the bug fixed above
+
 Wed Jan 22 11:37:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c man/xmlsec.xml: applied patch from Rich Salz

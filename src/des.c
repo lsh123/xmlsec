@@ -113,7 +113,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncDes3CbcId = {
     XMLSEC_DES3_KEY_SIZE,		/* size_t keySize */
     XMLSEC_DES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_DES_BLOCK_SIZE,		/* size_t bufInSize */
-    XMLSEC_DES_BLOCK_SIZE		/* size_t bufOutSize */
+    2 * XMLSEC_DES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncDes3Cbc = (xmlSecTransformId)&xmlSecEncDes3CbcId;
 

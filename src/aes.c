@@ -115,7 +115,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     XMLSEC_AES128_KEY_SIZE,		/* size_t keySize */
     XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
-    XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
+    2 * XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncAes128Cbc = (xmlSecTransformId)&xmlSecEncAes128CbcId;
 
@@ -145,7 +145,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     XMLSEC_AES192_KEY_SIZE,		/* size_t keySize */
     XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
-    XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
+    2 * XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncAes192Cbc = (xmlSecTransformId)&xmlSecEncAes192CbcId;
 
@@ -175,7 +175,7 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     XMLSEC_AES256_KEY_SIZE,		/* size_t keySize */
     XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
     XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
-    XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
+    2 * XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncAes256Cbc = (xmlSecTransformId)&xmlSecEncAes256CbcId;
 

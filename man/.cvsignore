@@ -2,4 +2,5 @@ Makefile
 Makefile.in
 .deps
 .libs
-*.1
+xmlsec1.1
+xmlsec1-config.1

@@ -67,10 +67,10 @@
     </sect2>
     <sect2>
 	<title>Compiling and linking on Unix.</title>
-	<para>On Unix-like systems the <filename>xmlsec-config</filename> 
+	<para>On Unix-like systems the <filename>xmlsec1-config</filename> 
 	script is the simplest way to get all necessary information.
 	<example>
-	    <title>Using xmlsec-config script in a Makefile.</title>
+	    <title>Using xmlsec1-config script in a Makefile.</title>
 	    <programlisting><![CDATA[
 PROGRAM	 	 = test
 PROGRAM_FILES	 = test.c
@@ -78,9 +78,9 @@ cc	 	 = gcc
 CC	 	 = gcc
 LD	 	 = gcc
 
-CFLAGS		+= -g $(shell xmlsec-config --cflags)
+CFLAGS		+= -g $(shell xmlsec1-config --cflags)
 LDFLAGS		+= -g
-LIBS 		+= $(shell xmlsec-config --libs) 
+LIBS 		+= $(shell xmlsec1-config --libs) 
 
 all: $(PROGRAM)
 

@@ -5,7 +5,12 @@ man_MANS = \
     xmlsec1-config.1 \
     $(NULL)
 
-EXTRA_DIST = $(man_MANS)
+EXTRA_DIST = \
+	$(man_MANS) \
+	xmlsec.1 \
+	xmlsec-config.1 \
+	$(NULL)
+
 EXTRA_CLEAN = $(man_MANS)
 
 
@@ -23,18 +28,24 @@ $(XMLSEC_HTML): xmlsec1.1
 		  tr "[:cntrl:]" " " > \
 		  $(XMLSEC_HTML)
 
-xmlsec1.1:
+xmlsec.1:
 	@rm -f xmlsec1.1
 	@help2man --help-option=--help-all \
 		  --version-option=--version \
-		  $(XMLSEC_PROGRAM) > xmlsec1.1
+		  $(XMLSEC_PROGRAM) > xmlsec.1
 
-xmlsec1-config.1:
+xmlsec-config.1:
 	@chmod 766 $(XMLSEC_CONFIG_PROGRAM)
 	@rm -f xmlsec1-config.1
 	@help2man --help-option=--help \
 		  --version-option=--version \
-		  $(XMLSEC_CONFIG_PROGRAM) > xmlsec1-config.1
-	
+		  $(XMLSEC_CONFIG_PROGRAM) > xmlsec-config.1
+
+xmlsec1.1: xmlsec.1
+	@cp xmlsec.1 xmlsec1.1
+
+xmlsec1-config.1: xmlsec-config.1
+	@cp xmlsec-config.1 xmlsec1-config.1
+
 $(XMLSEC_PROGRAM): 
 	@cd ../apps;make

@@ -104,20 +104,20 @@
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
 <a name="AEN62"></a>Compiling and linking on Unix.</h2>
-<p>On Unix-like systems the <tt class="FILENAME">xmlsec-config</tt> 
+<p>On Unix-like systems the <tt class="FILENAME">xmlsec1-config</tt> 
 	script is the simplest way to get all necessary information.
 	</p>
 <div class="EXAMPLE">
-<a name="AEN66"></a><p><b>Example 2. Using xmlsec-config script in a Makefile.</b></p>
+<a name="AEN66"></a><p><b>Example 2. Using xmlsec1-config script in a Makefile.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">PROGRAM	 	 = test
 PROGRAM_FILES	 = test.c
 cc	 	 = gcc
 CC	 	 = gcc
 LD	 	 = gcc
 
-CFLAGS		+= -g $(shell xmlsec-config --cflags)
+CFLAGS		+= -g $(shell xmlsec1-config --cflags)
 LDFLAGS		+= -g
-LIBS 		+= $(shell xmlsec-config --libs) 
+LIBS 		+= $(shell xmlsec1-config --libs) 
 
 all: $(PROGRAM)
 

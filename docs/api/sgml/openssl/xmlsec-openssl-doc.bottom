@@ -2,5 +2,5 @@
     &xmlsec-openssl-bn;
     &xmlsec-openssl-crypto;
     &xmlsec-openssl-evp;
-    &xmlsec-openssl-x509;
     &xmlsec-openssl-symbols;
+    &xmlsec-openssl-x509;

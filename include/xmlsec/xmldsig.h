@@ -163,6 +163,10 @@ XMLSEC_EXPORT int		xmlSecDSigCtxSign		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlNodePtr tmpl);
 XMLSEC_EXPORT int		xmlSecDSigCtxVerify		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx,
+								xmlSecTransformId transformId);
+XMLSEC_EXPORT int		xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx,
+								xmlSecTransformId transformId);
 XMLSEC_EXPORT xmlSecBufferPtr	xmlSecDSigCtxGetPreSignBuffer	(xmlSecDSigCtxPtr dsigCtx);
 XMLSEC_EXPORT void		xmlSecDSigCtxDebugDump		(xmlSecDSigCtxPtr dsigCtx,
 								 FILE* output);

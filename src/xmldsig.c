@@ -198,6 +198,65 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
 }
 
 /**
+ * xmlSecDSigCtxEnableReferenceTransform:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @transformId:	the transform klass.
+ *
+ * Enables @transformId for <dsig:Reference/> elements processing.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformId transformId) {
+    int ret;
+    
+    xmlSecAssert2(dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigCtx->result == NULL, -1);
+    xmlSecAssert2(transformId != xmlSecTransformIdUnknown, -1);
+
+    if(dsigCtx->enabledReferenceTransforms == NULL) {
+	dsigCtx->enabledReferenceTransforms = xmlSecPtrListCreate(xmlSecTransformIdListId);
+	if(dsigCtx->enabledReferenceTransforms == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecPtrListCreate",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);   
+	}
+    }	
+	
+    ret = xmlSecPtrListAdd(dsigCtx->enabledReferenceTransforms, (void*)transformId);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListAdd",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);   
+    }
+    return(0);
+}
+
+/**
+ * xmlSecDSigCtxEnableSignatureTransform:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @transformId:	the transform klass.
+ *
+ * Enables @transformId for <dsig:SignedInfo/> element processing.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformId transformId) {
+    xmlSecAssert2(dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigCtx->result == NULL, -1);
+    xmlSecAssert2(transformId != xmlSecTransformIdUnknown, -1);
+
+    return(xmlSecPtrListAdd(&(dsigCtx->transformCtx.enabledTransforms), (void*)transformId));
+}
+
+/**
  * xmlSecDSigCtxGetPreSignBuffer:
  * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
  * 

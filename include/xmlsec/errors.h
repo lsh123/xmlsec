@@ -13,6 +13,27 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <openssl/err.h>
+
+/**************************************************************
+ *
+ * Error constants for OpenSSL 
+ *
+ *************************************************************/
+
+/**
+ * XMLSEC_ERRORS_LIB:
+ *
+ * Macro. The XMLSec library id for OpenSSL errors reporting functions.
+ */
+#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
+/**
+ * XMLSEC_ERRORS_FUNCTION:
+ *
+ * Macro. The XMLSec library functions OpenSSL errors reporting functions.
+ */
+#define XMLSEC_ERRORS_FUNCTION			0
+
 /***************************************************************
  *
  * Error codes
@@ -34,7 +55,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_CRYPTO_FAILED:
  *
- * Crypto function failed. 
+ * Crypto (OpenSSL) function failed. 
  */
 #define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3
 /**
@@ -55,12 +76,6 @@ extern "C" {
  * IO operation failed.
  */
 #define XMLSEC_ERRORS_R_IO_FAILED		 6
-/**
- * XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED:
- *
- * An XMLSec object failed.
- */
-#define XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED	 7
 /**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM:
  * 
@@ -121,12 +136,6 @@ extern "C" {
  * Invalid data.
  */
 #define XMLSEC_ERRORS_R_INVALID_DATA		 19
-/**
- * XMLSEC_ERRORS_R_INVALID_ID:
- *
- * Invalid id.
- */
-#define XMLSEC_ERRORS_R_INVALID_ID		 20
 /**
  * XMLSEC_ERRORS_R_INVALID_TYPE:
  * 
@@ -265,11 +274,9 @@ typedef void (*xmlSecErrorsCallback) 		(const char* file, int line,
 				    		 const char* func,
 						 int reason, const char* msg);
 
+XMLSEC_EXPORT void xmlSecErrorsInit		(void);
+XMLSEC_EXPORT void xmlSecErrorsShutdown		(void);
 XMLSEC_EXPORT void xmlSecErrorsSetCallback	(xmlSecErrorsCallback callback);
-XMLSEC_EXPORT void xmlSecErrorsDefaultCallback	(const char* file, int line, 
-				    		 const char* func,
-						 int reason, const char* msg);
-
  
 /**
  * xmlSecPrintErrorMessages:
@@ -340,7 +347,9 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 #define __FUNCTION__  ""
 #endif /* _MSC_VER */
 
-#define XMLSEC_ERRORS_BUFFER_SIZE	1024
+#if defined(__SUNPRO_C) && (__SUNPRO_C <= 0x530)
+#define __FUNCTION__  ""
+#endif /* __SUNPRO_C */
 
 #ifdef __cplusplus
 }

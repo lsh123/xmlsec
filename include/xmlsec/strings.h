@@ -14,8 +14,14 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <libxml/tree.h>
+
 #include <xmlsec/xmlsec.h>
 
+/*************************************************************************
+ *
+ * Global Namespaces
+ *
+ ************************************************************************/
 /**
  * xmlSecNs:
  * 
@@ -24,105 +30,117 @@ extern "C" {
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 
 /**
- * xmlSecNsDSig:
+ * xmlSecDSigNs:
  *
  * The XML DSig namespace 
  */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNsDSig[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
 
 /**
- * xmlSecNsEnc:
+ * xmlSecEncNs:
  *
  * The XML Encription namespace 
  */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNsEnc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
+
+
+/*************************************************************************
+ *
+ * AES strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAESKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeAESKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefAESKeyValue[];
+
+/*************************************************************************
+ *
+ * DES strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDESKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDESKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDESKeyValue[];
+
+/*************************************************************************
+ *
+ * DSA strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDSAKeyValue[];
+
+/*************************************************************************
+ *
+ * HMAC strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHMACKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHMACKeyValue[];
+
+/*************************************************************************
+ *
+ * RSA strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRSAKeyValue[];
+
+/*************************************************************************
+ *
+ * X509 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Data[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509Data[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX509Data[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRawX509Cert[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRawX509Cert[];
+
+/*************************************************************************
+ *
+ * RetrievalMethod
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRetrievalMethod[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRetrievalMethod[];
+
+/*************************************************************************
+ *
+ * EncryptedKey
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEncryptedKey[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeEncryptedKey[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncryptedKey[];
+
+
+
+
+
+
 
 
 /**
- * xmlSecNsXPath2:
+ * xmlSecXPathNs:
+ * 
+ * The XPath transform namespace 
+ */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
+
+/**
+ * xmlSecXPath2Ns:
  * 
  * The XPath2 transform namespace 
  */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNsXPath2[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 
-/**
- * xmlSecNsXPointer:
- *
- * XPointer transform namespace 
- */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNsXPointer[];
-
-/**
- * xmlSecNsExcC14NNs:
- *
- * XPointer transform namespace 
- */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNsExcC14N[];
-
-/* KeyInfo children names */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKeyName[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRetreivalMethod[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Data[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNamePgpData[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSpkiData[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMgmtData[];
-
-/* KeyValue children names */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameAesKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDesKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDsaKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaKeyValue[];
-
-/* known RetrievalMethod hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypeDSAKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypeRSAKeyValue[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypeX509Data[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypePGPData[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypeSPKIData[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypeMgmtData[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRetrievalMethodTypeRawX509Cert[];
-
-/* base64 hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefBase64Decode[];
-
-/* c14n algorithms hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14NInclusiveTransform[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14NInclusiveWithCommentsTransform[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14NExclusiveTransform[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14NExclusiveWithCommentsTransform[];
-
-/* xml transforms hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefTransformEnveloped[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXPathTransform[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXPath2Transform[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefTransformXslt[];
-
-/* digests algorithms hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDigestRipemd160[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDigestSha1[];
-
-/* signature algorithms hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSignDsaSha1[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMacHmacSha1[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMacHmacMd5[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMacHmacRipeMd160[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSignRsaSha1[];
-
-/* encryption algorithm hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncAes128Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncAes192Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncAes256Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncDes3Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncRsaPkcs1[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncRsaOaep[];
-
-/* key wrap algorithm hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes128Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes192Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes256Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWDes3Cbc[];
+/* XPointer transform namespace */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 
 #ifdef __cplusplus
 }

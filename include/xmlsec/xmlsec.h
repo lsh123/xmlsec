@@ -13,6 +13,8 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <libxml/tree.h>
+
 #include <xmlsec/version.h>
 
 #if !defined XMLSEC_EXPORT
@@ -49,6 +51,7 @@ extern "C" {
 XMLSEC_EXPORT int	xmlSecInit			(void);
 XMLSEC_EXPORT int	xmlSecShutdown			(void);
 
+
 /**
  * ATTRIBUTE_UNUSED:
  *
@@ -65,7 +68,7 @@ XMLSEC_EXPORT int	xmlSecShutdown			(void);
 #define ATTRIBUTE_UNUSED
 #endif
 
-
+#include <xmlsec/strings.h>
 
 #ifdef __cplusplus
 }

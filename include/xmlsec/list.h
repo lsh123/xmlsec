@@ -1,69 +1,98 @@
 /** 
  * XMLSec library
  *
- * List
  *
  * See Copyright for the status of this software.
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_LIST_H__
-#define __XMLSEC_LIST_H__
+#define __XMLSEC_LIST_H__    
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
 
-#include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/object.h>
-#include <xmlsec/serializable.h>
+
+typedef void*	xmlSecPtr;
+typedef const struct _xmlSecPtrListKlass	*xmlSecPtrListId;
+typedef struct _xmlSecPtrList 			xmlSecPtrList, *xmlSecPtrListPtr;
 
 
-typedef struct _xmlSecListKlass				xmlSecListKlass,
-							*xmlSecListKlassPtr;
-typedef struct _xmlSecList				xmlSecList,
-							*xmlSecListPtr;
+struct _xmlSecPtrList {
+    xmlSecPtrListId		id;        
 
-/*********************************************************************
- *
- * Simple List
- *
- *********************************************************************/
-#define xmlSecListKlassId 				xmlSecListKlassGet()
-#define xmlSecListKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecListKlassId, xmlSecListKlassPtr)
-#define xmlSecListKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecListKlassId)
-#define xmlSecListCast(obj) 				xmlSecObjCastMacro((obj), xmlSecListKlassId, xmlSecListPtr)
-#define xmlSecListCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecListKlassId)
-
-struct _xmlSecListKlass {
-    xmlSecBaseBufferKlass		parent;
-};
-		
-struct _xmlSecList {
-    xmlSecBaseBuffer			parent;
+    xmlSecPtr*			data;
+    size_t			use;
+    size_t			max;
 };
 
-#define xmlSecListNew()			((xmlSecListPtr)xmlSecObjNew(xmlSecListKlassId))
-XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecListKlassGet	(void);
-XMLSEC_EXPORT xmlSecPtr			xmlSecListGetData	(xmlSecListPtr list,
-								 size_t pos);
-XMLSEC_EXPORT size_t			xmlSecListGetSize	(xmlSecListPtr list);
-XMLSEC_EXPORT int			xmlSecListFind		(xmlSecListPtr list,
-								 xmlSecPtr data);
-XMLSEC_EXPORT int			xmlSecListAppend	(xmlSecListPtr list,
-								 xmlSecPtr data);
-XMLSEC_EXPORT int			xmlSecListPrepend	(xmlSecListPtr list,
-								 xmlSecPtr data);
-XMLSEC_EXPORT int			xmlSecListInsert	(xmlSecListPtr list,
-								 size_t pos,
-								 xmlSecPtr data);
-XMLSEC_EXPORT void			xmlSecListRemove	(xmlSecListPtr list,
-								 size_t pos);
-XMLSEC_EXPORT void			xmlSecListEmpty		(xmlSecListPtr list);
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListCreate	(xmlSecPtrListId id);
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecPtrListDuplicate	(xmlSecPtrListPtr list);
+XMLSEC_EXPORT void		xmlSecPtrListDestroy	(xmlSecPtrListPtr list);
+XMLSEC_EXPORT size_t		xmlSecPtrListGetSize	(xmlSecPtrListPtr list);
+XMLSEC_EXPORT xmlSecPtr		xmlSecPtrListGetItem	(xmlSecPtrListPtr list,
+							 size_t pos);
+XMLSEC_EXPORT int		xmlSecPtrListAdd	(xmlSecPtrListPtr list,
+							 xmlSecPtr item);
+XMLSEC_EXPORT int		xmlSecPtrListSet	(xmlSecPtrListPtr list,
+							 xmlSecPtr item,
+							 size_t pos);
+XMLSEC_EXPORT int		xmlSecPtrListRemove	(xmlSecPtrListPtr list,
+							 size_t pos);
+XMLSEC_EXPORT void		xmlSecPtrListDebugDump	(xmlSecPtrListPtr list,
+							 FILE* output);
+XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list,
+							 FILE* output);
 
+/**
+ * xmlSecPtrListIsValid:
+ * @list: the pointer to list.
+ *
+ * Macro. Returns 1 if @list is not NULL and @list->id is not NULL
+ * or 0 otherwise.
+ */ 
+#define xmlSecPtrListIsValid(list) \
+	((( list ) != NULL) && ((( list )->id) != NULL))
+/**
+ * xmlSecPtrListCheckId:
+ * @list: the pointer to list.
+ * @dataId: the list Id.
+ *
+ * Macro. Returns 1 if @list is valid and @list's id is equal to @dataId.
+ */
+#define xmlSecPtrListCheckId(list, dataId) \
+ 	(xmlSecPtrListIsValid(( list )) && \
+	((( list )->id) == ( dataId )))
+
+
+/**************************************************************************
+ *
+ * xmlSecPtrListKlass
+ *
+ *************************************************************************/
+/**
+ * xmlSecPtrListIdUnknown:
+ *
+ * The "unknown" id.
+ */
+#define xmlSecPtrListIdUnknown 			NULL
+
+typedef xmlSecPtr		(*xmlSecPtrDuplicateItemMethod)	(xmlSecPtr ptr);
+typedef void			(*xmlSecPtrDestroyItemMethod)	(xmlSecPtr ptr);
+typedef void			(*xmlSecPtrDebugDumpItemMethod)	(xmlSecPtr ptr,
+								 FILE* output);
+
+struct _xmlSecPtrListKlass {
+    xmlSecPtrDuplicateItemMethod	duplicateItem;
+    xmlSecPtrDestroyItemMethod		destroyItem;
+    xmlSecPtrDebugDumpItemMethod	debugDumpItem;
+    xmlSecPtrDebugDumpItemMethod	debugXmlDumpItem;
+};
 #ifdef __cplusplus
-	}
+}
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_LIST_H__ */
+

@@ -1,15 +1,15 @@
-NULL=
+NULL =
 
-xmlsecincdir = $(includedir)/xmlsec
+xmlsecopensslincdir = $(includedir)/xmlsec/openssl
 
-xmlsecinc_HEADERS = \
+xmlsecopensslinc_HEADERS = \
+app.h \
 bn.h \
-errors.h \
+crypto.h \
 evp.h \
-keysmngr.h \
 x509.h \
 $(NULL)
 
 install-exec-hook:
-	$(mkinstalldirs) $(DESTDIR)$(xmlsecincdir)
+	$(mkinstalldirs) $(DESTDIR)$(xmlsecopensslincdir)
 

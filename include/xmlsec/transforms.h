@@ -20,18 +20,20 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/nodeset.h>
 
 
-typedef struct _xmlSecTransform xmlSecTransform, *xmlSecTransformPtr; 
-typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;
+typedef const struct _xmlSecTransformKlass		*xmlSecTransformId;
+typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
+typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
+typedef struct _xmlSecTransfomrBinData			xmlSecTransformBinData, *xmlSecTransformBinDataPtr; 
 
-/**
- * xmlSecTransformUnknown:
+
+/**************************************************************************
  *
- * The "unknown" transform id (NULL).
- */
-#define xmlSecTransformUnknown			NULL
-
+ * xmlSecTransformStatus
+ *
+ *************************************************************************/
 /**
  * xmlSecTransformStatus:
  * @xmlSecTransformStatusNone: the status unknown.
@@ -42,356 +44,396 @@ typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTr
  */
 typedef enum  {
     xmlSecTransformStatusNone = 0,
+    xmlSecTransformStatusMoreData,
+    xmlSecTransformStatusLastData,
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
 } xmlSecTransformStatus;
 
-
-/********************************************************************
+/**************************************************************************
  *
- * AES transforms
+ * xmlSecTransformBinData
  *
- *******************************************************************/
-#ifndef XMLSEC_NO_AES
+ *************************************************************************/
 /**
- * xmlSecEncAes128Cbc:
- * 
- * The AES-CBC with 128 bits key encryption transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncAes128Cbc;
-/**
- * xmlSecEncAes192Cbc:
- * 
- * The AES-CBC with 192 bits key encryption transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncAes192Cbc;
-/**
- * xmlSecEncAes256Cbc:
- * 
- * The AES-CBC with 256 bits key encryption transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncAes256Cbc;
-/**
- * xmlSecKWAes128:
- * 
- * The AES with 128 bits key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes128;
-/**
- * xmlSecKWAes192:
- * 
- * The AES with 192 bits key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes192;
-/**
- * xmlSecKWAes256:
- * 
- * The AES with 256 bits key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWAes256;
-/**
- * xmlSecAesKey:
- * 
- * The AES key id.
- */
-XMLSEC_EXPORT_VAR xmlSecKeyValueId 	 	xmlSecAesKeyValue;
-
-#endif /* XMLSEC_NO_AES */
-
-/******************************************************************** 
+ * xmlSecTransformBinData:
  *
- * Base64 Transform
- *
- *******************************************************************/
-/**
- * XMLSEC_BASE64_LINESIZE:
- *
- * The default max line size for base64 encoding
- */ 
-#define XMLSEC_BASE64_LINESIZE			64
-/**
- * xmlSecEncBase64Encode:
- * 
- * The base64 encode transform id.
+ * The binary.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncBase64Encode;
-/**
- * xmlSecEncBase64Decode:
- * 
- * The base64 decode transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncBase64Decode;
-
-XMLSEC_EXPORT     void xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform,
-						 size_t lineSize);
+struct _xmlSecTransformBinData {
+    unsigned char*		buf;
+    size_t			useSize;
+    size_t			maxSize;
+    xmlSecTransformStatus	status;
+};
 
 
-/********************************************************************
+/**************************************************************************
  *
- * C14N transforms 
+ * xmlSecTransformCtx
  *
- *******************************************************************/
+ *************************************************************************/
 /**
- * xmlSecC14NInclusive:
- * 
- * The regular (inclusive) C14N without comments transform id.
+ * xmlSecTransformCtx:
+ *
+ * The transform context.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NInclusive;
-/**
- * xmlSecC14NInclusiveWithComments:
- * 
- * The regular (inclusive) C14N with comments transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NInclusiveWithComments;
-/**
- * xmlSecC14NExclusive:
- * 
- * The exclusive C14N without comments transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NExclusive;
-/**
- * xmlSecC14NExclusiveWithComments:
- * 
- * The exclusive C14N with comments transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecC14NExclusiveWithComments;
+struct _xmlSecTransformCtx {
+    int 	something;
+};
 
-XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces		
-						(xmlNodePtr transformNode,
-						 const xmlChar *prefixList);
+/**************************************************************************
+ *
+ * xmlSecTransform
+ *
+ *************************************************************************/
+/**
+ * xmlSecTransform:
+ * @id: the transform id (pointer to #xmlSecTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
+ *
+ * The transform structure.
+ */
+struct _xmlSecTransform {
+    /* general data */
+    xmlSecTransformId 			id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
 
-/********************************************************************
- *
- * DES transform
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_DES
-/**
- * xmlSecEncDes3Cbc:
- * 
- * The DES3-CBC encryption transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncDes3Cbc;
-/**
- * xmlSecKWDes3Cbc:
- * 
- * The DES3-CBC key wrap transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecKWDes3Cbc;
-/**
- * xmlSecDesKey:
- * 
- * The DES key id.
- */
-XMLSEC_EXPORT_VAR xmlSecKeyValueId 			xmlSecDesKeyValue;
- 
-#endif /* XMLSEC_NO_DES */
+    /* binary specific */
+    int					encode;
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+    
+    /* xml specific */
+    xmlNodePtr				hereNode;
+    
+    void*				reserved0;
+    void*				reserved1;
+    void*				reserved2;
+    void*				reserved3;
+};
 
-/********************************************************************
- *
- * DSA transform
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_DSA
-/**
- * xmlSecSignDsaSha1:
- * 
- * The DSA with SHA1 signature transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecSignDsaSha1;
-/**
- * xmlSecDsaKey:
- * 
- * The DSA signature key id.
- */
-XMLSEC_EXPORT_VAR xmlSecKeyValueId 			xmlSecDsaKeyValue;
-#endif /* XMLSEC_NO_DSA */
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCreate	(xmlSecTransformId id,
+								 int dontDestroy);
+XMLSEC_EXPORT void			xmlSecTransformDestroy	(xmlSecTransformPtr transform,
+								 int forceDestroy);
+XMLSEC_EXPORT int 			xmlSecTransformRead	(xmlSecTransformPtr transform,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform, 
+								 xmlSecKeyPtr key);
+XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int			xmlSecTransformExecuteBin(xmlSecTransformPtr transform,
+								 xmlSecTransformBinDataPtr in,
+								 xmlSecTransformBinDataPtr out);
 
-/********************************************************************
- *
- * Enveloped transform 
- *
- *******************************************************************/
-/**
- * xmlSecTransformEnveloped:
- * 
- * The "enveloped" transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformEnveloped;
+XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
+								 unsigned char *buf,
+								 size_t size);		
+XMLSEC_EXPORT int			xmlSecTransformWriteBin	(xmlSecTransformPtr transform,
+								 const unsigned char *buf,
+								 size_t size);		
+XMLSEC_EXPORT int			xmlSecTransformFlushBin	(xmlSecTransformPtr transform);
+XMLSEC_EXPORT int 			xmlSecTransformExecuteXml(xmlSecTransformPtr transform,
+								  xmlDocPtr ctxDoc,
+								  xmlDocPtr *doc,
+								  xmlSecNodeSetPtr *nodes);
+XMLSEC_EXPORT int 			xmlSecTransformExecuteC14N(xmlSecTransformPtr transform,
+								 xmlDocPtr doc,
+								 xmlSecNodeSetPtr nodes,
+								 xmlOutputBufferPtr buffer);
 
+XMLSEC_EXPORT void			xmlSecTransformDestroyAll(xmlSecTransformPtr transform);	
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddAfter	(xmlSecTransformPtr curTransform,
+								 xmlSecTransformPtr newTransform);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformAddBefore(xmlSecTransformPtr curTransform,
+								 xmlSecTransformPtr newTransform);
+XMLSEC_EXPORT void			xmlSecTransformRemove	(xmlSecTransformPtr transform);
 
-/********************************************************************
+/**
+ * xmlSecTransformIsValid:
+ * @transform: the pointer to transform.
  *
- * HMAC transforms
+ * Macro. Returns 1 if the @transform is valid or 0 otherwise.
+ */
+#define xmlSecTransformIsValid(transform) \
+	((( transform ) != NULL) && ((( transform )->id) != NULL))
+/**
+ * xmlSecTransformCheckType:
+ * @transform: the pointer to transform.
+ * @t: the transform type.
  *
- *******************************************************************/
-#ifndef XMLSEC_NO_HMAC
-/**
- * xmlSecMacHmacSha1:
- * 
- * The HMAC with SHA1 signature transform id.
+ * Macro. Returns 1 if the @transform is valid and has specified type @t 
+ * or 0 otherwise.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacSha1;
+#define xmlSecTransformCheckType(transform, t) \
+ 	(xmlSecTransformIsValid(( transform )) && \
+	((( transform )->id->type) == ( t )))
 /**
- * xmlSecMacHmacRipeMd160:
- * 
- * The HMAC with RipeMD160 signature transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacRipeMd160;
-/**
- * xmlSecMacHmacMd5:
- * 
- * The HMAC with MD5 signature transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacMd5;
-/**
- * xmlSecHmacKey:
- * 
- * The HMAC key id.
- */
-XMLSEC_EXPORT_VAR xmlSecKeyValueId 			xmlSecHmacKeyValue;
-
-#endif /* XMLSEC_NO_HMAC */
-
-/********************************************************************
+ * xmlSecTransformCheckId:
+ * @transform: the pointer to transform.
+ * @i: the transform id.
  *
- * RipeMD160 transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_RIPEMD160
-/**
- * xmlSecDigestRipemd160:
- * 
- * The RIPEMD160 digest transform id.
+ * Macro. Returns 1 if the @transform is valid and has specified id @i 
+ * or 0 otherwise.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecDigestRipemd160;
-#endif /* XMLSEC_NO_RIPEMD160 */
-
-/********************************************************************
- *
- * RSA transforms
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_RSA
-/**
- * xmlSecSignRsaSha1:
- * 
- * The RSA with SHA1 signature transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecSignRsaSha1;
-/**
- * xmlSecEncRsaPkcs1:
- * 
- * The RSA-PKCS1 key transport transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncRsaPkcs1;
-/**
- * xmlSecEncRsaOaep:
- * 
- * The RSA-OAEP key transport transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecEncRsaOaep;
-/**
- * xmlSecRsaKey:
- * 
- * The RSA key id.
- */
-XMLSEC_EXPORT_VAR xmlSecKeyValueId		xmlSecRsaKeyValue;
-
-#endif /* XMLSEC_NO_RSA */
+#define xmlSecTransformCheckId(transform, i) \
+ 	(xmlSecTransformIsValid(( transform )) && \
+	((((const xmlSecTransformId) (( transform )->id))) == ( i )))
 
 
-/********************************************************************
+/**************************************************************************
  *
- * SHA1 transform
+ * xmlSecTransformType
  *
- *******************************************************************/
-#ifndef XMLSEC_NO_SHA1
+ *************************************************************************/
 /**
- * xmlSecDigestSha1:
- * 
- * The SHA1 digest transform id.
+ * xmlSecTransformType:
+ * @xmlSecTransformTypeBinary: input - binary; output - binary.
+ * @xmlSecTransformTypeXml: input - XML; output - XML.
+ * @xmlSecTransformTypeC14N: input - XML; output - binary.
+ *
+ * The transform input/output types.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecDigestSha1;
-#endif /* XMLSEC_NO_SHA1 */
+typedef enum  {
+    xmlSecTransformTypeBinary,
+    xmlSecTransformTypeXml,
+    xmlSecTransformTypeC14N
+} xmlSecTransformType;
 
-/********************************************************************
+/**************************************************************************
  *
- * XPath amd XPointer transforms
+ * xmlSecTransformUsage
  *
- *******************************************************************/
-/** 
- * xmlSecXPath2TransformType:
- * @xmlSecXPathTransformIntersect: intersect.
- * @xmlSecXPathTransformSubtract: subtract.
- * @xmlSecXPathTransformUnion:  union.
+ *************************************************************************/
+typedef unsigned int					xmlSecTransformUsage;
+#define xmlSecTransformUsageUnknown			0x0000
+/**
+ * xmlSecTransformUsageDSigTransform:
  *
- * The XPath2 transform types.
+ * Transform could be used in <dsig:Transform>.
  */
-typedef enum {
-    xmlSecXPathTransformIntersect = 0,
-    xmlSecXPathTransformSubtract,
-    xmlSecXPathTransformUnion
-} xmlSecXPath2TransformType;
- 
+#define xmlSecTransformUsageDSigTransform		0x0001
 /**
- * xmlSecTransformXPath:
- * 
- * The XPath transform id.
+ * xmlSecTransformUsageC14NMethod:
+ *
+ * Transform could be used in <dsig:CanonicalizationMethod>.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPath;
+#define xmlSecTransformUsageC14NMethod			0x0002
 /**
- * xmlSecTransformXPath2:
- * 
- * The XPath2 transform id.
+ * xmlSecTransformUsageDigestMethod:
+ *
+ * Transform could be used in <dsig:DigestMethod>.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPath2;
+#define xmlSecTransformUsageDigestMethod		0x0004
 /**
- * xmlSecTransformXPointer:
- * 
- * The XPointer transform id.
+ * xmlSecTransformUsageSignatureMethod:
+ *
+ * Transform could be used in <dsig:SignatureMethod>.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXPointer;
+#define xmlSecTransformUsageSignatureMethod		0x0008
+/**
+ * xmlSecTransformUsageEncryptionMethod:
+ *
+ * Transform could be used in <enc:EncryptionMethod>.
+ */
+#define xmlSecTransformUsageEncryptionMethod		0x0010
+/**
+ * xmlSecTransformUsageAny:
+ *
+ * Transform could be used for operation.
+ */
+#define xmlSecTransformUsageAny				0xFFFF
 
 
-/********************************************************************
+/************************************************************************
  *
- * XSLT transform 
+ * Transform Klass
  *
- *******************************************************************/
-#ifndef XMLSEC_NO_XSLT
+ ************************************************************************/ 
 /**
- * xmlSecTransformXslt:
- * 
- * The XSLT transform id.
+ * xmlSecTransformIdUnknown:
+ *
+ * The "unknown" transform id (NULL).
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXslt;
-#endif /* XMLSEC_NO_XSLT */
+#define xmlSecTransformIdUnknown			NULL
+
+/**
+ * xmlSecTransformCreateMethod:
+ * @id: the transform id to create.
+ *
+ * The transform specific creation method.
+ *
+ * Returns pointer to the newly created transform or NULL if an 
+ * error occurs.
+ */
+typedef xmlSecTransformPtr (*xmlSecTransformCreateMethod) 	(xmlSecTransformId id);
+
+/**
+ * xmlSecTransformDestroyMethod:
+ * @transform: the pointer to the #xmlSecTransform structure.
+ *
+ * The transform specific destroy method.
+ */
+typedef void 		(*xmlSecTransformDestroyMethod)		(xmlSecTransformPtr transform);
+
+/**
+ * xmlSecTransformNodeReadMethod:
+ * @transform: the pointer to the #xmlSecTransform structure.
+ * @node: the pointer to the <dsig:Transform> node.
+ *
+ * The transfomr specific method to read the transform data from 
+ * the @transformNode.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+typedef int 		(*xmlSecTransformNodeReadMethod)	(xmlSecTransformPtr transform,
+								 xmlNodePtr node);
+
+/**
+ * xmlSecTransformSetKeyRequirements:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @keyInfoCtx: the pointer to key info context.
+ * 
+ */
+typedef int  		(*xmlSecTransformSetKeyRequirements)	(xmlSecTransformPtr transform, 
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+/**
+ * xmlSecTransformSetKeyMethod:
+ * @transform: the pointer to binary transform.
+ * @key: the pointer to key.
+ *
+ * The transform specific method to set key for use.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */
+typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform, 
+								 xmlSecKeyPtr key);
+
+typedef int 		(*xmlSecTransformExecuteBinMethod)	(xmlSecTransformPtr transform, 
+								 xmlSecTransformBinDataPtr in,
+								 xmlSecTransformBinDataPtr out);
+			
+
 
 
 /**
- * Functions to change transforms properties
+ * xmlSecTransformReadMethod:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
+ * 
+ * The transform specific method to read next chunk of binary data into @buf.
+ *
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
  */
-XMLSEC_EXPORT int	xmlSecTransformHmacAddOutputLength
-						(xmlNodePtr transformNode,
-						 size_t bitsLen);
-XMLSEC_EXPORT int  	xmlSecTransformRsaOaepAddParam
-						(xmlNodePtr transformNode,
-						 const unsigned char *buf,
-						 size_t size);
-XMLSEC_EXPORT int 	xmlSecTransformXPathAdd	(xmlNodePtr transformNode, 
-						 const xmlChar *expression,
-						 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPath2Add(xmlNodePtr transformNode, 
-						 xmlSecXPath2TransformType type,
-						 const xmlChar *expression,
-						 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode, 
-						 const xmlChar *expression,
-						 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXsltAdd	(xmlNodePtr transformNode, 
-						 const xmlChar *xslt);
+typedef int  		(*xmlSecTransformReadMethod)		(xmlSecTransformPtr transform, 
+								 unsigned char *buf, 
+								 size_t size);
+/**
+ * xmlSecTransformWriteMethod:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the input data buffer.
+ * @size: the input data size.
+ *
+ * The transform specific method to write next chunk of binary data from @buf.
+ * 
+ * Returns 0 if success or a negative value otherwise.
+ */
+typedef int  		(*xmlSecTransformWriteMethod)		(xmlSecTransformPtr transform, 
+                                        			 const unsigned char *buf, 
+								 size_t size);
+/**
+ * xmlSecTransformFlushMethod:
+ * @transform: the pointer to #xmlSecTransform structure.
+ *
+ * The transform specific method to finalize writing. 
+ *
+ * Returns 0 if success or negative value otherwise.
+ */
+typedef int  		(*xmlSecTransformFlushMethod)		(xmlSecTransformPtr transform);
 
+/**
+ * xmlSecTransformExecuteMethod:
+ * @transform: the pointer to XML transform.
+ * @ctxDoc: the pointer to the document containing the transform's 
+ *		<dsig:Transform> node.
+ * @doc: the pointer to the pointer to current document.
+ * @nodes: the pointer to the pointer to current and result nodes set.
+ *
+ * Transform specific execute method. Returns result nodes set in @nodes.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+typedef int 		(*xmlSecTransformExecuteXmlMethod)	(xmlSecTransformPtr transform,
+								 xmlDocPtr ctxDoc,
+								 xmlDocPtr *doc,
+								 xmlSecNodeSetPtr *nodes);
+
+/**
+ * xmlSecTransformExecuteMethod:
+ * @transform: the pointer to C14N transform.
+ * @doc: the pointer to current document.
+ * @nodes: the pointer to current nodes set.
+ * @buffer: the result buffer.
+ *
+ * Transform specific execute method. returns result in the @buffer.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+typedef int 		(*xmlSecTransformExecuteC14NMethod)	(xmlSecTransformPtr transform,
+								 xmlDocPtr doc,
+								 xmlSecNodeSetPtr nodes,
+								 xmlOutputBufferPtr buffer);
+
+/**
+ * xmlSecTransformKlass:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
+ * 
+ * The transform id structure.
+ */
+struct _xmlSecTransformKlass {
+    /* general data */
+    const xmlChar*			name;
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
+
+    /* general methods */
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformNodeReadMethod	readNode;    
+    xmlSecTransformSetKeyRequirements	setKeyReq;
+    xmlSecTransformSetKeyMethod		setKey;
+    
+    /* binary methods */
+    xmlSecTransformExecuteBinMethod	executeBin;
+
+    xmlSecTransformReadMethod		readBin; 
+    xmlSecTransformWriteMethod		writeBin;
+    xmlSecTransformFlushMethod		flushBin;
+
+    /* xml methods */
+    xmlSecTransformExecuteXmlMethod	executeXml;
+
+    /* c14n methods */
+    xmlSecTransformExecuteC14NMethod	executeC14N;
+};
+
+
+
+
+#include "transforms-old.h"
 
 #ifdef __cplusplus
 }

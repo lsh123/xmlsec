@@ -17,11 +17,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#ifdef XMLSEC_CRYPTO_OPENSSL
-#include <openssl/err.h>
-#include <openssl/x509.h>
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
 #include <libxslt/extensions.h> 
@@ -31,7 +26,6 @@
 #endif /* XMLSEC_NO_XSLT */
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -40,11 +34,8 @@
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
-#include <xmlsec/crypto.h>
 
-#include <xmlsec/openssl/evp.h>
-#include <xmlsec/openssl/x509.h>
-
+#include "crypto.h"
 
 static const char copyright[] =
     "Written by Aleksey Sanin <aleksey@aleksey.com>.\n"
@@ -84,24 +75,19 @@ static const char helpKeys[] =
     "Keys XML file manipulation. The result keys set is written to the file.\n"
     "\n"
     "Keys generation options:\n"
-    "  --gen-hmac <name>     generate new 24 bytes HMAC key and set the key name\n"
-    "  --gen-rsa <name>      generate new RSA key and set the key name\n"
-    "  --gen-dsa <name>      generate new DSA key and set the key name\n"
-    "  --gen-des3 <name>     generate new DES key and set the key name\n"
-    "  --gen-aes128 <name>   generate new AES 128 key and set the key name\n"
-    "  --gen-aes192 <name>   generate new AES 192 key and set the key name\n"
-    "  --gen-aes256 <name>   generate new AES 256 key and set the key name\n"
+    "  --gen-<keyKlass>-<keySize> <name>\n"
+    "                        generate new <keyKlass> key of <keySize> bits size,\n"
+    "                        set the key name to <name> and add the result to keys manager\n"
+    "                        (for example, \"--gen-rsa-1024 mykey\" generates a new 1024 bits\n"
+    "                         RSA key and sets it's name to \"mykey\")\n"
     "\n";
 
 static const char helpKeySelect[] = 
     "Key selection options:\n"
-    "  --session-key-hmac    generate and use session 24 bytes HMAC key\n"
-    "  --session-key-rsa     generate and use session RSA key\n"
-    "  --session-key-dsa     generate and use session DSA key\n"
-    "  --session-key-des3    generate and use session DES key\n"
-    "  --session-key-aes128  generate and use session AES 128 key\n"
-    "  --session-key-aes192  generate and use session AES 192 key\n"
-    "  --session-key-aes256  generate and use session AES 256 key\n"
+    "  --sesssion-<keyKlass>-<keySize>\n"
+    "                        generate new session <keyKlass> key of <keySize> bits size\n"
+    "                        (for example, \"--session-des-192\" generates a new 192 bits\n"
+    "                         DES key for DES3 encryption)\n"
     "\n";
 
 
@@ -171,6 +157,9 @@ static const char helpNodeSelection[] =
     "  --node-name [<namespace-uri>:]<name>\n"
     "                        set the operation start point to the first node \n"
     "                        with given <name> and <namespace> URI\n"
+    "  --node-xpath <expr>   set the operation start point to the first node \n"
+    "                        selected by the specified XPath expression\n"
+    "  --dtdfile <file>      Load the specified file as the DTD\n"
     "\n";
     
 static const char helpKeysMngmt[] = 
@@ -205,10 +194,10 @@ static const char helpX509[] =
     "X509 certificates options:\n"
     "  --trusted <file>      load trusted (root) certificate from PEM file\n"
     "  --untrusted <file>    load un-trusted certificate from PEM file\n"
-    "  --crl <file>          load crl from PEM file\n"
     "  --pwd <password>      the password to use for reading keys and certs\n"
     "  --verification-time <time> the local time in \"YYYY-MM-DD HH:MM:SS\"\n"
     "                       format used certificates verification\n"
+    "  --depth <number>      maximum chain depth\n"
 #else /* XMLSEC_NO_X509 */
     "x509 certificates support was disabled during compilation\n"
 #endif /* XMLSEC_NO_X509 */        
@@ -218,9 +207,7 @@ static const char helpMisc[] =
     "Misc. options:\n"
     "  --repeat <number>     repeat the operation <number> times\n"
     "  --disable-error-msgs  do not print xmlsec error messages\n"
-#ifdef XMLSEC_CRYPTO_OPENSSL
     "  --print-openssl-errors print openssl errors stack at the end\n"
-#endif /* XMLSEC_CRYPTO_OPENSSL */
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -241,12 +228,38 @@ typedef struct _xmlSecDSigStatus {
     size_t			manifestRefFail;
 } xmlSecDSigStatus, *xmlSecDSigStatusPtr;
 
+typedef struct _xmlSecAppCtx		xmlSecAppCtx, *xmlSecAppCtxPtr;
+struct _xmlSecAppCtx {
+    xmlSecKeysMngrPtr 	keysMngr; 
+    xmlSecKeyPtr 	sessionKey;
+    
+#ifndef XMLSEC_NO_XMLDSIG
+    xmlSecDSigCtxPtr 	dsigCtx;
+#endif /* XMLSEC_NO_XMLDSIG */
+#ifndef XMLSEC_NO_XMLENC
+    xmlSecEncCtxPtr 	encCtx;
+#endif /* XMLSEC_NO_XMLENC */
+    
+};
+
+static xmlSecAppCtx	gXmlSecAppCtx;
+
 /**
  * Init/Shutdown
  */
-int  initXmlsec(xmlsecCommand command);
-void shutdownXmlsec(void);
+static int		xmlSecAppInit			(xmlSecAppCtxPtr ctx);
+static int		xmlSecAppShutdown		(xmlSecAppCtxPtr ctx);
 
+/** 
+ * Parsing command line
+ */
+static int		xmlSecAppOptionsParse		(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+
+int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc);
+xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlChar* defNodeNs);
 
 /**
  * Read command line options
@@ -254,16 +267,7 @@ void shutdownXmlsec(void);
 int  readKeyOrigins(char *keyOrigins);
 int  readNumber(const char *str, int *number);
 int  readTime(const char* str, time_t* t);
-int  readKeys(char *file);
-int  readPemKey(int privateKey, char *param, char *name);
-int  readHmacKey(char *filename, char *name);
-int  readPKCS12Key(char *filename, char *name);
 
-/**
- * Keys generation/manipulation
- */
-xmlSecKeyPtr genKey(const char* type, const char *name);
- 
 /**
  * Print help
  */
@@ -275,8 +279,6 @@ void printVersion(void);
  * XML Signature
  */
 #ifndef XMLSEC_NO_XMLDSIG
-xmlSecDSigCtxPtr dsigCtx = NULL;
-
 void getDSigResult(xmlSecDSigResultPtr result, xmlSecDSigStatusPtr status);
 int  generateDSig(xmlDocPtr doc);
 int  validateDSig(xmlDocPtr doc);
@@ -286,9 +288,8 @@ int  validateDSig(xmlDocPtr doc);
  * XML Encryption
  */
 #ifndef XMLSEC_NO_XMLENC
-char *data = NULL;
+char *dataFile = NULL;
 int binary = 0;
-xmlSecEncCtxPtr encCtx = NULL;
 
 int encrypt(xmlDocPtr tmpl);
 int decrypt(xmlDocPtr doc);
@@ -297,21 +298,20 @@ int decrypt(xmlDocPtr doc);
 /**
  * Global data
  */
-xmlSecKeysMngrPtr keysMngr = NULL; 
-xmlSecKeysMngrCtxPtr keysMngrCtx = NULL; 
-xmlSecKeyPtr sessionKey = NULL;
 
 char *output = NULL; 
 char *nodeId = NULL;
 char *nodeName = NULL;
 char *nodeNs = NULL;
+char* nodeXPath = NULL;
 int repeats = 1;
 int printResult = 0;
 int printXml = 0;
 FILE* printFile = NULL;
 clock_t total_time = 0;
 char *global_pwd = NULL;
-int print_errors_stack = 0;
+int print_openssl_errors = 0;
+xmlDtdPtr idsDtd = NULL;
 
 int main(int argc, char **argv) {
     int res = 1;
@@ -321,7 +321,7 @@ int main(int argc, char **argv) {
     int pos;
     int ret;
     int templateRequired = 0;
-        
+            
     /**
      * Read the command
      */
@@ -359,247 +359,21 @@ int main(int argc, char **argv) {
 	printUsage(NULL);
 	return(0);
     }
-    
-    ret = initXmlsec(command);
-    if(ret < 0) {
-	fprintf(stdout, "Error: init failed\n");
+
+    if(xmlSecAppInit(&gXmlSecAppCtx) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAppInit");
 	goto done;
     }
 
     xmlSecTimerInit();
         
-    ret = 0;
-    pos = 2;
-    while((pos < argc) && (argv[pos][0] == '-')) {
-	/** 
-	 * Node selection options 
-	 */
-	if((strcmp(argv[pos], "--node-id") == 0) && (pos + 1 < argc)) {    
-	    if((nodeName != NULL) || (nodeId != NULL)){
-		fprintf(stderr, "Error: another node selection option present\n");
-		ret = -1;
-	    } else {
-		nodeId = argv[++pos];
-	    }
-	} else if((strcmp(argv[pos], "--node-name") == 0) && (pos + 1 < argc)) {    
-	    if((nodeName != NULL) || (nodeId != NULL)){
-		fprintf(stderr, "Error: another node selection option present\n");
-		ret = -1;
-	    } else {
-		nodeName = strrchr(argv[++pos], ':');
-		if(nodeName != NULL) {
-		    *(nodeName++) = '\0';
-		    nodeNs = argv[pos];
-		} else {
-		    nodeName = argv[pos];
-		    nodeNs = NULL;
-		}
-	    }
-	} else 
-
-	/**
-	 * Keys Mgmt options
-	 */ 
-	if((strcmp(argv[pos], "--keys") == 0) && (pos + 1 < argc)) {
-	    ret = readKeys(argv[++pos]);
-	} else if((strncmp(argv[pos], "--privkey", 9) == 0) && (pos + 1 < argc)) {
-	    char *name;
-	    
-	    name = strchr(argv[pos], ':');
-	    if(name != NULL) ++name;
-	    ret = readPemKey(1, argv[++pos], name); 
-	} else if((strncmp(argv[pos], "--pubkey", 8) == 0) && (pos + 1 < argc)) {
-	    char *name;
-	    
-	    name = strchr(argv[pos], ':');
-	    if(name != NULL) ++name;
-	    ret = readPemKey(0, argv[++pos], name); 
-	} else if((strncmp(argv[pos], "--pkcs12", 8) == 0) && (pos + 1 < argc)) {
-	    char *name;
-	    
-	    name = strchr(argv[pos], ':');
-	    if(name != NULL) ++name;	    
-	    ret = readPKCS12Key(argv[++pos], name); 
-	} else if((strncmp(argv[pos], "--hmackey", 9) == 0) && (pos + 1 < argc)) {
-	    char *name;
-	    
-	    name = strchr(argv[pos], ':');
-	    if(name != NULL) ++name;
-	    ret = readHmacKey(argv[++pos], name); 
-	} else if((strcmp(argv[pos], "--allowed") == 0) && (pos + 1 < argc)) {
-	    ret = readKeyOrigins(argv[++pos]);
-	} else 
-
-
-	/**
-	 * Key selection options
-	 */	
-	if((strncmp(argv[pos], "--session-key-", 14) == 0)) {
-	    if(sessionKey != NULL) {
-		fprintf(stderr, "Error: session key already selected\n");
-		ret = -1;
-	    } else {    
-		sessionKey = genKey(argv[pos] + 14, NULL);
-		if(sessionKey == NULL) {
-		    ret = -1;
-		}
-	    }
-	} else
-
-#ifndef XMLSEC_NO_X509
-	/**
-	 * X509 certificates options
-	 */
-	if((strcmp(argv[pos], "--trusted") == 0) && (pos + 1 < argc)) {
-	    ret = xmlSecX509StoreLoadPemFile(keysMngr->x509Store, argv[++pos], xmlSecX509ObjectTypeTrustedCert);
-	} else if((strcmp(argv[pos], "--untrusted") == 0) && (pos + 1 < argc)) {	
-	    ret = xmlSecX509StoreLoadPemFile(keysMngr->x509Store, argv[++pos], xmlSecX509ObjectTypeCert);
-	} else if((strcmp(argv[pos], "--crl") == 0) && (pos + 1 < argc)) {	
-	    ret = xmlSecX509StoreLoadPemFile(keysMngr->x509Store, argv[++pos], xmlSecX509ObjectTypeCrl);
-	} else if((strcmp(argv[pos], "--verification-time") == 0) && (pos + 1 < argc)) {
-	    time_t t = 0;
-	     
-	    if(readTime(argv[++pos], &t) >= 0) {
-		if(keysMngrCtx != NULL) {	    
-		    keysMngrCtx->certsVerificationTime = t;
-		}
-    		ret = 0;
-	    } else {
-    		ret = -1;
-	    }
-	} else 
-#endif /* XMLSEC_NO_X509 */
-
-	/**
-	 * Misc. options
-	 */	
-	if((strcmp(argv[pos], "--repeat") == 0) && (pos + 1 < argc)) {
-	    ret = readNumber(argv[++pos], &repeats);
-	} else if((strcmp(argv[pos], "--pwd") == 0) && (pos + 1 < argc)) {
-	    global_pwd = argv[++pos];
-	    ret = 0;
-	} else if((strcmp(argv[pos], "--output") == 0) && (pos + 1 < argc)) {
-	    output = argv[++pos];
-	    ret = 0;
-	} else if((strcmp(argv[pos], "--disable-error-msgs") == 0)) {
-	    xmlSecPrintErrorMessages = 0;
-	    ret = 0;
-#ifdef XMLSEC_CRYPTO_OPENSSL
-	} else if((strcmp(argv[pos], "--print-openssl-errors") == 0)) {
-	    print_errors_stack = 1;
-	    ret = 0;
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-	} else 
-
-	/**
-	 * Keys options
-	 */	
-	if((strncmp(argv[pos], "--gen-", 6) == 0) && (pos + 1 < argc)) {
-	    xmlSecKeyPtr key;
-	    char* type = argv[pos] + 6;
-	    key = genKey(type, argv[++pos]);
-	    if(key != NULL) {
-		ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
-	    } else {
-		/* we ignore this error because it might be cause 
-		by a missed algorithm */
-		ret = 0;
-	    }
-	} else 
-	
-	
-#ifndef XMLSEC_NO_XMLDSIG	
-	/**
-	 * Signature options
-	 */
-	if((strcmp(argv[pos], "--ignore-manifests") == 0) && (dsigCtx != NULL)) {
-	    dsigCtx->processManifests = 0; 
-	} else if((strcmp(argv[pos], "--fake-signatures") == 0) && (dsigCtx != NULL)) {
-	    dsigCtx->fakeSignatures = 1; 
-	} else 
-	
-	
-	/**
-	 * Verification  options
-	 */
-	if((strcmp(argv[pos], "--print-result") == 0) && (dsigCtx != NULL))  {
-	    printResult = 1;
-	} else if((strcmp(argv[pos], "--print-references") == 0) && (dsigCtx != NULL)) {
-	    dsigCtx->storeReferences = 1; 
-	    printResult = 1;	    
-	} else if((strcmp(argv[pos], "--print-manifests") == 0) && (dsigCtx != NULL)) {
-	    dsigCtx->storeManifests = 1; 
-	    printResult = 1;
-	} else if((strcmp(argv[pos], "--print-signature") == 0) && (dsigCtx != NULL)) {
-	    dsigCtx->storeSignatures = 1; 
-	    printResult = 1;
-	} else if((strcmp(argv[pos], "--print-all") == 0) && (dsigCtx != NULL)) {	    
-	    dsigCtx->storeReferences = 1; 
-	    dsigCtx->storeManifests = 1; 
-	    dsigCtx->storeSignatures = 1; 	    
-	    printResult = 1;
-	} else if((strcmp(argv[pos], "--print-xml") == 0) && (dsigCtx != NULL))  {
-	    printXml = 1;
-	    printResult = 1;
-	} else if((strcmp(argv[pos], "--print-to-file") == 0) && (dsigCtx != NULL) && 
-		  (pos + 1 < argc) && (printFile == NULL)) {
-	    printFile = fopen(argv[++pos], "w");
-	    if(printFile == NULL) {
-		fprintf(stderr, "Error: failed to open result file \"%s\"\n", argv[pos]);
-		ret = -1;
-	    }
-	} else 
-#endif /* XMLSEC_NO_XMLDSIG */
-
-#ifndef XMLSEC_NO_XMLENC
-	
-	/** 
-	 * Encryption options
-	 */
-	if((strcmp(argv[pos], "--binary") == 0) && (pos + 1 < argc)) {
-	    if(data != NULL){
-		fprintf(stderr, "Error: data file was already specified\n");
-		ret = -1;
-	    } else {
-		data = argv[++pos];
-		binary = 1;
-	    }
-	} else if((strcmp(argv[pos], "--xml") == 0) && (pos + 1 < argc)) {
-	    if(data != NULL){
-		fprintf(stderr, "Error: data file was already specified\n");
-		ret = -1;
-	    } else {
-		data = argv[++pos];
-		binary = 0;
-	    }
-	} else 
-	
-	/**
-	 * Decryption options
-	 */
-	if((strcmp(argv[pos], "") == 0) && (pos + 1 < argc)) {
-	} else 
-	
-#endif /* XMLSEC_NO_XMLENC */
-
-	/**
-	 * Unknown option error
-	 */
-	{
-	    fprintf(stderr, "Error: option \"%s\" is unknown\n", argv[pos]);
-	    ret = -1;
-	}
-	
-	/** 
-	 * Check for error
-	 */
-	if(ret < 0) {
-	    printUsage(argv[1]);
-	    goto done;	    
-	}
-	++pos;
+    pos = xmlSecAppOptionsParse(&gXmlSecAppCtx, argc, argv, 2);
+    if(pos < 0) {
+	printUsage(NULL);
+	goto done;	    
     }
-    
     
     /**
      * Now process files one after another
@@ -610,17 +384,19 @@ int main(int argc, char **argv) {
 	for(i = 0; (i < repeats); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
-		ret = xmlSecSimpleKeysStoreSave(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), argv[pos]);
+		ret = xmlSecAppCryptoSimpleKeysMngrSave(gXmlSecAppCtx.keysMngr,  argv[pos], xmlSecKeyDataTypeAny);
 	    } else {
 		doc = xmlSecParseFile(argv[pos]);
 	        if(doc == NULL) {
 		    fprintf(stderr, "Error: failed to read XML file \"%s\"\n", argv[pos]);
-		    printUsage(argv[1]);
+		    printUsage(NULL);
 	    	    goto done;
 		}
-	
-    		switch(command) {
-	    
+                if (idsDtd) {
+                    findIDNodes(idsDtd, doc);
+		}
+			
+    		switch(command) {	    
 #ifndef XMLSEC_NO_XMLDSIG	    
     		case xmlsecCommandSign:
 		    ret = generateDSig(doc);
@@ -641,7 +417,7 @@ int main(int argc, char **argv) {
 
 		default:
 		    fprintf(stderr, "Error: unknown command\n");
-	    	    printUsage(argv[1]);
+	    	    printUsage(NULL);
 		    goto done;	    
 		}
 	    }
@@ -669,17 +445,29 @@ int main(int argc, char **argv) {
     res = 0;
     
 done:    
-#ifdef XMLSEC_CRYPTO_OPENSSL
-    if(print_errors_stack) {
+    if(print_openssl_errors) {
 	ERR_print_errors_fp(stderr);
     }
-#endif /* XMLSEC_CRYPTO_OPENSSL */
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
     }
-    shutdownXmlsec();
+    if(idsDtd != NULL) {
+	xmlFreeDtd(idsDtd);
+    }
+
+    if(xmlSecAppShutdown(&gXmlSecAppCtx) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAppShutdown");
+	/* could do nothing with that */
+    }
     return(res);
 }
+
+
+
+
+
 
 void printUsage(const char *command) {
     if(command == NULL) {
@@ -746,135 +534,6 @@ void printVersion(void) {
 }
 
 
-/**
- * Init/Shutdown
- */
-int initXmlsec(xmlsecCommand command) {
-    /* 
-     * Init crypto engine
-     */
-    if(xmlSecCryptoAppInit() < 0) { 
-	fprintf(stderr, "Failed to initialize crypto engine\n"); 
-	return(-1);
-    }
-    
-    /*
-     * Init libxml
-     */     
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-
-    xmlTreeIndentString = "\t";
-#ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1; 
-#endif /* XMLSEC_NO_XSLT */
-    
-    /*
-     * Init xmlsec
-     */
-    if(xmlSecInit() < 0) {
-    	fprintf(stderr, "Error: failed to initialize xmlsec\n");
-	return(-1);
-    }
-
-    /** 
-     * Create Keys and x509 managers
-     */
-    keysMngr = xmlSecCryptoAppKeysMngrCreate();    
-    if(keysMngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager\n");
-	return(-1);
-    }
-    keysMngrCtx = xmlSecKeysMngrCtxCreate(keysMngr);    
-    if(keysMngrCtx == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager context\n");
-	return(-1);
-    }
-
-    switch(command) {
-    
-#ifndef XMLSEC_NO_XMLDSIG    
-    case xmlsecCommandSign:
-    case xmlsecCommandVerify:
-	/**
-	 * Init DSig context
-         */    
-        dsigCtx = xmlSecDSigCtxCreate(keysMngrCtx);
-	if(dsigCtx == NULL) {
-    	    fprintf(stderr,"Error: failed to create DSig context\n");
-	    return(-1);
-	}
-        /**
-	 * Set default values to process manifests and store nothing
-         * Overwrite this options thru command line if needed!
-	 */
-        dsigCtx->processManifests = 1;
-	dsigCtx->storeSignatures = 0;
-	dsigCtx->storeReferences = 0;
-        dsigCtx->storeManifests = 0;
-	break;
-#endif /* XMLSEC_NO_XMLDSIG */
-	
-#ifndef XMLSEC_NO_XMLENC
-    case xmlsecCommandEncrypt:
-    case xmlsecCommandDecrypt:
-        encCtx = xmlSecEncCtxCreate(keysMngrCtx);
-	if(encCtx == NULL) {
-    	    fprintf(stderr,"Error: failed to create Enc context\n");
-	    return(-1);
-	}	
-	break;
-#endif /* XMLSEC_NO_XMLENC */
-    default:
-	break;
-    }	
-    return(0);    
-}
-
-void shutdownXmlsec(void) {
-
-    if(sessionKey != NULL) {
-	xmlSecKeyDestroy(sessionKey);
-    }
-
-    /* destroy xmlsec objects */
-#ifndef XMLSEC_NO_XMLENC
-    if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
-    }
-#endif /* XMLSEC_NO_XMLENC */
-    
-#ifndef XMLSEC_NO_XMLDSIG
-    if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
-    }
-#endif /* XMLSEC_NO_XMLDSIG */
-
-    if(keysMngrCtx != NULL) {
-	xmlSecObjDelete(xmlSecObjCast(keysMngrCtx));
-    }
-    if(keysMngr != NULL) {
-	xmlSecObjDelete(xmlSecObjCast(keysMngr));
-    }
-    
-    /**
-     * Shutdown xmlsec
-     */
-    xmlSecShutdown();
-    
-    /* 
-     * Shutdown libxslt/libxml
-     */
-    #ifndef XMLSEC_NO_XSLT
-    xsltCleanupGlobals();            
-#endif /* XMLSEC_NO_XSLT */
-    xmlCleanupParser();
-
-    /**
-     * Shutdown crypto engine
-     */    
-    xmlSecCryptoAppShutdown();
-}
 
 /**
  * Command line options
@@ -898,8 +557,8 @@ int  readTime(const char* str, time_t* t) {
     tm.tm_isdst = -1;
     
     n = sscanf(str, "%4d-%2d-%2d%*c%2d:%2d:%2d", 
-	    &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-	    &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+			    &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+			    &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
     if((n != 6) || (tm.tm_year < 1900) 
 		|| (tm.tm_mon  < 1) || (tm.tm_mon  > 12) 
 		|| (tm.tm_mday < 1) || (tm.tm_mday > 31)
@@ -916,16 +575,6 @@ int  readTime(const char* str, time_t* t) {
     return(0);    
 }
 
-int  readKeys(char *file) {
-    int ret;
-    
-    ret = xmlSecSimpleKeysStoreLoad(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), file, 0);
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to load keys from \"%s\".\n", file);
-	return(-1);
-    }
-    return(0);
-}
 
 int  readKeyOrigins(char *keyOrigins) {
     xmlSecKeyOrigin res = xmlSecKeyOriginDefault;
@@ -955,157 +604,46 @@ int  readKeyOrigins(char *keyOrigins) {
 	}
 	p = strtok(NULL, ",");
     }    
-    if(keysMngrCtx != NULL) {
-	keysMngrCtx->allowedOrigins = res;
-    }  
+    
+    gXmlSecAppCtx.keysMngr->allowedOrigins = res;
     return(0);
 }
 
-int readPemKey(int privateKey, char *param, char *name) {
-    char *p;
-    xmlSecKeyPtr key;
-    int ret;
+xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlChar* defNodeNs) {
+    xmlNodePtr cur = NULL;
     
-    p = strtok(param, ","); 
-    key = xmlSecOpenSSLEvpLoadPemKey(p, global_pwd, privateKey);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to load key from \"%s\"\n", p);
-	return(-1);
+    if(doc == NULL) {
+	fprintf(stderr, "Error: document is null\n");
+	return(NULL);
     }
-    if(name != NULL) {
-	key->name = xmlStrdup(BAD_CAST name);
-    }
+    
+    if(nodeId != NULL) {
+	xmlAttrPtr attr;
+	    
+	attr = xmlGetID(doc, BAD_CAST nodeId);
+	cur = (attr != NULL) ? attr->parent : NULL;
+    } else if(nodeName != NULL) {
+	cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST nodeName, BAD_CAST nodeNs);
+    } else if(nodeXPath != NULL) {
+	xmlXPathContextPtr ctx = NULL;
+	xmlXPathObjectPtr obj = NULL;
+	
+	ctx = xmlXPathNewContext(doc);
+	obj = xmlXPathEval(BAD_CAST nodeXPath, ctx);
 
-    p = strtok(NULL, ",");
-#ifndef XMLSEC_NO_X509     
-    while((p != NULL) && (privateKey)) {
-	ret = xmlSecOpenSSLX509DataAddPemCert(xmlSecOpenSSLX509DataCast(key->x509Data),
-						p, xmlSecX509ObjectTypeCert);
-	if(ret < 0){
-	    fprintf(stderr, "Error: failed to load cert from \"%s\"\n", p);
-	    xmlSecKeyDestroy(key);
-	    return(-1);
+	if ((obj != NULL) && (obj->nodesetval != NULL) && (obj->nodesetval->nodeNr > 0)) {
+	    cur = obj->nodesetval->nodeTab[0];
 	}
-	p = strtok(NULL, ","); 
+	
+	xmlXPathFreeContext(ctx);
+	xmlXPathFreeObject(obj);
+    } else if(defNodeName != NULL) {
+	cur = xmlSecFindNode(xmlDocGetRootElement(doc), defNodeName, defNodeNs);
+    } else {
+	cur = xmlDocGetRootElement(doc);
     }
-#else /* XMLSEC_NO_X509 */
-    if(p != NULL) {
-	fprintf(stderr, "Error: x509 support disabled.\n");
-	xmlSecKeyDestroy(key);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_X509 */        
-    
-    ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to add key.\n");
-	xmlSecKeyDestroy(key);
-	return(-1);
-    }
-
-    return(0);
+    return(cur);
 }
-
-int readPKCS12Key(char *filename, char *name) {
-#ifndef XMLSEC_NO_X509     
-    xmlSecKeyPtr key;
-    char pwd[1024] = "";
-    char prompt[1024];
-    int ret;
-    
-    if(global_pwd == NULL) {
-	snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
-#ifdef XMLSEC_CRYPTO_OPENSSL
-	ret = EVP_read_pw_string(pwd, sizeof(pwd), prompt, 0);
-	if(ret != 0) {
-	    fprintf(stderr, "Error: password propmpt failed for file \"%s\"\n", filename); 
-	    return(-1);
-	}	
-#else
-	/* todo: do something more intelligent and remove openssl dependenct */
-	scanf("%200s", pwd);
-#endif /* XMLSEC_CRYPTO_OPENSSL */
-    } 
-
-    key = xmlSecCryptoPKCS12ReadKey(filename, (global_pwd != NULL) ? global_pwd : pwd);
-    if(key == NULL) {
-	fprintf(stderr, "Error: failed to load pkcs12 file \"%s\"\n", filename); 
-	return(-1);
-    }
-    if(name != NULL) {
-    	key->name = xmlStrdup(BAD_CAST name);
-    }
-    
-    ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);
-	fprintf(stderr, "Error: failed to add hmac key\n"); 
-	return(-1);
-    }
-    
-    return(0);
-#else /* XMLSEC_NO_X509 */
-    fprintf(stderr, "Error: x509 support disabled.\n");
-    return(-1);
-#endif /* XMLSEC_NO_X509 */       
-}
-
-int readHmacKey(char *filename, char *name) {
-#ifndef XMLSEC_NO_HMAC
-    FILE *f;
-    unsigned char buf[1024];
-    xmlSecKeyPtr key;
-    xmlSecKeyValuePtr keyValue;
-    int ret;    
-    
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	fprintf(stderr, "Error: failed to open file \"%s\" \n", filename);
-	return(-1);
-    }
-    
-    ret = fread(buf, 1, sizeof(buf), f);
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to read file \"%s\" \n", filename);
-	fclose(f);
-	return(-1);
-    }
-    fclose(f);    
-    
-    /* HMAC */    
-    keyValue = xmlSecKeyValueCreate(xmlSecHmacKeyValue);
-    if(keyValue == NULL) {
-	fprintf(stderr, "Error: failed to create hmac key\n"); 
-	return(-1);
-    }    
-    ret = xmlSecKeyValueSet(keyValue, buf, ret);
-    if(ret < 0) {
-	fprintf(stderr, "Error: failed to set key value\n"); 
-	xmlSecKeyValueDestroy(keyValue);
-	return(-1);
-    }    
-
-    key = xmlSecKeyCreate(keyValue, BAD_CAST name);
-    if(key == NULL) {
-	xmlSecKeyValueDestroy(keyValue);
-	fprintf(stderr, "Error: failed to create key\n"); 
-	return(-1);
-    }    
-    xmlSecKeyValueDestroy(keyValue);
-
-    ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
-    if(ret < 0) {
-	xmlSecKeyDestroy(key);
-	fprintf(stderr, "Error: failed to add hmac key\n"); 
-	return(-1);
-    }
-    return(0);
-#else /* XMLSEC_NO_HMAC */
-    fprintf(stderr, "Error: hmac algorithm support disabled\n"); 
-    return(-1);    
-#endif /* XMLSEC_NO_HMAC */
-}
-
 
 /**
  * XML Digital Signature
@@ -1156,15 +694,14 @@ int generateDSig(xmlDocPtr doc) {
     int res = -1;
     clock_t start_time;
 
-    signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecNsDSig);
+    signNode = findStartNode(doc, BAD_CAST "Signature", xmlSecDSigNs);
     if(signNode == NULL) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
     }    
 
     start_time = clock();
-    ret = xmlSecDSigGenerate(dsigCtx, sessionKey, signNode, &result);
+    ret = xmlSecDSigGenerate(gXmlSecAppCtx.dsigCtx, NULL, gXmlSecAppCtx.sessionKey, signNode, &result);
     total_time += clock() - start_time;    
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
@@ -1215,15 +752,14 @@ int validateDSig(xmlDocPtr doc) {
     clock_t start_time;
     int ret;
     	    
-    signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecNsDSig);
+    signNode = findStartNode(doc, BAD_CAST "Signature", xmlSecDSigNs);
     if(signNode == NULL) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
     }    
 
     start_time = clock();        
-    ret = xmlSecDSigValidate(dsigCtx, sessionKey, signNode, &result);
+    ret = xmlSecDSigValidate(gXmlSecAppCtx.dsigCtx, NULL, gXmlSecAppCtx.sessionKey, signNode, &result);
     total_time += clock() - start_time;    
     if((ret < 0) || (result == NULL)){
 	fprintf(stdout,"ERROR\n");
@@ -1289,10 +825,10 @@ int encrypt(xmlDocPtr tmpl) {
     int ret;
     int res = -1;
 
-    if(binary && (data != NULL)) {
+    if(binary && (dataFile != NULL)) {
         start_time = clock();        
-	ret = xmlSecEncryptUri(encCtx, sessionKey,
-				xmlDocGetRootElement(tmpl), data, 
+	ret = xmlSecEncryptUri(gXmlSecAppCtx.encCtx, NULL, gXmlSecAppCtx.sessionKey,
+				xmlDocGetRootElement(tmpl), dataFile, 
 				&encResult);
         total_time += clock() - start_time;    
 	if(ret < 0) {
@@ -1300,42 +836,29 @@ int encrypt(xmlDocPtr tmpl) {
 	    goto done;    
 	} 
 
-    } else if(!binary && (data != NULL)) { 
+    } else if(!binary && (dataFile != NULL)) { 
 	xmlNodePtr cur;
 	
 	/** 
 	 * Load doc
 	 */
-	doc = xmlParseFile(data);
+	doc = xmlParseFile(dataFile);
 	if (doc == NULL) {
-	    fprintf(stderr, "Error: unable to parse file \"%s\"\n", data);
+	    fprintf(stderr, "Error: unable to parse file \"%s\"\n", dataFile);
 	    goto done;    
 	}
 
 	/**
 	 * What do we want to replace?
 	 */    
-	if(nodeId != NULL) {
-	    xmlAttrPtr attr;
-	    
-	    attr = xmlGetID(doc, BAD_CAST nodeId);
-	    cur = (attr != NULL) ? attr->parent : NULL;
-	} else if(nodeName != NULL) {
-	    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST nodeName, BAD_CAST nodeNs);
-	} else {
-	    cur = xmlDocGetRootElement(doc);
-	}
-	
-	/*
-	 * Did we found node?
-	 */    
+	cur = findStartNode(doc, NULL, NULL);
 	if(cur == NULL) {
-    	    fprintf(stderr,"Error: empty document for file \"%s\" or unable to find node\n", data);
+    	    fprintf(stderr,"Error: empty document for file \"%s\" or unable to find node\n", dataFile);
 	    goto done;    
 	}
 
         start_time = clock();        	
-	ret = xmlSecEncryptXmlNode(encCtx, sessionKey,
+	ret = xmlSecEncryptXmlNode(gXmlSecAppCtx.encCtx, NULL, gXmlSecAppCtx.sessionKey,
 				xmlDocGetRootElement(tmpl), 
 				cur, &encResult);	
         total_time += clock() - start_time;    
@@ -1399,14 +922,14 @@ int decrypt(xmlDocPtr doc) {
     int ret;
     int res = -1;
 
-    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST "EncryptedData", xmlSecNsEnc);
+    cur = findStartNode(doc, BAD_CAST "EncryptedData", xmlSecEncNs);
     if(cur == NULL) {
         fprintf(stderr,"Error: unable to find EncryptedData node\n");
 	goto done;    
     }
 
     start_time = clock();            
-    ret = xmlSecDecrypt(encCtx, sessionKey, cur, &encResult);
+    ret = xmlSecDecrypt(gXmlSecAppCtx.encCtx, NULL, gXmlSecAppCtx.sessionKey, cur, &encResult);
     total_time += clock() - start_time;    
     if(ret < 0) {
         fprintf(stderr,"Error: xmlSecDecrypt() failed \n");
@@ -1459,66 +982,608 @@ done:
 }
 #endif /* XMLSEC_NO_XMLENC */
 
-/**
- * Keys generation/manipulation
- */
-xmlSecKeyPtr genKey(const char* type, const char *name) {
-    xmlSecKeyPtr key = NULL;    
-    xmlSecKeyValuePtr keyValue = NULL;    
+int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc) {
+    xmlValidCtxt c;
 
-    if(type == NULL) {
-    	fprintf(stderr, "Error: bad key type (NULL)\n");
-	return(NULL);
-    } else
-#ifndef XMLSEC_NO_HMAC    
-    if(strcmp(type, "hmac") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecHmacKeyValue, 24);
-    } else 
-#endif /* XMLSEC_NO_HMAC */ 
-#ifndef XMLSEC_NO_RSA
-    if(strcmp(type, "rsa") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecRsaKeyValue, 1024);	
-    } else 
-#endif /* XMLSEC_NO_RSA */    
-#ifndef XMLSEC_NO_DSA
-    if(strcmp(type, "dsa") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecDsaKeyValue, 1024);	
-    } else 
-#endif /* XMLSEC_NO_DSA */    
-#ifndef XMLSEC_NO_DES
-    if(strcmp(type, "des3") == 0) {
-	keyValue = xmlSecKeyValueGenerate(xmlSecDesKeyValue, 24);	
-    } else 
-#endif /* XMLSEC_NO_DES */
-#ifndef XMLSEC_NO_AES
-    if(strcmp(type, "aes128") == 0) {
-    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 16);	
-    } else 
-    if(strcmp(type, "aes192") == 0) {
-    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 24);	
-    } else 
-    if(strcmp(type, "aes256") == 0) {
-    	keyValue = xmlSecKeyValueGenerate(xmlSecAesKeyValue, 32);	
-    } else 
-#endif /* XMLSEC_NO_AES */
-    {
-    	fprintf(stderr, "Error: \"%s\" is a bad key identifier or the algorithm support was disabled during compilation\n", type);
-	return(NULL);
-    }
-    
-    if(keyValue == NULL) {
-	fprintf(stderr, "Error: failed to create key \"%s\" \n", type);
-	return(NULL);	
-    }
-    
-    key = xmlSecKeyCreate(keyValue, BAD_CAST name);
-    if(key == NULL) {
-	xmlSecKeyValueDestroy(keyValue);
-	fprintf(stderr, "Error: failed to create key\n");
-	return(NULL);	
-    }
-    xmlSecKeyValueDestroy(keyValue);
-    
-    return(key);
+    memset(&c, 0, sizeof(c));    
+    xmlValidateDtd(&c, doc, dtd);
+    return 0;
 }
+
+
+/**************************************************************************
+ *
+ *
+ *
+ *************************************************************************/
+static int
+xmlSecAppInit(xmlSecAppCtxPtr ctx) {
+    xmlSecAssert2(ctx != NULL, -1);
     
+    /* init ctx */
+    memset(ctx, 0, sizeof(xmlSecAppCtx));
+    
+    /* Init libxml */     
+    xmlInitParser();
+    LIBXML_TEST_VERSION
+    xmlTreeIndentString = "\t";
+#ifndef XMLSEC_NO_XSLT
+    xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+    
+    	
+    /* Init xmlsec */
+    if(xmlSecInit() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecInit");
+	return(-1);
+    }
+
+    /* Init Crypto */
+    if(xmlSecAppCryptoInit() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAppCryptoInit");
+	return(-1);
+    }
+
+    /* Create keys manager */
+    gXmlSecAppCtx.keysMngr = xmlSecKeysMngrCreate();
+    if(gXmlSecAppCtx.keysMngr == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecKeysMngrCreate");
+	return(-1);
+    }
+    if(xmlSecAppCryptoSimpleKeysMngrInit(gXmlSecAppCtx.keysMngr) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAppCryptoSimpleKeysMngrInit");
+	return(-1);
+    }    
+    
+    /* init DSig Ctx */
+#ifndef XMLSEC_NO_XMLDSIG    
+    ctx->dsigCtx = xmlSecDSigCtxCreate(gXmlSecAppCtx.keysMngr);
+    if(ctx->dsigCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDSigCtxCreate");
+	return(-1);
+    }
+    /**
+     * Set default values to process manifests and store nothing
+     * Overwrite this options thru command line if needed!
+     */
+    ctx->dsigCtx->processManifests = 1;
+    ctx->dsigCtx->storeSignatures  = 0;
+    ctx->dsigCtx->storeReferences  = 0;
+    ctx->dsigCtx->storeManifests   = 0;
+#endif /* XMLSEC_NO_XMLDSIG */
+
+    /* init XML Enc context */
+#ifndef XMLSEC_NO_XMLENC
+    ctx->encCtx = xmlSecEncCtxCreate(gXmlSecAppCtx.keysMngr);
+    if(ctx->encCtx == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecEncCtxCreate");
+	return(-1);
+    }
+#endif /* XMLSEC_NO_XMLENC */
+    
+    return(0);
+}
+
+static int 
+xmlSecAppShutdown(xmlSecAppCtxPtr ctx) {
+    xmlSecAssert2(ctx != NULL, -1);
+    
+    /* cleanup context */
+    if(ctx->sessionKey != NULL) {
+	xmlSecKeyDestroy(ctx->sessionKey);
+    }
+#ifndef XMLSEC_NO_XMLENC
+    if(ctx->encCtx != NULL) {
+	xmlSecEncCtxDestroy(ctx->encCtx);
+    }
+#endif /* XMLSEC_NO_XMLENC */
+#ifndef XMLSEC_NO_XMLDSIG
+    if(ctx->dsigCtx != NULL) {
+	xmlSecDSigCtxDestroy(ctx->dsigCtx);
+    }
+#endif /* XMLSEC_NO_XMLDSIG */
+    if(gXmlSecAppCtx.keysMngr != NULL) {
+	xmlSecKeysMngrDestroy(gXmlSecAppCtx.keysMngr);
+    }
+    memset(ctx, 0, sizeof(xmlSecAppCtx));
+
+
+    /* Shutdown Crypto */
+    if(xmlSecAppCryptoShutdown() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAppCryptoShutdown");
+	return(-1);
+    }
+    
+    /* Shutdown xmlsec */
+    if(xmlSecShutdown() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecShutdown");
+	return(-1);
+    }
+    
+    /* Shutdown libxslt/libxml */
+#ifndef XMLSEC_NO_XSLT
+    xsltCleanupGlobals();            
+#endif /* XMLSEC_NO_XSLT */
+    xmlCleanupParser();
+    
+    return(0);
+}
+
+
+
+/**************************************************************************
+ *
+ *
+ *
+ *************************************************************************/
+static int		xmlSecAppKeysOptionsParse	(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+static int		xmlSecAppX509OptionsParse	(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+static int		xmlSecAppDSigOptionsParse	(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+static int		xmlSecAppEncOptionsParse	(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+static int		xmlSecAppStartNodeOptionsParse	(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+static int		xmlSecAppMiscOptionsParse	(xmlSecAppCtxPtr ctx, 
+							 int argc, 
+							 char** argv, 
+							 int pos);
+/**
+ * options
+ */	
+static int
+xmlSecAppOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+
+    while((pos < argc) && (argv[pos][0] == '-')) {
+	/* Keys and keys mngr options */ 
+	ret = xmlSecAppKeysOptionsParse(&gXmlSecAppCtx, argc, argv, pos);
+	if(ret < 0) {
+	    return(-1);
+	} else if (ret > pos) {
+	    pos = ret;
+	    continue;
+	}
+
+	/* x509 options */ 
+	ret = xmlSecAppX509OptionsParse(&gXmlSecAppCtx, argc, argv, pos);
+	if(ret < 0) {
+	    return(-1);
+	} else if (ret > pos) {
+	    pos = ret;
+	    continue;
+	}
+
+	/* dsig options */ 
+	ret = xmlSecAppDSigOptionsParse(&gXmlSecAppCtx, argc, argv, pos);
+	if(ret < 0) {
+	    return(-1);
+	} else if (ret > pos) {
+	    pos = ret;
+	    continue;
+	}
+
+	/* enc options */ 
+	ret = xmlSecAppEncOptionsParse(&gXmlSecAppCtx, argc, argv, pos);
+	if(ret < 0) {
+	    return(-1);
+	} else if (ret > pos) {
+	    pos = ret;
+	    continue;
+	}
+
+	/* Node selection options */
+	ret = xmlSecAppStartNodeOptionsParse(&gXmlSecAppCtx, argc, argv, pos);
+	if(ret < 0) {
+	    return(-1);
+	} else if (ret > pos) {
+	    pos = ret;
+	    continue;
+	}
+
+	/* misc options */ 
+	ret = xmlSecAppMiscOptionsParse(&gXmlSecAppCtx, argc, argv, pos);
+	if(ret < 0) {
+	    return(-1);
+	} else if (ret > pos) {
+	    pos = ret;
+	    continue;
+	}
+
+	/* if we are here then option is unknown */
+	fprintf(stderr, "Error: option \"%s\" is unknown\n", argv[pos]);
+	return(-1);
+    }
+
+    return(pos);
+}
+
+/**
+ * Key selection options
+ */	
+static int
+xmlSecAppKeysOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+
+    /**
+     * Allowed key origins
+     */
+    if((strcmp(argv[pos], "--allowed") == 0) && (pos + 1 < argc)) {
+	if(readKeyOrigins(argv[++pos]) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "readKeyOrigins");
+	    return(-1);
+	}
+    } else 
+    
+    /**
+     * Loading keys in the keys manager
+     */
+    if((strcmp(argv[pos], "--keys") == 0) && (pos + 1 < argc)) {
+	if(xmlSecAppCryptoSimpleKeysMngrLoad(ctx->keysMngr, argv[++pos]) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrLoad");
+	    return(-1);
+	}
+    } else if((strncmp(argv[pos], "--privkey", 9) == 0) && (pos + 1 < argc)) {
+	char *name;
+	    
+	name = strchr(argv[pos], ':');
+	if(name != NULL) ++name;
+	if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(ctx->keysMngr, argv[++pos], global_pwd, name, 1) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad");
+	    return(-1);
+	}
+    } else if((strncmp(argv[pos], "--pubkey", 8) == 0) && (pos + 1 < argc)) {
+	char *name;
+	    
+	name = strchr(argv[pos], ':');
+	if(name != NULL) ++name;
+	if(xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(ctx->keysMngr, argv[++pos], global_pwd, name, 0) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad");
+	    return(-1);
+	}
+    } else if((strncmp(argv[pos], "--pkcs12", 8) == 0) && (pos + 1 < argc)) {
+	char *name;
+	    
+	name = strchr(argv[pos], ':');
+	if(name != NULL) ++name;	    
+	if(xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad(ctx->keysMngr, argv[++pos], global_pwd, name) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrPkcs12KeyLoad");
+	    return(-1);
+	}
+    } else if((strncmp(argv[pos], "--hmackey", 9) == 0) && (pos + 1 < argc)) {
+	char *name;
+	    
+	name = strchr(argv[pos], ':');
+	if(name != NULL) ++name;	    
+	if(xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(ctx->keysMngr, "hmac", argv[++pos], name) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(hmac)");
+	    return(-1);
+	}
+    } else 
+    
+    /** 
+     * Session key options
+     */
+    if(strncmp(argv[pos], "--session-", 10) == 0) {
+	char* klassAndSize = argv[pos] + 10;
+	
+	if(ctx->sessionKey != NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "xmlSecAppCryptoShutdown");
+	    return(-1);
+	}
+	
+	ctx->sessionKey = xmlSecAppCryptoKeyGenerate(klassAndSize, NULL);
+	if(ctx->sessionKey == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoKeyGenerate(klassAndSize)");
+	    return(-1);
+	}
+    } else 
+    
+    /**
+     * Keys generation options
+     */
+    if((strncmp(argv[pos], "--gen-", 6) == 0) && (pos + 1 < argc)) {
+	char* klassAndSize = argv[pos] + 6;
+	
+	if(xmlSecAppCryptoSimpleKeysMngrKeyGenerate(ctx->keysMngr, klassAndSize, argv[++pos]) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrKeyGenerate(klassAndSize)");
+	    return(-1);
+	}
+    } else {
+	/* the option is unknown */
+	return(pos);
+    }
+    
+    return(++pos); 
+}
+
+
+/** 
+ * Node selection options 
+ */
+static int
+xmlSecAppStartNodeOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+	
+    if((strcmp(argv[pos], "--node-id") == 0) && (pos + 1 < argc)) {    
+	if((nodeName != NULL) || (nodeId != NULL) || (nodeXPath != NULL)){
+	    fprintf(stderr, "Error: another node selection option present\n");
+	    return(-1);
+	} else {
+	    nodeId = argv[++pos];
+	}
+    } else if((strcmp(argv[pos], "--node-name") == 0) && (pos + 1 < argc)) {    
+	if((nodeName != NULL) || (nodeId != NULL) || (nodeXPath != NULL)){
+	    fprintf(stderr, "Error: another node selection option present\n");
+	    return(-1);
+	} else {
+	    nodeName = strrchr(argv[++pos], ':');
+	    if(nodeName != NULL) {
+		*(nodeName++) = '\0';
+		nodeNs = argv[pos];
+	    } else {
+	        nodeName = argv[pos];
+		nodeNs = NULL;
+	    }
+	}
+    } else if((strcmp(argv[pos], "--node-xpath") == 0) && (pos + 1 < argc)) {    
+	if((nodeName != NULL) || (nodeId != NULL) || (nodeXPath != NULL)){
+	    fprintf(stderr, "Error: another node selection option present\n");
+	    return(-1);
+	} else {
+	    nodeXPath = argv[++pos];
+	}
+    } else if((strcmp(argv[pos], "--dtdfile") == 0) && (pos + 1 < argc)) {
+        if(idsDtd != NULL){
+            fprintf(stderr, "Error: DTD already specified\n");
+            return(-1);
+        } else {
+            idsDtd = xmlParseDTD(NULL, (const xmlChar*)argv[++pos]);
+            if(idsDtd == NULL) {
+                fprintf(stderr, "Could not parse DTD\n");
+                return(-1);
+            }
+        }
+    } else {
+	/* the option is unknown */
+	return(pos);
+    }
+    
+    return(++pos); 
+}
+
+static int
+xmlSecAppX509OptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+	
+    if((strcmp(argv[pos], "--trusted") == 0) && (pos + 1 < argc)) {
+	if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(ctx->keysMngr, argv[++pos], 1) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrPemCertLoad(%s)", argv[pos]);
+	    return(-1);
+	}
+    } else if((strcmp(argv[pos], "--untrusted") == 0) && (pos + 1 < argc)) {	
+	if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(ctx->keysMngr, argv[++pos], 0) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecAppCryptoSimpleKeysMngrPemCertLoad(%s)", argv[pos]);
+	    return(-1);
+	}
+    } else if((strcmp(argv[pos], "--verification-time") == 0) && (pos + 1 < argc)) {
+	time_t t = 0;
+	     
+	if(readTime(argv[++pos], &t) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"readTime");
+	    return(-1);
+	}
+	
+#ifndef XMLSEC_NO_XMLDSIG
+	xmlSecAssert2(ctx->dsigCtx != NULL, -1);	    
+	ctx->dsigCtx->keyInfoCtx.certsVerificationTime = t;		        
+#endif /* XMLSEC_NO_XMLDSIG */
+#ifndef XMLSEC_NO_XMLENC
+	xmlSecAssert2(ctx->encCtx != NULL, -1);
+	ctx->encCtx->keyInfoCtx.certsVerificationTime = t;		        
+#endif /* XMLSEC_NO_XMLENC */
+    } else if((strncmp(argv[pos], "--depth", 7) == 0) && (pos + 1 < argc)) {
+	int depth;
+	
+	depth = atoi(argv[++pos]);
+#ifndef XMLSEC_NO_XMLDSIG
+	xmlSecAssert2(ctx->dsigCtx != NULL, -1);
+	    
+	ctx->dsigCtx->keyInfoCtx.certsVerificationDepth = depth;  
+#endif /* XMLSEC_NO_XMLDSIG */
+#ifndef XMLSEC_NO_XMLENC
+	xmlSecAssert2(ctx->encCtx != NULL, -1);
+	    
+	ctx->encCtx->keyInfoCtx.certsVerificationDepth = depth;
+#endif /* XMLSEC_NO_XMLENC */
+    } else {
+	/* the option is unknown */
+	return(pos);
+    }
+    
+    return(++pos); 
+}
+
+static int
+xmlSecAppMiscOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+
+    if((strcmp(argv[pos], "--repeat") == 0) && (pos + 1 < argc)) {
+	if(readNumber(argv[++pos], &repeats) < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"readNumber");
+	    return(-1);
+	}	
+    } else if((strcmp(argv[pos], "--pwd") == 0) && (pos + 1 < argc)) {
+	global_pwd = argv[++pos];
+    } else if((strcmp(argv[pos], "--output") == 0) && (pos + 1 < argc)) {
+	output = argv[++pos];
+    } else if((strcmp(argv[pos], "--disable-error-msgs") == 0)) {
+	xmlSecPrintErrorMessages = 0;
+    } else if((strcmp(argv[pos], "--print-openssl-errors") == 0)) {
+	print_openssl_errors = 1;
+    } else {
+	/* the option is unknown */
+	return(pos);
+    }
+    
+    return(++pos); 
+}
+
+static int
+xmlSecAppDSigOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+	
+#ifndef XMLSEC_NO_XMLDSIG	
+    xmlSecAssert2(ctx->dsigCtx != NULL, -1);
+    
+    if(strcmp(argv[pos], "--ignore-manifests") == 0) {
+	ctx->dsigCtx->processManifests = 0; 
+    } else if(strcmp(argv[pos], "--fake-signatures") == 0) {
+	ctx->dsigCtx->fakeSignatures = 1; 
+    } else if(strcmp(argv[pos], "--print-result") == 0)  {
+	printResult = 1;
+    } else if(strcmp(argv[pos], "--print-references") == 0) {
+	ctx->dsigCtx->storeReferences = 1; 
+	printResult = 1;	    
+    } else if(strcmp(argv[pos], "--print-manifests") == 0) { 
+	ctx->dsigCtx->storeManifests = 1; 
+	printResult = 1;
+    } else if(strcmp(argv[pos], "--print-signature") == 0) { 
+	ctx->dsigCtx->storeSignatures = 1; 
+	printResult = 1;
+    } else if(strcmp(argv[pos], "--print-all") == 0) { 	    
+	ctx->dsigCtx->storeReferences = 1; 
+	ctx->dsigCtx->storeManifests = 1; 
+	ctx->dsigCtx->storeSignatures = 1; 	    
+	printResult = 1;
+    } else if(strcmp(argv[pos], "--print-xml") == 0) {
+	printXml = 1;
+	printResult = 1;
+    } else if((strcmp(argv[pos], "--print-to-file") == 0) && (pos + 1 < argc) && (printFile == NULL)) {
+	printFile = fopen(argv[++pos], "w");
+	if(printFile == NULL) {
+	    fprintf(stderr, "Error: failed to open result file \"%s\"\n", argv[pos]);
+	    return(-1);
+	}
+    } else {
+	/* the option is unknown */
+	return(pos);
+    }
+    return(++pos); 
+#else /* XMLSEC_NO_XMLDSIG */
+    return(pos);
+#endif /* XMLSEC_NO_XMLDSIG */
+}
+
+static int
+xmlSecAppEncOptionsParse(xmlSecAppCtxPtr ctx, int argc, char** argv, int pos) {
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(argv != NULL, -1);
+    xmlSecAssert2(pos >= 0, -1);
+    xmlSecAssert2(pos < argc, -1);
+	
+#ifndef XMLSEC_NO_XMLEMC
+    xmlSecAssert2(ctx->encCtx != NULL, -1);
+
+    if((strcmp(argv[pos], "--binary") == 0) && (pos + 1 < argc)) {
+	if(dataFile != NULL){
+	    fprintf(stderr, "Error: data file was already specified\n");
+	    return(-1);
+	} else {
+	    dataFile = argv[++pos];
+	    binary = 1;
+	}
+    } else if((strcmp(argv[pos], "--xml") == 0) && (pos + 1 < argc)) {
+	if(dataFile != NULL){
+	    fprintf(stderr, "Error: dataFile file was already specified\n");
+	    return(-1);
+	} else {
+	    dataFile = argv[++pos];
+	    binary = 0;
+	}
+    } else {
+	/* the option is unknown */
+	return(pos);
+    }
+    
+    return(++pos); 
+#else /* XMLSEC_NO_XMLENC */
+    return(pos);
+#endif /* XMLSEC_NO_XMLENC */
+}
+
+

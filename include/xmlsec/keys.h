@@ -14,218 +14,202 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#include <time.h>
+
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/object.h>
-#include <xmlsec/serializable.h>
 #include <xmlsec/list.h>
-#include <xmlsec/keysInternal.h>
-#include <xmlsec/keyvalue.h>
-#include <xmlsec/x509.h>
-#include <xmlsec/pgp.h>
-
-typedef struct _xmlSecKeysStoreKlass		xmlSecKeysStoreKlass,
-						*xmlSecKeysStoreKlassPtr;
-typedef struct _xmlSecKeysStore			xmlSecKeysStore,
-						*xmlSecKeysStorePtr;
-
-typedef struct _xmlSecSimpleKeysStoreKlass	xmlSecSimpleKeysStoreKlass,
-						*xmlSecSimpleKeysStoreKlassPtr;
-typedef struct _xmlSecSimpleKeysStore		xmlSecSimpleKeysStore,
-						*xmlSecSimpleKeysStorePtr;
-
-/* forward declarations */
-typedef struct _xmlSecKey			xmlSecKey,
-						*xmlSecKeyPtr;
-
-
-/*********************************************************************
- *
- * Keys data storage
- *
- *********************************************************************/
-#define xmlSecKeysStoreKlassId 				xmlSecKeysStoreKlassGet()
-#define xmlSecKeysStoreKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecKeysStoreKlassId, xmlSecKeysStoreKlassPtr)
-#define xmlSecKeysStoreKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecKeysStoreKlassId)
-#define xmlSecKeysStoreCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeysStoreKlassId, xmlSecKeysStorePtr)
-#define xmlSecKeysStoreCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecKeysStoreKlassId)
+#include <xmlsec/keysdata.h>
 
 /**
- * xmlSecKeysStoreFindMethod:
+ * xmlSecKeyInifiteRetrivals:
  *
- * Searches for key.
- *
- * Returns the pointer to key or NULL if the key is not found or 
- * an error occurs.
+ * Macro. Inifinite number of retrievals (really big number :) )
  */
-typedef xmlSecKeyPtr 	(*xmlSecKeysStoreFindMethod)		(xmlSecKeysStorePtr store, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+#define xmlSecKeyInifiteRetrivals		99999
 
-struct _xmlSecKeysStoreKlass {
-    xmlSecObjKlass			parent;
-    
-    xmlSecKeysStoreFindMethod		find;
-};
-
-struct _xmlSecKeysStore {
-    xmlSecObj				parent;
-};
-
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecKeysStoreKlassGet		(void);
-XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysStoreFind		(xmlSecKeysStorePtr store, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx);
-
-/*********************************************************************
- *
- * Simple keys data storage
- *
- *********************************************************************/
-#define xmlSecSimpleKeysStoreKlassId 			xmlSecSimpleKeysStoreKlassGet()
-#define xmlSecSimpleKeysStoreKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecSimpleKeysStoreKlassId, xmlSecSimpleKeysStoreKlassPtr)
-#define xmlSecSimpleKeysStoreKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecSimpleKeysStoreKlassId)
-#define xmlSecSimpleKeysStoreCast(obj) 			xmlSecObjCastMacro((obj), xmlSecSimpleKeysStoreKlassId, xmlSecSimpleKeysStorePtr)
-#define xmlSecSimpleKeysStoreCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecSimpleKeysStoreKlassId)
-
-struct _xmlSecSimpleKeysStoreKlass {
-    xmlSecKeysStoreKlass		parent;
-};
-
-struct _xmlSecSimpleKeysStore {
-    xmlSecKeysStore			parent;
-    
-    xmlSecListPtr			keys;    
-};
-
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecSimpleKeysStoreKlassGet	(void);
-XMLSEC_EXPORT int		xmlSecSimpleKeysStoreAddKey	(xmlSecSimpleKeysStorePtr keysMngr, 
-								 xmlSecKeyPtr key);
-XMLSEC_EXPORT int		xmlSecSimpleKeysStoreLoad 	(xmlSecSimpleKeysStorePtr keysMngr,
-								 const char *uri,
-								 int strict); 
-XMLSEC_EXPORT int		xmlSecSimpleKeysStoreSave	(xmlSecSimpleKeysStorePtr keysMngr, 
-								 const char *filename);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***************************************************************************
- *
- * xmlSecKey
- *
- **************************************************************************/
 /**
- * xmlSecKeyUsages:
- * @xmlSecKeyUsageUnknown: unknown.
+ * xmlSecKeyIsValid:
+ * @key: the pointer to key.
+ *
+ * Macro. Returns 1 if @key is not NULL and @key->id is not NULL
+ * or 0 otherwise.
+ */ 
+#define xmlSecKeyIsValid(key) \
+	((( key ) != NULL) && \
+	 (( key )->value != NULL) && \
+	 ((( key )->value->id) != NULL))
+/**
+ * xmlSecKeyCheckId:
+ * @key: the pointer to key.
+ * @keyId: the key Id.
+ *
+ * Macro. Returns 1 if @key is valid and @key's id is equal to @keyId.
+ */
+#define xmlSecKeyCheckId(key, keyId) \
+ 	(xmlSecKeyIsValid(( key )) && \
+	((( key )->value->id) == ( keyId )))
+
+/**
+ * xmlSecKeyUsage:
+ * @xmlSecKeyUsageAny: the key can be used in any way.
  * @xmlSecKeyUsageSign: the key for signing.
  * @xmlSecKeyUsageVerify: the key for signature verification.
  * @xmlSecKeyUsageEncrypt: the encryption key.
  * @xmlSecKeyUsageDecrypt: the decryption key.
- * @xmlSecKeyUsageAny: the key can be used in any way.
  *
- * The key usages list.
- */ 
+ * The key usage.
+ */
 typedef enum  {
-    xmlSecKeyUsageUnknown		= 0x0000,
-    xmlSecKeyUsageSign			= 0x0001,
-    xmlSecKeyUsageVerify		= 0x0002,
-    xmlSecKeyUsageEncrypt		= 0x0004,
-    xmlSecKeyUsageDecrypt		= 0x0008,
-    xmlSecKeyUsageAny			= 0xFFFF
-} xmlSecKeyUsages;
-/**
- * xmlSecKeyUsage:
- *
- * The key usage is a bits mask from the @xmlSecKeyUsages list.
- */
-typedef unsigned long			xmlSecKeyUsage;
+    xmlSecKeyUsageAny = 0,
+    xmlSecKeyUsageSign,
+    xmlSecKeyUsageVerify,
+    xmlSecKeyUsageEncrypt,
+    xmlSecKeyUsageDecrypt
+} xmlSecKeyUsage;
 
-/** 
- * xmlSecKeyOrigins:
- * @xmlSecKeyOriginUnknown: unknown.
- * @xmlSecKeyOriginContext: key from the context (i.e. w/o information 
- *       from dsig:KeyInfo).
- * @xmlSecKeyOriginKeyName: key from the name in dsig:KeyName element.
- * @xmlSecKeyOriginKeyValue: key from the name in dsig:KeyValue element.
- * @xmlSecKeyOriginRetrievalLocal: key from dsig:RetrievalMethod 
- *	pointing to the current document.
- * @xmlSecKeyOriginRetrievalRemote: key from dsig:RetrievalMethod 
- *	pointing outsied of the current document.
- * @xmlSecKeyOriginX509Data: key from dsig:X509Data element.
- * @xmlSecKeyOriginPGPData: key from dsig:PGPData element.
- * @xmlSecKeyOriginEncryptedKey: key from enc:EncryptedKey element.
- * @xmlSecKeyOriginAll: all of the above.
- *
- * The key origin(s) are used to set rules for key retrieval.
- */
-typedef enum {
-    xmlSecKeyOriginDefault		= 0x0000,
-    xmlSecKeyOriginKeyManager		= 0x0001,
-    xmlSecKeyOriginKeyName		= 0x0002,
-    xmlSecKeyOriginKeyValue		= 0x0004,
-    xmlSecKeyOriginRetrievalDocument	= 0x0008,
-    xmlSecKeyOriginRetrievalRemote	= 0x0010,
-    xmlSecKeyOriginX509			= 0x0020,
-    xmlSecKeyOriginPGP			= 0x0040,
-    xmlSecKeyOriginEncryptedKey		= 0x0080,
-    xmlSecKeyOriginAll			= 0xFFFF
-} xmlSecKeyOrigins;
 /** 
  * xmlSecKeyOrigin:
  * 
- * The key origin is a bits mask from the @xmlSecKeyOrigins list.
- */ 
+ * The key origin (keys manager, remote document, cert, etc.).
+ */
 typedef long				xmlSecKeyOrigin;
+/**
+ * xmlSecKeyOriginDefault:
+ *
+ * Default origin (unknown).
+ */
+#define xmlSecKeyOriginDefault			0
+/**
+ * xmlSecKeyOriginKeyManager:
+ *
+ * The key was found in the keys manager.
+ */
+#define xmlSecKeyOriginKeyManager		1
+/**
+ * xmlSecKeyOriginKeyName:
+ *
+ * The key was found in the keys manager via key name
+ * specified in the <dsig:KeyName> node. (useless w/o 
+ * #xmlSecKeyOriginKeyManager).
+ */
+#define xmlSecKeyOriginKeyName			2 
+/**
+ * xmlSecKeyOriginKeyValue:
+ *
+ * The key was extracted from <dsig:KeyValue> node.
+ */
+#define xmlSecKeyOriginKeyValue			4
+/**
+ * xmlSecKeyOriginRetrievalDocument:
+ *
+ * The key was extracted thru <dsig:RetrievalMethod> 
+ * pointing in the same document.
+ */
+#define xmlSecKeyOriginRetrievalDocument	8
+/**
+ * xmlSecKeyOriginRetrievalRemote:
+ *
+ * The key was extracted thru <dsig:RetrievalMethod> 
+ * pointing to another document.
+ */
+#define xmlSecKeyOriginRetrievalRemote		16
+/**
+ * xmlSecKeyOriginX509:
+ *
+ * The key was extracted from X509 certificate
+ * in the <dsig:X509Data> node.
+ */
+#define xmlSecKeyOriginX509			32
+/**
+ * xmlSecKeyOriginPGP:
+ *
+ * The PGP key from <dsig:PGPData> node. Not used.
+ */
+#define xmlSecKeyOriginPGP			64
+/**
+ * xmlSecKeyOriginEncryptedKey:
+ *
+ * The key was extracted from <enc:EncryptedKey> node.
+ */
+#define xmlSecKeyOriginEncryptedKey		128
+/**
+ * xmlSecKeyOriginAll:
+ *
+ * All of the above.
+ */
+#define xmlSecKeyOriginAll			\
+	    (xmlSecKeyOriginKeyManager | xmlSecKeyOriginKeyName | \
+	     xmlSecKeyOriginKeyValue | xmlSecKeyOriginKeyValue | \
+	     xmlSecKeyOriginRetrievalDocument | xmlSecKeyOriginRetrievalRemote | \
+	     xmlSecKeyOriginX509 | xmlSecKeyOriginPGP | xmlSecKeyOriginEncryptedKey)		
 
 
 /**
  * xmlSecKey:
- * @id: the key id (#xmlSecKeyId).
  * @type: the key type (private/public).
- * @name: the key name (may be NULL).
+ * @origin: the key origin.
  * @keyData: key specific data.
  *
  * The key.
  */
 struct _xmlSecKey {
-    xmlSecKeyValuePtr		value;
-    xmlChar*			name;
-    xmlSecKeyUsage		usage;
-    xmlSecKeyOrigin		origin;
+    xmlSecKeyDataPtr			value;
+    xmlChar*				name;
+    xmlSecPtrListPtr			dataList;
 
-    xmlSecX509DataPtr		x509Data;
-    xmlSecPgpDataPtr		pgpData;
+
+    xmlSecKeyDataType			type;
+    xmlSecKeyOrigin			origin;
 };
 
-XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyCreate		(xmlSecKeyValuePtr value,
-								 const xmlChar* name);
-XMLSEC_EXPORT void			xmlSecKeyDestroy	(xmlSecKeyPtr key);
-XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyDuplicate	(xmlSecKeyPtr key);
-XMLSEC_EXPORT int			xmlSecKeyCheck		(xmlSecKeyPtr key, 
-								 const xmlChar *name,
-								 xmlSecKeyValueId id, 
-								 xmlSecKeyValueType type);
-XMLSEC_EXPORT void			xmlSecKeyDebugDump	(xmlSecKeyPtr key,
-								 FILE *output);
-XMLSEC_EXPORT void			xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
-								 FILE *output);
+
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(void);
+XMLSEC_EXPORT void		xmlSecKeyDestroy	(xmlSecKeyPtr key);
+XMLSEC_EXPORT void		xmlSecKeyEmpty		(xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDuplicate	(xmlSecKeyPtr key);
+XMLSEC_EXPORT int		xmlSecKeyCopy		(xmlSecKeyPtr keyDst,
+							 xmlSecKeyPtr keySrc);
+
+XMLSEC_EXPORT const xmlChar*	xmlSecKeyGetName	(xmlSecKeyPtr key);
+XMLSEC_EXPORT int		xmlSecKeySetName	(xmlSecKeyPtr key,
+							 const xmlChar* name);
+
+XMLSEC_EXPORT xmlSecKeyDataType	xmlSecKeyGetType	(xmlSecKeyPtr key);
+
+XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyGetValue	(xmlSecKeyPtr key);
+XMLSEC_EXPORT int		xmlSecKeySetValue	(xmlSecKeyPtr key,
+							 xmlSecKeyDataPtr value);
+
+XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecKeyGetData	(xmlSecKeyPtr key, 
+							 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecKeyEnsureData	(xmlSecKeyPtr key, 
+							 xmlSecKeyDataId dataId);
+XMLSEC_EXPORT int		xmlSecKeyAdoptData	(xmlSecKeyPtr key,
+							 xmlSecKeyDataPtr data);
+
+XMLSEC_EXPORT void		xmlSecKeyDebugDump	(xmlSecKeyPtr key,
+							 FILE *output);
+XMLSEC_EXPORT void		xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
+							 FILE *output);
 
 
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(const xmlChar* type,
+							 const xmlChar* name,
+							 size_t sizeBits);
 
 
+XMLSEC_EXPORT int		xmlSecKeyVerify		(xmlSecKeyPtr key, 
+							 const xmlChar *name,
+							 xmlSecKeyDataId id, 
+							 xmlSecKeyDataType type);
+							 
+
+/***********************************************************************
+ *
+ * Keys list
+ *
+ **********************************************************************/
+#define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyPtrListGetKlass		(void);
 
 #ifdef __cplusplus
 }

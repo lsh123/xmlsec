@@ -7,28 +7,32 @@
  * 
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
-#ifndef __XMLSEC_OPENSSL_BN_H__
-#define __XMLSEC_OPENSSL_BN_H__    
+#ifndef __XMLSEC_BN_H__
+#define __XMLSEC_BN_H__    
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
 
 #include <openssl/bn.h>
+
+#include <libxml/tree.h> 
+
 #include <xmlsec/xmlsec.h>
 
-
-
-XMLSEC_EXPORT int	xmlSecOpenSSLBnToCryptoBinary	(const BIGNUM *a, 
-							 unsigned char** value, 
-							 size_t* valueSize);
-XMLSEC_EXPORT BIGNUM*	xmlSecOpenSSLBnFromCryptoBinary	(const unsigned char* value, 
-							 size_t valueSize, 
+XMLSEC_EXPORT BIGNUM*	xmlSecOpenSSLCryptoBinary2BN	(const xmlChar *str,
 							 BIGNUM **a);
+XMLSEC_EXPORT xmlChar*	xmlSecOpenSSLBN2CryptoBinary	(const BIGNUM *a);
+
+XMLSEC_EXPORT BIGNUM*	xmlSecOpenSSLNodeGetBNValue	(const xmlNodePtr cur,
+							 BIGNUM **a);
+XMLSEC_EXPORT int	xmlSecOpenSSLNodeSetBNValue	(xmlNodePtr cur, 
+							 const BIGNUM *a,
+							 int addLineBreaks);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_OPENSSL_BN_H__ */
+#endif /* __XMLSEC_BN_H__ */
 

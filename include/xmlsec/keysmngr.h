@@ -15,121 +15,109 @@ extern "C" {
 #endif /* __cplusplus */ 
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/object.h>
+#include <xmlsec/list.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/keysInternal.h>
-#include <xmlsec/x509.h>
-#include <xmlsec/pgp.h>
+#include <xmlsec/keysdata.h>
 #include <xmlsec/keyinfo.h>
 
-typedef struct _xmlSecKeysMngrKlass		xmlSecKeysMngrKlass,
-						*xmlSecKeysMngrKlassPtr;
-typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
-						*xmlSecKeysMngrPtr;
+/****************************************************************************
+ *
+ * Simple Keys Store
+ *
+ ***************************************************************************/
+#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataStoreId	xmlSecSimpleKeysStoreGetKlass	(void);
+XMLSEC_EXPORT int			xmlSecSimpleKeysStoreAdoptKey	(xmlSecKeyDataStorePtr store,
+									 xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyPtr		xmlSecSimpleKeysStoreFindKey	(xmlSecKeyDataStorePtr store,
+									 const xmlChar* name,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int			xmlSecSimpleKeysStoreLoad 	(xmlSecKeyDataStorePtr store,
+									 const char *uri);
+XMLSEC_EXPORT int			xmlSecSimpleKeysStoreSave	(xmlSecKeyDataStorePtr store, 
+									 const char *filename,
+									 xmlSecKeyDataType type);
 
-typedef xmlSecObjKlass				xmlSecKeyDataCtxKlass,
-						*xmlSecKeyDataCtxKlassPtr;
-typedef xmlSecObj				xmlSecKeyDataCtx,
-						*xmlSecKeyDataCtxPtr;
-						
-typedef struct _xmlSecKeysMngrCtxKlass		xmlSecKeysMngrCtxKlass,
-						*xmlSecKeysMngrCtxKlassPtr;
-#if 0
-/* now defined in keys.h */
-typedef struct _xmlSecKeysMngrCtx		xmlSecKeysMngrCtx,
-						*xmlSecKeysMngrCtxPtr;
-#endif
 
-/*********************************************************************
+/****************************************************************************
  *
  * Keys Manager
  *
- *********************************************************************/
-#define xmlSecKeysMngrKlassId 				xmlSecKeysMngrKlassGet()
-#define xmlSecKeysMngrKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecKeysMngrKlassId, xmlSecKeysMngrKlassPtr)
-#define xmlSecKeysMngrKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecKeysMngrKlassId)
-#define xmlSecKeysMngrCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeysMngrKlassId, xmlSecKeysMngrPtr)
-#define xmlSecKeysMngrCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecKeysMngrKlassId)
+ ***************************************************************************/
+XMLSEC_EXPORT xmlSecKeysMngrPtr 	xmlSecKeysMngrCreate		(void);
+XMLSEC_EXPORT void			xmlSecKeysMngrDestroy		(xmlSecKeysMngrPtr mngr);
+
+XMLSEC_EXPORT int			xmlSecKeysMngrFindKey		(xmlSecKeysMngrPtr mngr,
+									 xmlSecKeyPtr key,
+									 const xmlChar* name,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int			xmlSecKeysMngrFindKeyData	(xmlSecKeysMngrPtr mngr,
+									 xmlSecKeyDataStoreId storeId,
+									 xmlSecKeyPtr key,
+									 const xmlChar** params,
+									 size_t paramsSize,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+XMLSEC_EXPORT int			xmlSecKeysMngrAdoptKeysStore	(xmlSecKeysMngrPtr mngr,
+									 xmlSecKeyDataStorePtr store);
+XMLSEC_EXPORT xmlSecKeyDataStorePtr	xmlSecKeysMngrGetKeysStore	(xmlSecKeysMngrPtr mngr);
+
+XMLSEC_EXPORT int			xmlSecKeysMngrAdoptDataStore	(xmlSecKeysMngrPtr mngr,
+									 xmlSecKeyDataStorePtr store);
+XMLSEC_EXPORT xmlSecKeyDataStorePtr	xmlSecKeysMngrGetDataStore	(xmlSecKeysMngrPtr mngr,
+									 xmlSecKeyDataStoreId id);
 
 /**
- * xmlSecKeysMngrGetKeyMethod:
+ * xmlSecGetKeyCallback:
  * @keyInfoNode: the pointer to <dsig:KeyInfo> node.
+ * @mngr: the keys manager.
+ * @context: the pointer to application specific data.
+ * @keyId: the required key Id (or NULL for "any").
+ * @type: the required key (may be "any").
+ * @usage: the required key usage.
  *
  * Reads the <dsig:KeyInfo> node @keyInfoNode and extracts the key.
  *
  * Returns the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
-typedef xmlSecKeyPtr 	(*xmlSecKeysMngrGetKeyMethod)		(xmlSecKeysMngrPtr keysMngr, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlNodePtr keyInfoNode);
+typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
+							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-
-struct _xmlSecKeysMngrKlass {
-    xmlSecObjKlass			parent;
-
-    xmlSecKeysMngrGetKeyMethod		getKey;
-};
-
-struct _xmlSecKeysMngr {
-    xmlSecObj				parent;
-
-    xmlSecKeysStorePtr			keysStore;
-    xmlSecX509StorePtr			x509Store;
-    xmlSecPgpStorePtr			pgpStore;
-};
-
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecKeysMngrKlassGet		(void);
-XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey		(xmlSecKeysMngrPtr keysMngr, 
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlNodePtr keyInfoNode);
-
-/****************************************************************************
+/**
+ * xmlSecKeysMngr:
+ * @getKey: the callback used to read <dsig:KeyInfo> node.
+ * @allowedOrigins: the allowed origins bits mask.
+ * @maxRetrievalsLevel: the max allowed <dsig:RetrievalMethod> level to prevent DOS attack.
+ * @maxEncKeysLevel: the max allowed <enc:EncryptedKey> level to prevent DOS attack.
+ * @findKey: the callback used to serach for key in the keys manager.
+ * @keysData: the keys manager data.
+ * @failIfCertNotFound: the flag.
+ * @findX509: the callback used to search for a cert.
+ * @verifyX509: the callback used to verify a cert.
+ * @x509Data: the X509 certificates manager specific data.
  *
- * Keys Read/Write context
- *
- ***************************************************************************/
-#define xmlSecKeysMngrCtxKlassId 			xmlSecKeysMngrCtxKlassGet()
-#define xmlSecKeysMngrCtxKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecKeysMngrCtxKlassId, xmlSecKeysMngrCtxKlassPtr)
-#define xmlSecKeysMngrCtxKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecKeysMngrCtxKlassId)
-#define xmlSecKeysMngrCtxCast(obj) 			xmlSecObjCastMacro((obj), xmlSecKeysMngrCtxKlassId, xmlSecKeysMngrCtxPtr)
-#define xmlSecKeysMngrCtxCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecKeysMngrCtxKlassId)
+ * The keys manager structure.
+ */
+struct _xmlSecKeysMngr {	
+    xmlSecKeyDataStorePtr		keysStore;
+    xmlSecPtrListPtr			storesList;
 
-struct _xmlSecKeysMngrCtxKlass {
-    xmlSecObjKlass			parent;
-};
 
-struct _xmlSecKeysMngrCtx {
-    xmlSecObj				parent;
-    
-    xmlSecKeysMngrPtr			keysMngr;
 
-    /* restrictions */
+    xmlSecGetKeyCallback		getKey;
+
     xmlSecKeyOrigin 			allowedOrigins;
     int 				maxRetrievalsLevel;
     int					maxEncKeysLevel; 
-    time_t				certsVerificationTime;
-
-    /* desired key */
-    xmlSecKeyValueId			keyId;
-    xmlSecKeyValueType			keyType;
-    xmlSecKeyUsage			keyUsage;
-    xmlChar*				keyName;
-    
-    /* current state */
-    int 				curRetrievalsLevel;
-    int					curEncKeysLevel; 
-    xmlSecKeyPtr			curKey;
+    /* x509 certs */    
+    int					failIfCertNotFound; 
 };
 
-XMLSEC_EXPORT xmlSecObjKlassPtr	xmlSecKeysMngrCtxKlassGet	(void);
-XMLSEC_EXPORT xmlSecKeysMngrCtxPtr xmlSecKeysMngrCtxCreate	(xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT int 	xmlSecKeysMngrCtxCheckOrigin		(xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlSecKeyOrigin origin);
-XMLSEC_EXPORT int	xmlSecKeysMngrCtxCheckRetrievalsLevel	(xmlSecKeysMngrCtxPtr keysMngrCtx);
-XMLSEC_EXPORT int	xmlSecKeysMngrCtxCheckEncKeysLevel	(xmlSecKeysMngrCtxPtr keysMngrCtx);
-XMLSEC_EXPORT void	xmlSecKeysMngrCtxSetCurKey		(xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlSecKeyPtr key);
+
+XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
+							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 #ifdef __cplusplus
 }

@@ -9,7 +9,6 @@
 #ifndef __XMLSEC_BUFFERED_H__
 #define __XMLSEC_BUFFERED_H__    
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
@@ -58,25 +57,31 @@ typedef int (*xmlSecBufferedProcessMethod)	(xmlSecBufferedTransformPtr transform
  * The buffered transform id.
  */
 struct _xmlSecBufferedTransformIdStruct {
-    /* same as xmlSecTransformId */    
+    /* general data */
+    const xmlChar*			name;
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
     const xmlChar			*href;
-    
+
+    /* general methods */
     xmlSecTransformCreateMethod		create;
     xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
+    xmlSecTransformNodeReadMethod	readNode;    
+    xmlSecTransformSetKeyRequirements	setKeyReq;
+    xmlSecTransformSetKeyMethod		setKey;
     
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyValueId			keyId;
-    xmlSecKeyValueType			encryption;
-    xmlSecKeyValueType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
+    /* binary methods */
+    xmlSecTransformExecuteBinMethod	executeBin;
+
+    xmlSecTransformReadMethod		readBin; 
+    xmlSecTransformWriteMethod		writeBin;
+    xmlSecTransformFlushMethod		flushBin;
+
+    /* xml methods */
+    xmlSecTransformExecuteXmlMethod	executeXml;
+
+    /* c14n methods */
+    xmlSecTransformExecuteC14NMethod	executeC14N;
     
     /* xmlSecBufferedTransform data/methods */
     xmlSecBufferedProcessMethod		bufferedProcess;
@@ -84,7 +89,7 @@ struct _xmlSecBufferedTransformIdStruct {
 
 /**
  * xmlSecBufferedTransform:
- * @id: the transform id (pointer to #xmlSecBinTransformId).
+ * @id: the transform id (pointer to #xmlSecTransformId).
  * @status: the transform status (ok/fail/unknown).
  * @dontDestroy: the don't automatically destroy flag.
  * @data: the pointer to transform specific data.
@@ -97,17 +102,23 @@ struct _xmlSecBufferedTransformIdStruct {
  * The buffered transform.
  */
 struct _xmlSecBufferedTransform {	
-    /* same as for xmlSecTransform but id type changed */
-    xmlSecBufferedTransformId		id;    
+    /* general data */
+    xmlSecTransformId 			id; 
     xmlSecTransformStatus		status;
     int					dontDestroy;
-    void				*data;
-    
-    /* xmlSecBinTransform specific */
+
+    /* binary specific */
     int					encode;
-    xmlSecBinTransformPtr		next;
-    xmlSecBinTransformPtr		prev;   
-    void				*binData;
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+    
+    /* xml specific */
+    xmlNodePtr				hereNode;
+    
+    void*				reserved0;
+    void*				reserved1;
+    void*				reserved2;
+    void*				reserved3;
     
     /* xmlSecBufferedTransform specific */
     xmlBufferPtr			buffer;
@@ -116,17 +127,17 @@ struct _xmlSecBufferedTransform {
 /**
  * BinTransform methods to be used in the Id structure
  */
-XMLSEC_EXPORT int  	xmlSecBufferedTransformRead	(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecBufferedTransformRead	(xmlSecTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
-XMLSEC_EXPORT int  	xmlSecBufferedTransformWrite	(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecBufferedTransformWrite	(xmlSecTransformPtr transform, 
                                         		 const unsigned char *buf, 
 							 size_t size);
-XMLSEC_EXPORT int  	xmlSecBufferedTransformFlush	(xmlSecBinTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecBufferedTransformFlush	(xmlSecTransformPtr transform);
 
 
 XMLSEC_EXPORT void 	xmlSecBufferedDestroy		(xmlSecBufferedTransformPtr buffered);
-XMLSEC_EXPORT int 	xmlSecBufferedProcess		(xmlSecBinTransformPtr transform,
+XMLSEC_EXPORT int 	xmlSecBufferedProcess		(xmlSecTransformPtr transform,
 							 xmlBufferPtr buffer);
 
 #ifdef __cplusplus

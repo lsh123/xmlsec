@@ -14,85 +14,101 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <time.h>
+
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
-
-XMLSEC_EXPORT xmlSecKeyPtr xmlSecKeyInfoNodeRead	(xmlNodePtr keyInfoNode,
-							 xmlSecKeysMngrCtxPtr keysMngrCtx);
-XMLSEC_EXPORT int 	xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
-							 xmlSecKeysMngrCtxPtr keysMngrCtx,
-							 xmlSecKeyPtr key,
-							 xmlSecKeyValueType type);
-
-
-
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddKeyName	(xmlNodePtr keyInfoNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddKeyValue	(xmlNodePtr keyInfoNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddX509Data	(xmlNodePtr keyInfoNode);
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddRetrievalMethod	
-							(xmlNodePtr keyInfoNode,
-							 const xmlChar *uri,
-							 const xmlChar *type);
-XMLSEC_EXPORT xmlNodePtr xmlSecRetrievalMethodAddTransform	
-							(xmlNodePtr retrMethod,
-							 xmlSecTransformId transform);						 							 
-XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
-							 const xmlChar *id,
-							 const xmlChar *type,
-							 const xmlChar *recipient);    
-
-/** 
- * These methods most likely should not be used by application.
+/**
+ * Hi level functions
  */
-XMLSEC_EXPORT int xmlSecKeyInfoReadAESKeyValueNode	(xmlNodePtr node,
-							 unsigned char** key,
-							 size_t* keySize); 
-XMLSEC_EXPORT int xmlSecKeyInfoWriteAESKeyValueNode	(xmlNodePtr node,
-							 const unsigned char* key,
-							 size_t keySize); 
-XMLSEC_EXPORT int xmlSecKeyInfoReadDESKeyValueNode	(xmlNodePtr node,
-							 unsigned char** key,
-							 size_t* keySize); 
-XMLSEC_EXPORT int xmlSecKeyInfoWriteDESKeyValueNode	(xmlNodePtr node,
-							 const unsigned char* key,
-							 size_t keySize); 
-XMLSEC_EXPORT int xmlSecKeyInfoReadHMACKeyValueNode	(xmlNodePtr node,
-							 unsigned char** key,
-							 size_t* keySize); 
-XMLSEC_EXPORT int xmlSecKeyInfoWriteHMACKeyValueNode	(xmlNodePtr node,
-							 const unsigned char* key,
-							 size_t keySize); 
+XMLSEC_EXPORT int	 	xmlSecKeyInfoNodeRead		(xmlNodePtr keyInfoNode,
+								 xmlSecKeyPtr key,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int 		xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
+								 xmlSecKeyPtr key,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-XMLSEC_EXPORT int xmlSecKeyInfoReadDSAKeyValueNode	(xmlNodePtr node, 
-							 unsigned char** pValue, size_t* pSize,
-							 unsigned char** qValue, size_t* qSize,
-							 unsigned char** gValue, size_t* gSize,
-							 unsigned char** xValue, size_t* xSize,
-							 unsigned char** yValue, size_t* ySize,
-							 unsigned char** jValue, size_t* jSize);
+/**
+ * xmlSecKeyDataNameId
+ *
+ * The <dsig:KeyName> processing class.
+ */
+#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataNameGetKlass		(void);
 
-XMLSEC_EXPORT int xmlSecKeyInfoWriteDSAKeyValueNode	(xmlNodePtr node, 
-							 const unsigned char* pValue, size_t pSize,
-							 const unsigned char* qValue, size_t qSize,
-							 const unsigned char* gValue, size_t gSize,
-							 const unsigned char* xValue, size_t xSize,
-							 const unsigned char* yValue, size_t ySize,
-							 const unsigned char* jValue, size_t jSize);
+/**
+ * xmlSecKeyDataValueId
+ *
+ * The <dsig:KeyValue> processing class.
+ */
+#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataValueGetKlass		(void);
 
-XMLSEC_EXPORT int xmlSecKeyInfoReadRSAKeyValueNode	(xmlNodePtr node, 
-							unsigned char** modValue, size_t* modSize,
-							unsigned char** expValue, size_t* expSize,
-							unsigned char** privExpValue, size_t* privExpSize);
+/**
+ * xmlSecKeyDataRetrievalMethodId
+ *
+ * The <dsig:RetrievalMethod> processing class.
+ */
+#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataRetrievalMethodGetKlass	(void);
 
-XMLSEC_EXPORT int xmlSecKeyInfoWriteRSAKeyValueNode	(xmlNodePtr node, 
-							const unsigned char* modValue, size_t modSize,
-							const unsigned char* expValue, size_t expSize,
-							const unsigned char* privExpValue, size_t privExpSize);
+#ifndef XMLSEC_NO_XMLENC
+/**
+ * xmlSecKeyDataEncryptedKeyId
+ *
+ * The <enc:EncryptedKey> processing class.
+ */
+#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId	xmlSecKeyDataEncryptedKeyGetKlass	(void);
+#endif /* XMLSEC_NO_XMLENC */
 
+
+
+
+/**
+ * xmlSecKeyInfoCtx:
+ * TODO
+ */
+struct _xmlSecKeyInfoCtx {
+    xmlSecKeysMngrPtr			keysMngr;
+    void				*context;
+    
+    xmlSecKeyDataId			keyId;
+    xmlSecKeyDataType			keyType;
+    xmlSecKeyUsage			keyUsage;
+    
+    int					base64LineSize;
+    int 				retrievalsLevel;
+    int					encKeysLevel;                
+
+    /* x509 certificate */
+    int					failIfCertNotFound;
+    time_t				certsVerificationTime;
+    int					certsVerificationDepth;
+};
+
+#define xmlSecKeyInfoNodeCheckOrigin(status, origin) \
+	( ( ((status) != NULL) && \
+	    ((status)->keysMngr != NULL) && \
+	    ((status)->keysMngr->allowedOrigins & origin) ) ? \
+	    1 : 0 )
+#define xmlSecKeyInfoNodeCheckRetrievalsLevel(status) \
+	( ( ((status) != NULL) && \
+	    ((status)->keysMngr != NULL) && \
+	    ((status)->keysMngr->maxRetrievalsLevel >= 0) ) ? \
+	    ((status)->keysMngr->maxRetrievalsLevel >= (status)->retrievalsLevel) : \
+	    1 )
+#define xmlSecKeyInfoNodeCheckEncKeysLevel(status) \
+	( ( ((status) != NULL) && \
+	    ((status)->keysMngr != NULL) && \
+	    ((status)->keysMngr->maxEncKeysLevel >= 0) ) ? \
+	    ((status)->keysMngr->maxEncKeysLevel >= (status)->encKeysLevel) : \
+	    1 )
+		    
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

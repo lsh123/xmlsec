@@ -29,6 +29,7 @@ XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const unsigned char *prefix,
 							 const unsigned char *postfix, 
 							 size_t postfixSize);
 
+XMLSEC_EXPORT const xmlChar* 	xmlSecGetNodeNsHref	(const xmlNodePtr cur);
 XMLSEC_EXPORT int		xmlSecCheckNodeName	(const xmlNodePtr cur, 
 							 const xmlChar *name, 
 							 const xmlChar *ns);
@@ -59,18 +60,11 @@ XMLSEC_EXPORT int		xmlSecReplaceContent	(xmlNodePtr node,
 XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 							 const unsigned char *buffer, 
 							 size_t size);
-XMLSEC_EXPORT int 		xmlSecGetBase64NodeContent (xmlNodePtr node,
-							 unsigned char** data,
-							 size_t* dataSize);
-XMLSEC_EXPORT int 		xmlSecSetBase64NodeContent (xmlNodePtr node,
-							 const unsigned char* data,
-							 size_t dataSize);
+
 
 XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 xmlNodePtr cur,
 							 const xmlChar** ids);
-
-
 /**
  * xmlSecIsHex:
  * @c: the character.

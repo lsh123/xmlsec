@@ -13,6 +13,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
+#include <openssl/evp.h>
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 
@@ -22,9 +24,6 @@ extern "C" {
 
 typedef struct _xmlSecCipherTransform 	xmlSecCipherTransform, *xmlSecCipherTransformPtr; 
 typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
-
-typedef int (*xmlSecCipherGenerateIvMethod)	(xmlSecCipherTransformPtr transform);
-typedef int (*xmlSecCipherInitMethod)		(xmlSecCipherTransformPtr transform);
 
 /**
  * xmlSecCipherUpdateMethod:
@@ -75,29 +74,33 @@ typedef int (*xmlSecCipherFinalMethod)		(xmlSecCipherTransformPtr transform);
  * The cipher (encrypt/decrypt) transform id.
  */
 struct _xmlSecCipherTransformIdStruct {
-    /* same as xmlSecTransformId */    
+    /* general data */
+    const xmlChar*			name;
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
     const xmlChar			*href;
-    
+
+    /* general methods */
     xmlSecTransformCreateMethod		create;
     xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
+    xmlSecTransformNodeReadMethod	readNode;    
+    xmlSecTransformSetKeyRequirements	setKeyReq;
+    xmlSecTransformSetKeyMethod		setKey;
     
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyValueId			keyId;
-    xmlSecKeyValueType			encryption;
-    xmlSecKeyValueType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
-    
+    /* binary methods */
+    xmlSecTransformExecuteBinMethod	executeBin;
+
+    xmlSecTransformReadMethod		readBin; 
+    xmlSecTransformWriteMethod		writeBin;
+    xmlSecTransformFlushMethod		flushBin;
+
+    /* xml methods */
+    xmlSecTransformExecuteXmlMethod	executeXml;
+
+    /* c14n methods */
+    xmlSecTransformExecuteC14NMethod	executeC14N;
+
     /* xmlSecCipherTransform data/methods */
-    xmlSecCipherGenerateIvMethod	cipherGenerateIv;
-    xmlSecCipherInitMethod		cipherInit;
     xmlSecCipherUpdateMethod		cipherUpdate;
     xmlSecCipherFinalMethod		cipherFinal;
     size_t				keySize;
@@ -108,7 +111,7 @@ struct _xmlSecCipherTransformIdStruct {
 
 /**
  * xmlSecCipherTransform:
- * @id: the transform id (pointer to #xmlSecBinTransformId).
+ * @id: the transform id (pointer to #xmlSecTransformId).
  * @status: the transform status (ok/fail/unknown).
  * @dontDestroy: the don't automatically destroy flag.
  * @data: the pointer to transform specific data.
@@ -126,43 +129,56 @@ struct _xmlSecCipherTransformIdStruct {
  * The cipher (encrypt/decrypt) transform.
  */
 struct _xmlSecCipherTransform {	
-    /* same as for xmlSecTransform but id type changed */
-    xmlSecCipherTransformId		id;    
+    /* general data */
+    xmlSecTransformId 			id; 
     xmlSecTransformStatus		status;
     int					dontDestroy;
-    void				*data;
-    
-    /* xmlSecBinTransform specific */
+
+    /* binary specific */
     int					encode;
-    xmlSecCipherTransformPtr		next;
-    xmlSecCipherTransformPtr		prev;   
-    void				*binData;
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+    
+    /* xml specific */
+    xmlNodePtr				hereNode;
+    
+    void*				reserved0;
+    void*				reserved1;
+    void*				reserved2;
+    void*				reserved3;
     
     /* xmlSecCipherTransform specific */
     unsigned char			*bufIn;
     unsigned char			*bufOut;
+    EVP_CIPHER_CTX 			cipherCtx;
     unsigned char			*iv;
     size_t				ivPos;
     void				*cipherData;
 };
 
 /**
- * BinTransform methods to be used in the Id structure
+ * Transform methods to be used in the Id structure
  */
-XMLSEC_EXPORT int  	xmlSecCipherTransformRead	(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecCipherTransformRead	(xmlSecTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
-XMLSEC_EXPORT int  	xmlSecCipherTransformWrite	(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecCipherTransformWrite	(xmlSecTransformPtr transform, 
                                         		 const unsigned char *buf, 
 							 size_t size);
-XMLSEC_EXPORT int  	xmlSecCipherTransformFlush	(xmlSecBinTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecCipherTransformFlush	(xmlSecTransformPtr transform);
 
 
 /**
+ * EVP Cipher methods
+ */
+XMLSEC_EXPORT int 	xmlSecEvpCipherUpdate		(xmlSecCipherTransformPtr cipher,
+							 const unsigned char *buffer,
+							 size_t size);
+XMLSEC_EXPORT int 	xmlSecEvpCipherFinal		(xmlSecCipherTransformPtr cipher);
+ 
+/**
  * Low-level methods
  */
-XMLSEC_EXPORT int 	xmlSecCipherGenerateIv		(xmlSecTransformPtr transform);
-XMLSEC_EXPORT int 	xmlSecCipherInit		(xmlSecTransformPtr transform);
 XMLSEC_EXPORT int 	xmlSecCipherUpdate		(xmlSecTransformPtr transform,
 							 const unsigned char *buffer,
 							 size_t size);
@@ -172,5 +188,5 @@ XMLSEC_EXPORT int 	xmlSecCipherFinal		(xmlSecTransformPtr transform);
 }
 #endif /* __cplusplus */
 
-#endif /* __XMLSEC_			CIPHERS_H__ */
+#endif /* __XMLSEC_CIPHERS_H__ */
 

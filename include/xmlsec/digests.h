@@ -92,25 +92,31 @@ typedef int (*xmlSecDigestVerifyMethod)		(xmlSecDigestTransformPtr transform,
  * The digest transform id (%xmlSecTransformTypeBinary type).
  */ 
 struct _xmlSecDigestTransformIdStruct {
-    /* same as xmlSecTransformId */    
+    /* general data */
+    const xmlChar*			name;
     xmlSecTransformType			type;
     xmlSecTransformUsage		usage;
     const xmlChar			*href;
-    
+
+    /* general methods */
     xmlSecTransformCreateMethod		create;
     xmlSecTransformDestroyMethod	destroy;
-    xmlSecTransformReadNodeMethod	read;
+    xmlSecTransformNodeReadMethod	readNode;    
+    xmlSecTransformSetKeyRequirements	setKeyReq;
+    xmlSecTransformSetKeyMethod		setKey;
     
-    /* xmlSecBinTransform data/methods */
-    xmlSecKeyValueId			keyId;
-    xmlSecKeyValueType			encryption;
-    xmlSecKeyValueType			decryption;
-    xmlSecBinTransformSubType		binSubType;
-            
-    xmlSecBinTransformAddKeyMethod	addBinKey;
-    xmlSecBinTransformReadMethod	readBin;
-    xmlSecBinTransformWriteMethod	writeBin;
-    xmlSecBinTransformFlushMethod	flushBin;    
+    /* binary methods */
+    xmlSecTransformExecuteBinMethod	executeBin;
+
+    xmlSecTransformReadMethod		readBin; 
+    xmlSecTransformWriteMethod		writeBin;
+    xmlSecTransformFlushMethod		flushBin;
+
+    /* xml methods */
+    xmlSecTransformExecuteXmlMethod	executeXml;
+
+    /* c14n methods */
+    xmlSecTransformExecuteC14NMethod	executeC14N;
     
     /* xmlSecDigestTransform data/methods */
     xmlSecDigestUpdateMethod		digestUpdate;
@@ -120,7 +126,7 @@ struct _xmlSecDigestTransformIdStruct {
 
 /**
  * xmlSecDigestTransform:
- * @id: the transform id (pointer to #xmlSecBinTransformId).
+ * @id: the transform id (pointer to #xmlSecTransformId).
  * @status: the transform status (ok/fail/unknown).
  * @dontDestroy: the don't automatically destroy flag.
  * @data: the pointer to transform specific data.
@@ -137,22 +143,29 @@ struct _xmlSecDigestTransformIdStruct {
  * The digests transform.
  */ 
 struct _xmlSecDigestTransform {	
-    /* same as for xmlSecTransform but id type changed */
-    xmlSecDigestTransformId		id;    
+    /* general data */
+    xmlSecTransformId 			id; 
     xmlSecTransformStatus		status;
     int					dontDestroy;
-    void				*data;
-    
-    /* xmlSecBinTransform specific */
+
+    /* binary specific */
     int					encode;
-    xmlSecDigestTransformPtr		next;
-    xmlSecDigestTransformPtr		prev;   
-    void				*binData;
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+    
+    /* xml specific */
+    xmlNodePtr				hereNode;
+    
+    void*				reserved0;
+    void*				reserved1;
+    void*				reserved2;
+    void*				reserved3;
     
     /* xmlSecDigestTransform specific */
     int					pushModeEnabled;
     unsigned char			*digest;
     size_t				digestSize;
+    unsigned char			digestLastByteMask;
     void 				*digestData;
 };
 
@@ -182,15 +195,15 @@ XMLSEC_EXPORT int 	xmlSecDigestVerify		(xmlSecTransformPtr transform,
 
 
 /**
- * BinTransform methods to be used in the Id structure
+ * Transform methods to be used in the Id structure
  */
-XMLSEC_EXPORT int  	xmlSecDigestTransformRead	(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecDigestTransformRead	(xmlSecTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
-XMLSEC_EXPORT int  	xmlSecDigestTransformWrite	(xmlSecBinTransformPtr transform, 
+XMLSEC_EXPORT int  	xmlSecDigestTransformWrite	(xmlSecTransformPtr transform, 
                                         		 const unsigned char *buf, 
 							 size_t size);
-XMLSEC_EXPORT int  	xmlSecDigestTransformFlush	(xmlSecBinTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecDigestTransformFlush	(xmlSecTransformPtr transform);
 
 
 

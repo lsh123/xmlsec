@@ -1,5 +1,6 @@
-NULL=
-SUBDIRS = $(XMLSEC_CRYPTO)
+## Process this file with automake to produce Makefile.in
+
+SUBDIRS = openssl
 
 xmlsecincdir = $(includedir)/xmlsec
 
@@ -7,33 +8,25 @@ xmlsecinc_HEADERS = \
 base64.h \
 buffered.h \
 ciphers.h \
-crypto.h \
-debug.h \
 digests.h \
+debug.h \
 errors.h \
 io.h \
 keyinfo.h \
 keys.h \
-keyvalue.h \
-keysInternal.h \
 keysmngr.h \
 list.h \
-map.h \
 membuf.h \
 nodeset.h \
-object.h \
-pgp.h \
-serializable.h \
 strings.h \
+templates.h \
 transforms.h \
 transformsInternal.h \
 version.h \
-x509.h \
 xmldsig.h \
 xmlenc.h \
 xmlsec.h \
-xmltree.h \
-$(NULL)
+xmltree.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlsecincdir)

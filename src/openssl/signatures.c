@@ -119,7 +119,9 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
 
+#ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_init(&(ctx->digestCtx));
+#endif /* XMLSEC_OPENSSL_096 */
     return(0);
 }
 
@@ -136,7 +138,10 @@ xmlSecOpenSSLEvpSignatureFinalize(xmlSecTransformPtr transform) {
     if(ctx->pKey != NULL) {
 	EVP_PKEY_free(ctx->pKey);
     }
+
+#ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_cleanup(&(ctx->digestCtx));
+#endif /* XMLSEC_OPENSSL_096 */
     memset(ctx, 0, sizeof(xmlSecOpenSSLEvpSignatureCtx));    
 }
 
@@ -274,6 +279,7 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
     if(transform->status == xmlSecTransformStatusNone) {
 	if(transform->encode) {
+#ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_SignInit(&(ctx->digestCtx), ctx->digest);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -283,7 +289,11 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
+#else /* XMLSEC_OPENSSL_096 */
+	    EVP_SignInit(&(ctx->digestCtx), ctx->digest);
+#endif /* XMLSEC_OPENSSL_096 */
 	} else {
+#ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_VerifyInit(&(ctx->digestCtx), ctx->digest);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -293,12 +303,16 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
+#else /* XMLSEC_OPENSSL_096 */
+	    EVP_VerifyInit(&(ctx->digestCtx), ctx->digest);
+#endif /* XMLSEC_OPENSSL_096 */
 	}
 	transform->status = xmlSecTransformStatusWorking;
     }
     
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
 	if(transform->encode) {
+#ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -308,7 +322,11 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
+#else /* XMLSEC_OPENSSL_096 */
+	    EVP_SignUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
+#endif /* XMLSEC_OPENSSL_096 */
 	} else {
+#ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_VerifyUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
 	    if(ret != 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -318,6 +336,9 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 			    XMLSEC_ERRORS_NO_MESSAGE);
 		return(-1);
 	    }
+#else /* XMLSEC_OPENSSL_096 */
+	    EVP_VerifyUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
+#endif /* XMLSEC_OPENSSL_096 */
 	}
 	    
 	ret = xmlSecBufferRemoveHead(in, inSize);
@@ -454,6 +475,7 @@ xmlSecOpenSSLTransformDsaSha1GetKlass(void) {
  * <SignatureValue>i6watmQQQ1y3GB+VsWq5fJKzQcBB4jRfH1bfJFj0JtFVtLotttzYyA==</SignatureValue>
  *
  ***************************************************************************/
+#ifndef XMLSEC_OPENSSL_096
 static int 
 xmlSecOpenSSLDsaEvpInit(EVP_MD_CTX *ctx)
 { 
@@ -471,6 +493,7 @@ xmlSecOpenSSLDsaEvpFinal(EVP_MD_CTX *ctx,unsigned char *md)
 { 
     return SHA1_Final(md,ctx->md_data); 
 }
+#endif /* XMLSEC_OPENSSL_096 */
 
 static int 	
 xmlSecOpenSSLDsaEvpSign(int type ATTRIBUTE_UNUSED, 
@@ -554,12 +577,18 @@ static const EVP_MD xmlSecOpenSSLDsaMdEvp = {
     NID_dsaWithSHA,
     NID_dsaWithSHA,
     SHA_DIGEST_LENGTH,
+#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLDsaEvpInit,
     xmlSecOpenSSLDsaEvpUpdate,
     xmlSecOpenSSLDsaEvpFinal,
     NULL,
     NULL,
+#else /* XMLSEC_OPENSSL_096 */
+    SHA1_Init,
+    SHA1_Update,
+    SHA1_Final,
+#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLDsaEvpSign,
     xmlSecOpenSSLDsaEvpVerify, 
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},

@@ -103,7 +103,10 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+
+#ifndef XMLSEC_OPENSSL_096
     HMAC_CTX_init(&(ctx->hmacCtx));
+#endif /* XMLSEC_OPENSSL_096 */
     return(0);
 }
 
@@ -117,7 +120,9 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert(ctx != NULL);
     
+#ifndef XMLSEC_OPENSSL_096
     HMAC_CTX_cleanup(&(ctx->hmacCtx));
+#endif /* XMLSEC_OPENSSL_096 */
     memset(ctx, 0, sizeof(xmlSecOpenSSLHmacCtx));
 }
 

@@ -150,8 +150,8 @@ XMLSEC_CRYPTO_LDADDS=""
 dnl ==========================================================================
 dnl OpenSSL
 dnl ==========================================================================
-ac_openssl_lib_dir="/usr/lib /usr/local/lib /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
-ac_openssl_inc_dir="/usr/include /usr/local/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
+ac_openssl_lib_dir="/usr/local/lib /usr/lib /usr/local /usr/local/ssl /usr/local/ssl/lib /usr/pkg"
+ac_openssl_inc_dir="/usr/local/include /usr/include /usr/local /usr/local/ssl /usr/pkg /usr/local/ssl/include"
 
 XMLSEC_OPENSSL_DEFINES=""
 OPENSSL_WITHOUT="yes"

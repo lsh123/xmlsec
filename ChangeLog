@@ -1,3 +1,8 @@
+Mon 29 Sep 2003 07:27:14 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/download.html docs/index.html docs/news.html: preparation
+	for 1.2.0 release
+
 Mon 29 Sep 2003 07:07:07 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/mscrypto: 2nd code review pass

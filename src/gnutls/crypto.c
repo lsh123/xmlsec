@@ -65,6 +65,14 @@ xmlSecGnuTLSShutdown(void) {
 }
 
 int
+xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+    xmlSecAssert2(mngr != NULL, -1);
+
+    /* TODO: add key data stores */
+    return(0);
+}
+
+int
 xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
     int ret;
     

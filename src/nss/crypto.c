@@ -67,6 +67,14 @@ xmlSecNssShutdown(void) {
 }
 
 int
+xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+    xmlSecAssert2(mngr != NULL, -1);
+
+    /* TODO: add key data stores */
+    return(0);
+}
+
+int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
     SECStatus rv;
     int ret;

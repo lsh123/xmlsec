@@ -22,6 +22,8 @@ extern "C" {
  */
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssInit			(void);
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssShutdown		(void);
+
+XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeysMngrInit		(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssGenerateRandom		(xmlSecBufferPtr buffer,
 									 size_t sizeBytes);
 

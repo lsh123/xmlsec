@@ -506,34 +506,16 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 	    return(-1);        
 	}
     }
-    
-#ifndef XMLSEC_NO_X509
-    /* create x509 store if needed */
-    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId) == NULL) {
-	xmlSecKeyDataStorePtr x509Store;
 
-        x509Store = xmlSecKeyDataStoreCreate(xmlSecOpenSSLX509StoreId);
-	if(x509Store == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecKeyDataStoreCreate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLX509StoreId");
-	    return(-1);   
-	}
-    
-        ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
-        if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecKeysMngrAdoptDataStore",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecKeyDataStoreDestroy(x509Store);
-	    return(-1); 
-	}
+    ret = xmlSecOpenSSLKeysMngrInit(mngr);    
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLKeysMngrInit",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1); 
     }
-#endif /* XMLSEC_NO_X509 */    
     
     /* TODO */
     mngr->getKey = xmlSecKeysMngrGetKey;

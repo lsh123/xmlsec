@@ -177,6 +177,16 @@ xmlSecGnuTLSAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 	    return(-1);        
 	}
     }
+
+    ret = xmlSecGnuTLSKeysMngrInit(mngr);    
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecGnuTLSKeysMngrInit",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1); 
+    }
     
     /* TODO */
     mngr->getKey = xmlSecKeysMngrGetKey;

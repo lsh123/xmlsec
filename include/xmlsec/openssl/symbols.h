@@ -25,6 +25,9 @@ extern "C" {
 #define xmlSecCryptoInit			xmlSecOpenSSLInit
 #define xmlSecCryptoShutdown			xmlSecOpenSSLShutdown
 
+#define xmlSecCryptoKeysMngrInit		xmlSecOpenSSLKeysMngrInit
+#define xmlSecCryptoGenerateRandom		xmlSecOpenSSLGenerateRandom
+
 /**
  * Key data ids
  */

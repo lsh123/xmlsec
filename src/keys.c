@@ -833,8 +833,6 @@ xmlSecKeyPtr
 xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     xmlSecKeyPtr key;
     xmlSecBuffer buffer;
-    xmlSecByte buf[1024];
-    FILE *f;
     int ret;
     
     xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, NULL);
@@ -851,37 +849,17 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 	return(NULL);	
     }
 
-    f = fopen(filename, "rb");
-    if(f == NULL) {
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-		    "fopen",
-		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "xmlSecBufferReadFile",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "filename=%s", 
 		    xmlSecErrorsSafeString(filename));
 	xmlSecBufferFinalize(&buffer);
 	return(NULL);
     }
-
-    while(1) {
-        ret = fread(buf, 1, sizeof(buf), f);
-	if(ret > 0) {
-	    xmlSecBufferAppend(&buffer, buf, ret);
-	} else if(ret == 0) {
-	    break;
-	} else {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
-			"fread",
-			XMLSEC_ERRORS_R_IO_FAILED,
-			"filename=%s", 
-			xmlSecErrorsSafeString(filename));
-	    fclose(f);
-	    xmlSecBufferFinalize(&buffer);
-	    return(NULL);
-	}
-    }
-    fclose(f);    
 
     key = xmlSecKeyReadBuffer(dataId, &buffer);
     if(key == NULL) {

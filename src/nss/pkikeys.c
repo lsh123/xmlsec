@@ -122,7 +122,7 @@ xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
 			NULL,
 			"SECKEY_CopyPrivateKey",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", PORT_GetError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -134,7 +134,7 @@ xmlSecNSSPKIKeyDataCtxDup(xmlSecNssPKIKeyDataCtxPtr ctxDst,
 			NULL,
 			"SECKEY_CopyPublicKey",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", PORT_GetError());
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
@@ -559,7 +559,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	ret = -1;
 	goto done;
     }
@@ -570,7 +570,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "PORT_NewArena",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	ret = -1;
 	goto done;
     }
@@ -582,7 +582,7 @@ xmlSecNssKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "PORT_ArenaZAlloc",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	PORT_FreeArena(arena, PR_FALSE);
 	ret = -1;
 	goto done;
@@ -900,7 +900,7 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "PK11_PQG_ParamGen",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "size=%d, error code=%d", sizeBits, PORT_GetError());
+		    "size=%d", sizeBits);
 	goto done;
     }
 
@@ -910,7 +910,7 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "PK11_PQG_VerifyParams",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "size=%d, error code=%d", sizeBits, PORT_GetError());
+		    "size=%d", sizeBits);
 	goto done;
     }
 
@@ -924,7 +924,7 @@ xmlSecNssKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "PK11_GenerateKeyPair",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
         
 	goto done;
     }
@@ -1182,7 +1182,7 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "PK11_GetBestSlot",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+                    XMLSEC_ERRORS_NO_MESSAGE);
         ret = -1;
         goto done;
     }
@@ -1193,7 +1193,7 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "PORT_NewArena",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+                    XMLSEC_ERRORS_NO_MESSAGE);
         ret = -1;
         goto done;
     }
@@ -1205,7 +1205,7 @@ xmlSecNssKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "PORT_ArenaZAlloc",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+                    XMLSEC_ERRORS_NO_MESSAGE);
 	PORT_FreeArena(arena, PR_FALSE);
         ret = -1;
         goto done;
@@ -1425,7 +1425,7 @@ xmlSecNssKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "PK11_GenerateKeyPair",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
         
 	goto done;
     }

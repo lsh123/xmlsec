@@ -64,33 +64,33 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppKeyLoad		(const char *filename, 
 									 xmlSecKeyDataFormat format,
 									 const char *pwd,
-									 pem_password_cb *pwdCallback,
+									 void* wdCallback,
 									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppKeyLoadMemory	(const xmlSecByte* data,
 									 xmlSecSize dataSize, 
 									 xmlSecKeyDataFormat format,
 									 const char *pwd,
-									 pem_password_cb *pwdCallback,
+									 void* pwdCallback,
 									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppKeyLoadBIO	(BIO* bio,
 									 xmlSecKeyDataFormat format,
 									 const char *pwd,
-									 pem_password_cb *pwdCallback,
+									 void* pwdCallback,
 									 void* pwdCallbackCtx);
 
 #ifndef XMLSEC_NO_X509
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppPkcs12Load	(const char* filename, 
 									 const char* pwd,
-									 pem_password_cb* pwdCallback, 
+									 void* pwdCallback, 
 									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data,
 									 xmlSecSize dataSize, 
 									 const char* pwd,
-									 pem_password_cb* pwdCallback, 
+									 void* pwdCallback, 
 									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppPkcs12LoadBIO	(BIO* bio, 
 									 const char* pwd,
-									 pem_password_cb* pwdCallback, 
+									 void* pwdCallback, 
 									 void* pwdCallbackCtx);
 
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeyCertLoad	(xmlSecKeyPtr key,

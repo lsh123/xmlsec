@@ -31,6 +31,13 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeysMngrInit		(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecNssGenerateRandom		(xmlSecBufferPtr buffer,
 									 xmlSecSize size);
 
+XMLSEC_CRYPTO_EXPORT void		xmlSecNssErrorsDefaultCallback	(const char* file, 
+									int line, 
+									const char* func,
+									const char* errorObject, 
+									const char* errorSubject,
+									int reason, 
+									const char* msg);
 
 /********************************************************************
  *

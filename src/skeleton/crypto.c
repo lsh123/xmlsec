@@ -129,10 +129,14 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->cryptoAppDefaultKeysMngrSave 	= xmlSecSkeletonAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecSkeletonFunctions->cryptoAppKeysMngrCertLoad 	= xmlSecSkeletonAppKeysMngrCertLoad;
+    gXmlSecSkeletonFunctions->cryptoAppKeysMngrCertLoadMemory 	= xmlSecSkeletonAppKeysMngrCertLoadMemory;
     gXmlSecSkeletonFunctions->cryptoAppPkcs12Load  		= xmlSecSkeletonAppPkcs12Load; 
+    gXmlSecSkeletonFunctions->cryptoAppPkcs12LoadMemory		= xmlSecSkeletonAppPkcs12LoadMemory; 
     gXmlSecSkeletonFunctions->cryptoAppKeyCertLoad 		= xmlSecSkeletonAppKeyCertLoad;
+    gXmlSecSkeletonFunctions->cryptoAppKeyCertLoadMemory	= xmlSecSkeletonAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecSkeletonFunctions->cryptoAppKeyLoad 			= xmlSecSkeletonAppKeyLoad; 
+    gXmlSecSkeletonFunctions->cryptoAppKeyLoadMemory		= xmlSecSkeletonAppKeyLoadMemory; 
     gXmlSecSkeletonFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecSkeletonAppGetDefaultPwdCallback;
 
     return(gXmlSecSkeletonFunctions);

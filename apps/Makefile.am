@@ -77,3 +77,4 @@ xmlsec1_LDADD = \
 xmlsec1_DEPENDENCIES = \
 	$(CRYPTO_DEPS) \
 	$(NULL)
+

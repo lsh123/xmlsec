@@ -138,10 +138,14 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->cryptoAppDefaultKeysMngrSave 	= xmlSecOpenSSLAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoad 		= xmlSecOpenSSLAppKeysMngrCertLoad;
-    gXmlSecOpenSSLFunctions->cryptoAppPkcs12Load  		= (xmlSecCryptoAppPkcs12LoadMethod)xmlSecOpenSSLAppPkcs12Load; /* todo: to fix this we need to change xmlSecOpenSSLAppPkcs12Load signature */
+    gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoadMemory	= xmlSecOpenSSLAppKeysMngrCertLoadMemory;
+    gXmlSecOpenSSLFunctions->cryptoAppPkcs12Load  		= xmlSecOpenSSLAppPkcs12Load; 
+    gXmlSecOpenSSLFunctions->cryptoAppPkcs12LoadMemory 		= xmlSecOpenSSLAppPkcs12LoadMemory; 
     gXmlSecOpenSSLFunctions->cryptoAppKeyCertLoad 		= xmlSecOpenSSLAppKeyCertLoad;
+    gXmlSecOpenSSLFunctions->cryptoAppKeyCertLoadMemory		= xmlSecOpenSSLAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecOpenSSLFunctions->cryptoAppKeyLoad 			= (xmlSecCryptoAppKeyLoadMethod)xmlSecOpenSSLAppKeyLoad; /* todo: to fix this we need to fix the xmlSecOpenSSLAppKeyLoad signature */
+    gXmlSecOpenSSLFunctions->cryptoAppKeyLoad 			= xmlSecOpenSSLAppKeyLoad; 
+    gXmlSecOpenSSLFunctions->cryptoAppKeyLoadMemory		= xmlSecOpenSSLAppKeyLoadMemory; 
     gXmlSecOpenSSLFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecOpenSSLAppGetDefaultPwdCallback;
 
     return(gXmlSecOpenSSLFunctions);

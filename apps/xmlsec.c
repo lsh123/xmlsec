@@ -16,6 +16,8 @@
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>

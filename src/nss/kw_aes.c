@@ -521,7 +521,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
     	    	        NULL,
     		        "xmlSecNssMakeAesKey",
     		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-    		        "error code = %d", PORT_GetError());
+    		        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
         }
     
@@ -561,7 +561,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
     		        NULL,
     		        "xmlSecNssMakeAesKey",
     		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-    		        "error code = %d", PORT_GetError());
+    		        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
         }
         
@@ -630,7 +630,7 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
 		    NULL,
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -643,7 +643,7 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
 		    NULL,
 		    "PK11_ImportSymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -677,7 +677,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
 		    NULL,
 		    "PK11_ParamFromIV",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -689,7 +689,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
 		    NULL,
 		    "PK11_CreateContextBySymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -702,7 +702,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
 		    NULL,
 		    "PK11_CipherOp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -713,7 +713,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
 		    NULL,
 		    "PK11_DigestFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -772,7 +772,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -785,7 +785,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_ImportSymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -795,7 +795,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_ParamFromIV",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -807,7 +807,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_CreateContextBySymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -819,7 +819,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_CipherOp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -830,7 +830,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_DigestFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 

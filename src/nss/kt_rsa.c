@@ -315,7 +315,7 @@ xmlSecNssRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tra
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"PK11_PubEncryptRaw",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"size=%d, error code=%d", inSize, PORT_GetError());
+			"size=%d", inSize);
 	    return(-1);
 	}
     } else {
@@ -330,7 +330,7 @@ xmlSecNssRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr tra
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"PK11_PubDecryptRaw",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"size=%d, error code=%d", inSize, PORT_GetError());
+			"size=%d", inSize);
 	    return(-1);
 	}
 	outSize = outlen;

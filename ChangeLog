@@ -1,4 +1,12 @@
-Thu Sep 25 11:39:22 2003  Aleksey Sanin  <aleksey@aleksey.com>
+Thu 25 Sep 2003 05:51:37 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* include/ src/ win32/ docs/ Makefile.am configure.in: merging
+	from XMLSEC_MSCRYPTO_083103 branch - new xmlsec-mscrypto library
+	implemented by Wouter, general functions for reading keys and certs
+	from memory (openssl/nss/mscrypto), default error callback for nss,
+	moving private keys in 01-phaos-enc tests to pkcs12 file.
+
+Thu Sep 25 11:39:22 2003 Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c: added root nodes namespaces registration
 	for "--node-xpath" command line option processing (by request

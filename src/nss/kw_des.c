@@ -401,7 +401,7 @@ xmlSecNssKWDes3Encode(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_GenerateRandom",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);    
     }	
 
@@ -588,7 +588,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -601,7 +601,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_ImportSymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -614,7 +614,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_ParamFromIV",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -626,7 +626,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_CreateContextBySymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -638,7 +638,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_CipherOp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -649,7 +649,7 @@ xmlSecNssKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
 		    NULL,
 		    "PK11_DigestFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "Error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -710,7 +710,7 @@ xmlSecNssComputeSHA1(const xmlSecByte *in, xmlSecSize inSize,
 		    NULL,
 		    "PK11_CreateDigestContext",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -720,7 +720,7 @@ xmlSecNssComputeSHA1(const xmlSecByte *in, xmlSecSize inSize,
 		    NULL,
 		    "PK11_DigestBegin",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -730,7 +730,7 @@ xmlSecNssComputeSHA1(const xmlSecByte *in, xmlSecSize inSize,
 		    NULL,
 		    "PK11_DigestOp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
 
@@ -740,7 +740,7 @@ xmlSecNssComputeSHA1(const xmlSecByte *in, xmlSecSize inSize,
 		    NULL,
 		    "PK11_DigestFinal",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code = %d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
     xmlSecAssert2(len == SHA1_LENGTH, NULL);

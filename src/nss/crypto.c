@@ -28,6 +28,10 @@
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
 
+#if defined(_MSC_VER)
+#define snprintf _snprintf
+#endif
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 
 xmlSecCryptoDLFunctionsPtr
@@ -130,10 +134,14 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrSave 	= xmlSecNssAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoad 	= xmlSecNssAppKeysMngrCertLoad;
+    gXmlSecNssFunctions->cryptoAppKeysMngrCertLoadMemory= xmlSecNssAppKeysMngrCertLoadMemory;
     gXmlSecNssFunctions->cryptoAppPkcs12Load  		= xmlSecNssAppPkcs12Load; 
+    gXmlSecNssFunctions->cryptoAppPkcs12LoadMemory	= xmlSecNssAppPkcs12LoadMemory; 
     gXmlSecNssFunctions->cryptoAppKeyCertLoad 		= xmlSecNssAppKeyCertLoad;
+    gXmlSecNssFunctions->cryptoAppKeyCertLoadMemory	= xmlSecNssAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
     gXmlSecNssFunctions->cryptoAppKeyLoad 		= xmlSecNssAppKeyLoad; 
+    gXmlSecNssFunctions->cryptoAppKeyLoadMemory		= xmlSecNssAppKeyLoadMemory; 
     gXmlSecNssFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecNssAppGetDefaultPwdCallback;
 
     return(gXmlSecNssFunctions);
@@ -157,6 +165,9 @@ xmlSecNssInit (void)  {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+
+    /* set default errors callback for xmlsec to us */
+    xmlSecErrorsSetCallback(xmlSecNssErrorsDefaultCallback);
 
     /* register our klasses */
     if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_nss()) < 0) {
@@ -262,11 +273,32 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
 		    NULL,
 		    "PK11_GenerateRandom",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "size=%d, error code=%d", size, PORT_GetError());
+		    "size=%d", size);
 	return(-1);    
     }    
     return(0);
 }
 
+/**
+ * xmlSecNssErrorsDefaultCallback:
+ * @file:		the error location file name (__FILE__ macro).
+ * @line:		the error location line number (__LINE__ macro).
+ * @func:		the error location function name (__FUNCTION__ macro).
+ * @errorObject:	the error specific error object 
+ * @errorSubject:	the error specific error subject.
+ * @reason:		the error code.
+ * @msg:		the additional error message.
+ *
+ * The default errors reporting callback function.
+ */
+void 
+xmlSecNssErrorsDefaultCallback(const char* file, int line, const char* func,
+				const char* errorObject, const char* errorSubject,
+				int reason, const char* msg) {
+    char buf[500];
 
-
+    snprintf(buf, sizeof(buf), "%s;last nss error=%d", msg, PORT_GetError());
+    xmlSecErrorsDefaultCallback(file, line, func, 
+		errorObject, errorSubject, 
+		reason, buf);
+}

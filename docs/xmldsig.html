@@ -51,7 +51,7 @@ type, whether located within the XML that includes the signature or elsewhere.
      </p>
 <p>      XML Security Library supports <a href="xmldsig-interop.html">all</a> MUST/SHOULD/MAY      features and algorithms
 described in the W3C standard and provides API to sign prepared document templates,
-add signature(s)   to a document "on-the-fly" or verify the signature(s)
+add signature(s)   to a document &quot;on-the-fly&quot; or verify the signature(s)
  in the document.             </p>
 <p>       <a href="http://www.aleksey.com/xmlsec/xmldsig-verifier.html">XML Digital Signature
 Online Verifier</a>       is an example of a real application based on XML
@@ -68,6 +68,8 @@ and get        detailed report on what and how was signed.        </p>
              <td valign="top" align="left"> <b>XMLSec with OpenSSL </b> </td>
              <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
              <td style="vertical-align: top;"> <b>XMLSec with NSS</b><b><a href="#new-version"></a></b> </td>
+             <td style="vertical-align: top;"> <b>XMLSec with MSCrypto</b> </td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a class="link-def" href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureDetac%20hed"> 
@@ -81,10 +83,13 @@ Detached</a> Signature<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a class="link-def" href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureEnvel%20oping"> 
-Enveloping</a> Signature: same document reference with fragment (URI="#Object1")<br>
+Enveloping</a> Signature: same document reference with fragment (URI=&quot;#Object1&quot;)<br>
 </td>
              <td valign="top" align="left">MUST <br>
 </td>
@@ -94,10 +99,13 @@ Enveloping</a> Signature: same document reference with fragment (URI="#Object1")
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a class="link-def" href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#def-SignatureEnvel%20oped"> 
-Enveloped</a> Signature: same document reference (URI="") with <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature"> 
+Enveloped</a> Signature: same document reference (URI=&quot;&quot;) with <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature"> 
 Enveloped Signature Transform</a> .<br>
 </td>
              <td valign="top" align="left">MUST <br>
@@ -108,6 +116,9 @@ Enveloped Signature Transform</a> .<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/2000/WD-xmldsig-core-20001012/#sec-SignatureValue%20"> 
@@ -121,6 +132,9 @@ SignatureValue</a> generation/validation<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"> Manifest</a> DigestValue
@@ -133,6 +147,9 @@ generation/valdiation<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> Feature: <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature"> laxly schema valid
@@ -146,6 +163,9 @@ Signature element</a> generation<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel"> XPointers</a>
@@ -159,10 +179,13 @@ Signature element</a> generation<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel"> XPointers</a>
-'#xpointer(id("<em>ID</em>"))'<br>
+'#xpointer(id(&quot;<em>ID</em>&quot;))'<br>
 </td>
              <td valign="top" align="left">SHOULD <br>
 </td>
@@ -172,6 +195,9 @@ Signature element</a> generation<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/xmldsig-core/#sec-ReferenceProcessingModel"> XPointers</a>:
@@ -184,6 +210,9 @@ full suppport </td>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/xmldsig-core/#sec-XPath"> XPath</a> <br>
@@ -196,6 +225,9 @@ full suppport </td>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> the dsig <a href="http://www.w3.org/TR/xmldsig-core/#sec-XPath"> XPath 'here()'</a>
@@ -209,6 +241,9 @@ function (can be used to implement enveloped signature)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> XSLT (note, the child <code> XSLT</code>
@@ -222,6 +257,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> RetrievalMethod (e.g., X509Data)<br>
@@ -234,6 +272,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/2000/09/xmldsig#sha1"> SHA1</a> <br>
@@ -246,6 +287,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/2000/09/xmldsig#base64"> Base64</a> <br>
@@ -258,6 +302,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/2000/09/xmldsig#hmac-sha1"> HMAC-SHA1</a> <br>
@@ -270,6 +317,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">N<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/2000/09/xmldsig#dsa"> DSAwithSHA1<br>
@@ -284,6 +334,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/2000/09/xmldsig#rsa-sha1"> RSAwithSHA1</a> <br>
@@ -296,6 +349,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top">X509 support<br>
@@ -308,6 +364,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/2000/09/xmldsig#minimal"> minimal</a> (deprecated)<br>
@@ -320,6 +379,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">N<br>
 </td>
+             <td style="vertical-align: top;">N<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/2000/WD-xml-c14n-20001011"> Canonical XML</a> 
@@ -333,6 +395,9 @@ element of Transform has been   deprecated.)<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/2000/WD-xml-c14n-20001011"> Canonical XML</a> 
@@ -346,6 +411,9 @@ with comments<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/2002/CR-xml-exc-c14n-20020212"> Exlusive Canonical
@@ -359,6 +427,9 @@ XML</a> <br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/TR/2002/CR-xml-exc-c14n-20020212"> Exlusive Canonical
@@ -372,6 +443,9 @@ XML</a> with comments<br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left"> <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html#sec-EnvelopedSignature"> 
@@ -385,6 +459,9 @@ Enveloped Signature</a> <br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top"> <b>Additional algorithms</b> 	    (<a href="http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt"> 
@@ -394,6 +471,8 @@ Enveloped Signature</a> <br>
              <td valign="top"><br></td>
              <td style="vertical-align: top;"><br></td>
              <td style="vertical-align: top;"><br></td>
+             <td style="vertical-align: top;"><br></td>
+
            </tr>
 <tr>
 <td valign="top" align="left">HMAC-MD5<br>
@@ -406,6 +485,9 @@ Enveloped Signature</a> <br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">N<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top">HMAC-RIPEMD160<br>
@@ -418,6 +500,9 @@ Enveloped Signature</a> <br>
 </td>
              <td style="vertical-align: top;">N<br>
 </td>
+             <td style="vertical-align: top;">N<br>
+</td>
+
            </tr>
 <tr>
 <td valign="top" align="left">XPointer transform<br>
@@ -430,6 +515,9 @@ Enveloped Signature</a> <br>
 </td>
              <td style="vertical-align: top;">Y<br>
 </td>
+             <td style="vertical-align: top;">Y<br>
+</td>
+
            </tr>
 </tbody></table>
 <div align="left"> <br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a> with

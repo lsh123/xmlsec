@@ -245,9 +245,8 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
                         xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
                         NULL,
                         XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                        "cert with subject name %s could not be verified, errcode %d",
-                        cert->subjectName,
-			PORT_GetError());
+                        "cert with subject name %s could not be verified",
+                        cert->subjectName);
 	    break;
     }
    
@@ -282,7 +281,7 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
                         xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
                         "CERT_NewCertList",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
     }
@@ -293,7 +292,7 @@ xmlSecNssX509StoreAdoptCert(xmlSecKeyDataStorePtr store, CERTCertificate* cert, 
                     xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
                     "CERT_AddCertToListTail",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
 
@@ -366,7 +365,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "PORT_NewArena",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 
@@ -376,7 +375,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "CERT_AsciiToName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 
@@ -387,7 +386,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "SEC_ASN1EncodeItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 
@@ -415,7 +414,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "PORT_NewArena",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 
@@ -425,7 +424,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "CERT_AsciiToName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 
@@ -436,7 +435,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "SEC_ASN1EncodeItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_NO_MESSAGE);
 	    goto done;
 	}
 

@@ -72,10 +72,33 @@ xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
     
-    if (format == xmlSecKeyDataFormatPkcs12) {
-	return (xmlSecSkeletonAppPkcs12Load(filename, pwd, pwdCallback,
-					    pwdCallbackCtx));
-    }
+    /* TODO: load key */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecSkeletonAppPemLoad",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(NULL);
+}
+
+/**
+ * xmlSecSkeletonAppKeyLoadMemory:
+ * @data:		the key binary data.
+ * @dataSize:		the key binary data size.
+ * @format:		the key data format.
+ * @pwd:		the key data2 password.
+ * @pwdCallback:	the key password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key from a binary @data.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr
+xmlSecSkeletonAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
+		    const char *pwd, void* pwdCallback, void* pwdCallbackCtx) {
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     /* TODO: load key */
     xmlSecError(XMLSEC_ERRORS_HERE,
@@ -85,6 +108,7 @@ xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(NULL);
 }
+
 
 #ifndef XMLSEC_NO_X509
 /**
@@ -146,6 +170,37 @@ xmlSecSkeletonAppPkcs12Load(const char *filename,
 }
 
 /**
+ * xmlSecSkeletonAppPkcs12LoadMemory:
+ * @data:		the key binary data.
+ * @dataSize:		the key binary data size.
+ * @pwd:		the PKCS12 password.
+ * @pwdCallback:	the password callback.
+ * @pwdCallbackCtx:	the user context for password callback.
+ *
+ * Reads key and all associated certificates from the PKCS12 binary data.
+ * For uniformity, call xmlSecSkeletonAppKeyLoad instead of this function. Pass
+ * in format=xmlSecKeyDataFormatPkcs12.
+ *
+ * Returns pointer to the key or NULL if an error occurs.
+ */
+xmlSecKeyPtr	
+xmlSecSkeletonAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
+		       void *pwdCallback ATTRIBUTE_UNUSED, 
+		       void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+    xmlSecAssert2(data != NULL, NULL);
+
+    /* TODO: load pkcs12 file */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecSkeletonAppPkcs12Load",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(NULL); 
+}
+
+
+
+/**
  * xmlSecSkeletonAppKeysMngrCertLoad:
  * @mngr: 		the keys manager.
  * @filename: 		the certificate file.
@@ -164,6 +219,36 @@ xmlSecSkeletonAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
 				xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+
+    /* TODO: load cert and add to keys manager */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecSkeletonAppKeysMngrCertLoad",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
+}
+
+/**
+ * xmlSecSkeletonAppKeysMngrCertLoadMemory:
+ * @mngr: 		the pointer to keys manager.
+ * @data:		the key binary data.
+ * @dataSize:		the key binary data size.
+ * @format:		the certificate format (PEM or DER).
+ * @type: 		the certificate type (trusted/untrusted).
+ *
+ * Reads cert from @data and adds to the list of trusted or known
+ * untrusted certs in @store
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecSkeletonAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, 
+			     xmlSecSize dataSize, xmlSecKeyDataFormat format, 
+			     xmlSecKeyDataType type) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO: load cert and add to keys manager */

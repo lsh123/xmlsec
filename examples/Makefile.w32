@@ -4,7 +4,7 @@
 # environment. Having done that, you can do a
 
 XMLSEC_STATIC  = yes
-XMLSEC_CRYPTO  = openssl
+XMLSEC_CRYPTO  = mscrypto
 XMLSEC_CFLAGS  =
 XMLSEC_LIBS    =
 
@@ -36,6 +36,12 @@ XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libeay32_a.lib wsock32.lib user32.lib gd
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_NSS" /D "XMLSEC_CRYPTO=\"nss\""
 XMLSEC_SOLIBS = libxmlsec-nss.lib nss3.lib nspr4.lib plds4.lib plc4.lib
 XMLSEC_ALIBS  = libxmlsec-nss_a.lib nss3.lib nspr4.lib plds4.lib plc4.lib
+!ENDIF
+
+!IF "$(XMLSEC_CRYPTO)" == "mscrypto"
+XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_MSCRYPTO" /D "XMLSEC_CRYPTO=\"mscrypto\""
+XMLSEC_SOLIBS = libxmlsec-mscrypto.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
+XMLSEC_ALIBS  = libxmlsec-mscrypto_a.lib user32.lib gdi32.lib crypt32.lib advapi32.lib
 !ENDIF
 
 !IF "$(XMLSEC_STATIC)" == "yes"

@@ -98,7 +98,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 			xmlSecErrorsSafeString(cipherName),
 			"PK11_GenerateRandom",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"size=%d, error code=%d", ivLen, PORT_GetError());
+			"size=%d", ivLen);
 	    return(-1);    
 	}
 	
@@ -149,7 +149,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "PK11_GetBestSlot",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
 	
@@ -160,7 +160,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "PK11_ImportSymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
         PK11_FreeSlot(slot);
 	return(-1);
     }
@@ -173,7 +173,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "PK11_CreateContextBySymKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	PK11_FreeSymKey(symKey);
         PK11_FreeSlot(slot);
 	return(-1);
@@ -244,7 +244,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "PK11_CipherOp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
@@ -324,7 +324,8 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
 			    xmlSecErrorsSafeString(cipherName),
 			    "PK11_GenerateRandom",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "size=%d, error code=%d", blockLen - inSize - 1, PORT_GetError()); return(-1);    
+			    "size=%d", blockLen - inSize - 1); 
+		return(-1);    
 	    }
 	}
 	inBuf[blockLen - 1] = blockLen - inSize;
@@ -359,7 +360,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "PK11_CipherOp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "error code=%d", PORT_GetError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     xmlSecAssert2((xmlSecSize)outLen == inSize, -1);

@@ -350,7 +350,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			    NULL,
 			    "CERT_ExtractPublicKey",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "error code=%d", PORT_GetError());
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		goto done;
 	    }
 	} 
@@ -362,7 +362,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			    NULL,
 			    "PK11_FindKeyByAnyCert",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "error code=%d", PORT_GetError());
+			    XMLSEC_ERRORS_NO_MESSAGE);
 		goto done;
 	    }
 	}
@@ -416,8 +416,8 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 			NULL,
 			"CERT_DupCertificate",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"data=%s, error code=%d",
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), PORT_GetError());
+			"data=%s",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	    goto done;
 	}
 

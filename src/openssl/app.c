@@ -107,7 +107,7 @@ xmlSecOpenSSLAppShutdown(void) {
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-			const char *pwd, pem_password_cb *pwdCallback, 
+			const char *pwd, void* pwdCallback, 
 			void* pwdCallbackCtx) {
     BIO* bio;
     xmlSecKeyPtr key;
@@ -160,7 +160,7 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
 			xmlSecKeyDataFormat format, const char *pwd, 
-			pem_password_cb *pwdCallback, void* pwdCallbackCtx) {
+			void* pwdCallback, void* pwdCallbackCtx) {
     BIO* bio;
     xmlSecKeyPtr key;
     
@@ -208,7 +208,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
-			const char *pwd, pem_password_cb *pwdCallback, 
+			const char *pwd, void* pwdCallback, 
 			void* pwdCallbackCtx) {
 
     xmlSecKeyPtr key = NULL;
@@ -222,11 +222,11 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     switch(format) {
     case xmlSecKeyDataFormatPem:
         /* try to read private key first */    
-	pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCallback, (void*)pwd);
+	pKey = PEM_read_bio_PrivateKey(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
         if(pKey == NULL) {
     	    /* go to start of the file and try to read public key */
 	    BIO_reset(bio); 
-	    pKey = PEM_read_bio_PUBKEY(bio, NULL, pwdCallback, (void*)pwd);
+	    pKey = PEM_read_bio_PUBKEY(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
 	    if(pKey == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
@@ -256,7 +256,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	break;
     case xmlSecKeyDataFormatPkcs8Pem:
         /* try to read private key first */    
-	pKey = PEM_read_bio_PrivateKey(bio, NULL, pwdCallback, (void*)pwd);
+	pKey = PEM_read_bio_PrivateKey(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
         if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -268,7 +268,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	break;
     case xmlSecKeyDataFormatPkcs8Der:
         /* try to read private key first */    
-	pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, pwdCallback, (void*)pwd);
+	pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
         if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -521,8 +521,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
  */
 xmlSecKeyPtr	
 xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
-			   pem_password_cb *pwdCallback, 
-			   void* pwdCallbackCtx) {
+			   void* pwdCallback, void* pwdCallbackCtx) {
     BIO* bio;
     xmlSecKeyPtr key;
     
@@ -573,7 +572,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
  */
 xmlSecKeyPtr	
 xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
-			   const char *pwd, pem_password_cb *pwdCallback, 
+			   const char *pwd, void* pwdCallback, 
 			   void* pwdCallbackCtx) {
     BIO* bio;
     xmlSecKeyPtr key;
@@ -622,7 +621,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  */
 xmlSecKeyPtr	
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
-			   pem_password_cb *pwdCallback ATTRIBUTE_UNUSED, 
+			   void* pwdCallback ATTRIBUTE_UNUSED, 
 			   void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
 
     PKCS12 *p12 = NULL;

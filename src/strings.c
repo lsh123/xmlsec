@@ -57,6 +57,17 @@ const xmlChar xmlSecNameHMACKeyValue[]	= "hmac";
 const xmlChar xmlSecNodeHMACKeyValue[]	= "HMACKeyValue";
 const xmlChar xmlSecHrefHMACKeyValue[]	= "http://www.aleksey.com/xmlsec/2002#HMACKeyValue";
 
+const xmlChar xmlSecNodeHMACOutputLength[] = "HMACOutputLength";
+
+const xmlChar xmlSecNameHmacSha1[]	= "hmac-sha1";
+const xmlChar xmlSecHrefHmacSha1[]	= "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
+
+const xmlChar xmlSecNameHmacRipemd160[]	= "hmac-ripemd160";
+const xmlChar xmlSecHrefHmacRipemd160[]	= "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
+
+const xmlChar xmlSecNameHmacMd5[]	= "hmac-md5";
+const xmlChar xmlSecHrefHmacMd5[]	= "http://www.w3.org/2001/04/xmldsig-more#hmac-md5";
+
 /*************************************************************************
  *
  * RIPEMD160 strings

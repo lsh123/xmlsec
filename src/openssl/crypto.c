@@ -176,19 +176,19 @@ xmlSecOpenSSLTransformsInit(void) {
 
     /* MAC */ 
 #ifndef XMLSEC_NO_HMAC
-    if(xmlSecTransformRegister(xmlSecMacHmacSha1) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacSha1Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register hmac sha1 transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecMacHmacRipeMd160) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacRipemd160Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register hamc ripemd160 transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecMacHmacMd5) < 0) {
+    if(xmlSecTransformRegister(xmlSecOpenSSLTransformHmacMd5Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register hmac md5 transform");

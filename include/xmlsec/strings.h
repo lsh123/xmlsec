@@ -80,6 +80,17 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHMACKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHMACKeyValue[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACOutputLength[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha1[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacRipemd160[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacMd5[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacMd5[];
+
 /*************************************************************************
  *
  * RIPEMD160 strings

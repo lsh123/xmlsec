@@ -150,26 +150,30 @@ XMLSEC_EXPORT	xmlSecKeyDataId xmlSecOpenSSLKeyDataHmacValueGetKlass	(void);
 XMLSEC_EXPORT	int		xmlSecOpenSSLKeyDataHmacValueSet	(xmlSecKeyDataPtr data,
 									 const unsigned char* buf,
 									 size_t bufSize);
-XMLSEC_EXPORT 	int		xmlSecHmacAddOutputLength		(xmlNodePtr transformNode,
-									 size_t bitsLen);
 /**
- * xmlSecMacHmacSha1:
+ * xmlSecOpenSSLTransformHmacSha1Id:
  * 
  * The HMAC with SHA1 signature transform id.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacSha1;
+#define xmlSecOpenSSLTransformHmacSha1Id xmlSecOpenSSLTransformHmacSha1GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformHmacSha1GetKlass(void);
+
 /**
- * xmlSecMacHmacRipeMd160:
+ * xmlSecOpenSSLTransformHmacRipeMd160Id:
  * 
  * The HMAC with RipeMD160 signature transform id.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacRipeMd160;
+#define xmlSecOpenSSLTransformHmacRipemd160Id xmlSecOpenSSLTransformHmacRipemd160GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformHmacRipemd160GetKlass(void);
+
 /**
- * xmlSecMacHmacMd5:
+ * xmlSecOpenSSLTransformHmacMd5Id:
  * 
  * The HMAC with MD5 signature transform id.
  */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecMacHmacMd5;
+#define xmlSecOpenSSLTransformHmacMd5Id xmlSecOpenSSLTransformHmacMd5GetKlass()
+XMLSEC_EXPORT 	xmlSecTransformId xmlSecOpenSSLTransformHmacMd5GetKlass(void);
+
 #endif /* XMLSEC_NO_HMAC */
 
 /********************************************************************

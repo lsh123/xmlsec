@@ -108,6 +108,8 @@ struct _xmlSecTransform {
     void*				reserved1;
     void*				reserved2;
     void*				reserved3;
+    int					reserved4;
+    int					reserved5;
 };
 
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCreate	(xmlSecTransformId id,

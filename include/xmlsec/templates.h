@@ -94,6 +94,14 @@ XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
 							 const xmlChar *type,
 							 const xmlChar *recipient);
     
+
+
+
+
+XMLSEC_EXPORT 	int		xmlSecHmacAddOutputLength		(xmlNodePtr transformNode,
+									 size_t bitsLen);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

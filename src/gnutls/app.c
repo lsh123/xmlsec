@@ -78,14 +78,15 @@ xmlSecGnuTLSAppPemKeyLoad(const char *filename,
 
 #ifndef XMLSEC_NO_X509
 int		
-xmlSecGnuTLSAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
+xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecGnuTLSAppKeyPemCertLoad",
+		"xmlSecGnuTLSAppKeyCertLoad",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(-1);
@@ -108,7 +109,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
 }
 
 /**
- * xmlSecGnuTLSAppKeysMngrPemCertLoad:
+ * xmlSecGnuTLSAppKeysMngrCertLoad:
  * @mngr: keys manager.
  * @filename: the PEM file.
  * @trusted: the flag that indicates is the certificate in @filename
@@ -120,14 +121,16 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, int trusted) {
+xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
+				xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecGnuTLSAppKeysMngrPemCertLoad",
+		"xmlSecGnuTLSAppKeysMngrCertLoad",
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(-1);
@@ -283,7 +286,8 @@ xmlSecGnuTLSAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
 		    NULL,
 		    "xmlSecSimpleKeysStoreSave",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "filename%s", xmlSecErrorsSafeString(filename));
+		    "filename=%s", 
+		    xmlSecErrorsSafeString(filename));
 	return(-1);
     }
     

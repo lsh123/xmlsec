@@ -1740,8 +1740,9 @@ xmlSecAppLoadKeys(void) {
 	if(value->strValue == NULL) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", trustedParam.fullName);
 	    return(-1);
-	} else if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(gKeysMngr, 
-		    value->strValue, 1) < 0) {
+	} else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr, 
+		    value->strValue, xmlSecKeyDataFormatPem,
+		    xmlSecKeyDataTypeTrusted) < 0) {
 	    fprintf(stderr, "Error: failed to load trusted cert from \"%s\".\n",
 		    value->strValue);
 	    return(-1);
@@ -1753,8 +1754,9 @@ xmlSecAppLoadKeys(void) {
 	if(value->strValue == NULL) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", untrustedParam.fullName);
 	    return(-1);
-	} else if(xmlSecAppCryptoSimpleKeysMngrPemCertLoad(gKeysMngr, 
-		    value->strValue, 0) < 0) {
+	} else if(xmlSecAppCryptoSimpleKeysMngrCertLoad(gKeysMngr, 
+		    value->strValue, xmlSecKeyDataFormatPem,
+		    xmlSecKeyDataTypeNone) < 0) {
 	    fprintf(stderr, "Error: failed to load untrusted cert from \"%s\".\n",
 		    value->strValue);
 	    return(-1);

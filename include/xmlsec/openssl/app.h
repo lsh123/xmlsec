@@ -38,9 +38,10 @@ XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr 
 									 const char* filename,
 									 xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509
-XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, 
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, 
 									 const char *filename, 
-									 int trusted);
+									 xmlSecKeyDataFormat format,
+									 xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, 
 									 const char *path);
 #endif /* XMLSEC_NO_X509 */
@@ -58,8 +59,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppPkcs12Load	(const char* filena
 									 const char* pwd,
 									 pem_password_cb* pwdCallback, 
 									 void* pwdCallbackCtx);
-XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeyPemCertLoad	(xmlSecKeyPtr key,
-									 const char* filename);
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeyCertLoad	(xmlSecKeyPtr key,
+									 const char* filename,
+									 xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

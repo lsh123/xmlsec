@@ -17,8 +17,8 @@
 	with the private key using one of the following functions:
 	<itemizedlist>
 	    <listitem><para>
-	    <link linkend="xmlSecOpenSSLAppKeyPemCertLoad">xmlSecOpenSSLAppKeyPemCertLoad</link> - loads
-	    certificate from a PEM file and adds to the key;
+	    <link linkend="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertLoad</link> - loads
+	    certificate from a file and adds to the key;
 	    </para></listitem>
 
 	    <listitem><para>
@@ -35,14 +35,14 @@
 	    <title>Loading private key and X509 certificate.</title>
 	    <programlisting><![CDATA[
     /* load private key, assuming that there is not password */
-    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, NULL);
     if(key == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
 	goto done;
     }
     
     /* load certificate and add to the key */
-    if(xmlSecCryptoAppKeyPemCertLoad(key, cert_file) < 0) {
+    if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) < 0) {
         fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
 	goto done;
     }
@@ -127,7 +127,7 @@ Certificate A (signed with B) <- Certificate B (signed with C) <- ... <- Root Ce
 	</para>
 	
 	<para>
-	Application can use <link linkend="xmlSecCryptoAppKeysMngrPemCertLoad">xmlSecCryptoAppKeysMngrPemCertLoad</link>
+	Application can use <link linkend="xmlSecCryptoAppKeysMngrCertLoad">xmlSecCryptoAppKeysMngrCertLoad</link>
 	function to load both &quot;trusted&quot; and &quot;un-trusted&quot;
 	certificates. However, the selection of &quot;trusted&quot;
 	certificates is very sensitive process and this function might be
@@ -177,7 +177,7 @@ load_trusted_certs(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load trusted cert */
-	if(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, files[i], 1) < 0) {
+	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
     	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);

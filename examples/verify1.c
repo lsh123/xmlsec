@@ -134,7 +134,7 @@ verify_file(const char* xml_file, const char* key_file) {
     }
 
     /* load public key */
-    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    dsigCtx->signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL, NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", key_file);
 	goto done;

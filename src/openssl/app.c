@@ -27,7 +27,6 @@
 
 static int 		xmlSecOpenSSLAppLoadRANDFile		(const char *file);
 static int 		xmlSecOpenSSLAppSaveRANDFile		(const char *file);
-static X509*		xmlSecOpenSSLAppPemCertLoad		(const char* filename);
 
 /**
  * xmlSecOpenSSLAppInit:
@@ -175,24 +174,29 @@ xmlSecOpenSSLAppPemKeyLoad(const char *filename, const char *pwd,
 }
 
 #ifndef XMLSEC_NO_X509
+static X509*		xmlSecOpenSSLAppCertLoad		(const char* filename,
+								 xmlSecKeyDataFormat format);
+
 /**
- * xmlSecOpenSSLAppKeyPemCertLoad:
+ * xmlSecOpenSSLAppKeyCertLoad:
  * @key:		the pointer to key.
  * @filename:		the certificate filename.
+ * @format:		the certificate file format.
  *
- * Reads the PEM certificate from $@filename and adds it to key.
+ * Reads the certificate from $@filename and adds it to key.
  * 
  * Returns 0 on success or a negative value otherwise.
  */
 int		
-xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
+xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
     xmlSecKeyDataPtr data;
     X509 *cert;
     int ret;
     
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
-
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
+    
     data = xmlSecKeyEnsureData(key, xmlSecOpenSSLKeyDataX509Id);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -204,13 +208,14 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 	return(-1);
     }
 
-    cert = xmlSecOpenSSLAppPemCertLoad(filename);
+    cert = xmlSecOpenSSLAppCertLoad(filename, format);
     if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecOpenSSLAppPemCertLoad", 
+		    "xmlSecOpenSSLAppCertLoad", 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "filename=%s", xmlSecErrorsSafeString(filename));
+		    "filename=%s;format=%d", 
+		    xmlSecErrorsSafeString(filename), format);
 	return(-1);    
     }    	
     
@@ -232,8 +237,8 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 /**
  * xmlSecOpenSSLAppPkcs12Load:
  * @filename:		the PKCS12 key filename.
- * @pwd:		the PEM key file password.
- * @pwdCallback:	the PEM key password callback.
+ * @pwd:		the PKCS12 file password.
+ * @pwdCallback:	the password callback.
  * @pwdCallbackCtx:	the user context for password callback.
  *
  * Reads key and all associated certificates from the PKCS12 file.
@@ -430,25 +435,28 @@ done:
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrPemCertLoad:
+ * xmlSecOpenSSLAppKeysMngrCertLoad:
  * @mngr: 		the keys manager.
- * @filename: 		the PEM file.
- * @trusted: 		the flag that indicates is the certificate in @filename
+ * @filename: 		the certificate file.
+ * @format:		the certificate file format.
+ * @type: 		the flag that indicates is the certificate in @filename
  *    			trusted or not.
  * 
- * Reads cert from PEM @filename and adds to the list of trusted or known
+ * Reads cert from @filename and adds to the list of trusted or known
  * untrusted certs in @store.
  *
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, int trusted) {
+xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
+				    xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
     xmlSecKeyDataStorePtr x509Store;
     X509* cert;
     int ret;
 
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
     
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId);
     if(x509Store == NULL) {
@@ -460,17 +468,18 @@ xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename
 	return(-1);
     }
 
-    cert = xmlSecOpenSSLAppPemCertLoad(filename);
+    cert = xmlSecOpenSSLAppCertLoad(filename, format);
     if(cert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecOpenSSLAppPemCertLoad",
+		    "xmlSecOpenSSLAppCertLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "filename=%s", xmlSecErrorsSafeString(filename));
+		    "filename=%s;format=%d", 
+		    xmlSecErrorsSafeString(filename), format);
 	return(-1);    
     }    	
     
-    ret = xmlSecOpenSSLX509StoreAdoptCert(x509Store, cert, trusted);
+    ret = xmlSecOpenSSLX509StoreAdoptCert(x509Store, cert, type);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -485,7 +494,7 @@ xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename
 }
 
 /**
- * xmlSecOpenSSLAppKeysMngrPemCertLoad:
+ * xmlSecOpenSSLAppKeysMngrAddCertsPath:
  * @mngr: 		the keys manager.
  * @path:		the path to trusted certificates.
  * 
@@ -522,6 +531,39 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
     }
     
     return(0);
+}
+
+static X509*	
+xmlSecOpenSSLAppCertLoad(const char* filename, xmlSecKeyDataFormat format) {
+    X509 *cert;
+    FILE *f;
+    
+    xmlSecAssert2(filename != NULL, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    f = fopen(filename, "r");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "fopen",
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "filename=%s;errno=%d", 
+		    xmlSecErrorsSafeString(filename), errno);
+	return(NULL);    
+    }
+    
+    cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
+    if(cert == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PEM_read_X509_AUX",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "filename=%s", xmlSecErrorsSafeString(filename));
+	fclose(f);
+	return(NULL);    
+    }    	
+    fclose(f);
+    return(cert);
 }
 
 #endif /* XMLSEC_NO_X509 */
@@ -767,34 +809,5 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
     return 1;
 }
 
-static X509*	
-xmlSecOpenSSLAppPemCertLoad(const char* filename) {
-    X509 *cert;
-    FILE *f;
-    
-    xmlSecAssert2(filename != NULL, NULL);
 
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "fopen",
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "filename=%s;errno=%d", 
-		    xmlSecErrorsSafeString(filename), errno);
-	return(NULL);    
-    }
-    
-    cert = PEM_read_X509_AUX(f, NULL, NULL, NULL);
-    if(cert == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "PEM_read_X509_AUX",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "filename=%s", xmlSecErrorsSafeString(filename));
-	fclose(f);
-	return(NULL);    
-    }    	
-    fclose(f);
-    return(cert);
-}
+

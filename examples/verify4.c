@@ -156,7 +156,7 @@ load_trusted_certs(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load trusted cert */
-	if(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, files[i], 1) < 0) {
+	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) < 0) {
     	    fprintf(stderr,"Error: failed to load pem certificate from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);

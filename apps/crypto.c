@@ -88,12 +88,13 @@ xmlSecAppCryptoSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char *filename, 
 }
 
 int 
-xmlSecAppCryptoSimpleKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, int trusted) {
+xmlSecAppCryptoSimpleKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
+				      xmlSecKeyDataFormat format, xmlSecKeyDataType type) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
 
 #ifndef XMLSEC_NO_X509	    
-    return(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, filename, trusted));
+    return(xmlSecCryptoAppKeysMngrCertLoad(mngr, filename, format, type));
 #else /* XMLSEC_NO_X509 */
     return(-1);
 #endif /* XMLSEC_NO_X509 */    
@@ -138,11 +139,11 @@ xmlSecAppCryptoSimpleKeysMngrPemKeyAndCertsLoad(xmlSecKeysMngrPtr mngr,
 
 #ifndef XMLSEC_NO_X509     
     for(files += strlen(files) + 1; (files[0] != '\0'); files += strlen(files) + 1) {
-	ret = xmlSecCryptoAppKeyPemCertLoad(key, files);
+	ret = xmlSecCryptoAppKeyCertLoad(key, files, xmlSecKeyDataFormatPem);
 	if(ret < 0){
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecCryptoAppKeyPemCertLoad",
+			"xmlSecCryptoAppKeyCertLoad",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"uri=%s", 
 			xmlSecErrorsSafeString(files));

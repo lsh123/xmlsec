@@ -73,11 +73,11 @@ extern "C" {
 #define xmlSecCryptoAppSimpleKeysMngrAdoptKey	xmlSecNssAppSimpleKeysMngrAdoptKey
 #define xmlSecCryptoAppSimpleKeysMngrLoad	xmlSecNssAppSimpleKeysMngrLoad
 #define xmlSecCryptoAppSimpleKeysMngrSave	xmlSecNssAppSimpleKeysMngrSave
-#define xmlSecCryptoAppKeysMngrPemCertLoad	xmlSecNssAppKeysMngrPemCertLoad
+#define xmlSecCryptoAppKeysMngrCertLoad		xmlSecNssAppKeysMngrCertLoad
 #define xmlSecCryptoAppKeysMngrAddCertsPath	xmlSecNssAppKeysMngrAddCertsPath
 #define xmlSecCryptoAppPemKeyLoad		xmlSecNssAppPemKeyLoad
 #define xmlSecCryptoAppPkcs12Load		xmlSecNssAppPkcs12Load
-#define xmlSecCryptoAppKeyPemCertLoad		xmlSecNssAppKeyPemCertLoad
+#define xmlSecCryptoAppKeyCertLoad		xmlSecNssAppKeyCertLoad
 
 #endif /* XMLSEC_CRYPTO_NSS */
 

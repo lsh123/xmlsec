@@ -189,11 +189,65 @@ typedef unsigned int				xmlSecKeyDataType;
 #define xmlSecKeyDataTypePermanent			0x0010
 
 /**
+ * xmlSecKeyDataTypeTrusted:
+ *
+ * The key data is trusted.
+ */
+#define xmlSecKeyDataTypeTrusted			0x0100
+
+/**
  * xmlSecKeyDataTypeAny:
  *
  * Any key data.
  */
 #define xmlSecKeyDataTypeAny				0xFFFF
+
+/**************************************************************************
+ *
+ * xmlSecKeyDataFormat
+ *
+ *************************************************************************/
+/**
+ * xmlSecKeyDataFormat:
+ *
+ * The key data format (binary, der, pem, etc.).
+ */
+typedef unsigned int				xmlSecKeyDataFormat;
+
+/**
+ * xmlSecKeyDataFormatUnknown:
+ *
+ * The key data format is unknown.
+ */
+#define xmlSecKeyDataFormatUnknown			0x0000
+
+/**
+ * xmlSecKeyDataFormatBinary:
+ *
+ * The key data format is binary.
+ */
+#define xmlSecKeyDataFormatBinary			0x0001
+
+/**
+ * xmlSecKeyDataFormatPem:
+ *
+ * The key data format is PEM (certificates and public/private keys).
+ */
+#define xmlSecKeyDataFormatPem				0x0002
+
+/**
+ * xmlSecKeyDataFormatDer:
+ *
+ * The key data format is DER (certificates and public/private keys).
+ */
+#define xmlSecKeyDataFormatDer				0x0004
+
+/**
+ * xmlSecKeyDataFormatAny:
+ *
+ * Any key data format.
+ */
+#define xmlSecKeyDataFormatAny				0xFFFF
 
 /**************************************************************************
  *

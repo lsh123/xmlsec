@@ -147,7 +147,7 @@ load_keys(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL);
+	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL, NULL);
 	if(key == NULL) {
     	    fprintf(stderr,"Error: failed to load pem key from \"%s\"\n", files[i]);
 	    xmlSecKeysMngrDestroy(mngr);

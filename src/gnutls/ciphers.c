@@ -379,7 +379,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize + outLen);
+		    "size=%d", outSize + outLen);
 	return(-1);
     }
 

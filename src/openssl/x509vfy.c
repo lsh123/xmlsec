@@ -21,7 +21,6 @@
 
 #include <libxml/tree.h>
 #include <openssl/evp.h>
-#include <openssl/pem.h>
 #include <openssl/x509.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
@@ -329,7 +328,7 @@ done:
 }
 
 int 
-xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int trusted) {
+xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecKeyDataType type) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     int ret;
     
@@ -339,7 +338,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, int tru
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(trusted) {
+    if((type & xmlSecKeyDataTypeTrusted) != 0) {
 	xmlSecAssert2(ctx->xst != NULL, -1);
 
 	ret = X509_STORE_add_cert(ctx->xst, cert);

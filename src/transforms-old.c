@@ -72,7 +72,7 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
 
 /**
  * xmlSecTransformNodeWrite:
- * @transformNode: the pointer to <dsig:Transform> node.
+ * @node: the pointer to <dsig:Transform> node.
  * @id: the transform id.
  *
  * Writes Agorithm attribute in the transform node.
@@ -80,11 +80,11 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
-    xmlSecAssert2(transformNode != NULL, -1);
+xmlSecTransformNodeWrite(xmlNodePtr node, xmlSecTransformId id) {
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(id != NULL, -1);
     
-    if(xmlSetProp(transformNode, xmlSecAttrAlgorithm, id->href) == NULL) {	
+    if(xmlSetProp(node, xmlSecAttrAlgorithm, id->href) == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSetProp",

@@ -1439,24 +1439,24 @@ xmlSecKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, const xmlChar *id,
 
 /**
  * xmlSecHmacAddOutputLength:
- * @transformNode: the pointer to <dsig:Transform> node
+ * @node: the pointer to <dsig:Transform> node
  * @bitsLen: the required length in bits
  *
  * Creates <dsig:HMACOutputLength>child for the HMAC transform 
- * node @transformNode.
+ * node @node.
  *
  * Returns 0 on success and a negatie value otherwise.
  */
 int
-xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
-    xmlNodePtr node;
+xmlSecHmacAddOutputLength(xmlNodePtr node, size_t bitsLen) {
+    xmlNodePtr cur;
     char buf[32];
 
-    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(bitsLen > 0, -1);
 
-    node = xmlSecFindChild(transformNode, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
-    if(node != NULL) {
+    cur = xmlSecFindChild(node, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
+    if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeHMACOutputLength),
@@ -1465,8 +1465,8 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
 	return(-1);
     }
     
-    node = xmlSecAddChild(transformNode, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
-    if(node == NULL) {
+    cur = xmlSecAddChild(node, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
+    if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecAddChild",
@@ -1477,31 +1477,31 @@ xmlSecHmacAddOutputLength(xmlNodePtr transformNode, size_t bitsLen) {
     }    
     
     sprintf(buf, "%u", bitsLen);
-    xmlNodeSetContent(node, BAD_CAST buf);
+    xmlNodeSetContent(cur, BAD_CAST buf);
     return(0);
 }
 
 /**
  * xmlSecEncRsaOaepAddParam::
- * @transformNode: the pointer to <dsig:Transform> node.
+ * @node: the pointer to <dsig:Transform> node.
  * @buf: the OAEP param buffer.
  * @size: the OAEP param buffer size.
  * 
- * Creates <enc:OAEPParam> child node in the @transformNode.
+ * Creates <enc:OAEPParam> child node in the @node.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int  	
-xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf, 
+xmlSecEncRsaOaepAddParam(xmlNodePtr node, const unsigned char *buf, 
 			 size_t size) {
     xmlNodePtr oaepParamNode;
     xmlChar *base64;
 
-    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
-    oaepParamNode = xmlSecFindChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
+    oaepParamNode = xmlSecFindChild(node, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
     if(oaepParamNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1511,7 +1511,7 @@ xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf,
 	return(-1);    
     }
 
-    oaepParamNode = xmlSecAddChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
+    oaepParamNode = xmlSecAddChild(node, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
     if(oaepParamNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1581,66 +1581,66 @@ xmlSecXsltAddStylesheet(xmlNodePtr node, const xmlChar *xslt) {
 
 /**
  * xmlSecC14NExclAddInclNamespaces:
- * @transformNode: the pointer to <dsig:Transform> node.
+ * @node: the pointer to <dsig:Transform> node.
  * @prefixList: the white space delimited  list of namespace prefixes, 
  *		where "#default" indicates the default namespace
  *
- * Adds "inclusive" namespaces to the ExcC14N transform node @transformNode.
+ * Adds "inclusive" namespaces to the ExcC14N transform node @node.
  *
  * Returns 0 if success or a negative value otherwise.
  */
 int		
-xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
-    xmlNodePtr node;
+xmlSecC14NExclAddInclNamespaces(xmlNodePtr node, const xmlChar *prefixList) {
+    xmlNodePtr cur;
 
-    xmlSecAssert2(transformNode != NULL, -1);    
+    xmlSecAssert2(node != NULL, -1);    
     xmlSecAssert2(prefixList != NULL, -1);
 
-    node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
-    if(node != NULL) {
+    cur = xmlSecFindChild(node, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
+    if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecNodeGetName(transformNode),
+		    xmlSecNodeGetName(node),
 		    "xmlSecFindChild",
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
 		    "<dsig:InclusiveNamespaces>");
 	return(-1);
     }
     
-    node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
-    if(node == NULL) {
+    cur = xmlSecAddChild(node, BAD_CAST "InclusiveNamespaces", xmlSecNsExcC14N);
+    if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecNodeGetName(transformNode),
+		    xmlSecNodeGetName(node),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "<dsig:InclusiveNamespaces>");
 	return(-1);
     }    
     
-    xmlSetProp(node, BAD_CAST "PrefixList", prefixList);    
+    xmlSetProp(cur, BAD_CAST "PrefixList", prefixList);    
     return(0);
 }
 
 /**
  * xmlSecTransformXPathAdd:
- * @transformNode: the pointer to the <dsig:Transform> node.
+ * @node: the pointer to the <dsig:Transform> node.
  * @expression: the XPath expression.
  * @namespaces: NULL terminated list of namespace prefix/href pairs.
  *
  * Writes XPath transform infromation to the <dsig:Transform> node 
- * @transformNode.
+ * @node.
  *
  * Returns 0 for success or a negative value otherwise.
  */
 int 	
-xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
+xmlSecTransformXPathAdd(xmlNodePtr node, const xmlChar *expression,
 			 const xmlChar **namespaces) {
     xmlNodePtr xpathNode;
     
-    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
     
 
-    xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
+    xpathNode = xmlSecFindChild(node, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1650,7 +1650,7 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	return(-1);    
     }
 
-    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
+    xpathNode = xmlSecAddChild(node, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1704,26 +1704,26 @@ xmlSecTransformXPathAdd(xmlNodePtr transformNode, const xmlChar *expression,
 
 /**
  * xmlSecTransformXPath2Add:
- * @transformNode: the pointer to the <dsig:Transform> node.
+ * @node: the pointer to the <dsig:Transform> node.
  * @type: XPath2 transform type ("union", "intersect" or "subtract").
  * @expression: the XPath expression.
  * @namespaces: NULL terminated list of namespace prefix/href pairs.
  *
  * Writes XPath2 transform infromation to the <dsig:Transform> node 
- * @transformNode.
+ * @node.
  *
  * Returns 0 for success or a negative value otherwise.
  */
 int
-xmlSecTransformXPath2Add(xmlNodePtr transformNode, const xmlChar* type,
+xmlSecTransformXPath2Add(xmlNodePtr node, const xmlChar* type,
 			const xmlChar *expression, const xmlChar **namespaces) {
     xmlNodePtr xpathNode;
 
-    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(type != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
 
-    xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecXPath2Ns);
+    xpathNode = xmlSecAddChild(node, xmlSecNodeXPath, xmlSecXPath2Ns);
     if(xpathNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1777,24 +1777,24 @@ xmlSecTransformXPath2Add(xmlNodePtr transformNode, const xmlChar* type,
 
 /**
  * xmlSecTransformXPointerAdd:
- * @transformNode: the pointer to the <dsig:Transform> node.
+ * @node: the pointer to the <dsig:Transform> node.
  * @expression: the XPath expression.
  * @namespaces: NULL terminated list of namespace prefix/href pairs.
  *
  * Writes XPoniter transform infromation to the <dsig:Transform> node 
- * @transformNode.
+ * @node.
  *
  * Returns 0 for success or a negative value otherwise.
  */
 int 	
-xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
+xmlSecTransformXPointerAdd(xmlNodePtr node, const xmlChar *expression,
 			 const xmlChar **namespaces) {
     xmlNodePtr xpointerNode;
 
     xmlSecAssert2(expression != NULL, -1);
-    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
 
-    xpointerNode = xmlSecFindChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
+    xpointerNode = xmlSecFindChild(node, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1804,7 +1804,7 @@ xmlSecTransformXPointerAdd(xmlNodePtr transformNode, const xmlChar *expression,
 	return(-1);    
     }
 
-    xpointerNode = xmlSecAddChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
+    xpointerNode = xmlSecAddChild(node, xmlSecNodeXPointer, xmlSecXPointerNs);
     if(xpointerNode == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

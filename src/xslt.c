@@ -79,7 +79,7 @@ struct _xmlSecXsltCtx {
 static int		xmlSecXsltInitialize			(xmlSecTransformPtr transform);
 static void		xmlSecXsltFinalize			(xmlSecTransformPtr transform);
 static int 		xmlSecXsltReadNode			(xmlSecTransformPtr transform,
-								 xmlNodePtr transformNode,
+								 xmlNodePtr node,
 								 xmlSecTransformCtxPtr transformCtx);
 static int  		xmlSecXsltExecute			(xmlSecTransformPtr transform, 
 								 int last,

@@ -98,25 +98,25 @@ XMLSEC_EXPORT xmlNodePtr xmlSecKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNode,
 
 
 
-XMLSEC_EXPORT int	xmlSecHmacAddOutputLength	(xmlNodePtr transformNode,
+XMLSEC_EXPORT int	xmlSecHmacAddOutputLength	(xmlNodePtr node,
 							 size_t bitsLen);
-XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam	(xmlNodePtr transformNode,
+XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam	(xmlNodePtr node,
 							 const unsigned char *buf,
 							 size_t size);
 XMLSEC_EXPORT int	xmlSecXsltAddStylesheet		(xmlNodePtr node, 
 							 const xmlChar *xslt);
 
-XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces	(xmlNodePtr transformNode,
+XMLSEC_EXPORT int	xmlSecC14NExclAddInclNamespaces	(xmlNodePtr node,
 							 const xmlChar *prefixList);
 							 
-XMLSEC_EXPORT int 	xmlSecTransformXPathAdd		(xmlNodePtr transformNode, 
+XMLSEC_EXPORT int 	xmlSecTransformXPathAdd		(xmlNodePtr node, 
 							 const xmlChar *expression,
 							 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPath2Add	(xmlNodePtr transformNode, 
+XMLSEC_EXPORT int 	xmlSecTransformXPath2Add	(xmlNodePtr node, 
 							 const xmlChar* type,
 							 const xmlChar *expression,
 							 const xmlChar **namespaces);
-XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd	(xmlNodePtr transformNode, 
+XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd	(xmlNodePtr node, 
 							 const xmlChar *expression,
 							 const xmlChar **namespaces);
 

@@ -104,7 +104,7 @@ int			xmlSecTransformStateFinalVerifyNode(xmlSecTransformStatePtr state,
 
 int			xmlSecTransformsNodeRead	(xmlSecTransformStatePtr state, 
 							 xmlNodePtr transformsNode);
-int			xmlSecTransformNodeWrite	(xmlNodePtr transformNode,
+int			xmlSecTransformNodeWrite	(xmlNodePtr node,
 							 xmlSecTransformId id);
 
 #ifdef __cplusplus

@@ -343,7 +343,7 @@ typedef xmlSecTransformDataType	(*xmlSecTransformGetDataTypeMethod)(xmlSecTransf
  * @node: the pointer to the <dsig:Transform> node.
  *
  * The transfomr specific method to read the transform data from 
- * the @transformNode.
+ * the @node.
  *
  * Returns 0 on success or a negative value otherwise.
  */

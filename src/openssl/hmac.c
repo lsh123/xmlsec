@@ -56,7 +56,7 @@ struct _xmlSecOpenSSLHmacCtx {
 static int	xmlSecOpenSSLHmacInitialize			(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLHmacFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLHmacNodeRead			(xmlSecTransformPtr transform,
-								 xmlNodePtr transformNode,
+								 xmlNodePtr node,
 								 xmlSecTransformCtxPtr transformCtx);
 static int  	xmlSecOpenSSLHmacSetKeyReq			(xmlSecTransformPtr transform, 
 								 xmlSecKeyReqPtr keyReq);
@@ -150,19 +150,19 @@ xmlSecOpenSSLHmacFinalize(xmlSecTransformPtr transform) {
  * <!ELEMENT HMACOutputLength (#PCDATA)>
  */
 static int
-xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr transformNode, xmlSecTransformCtxPtr transformCtx) {
+xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLHmacCtxPtr ctx;
     xmlNodePtr cur;
 
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);
-    xmlSecAssert2(transformNode!= NULL, -1);
+    xmlSecAssert2(node!= NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(transformNode->children); 
+    cur = xmlSecGetNextElementNode(node->children); 
     if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {  
 	xmlChar *content;
 	

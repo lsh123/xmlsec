@@ -14,6 +14,7 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/x509.h>
 
 /**
  * xmlSecCryptoInit:
@@ -67,9 +68,9 @@ XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecCryptoAppLoadPemKey	(const xmlChar* keyName,
 								 const char* filename,
 								 const char* pwd,
 								 xmlSecKeyValueType type);
-XMLSEC_EXPORT xmlSecX509Data 	xmlSecCryptoAppLoadPemCert	(const char* filename,
+XMLSEC_EXPORT xmlSecKeyData 	xmlSecCryptoAppLoadPemCert	(const char* filename,
 								 const char* pwd,
-								 xmlSecX509DataType type);
+								 xmlSecKeyDataX509ObjType type);
 XMLSEC_EXPORT xmlSecKeyPtr	xmlSecCryptoAppLoadPkcs12	(const xmlChar* keyName,
 								 const char* filename,
 								 const char* pwd);

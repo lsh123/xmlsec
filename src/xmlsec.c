@@ -65,6 +65,18 @@ const xmlChar xmlSecXPathTransformHref[] 	= "http://www.w3.org/TR/1999/REC-xpath
 const xmlChar xmlSecXPath2TransformHref[] 	= "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecTransformXsltHref[]= "http://www.w3.org/TR/1999/REC-xslt-19991116";
 
+
+
+const xmlChar xmlSecRetrievalMethodTypeDSAKeyValueHref[] = "http://www.w3.org/2000/09/xmldsig#DSAKeyValue";
+const xmlChar xmlSecRetrievalMethodTypeRSAKeyValueHref[] = "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
+const xmlChar xmlSecRetrievalMethodTypeX509DataHref[] 	 = "http://www.w3.org/2000/09/xmldsig#X509Data";
+const xmlChar xmlSecRetrievalMethodTypePGPDataHref[] 	 = "http://www.w3.org/2000/09/xmldsig#PGPData";
+const xmlChar xmlSecRetrievalMethodTypeSPKIDataHref[] 	 = "http://www.w3.org/2000/09/xmldsig#SPKIData";
+const xmlChar xmlSecRetrievalMethodTypeMgmtDataHref[] 	 = "http://www.w3.org/2000/09/xmldsig#MgmtData";
+const xmlChar xmlSecRetrievalMethodTypeRawX509CertHref[] = "http://www.w3.org/2000/09/xmldsig#rawX509Certificate";
+			    
+			    
+
 /**
  * xmlSecInit:
  *

@@ -116,6 +116,12 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_INVALID_DATA		 19
 /**
+ * XMLSEC_ERRORS_R_INVALID_ID:
+ *
+ * Invalid id.
+ */
+#define XMLSEC_ERRORS_R_INVALID_ID		 20
+/**
  * XMLSEC_ERRORS_R_INVALID_TYPE:
  * 
  * Invalid type.

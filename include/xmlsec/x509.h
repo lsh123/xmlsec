@@ -16,19 +16,69 @@ extern "C" {
 
 #ifndef XMLSEC_NO_X509
 
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/keys.h>
+
 
 /***************************************************************************
  *
  * xmlSecKeyDataX509
  *
  **************************************************************************/
+typedef enum {
+    xmlSecKeyDataX509ObjTypeCert,
+    xmlSecKeyDataX509ObjTypeVerifiedCert,
+    xmlSecKeyDataX509ObjTypeTrustedCert,
+    xmlSecKeyDataX509ObjTypeCrl
+} xmlSecKeyDataX509ObjType;
+
+typedef xmlSecKeyPtr	(*xmlSecKeyDataX509GetKeyMethod)	(xmlSecKeyDataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+/**
+ * xmlSecKeyDataX509FindCertMethod:
+ * @data: the key data pointer
+ * @mngr: the keys manager.
+ * @subjectName: the subject name string.
+ * @issuerName: the issuer name string.
+ * @issuerSerial: the issuer serial.
+ * @ski: the SKI string.
+ *
+ * Searches for matching certificate in the x509 data and keys manager.
+ *
+ * Returns the pointer to key that matches given criteria or NULL 
+ * if an error occurs or certificate not found.
+ */
+typedef xmlSecKeyPtr	(*xmlSecKeyDataX509FindCertMethod)	(xmlSecKeyDataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski);
+
+typedef int		(*xmlSecKeyDataX509AddObjMethod)	(xmlSecKeyDataPtr data,
+								 const unsigned char* buf,
+								 size_t size,
+								 xmlSecKeyDataX509ObjType type);
+/**
+ * xmlSecKeyDataX509GetObjMethod:
+ * @pos: the object position (for cert objects, if the @pos is 0
+ * then the cert containig the key MUST be returned).
+ *
+ * Returns 1 if the object returned, 0 if there are no more
+ * objects of this type and a negative value if an error occurs.
+ */
+typedef int		(*xmlSecKeyDataX509GetObjMethod)	(xmlSecKeyDataPtr data,
+								 unsigned char** buf,
+								 size_t* size,
+								 xmlSecKeyDataX509ObjType type,
+								 size_t pos);
 
 
-#if 0
-typedef struct _xmlSecKeyDataX509IdStruct*	xmlSecKeyDataX509Id;
+typedef struct _xmlSecKeyDataX509IdStruct	xmlSecKeyDataX509IdStruct,
+						*xmlSecKeyDataX509Id;
 struct _xmlSecKeyDataX509IdStruct {
     /* same as xmlSecDataId */
-    const xmlChar*			href;
+    xmlSecKeyDataType			type;
     const xmlChar*			childNodeName;
     const xmlChar*			childNodeNs;
     xmlSecKeyOrigin			origin; 
@@ -41,10 +91,61 @@ struct _xmlSecKeyDataX509IdStruct {
     xmlSecKeyDataReadBinaryMethod	readBin;
     xmlSecKeyDataWriteBinaryMethod	writeBin;
 
-    /* new in xmlSecDataX509Id */
+    /* new in xmlSecKeyDataX509Id */
+    xmlSecKeyDataX509GetKeyMethod	getKey;
+    xmlSecKeyDataX509FindCertMethod	findCert;
+    xmlSecKeyDataX509AddObjMethod	addObj;
+    xmlSecKeyDataX509GetObjMethod	getObj;
 };
 
 
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509ReadXml	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecKeyDataX509WriteXml	(xmlSecKeyPtr key,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr parent);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509ReadBinary	(xmlSecKeyDataId id,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 const unsigned char *buf,
+								 size_t size);
+XMLSEC_EXPORT int		xmlSecKeyDataX509WriteBinary	(xmlSecKeyPtr key,
+						    		 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 unsigned char **buf,
+								 size_t *size);
+
+
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509GetKey		(xmlSecKeyDataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDataX509FindCert	(xmlSecKeyDataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski);
+XMLSEC_EXPORT int 		xmlSecKeyDataX509AddObj		(xmlSecKeyDataPtr data,
+								 const unsigned char* buf,
+								 size_t size,
+								 xmlSecKeyDataX509ObjType type);
+XMLSEC_EXPORT int		xmlSecKeyDataX509GetObj		(xmlSecKeyDataPtr data,
+								 unsigned char** buf,
+								 size_t* size,
+								 xmlSecKeyDataX509ObjType type,
+								 size_t pos);
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
 
 /***************************************************************************
  *
@@ -75,69 +176,22 @@ struct _xmlSecKeyDataPGPIdStruct {
 
 
 
-
-
-
-
-
-
-
-typedef enum {
-    xmlSecX509DataTypeUnknown = 0,
-    xmlSecX509DataTypeVerifiedCert,
-    xmlSecX509DataTypeTrustedCert,
-    xmlSecX509DataTypeCert,
-    xmlSecX509DataTypeCrl
-} xmlSecX509DataType;
-
-/* forward declarations */
-typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
-typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
-
-
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
-XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataCreate		(void);
-XMLSEC_EXPORT void		xmlSecX509DataDestroy		(xmlSecX509DataPtr x509Data);
-XMLSEC_EXPORT size_t		xmlSecX509DataGetCertsNumber	(xmlSecX509DataPtr x509Data);
-XMLSEC_EXPORT size_t		xmlSecX509DataGetCrlsNumber	(xmlSecX509DataPtr x509Data);
-XMLSEC_EXPORT int		xmlSecX509DataReadDerCert	(xmlSecX509DataPtr x509Data,
-							 	 xmlChar *buf,
-								 size_t size,
-								 int base64);
-XMLSEC_EXPORT void		xmlSecX509DataSetVerificationTime(xmlSecX509DataPtr x509Data,
-								 time_t t);
-XMLSEC_EXPORT xmlChar*		xmlSecX509DataWriteDerCert	(xmlSecX509DataPtr x509Data,
-								 int pos);
-XMLSEC_EXPORT int		xmlSecX509DataReadDerCrl	(xmlSecX509DataPtr x509Data,
-								 xmlChar *buf,
-								 size_t size,
-								 int base64);
-XMLSEC_EXPORT xmlChar*		xmlSecX509DataWriteDerCrl	(xmlSecX509DataPtr x509Data,
-								 int pos);
-XMLSEC_EXPORT int		xmlSecX509DataReadPemCert	(xmlSecX509DataPtr x509Data,
-							 	const char *filename);
-XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataDup		(xmlSecX509DataPtr x509Data);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecX509DataCreateKey		(xmlSecX509DataPtr x509Data);
-XMLSEC_EXPORT void		xmlSecX509DataDebugDump		(xmlSecX509DataPtr x509Data,
-							 	FILE *output);
-XMLSEC_EXPORT void		xmlSecX509DataDebugXmlDump	(xmlSecX509DataPtr x509Data,
-							 	FILE *output);
-
-
+typedef struct _xmlSecX509Store			xmlSecX509Store,
+						*xmlSecX509StorePtr;
 XMLSEC_EXPORT xmlSecX509StorePtr xmlSecX509StoreCreate		(void);
 XMLSEC_EXPORT void		xmlSecX509StoreDestroy		(xmlSecX509StorePtr store);
-XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509StoreFind		(xmlSecX509StorePtr store,
+XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecX509StoreFind		(xmlSecX509StorePtr store,
 								 xmlChar *subjectName, 
 								 xmlChar *issuerName, 
 								 xmlChar *issuerSerial,
-								 xmlChar *ski,
-								 xmlSecX509DataPtr x509Data);
+								 xmlChar *ski);
 XMLSEC_EXPORT int		xmlSecX509StoreVerify		(xmlSecX509StorePtr store,
-								 xmlSecX509DataPtr x509Data);
+								 xmlSecKeyDataPtr x509Data);
 XMLSEC_EXPORT int		xmlSecX509StoreLoadPemCert	(xmlSecX509StorePtr store,
 								 const char *filename,
 								 int trusted);
@@ -151,7 +205,6 @@ XMLSEC_EXPORT int		xmlSecKeyReadPemCert		(xmlSecKeyPtr key,
 								 const char *filename);
 
 #else /*  XMLSEC_NO_X509 */
-typedef void* 	xmlSecX509Data, *xmlSecX509DataPtr;
 typedef void* 	xmlSecX509Store, *xmlSecX509StorePtr;
 
 #endif /* XMLSEC_NO_X509 */

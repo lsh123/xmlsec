@@ -42,14 +42,13 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr
  * X509 certificates management
  */
 #ifndef XMLSEC_NO_X509						 
-XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find (xmlSecKeysMngrCtxPtr keysMngrCtx,
+XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecSimpleKeysMngrX509Find (xmlSecKeysMngrCtxPtr keysMngrCtx,
 							 xmlChar *subjectName,
 							 xmlChar *issuerName,
 							 xmlChar *issuerSerial,
-							 xmlChar *ski,
-							 xmlSecX509DataPtr cert);
+							 xmlChar *ski);
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrX509Verify	(xmlSecKeysMngrCtxPtr keysMngrCtx,
-    							 xmlSecX509DataPtr cert);  
+    							 xmlSecKeyDataPtr cert);  
 XMLSEC_EXPORT int	xmlSecSimpleKeysMngrLoadPemCert	(xmlSecKeysMngrPtr mngr,
 							 const char *filename,
 							 int trusted);

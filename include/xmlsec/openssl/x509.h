@@ -22,22 +22,29 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
+
+typedef struct _xmlSecOpenSSLKeyDataX509		xmlSecOpenSSLKeyDataX509,
+							*xmlSecOpenSSLKeyDataX509Ptr;
+
 /**
- * xmlSecX509Data:
+ * xmlSecOpenSSLKeyDataX509:
  * @verified: the cert that contains this key.
  * @certs: the certs list used to verify the @verified cert.
  * @crls: the crls list present in the key data.
  *
  * XML DSig data for the key.
  */
-
-/* openssl specific */
-struct _xmlSecX509Data {
+struct _xmlSecOpenSSLKeyDataX509 {
+    xmlSecKeyDataX509Id	id;
+    
     X509		*verified;
     STACK_OF(X509) 	*certs;
     STACK_OF(X509_CRL)  *crls;
-    time_t		certsVerificationTime;
 };
+
+
+
+
 
 struct _xmlSecX509Store {
     unsigned long	x509_store_flags;

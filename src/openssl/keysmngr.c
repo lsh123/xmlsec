@@ -567,18 +567,16 @@ xmlSecSimpleKeysDataDestroy(xmlSecSimpleKeysDataPtr keysData) {
  * Returns the pointer to certificate that matches given criteria or NULL 
  * if an error occurs or certificate not found.
  */
-xmlSecX509DataPtr
+xmlSecKeyDataPtr
 xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrCtxPtr keysMngrCtx,
 			    xmlChar *subjectName, xmlChar *issuerName, 
-			    xmlChar *issuerSerial, xmlChar *ski, 
-			    xmlSecX509DataPtr cert) {
+			    xmlChar *issuerSerial, xmlChar *ski) {
     xmlSecAssert2(keysMngrCtx != NULL, NULL);
     xmlSecAssert2(keysMngrCtx->keysMngr != NULL, NULL);
     
     if(keysMngrCtx->keysMngr->x509Data != NULL) {
 	return(xmlSecX509StoreFind((xmlSecX509StorePtr)keysMngrCtx->keysMngr->x509Data, 
-				    subjectName, issuerName, issuerSerial, ski,
-				    cert));
+				    subjectName, issuerName, issuerSerial, ski));
 				
     }        
     return(NULL);
@@ -597,7 +595,7 @@ xmlSecSimpleKeysMngrX509Find(xmlSecKeysMngrCtxPtr keysMngrCtx,
  */
 int	
 xmlSecSimpleKeysMngrX509Verify(xmlSecKeysMngrCtxPtr keysMngrCtx, 
-			       xmlSecX509DataPtr cert) {
+			       xmlSecKeyDataPtr cert) {
     xmlSecAssert2(keysMngrCtx != NULL, -1);
     xmlSecAssert2(keysMngrCtx->keysMngr != NULL, -1);
     xmlSecAssert2(cert != NULL, -1);

@@ -14,6 +14,11 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <time.h>
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/keyvalue.h>
+
+
 /* forward declarations */
 typedef struct _xmlSecKey			xmlSecKey,
 						*xmlSecKeyPtr;
@@ -25,14 +30,11 @@ typedef struct _xmlSecKeysMngrCtx		xmlSecKeysMngrCtx,
 typedef struct _xmlSecKeysMngr			xmlSecKeysMngr,
 						*xmlSecKeysMngrPtr;
 
-
-
-#include <time.h>
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/keyvalue.h>
-#include <xmlsec/x509.h>
-#include <xmlsec/x509.h>
-
+/* todo:  find a better place */
+#ifndef XMLSEC_NO_X509
+XMLSEC_EXPORT_VAR xmlSecKeyDataId		xmlSecKeyDataX509;
+#define xmlSecKeyDataRawX509  xmlSecKeyDataX509
+#endif /* XMLSEC_NO_X509 */
 
 /***************************************************************************
  *
@@ -118,12 +120,8 @@ struct _xmlSecKey {
     xmlSecKeyUsage		usage;
     xmlSecKeyOrigin		origin;
 
-    xmlSecX509DataPtr		x509Data;
-/* 
-todo    
     xmlSecKeyDataPtr		x509Data;
     xmlSecKeyDataPtr		pgpData;
-*/
 };
 
 XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyCreate		(xmlSecKeyValuePtr value,
@@ -188,19 +186,17 @@ typedef xmlSecKeyPtr		(*xmlSecKeyDataReadXmlMethod)	(xmlSecKeyDataId id,
 								 xmlNodePtr node);
 /** 
  * xmlSecKeyDataWriteXmlMethod:
- * @id: the key data id.
- * @keysMngrCtx: the keys write context.
  * @key: the key.
- * @parent: the pointer to key's value XML node parent node.
+ * @keysMngrCtx: the keys write context.
+ * @node: the pointer to key's value XML node parent node.
  *
  * Key specific writing to XML node method.
  * 
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int			(*xmlSecKeyDataWriteXmlMethod)	(xmlSecKeyDataId id,
+typedef int			(*xmlSecKeyDataWriteXmlMethod)	(xmlSecKeyPtr key,
 								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlSecKeyPtr key,
-								 xmlNodePtr parent);
+								 xmlNodePtr node);
 /** 
  * xmlSecKeyDataReadBinaryMethod:
  * @id: the key data id.
@@ -218,9 +214,8 @@ typedef xmlSecKeyPtr		(*xmlSecKeyDataReadBinaryMethod)(xmlSecKeyDataId id,
 								 size_t size);
 /** 
  * xmlSecKeyDataWriteBinaryMethod:
- * @id: the key data id.
- * @keysMngrCtx: the keys write context.
  * @key: the key.
+ * @keysMngrCtx: the keys write context.
  * @buf: the pointer to pointer to the output buffer.
  * @size: the pointer to output buffer size.
  *
@@ -230,14 +225,17 @@ typedef xmlSecKeyPtr		(*xmlSecKeyDataReadBinaryMethod)(xmlSecKeyDataId id,
  * 
  * Returns 0 on success or a negative value if an error occurs.
  */
-typedef int			(*xmlSecKeyDataWriteBinaryMethod)(xmlSecKeyDataId id,
+typedef int			(*xmlSecKeyDataWriteBinaryMethod)(xmlSecKeyPtr key,
 								 xmlSecKeysMngrCtxPtr keysMngrCtx,
-								 xmlSecKeyPtr key,
 								 unsigned char **buf,
 								 size_t *size);
+typedef enum  {
+    xmlSecKeyDataTypeX509,
+    xmlSecKeyDataTypePGP
+} xmlSecKeyDataType;
 
 struct _xmlSecKeyDataIdStruct {
-    const xmlChar*			href;
+    xmlSecKeyDataType			type;
     const xmlChar*			childNodeName;
     const xmlChar*			childNodeNs;
     xmlSecKeyOrigin			origin; 
@@ -263,16 +261,16 @@ XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyDataReadXml	(xmlSecKeyDataId id,
 								 xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT int			xmlSecKeyDataWriteXml	(xmlSecKeyDataId id,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 xmlSecKeyPtr key,
-								 xmlNodePtr parent);
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlNodePtr node);
 XMLSEC_EXPORT xmlSecKeyPtr		xmlSecKeyDataReadBinary	(xmlSecKeyDataId id,
 								 xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 const unsigned char *buf,
 								 size_t size);
 XMLSEC_EXPORT int			xmlSecKeyDataWriteBinary(xmlSecKeyDataId id,
-								 xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 xmlSecKeyPtr key,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 unsigned char **buf,
 								 size_t *size);
 
@@ -296,6 +294,16 @@ XMLSEC_EXPORT int			xmlSecKeyDataWriteBinary(xmlSecKeyDataId id,
  	(xmlSecKeyDataIsValid(( keyData )) && \
 	((( keyData )->id) == ( keyDataId )))
 
+/**
+ * xmlSecKeyDataCheckType:
+ * @keyData: the pointer to key data.
+ * @dataType: the key data type.
+ *
+ * Macro. Returns 1 if @keyData is valid and @keyData's id type is equal to @dataType.
+ */
+#define xmlSecKeyDataCheckType(keyData, dataType) \
+ 	(xmlSecKeyDataIsValid(( keyData )) && \
+	((( keyData )->id)->type == ( dataType )))
 
 /****************************************************************************
  *
@@ -400,12 +408,11 @@ typedef xmlSecKeyPtr 	(*xmlSecFindKeyCallback)		(xmlSecKeysMngrCtxPtr keysMngrCt
  * Returns the pointer to certificate that matches given criteria or NULL 
  * if an error occurs or certificate not found.
  */
-typedef xmlSecX509DataPtr	(*xmlSecX509FindCallback)	(xmlSecKeysMngrCtxPtr keysMngrCtx,
+typedef xmlSecKeyDataPtr	(*xmlSecX509FindCallback)	(xmlSecKeysMngrCtxPtr keysMngrCtx,
 								 xmlChar *subjectName,
 								 xmlChar *issuerName,
 								 xmlChar *issuerSerial,
-								 xmlChar *ski,
-								 xmlSecX509DataPtr cert);
+								 xmlChar *ski);
 /**
  * xmlSecX509VerifyCallback:
  * @mngr: the keys manager.
@@ -418,7 +425,7 @@ typedef xmlSecX509DataPtr	(*xmlSecX509FindCallback)	(xmlSecKeysMngrCtxPtr keysMn
  * and -1 if an error occurs.
  */
 typedef int			(*xmlSecX509VerifyCallback)	(xmlSecKeysMngrCtxPtr keysMngrCtx,
-    								 xmlSecX509DataPtr cert);  
+    								 xmlSecKeyDataPtr cert);  
 /**
  * xmlSecKeysMngr:
  * @getKey: the callback used to read <dsig:KeyInfo> node.

@@ -32,6 +32,23 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoShutdown		(void);
 XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoGenerateRandom	(xmlSecBufferPtr buffer,
 									 size_t size);
+/********************************************************************
+ *
+ * HMAC transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_HMAC
+/** 
+ * xmlSecMSCryptoKeyDataHmacId:
+ * 
+ * The DHMAC key data klass.
+ */
+#define xmlSecMSCryptoKeyDataHmacId \
+	xmlSecMSCryptoKeyDataHmacGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId	xmlSecMSCryptoKeyDataHmacGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataHmacSet	(xmlSecKeyDataPtr data,
+									 const xmlSecByte* buf,
+									 xmlSecSize bufSize);
 /**
  * xmlSecMSCryptoTransformHmacSha1Id:
  * 
@@ -41,6 +58,44 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoGenerateRandom	(xmlSecBufferPtr buffer,
 	xmlSecMSCryptoTransformHmacSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacSha1GetKlass(void);
 
+/**
+ * xmlSecMSCryptoTransformHmacMd5Id:
+ * 
+ * The HMAC with MD5 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformHmacMd5Id \
+	xmlSecMSCryptoTransformHmacMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformHmacMd5GetKlass(void);
+
+
+#endif /* XMLSEC_NO_HMAC */
+
+/********************************************************************
+ *
+ * DSA transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DSA
+
+/**
+ * xmlSecMSCryptoKeyDataDsaId:
+ * 
+ * The DSA key klass.
+ */
+#define xmlSecMSCryptoKeyDataDsaId \
+	xmlSecMSCryptoKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDsaGetKlass	(void);
+
+/**
+ * xmlSecMSCryptoTransformDsaSha1Id:
+ * 
+ * The DSA SHA1 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformDsaSha1Id \
+	xmlSecMSCryptoTransformDsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDsaSha1GetKlass(void);
+
+#endif /* XMLSEC_NO_DSA */
 
 /********************************************************************
  *
@@ -120,8 +175,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void)
  */
 #define xmlSecMSCryptoKeyDataAesId \
 	xmlSecMSCryptoKeyDataAesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataAesGetKlass	(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data,
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataAesGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataAesSet	(xmlSecKeyDataPtr data,
 									 const xmlSecByte* buf,
 									 xmlSecSize bufSize);
 /**
@@ -160,17 +215,18 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes256CbcGetKlass(
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DES
+
 /**
- * xmlSecMSCryptoKeyDataDesId:
+ * xmlSecNssKeyDataDesId:
  * 
- * The DES key klass.
+ * The DES key data klass.
  */
 #define xmlSecMSCryptoKeyDataDesId \
 	xmlSecMSCryptoKeyDataDesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId	xmlSecMSCryptoKeyDataDesGetKlass	(void);
-XMLSEC_CRYPTO_EXPORT int				xmlSecMSCryptoKeyDataDesSet	(xmlSecKeyDataPtr data,
-																	 const unsigned char* buf,
-																	 size_t bufSize);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDesGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataDesSet	(xmlSecKeyDataPtr data,
+									 const xmlSecByte* buf,
+									 xmlSecSize bufSize);
 
 /**
  * xmlSecMSCryptoTransformDes3CbcId:
@@ -181,14 +237,8 @@ XMLSEC_CRYPTO_EXPORT int				xmlSecMSCryptoKeyDataDesSet	(xmlSecKeyDataPtr data,
 	xmlSecMSCryptoTransformDes3CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDes3CbcGetKlass(void);
 
-/**
- * xmlSecMSCryptoTransformKWDes3Id:
- * 
- * The DES3 CBC cipher transform klass.
- */
-#define xmlSecMSCryptoTransformKWDes3Id \
-	xmlSecMSCryptoTransformKWDes3GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformKWDes3GetKlass(void);
+
+
 #endif /* XMLSEC_NO_DES */
 
 #ifdef __cplusplus

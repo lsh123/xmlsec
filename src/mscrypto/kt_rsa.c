@@ -248,14 +248,10 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     xmlSecSize keySize;
     int ret;
     unsigned int outlen;
-    HCRYPTPROV hProv = 0;
-    PCCERT_CONTEXT pCert;
     HCRYPTKEY hKey = 0;
     DWORD dwInLen;
     DWORD dwBufLen;
     DWORD dwOutLen;
-    DWORD dwKeySpec;
-    BOOL fCallerFreeProv = TRUE;
     BYTE * outBuf;
     BYTE * inBuf;
     BYTE * tmpBuf;
@@ -309,35 +305,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         return(-1);
     }
 
-    pCert = xmlSecMSCryptoKeyDataGetCert(ctx->data);
-    if (NULL == pCert) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecMSCryptoKeyDataGetCert",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
-    }
-
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-        if (!CryptAcquireContext(&hProv, NULL, MS_STRONG_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptAcquireContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", GetLastError());
-            return(-1);
-        }
-        if (!CryptImportPublicKeyInfo(hProv, X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                      &(pCert->pCertInfo->SubjectPublicKeyInfo), 
-                                      &hKey)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptImportPublicKeyInfo",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", GetLastError());
-            return(-1);
-        }
 
         tmp = xmlSecBufferCreate(outSize);
 	ret = xmlSecBufferSetData(tmp, xmlSecBufferGetData(in), inSize);
@@ -353,10 +321,18 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         dwInLen = inSize;
         dwBufLen = outSize;
 
+	if (0 == (hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePublic))) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecMSCryptoKeyDataGetKey",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return (-1);
+	}
         if (!CryptEncrypt(hKey, 0, TRUE, 0, xmlSecBufferGetData(tmp), &dwInLen, dwBufLen)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "CryptImportPublicKeyInfo",
+                        "CryptEncrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "error code=%d", GetLastError());
             return (-1);
@@ -372,30 +348,6 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 	}
 	xmlSecBufferDestroy(tmp);
     } else {
-        if (!CryptAcquireCertificatePrivateKey(pCert, CRYPT_ACQUIRE_USE_PROV_INFO_FLAG,
-                                               NULL, &hProv, &dwKeySpec, &fCallerFreeProv)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptAcquireCertificatePrivateKey",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", GetLastError());
-            return(-1);
-        }
-
-        /* Instead of using CryptGetUserKey, apparently this can be used, looks safer
-         * to me, since a direct link to the certificate while selecting the key pair
-         * is used (I think), however testing is needed. Wouter
-         */
-        if (!CryptImportPublicKeyInfo(hProv, X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                      &(pCert->pCertInfo->SubjectPublicKeyInfo), 
-                                      &hKey)) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CryptImportPublicKeyInfo",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "error code=%d", GetLastError());
-            return(-1);
-        }
 
 	dwOutLen = inSize;
 
@@ -408,6 +360,14 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 	    outBuf[i] = inBuf[inSize-(i+1)];
 	}
 
+	if (0 == (hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePrivate))) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecMSCryptoKeyDataGetKey",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return (-1);
+	}
 	if (!CryptDecrypt(hKey, 0, TRUE, 0, outBuf, &dwOutLen)) {
             xmlSecError(XMLSEC_ERRORS_HERE, 
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -418,13 +378,6 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         }
 
         outSize = dwOutLen;
-    }
-
-    if (hKey != 0) {
-        CryptDestroyKey(hKey);
-    }
-    if ((hProv != 0) && (TRUE == fCallerFreeProv)) {
-        CryptReleaseContext(hProv, 0);
     }
 
     ret = xmlSecBufferSetSize(out, outSize);

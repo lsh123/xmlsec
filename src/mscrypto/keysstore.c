@@ -357,15 +357,15 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	    lpCertID,
 	    NULL))) {
 
-	    xmlSecError(XMLSEC_ERRORS_HERE,
+	    /*xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"CertFindCertificateInStore",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"error code=%d", GetLastError());
+			"error code=%d", GetLastError());*/
 	    goto done;
 	}
 
-	data = xmlSecMSCryptoCertAdopt(pCertContext);
+	data = xmlSecMSCryptoCertAdopt(pCertContext, keyReq->keyType);
 	if(data == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -396,7 +396,17 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
 	    goto done;
 	}
 
-	ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, pCertContext);
+	pDupCert = CertDuplicateCertificateContext(pCertContext);
+	if (pDupCert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CertDuplicateCertificateContext",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"data=%s, error code=%d",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), GetLastError());
+	    goto done;
+	}
+	ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, pDupCert);
 	if (ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -490,6 +500,7 @@ done:
 		xmlSecKeyDestroy(retval);
 		retval = NULL;
 	    }
+	    retval = xmlSecKeyStoreFindKey(*ss, name, keyInfoCtx);
 	} else {
 	    xmlSecKeyDestroy(retval);
 	    retval = NULL;

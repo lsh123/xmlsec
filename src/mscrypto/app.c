@@ -20,6 +20,7 @@
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
+#include <xmlsec/mscrypto/certkeys.h>
 #include <xmlsec/mscrypto/keysstore.h>
 #include <xmlsec/mscrypto/x509.h>
 
@@ -35,7 +36,7 @@
  */
 int
 xmlSecMSCryptoAppInit(const char* config ATTRIBUTE_UNUSED) {
-    /* TODO: initialize MSCrypto crypto engine */
+    /* initialize MSCrypto crypto engine */
     return(0);
 }
 
@@ -50,8 +51,7 @@ xmlSecMSCryptoAppInit(const char* config ATTRIBUTE_UNUSED) {
  */
 int
 xmlSecMSCryptoAppShutdown(void) {
-    /* TODO: shutdown MSCrypto crypto engine */
-    
+    /* shutdown MSCrypto crypto engine */
     return(0);
 }
 
@@ -59,33 +59,35 @@ xmlSecMSCryptoAppShutdown(void) {
  * xmlSecMSCryptoAppKeyLoad:
  * @filename:		the key filename.
  * @format:		the key file format.
- * @pwd:		the PEM key file password.
- * @pwdCallback:	the PEM key password callback.
+ * @pwd:		the key file password.
+ * @pwdCallback:	the key password callback.
  * @pwdCallbackCtx:	the user context for password callback.
  *
- * Reads key from the a file (not implemented yet).
+ * Reads key from the a file.
  *
  * Returns pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecMSCryptoAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
-			const char *pwd ATTRIBUTE_UNUSED, 
-			void* pwdCallback ATTRIBUTE_UNUSED, 
-			void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+			const char *pwd, 
+			void* pwdCallback, 
+			void* pwdCallbackCtx) {
+    
     
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
     
     if (format == xmlSecKeyDataFormatPkcs12) {
-	return (xmlSecMSCryptoAppPkcs12Load(filename, pwd, pwdCallback, pwdCallbackCtx));
+	return (xmlSecMSCryptoAppPkcs12Load(filename, pwd, pwdCallback,
+					    pwdCallbackCtx));
     }
 
-    /* TODO: load key */
+    /* Any other format like PEM keys is currently not supported */
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecMSCryptoAppPemLoad",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
+		NULL,
+		XMLSEC_ERRORS_R_INVALID_FORMAT,
+		"format=%d", format);
     return(NULL);
 }
 
@@ -99,8 +101,7 @@ static PCCERT_CONTEXT xmlSecMSCryptoAppCertLoad(const char* filename, xmlSecKeyD
  * @filename:		the certificate filename.
  * @format:		the certificate file format.
  *
- * Reads the certificate from $@filename and adds it to key
- * (not implemented yet).
+ * Reads the certificate from $@filename and adds it to key.
  * 
  * Returns 0 on success or a negative value otherwise.
  */
@@ -184,18 +185,257 @@ xmlSecMSCryptoAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  */
 xmlSecKeyPtr	
 xmlSecMSCryptoAppPkcs12Load(const char *filename, 
-			  const char *pwd ATTRIBUTE_UNUSED,
+			  const char *pwd,
 		          void* pwdCallback ATTRIBUTE_UNUSED, 
 			  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    xmlSecAssert2(filename != NULL, NULL);
+    FILE *f = NULL;
+    xmlSecBuffer buffer;
+    xmlSecByte buf[1024];
+    int ret, len;
+    CRYPT_DATA_BLOB pfx;
+    HCERTSTORE hCertStore;
+    PCCERT_CONTEXT tmpcert;
+    PCCERT_CONTEXT pCert = NULL;
+    WCHAR * wcPwd;
+    xmlSecKeyDataPtr x509Data = NULL;
+    xmlSecKeyDataPtr data = NULL;
+    xmlSecKeyPtr key = NULL;
+    DWORD dwData, dwDataLen;
+    BOOL bres;
 
-    /* TODO: load pkcs12 file */
+    xmlSecAssert2(filename != NULL, NULL);
+    xmlSecAssert2(pwd != NULL, NULL);
+
+    ret = xmlSecBufferInitialize(&buffer, 0);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecBufferInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);	
+    }
+
+    f = fopen(filename, "rb");
+    if (f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "fopen",
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "filename=%s", 
+		    xmlSecErrorsSafeString(filename));
+	xmlSecBufferFinalize(&buffer);
+	return(NULL);
+    }
+
+    while(1) {
+        ret = fread(buf, 1, sizeof(buf), f);
+        if (ret > 0) {
+            xmlSecBufferAppend(&buffer, buf, ret);
+        } else if(ret == 0) {
+            break;
+        } else {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "fread",
+                        XMLSEC_ERRORS_R_IO_FAILED,
+                        "filename=%s", 
+                        xmlSecErrorsSafeString(filename));
+            fclose(f);
+            xmlSecBufferFinalize(&buffer);
+            return(NULL);
+        }
+    }
+    fclose(f);
+
+    pfx.pbData = xmlSecBufferGetData(&buffer);
+    pfx.cbData = xmlSecBufferGetSize(&buffer);
+
+    if (FALSE == PFXIsPFXBlob(&pfx)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PFXIsPFXBlob",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "Invalid data");
+
+	return(NULL);
+    }
+
+    len = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pwd, -1, NULL, 0);
+    if (len <= 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "MultiByteToWideChar",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "Error no: %d", GetLastError());
+	return(NULL);
+    }
+    wcPwd = (WCHAR *)malloc((len + 1) * sizeof(WCHAR));
+    ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pwd, -1, wcPwd, len);
+    if (ret <= 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "MultiByteToWideChar",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "Error no: %d", GetLastError());
+	return(NULL);
+    }
+
+    if (FALSE == PFXVerifyPassword(&pfx, wcPwd, 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PFXVerifyPassword",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "Invalid password");
+	free(wcPwd);
+	return(NULL);
+    }
+
+    hCertStore = PFXImportCertStore(&pfx, wcPwd, CRYPT_EXPORTABLE);
+    free(wcPwd);
+    if (NULL == hCertStore) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "PFXImportCertStore",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "Invalid data, Error nr: %d", GetLastError());
+	return(NULL);
+    }
+    
+    x509Data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataX509Id);
+    if(x509Data == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyDataCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecMSCryptoKeyDataX509Id)));
+	goto done;
+    }
+
+    while (pCert = CertEnumCertificatesInStore(hCertStore, pCert)) {
+	/* Find the certificate that has the private key */
+	dwDataLen = sizeof(DWORD);
+	dwData = 0;
+	if (TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen) &&
+	    dwData) {
+	/*if ((TRUE == CryptFindCertificateKeyProvInfo(pCert, 0, NULL)) && (NULL == data)) {*/
+	    data = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+	    if(data == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "xmlSecMSCryptoCertAdopt",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		goto done;
+	    }
+	    tmpcert = CertDuplicateCertificateContext(pCert);
+	    if(tmpcert == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "CertDuplicateCertificateContext",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "data=%s, error code=%d",
+			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), GetLastError());
+		goto done;
+	    }
+
+	    ret = xmlSecMSCryptoKeyDataX509AdoptKeyCert(x509Data, tmpcert);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecMSCryptoKeyDataX509AdoptKeyCert",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+		CertFreeCertificateContext(tmpcert);
+		goto done;
+	    }
+
+	}
+
+	tmpcert = CertDuplicateCertificateContext(pCert);
+        if(tmpcert == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CertDuplicateCertificateContext",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"data=%s, error code=%d",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)), GetLastError());
+	    goto done;	
+	}
+	ret = xmlSecMSCryptoKeyDataX509AdoptCert(x509Data, tmpcert);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecMSCryptoKeyDataX509AdoptCert",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"data=%s",
+		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+	    CertFreeCertificateContext(tmpcert);
+	    goto done;
+	}
+    }
+
+    if (data == NULL) {
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
 		"xmlSecMSCryptoAppPkcs12Load",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "private key not found in PKCS12 file");
+	goto done;
+    }
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL); 
+	goto done;
+    }    
+    
+    ret = xmlSecKeySetValue(key, data);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeySetValue",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+	xmlSecKeyDestroy(key);
+	key = NULL;
+	goto done;
+    }
+    data = NULL;
+
+    ret = xmlSecKeyAdoptData(key, x509Data);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyAdoptData",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+	xmlSecKeyDestroy(key);
+	key = NULL;
+	goto done;
+    }
+    x509Data = NULL;
+
+
+done:
+    CertCloseStore(hCertStore, 0);
+
+    if(x509Data != NULL) {
+	xmlSecKeyDataDestroy(x509Data);
+    }
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+
+    return(key); 
 }
 
 /**
@@ -215,17 +455,47 @@ int
 xmlSecMSCryptoAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
 				xmlSecKeyDataFormat format, 
 				xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+    xmlSecKeyDataStorePtr x509Store;
+    PCCERT_CONTEXT pCert;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO: load cert and add to keys manager */
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecMSCryptoX509StoreId);
+    if(x509Store == NULL) {
     xmlSecError(XMLSEC_ERRORS_HERE,
 		NULL,
-		"xmlSecMSCryptoAppKeysMngrCertLoad",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+                    "xmlSecKeysMngrGetDataStore",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecMSCryptoX509StoreId");
+        return(-1);
+    }
+
+    pCert = xmlSecMSCryptoAppCertLoad(filename, format);
+    if(pCert == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecMSCryptoAppCertLoad",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "filename=%s;format=%d", 
+		    xmlSecErrorsSafeString(filename), format);
+	return(-1);
+    }    	
+    
+    ret = xmlSecMSCryptoX509StoreAdoptCert(x509Store, pCert, type);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecMSCryptoX509StoreAdoptCert",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		XMLSEC_ERRORS_NO_MESSAGE);
+	CertFreeCertificateContext(pCert);
     return(-1);
+}
+
+    return(0);
 }
 
 static PCCERT_CONTEXT	

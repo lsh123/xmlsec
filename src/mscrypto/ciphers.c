@@ -39,6 +39,7 @@ struct _xmlSecMSCryptoBlockCipherCtx {
     HCRYPTKEY		cryptKey;
     HCRYPTKEY		pubPrivKey;
     xmlSecKeyDataId	keyId;
+    LPCTSTR		providerName;
     int			providerType;
     int			keyInitialized;
     int			ctxInitialized;
@@ -447,6 +448,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecMSCryptoTransformDes3CbcId) {
 	ctx->algorithmIdentifier = CALG_3DES;
 	ctx->keyId 	= xmlSecMSCryptoKeyDataDesId;
+	ctx->providerName = MS_ENHANCED_PROV;
 	ctx->providerType = PROV_RSA_FULL;
 	ctx->keySize = 24;
     } else 
@@ -455,16 +457,22 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 	if(transform->id == xmlSecMSCryptoTransformAes128CbcId) {
 	    ctx->algorithmIdentifier = CALG_AES_128;
 	    ctx->keyId 	= xmlSecMSCryptoKeyDataAesId;
+	    /*ctx->providerName = MS_ENH_RSA_AES_PROV;*/
+	    ctx->providerName = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)";
 	    ctx->providerType = PROV_RSA_AES;
 	    ctx->keySize = 16;
 	} else if(transform->id == xmlSecMSCryptoTransformAes192CbcId) {
 	    ctx->algorithmIdentifier = CALG_AES_192;
 	    ctx->keyId 	= xmlSecMSCryptoKeyDataAesId;
+	    /*ctx->providerName = MS_ENH_RSA_AES_PROV;*/
+	    ctx->providerName = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)";
 	    ctx->providerType = PROV_RSA_AES;
 	    ctx->keySize = 24;
 	} else if(transform->id == xmlSecMSCryptoTransformAes256CbcId) {
 	    ctx->algorithmIdentifier = CALG_AES_256;
 	    ctx->keyId 	= xmlSecMSCryptoKeyDataAesId;
+	    /*ctx->providerName = MS_ENH_RSA_AES_PROV;*/
+	    ctx->providerName = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)";
 	    ctx->providerType = PROV_RSA_AES;
 	    ctx->keySize = 32;
 	} else 
@@ -478,16 +486,19 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 		return(-1);
 	    }        
 	
+
+    if (!CryptAcquireContext(&ctx->cryptProvider, NULL /*"xmlSecMSCryptoTempContainer"*/, 
+			     ctx->providerName, ctx->providerType, 0)) {
+        DWORD dwError;
+	dwError = GetLastError();
+	if (dwError == NTE_EXISTS) {
     if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer", 
-    			     MS_ENHANCED_PROV, ctx->providerType, CRYPT_NEWKEYSET)) {
-	if (GetLastError() == NTE_EXISTS) {
-	    if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer", 
-				     MS_ENHANCED_PROV, ctx->providerType, 0)) {
+				     ctx->providerName, ctx->providerType, 0)) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "CryptAcquireContext",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+			    "Error code: %d", GetLastError());
 
 		return(-1);
 	    }
@@ -496,7 +507,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"CryptAcquireContext",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"Error code: %d", dwError);
 
 	    return(-1);
 	}

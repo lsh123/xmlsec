@@ -356,6 +356,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecAssert2(ctx != NULL, -1);
 
     pCert = CertDuplicateCertificateContext(cert);
+    CertFreeCertificateContext(cert);
     if (!pCert) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1534,7 +1535,17 @@ xmlSecMSCryptoX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
 	return(-1);
     }    
 
+    if (0 != xmlSecMSCryptoKeyDataX509AdoptCrl(data, crl)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		    "xmlSecMSCryptoKeyDataX509AdoptCrl",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlFree(content);
     CertFreeCRLContext(crl); 
+	return(-1);
+    }
+    
     xmlFree(content);
     return(0);
 }
@@ -1716,7 +1727,7 @@ xmlSecMSCryptoX509CertGetKey(PCCERT_CONTEXT cert) {
 	return(NULL);
     }    
 
-    data = xmlSecMSCryptoCertAdopt(pCert);
+    data = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePublic);
     if(data == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1927,49 +1938,80 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
     return(res);
 }
 
+static BOOL 
+IsHexDigit(char c) {
+    switch (c) {
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case '0':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	    return TRUE;
+	    break;
+	default:
+	    return FALSE;
+    }
+}
+
 static xmlChar*
 xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
     xmlChar *res = NULL;
     unsigned char * bsn;
+    unsigned char *data, *p, *e;
     size_t ssn;
     int i;
     char *str;
     char str0[10];
+    int len;
 
     xmlSecAssert2(num != NULL, NULL);
 
-    bsn = num->pbData;
-    ssn = num->cbData;
-
-    str = (char *)malloc(ssn * 3);
-    if (!str) {
+    if (!CryptBinaryToString(num->pbData, num->cbData, CRYPT_STRING_HEX, NULL, &len)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "malloc",
+		    "CryptBinaryToString",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return NULL;
     }
-    str[0] = '\0';
-
-    for (i=(ssn-1); i>=0; i--) {
-	sprintf(str0, "%.2x ", bsn[i]);
-	strcat(str, str0);
-    }
-    str[strlen(str) - 1] = '\0';
-
-    res = xmlStrdup(BAD_CAST str);
-    if(res == NULL) {
+    data = malloc(len + 1);
+    if (!CryptBinaryToString(num->pbData, num->cbData, CRYPT_STRING_HEX, data, &len)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlStrdup",
+		    "CryptBinaryToString",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	free(str);
-	return(NULL);
+	return NULL;
     }
 
-    free(str);
+    /* Somehow CryptBinaryToString thinks it is necessary to add leading and trailing non hex characters */
+    p = data;
+    while (!IsHexDigit(*p)) {
+	p++;
+    }
+    while (!IsHexDigit(data[len-1])) {
+	len--;
+    }
+    data[len] = 0;
+    res = xmlStrdup(BAD_CAST p);
+    free(data);
 
     return(res);
 }
@@ -1979,31 +2021,32 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
     xmlChar *res = NULL;
     DWORD id = 0;
     DWORD dwSize;
-    BYTE *bSKI;
+    BYTE *bSKI = NULL;
+    PCERT_EXTENSION pCertExt;
 
     xmlSecAssert2(cert != NULL, NULL);
 
-    /* First check if the SKI is an extension of the certificate */
-    while (id = CertEnumCertificateContextProperties(cert, id)) {
-	if (id == CERT_KEY_IDENTIFIER_PROP_ID) {
-	    if (!CertGetCertificateContextProperty(cert, id, NULL, &dwSize) || dwSize < 1) {
+    /* First check if the SKI extension actually exists, otherwise we get a SHA1 hash o fthe key/cert */
+    pCertExt = CertFindExtension(szOID_SUBJECT_KEY_IDENTIFIER, cert->pCertInfo->cExtension, cert->pCertInfo->rgExtension);
+    if (pCertExt == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
-			    "CertGetCertificateContextProperty",
+		    "CertFindExtension",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "Error Code=%d", GetLastError());
+		    XMLSEC_ERRORS_NO_MESSAGE);
 		return (NULL);
 	    }
-	    bSKI = (BYTE *)malloc(dwSize);
-	    if (NULL == bSKI) {
+
+    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, NULL, &dwSize) || dwSize < 1) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
-			    "malloc",
+		    "CertGetCertificateContextProperty",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
+		    "Error Code=%d", GetLastError());
 		return (NULL);
 	    }
-	    if (!CertGetCertificateContextProperty(cert, id, (void *)bSKI, &dwSize) || (dwSize < 1)) {
+    bSKI = malloc(dwSize);
+    if (!CertGetCertificateContextProperty(cert, CERT_KEY_IDENTIFIER_PROP_ID, bSKI, &dwSize)) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
 			    "CertGetCertificateContextProperty",
@@ -2012,8 +2055,9 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
 		free(bSKI);
 		return (NULL);
 	    }
-	    break;
-	}
+
+    if (NULL == bSKI) {
+	return(NULL);
     }
 
     res = xmlSecBase64Encode(bSKI, dwSize, 0);

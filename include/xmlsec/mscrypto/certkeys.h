@@ -20,23 +20,25 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
-XMLSEC_CRYPTO_EXPORT int 		xmlMSCryptoKeyDataAdoptCert	(xmlSecKeyDataPtr data, 
-									 PCCERT_CONTEXT pCert);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoKeyDataGetCert	(xmlSecKeyDataPtr data);
+/*XMLSEC_CRYPTO_EXPORT int 		xmlMSCryptoKeyDataAdoptCert	(xmlSecKeyDataPtr data, 
+									 PCCERT_CONTEXT pCert);*/
+/*XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoKeyDataGetCert	(xmlSecKeyDataPtr data);*/
+HCRYPTKEY xmlSecMSCryptoKeyDataGetKey					(xmlSecKeyDataPtr data, 
+									 xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataDuplicate	(xmlSecKeyDataPtr dst, 
 									 xmlSecKeyDataPtr src);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoCertDup		(PCCERT_CONTEXT pCert);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecMSCryptoCertAdopt		(PCCERT_CONTEXT pCert);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecMSCryptoCertAdopt		(PCCERT_CONTEXT pCert, xmlSecKeyDataType type);
 
 /* RSA HELPER STUFF */
-#ifndef XMLSEC_NO_RSA
-XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, 
-									 BLOB keyBlob);
-XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataRsaAdoptCert(xmlSecKeyDataPtr data, 
-									 PCCERT_CONTEXT pCert);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoKeyDataRsaGetCert	(xmlSecKeyDataPtr data);
-
-#endif /* XMLSEC_NO_RSA */
+//#ifndef XMLSEC_NO_RSA
+//XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, 
+//									 BLOB keyBlob);
+//XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataRsaAdoptCert(xmlSecKeyDataPtr data, 
+//									 PCCERT_CONTEXT pCert);
+//XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoKeyDataRsaGetCert	(xmlSecKeyDataPtr data);
+//
+//#endif /* XMLSEC_NO_RSA */
 
 #ifdef __cplusplus
 }

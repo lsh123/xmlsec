@@ -30,12 +30,12 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataX509GetKlass(void);
 
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetKeyCert(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, 
-									 PCCERT_CONTEXT pCertContext);
+									      PCCERT_CONTEXT pCertContext);
 
 XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data,
-									 PCCERT_CONTEXT pCertContext);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetCert	(xmlSecKeyDataPtr data,
-									 xmlSecSize pos);
+									   PCCERT_CONTEXT pCertContext);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetCert    (xmlSecKeyDataPtr data,
+									     xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data);
 
 XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data,

@@ -50,6 +50,7 @@ struct _xmlSecDSigCtx {
     int				fakeSignatures;
 
     xmlSecKeyInfoCtx		keyInfoCtx;
+    xmlSecTransformCtx		signatureTransformCtx;
 };
 
 /**

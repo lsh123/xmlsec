@@ -113,6 +113,7 @@ XMLSEC_EXPORT xmlSecTransformPtr 	xmlSecTransformCtxNodeRead  (xmlSecTransformCt
 XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx,
 								     xmlNodePtr node,
 								     xmlSecTransformUsage usage);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCtxAppendMemBuf(xmlSecTransformCtxPtr ctx);
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump (xmlSecTransformCtxPtr ctx,
 								     FILE* output);
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx,

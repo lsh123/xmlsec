@@ -459,7 +459,8 @@ xmlSecDSigResultAddManifestRef(xmlSecDSigResultPtr result, xmlSecReferenceResult
 xmlSecDSigCtxPtr		
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     xmlSecDSigCtxPtr ctx;
-    
+    int ret;
+        
     /*
      * Allocate a new xmlSecDSigCtx and fill the fields.
      */
@@ -474,6 +475,19 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 	return(NULL);
     }
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
+    
+    ret = xmlSecTransformCtxInitialize(&(ctx->signatureTransformCtx));
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCtxInitialize",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecDSigCtxDestroy(ctx);
+	return(NULL);
+    }
+    
+    /* todo: call key info ctx initialize */
     
     /* by default we process Manifests and store everything */
     ctx->keyInfoCtx.keysMngr = keysMngr;
@@ -493,6 +507,8 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 void
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {    
     xmlSecAssert(ctx != NULL);
+    
+    xmlSecTransformCtxFinalize(&(ctx->signatureTransformCtx));
 
     memset(ctx, 0, sizeof(xmlSecDSigCtx));
     xmlFree(ctx);

@@ -49,6 +49,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/membuf.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
@@ -434,6 +435,40 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
     }    
     return(0);
 }
+
+xmlSecTransformPtr 
+xmlSecTransformCtxAppendMemBuf(xmlSecTransformCtxPtr ctx) {
+    xmlSecTransformPtr transform;
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    transform = xmlSecTransformCreate(xmlSecTransformMemBufId, 0);
+    if(!xmlSecTransformIsValid(transform)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCreate",		    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
+	return(NULL);
+    }
+
+    ret = xmlSecTransformCtxAppend(ctx, transform);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformConnect",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+
+    return(transform);
+}
+
 
 void 
 xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {

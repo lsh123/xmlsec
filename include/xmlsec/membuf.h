@@ -18,6 +18,7 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/transforms.h>
 
 /********************************************************************
  *

@@ -25,9 +25,11 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
+#include <xmlsec/buffer.h>
 #include <xmlsec/keys.h>
-#include <xmlsec/transforms.h>
+#include <xmlsec/keysmngr.h>
 #include <xmlsec/keyinfo.h>
+#include <xmlsec/transforms.h>
 
 typedef struct _xmlSecDSigReferenceCtx		xmlSecDSigReferenceCtx,
 						*xmlSecDSigReferenceCtxPtr;

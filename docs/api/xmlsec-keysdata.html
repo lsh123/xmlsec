@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-KEYSDATA"></a>keysdata</h1>
 <div class="REFNAMEDIV">
-<a name="AEN2605"></a><h2>Name</h2>keysdata -- </div>
+<a name="AEN2632"></a><h2>Name</h2>keysdata -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN2608"></a><h2>Synopsis</h2>
+<a name="AEN2635"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 typedef     <a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGE">xmlSecKeyDataUsage</a>;
@@ -229,13 +229,13 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
                                             (void);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN2832"></a><h2>Description</h2>
+<a name="AEN2859"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN2835"></a><h2>Details</h2>
+<a name="AEN2862"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN2837"></a><h3>
+<a name="AEN2864"></a><h3>
 <a name="XMLSECKEYDATAUSAGE"></a>xmlSecKeyDataUsage</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned int					xmlSecKeyDataUsage;</pre></td></tr></table>
 <p>The bits mask that determines possible keys data usage.</p>
@@ -243,7 +243,7 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2843"></a><h3>
+<a name="AEN2870"></a><h3>
 <a name="XMLSECKEYDATAUSAGEUNKNOWN"></a>xmlSecKeyDataUsageUnknown</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageUnknown			0x00000</pre></td></tr></table>
 <p>The key data usage is unknown.</p>
@@ -251,7 +251,7 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2849"></a><h3>
+<a name="AEN2876"></a><h3>
 <a name="XMLSECKEYDATAUSAGEKEYINFONODEREAD"></a>xmlSecKeyDataUsageKeyInfoNodeRead</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageKeyInfoNodeRead		0x00001</pre></td></tr></table>
 <p>The key data could be read from a <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> child.</p>
@@ -259,7 +259,7 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2856"></a><h3>
+<a name="AEN2883"></a><h3>
 <a name="XMLSECKEYDATAUSAGEKEYINFONODEWRITE"></a>xmlSecKeyDataUsageKeyInfoNodeWrite</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageKeyInfoNodeWrite		0x00002</pre></td></tr></table>
 <p>The key data could be written to a <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo%20" target="_top">&lt;dsig:KeyInfo /&gt;</a> child.</p>
@@ -267,7 +267,7 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2863"></a><h3>
+<a name="AEN2890"></a><h3>
 <a name="XMLSECKEYDATAUSAGEKEYVALUENODEREAD"></a>xmlSecKeyDataUsageKeyValueNodeRead</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageKeyValueNodeRead		0x00004</pre></td></tr></table>
 <p>The key data could be read from a <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue%20" target="_top">&lt;dsig:KeyValue /&gt;</a> child.</p>
@@ -275,7 +275,7 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2870"></a><h3>
+<a name="AEN2897"></a><h3>
 <a name="XMLSECKEYDATAUSAGEKEYVALUENODEWRITE"></a>xmlSecKeyDataUsageKeyValueNodeWrite</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageKeyValueNodeWrite		0x00008</pre></td></tr></table>
 <p>The key data could be written to a <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue%20" target="_top">&lt;dsig:KeyValue /&gt;</a> child.</p>
@@ -283,7 +283,7 @@ struct      <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREKLASS">xmlSecKeyData
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2877"></a><h3>
+<a name="AEN2904"></a><h3>
 <a name="XMLSECKEYDATAUSAGERETRIEVALMETHODNODEXML"></a>xmlSecKeyDataUsageRetrievalMethodNodeXml</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageRetrievalMethodNodeXml	0x00010</pre></td></tr></table>
 <p>The key data could be retrieved using <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod%20" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> node
@@ -292,7 +292,7 @@ in XML format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2884"></a><h3>
+<a name="AEN2911"></a><h3>
 <a name="XMLSECKEYDATAUSAGERETRIEVALMETHODNODEBIN"></a>xmlSecKeyDataUsageRetrievalMethodNodeBin</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageRetrievalMethodNodeBin	0x00020</pre></td></tr></table>
 <p>The key data could be retrieved using <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod%20" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> node
@@ -301,7 +301,7 @@ in binary format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2891"></a><h3>
+<a name="AEN2918"></a><h3>
 <a name="XMLSECKEYDATAUSAGEANY"></a>xmlSecKeyDataUsageAny</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataUsageAny				0xFFFFF</pre></td></tr></table>
 <p>Any key data usage.</p>
@@ -309,7 +309,7 @@ in binary format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2897"></a><h3>
+<a name="AEN2924"></a><h3>
 <a name="XMLSECKEYDATAUSAGEKEYINFONODE"></a>xmlSecKeyDataUsageKeyInfoNode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataUsageKeyInfoNode</pre></td></tr></table>
 <p>The key data could be read and written from/to a <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo%20" target="_top">&lt;dsig:KeyInfo /&gt;</a> child.</p>
@@ -317,7 +317,7 @@ in binary format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2904"></a><h3>
+<a name="AEN2931"></a><h3>
 <a name="XMLSECKEYDATAUSAGEKEYVALUENODE"></a>xmlSecKeyDataUsageKeyValueNode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataUsageKeyValueNode</pre></td></tr></table>
 <p>The key data could be read and written from/to a <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue%20" target="_top">&lt;dsig:KeyValue /&gt;</a> child.</p>
@@ -325,7 +325,7 @@ in binary format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2911"></a><h3>
+<a name="AEN2938"></a><h3>
 <a name="XMLSECKEYDATAUSAGERETRIEVALMETHODNODE"></a>xmlSecKeyDataUsageRetrievalMethodNode</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataUsageRetrievalMethodNode</pre></td></tr></table>
 <p>The key data could be retrieved using <a href="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod%20" target="_top">&lt;dsig:RetrievalMethod /&gt;</a> node
@@ -334,7 +334,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2918"></a><h3>
+<a name="AEN2945"></a><h3>
 <a name="XMLSECKEYDATATYPE"></a>xmlSecKeyDataType</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef unsigned int				xmlSecKeyDataType;</pre></td></tr></table>
 <p>The key data type (public/private, session/permanet, etc.).</p>
@@ -342,7 +342,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2924"></a><h3>
+<a name="AEN2951"></a><h3>
 <a name="XMLSECKEYDATATYPEUNKNOWN"></a>xmlSecKeyDataTypeUnknown</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypeUnknown			0x0000</pre></td></tr></table>
 <p>The key data type is unknown (same as <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPENONE">xmlSecKeyDataTypeNone</a>).</p>
@@ -350,7 +350,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2931"></a><h3>
+<a name="AEN2958"></a><h3>
 <a name="XMLSECKEYDATATYPENONE"></a>xmlSecKeyDataTypeNone</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypeNone				xmlSecKeyDataTypeUnknown</pre></td></tr></table>
 <p>The key data type is unknown (same as <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPEUNKNOWN">xmlSecKeyDataTypeUnknown</a>).</p>
@@ -358,7 +358,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2938"></a><h3>
+<a name="AEN2965"></a><h3>
 <a name="XMLSECKEYDATATYPEPUBLIC"></a>xmlSecKeyDataTypePublic</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypePublic				0x0001</pre></td></tr></table>
 <p>The key data contain a public key.</p>
@@ -366,7 +366,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2944"></a><h3>
+<a name="AEN2971"></a><h3>
 <a name="XMLSECKEYDATATYPEPRIVATE"></a>xmlSecKeyDataTypePrivate</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypePrivate			0x0002</pre></td></tr></table>
 <p>The key data contain a private key.</p>
@@ -374,7 +374,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2950"></a><h3>
+<a name="AEN2977"></a><h3>
 <a name="XMLSECKEYDATATYPESYMMETRIC"></a>xmlSecKeyDataTypeSymmetric</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypeSymmetric			0x0004</pre></td></tr></table>
 <p>The key data contain a symmetric key.</p>
@@ -382,7 +382,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2956"></a><h3>
+<a name="AEN2983"></a><h3>
 <a name="XMLSECKEYDATATYPESESSION"></a>xmlSecKeyDataTypeSession</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypeSession			0x0008</pre></td></tr></table>
 <p>The key data contain session key (one time key, not stored in keys manager).</p>
@@ -390,7 +390,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2962"></a><h3>
+<a name="AEN2989"></a><h3>
 <a name="XMLSECKEYDATATYPEPERMANENT"></a>xmlSecKeyDataTypePermanent</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypePermanent			0x0010</pre></td></tr></table>
 <p>The key data contain permanent key (stored in keys manager).</p>
@@ -398,7 +398,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2968"></a><h3>
+<a name="AEN2995"></a><h3>
 <a name="XMLSECKEYDATATYPEANY"></a>xmlSecKeyDataTypeAny</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataTypeAny				0xFFFF</pre></td></tr></table>
 <p>Any key data.</p>
@@ -406,13 +406,13 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2974"></a><h3>
+<a name="AEN3001"></a><h3>
 <a name="XMLSECKEYDATAIDSGET"></a>xmlSecKeyDataIdsGet ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> xmlSecKeyDataIdsGet        (void);</pre></td></tr></table>
 <p>Gets global registered key data klasses list.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN2981"></a><p></p>
+<a name="AEN3008"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -423,14 +423,14 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN2990"></a><h3>
+<a name="AEN3017"></a><h3>
 <a name="XMLSECKEYDATAIDSINIT"></a>xmlSecKeyDataIdsInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataIdsInit            (void);</pre></td></tr></table>
 <p>Initializes the key data klasses. This function is called from the 
 <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a> function and the application should not call it directly.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN2997"></a><p></p>
+<a name="AEN3024"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -441,7 +441,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3006"></a><h3>
+<a name="AEN3033"></a><h3>
 <a name="XMLSECKEYDATAIDSSHUTDOWN"></a>xmlSecKeyDataIdsShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdsShutdown        (void);</pre></td></tr></table>
 <p>Shuts down the keys data klasses. This function is called from the 
@@ -450,7 +450,7 @@ in any format.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3013"></a><h3>
+<a name="AEN3040"></a><h3>
 <a name="XMLSECKEYDATAIDSREGISTERDEFAULT"></a>xmlSecKeyDataIdsRegisterDefault ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataIdsRegisterDefault (void);</pre></td></tr></table>
 <p>Registers default (implemented by XML Security Library)
@@ -458,7 +458,7 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" targe
 <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue" target="_top">&lt;dsig:KeyValue/&gt;</a> element processing klass, ...</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3021"></a><p></p>
+<a name="AEN3048"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -469,13 +469,13 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" targe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3030"></a><h3>
+<a name="AEN3057"></a><h3>
 <a name="XMLSECKEYDATAIDSREGISTER"></a>xmlSecKeyDataIdsRegister ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataIdsRegister        (<font>xmlSecKeyDataId</font> id);</pre></td></tr></table>
 <p>Registers <tt class="PARAMETER"><i>id</i></tt> in the global list of key data klasses.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3038"></a><p></p>
+<a name="AEN3065"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -493,7 +493,7 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" targe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3051"></a><h3>
+<a name="AEN3078"></a><h3>
 <a name="XMLSECKEYDATA"></a>struct xmlSecKeyData</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeyData {
     xmlSecKeyDataId			id;
@@ -503,7 +503,7 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" targe
 <p>The key data: key value (crypto material), x509 data, pgp data, etc.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3057"></a><p></p>
+<a name="AEN3084"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -527,7 +527,7 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" targe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3076"></a><h3>
+<a name="AEN3103"></a><h3>
 <a name="XMLSECKEYDATACREATE"></a>xmlSecKeyDataCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecKeyDataCreate        (<font>xmlSecKeyDataId</font> id);</pre></td></tr></table>
 <p>Allocates and initializes new key data of the specified type <tt class="PARAMETER"><i>id</i></tt>.
@@ -535,7 +535,7 @@ Caller is responsible for destroing returend object with
 <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY">xmlSecKeyDataDestroy</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3086"></a><p></p>
+<a name="AEN3113"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -554,14 +554,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3099"></a><h3>
+<a name="AEN3126"></a><h3>
 <a name="XMLSECKEYDATADUPLICATE"></a>xmlSecKeyDataDuplicate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyDataDuplicate     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Creates a duplicate of the given <tt class="PARAMETER"><i>data</i></tt>. Caller is responsible for 
 destroing returend object with <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY">xmlSecKeyDataDestroy</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3109"></a><p></p>
+<a name="AEN3136"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -580,13 +580,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3122"></a><h3>
+<a name="AEN3149"></a><h3>
 <a name="XMLSECKEYDATADESTROY"></a>xmlSecKeyDataDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDestroy            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Destroys the data and frees all allocated memory.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3129"></a><p></p>
+<a name="AEN3156"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
@@ -597,7 +597,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3138"></a><h3>
+<a name="AEN3165"></a><h3>
 <a name="XMLSECKEYDATAGENERATE"></a>xmlSecKeyDataGenerate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataGenerate           (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>size_t</font> sizeBits,
@@ -605,7 +605,7 @@ or NULL if an error occurs.</td>
 <p>Generates new key data of given size and type.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3147"></a><p></p>
+<a name="AEN3174"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -633,13 +633,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3168"></a><h3>
+<a name="AEN3195"></a><h3>
 <a name="XMLSECKEYDATAGETTYPE"></a>xmlSecKeyDataGetType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> xmlSecKeyDataGetType      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets key data type.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3176"></a><p></p>
+<a name="AEN3203"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -657,13 +657,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3189"></a><h3>
+<a name="AEN3216"></a><h3>
 <a name="XMLSECKEYDATAGETSIZE"></a>xmlSecKeyDataGetSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecKeyDataGetSize            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets key data size.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3197"></a><p></p>
+<a name="AEN3224"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -681,13 +681,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3210"></a><h3>
+<a name="AEN3237"></a><h3>
 <a name="XMLSECKEYDATAGETIDENTIFIER"></a>xmlSecKeyDataGetIdentifier ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecKeyDataGetIdentifier   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets key data identifier string.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3218"></a><p></p>
+<a name="AEN3245"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -705,14 +705,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3231"></a><h3>
+<a name="AEN3258"></a><h3>
 <a name="XMLSECKEYDATADEBUGDUMP"></a>xmlSecKeyDataDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDebugDump          (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints key data debug info.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3239"></a><p></p>
+<a name="AEN3266"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -730,14 +730,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3252"></a><h3>
+<a name="AEN3279"></a><h3>
 <a name="XMLSECKEYDATADEBUGXMLDUMP"></a>xmlSecKeyDataDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataDebugXmlDump       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints key data debug info in XML format.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3260"></a><p></p>
+<a name="AEN3287"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -755,7 +755,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3273"></a><h3>
+<a name="AEN3300"></a><h3>
 <a name="XMLSECKEYDATAXMLREAD"></a>xmlSecKeyDataXmlRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataXmlRead            (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -764,7 +764,7 @@ or NULL if an error occurs.</td>
 <p>Reads the key data of klass <tt class="PARAMETER"><i>id</i></tt> from XML <tt class="PARAMETER"><i>node</i></tt> and adds them to <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3286"></a><p></p>
+<a name="AEN3313"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -797,7 +797,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3312"></a><h3>
+<a name="AEN3339"></a><h3>
 <a name="XMLSECKEYDATAXMLWRITE"></a>xmlSecKeyDataXmlWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataXmlWrite           (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -806,7 +806,7 @@ or NULL if an error occurs.</td>
 <p>Writes the key data of klass <tt class="PARAMETER"><i>id</i></tt> from <tt class="PARAMETER"><i>key</i></tt> to an XML <tt class="PARAMETER"><i>node</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3325"></a><p></p>
+<a name="AEN3352"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -839,7 +839,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3351"></a><h3>
+<a name="AEN3378"></a><h3>
 <a name="XMLSECKEYDATABINREAD"></a>xmlSecKeyDataBinRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinRead            (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -849,7 +849,7 @@ or NULL if an error occurs.</td>
 <p>Reads the key data of klass <tt class="PARAMETER"><i>id</i></tt> from binary buffer <tt class="PARAMETER"><i>buf</i></tt> to <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3364"></a><p></p>
+<a name="AEN3391"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -887,7 +887,7 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3394"></a><h3>
+<a name="AEN3421"></a><h3>
 <a name="XMLSECKEYDATABINWRITE"></a>xmlSecKeyDataBinWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinWrite           (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -897,7 +897,7 @@ or NULL if an error occurs.</td>
 <p>Writes the key data of klass <tt class="PARAMETER"><i>id</i></tt> from the <tt class="PARAMETER"><i>key</i></tt> to a binary buffer <tt class="PARAMETER"><i>buf</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3407"></a><p></p>
+<a name="AEN3434"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -935,13 +935,13 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3437"></a><h3>
+<a name="AEN3464"></a><h3>
 <a name="XMLSECKEYDATAGETNAME"></a>xmlSecKeyDataGetName()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataGetName(data)</pre></td></tr></table>
 <p>Macro. Returns the key data name.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3443"></a><p></p>
+<a name="AEN3470"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
@@ -952,14 +952,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3452"></a><h3>
+<a name="AEN3479"></a><h3>
 <a name="XMLSECKEYDATAISVALID"></a>xmlSecKeyDataIsValid()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataIsValid(data)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>data</i></tt> is not NULL and <tt class="PARAMETER"><i>data</i></tt>-&gt;id is not NULL
 or 0 otherwise.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3460"></a><p></p>
+<a name="AEN3487"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
@@ -970,13 +970,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3469"></a><h3>
+<a name="AEN3496"></a><h3>
 <a name="XMLSECKEYDATACHECKID"></a>xmlSecKeyDataCheckId()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataCheckId(data, dataId)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>data</i></tt> is valid and <tt class="PARAMETER"><i>data</i></tt>'s id is equal to <tt class="PARAMETER"><i>dataId</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3478"></a><p></p>
+<a name="AEN3505"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -994,13 +994,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3491"></a><h3>
+<a name="AEN3518"></a><h3>
 <a name="XMLSECKEYDATACHECKUSAGE"></a>xmlSecKeyDataCheckUsage()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataCheckUsage(data, usg)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>data</i></tt> is valid and could be used for <tt class="PARAMETER"><i>usg</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3499"></a><p></p>
+<a name="AEN3526"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1018,13 +1018,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3512"></a><h3>
+<a name="AEN3539"></a><h3>
 <a name="XMLSECKEYDATACHECKSIZE"></a>xmlSecKeyDataCheckSize()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataCheckSize(data, size)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>data</i></tt> is valid and <tt class="PARAMETER"><i>data</i></tt>'s object has at least <tt class="PARAMETER"><i>size</i></tt> bytes.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3521"></a><p></p>
+<a name="AEN3548"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1042,7 +1042,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3534"></a><h3>
+<a name="AEN3561"></a><h3>
 <a name="XMLSECKEYDATAIDUNKNOWN"></a>xmlSecKeyDataIdUnknown</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataIdUnknown 			NULL</pre></td></tr></table>
 <p>The &quot;unknown&quot; id.</p>
@@ -1050,13 +1050,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3540"></a><h3>
+<a name="AEN3567"></a><h3>
 <a name="XMLSECKEYDATAINITMETHOD"></a>xmlSecKeyDataInitMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataInitMethod)      (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific initialization method.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3547"></a><p></p>
+<a name="AEN3574"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1074,14 +1074,14 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3560"></a><h3>
+<a name="AEN3587"></a><h3>
 <a name="XMLSECKEYDATADUPLICATEMETHOD"></a>xmlSecKeyDataDuplicateMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataDuplicateMethod) (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);</pre></td></tr></table>
 <p>Key data specific duplication (copy) method.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3568"></a><p></p>
+<a name="AEN3595"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1104,14 +1104,14 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3585"></a><h3>
+<a name="AEN3612"></a><h3>
 <a name="XMLSECKEYDATAFINALIZEMETHOD"></a>xmlSecKeyDataFinalizeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataFinalizeMethod)  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific finalization method. All the objects and resources allocated
 by the key data object must be freed inside this method.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3592"></a><p></p>
+<a name="AEN3619"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
@@ -1122,7 +1122,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3601"></a><h3>
+<a name="AEN3628"></a><h3>
 <a name="XMLSECKEYDATAXMLREADMETHOD"></a>xmlSecKeyDataXmlReadMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataXmlReadMethod)   (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -1131,7 +1131,7 @@ by the key data object must be freed inside this method.</p>
 <p>Key data specific method for reading XML node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3611"></a><p></p>
+<a name="AEN3638"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1164,7 +1164,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3637"></a><h3>
+<a name="AEN3664"></a><h3>
 <a name="XMLSECKEYDATAXMLWRITEMETHOD"></a>xmlSecKeyDataXmlWriteMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataXmlWriteMethod)  (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -1173,7 +1173,7 @@ by the key data object must be freed inside this method.</p>
 <p>Key data specific method for writing XML node.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3647"></a><p></p>
+<a name="AEN3674"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1206,7 +1206,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3672"></a><h3>
+<a name="AEN3699"></a><h3>
 <a name="XMLSECKEYDATABINREADMETHOD"></a>xmlSecKeyDataBinReadMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataBinReadMethod)   (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -1216,7 +1216,7 @@ by the key data object must be freed inside this method.</p>
 <p>Key data specific method for reading binary buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3682"></a><p></p>
+<a name="AEN3709"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1254,7 +1254,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3712"></a><h3>
+<a name="AEN3739"></a><h3>
 <a name="XMLSECKEYDATABINWRITEMETHOD"></a>xmlSecKeyDataBinWriteMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataBinWriteMethod)  (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -1264,7 +1264,7 @@ by the key data object must be freed inside this method.</p>
 <p>Key data specific method for reading binary buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3722"></a><p></p>
+<a name="AEN3749"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1302,7 +1302,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3752"></a><h3>
+<a name="AEN3779"></a><h3>
 <a name="XMLSECKEYDATAGENERATEMETHOD"></a>xmlSecKeyDataGenerateMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataGenerateMethod)  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>size_t</font> sizeBits,
@@ -1310,7 +1310,7 @@ by the key data object must be freed inside this method.</p>
 <p>Key data specific method for generating new key data.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3761"></a><p></p>
+<a name="AEN3788"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1338,14 +1338,14 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3782"></a><h3>
+<a name="AEN3809"></a><h3>
 <a name="XMLSECKEYDATAGETTYPEMETHOD"></a>xmlSecKeyDataGetTypeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> (*xmlSecKeyDataGetTypeMethod)
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific method to get the key type.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3790"></a><p></p>
+<a name="AEN3817"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1363,13 +1363,13 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3803"></a><h3>
+<a name="AEN3830"></a><h3>
 <a name="XMLSECKEYDATAGETSIZEMETHOD"></a>xmlSecKeyDataGetSizeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      (*xmlSecKeyDataGetSizeMethod)   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Key data specific method to get the key size.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3811"></a><p></p>
+<a name="AEN3838"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1387,7 +1387,7 @@ by the key data object must be freed inside this method.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3824"></a><h3>
+<a name="AEN3851"></a><h3>
 <a name="XMLSECKEYDATAGETIDENTIFIERMETHOD"></a>xmlSecKeyDataGetIdentifierMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">const <font>xmlChar</font>* (*xmlSecKeyDataGetIdentifierMethod)
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
@@ -1395,7 +1395,7 @@ by the key data object must be freed inside this method.</p>
 X509 data identifier is the subject of the verified cert).</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3832"></a><p></p>
+<a name="AEN3859"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1413,14 +1413,14 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3845"></a><h3>
+<a name="AEN3872"></a><h3>
 <a name="XMLSECKEYDATADEBUGDUMPMETHOD"></a>xmlSecKeyDataDebugDumpMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataDebugDumpMethod) (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Key data specific method for printing debug info.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3853"></a><p></p>
+<a name="AEN3880"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1438,7 +1438,7 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3866"></a><h3>
+<a name="AEN3893"></a><h3>
 <a name="XMLSECKEYDATAKLASS"></a>struct xmlSecKeyDataKlass</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeyDataKlass {
     size_t				klassSize;
@@ -1479,7 +1479,7 @@ X509 data identifier is the subject of the verified cert).</p>
 <p>The data id (klass).</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3872"></a><p></p>
+<a name="AEN3899"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -1613,13 +1613,13 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN3985"></a><h3>
+<a name="AEN4012"></a><h3>
 <a name="XMLSECKEYDATAKLASSGETNAME"></a>xmlSecKeyDataKlassGetName()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataKlassGetName(klass)</pre></td></tr></table>
 <p>Macro. Returns data klass name.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN3991"></a><p></p>
+<a name="AEN4018"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>klass</i></tt> :</td>
@@ -1630,7 +1630,7 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4000"></a><h3>
+<a name="AEN4027"></a><h3>
 <a name="XMLSECKEYDATALISTID"></a>xmlSecKeyDataListId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataListId	xmlSecKeyDataListGetKlass()</pre></td></tr></table>
 <p>The key data klasses list klass id.</p>
@@ -1638,13 +1638,13 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4006"></a><h3>
+<a name="AEN4033"></a><h3>
 <a name="XMLSECKEYDATALISTGETKLASS"></a>xmlSecKeyDataListGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecKeyDataListGetKlass   (void);</pre></td></tr></table>
 <p>The key data list klass.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4013"></a><p></p>
+<a name="AEN4040"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -1655,7 +1655,7 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4022"></a><h3>
+<a name="AEN4049"></a><h3>
 <a name="XMLSECKEYDATAIDLISTID"></a>xmlSecKeyDataIdListId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataIdListId	xmlSecKeyDataIdListGetKlass()</pre></td></tr></table>
 <p>The key data list klass id.</p>
@@ -1663,13 +1663,13 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4028"></a><h3>
+<a name="AEN4055"></a><h3>
 <a name="XMLSECKEYDATAIDLISTGETKLASS"></a>xmlSecKeyDataIdListGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecKeyDataIdListGetKlass (void);</pre></td></tr></table>
 <p>The key data id list klass.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4035"></a><p></p>
+<a name="AEN4062"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>
@@ -1680,14 +1680,14 @@ X509 data identifier is the subject of the verified cert).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4044"></a><h3>
+<a name="AEN4071"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFIND"></a>xmlSecKeyDataIdListFind ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataIdListFind         (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>xmlSecKeyDataId</font> dataId);</pre></td></tr></table>
 <p>Lookups <tt class="PARAMETER"><i>dataId</i></tt> in <tt class="PARAMETER"><i>list</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4054"></a><p></p>
+<a name="AEN4081"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1711,7 +1711,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4073"></a><h3>
+<a name="AEN4100"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFINDBYNODE"></a>xmlSecKeyDataIdListFindByNode ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataIdListFindByNode
                                             (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
@@ -1722,7 +1722,7 @@ value if an error occurs.</td>
 <tt class="PARAMETER"><i>usage</i></tt> in the <tt class="PARAMETER"><i>list</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4088"></a><p></p>
+<a name="AEN4115"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1755,7 +1755,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4113"></a><h3>
+<a name="AEN4140"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFINDBYHREF"></a>xmlSecKeyDataIdListFindByHref ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataIdListFindByHref
                                             (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
@@ -1764,7 +1764,7 @@ value if an error occurs.</td>
 <p>Lookups data klass in the list with given <tt class="PARAMETER"><i>href</i></tt> and <tt class="PARAMETER"><i>usage</i></tt> in <tt class="PARAMETER"><i>list</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4126"></a><p></p>
+<a name="AEN4153"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1792,7 +1792,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4147"></a><h3>
+<a name="AEN4174"></a><h3>
 <a name="XMLSECKEYDATAIDLISTFINDBYNAME"></a>xmlSecKeyDataIdListFindByName ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font> xmlSecKeyDataIdListFindByName
                                             (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
@@ -1801,7 +1801,7 @@ value if an error occurs.</td>
 <p>Lookups data klass in the list with given <tt class="PARAMETER"><i>name</i></tt> and <tt class="PARAMETER"><i>usage</i></tt> in <tt class="PARAMETER"><i>list</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4160"></a><p></p>
+<a name="AEN4187"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1829,14 +1829,14 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4181"></a><h3>
+<a name="AEN4208"></a><h3>
 <a name="XMLSECKEYDATAIDLISTDEBUGDUMP"></a>xmlSecKeyDataIdListDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdListDebugDump    (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4190"></a><p></p>
+<a name="AEN4217"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1854,14 +1854,14 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4203"></a><h3>
+<a name="AEN4230"></a><h3>
 <a name="XMLSECKEYDATAIDLISTDEBUGXMLDUMP"></a>xmlSecKeyDataIdListDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataIdListDebugXmlDump (<a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> list,
                                              <font>FILE</font> *output);</pre></td></tr></table>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4212"></a><p></p>
+<a name="AEN4239"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1879,7 +1879,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4225"></a><h3>
+<a name="AEN4252"></a><h3>
 <a name="XMLSECKEYDATABINARYSIZE"></a>xmlSecKeyDataBinarySize</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataBinarySize</pre></td></tr></table>
 <p>The binary key data object size.</p>
@@ -1887,14 +1887,14 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4231"></a><h3>
+<a name="AEN4258"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEINITIALIZE"></a>xmlSecKeyDataBinaryValueInitialize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueInitialize
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Initializes key data.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4238"></a><p></p>
+<a name="AEN4265"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1912,7 +1912,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4251"></a><h3>
+<a name="AEN4278"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEDUPLICATE"></a>xmlSecKeyDataBinaryValueDuplicate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueDuplicate
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
@@ -1920,7 +1920,7 @@ value if an error occurs.</td>
 <p>Copies binary key data from <tt class="PARAMETER"><i>src</i></tt> to <tt class="PARAMETER"><i>dst</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4261"></a><p></p>
+<a name="AEN4288"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -1943,14 +1943,14 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4278"></a><h3>
+<a name="AEN4305"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEFINALIZE"></a>xmlSecKeyDataBinaryValueFinalize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataBinaryValueFinalize
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Cleans up binary key data.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4285"></a><p></p>
+<a name="AEN4312"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>data</i></tt> :</td>
@@ -1961,7 +1961,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4294"></a><h3>
+<a name="AEN4321"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEXMLREAD"></a>xmlSecKeyDataBinaryValueXmlRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueXmlRead (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -1970,7 +1970,7 @@ value if an error occurs.</td>
 <p>Reads binary key data from <tt class="PARAMETER"><i>node</i></tt> to the key by base64 decoding the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4306"></a><p></p>
+<a name="AEN4333"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2003,7 +2003,7 @@ value if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4332"></a><h3>
+<a name="AEN4359"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEXMLWRITE"></a>xmlSecKeyDataBinaryValueXmlWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueXmlWrite
                                             (<font>xmlSecKeyDataId</font> id,
@@ -2014,7 +2014,7 @@ value if an error occurs.</td>
 sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4345"></a><p></p>
+<a name="AEN4372"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2047,7 +2047,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4371"></a><h3>
+<a name="AEN4398"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEBINREAD"></a>xmlSecKeyDataBinaryValueBinRead ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueBinRead (<font>xmlSecKeyDataId</font> id,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
@@ -2057,7 +2057,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p>Reads binary key data of the klass <tt class="PARAMETER"><i>id</i></tt> from <tt class="PARAMETER"><i>buf</i></tt> to the <tt class="PARAMETER"><i>key</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4384"></a><p></p>
+<a name="AEN4411"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2095,7 +2095,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4414"></a><h3>
+<a name="AEN4441"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEBINWRITE"></a>xmlSecKeyDataBinaryValueBinWrite ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueBinWrite
                                             (<font>xmlSecKeyDataId</font> id,
@@ -2106,7 +2106,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p>Writes binary key data of klass <tt class="PARAMETER"><i>id</i></tt> from the <tt class="PARAMETER"><i>key</i></tt> to <tt class="PARAMETER"><i>buf</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4427"></a><p></p>
+<a name="AEN4454"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2144,7 +2144,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4457"></a><h3>
+<a name="AEN4484"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEDEBUGDUMP"></a>xmlSecKeyDataBinaryValueDebugDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataBinaryValueDebugDump
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
@@ -2152,7 +2152,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4466"></a><p></p>
+<a name="AEN4493"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2170,7 +2170,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4479"></a><h3>
+<a name="AEN4506"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEDEBUGXMLDUMP"></a>xmlSecKeyDataBinaryValueDebugXmlDump ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataBinaryValueDebugXmlDump
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
@@ -2178,7 +2178,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p>Prints binary key data debug information to <tt class="PARAMETER"><i>output</i></tt> in XML format.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4488"></a><p></p>
+<a name="AEN4515"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2196,13 +2196,13 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4501"></a><h3>
+<a name="AEN4528"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEGETSIZE"></a>xmlSecKeyDataBinaryValueGetSize ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>size_t</font>      xmlSecKeyDataBinaryValueGetSize (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets the binary key data size.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4509"></a><p></p>
+<a name="AEN4536"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2220,14 +2220,14 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4522"></a><h3>
+<a name="AEN4549"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUEGETBUFFER"></a>xmlSecKeyDataBinaryValueGetBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> xmlSecKeyDataBinaryValueGetBuffer
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets the binary key data buffer.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4530"></a><p></p>
+<a name="AEN4557"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2245,7 +2245,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4543"></a><h3>
+<a name="AEN4570"></a><h3>
 <a name="XMLSECKEYDATABINARYVALUESETBUFFER"></a>xmlSecKeyDataBinaryValueSetBuffer ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecKeyDataBinaryValueSetBuffer
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
@@ -2254,7 +2254,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 <p>Sets the value of <tt class="PARAMETER"><i>data</i></tt> to <tt class="PARAMETER"><i>buf</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4553"></a><p></p>
+<a name="AEN4580"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2282,7 +2282,7 @@ sets to the <tt class="PARAMETER"><i>node</i></tt> content.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4574"></a><h3>
+<a name="AEN4601"></a><h3>
 <a name="XMLSECKEYDATASTORE"></a>struct xmlSecKeyDataStore</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeyDataStore {
     xmlSecKeyDataStoreId		id;
@@ -2296,7 +2296,7 @@ required for key data processing. For example, X509 data store may hold
 information about trusted (root) certificates.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4580"></a><p></p>
+<a name="AEN4607"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFF0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="LEFT" valign="TOP">
@@ -2320,7 +2320,7 @@ information about trusted (root) certificates.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4599"></a><h3>
+<a name="AEN4626"></a><h3>
 <a name="XMLSECKEYDATASTORECREATE"></a>xmlSecKeyDataStoreCreate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> xmlSecKeyDataStoreCreate
                                             (<font>xmlSecKeyDataStoreId</font> id);</pre></td></tr></table>
@@ -2328,7 +2328,7 @@ information about trusted (root) certificates.</p>
 for freeng returned object with <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREDESTROY">xmlSecKeyDataStoreDestroy</a> function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4609"></a><p></p>
+<a name="AEN4636"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2347,14 +2347,14 @@ or NULL if an error occurs.</td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4622"></a><h3>
+<a name="AEN4649"></a><h3>
 <a name="XMLSECKEYDATASTOREDESTROY"></a>xmlSecKeyDataStoreDestroy ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        xmlSecKeyDataStoreDestroy       (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre></td></tr></table>
 <p>Destroys the key data store created with <a href="xmlsec-keysdata.html#XMLSECKEYDATASTORECREATE">xmlSecKeyDataStoreCreate</a>
 function.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4630"></a><p></p>
+<a name="AEN4657"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
@@ -2365,13 +2365,13 @@ function.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4639"></a><h3>
+<a name="AEN4666"></a><h3>
 <a name="XMLSECKEYDATASTOREGETNAME"></a>xmlSecKeyDataStoreGetName()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataStoreGetName(store)</pre></td></tr></table>
 <p>Macro. Returns key data store name.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4645"></a><p></p>
+<a name="AEN4672"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
@@ -2382,14 +2382,14 @@ function.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4654"></a><h3>
+<a name="AEN4681"></a><h3>
 <a name="XMLSECKEYDATASTOREISVALID"></a>xmlSecKeyDataStoreIsValid()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataStoreIsValid(store)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>store</i></tt> is not NULL and <tt class="PARAMETER"><i>store</i></tt>-&gt;id is not NULL
 or 0 otherwise.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4662"></a><p></p>
+<a name="AEN4689"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
@@ -2400,13 +2400,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4671"></a><h3>
+<a name="AEN4698"></a><h3>
 <a name="XMLSECKEYDATASTORECHECKID"></a>xmlSecKeyDataStoreCheckId()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataStoreCheckId(store, storeId)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>store</i></tt> is valid and <tt class="PARAMETER"><i>store</i></tt>'s id is equal to <tt class="PARAMETER"><i>storeId</i></tt>.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4680"></a><p></p>
+<a name="AEN4707"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2424,13 +2424,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4693"></a><h3>
+<a name="AEN4720"></a><h3>
 <a name="XMLSECKEYDATASTORECHECKSIZE"></a>xmlSecKeyDataStoreCheckSize()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataStoreCheckSize(store, size)</pre></td></tr></table>
 <p>Macro. Returns 1 if <tt class="PARAMETER"><i>data</i></tt> is valid and <tt class="PARAMETER"><i>stores</i></tt>'s object has at least <tt class="PARAMETER"><i>size</i></tt> bytes.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4702"></a><p></p>
+<a name="AEN4729"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2448,7 +2448,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4715"></a><h3>
+<a name="AEN4742"></a><h3>
 <a name="XMLSECKEYDATASTOREIDUNKNOWN"></a>xmlSecKeyDataStoreIdUnknown</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataStoreIdUnknown 			NULL</pre></td></tr></table>
 <p>The &quot;unknown&quot; id.</p>
@@ -2456,14 +2456,14 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4721"></a><h3>
+<a name="AEN4748"></a><h3>
 <a name="XMLSECKEYDATASTOREINITIALIZEMETHOD"></a>xmlSecKeyDataStoreInitializeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         (*xmlSecKeyDataStoreInitializeMethod)
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre></td></tr></table>
 <p>Key data store specific initialization method.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4728"></a><p></p>
+<a name="AEN4755"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody>
 <tr>
 <td width="20%" align="RIGHT" valign="TOP">
@@ -2481,14 +2481,14 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4741"></a><h3>
+<a name="AEN4768"></a><h3>
 <a name="XMLSECKEYDATASTOREFINALIZEMETHOD"></a>xmlSecKeyDataStoreFinalizeMethod ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">void        (*xmlSecKeyDataStoreFinalizeMethod)
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE">xmlSecKeyDataStorePtr</a> store);</pre></td></tr></table>
 <p>Key data store specific finalization (destroy) method.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4748"></a><p></p>
+<a name="AEN4775"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>store</i></tt> :</td>
@@ -2499,7 +2499,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4757"></a><h3>
+<a name="AEN4784"></a><h3>
 <a name="XMLSECKEYDATASTOREKLASS"></a>struct xmlSecKeyDataStoreKlass</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct xmlSecKeyDataStoreKlass {
     size_t				klassSize;
@@ -2520,13 +2520,13 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4762"></a><h3>
+<a name="AEN4789"></a><h3>
 <a name="XMLSECKEYDATASTOREKLASSGETNAME"></a>xmlSecKeyDataStoreKlassGetName()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define     xmlSecKeyDataStoreKlassGetName(klass)</pre></td></tr></table>
 <p>Macro. Returns store klass name.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4768"></a><p></p>
+<a name="AEN4795"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <tt class="PARAMETER"><i>klass</i></tt> :</td>
@@ -2537,7 +2537,7 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4777"></a><h3>
+<a name="AEN4804"></a><h3>
 <a name="XMLSECKEYDATASTOREPTRLISTID"></a>xmlSecKeyDataStorePtrListId</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define xmlSecKeyDataStorePtrListId	xmlSecKeyDataStorePtrListGetKlass()</pre></td></tr></table>
 <p>The data store list id (klass).</p>
@@ -2545,14 +2545,14 @@ or 0 otherwise.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4783"></a><h3>
+<a name="AEN4810"></a><h3>
 <a name="XMLSECKEYDATASTOREPTRLISTGETKLASS"></a>xmlSecKeyDataStorePtrListGetKlass ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecKeyDataStorePtrListGetKlass
                                             (void);</pre></td></tr></table>
 <p>Key data stores list.</p>
 <p></p>
 <div class="INFORMALTABLE">
-<a name="AEN4790"></a><p></p>
+<a name="AEN4817"></a><p></p>
 <table border="0" width="100%" bgcolor="#FFD0D0" cellspacing="0" cellpadding="4" class="CALSTABLE"><tbody><tr>
 <td width="20%" align="RIGHT" valign="TOP">
 <span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</td>

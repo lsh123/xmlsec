@@ -6,7 +6,64 @@
     </para>
     <sect2>
 	<title>Include files</title>
-	<para>TODO</para>
+	<para>In order to use XML Security Library an application should include 
+	one or more of the following files:
+	<itemizedlist>
+	    <listitem>
+		<para><link linkend="XMLSEC-XMLSEC">xmlsec/xmlsec.h</link> -
+		XML Security Library initialization and shutdown functions;
+		</para>
+	    </listitem>
+	    <listitem>
+		<para><link linkend="XMLSEC-XMLDSIG">xmlsec/xmldsig.h</link> - 
+		XML Digital Signature functions;</para>
+	    </listitem>
+	    <listitem>
+		<para><link linkend="XMLSEC-XMLENC">xmlsec/xmlenc.h</link> - 
+		XML Encryption functions;</para>
+	    </listitem>
+	    <listitem>
+		<para><link linkend="XMLSEC-XMLTREE">xmlsec/xmltree.h</link> -
+		helper functions for XML documents manipulation;
+		</para>
+	    </listitem>
+	    <listitem>
+		<para><link linkend="XMLSEC-TEMPLATES">xmlsec/templates.h</link> -
+		helper functions for dynamic XML Digital Signature and 
+		XML Encryption templates creation;
+		</para>
+	    </listitem>
+	    <listitem>
+		<para><link linkend="XMLSEC-CRYPTO">xmlsec/crypto.h</link> -
+		automatic XML Security Crypto Library selection.
+		</para>
+	    </listitem>
+	</itemizedlist>
+	</para>
+	<para>If necessary, the application should also include LibXML, 
+	LibXSLT and crypto library header files.
+	</para>
+	<para>
+	<example>
+	    <title>Example includes file section.</title>
+	    <programlisting><![CDATA[
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+
+#ifndef XMLSEC_NO_XSLT
+#include <libxslt/xslt.h>
+#endif /* XMLSEC_NO_XSLT */
+
+#include <xmlsec/xmlsec.h>
+#include <xmlsec/xmltree.h>
+#include <xmlsec/xmldsig.h>
+#include <xmlsec/xmlenc.h>
+#include <xmlsec/templates.h>
+#include <xmlsec/crypto.h>
+	    ]]></programlisting>
+	</example>
+	</para>
     </sect2>
     <sect2>
 	<title>Compiling and linking on Unix.</title>

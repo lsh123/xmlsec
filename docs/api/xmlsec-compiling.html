@@ -49,16 +49,66 @@
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
 <a name="AEN35"></a>Include files</h2>
-<p>TODO</p>
+<p>In order to use XML Security Library an application should include 
+	one or more of the following files:
+	</p>
+<p></p>
+<ul>
+<li><p>
+<a href="xmlsec-xmlsec.html">xmlsec/xmlsec.h</a> -
+		XML Security Library initialization and shutdown functions;
+		</p></li>
+<li><p>
+<a href="xmlsec-xmldsig.html">xmlsec/xmldsig.h</a> - 
+		XML Digital Signature functions;</p></li>
+<li><p>
+<a href="xmlsec-xmlenc.html">xmlsec/xmlenc.h</a> - 
+		XML Encryption functions;</p></li>
+<li><p>
+<a href="xmlsec-xmltree.html">xmlsec/xmltree.h</a> -
+		helper functions for XML documents manipulation;
+		</p></li>
+<li><p>
+<a href="xmlsec-templates.html">xmlsec/templates.h</a> -
+		helper functions for dynamic XML Digital Signature and 
+		XML Encryption templates creation;
+		</p></li>
+<li><p>
+<font>xmlsec/crypto.h</font> -
+		automatic XML Security Crypto Library selection.
+		</p></li>
+</ul>
+<p>If necessary, the application should also include LibXML, 
+	LibXSLT and crypto library header files.
+	</p>
+<p>	</p>
+<div class="EXAMPLE">
+<a name="AEN59"></a><p><b>Example 1. Example includes file section.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#include &lt;libxml/tree.h&gt;
+#include &lt;libxml/xmlmemory.h&gt;
+#include &lt;libxml/parser.h&gt;
+
+#ifndef XMLSEC_NO_XSLT
+#include &lt;libxslt/xslt.h&gt;
+#endif /* XMLSEC_NO_XSLT */
+
+#include &lt;xmlsec/xmlsec.h&gt;
+#include &lt;xmlsec/xmltree.h&gt;
+#include &lt;xmlsec/xmldsig.h&gt;
+#include &lt;xmlsec/xmlenc.h&gt;
+#include &lt;xmlsec/templates.h&gt;
+#include &lt;xmlsec/crypto.h&gt;
+	    </pre></td></tr></table>
 </div>
+	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN38"></a>Compiling and linking on Unix.</h2>
+<a name="AEN62"></a>Compiling and linking on Unix.</h2>
 <p>On Unix-like systems the <tt class="FILENAME">xmlsec-config</tt> 
 	script is the simplest way to get all necessary information.
 	</p>
 <div class="EXAMPLE">
-<a name="AEN42"></a><p><b>Example 1. Using xmlsec-config script in a Makefile.</b></p>
+<a name="AEN66"></a><p><b>Example 2. Using xmlsec-config script in a Makefile.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">PROGRAM	 	 = test
 PROGRAM_FILES	 = test.c
 cc	 	 = gcc
@@ -81,7 +131,7 @@ clean:
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN45"></a>Compiling and linking on Windows.</h2>
+<a name="AEN69"></a>Compiling and linking on Windows.</h2>
 <p>On Windows there is no such simple and elegant solution.
 	Please check <tt class="FILENAME">README</tt> file in <tt class="FILENAME">win32</tt>
 	folder of the library package for latest instructions.
@@ -99,7 +149,7 @@ clean:
 	     additional global defines:</i></span>
 	      </p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN57"></a><p></p>
+<a name="AEN81"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define LIBXML_STATIC
 #define LIBXSLT_STATIC
 #define XMLSEC_STATIC	    
@@ -111,7 +161,7 @@ clean:
 </div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN59"></a>Compiling and linking on other systems.</h2>
+<a name="AEN83"></a>Compiling and linking on other systems.</h2>
 <p>Well, nothing is impossible, it's only software (you managed to 
 	compile the library itself, do you?). 
 	I'll be happy to include in this manual your expirience with

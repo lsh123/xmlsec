@@ -52,7 +52,7 @@
     inside your application.</p>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN181"></a>Creating dynamic signature templates.</h2>
+<a name="AEN205"></a>Creating dynamic signature templates.</h2>
 <p>The signature template has structure similar 
 	to the XML Digital Signature structure as it is described in 
 	<a href="http://www.w3.org/TR/xmldsig-core" target="_top">specification</a>.
@@ -62,7 +62,7 @@
 	nodes after doing necessary calculations.
 	</p>
 <div class="FIGURE">
-<a name="AEN185"></a><p><b>Figure 3. XML Digital Signature structure</b></p>
+<a name="AEN209"></a><p><b>Figure 3. XML Digital Signature structure</b></p>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;dsig:Signature ID?&gt; 
     &lt;dsig:SignedInfo&gt;
         &lt;dsig:CanonicalizationMethod Algorithm /&gt;
@@ -94,7 +94,7 @@
 </div>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN189"></a><p><b>Example 6. Creating dynamic signature template.</b></p>
+<a name="AEN213"></a><p><b>Example 7. Creating dynamic signature template.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * sign_file:
  * @xml_file:		the XML file name.
@@ -191,7 +191,7 @@ done:
 	</div>
 <br clear="all"><div class="SECT2">
 <h2 class="SECT2">
-<a name="AEN194"></a>Creating dynamic encryption templates.</h2>
+<a name="AEN218"></a>Creating dynamic encryption templates.</h2>
 <p>The encryption template has structure similar 
 	to the XML Encryption structure as it is described in 
 	<a href="http://www.w3.org/TR/xmlenc-core" target="_top">specification</a>.
@@ -201,7 +201,7 @@ done:
 	nodes after doing necessary calculations.
 	</p>
 <div class="FIGURE">
-<a name="AEN198"></a><p><b>Figure 4. XML Encryption structure</b></p>
+<a name="AEN222"></a><p><b>Figure 4. XML Encryption structure</b></p>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
     &lt;enc:EncryptionMethod Algorithm /&gt;?
     (&lt;dsig:KeyInfo&gt;
@@ -226,7 +226,7 @@ done:
 </div>
 <p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN202"></a><p><b>Example 7. Creating dynamic encrytion template.</b></p>
+<a name="AEN226"></a><p><b>Example 8. Creating dynamic encrytion template.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
  * encrypt_file:
  * @xml_file:		the encryption template file name.

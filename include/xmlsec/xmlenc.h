@@ -23,8 +23,10 @@ extern "C" {
 #include <libxml/parser.h> 
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/keys.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keysmngr.h>
+#include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
 /** 

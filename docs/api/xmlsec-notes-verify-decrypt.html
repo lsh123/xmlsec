@@ -53,26 +53,62 @@
 	encrypted document.
     	  </p>
 <div class="FIGURE">
-<a name="AEN63"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
+<a name="AEN111"></a><p><b>Figure 3. The verification or decryption processing model.</b></p>
 <p><img src="images/verif-dec-model.png" align="CENTER"></p>
 </div>	 
-	<p>The typical siganture verification or decryption process includes following steps:
+	<p>The typical siganture verification process includes following steps:
 	  </p>
 <p></p>
 <ul>
-<li><p>		Initialize keys manager with keys, X509 certificates, etc.
+<li><p>		Load keys, X509 certificates, etc. in the <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> .
 	    </p></li>
-<li><p>		Initialize signature/encryption context.
+<li><p>		Create signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>
+		functions.
 	    </p></li>
-<li><p>		Select verification/decryption start node in the signed/encrypted data.
+<li><p>		Select start verification &lt;dsig:Signature/&gt; node in 
+		the signed XML document.
 	    </p></li>
-<li><p>		Call verification/decrypiton functions.
+<li><p>		Verify signature by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY">xmlSecDSigCtxVerify</a> 
+		function.
 	    </p></li>
-<li><p>		Check returned value and if necessary consume returned
-		verified/decrypted data from the context.
+<li><p>		Check returned value and verification status (<tt class="STRUCTFIELD"><i>status</i></tt>
+		member of <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure).
+		If necessary, consume returned data from the <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">context</a>.
+	    </p></li>
+<li><p>		Destroy signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>
+		functions.
 	    </p></li>
 </ul>
-<p>TODO: example signature</p>
+<p>TODO: example signature
+	</p>
+<p>The typical decryption process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Load keys, X509 certificates, etc. in the <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> .
+	    </p></li>
+<li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
+		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>
+		functions.
+	    </p></li>
+<li><p>		Select start decryption &lt;enc:EncryptedData&gt; node.
+	    </p></li>
+<li><p>		Decrypt by calling <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPT">xmlSecencCtxDecrypt</a> 
+		function.
+	    </p></li>
+<li><p>		Check returned value and if necessary consume encrypted data.
+	    </p></li>
+<li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
+		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> or
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>
+		functions.
+	    </p></li>
+</ul>
 <p>TODO: example encryption</p>
 </div>
 <div class="NAVFOOTER">

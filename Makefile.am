@@ -1,15 +1,17 @@
 NULL =
 
-SUBDIRS = include src apps tests man
+SUBDIRS = include src apps tests man 
 TEST_APP = apps/xmlsec
 bin_SCRIPTS = xmlsec-config
 
 EXTRA_DIST = \
 	win32 \
 	docs/*.html \
-	docs/api \
-	docs/examples \
+	docs/api/*.html \
+	docs/api/xmlsec.sgml \
+	docs/api/images \
 	docs/images \
+	examples \
 	NEWS \
 	ChangeLog \
 	Copyright \

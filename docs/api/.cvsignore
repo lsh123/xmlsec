@@ -6,5 +6,7 @@ Makefile.in
 *.la
 core
 code
+examples
 *.stamp
 *.txt
+

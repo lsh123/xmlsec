@@ -56,28 +56,82 @@
 <a name="AEN38"></a><p><b>Figure 2. The signature or encryption processing model.</b></p>
 <p><img src="images/sign-enc-model.png" align="CENTER"></p>
 </div>
-	<p>The typical siganture or encryption process includes following steps:
+	<p>The typical siganture process includes following steps:
 	  </p>
 <p></p>
 <ul>
-<li><p>		Prepare data for signature or encryption.
+<li><p>		Prepare data for signature.
 	    </p></li>
-<li><p>		Create or load signature/encryption template.
+<li><p>		Create or load signature template and select start
+		&lt;dsig:Signature/&gt; node.
 	    </p></li>
-<li><p>		Initialize signature/encryption context.
+<li><p>		Create signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>
+		functions.
 	    </p></li>
-<li><p>		Load signature/encryption key in keys manager or generate
-		a sesison key and set it in the signature/encryption context.
+<li><p>		Load signature key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
+		or generate a sesison key and set it in the signature context 
+		(<tt class="STRUCTFIELD"><i>signKey</i></tt> member of 
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure).
 	    </p></li>
-<li><p>		Select signature/encryption start node.
+<li><p>		Sign data by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a> 
+		function.
 	    </p></li>
-<li><p>		Call one of signature/encrypiton functions.
+<li><p>		Check returned value and consume signed data.
 	    </p></li>
-<li><p>		Check returned value and if necessary consume returned
-		signed/encrypted data from the context.
+<li><p>		Destroy signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
+		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a> or
+		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>
+		functions.
 	    </p></li>
 </ul>
-<p>TODO: example signature</p>
+<p>TODO: example signature
+	     </p>
+<div class="EXAMPLE">
+<a name="AEN68"></a><p><b>Example 1. Signing a template</b></p>
+<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"></pre></td></tr></table>
+</div>
+	<p>The typical encryption process includes following steps:
+	  </p>
+<p></p>
+<ul>
+<li><p>		Prepare data for encryption.
+	    </p></li>
+<li><p>		Create or load encryption template and select start
+		&lt;enc:EncryptedData/&gt; node.
+	    </p></li>
+<li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
+		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>
+		functions.
+	    </p></li>
+<li><p>		Load encryption key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
+		or generate a sesison key and set it in the encryption context
+		(<tt class="STRUCTFIELD"><i>encKey</i></tt> member of 
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure).
+	    </p></li>
+<li>
+<p>		Encrypt data by calling one of the following functions:
+		</p>
+<p></p>
+<ul>
+<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT">xmlSecEncCtxBinaryEncrypt</a>
+		    </p></li>
+<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a>
+		    </p></li>
+<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>
+		    </p></li>
+</ul>
+</li>
+<li><p>		Check returned value and if necessary consume encrypted data.
+	    </p></li>
+<li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
+		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> or
+		<a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>
+		functions.
+	    </p></li>
+</ul>
 <p>TODO: example encryption</p>
 </div>
 <div class="NAVFOOTER">

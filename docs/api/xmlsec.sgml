@@ -32,6 +32,14 @@
 <!ENTITY xmlsec-nss-app SYSTEM "sgml/nss/app.sgml">
 <!ENTITY xmlsec-nss-crypto SYSTEM "sgml/nss/crypto.sgml">
 <!ENTITY xmlsec-nss-symbols SYSTEM "sgml/nss/symbols.sgml">
+
+
+<!ENTITY xmlsec-example-dsig1 SYSTEM "examples/dsig1.sgml">
+<!ENTITY xmlsec-example-dsig2 SYSTEM "examples/dsig2.sgml">
+<!ENTITY xmlsec-example-dsig3 SYSTEM "examples/dsig3.sgml">
+<!ENTITY xmlsec-example-dsig4 SYSTEM "examples/dsig4.sgml">
+<!ENTITY xmlsec-example-enc1 SYSTEM "examples/enc1.sgml">
+<!ENTITY xmlsec-example-enc2 SYSTEM "examples/enc2.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -159,7 +167,12 @@
 	    </para></listitem>
 	  </itemizedlist>
 	</para>
-	<para>TODO: example signature</para>
+	<para>TODO: example signature
+	     <example>
+		<title>Signing a template</title>
+		<programlisting></programlisting>
+	    </example>
+	</para>
 
 	<para>The typical encryption process includes following steps:
 	  <itemizedlist>
@@ -257,7 +270,8 @@
 	    </para></listitem>
 	  </itemizedlist>
 	</para>
-	<para>TODO: example signature</para>
+	<para>TODO: example signature
+	</para>
 	<para>The typical decryption process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
@@ -291,6 +305,57 @@
     </sect1>
     <sect1 id="xmlsec-notes-keysmngr">
         <title>Keys and keys manager.</title>
+	<para>A key in XML Security Library is a representation of the 
+	&lt;dsig:KeyInfo/&gt; element and consist of several key data objects. 
+	The "value" key data usually contains raw key material (or handlers to 
+	key material) required to execute particular crypto transform. Other 
+	key data objects may contain any additional information about the key. 
+	All the key data objects in the key are associated with the same key 
+	material. For example, if a DSA key material has both an X509 
+	certificate and a PGP data associated with it then such a key can 
+	have a DSA key "value" and two key data objects for X509 certificate 
+	and PGP key data.
+	</para>
+	<figure>
+	    <title>The key structure.</title>
+	    <graphic fileref="images/key.png" align="center" />
+	</figure>	 
+	<para>XML Security Library has several "invisible" key data classes. 
+	These classes never show up in the keys data list of a key but are used 
+	for &lt;dsig:KeyInfo/&gt; children processing (&lt;dsig:KeyName/&gt;, 
+	&lt;dsig:EncryptedKey/&gt;, ...). As with transforms, application might 
+	add any new key data objects or replace the default ones.
+	</para>
+	<para>Processing some of the key data objects require additional 
+	information which is global across the application (or in the 
+	particular area of the application). For example, X509 certificates 
+	processing require a common list of trusted certificates to be 
+	available. XML Security Library keeps all the common information 
+	for key data processing in a a collection of key data stores called 
+	"keys manager".
+	</para>
+	<figure>
+	    <title>The keys manager structure.</title>
+	    <graphic fileref="images/keysmngr.png" align="center" />
+	</figure>	 
+	<para>Keys manager has a special "keys store" which lists the keys 
+	known to the application. This "keys store" is used by XML Security 
+	Library to lookup keys by name, type and crypto algorithm (for example,
+	during &lt;dsig:KeyName/&gt; processing). The XML Security Library 
+	provides default "flat list" based implementation of a simple keys 
+	store. The application can replace it with any other keys store 
+	(for example, based on an SQL database).
+	</para>
+	<para>Keys manager is the only object in XML Security Library which 
+	is supposed to be shared by many different operations. Usually keys 
+	manager is initialized once at the application startup and later is 
+	used by XML Security library routines in "read-only" mode. If 
+	application or crypto function need to modify any of the key data 
+	stores inside keys manager then proper synchronization must be 
+	implemented. In the same time, application can create a new keys 
+	manager each time it needs to perform XML signature, verification, 
+	encryption or decryption.
+	</para>
 	<para>TODO: example</para>
     </sect1>
     <sect1 id="xmlsec-notes-transforms">
@@ -350,10 +415,51 @@
 	</figure>	 
 
 
-	    <para>TODO: example</para>
+	<para>TODO: example</para>
     </sect1>
     <sect1 id="xmlsec-notes-templates">
 	<title>Creating dynamic templates.</title>
+	<para>    
+    <figure>
+    <title>XML Digital Signature Structure</title>
+    <programlisting>
+        &lt;Signature ID?&gt; 
+	    &lt;SignedInfo&gt;
+	        &lt;CanonicalizationMethod/&gt;
+	        &lt;SignatureMethod/&gt;
+	        (&lt;Reference URI? &gt;
+    	    (&lt;Transforms&gt;)?
+    	    &lt;DigestMethod&gt;
+    	    &lt;DigestValue&gt;
+	        &lt;/Reference&gt;)+
+	    &lt;/SignedInfo&gt;
+	    &lt;SignatureValue&gt; 
+	(&lt;KeyInfo&gt;)?
+	(&lt;Object ID?&gt;)*
+        &lt;/Signature&gt;
+    </programlisting>
+    </figure>
+    <figure>
+    <title>XML Encryption Structure</title>
+    <programlisting>
+        &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
+	&lt;EncryptionMethod/&gt;?
+	&lt;ds:KeyInfo&gt;
+	        &lt;EncryptedKey&gt;?
+	        &lt;AgreementMethod&gt;?
+	        &lt;ds:KeyName&gt;?
+	        &lt;ds:RetrievalMethod&gt;?
+	        &lt;ds:*&gt;?
+	&lt;/ds:KeyInfo&gt;?
+	&lt;CipherData&gt;
+	    &lt;CipherValue&gt;?
+	        &lt;CipherReference URI?&gt;?
+	&lt;/CipherData&gt;
+	&lt;EncryptionProperties&gt;?
+        &lt;/EncryptedData&gt;	
+	</programlisting>
+    </figure>
+</para>
 	<para>TODO: example signature</para>
 	<para>TODO: example encryption</para>
     </sect1>
@@ -375,7 +481,7 @@
   </chapter>
 
   <chapter id="xmlsec-ref">
-    <title>XML Security Library API Reference</title>
+    <title>XML Security Library API Reference.</title>
     <para>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -402,7 +508,7 @@
   </chapter>
 
   <chapter id="xmlsec-openssl-ref">
-    <title>XML Security Library for OpenSLL API Reference</title>
+    <title>XML Security Library for OpenSLL API Reference.</title>
     <para>This section contains the API reference for xmlsec-openssl. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -414,7 +520,7 @@
   </chapter>
 
   <chapter id="xmlsec-gnutls-ref">
-    <title>XML Security Library for GnuTLS API Reference</title>
+    <title>XML Security Library for GnuTLS API Reference.</title>
     <para>This section contains the API reference for xmlsec-gnutls. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -423,11 +529,24 @@
   </chapter>
 
   <chapter id="xmlsec-nss-ref">
-    <title>XML Security Library for NSS API Reference</title>
+    <title>XML Security Library for NSS API Reference.</title>
     <para>This section contains the API reference for xmlsec-nss. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
     &xmlsec-nss-app;
     &xmlsec-nss-crypto;
+  </chapter>
+    
+  <chapter id="xmlsec-examples">
+    <title>XML Security Library Examples.</title>
+    <para>This section contains several examples of using XML Security Library
+	to sign, veiryf, encrypt or decrypt XML documents.</para>
+    
+    &xmlsec-example-dsig1;
+    &xmlsec-example-dsig2;
+    &xmlsec-example-dsig3;
+    &xmlsec-example-dsig4;
+    &xmlsec-example-enc1;
+    &xmlsec-example-enc2;
   </chapter>
 </book>

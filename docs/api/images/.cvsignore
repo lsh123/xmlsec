@@ -1,0 +1,11 @@
+Makefile
+Makefile.in
+.deps
+*.lo
+.libs
+*.la
+core
+.xvpics
+*.stamp
+*.txt
+

@@ -42,6 +42,57 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-KEYSMNGR"></a>Keys and keys manager.</h1>
+<p>A key in XML Security Library is a representation of the 
+	&lt;dsig:KeyInfo/&gt; element and consist of several key data objects. 
+	The &quot;value&quot; key data usually contains raw key material (or handlers to 
+	key material) required to execute particular crypto transform. Other 
+	key data objects may contain any additional information about the key. 
+	All the key data objects in the key are associated with the same key 
+	material. For example, if a DSA key material has both an X509 
+	certificate and a PGP data associated with it then such a key can 
+	have a DSA key &quot;value&quot; and two key data objects for X509 certificate 
+	and PGP key data.
+	</p>
+<div class="FIGURE">
+<a name="AEN166"></a><p><b>Figure 4. The key structure.</b></p>
+<p><img src="images/key.png" align="CENTER"></p>
+</div>
+<p>XML Security Library has several &quot;invisible&quot; key data classes. 
+	These classes never show up in the keys data list of a key but are used 
+	for &lt;dsig:KeyInfo/&gt; children processing (&lt;dsig:KeyName/&gt;, 
+	&lt;dsig:EncryptedKey/&gt;, ...). As with transforms, application might 
+	add any new key data objects or replace the default ones.
+	</p>
+<p>Processing some of the key data objects require additional 
+	information which is global across the application (or in the 
+	particular area of the application). For example, X509 certificates 
+	processing require a common list of trusted certificates to be 
+	available. XML Security Library keeps all the common information 
+	for key data processing in a a collection of key data stores called 
+	&quot;keys manager&quot;.
+	</p>
+<div class="FIGURE">
+<a name="AEN171"></a><p><b>Figure 5. The keys manager structure.</b></p>
+<p><img src="images/keysmngr.png" align="CENTER"></p>
+</div>
+<p>Keys manager has a special &quot;keys store&quot; which lists the keys 
+	known to the application. This &quot;keys store&quot; is used by XML Security 
+	Library to lookup keys by name, type and crypto algorithm (for example,
+	during &lt;dsig:KeyName/&gt; processing). The XML Security Library 
+	provides default &quot;flat list&quot; based implementation of a simple keys 
+	store. The application can replace it with any other keys store 
+	(for example, based on an SQL database).
+	</p>
+<p>Keys manager is the only object in XML Security Library which 
+	is supposed to be shared by many different operations. Usually keys 
+	manager is initialized once at the application startup and later is 
+	used by XML Security library routines in &quot;read-only&quot; mode. If 
+	application or crypto function need to modify any of the key data 
+	stores inside keys manager then proper synchronization must be 
+	implemented. In the same time, application can create a new keys 
+	manager each time it needs to perform XML signature, verification, 
+	encryption or decryption.
+	</p>
 <p>TODO: example</p>
 </div>
 <div class="NAVFOOTER">

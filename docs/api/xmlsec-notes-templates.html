@@ -42,6 +42,45 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-TEMPLATES"></a>Creating dynamic templates.</h1>
+<p>    
+    </p>
+<div class="FIGURE">
+<a name="AEN207"></a><p><b>Figure 8. XML Digital Signature Structure</b></p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">        &lt;Signature ID?&gt; 
+	    &lt;SignedInfo&gt;
+	        &lt;CanonicalizationMethod/&gt;
+	        &lt;SignatureMethod/&gt;
+	        (&lt;Reference URI? &gt;
+    	    (&lt;Transforms&gt;)?
+    	    &lt;DigestMethod&gt;
+    	    &lt;DigestValue&gt;
+	        &lt;/Reference&gt;)+
+	    &lt;/SignedInfo&gt;
+	    &lt;SignatureValue&gt; 
+	(&lt;KeyInfo&gt;)?
+	(&lt;Object ID?&gt;)*
+        &lt;/Signature&gt;
+    </pre></td></tr></table>
+</div>
+    <div class="FIGURE">
+<a name="AEN210"></a><p><b>Figure 9. XML Encryption Structure</b></p>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">        &lt;EncryptedData Id? Type? MimeType? Encoding?&gt;
+	&lt;EncryptionMethod/&gt;?
+	&lt;ds:KeyInfo&gt;
+	        &lt;EncryptedKey&gt;?
+	        &lt;AgreementMethod&gt;?
+	        &lt;ds:KeyName&gt;?
+	        &lt;ds:RetrievalMethod&gt;?
+	        &lt;ds:*&gt;?
+	&lt;/ds:KeyInfo&gt;?
+	&lt;CipherData&gt;
+	    &lt;CipherValue&gt;?
+	        &lt;CipherReference URI?&gt;?
+	&lt;/CipherData&gt;
+	&lt;EncryptionProperties&gt;?
+        &lt;/EncryptedData&gt;	
+	</pre></td></tr></table>
+</div>
 <p>TODO: example signature</p>
 <p>TODO: example encryption</p>
 </div>

@@ -10,7 +10,10 @@ SGML_CATALOG_FILES=/usr/share/sgml/docbook/sgml-dtd-3.0-1.0-8/catalog:/usr/share
 #
 DOC_SOURCE_DIR=./code
 DOC_SOURCE_FILES=$(shell find $(SOURCE_DIR) -name '*.c' -print )  \
-	$(shell find $(INCLUDE_DIR) -name '*.h' -print )
+		 $(shell find $(INCLUDE_DIR) -name '*.h' -print )
+
+EXAMPLES_SOURCE_DIR=../../examples
+EXAMPLES_SOURCE_FILES=$(shell find $(EXAMPLES_SOURCE_DIR) -name '*.c' -print)
 
 all: sgml html clean-sources
 
@@ -36,7 +39,7 @@ sgml: templates
 templates: scan
 	@gtkdoc-mktmpl --module=xmlsec 
 	
-scan: doc_sources
+scan: doc_sources example_sources
 	@gtkdoc-scan --module=xmlsec \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
@@ -70,6 +73,33 @@ doc_sources: $(DOC_SOURCE_FILES)
 	@mkdir -p $(DOC_SOURCE_DIR)/include/xmlsec/base
 	@mv -f $(DOC_SOURCE_DIR)/include/xmlsec/*.h $(DOC_SOURCE_DIR)/include/xmlsec/base
 
+#
+# The following code converts C example file to sgml RefEntry files.
+# We get file title from a string "XML Security Library example: ..."
+# which is usually placed at the top of the file. Also all "unsafe" xml 
+# characters (<, >, &) are escaped. 
+#
+example_sources:
+	@mkdir -p examples
+	@(for i in $(EXAMPLES_SOURCE_FILES) ; do \
+	    file_name=`echo $$i | sed 's#.*/##' | sed 's#\..*$$##'`; \
+	    echo Converting $$i to $$file_name.sgml ...; \
+	    file_title=`cat $$i | grep 'XML Security Library example: ' | sed 's#^.*: *##'`; \
+	    echo "<refentry id=\"xmlsec-example-$$file_name\">" > \
+		examples/$$file_name.sgml; \
+	    echo "<refnamediv><refname>$$file_name.c</refname><refpurpose>$$file_title</refpurpose></refnamediv>" >> \
+		examples/$$file_name.sgml; \
+	    echo "<refsect1><title>Example: $$file_title</title><para><informalexample><programlisting>" >> \
+		examples/$$file_name.sgml; \
+	    cat $$i | \
+		sed "s#&#\&amp;#g" | \
+		sed "s#<#\&lt;#g" | \
+		sed "s#>#\&gt;#g" >> \
+		examples/$$file_name.sgml; \
+	    echo "</programlisting></informalexample></para></refsect1></refentry>" >> \
+		examples/$$file_name.sgml; \
+	done);
+
 clean: clean-sources
 	@rm -rf $(DOC_SOURCE_DIR)
 	@rm -f sgml/*~ sgml/*.bak  
@@ -77,7 +107,7 @@ clean: clean-sources
 	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
 
 clean-sources:
-	@rm -rf $(DOC_SOURCE_DIR)
+	@rm -rf code examples
 
 clean-local:
 	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
@@ -86,4 +116,3 @@ maintainer-clean-local: clean
 	@rm -rf *.html *.txt \
 	    sgml/*.sgml sgml/openssl/*.sgml \
 	    sgml/gnutls/*.sgml sgml/nss/*.sgml
-	

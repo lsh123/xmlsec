@@ -276,6 +276,10 @@
 	 &lt;!ATTLIST Data Id ID #IMPLIED&gt;<br>
 	]&gt;<br></code></blockquote>
 <p>
+      The DTD might be directly included in the XML file or located in 
+      a standalone file. In the second case, you might load the DTD
+      in xmlsec command line utility with "--dtd-file" option.
+<p>
       If you are using XML Security Library in your application (not the xmlsec
       command line utility!) then you can do a &quot;hack&quot; and tell LibXML2 (and
       XMLSec) which attributes are ID attributes without providing a DTD

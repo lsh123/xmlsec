@@ -881,6 +881,17 @@ AM_CONDITIONAL(XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING,
 AC_SUBST(XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING)
 
 dnl ==========================================================================
+dnl Where do we want to install docs
+dnl ==========================================================================
+AC_MSG_CHECKING(for docs folder) 
+AC_ARG_VAR(XMLSEC_DOCDIR,  [the doc files installation path $datadir/doc/xmlsec1])
+if test "z$XMLSEC_DOCDIR" = "z" ; then
+    XMLSEC_DOCDIR=$datadir/doc/xmlsec1
+fi
+AC_MSG_RESULT($XMLSEC_DOCDIR)
+AC_SUBST(XMLSEC_DOCDIR)
+
+dnl ==========================================================================
 dnl See do we need Simple Keys Manager 
 dnl ==========================================================================
 AC_MSG_CHECKING(for Simple Keys Manager testing) 

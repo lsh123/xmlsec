@@ -2,7 +2,7 @@ NULL =
 
 SUBDIRS=api
 
-TARGET_DIR=$(datadir)/doc/xmlsec1
+TARGET_DIR=@XMLSEC_DOCDIR@
 
 EXTRA_DIST=\
 	images \
@@ -47,12 +47,10 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/images
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api
-	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api/chapters
 	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)/api/images
 	-@INSTALL@ -m 0644 $(srcdir)/*.html $(DESTDIR)$(TARGET_DIR)
 	-@INSTALL@ -m 0644 $(srcdir)/images/*.gif $(srcdir)/images/*.png $(DESTDIR)$(TARGET_DIR)/images
 	-@INSTALL@ -m 0644 $(srcdir)/api/*.html $(srcdir)/api/*.sgml $(DESTDIR)$(TARGET_DIR)/api
-	-@INSTALL@ -m 0644 $(srcdir)/api/chapters/*.sgml $(DESTDIR)$(TARGET_DIR)/api/chapters
 	-@INSTALL@ -m 0644 $(srcdir)/api/images/*.png $(DESTDIR)$(TARGET_DIR)/api/images
 
 uninstall:

@@ -23,9 +23,6 @@ else
 fi
 cd xmlsec
 
-# hack to remove exec bit
-chmod a-x src/mscrypto/*.c
-
 ./autogen.sh --prefix=/usr --sysconfdir=/etc
 make rpm-release
 

@@ -1,3 +1,9 @@
+Mon Oct 13 19:29:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/Makefile.am: added support for XMLSEC_DOCDIR
+	environment variable to ./configure script and removed *.sgml 
+	files from docs installation
+
 Sat Oct 11 21:16:54 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/strings.h include/xmlsec/templates.h 

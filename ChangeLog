@@ -1,3 +1,7 @@
+Mon Jun 16 09:20:53 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: fixed NSS config bug #115297
+
 Sun Jun  8 20:08:42 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: fix for 'make distclean'

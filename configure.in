@@ -599,7 +599,7 @@ else
 
     if test "$NSPR_INCLUDES_FOUND" != "yes" -o "$NSPR_LIBS_FOUND" != "yes"
     then
-       if test "$NSPR_EXPLICIT" == "yes"
+       if test "$NSPR_EXPLICIT" = "yes"
        then 
           AC_MSG_ERROR(You need atleast version 4.0 of NSPR as a pre-requisite for NSS in this version of $PACKAGE)
        else
@@ -609,7 +609,7 @@ else
 
     if test "$NSS_INCLUDES_FOUND" != "yes" -o "$NSS_LIBS_FOUND" != "yes"
     then
-       if test "$NSS_EXPLICIT" == "yes"
+       if test "$NSS_EXPLICIT" = "yes"
        then 
          AC_MSG_ERROR(You need atleast version 3.2 of NSS for this version of $PACKAGE)
        else

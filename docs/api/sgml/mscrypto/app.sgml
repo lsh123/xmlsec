@@ -205,7 +205,7 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 <listitem><simpara> 		the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
-<listitem><simpara>		the destination filename.
+<listitem><simpara>   the destination filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&nbsp;:</term>
 <listitem><simpara>		the type of keys to save (public/private/symmetric).

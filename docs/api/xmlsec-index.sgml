@@ -510,9 +510,15 @@
 <listitem><para><link linkend="xmlSecKeyUseWithReset">xmlSecKeyUseWithReset</link></para></listitem>
 <listitem><para><link linkend="xmlSecKeyUseWithSet">xmlSecKeyUseWithSet</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptKey">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrLoad">xmlSecMSCryptoAppDefaultKeysMngrLoad</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrSave">xmlSecMSCryptoAppDefaultKeysMngrSave</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppGetCertStoreName">xmlSecMSCryptoAppGetCertStoreName</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppGetDefaultPwdCallback">xmlSecMSCryptoAppGetDefaultPwdCallback</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoAppInit">xmlSecMSCryptoAppInit</link></para></listitem>
@@ -578,6 +584,9 @@
 <listitem><para><link linkend="xmlSecMSCryptoTransformSha1GetKlass">xmlSecMSCryptoTransformSha1GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoTransformSha1Id">xmlSecMSCryptoTransformSha1Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoX509StoreAdoptKeyStore">xmlSecMSCryptoX509StoreAdoptKeyStore</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoX509StoreAdoptTrustedStore">xmlSecMSCryptoX509StoreAdoptTrustedStore</link></para></listitem>
+<listitem><para><link linkend="xmlSecMSCryptoX509StoreAdoptUntrustedStore">xmlSecMSCryptoX509StoreAdoptUntrustedStore</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoX509StoreFindCert">xmlSecMSCryptoX509StoreFindCert</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoX509StoreGetKlass">xmlSecMSCryptoX509StoreGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoX509StoreId">xmlSecMSCryptoX509StoreId</link></para></listitem>
@@ -619,6 +628,7 @@
 <listitem><para><link linkend="xmlSecNssAppShutdown">xmlSecNssAppShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssGetInternalKeySlot">xmlSecNssGetInternalKeySlot</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssInit">xmlSecNssInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link></para></listitem>
@@ -683,6 +693,8 @@
 <listitem><para><link linkend="xmlSecNssTransformKWAes256Id">xmlSecNssTransformKWAes256Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformKWDes3GetKlass">xmlSecNssTransformKWDes3GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformKWDes3Id">xmlSecNssTransformKWDes3Id</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssTransformRsaOaepGetKlass">xmlSecNssTransformRsaOaepGetKlass</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssTransformRsaOaepId">xmlSecNssTransformRsaOaepId</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformRsaSha1GetKlass">xmlSecNssTransformRsaSha1GetKlass</link></para></listitem>

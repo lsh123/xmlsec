@@ -37,6 +37,8 @@ static int	xmlSecXkmsCtxReadLocateRequestNode	(xmlSecXkmsCtxPtr xkmsCtx,
 							 xmlNodePtr node);
 static int	xmlSecXkmsCtxReadQueryKeyBindingNode	(xmlSecXkmsCtxPtr xkmsCtx,
 							 xmlNodePtr node);
+static int	xmlSecXkmsCtxWriteLocateResultNode	(xmlSecXkmsCtxPtr xkmsCtx,
+							 xmlNodePtr node);
 
 /**
  * xmlSecXkmsCtxCreate:
@@ -268,6 +270,7 @@ xmlSecXkmsCtxLocate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
     int ret;
 
     xmlSecAssert2(xkmsCtx != NULL, -1);
+    xmlSecAssert2(xkmsCtx->result == NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
     xmlSecAddIDs(node->doc, node, xmlSecXkmsIds);
@@ -279,7 +282,7 @@ xmlSecXkmsCtxLocate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
 		    "xmlSecXkmsCtxReadLocateRequestNode",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+	goto done;
     }
 
     /* now we are ready to search for key */
@@ -302,19 +305,36 @@ xmlSecXkmsCtxLocate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
 		        XMLSEC_ERRORS_NO_MESSAGE);
 	    xmlSecKeyDestroy(key);
 	    key = NULL;
+	    goto done;
+	}
+    }
+
+
+done:
+    /* write back the result */
+    if(xkmsCtx->result == NULL) {
+        xkmsCtx->result = xmlSecCreateTree(xmlSecNodeLocateResult, xmlSecXkmsNs);
+	if(xkmsCtx->result == NULL) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecCreateTree",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+            
+	ret = xmlSecXkmsCtxWriteLocateResultNode(xkmsCtx, xmlDocGetRootElement(xkmsCtx->result)); 
+	if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecXkmsCtxWriteLocateResultNode",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
     }
 
-    /* todo: write back the result */
-    
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		"xmlSecXkmsCtxLocate",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
+    return(0);
 }
 
 static int 
@@ -455,6 +475,24 @@ xmlSecXkmsCtxReadQueryKeyBindingNode(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) 
     }
     
     return(0);
+}
+
+static int	
+xmlSecXkmsCtxWriteLocateResultNode(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(xkmsCtx != NULL, -1);
+    xmlSecAssert2(xkmsCtx->mode == xmlXkmsCtxModeLocateRequest, -1);
+    xmlSecAssert2(node != NULL, -1);
+    
+    /* TODO */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		NULL,
+		"xmlSecXkmsCtxLocate",
+		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		XMLSEC_ERRORS_NO_MESSAGE);
+    return(-1);
 }
 
 /**

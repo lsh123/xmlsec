@@ -64,6 +64,9 @@ XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 xmlNodePtr cur,
 							 const xmlChar** ids);
+
+XMLSEC_EXPORT xmlDocPtr		xmlSecCreateTree	(const xmlChar* rootNodeName,
+							 const xmlChar* rootNodeNs);
 /**
  * xmlSecIsHex:
  * @c: 			the character.

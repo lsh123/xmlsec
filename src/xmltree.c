@@ -561,3 +561,59 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
     }
 }
 
+/**
+ * xmlSecCreateTree:
+ * @rootNodeName:	the root node name.
+ * @rootNodeNs:		the root node namespace (otpional).
+ *
+ * Creates a new XML tree with one root node @rootNodeName.
+ *
+ * Returns pointer to the newly created tree or NULL if an error occurs.
+ */
+xmlDocPtr 
+xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
+    xmlDocPtr doc;
+    xmlNodePtr root;
+
+    xmlSecAssert2(rootNodeName != NULL, -1);
+
+    /* create doc */
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewDoc",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    /* create root node */
+    root = xmlNewDocNode(doc, NULL, rootNodeName, NULL); 
+    if(root == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,	
+		    NULL,
+		    "xmlNewDocNode",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "node=Keys");
+	xmlFreeDoc(doc);
+	return(NULL);
+    }
+    xmlDocSetRootElement(doc, root);
+
+    /* and set root node namespace */
+    if(xmlNewNs(root, rootNodeNs, NULL) == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlNewNs",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "ns=%s",
+		    xmlSecErrorsSafeString(rootNodeNs));
+	xmlFreeDoc(doc); 
+	return(NULL);
+    }
+
+    return(doc);
+}
+
+

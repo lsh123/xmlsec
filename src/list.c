@@ -130,6 +130,7 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
 
     xmlSecPtrListEmpty(list);
+    memset(list, 0, sizeof(xmlSecPtrList));    
 }
 
 /**
@@ -158,7 +159,8 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
 	memset(list->data, 0, sizeof(xmlSecPtr) * list->use);
 	xmlFree(list->data);
     }
-    memset(list, 0, sizeof(xmlSecPtrList));    
+    list->max = list->use = 0;
+    list->data = NULL;
 }
 
 /**

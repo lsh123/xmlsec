@@ -531,7 +531,6 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     xmlSecKeyPtr key;
     xmlSecSize i, keysSize;    
     xmlDocPtr doc;
-    xmlNodePtr root;
     xmlNodePtr cur;
     xmlSecKeyDataPtr data;
     xmlSecPtrListPtr idsList;
@@ -546,39 +545,15 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
     xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecKeyPtrListId), -1);
 
     /* create doc */
-    doc = xmlNewDoc(BAD_CAST "1.0");
+    doc = xmlSecCreateTree(BAD_CAST "Keys", xmlSecNs);
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-		    "xmlNewDoc",
-		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlSecCreateTree",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    
-    /* create root node "Keys" */
-    root = xmlNewDocNode(doc, NULL, BAD_CAST "Keys", NULL); 
-    if(root == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-		    "xmlNewDocNode",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "node=Keys");
-	xmlFreeDoc(doc);
-	return(-1);
-    }
-    xmlDocSetRootElement(doc, root);
-    if(xmlNewNs(root, xmlSecNs, NULL) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-		    "xmlNewNs",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "ns=%s",
-		    xmlSecErrorsSafeString(xmlSecNs));
-	xmlFreeDoc(doc); 
-	return(-1);
-    }
-    
     
     idsList = xmlSecKeyDataIdsGet();	
     xmlSecAssert2(idsList != NULL, -1);
@@ -589,7 +564,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
 	key = (xmlSecKeyPtr)xmlSecPtrListGetItem(list, i);
 	xmlSecAssert2(key != NULL, -1);
 	    
-    	cur = xmlSecAddChild(root, xmlSecNodeKeyInfo, xmlSecDSigNs);
+    	cur = xmlSecAddChild(xmlDocGetRootElement(doc), xmlSecNodeKeyInfo, xmlSecDSigNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),

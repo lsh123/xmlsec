@@ -14,7 +14,7 @@ INCLUDES = \
 EXTRA_DIST = \
 	globals.h \
 	ltdl.h ltdl.c \
-	xmlsec-ltdl.h \
+	xmlsec-ltdl.h xmlsec-ltdl.c xmlsec-ltdl.patch \
 	skeleton \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
 	$(NULL)

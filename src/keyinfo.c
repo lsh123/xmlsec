@@ -869,7 +869,7 @@ xmlSecKeyDataEncryptedKeyGetKlass(void) {
 
 static int 
 xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecEncCtxPtr encCtx = NULL;
+    xmlSecEncOldCtxPtr encCtx = NULL;
     xmlSecEncResultPtr encResult = NULL; 
     int res = -1;
     int ret;
@@ -902,13 +902,13 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     /**
      * Init Enc context
      */    
-    encCtx = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
+    encCtx = xmlSecEncOldCtxCreate(keyInfoCtx->keysMngr);
     if(encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecEncCtxCreate",
+		    "xmlSecEncOldCtxCreate",
 	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecEncCtxCreate");
+		    "xmlSecEncOldCtxCreate");
 	goto done;
     }
     encCtx->ignoreType = 1; /* do not substitute the node! */
@@ -943,14 +943,14 @@ done:
 	xmlSecEncResultDestroy(encResult);
     }
     if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
+	xmlSecEncOldCtxDestroy(encCtx);
     }    
     return(res);
 }
 
 static int 
 xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecEncCtxPtr encCtx = NULL;
+    xmlSecEncOldCtxPtr encCtx = NULL;
     xmlSecKeyReq keyReq;
     unsigned char *keyBuf = NULL;
     size_t keySize = 0;
@@ -992,11 +992,11 @@ xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodeP
     /**
      * Init Enc context
      */    
-    encCtx = xmlSecEncCtxCreate(keyInfoCtx->keysMngr);
+    encCtx = xmlSecEncOldCtxCreate(keyInfoCtx->keysMngr);
     if(encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecEncCtxCreate",
+		    "xmlSecEncOldCtxCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
@@ -1021,7 +1021,7 @@ done:
 	xmlFree(keyBuf); keyBuf = NULL;
     }
     if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
+	xmlSecEncOldCtxDestroy(encCtx);
     }    
     return(res);
 }

@@ -244,7 +244,7 @@ struct _xmlSecAppCtx {
     xmlSecDSigCtxPtr 	dsigCtx;
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
-    xmlSecEncCtxPtr 	encCtx;
+    xmlSecEncOldCtxPtr 	encCtx;
 #endif /* XMLSEC_NO_XMLENC */
     
 };
@@ -1097,11 +1097,11 @@ xmlSecAppInit(xmlSecAppCtxPtr ctx) {
 
     /* init XML Enc context */
 #ifndef XMLSEC_NO_XMLENC
-    ctx->encCtx = xmlSecEncCtxCreate(gXmlSecAppCtx.keysMngr);
+    ctx->encCtx = xmlSecEncOldCtxCreate(gXmlSecAppCtx.keysMngr);
     if(ctx->encCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecEncCtxCreate",
+		    "xmlSecEncOldCtxCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -1121,7 +1121,7 @@ xmlSecAppShutdown(xmlSecAppCtxPtr ctx) {
     }
 #ifndef XMLSEC_NO_XMLENC
     if(ctx->encCtx != NULL) {
-	xmlSecEncCtxDestroy(ctx->encCtx);
+	xmlSecEncOldCtxDestroy(ctx->encCtx);
     }
 #endif /* XMLSEC_NO_XMLENC */
 #ifndef XMLSEC_NO_XMLDSIG

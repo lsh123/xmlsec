@@ -11,7 +11,7 @@ const xmlChar xmlSecEncTypeContent[] = "http://www.w3.org/2001/04/xmlenc#Content
 static const xmlChar*		xmlSecEncIds[] = { BAD_CAST "Id", NULL };
 
 typedef struct _xmlSecEncState {
-    xmlSecEncCtxPtr		ctx;
+    xmlSecEncOldCtxPtr		ctx;
     xmlSecTransformPtr 	first;
     xmlSecTransformPtr	last;
     xmlNodePtr			cipherDataNode;
@@ -23,7 +23,7 @@ typedef struct _xmlSecEncState {
 /** 
  * XML Enc state
  */
-static xmlSecEncStatePtr	xmlSecEncStateCreate		(xmlSecEncCtxPtr ctx, 
+static xmlSecEncStatePtr	xmlSecEncStateCreate		(xmlSecEncOldCtxPtr ctx, 
 								 xmlNodePtr encNode,
 								 int encrypt,
 								 xmlSecEncResultPtr result);
@@ -67,47 +67,47 @@ static int			xmlSecCipherReferenceNodeRead	(xmlNodePtr cipherReferenceNode,
  *
  ***************************************************************************/
 /**
- * xmlSecEncCtxCreate:
+ * xmlSecEncOldCtxCreate:
  * @keysMngr: the pointer to #xmlSecKeysMngr structure.
  * 
  * Creates new encryption context.
  *
- * Returns newly allocated #xmlSecEncCtx structure or NULL if an error occurs.
+ * Returns newly allocated #xmlSecEncOldCtx structure or NULL if an error occurs.
  */
-xmlSecEncCtxPtr		
-xmlSecEncCtxCreate(xmlSecKeysMngrPtr keysMngr) {
-    xmlSecEncCtxPtr ctx;
+xmlSecEncOldCtxPtr		
+xmlSecEncOldCtxCreate(xmlSecKeysMngrPtr keysMngr) {
+    xmlSecEncOldCtxPtr ctx;
     
     /*
-     * Allocate a new xmlSecEncCtx and fill the fields.
+     * Allocate a new xmlSecEncOldCtx and fill the fields.
      */
-    ctx = (xmlSecEncCtxPtr) xmlMalloc(sizeof(xmlSecEncCtx));
+    ctx = (xmlSecEncOldCtxPtr) xmlMalloc(sizeof(xmlSecEncOldCtx));
     if(ctx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecEncCtx)=%d", 
-		    sizeof(xmlSecEncCtx));
+		    "sizeof(xmlSecEncOldCtx)=%d", 
+		    sizeof(xmlSecEncOldCtx));
 	return(NULL);
     }
-    memset(ctx, 0, sizeof(xmlSecEncCtx));
+    memset(ctx, 0, sizeof(xmlSecEncOldCtx));
     
     ctx->keyInfoCtx.keysMngr = keysMngr;
     return(ctx);
 }
 
 /**
- * xmlSecEncCtxDestroy:
- * @ctx: the pointer to #xmlSecEncCtx structure.
+ * xmlSecEncOldCtxDestroy:
+ * @ctx: the pointer to #xmlSecEncOldCtx structure.
  *
- * Destroys the #xmlSecEncCtx structure.
+ * Destroys the #xmlSecEncOldCtx structure.
  */
 void
-xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
+xmlSecEncOldCtxDestroy(xmlSecEncOldCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
     
-    memset(ctx, 0, sizeof(xmlSecEncCtx));
+    memset(ctx, 0, sizeof(xmlSecEncOldCtx));
     xmlFree(ctx);
 }
 
@@ -121,7 +121,7 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
 
 /**
  * xmlSecEncryptMemory:
- * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @ctx: the pointer to #xmlSecEncOldCtx structure.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
@@ -138,7 +138,7 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr ctx) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptMemory(xmlSecEncOldCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
     xmlSecTransformCtx transformCtx; /* todo */
@@ -218,7 +218,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
 /**
  * xmlSecEncryptUri:
- * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @ctx: the pointer to #xmlSecEncOldCtx structure.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
@@ -234,7 +234,7 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptUri(xmlSecEncOldCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
     xmlSecTransformCtx transformCtx;
@@ -361,7 +361,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 
 /**
  * xmlSecEncryptXmlNode:
- * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @ctx: the pointer to #xmlSecEncOldCtx structure.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
@@ -377,7 +377,7 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecEncryptXmlNode(xmlSecEncOldCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
     xmlSecTransformCtx transformCtx; /* todo */
@@ -547,7 +547,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  
 /**
  * xmlSecDecrypt:
- * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @ctx: the pointer to #xmlSecEncOldCtx structure.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @key: the key to use (if NULL then the key specified in <dsig:KeyInfo>
@@ -560,7 +560,7 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
+xmlSecDecrypt(xmlSecEncOldCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 	     xmlNodePtr encNode, xmlSecEncResultPtr *result) {
     xmlSecEncStatePtr state;
     xmlSecEncResultPtr res;
@@ -679,7 +679,7 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
  * xmlSecEncStateCreate:
  */ 
 static xmlSecEncStatePtr
-xmlSecEncStateCreate(xmlSecEncCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSecEncResultPtr result) {
+xmlSecEncStateCreate(xmlSecEncOldCtxPtr ctx, xmlNodePtr encNode, int encrypt, xmlSecEncResultPtr result) {
     xmlSecEncStatePtr state;
     int ret;
 
@@ -851,7 +851,7 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
  *************************************************************************/
 /**
  * xmlSecEncResultCreate:
- * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @ctx: the pointer to #xmlSecEncOldCtx structure.
  * @context: the pointer to application specific data that will be 
  *     passed to all callback functions.
  * @encrypt: the encrypt/decrypt flag.
@@ -863,7 +863,7 @@ xmlSecEncStateAddFirstTransform(xmlSecEncStatePtr state, xmlSecTransformPtr tran
  * if an error occurs.
  */ 		
 xmlSecEncResultPtr		
-xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
+xmlSecEncResultCreate(xmlSecEncOldCtxPtr ctx, void *context, int encrypt, xmlNodePtr node) {
     xmlSecEncResultPtr result;
 
     xmlSecAssert2(ctx != NULL, NULL);    

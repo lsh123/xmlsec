@@ -57,10 +57,14 @@ check-dsig: $(TEST_APP)
 	@cd tests;make check-dsig
 
 check-enc: $(TEST_APP)
-	@cd tests;make check-enc
+	@cd tests;make check-en
+
+memcheck-res:
+	@cd tests;make memcheck-res
 
 memcheck: $(TEST_APP)
-	@export DEBUG_MEMORY=1;make check
+	@export DEBUG_MEMORY=1;make check;make memcheck-res
 
 perfcheck: $(TEST_APP)
 	@export PERF_TEST=10;make check
+

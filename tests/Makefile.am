@@ -52,3 +52,8 @@ else
 	@echo "XML Enc support disabled"
 endif
 
+memcheck-res: 
+	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u
+	@grep -i leak /tmp/*.log | sed 's/==.*== *//' | sort -u
+
+	

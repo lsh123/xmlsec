@@ -186,6 +186,7 @@ encrypt(void) {
 	fprintf(stderr, "Error: failed to create document\n");
 	goto done;    
     }
+    xmlSetTreeDoc(encData, doc);
     xmlDocSetRootElement(doc, encData);
      
     /**

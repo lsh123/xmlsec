@@ -23,6 +23,13 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/nodeset.h>
 
+
+
+XMLSEC_EXPORT int 	xmlSecTransformIdsRegister		(xmlSecTransformId id);
+XMLSEC_EXPORT int 	xmlSecTransformIdsRegisterDefault	(void);
+XMLSEC_EXPORT void 	xmlSecTransformIdsUnregisterAll		(void);
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformIdsFindByHref	(const xmlChar *href);
+
 /* 
  * Transforms usage constants
  */
@@ -285,10 +292,8 @@ struct _xmlSecTransform {
  	(xmlSecTransformIsValid(( transform )) && \
 	((((const xmlSecTransformId) (( transform )->id))) == ( i )))
 
-void 			xmlSecTransformsInit		(void);
 int			xmlSecTransformsNodeRead	(xmlSecTransformStatePtr state, 
 							 xmlNodePtr transformsNode);
-xmlSecTransformId	xmlSecTransformFind		(const xmlChar *href);
 xmlSecTransformPtr	xmlSecTransformNodeRead		(xmlNodePtr transformNode, 
 							 xmlSecTransformUsage usage,
 							 int dontDestroy);

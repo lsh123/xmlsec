@@ -664,7 +664,6 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr statu
     xmlNodePtr cur; 
     xmlSecKeyId keyId;
     xmlSecKeyPtr key;
-    size_t i;
 
     xmlSecAssert2(keyValueNode != NULL, NULL);
     xmlSecAssert2(status != NULL, NULL);
@@ -679,17 +678,15 @@ xmlSecKeyValueNodeRead(xmlNodePtr keyValueNode, xmlSecKeyInfoNodeStatusPtr statu
     key = NULL;
     cur = xmlSecGetNextElementNode(keyValueNode->children);    
     while(cur != NULL) {
-        for(i = 0; xmlSecAllKeyIds[i] != xmlSecKeyIdUnknown; ++i) {
-	    keyId = xmlSecAllKeyIds[i];
-	    if((status->keyId != xmlSecTransformUnknown) && 
-	        (status->keyId != keyId)) continue;
-	    if(xmlSecCheckNodeName(cur, keyId->keyValueNodeName, 
-					keyId->keyValueNodeNs)) {
-		key = xmlSecKeyReadXml(keyId, cur);
-		break;
+	keyId = xmlSecKeyIdsFindByNode(status->keyId, cur);
+	if(keyId != xmlSecKeyIdUnknown) {
+	    key = xmlSecKeyReadXml(keyId, cur);
+	    if(key == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecKeyReadXml(%s)", (cur->name != NULL) ? cur->name : BAD_CAST "NULL");
+		return(NULL);
 	    }
-	}
-	if(key != NULL) {
 	    if((key->type == status->keyType) || (status->keyType == xmlSecKeyTypeAny)) {
 		return(key);
 	    } else {

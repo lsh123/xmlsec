@@ -20,8 +20,12 @@
 #include <openssl/err.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/errors.h>
+#include <xmlsec/keys.h>
+#include <xmlsec/keysInternal.h>
+#include <xmlsec/transforms.h>
+#include <xmlsec/transformsInternal.h>
 #include <xmlsec/crypto.h>
+#include <xmlsec/errors.h>
 #include <xmlsec/openssl/errors.h>
 
 static ERR_STRING_DATA xmlSecStrReasons[]= {
@@ -93,12 +97,101 @@ static int  xmlSecOpenSSLSaveRandFile		(const char *file);
  */
 int	
 xmlSecCryptoInit(void) {
+    /* Initialize errors reporting system */
     ERR_load_crypto_strings();
     ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrLib); /* define xmlsec lib name */
     ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrDefReason); /* define default reason */
     ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrReasons); 
 
     xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
+
+    /* register keys and transforms */
+#ifndef XMLSEC_NO_DSA
+    if(xmlSecKeyIdsRegister(xmlSecDsaKey) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecSignDsaSha1) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_DSA */    
+
+#ifndef XMLSEC_NO_RSA
+    if(xmlSecKeyIdsRegister(xmlSecRsaKey) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecSignRsaSha1) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncRsaPkcs1) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncRsaOaep) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_DES    
+    if(xmlSecKeyIdsRegister(xmlSecDesKey) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncDes3Cbc) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecKWDes3Cbc) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_AES    
+    if(xmlSecKeyIdsRegister(xmlSecAesKey) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncAes128Cbc) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncAes192Cbc) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncAes256Cbc) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecKWAes128) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecKWAes192) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecKWAes256) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_SHA1    
+    if(xmlSecTransformIdsRegister(xmlSecDigestSha1) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_RIPEMD160
+    if(xmlSecTransformIdsRegister(xmlSecDigestRipemd160) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_HMAC    
+    if(xmlSecKeyIdsRegister(xmlSecHmacKey) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecMacHmacSha1) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecMacHmacRipeMd160) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecMacHmacMd5) < 0) {
+	return(-1);
+    }
+#endif /* XMLSEC_NO_HMAC */    
+
     return(0);
 }
 

@@ -27,13 +27,6 @@ typedef struct _xmlSecKey 		xmlSecKey, *xmlSecKeyPtr;
 typedef struct _xmlSecKeysMngr  	xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
 
 /**
- * xmlSecAllKeyIds:
- *
- * The list of all know key ids.
- */
-XMLSEC_EXPORT_VAR xmlSecKeyId xmlSecAllKeyIds[];
-
-/**
  * xmlSecKeyType:
  * @xmlSecKeyTypePublic: the public key.
  * @xmlSecKeyTypePrivate: the private key.

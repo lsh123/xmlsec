@@ -166,7 +166,11 @@ struct _xmlSecKeyIdStruct {
 /** 
  * XML Sec Key
  */
-void		xmlSecKeysInit				(void); 
+XMLSEC_EXPORT int xmlSecKeyIdsRegister			(xmlSecKeyId id); 
+XMLSEC_EXPORT int xmlSecKeyIdsRegisterDefault		(void); 
+XMLSEC_EXPORT void xmlSecKeyIdsUnregisterAll		(void); 
+XMLSEC_EXPORT xmlSecKeyId xmlSecKeyIdsFindByNode	(xmlSecKeyId desiredKeyId, 
+							 xmlNodePtr cur);
  
 /**
  * xmlSecKeyIsValid:

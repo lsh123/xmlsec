@@ -25,40 +25,58 @@
 #include <xmlsec/errors.h>
 
 
-xmlSecKeyId xmlSecAllKeyIds[100];
+#define XMLSEC_KEYIDS_SIZE 	100
 
-/**
- * xmlSecKeysInit:
- * 
- * Initializes the key ids list (called from xmlSecInit() function). 
- * This function should not be called directly by applications.
- */
-void		
-xmlSecKeysInit(void) {
-    int i = 0;
+static xmlSecKeyId xmlSecKeyIdsAll[XMLSEC_KEYIDS_SIZE] = { xmlSecKeyIdUnknown };
+static int xmlSecKeyIdsPos = 0;
 
-#ifndef XMLSEC_NO_HMAC    
-    xmlSecAllKeyIds[i++] = xmlSecHmacKey;
-#endif /* XMLSEC_NO_HMAC */    
+int 
+xmlSecKeyIdsRegister(xmlSecKeyId id) {
+    xmlSecAssert2(id != xmlSecKeyIdUnknown, -1);
+    
+    if(xmlSecKeyIdsPos + 1 >= XMLSEC_KEYIDS_SIZE) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "%d", xmlSecKeyIdsPos);
+	return(-1);	
+    }
+    
+    xmlSecKeyIdsAll[xmlSecKeyIdsPos++] = id;
+    xmlSecKeyIdsAll[xmlSecKeyIdsPos] = xmlSecKeyIdUnknown; /* MUST be the last in the list */  
 
-#ifndef XMLSEC_NO_DSA
-    xmlSecAllKeyIds[i++] = xmlSecDsaKey;
-#endif /* XMLSEC_NO_DSA */    
+    return(0);
+}
 
-#ifndef XMLSEC_NO_RSA
-    xmlSecAllKeyIds[i++] = xmlSecRsaKey;
-#endif /* XMLSEC_NO_RSA */
+int 
+xmlSecKeyIdsRegisterDefault(void) {
+    /* all keys are registered in crypto engine */
+    return(0);
+}
 
-#ifndef XMLSEC_NO_DES    
-    xmlSecAllKeyIds[i++] = xmlSecDesKey;
-#endif /* XMLSEC_NO_DES */
+void 
+xmlSecKeyIdsUnregisterAll(void) {
+    memset(xmlSecKeyIdsAll, 0, sizeof(xmlSecKeyIdsAll));
+    xmlSecKeyIdsPos = 0;
+}
 
-#ifndef XMLSEC_NO_AES    
-    xmlSecAllKeyIds[i++] = xmlSecAesKey;
-#endif /* XMLSEC_NO_AES */
+xmlSecKeyId 
+xmlSecKeyIdsFindByNode(xmlSecKeyId desiredKeyId, xmlNodePtr cur) {
+    xmlSecKeyId keyId;
+    int i;
 
-    /* MUST be the last in the list */  
-    xmlSecAllKeyIds[i++] = xmlSecKeyIdUnknown;
+    xmlSecAssert2(cur != NULL, xmlSecKeyIdUnknown);
+    
+    for(i = 0; i < xmlSecKeyIdsPos; ++i) {
+	keyId = xmlSecKeyIdsAll[i];
+	if((desiredKeyId != xmlSecKeyIdUnknown) && (desiredKeyId != keyId)) {
+	    continue;
+	}
+	if(xmlSecCheckNodeName(cur, keyId->keyValueNodeName, keyId->keyValueNodeNs)) {
+	    return(keyId);
+	}
+    }
+    /* todo: print an error? */
+    return(xmlSecKeyIdUnknown);
 }
 
 /**

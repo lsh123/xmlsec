@@ -1,3 +1,11 @@
+Wed Nov  6 01:18:33 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/Makefile.am config.h.in include/xmlsec/keys.h 
+	include/xmlsec/keysInternal.h include/xmlsec/transformsInternal.h
+	src/keyinfo.c src/keys.c src/openssl/crypto.c src/transforms.c
+	src/xmlsec.c: cleaning dependencies between the xmlsec and
+	xmlsec-crypto libraries
+
 Tue 05 Nov 2002 10:23:07 PM PST Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* almost all files: major code refactoring - separating OpenSSL

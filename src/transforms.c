@@ -58,8 +58,10 @@
 
 #define XMLSEC_TRANSFORM_BUFFER_SIZE    1024
 
+#define XMLSEC_TRANSFORMIDS_SIZE 	100
 
-static xmlSecTransformId xmlSecAllTransforms[100];
+static xmlSecTransformId xmlSecTransformIdsAll[XMLSEC_TRANSFORMIDS_SIZE];
+static int xmlSecTransformIdsPos = 0;
 
 /* internal functions */
 static int  xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri);
@@ -71,95 +73,115 @@ static int  xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state);
 static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet, 
 					  xmlOutputBufferPtr output);
 
-/**********************************************************************
- *
- * Hi-level functions
- *
- *********************************************************************/
-/**
- * xmlSecTransformsInit:
- *
- * Trnasforms engine initialization (called from xmlSecInit() function).
- * The applications should not call this function directly.
- */
-void xmlSecTransformsInit(void) {
-    int i = 0;
 
-    /* encoding */
-    xmlSecAllTransforms[i++] = xmlSecEncBase64Encode;
-    xmlSecAllTransforms[i++] = xmlSecEncBase64Decode;
+
+
+
+int 	
+xmlSecTransformIdsRegister(xmlSecTransformId id) {
+    xmlSecAssert2(id != xmlSecTransformUnknown, -1);
     
-    /* digest methods */
-#ifndef XMLSEC_NO_SHA1    
-    xmlSecAllTransforms[i++] = xmlSecDigestSha1;
-#endif /* XMLSEC_NO_SHA1 */
-#ifndef XMLSEC_NO_RIPEMD160
-    xmlSecAllTransforms[i++] = xmlSecDigestRipemd160;
-#endif /* XMLSEC_NO_RIPEMD160 */
-
-    /* MAC */ 
-#ifndef XMLSEC_NO_HMAC
-    xmlSecAllTransforms[i++] = xmlSecMacHmacSha1;
-    xmlSecAllTransforms[i++] = xmlSecMacHmacRipeMd160;
-    xmlSecAllTransforms[i++] = xmlSecMacHmacMd5;
-#endif /* XMLSEC_NO_HMAC */
-
-    /* signature */ 
-#ifndef XMLSEC_NO_DSA
-    xmlSecAllTransforms[i++] = xmlSecSignDsaSha1;
-#endif /* XMLSEC_NO_DSA */    
-
-#ifndef XMLSEC_NO_RSA
-    xmlSecAllTransforms[i++] = xmlSecSignRsaSha1;
-#endif /* XMLSEC_NO_RSA */
+    if(xmlSecTransformIdsPos + 1 >= XMLSEC_TRANSFORMIDS_SIZE) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "%d", xmlSecTransformIdsPos);
+	return(-1);	
+    }
     
-    /* c14n methods */
-    xmlSecAllTransforms[i++] = xmlSecC14NInclusive;
-    xmlSecAllTransforms[i++] = xmlSecC14NInclusiveWithComments;
-    xmlSecAllTransforms[i++] = xmlSecC14NExclusive;
-    xmlSecAllTransforms[i++] = xmlSecC14NExclusiveWithComments;
+    xmlSecTransformIdsAll[xmlSecTransformIdsPos++] = id;
+    xmlSecTransformIdsAll[xmlSecTransformIdsPos] = xmlSecTransformUnknown; /* MUST be the last in the list */  
+
+    return(0);
+}
+
+int 	
+xmlSecTransformIdsRegisterDefault(void) {
+    /* encodings */
+    if(xmlSecTransformIdsRegister(xmlSecEncBase64Encode) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecEncBase64Decode) < 0) {
+	return(-1);
+    }
+
+    /* c14n */
+    if(xmlSecTransformIdsRegister(xmlSecC14NInclusive) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecC14NInclusiveWithComments) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecC14NExclusive) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecC14NExclusiveWithComments) < 0) {
+	return(-1);
+    }    
 
     /* XML transforms */
-    xmlSecAllTransforms[i++] = xmlSecTransformEnveloped;
-    xmlSecAllTransforms[i++] = xmlSecTransformXPath;
-    xmlSecAllTransforms[i++] = xmlSecTransformXPath2;
-    xmlSecAllTransforms[i++] = xmlSecTransformXPointer;
+    if(xmlSecTransformIdsRegister(xmlSecTransformEnveloped) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPath) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPath2) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPointer) < 0) {
+	return(-1);
+    }
 
 #ifndef XMLSEC_NO_XSLT
-    xmlSecAllTransforms[i++] = xmlSecTransformXslt;
+    if(xmlSecTransformIdsRegister(xmlSecTransformXslt) < 0) {
+	return(-1);
+    }
 #endif /* XMLSEC_NO_XSLT */    
 
-    /* encryption */
-#ifndef XMLSEC_NO_DES    
-    xmlSecAllTransforms[i++] = xmlSecEncDes3Cbc;
-#endif /* XMLSEC_NO_DES */
-
-#ifndef XMLSEC_NO_AES    
-    xmlSecAllTransforms[i++] = xmlSecEncAes128Cbc;
-    xmlSecAllTransforms[i++] = xmlSecEncAes192Cbc;
-    xmlSecAllTransforms[i++] = xmlSecEncAes256Cbc;
-#endif /* XMLSEC_NO_AES */
-
-    /* Key Transports */
-#ifndef XMLSEC_NO_RSA
-    xmlSecAllTransforms[i++] = xmlSecEncRsaPkcs1;
-    xmlSecAllTransforms[i++] = xmlSecEncRsaOaep;
-#endif /* XMLSEC_NO_RSA */
-
-    /* key wrappers */
-#ifndef XMLSEC_NO_AES    
-    xmlSecAllTransforms[i++] = xmlSecKWDes3Cbc;
-    xmlSecAllTransforms[i++] = xmlSecKWAes128;
-    xmlSecAllTransforms[i++] = xmlSecKWAes192;
-    xmlSecAllTransforms[i++] = xmlSecKWAes256;
-#endif /* XMLSEC_NO_DES */
-
     /* Input/memory buffer */
-    xmlSecAllTransforms[i++] = xmlSecInputUri;
-    xmlSecAllTransforms[i++] = xmlSecMemBuf;
+    if(xmlSecTransformIdsRegister(xmlSecInputUri) < 0) {
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecMemBuf) < 0) {
+	return(-1);
+    }
+    return(0);
+}
 
-    /* MUST be the last in the list */
-    xmlSecAllTransforms[i++] = xmlSecTransformUnknown;
+void 	
+xmlSecTransformIdsUnregisterAll(void) {
+    memset(xmlSecTransformIdsAll, 0, sizeof(xmlSecTransformIdsAll));
+    xmlSecTransformIdsPos = 0;
+}
+
+/**
+ * xmlSecTransformIdsFindByHref:
+ * @href: the transform href.
+ *
+ * Searches the list of known transforms for transform with given href
+ *
+ * Returns the id of the found transform or NULL if an error occurs 
+ * or transform is not found.
+ */ 
+xmlSecTransformId	
+xmlSecTransformIdsFindByHref(const xmlChar *href) {
+    xmlSecTransformId id;
+    int i;
+    
+    xmlSecAssert2(href != NULL, NULL);
+    
+    for(i = 0; i < xmlSecTransformIdsPos; ++i) {
+	id = xmlSecTransformIdsAll[i];
+	if(xmlStrEqual(id->href, href)) {
+	    return(id);
+	}
+    }
+    
+    /* not found */
+    xmlSecError(XMLSEC_ERRORS_HERE,
+		XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		"href=%s", href);    
+    return(xmlSecTransformUnknown);
 }
 
 /**
@@ -243,11 +265,11 @@ xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
 	return(NULL);		
     }
     
-    id = xmlSecTransformFind(href);    
+    id = xmlSecTransformIdsFindByHref(href);    
     if(id == xmlSecTransformUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformFind(href=\"%s\")", href);
+		    "xmlSecTransformIdsFindByHref(href=\"%s\")", href);
 	xmlFree(href);
 	return(NULL);		
     }
@@ -304,35 +326,6 @@ xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
  * Transform Info
  *
  **************************************************************************/ 
-/**
- * xmlSecTransformFind:
- * @href: the transform href.
- *
- * Searches the list of known transforms for transform with given href
- *
- * Returns the id of the found transform or NULL if an error occurs 
- * or transform is not found.
- */ 
-xmlSecTransformId
-xmlSecTransformFind(const xmlChar* href) {
-    xmlSecTransformId *ptr;
-
-    xmlSecAssert2(href != NULL, NULL);
-    
-    ptr = xmlSecAllTransforms;
-    while((*ptr) != xmlSecTransformUnknown) {
-	if(xmlStrEqual((*ptr)->href, href)) {
-	    return(*ptr);
-	}
-	++ptr;
-    }
-    
-    /* not found */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		"href=%s", href);    
-    return(xmlSecTransformUnknown);
-}
 
 /**********************************************************************
  *

@@ -44,10 +44,10 @@ static const unsigned char base64[] =
 #define	XMLSEC_BASE64_OUTPUT_BUFFER_SIZE	5*XMLSEC_BASE64_INPUT_BUFFER_SIZE
 
 #define xmlSecBase64Min(a, b)		(((a) < (b)) ? (a) : (b))
-#define xmlSecBase64Encode1(a) 		(base64[((int)(a) >> 2) & 0x3F])
-	#define xmlSecBase64Encode2(a, b) 	(base64[(((int)(a) << 4) & 0x30) + ((((int)(b)) >> 4) & 0x0F)])
-#define xmlSecBase64Encode3(b, c) 	(base64[(((int)(b) << 2) & 0x3c) + ((((int)(c)) >> 6) & 0x03)])
-#define xmlSecBase64Encode4(c)		(base64[((int)(c)) & 0x3F])
+#define xmlSecBase64Encode1(a) 		(base64[((a) >> 2) & 0x3F])
+#define xmlSecBase64Encode2(a, b) 	(base64[(((a) << 4) & 0x30) + (((b) >> 4) & 0x0F)])
+#define xmlSecBase64Encode3(b, c) 	(base64[(((b) << 2) & 0x3c) + (((c) >> 6) & 0x03)])
+#define xmlSecBase64Encode4(c)		(base64[(c) & 0x3F])
 
 #define xmlSecBase64Decode1(a, b)	(((a) << 2) | (((b) & 0x3F) >> 4))
 #define xmlSecBase64Decode2(b, c)	(((b) << 4) | (((c) & 0x3F) >> 2))
@@ -68,7 +68,7 @@ static const unsigned char base64[] =
 struct _xmlSecBase64Ctx {
     int			encode;
     
-    unsigned char	in[4];
+    unsigned int	in[4];
     unsigned char	out[16];
     size_t 		inPos;
     size_t 		outPos;
@@ -100,8 +100,8 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
 static int
 xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
     xmlSecAssert2(ctx != NULL, -1);    
-    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
-    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in) / sizeof(ctx->in[0]), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out) / sizeof(ctx->out[0]), -1);
 
     if(ctx->outPos > 0) {
 	return(ctx->outPos);
@@ -121,21 +121,33 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
 	ctx->linePos = 0;
     }
     ++(ctx->linePos);
-    ctx->out[ctx->outPos++] = xmlSecBase64Encode2(ctx->in[0], ctx->in[1]);
+    if(ctx->inPos > 1) {
+        ctx->out[ctx->outPos++] = xmlSecBase64Encode2(ctx->in[0], ctx->in[1]);
+    } else {
+        ctx->out[ctx->outPos++] = xmlSecBase64Encode2(ctx->in[0], 0);
+    }
 
     if(ctx->columns > 0 && ctx->columns <= ctx->linePos) {
 	ctx->out[ctx->outPos++] = '\n';
 	ctx->linePos = 0;
     }
     ++(ctx->linePos);
-    ctx->out[ctx->outPos++] = (ctx->inPos > 1) ? xmlSecBase64Encode3(ctx->in[1], ctx->in[2]) : '=';
-
+    if(ctx->inPos > 1) {
+        ctx->out[ctx->outPos++] = xmlSecBase64Encode3(ctx->in[1], ctx->in[2]);
+    } else {
+        ctx->out[ctx->outPos++] = '=';
+    }
+    
     if(ctx->columns > 0 && ctx->columns <= ctx->linePos) {
 	ctx->out[ctx->outPos++] = '\n';
 	ctx->linePos = 0;
     }
     ++(ctx->linePos);
-    ctx->out[ctx->outPos++] = (ctx->inPos > 2) ? xmlSecBase64Encode4(ctx->in[2]) : '=';
+    if(ctx->inPos > 2) {
+	ctx->out[ctx->outPos++] = xmlSecBase64Encode4(ctx->in[2]);
+    } else {
+        ctx->out[ctx->outPos++] = '=';
+    }
     	    
     ctx->inPos = 0;    
     return(ctx->outPos);
@@ -147,8 +159,8 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx) {
 static int
 xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {    
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
-    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in) / sizeof(ctx->in[0]), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out) / sizeof(ctx->out[0]), -1);
 
     if(ctx->outPos > 0) {
 	return(ctx->outPos);
@@ -179,17 +191,20 @@ xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx) {
 static int 
 xmlSecBase64CtxPush(xmlSecBase64CtxPtr ctx, const unsigned char* in, size_t inSize) {
     size_t inBlockSize;
-        
+    size_t i;
+    
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
-    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in) / sizeof(ctx->in[0]), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out) / sizeof(ctx->out[0]), -1);
     xmlSecAssert2(in != NULL, -1);
     
     inBlockSize = (ctx->encode) ? 3 : 4;
     if(ctx->encode) {
 	if((ctx->inPos < inBlockSize) && (inSize > 0)) {
 	    inBlockSize = xmlSecBase64Min(inSize, (inBlockSize - ctx->inPos));
-	    memcpy(ctx->in + ctx->inPos, in, inBlockSize);
+	    for(i = 0; i < inBlockSize; ++i) {
+		ctx->in[i + ctx->inPos] = in[i];
+	    }
 	    ctx->inPos += inBlockSize;
 	    return(inBlockSize);
 	}
@@ -197,7 +212,7 @@ xmlSecBase64CtxPush(xmlSecBase64CtxPtr ctx, const unsigned char* in, size_t inSi
 	unsigned char ch;
         size_t inPos;
 	
-	for(inPos = 0; (inPos < inSize) && (ctx->inPos < sizeof(ctx->in)); ++inPos) {
+	for(inPos = 0; (inPos < inSize) && (ctx->inPos < sizeof(ctx->in) / sizeof(ctx->in[0])); ++inPos) {
 	    ch = in[inPos];
 	    if(ctx->equalSigns > 0) {
 		if((ch == '=') && (ctx->equalSigns < 2)) {
@@ -246,8 +261,8 @@ xmlSecBase64CtxPop(xmlSecBase64CtxPtr ctx, unsigned char* out, size_t outSize, i
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in), -1);
-    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out), -1);
+    xmlSecAssert2(ctx->inPos <= sizeof(ctx->in) / sizeof(ctx->in[0]), -1);
+    xmlSecAssert2(ctx->outPos <= sizeof(ctx->out) / sizeof(ctx->out[0]), -1);
     xmlSecAssert2(out != NULL, -1);
 
     inBlockSize = (ctx->encode) ? 3 : 4;

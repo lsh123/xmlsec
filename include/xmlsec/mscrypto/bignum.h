@@ -21,7 +21,6 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoNodeGetBigNumValue(xmlNodePtr cur, xmlSecBufferPtr retval);
 XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoNodeSetBigNumValue(xmlNodePtr cur, xmlSecByte* buf, xmlSecSize bufLen, int addLineBreaks);
-XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoWordbaseSwap(xmlChar *s);
 
 #ifdef __cplusplus
 }

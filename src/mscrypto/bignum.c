@@ -160,35 +160,3 @@ xmlSecMSCryptoNodeSetBigNumValue(xmlNodePtr cur, xmlSecByte* buf, xmlSecSize buf
     xmlSecBufferFinalize(&buffer);
     return(0);
 }
-
-int
-xmlSecMSCryptoWordbaseSwap(xmlChar *s) {
-    size_t len, i, j;
-    xmlChar ch;
-
-    xmlSecAssert2(s != NULL, -1);
-    
-    len = xmlStrlen(s);
-    xmlSecAssert2(len % 2 == 0, -1); 
-    
-    /* trivial case */
-    if(len == 0) {
-	return(0);
-    }
-    
-    xmlSecAssert2(len >= 2, -1);
-    for(i = 0, j = len - 2; i < len / 2; i += 2, j -= 2) {
-	/* swap i and (len - i - 2) */
-	ch = s[i];
-	s[i] = s[j];
-	s[j] = ch;
-	
-	/* swap i + 1 and (len - i - 1) */
-	ch = s[i + 1];
-	s[i + 1] = s[j + 1];
-	s[j + 1] = ch;
-    }
-
-    return(0);
-}
-

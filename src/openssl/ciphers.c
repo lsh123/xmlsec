@@ -489,15 +489,25 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInf
     ctx = xmlSecOpenSSLEvpBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
+#ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecOpenSSLTransformDes3CbcId) {
 	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataDesId;
-    } else if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
+    } else 
+#endif /* XMLSEC_NO_DES */
+    
+#ifndef XMLSEC_NO_AES
+#ifndef XMLSEC_OPENSSL_096
+    if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
 	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataAesId;
     } else if(transform->id == xmlSecOpenSSLTransformAes192CbcId) {
 	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataAesId;
     } else if(transform->id == xmlSecOpenSSLTransformAes256CbcId) {
 	keyInfoCtx->keyId = xmlSecOpenSSLKeyDataAesId;
-    } else {
+    } else 
+#endif /* XMLSEC_NO_AES */
+#endif /* XMLSEC_OPENSSL_096 */
+    
+    {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,

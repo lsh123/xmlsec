@@ -26,19 +26,6 @@
 
 #include <xmlsec/openssl/crypto.h>
 
-/* placeholders */
-#ifndef xmlSecOpenSSLKeyDataDesId
-#define xmlSecOpenSSLKeyDataDesId		xmlSecKeyDataIdUnknown
-#endif /* xmlSecOpenSSLKeyDataDesId */
-
-#ifndef xmlSecOpenSSLKeyDataAesId
-#define xmlSecOpenSSLKeyDataAesId		xmlSecKeyDataIdUnknown
-#endif /* xmlSecOpenSSLKeyDataAesId */
-
-#ifndef xmlSecOpenSSLKeyDataHmacId
-#define xmlSecOpenSSLKeyDataHmacId		xmlSecKeyDataIdUnknown
-#endif /* xmlSecOpenSSLKeyDataHmacId */
-
 /*****************************************************************************
  * 
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
@@ -75,19 +62,11 @@ static void	xmlSecOpenSSLSymKeyDataDebugDump	(xmlSecKeyDataPtr data,
 							 FILE* output);
 static void	xmlSecOpenSSLSymKeyDataDebugXmlDump	(xmlSecKeyDataPtr data,
 							 FILE* output);
-
-
-#define xmlSecOpenSSLSymKeyDataKlassCheck(klass) \
-    ((klass != xmlSecKeyDataIdUnknown) && \
-    ((klass == xmlSecOpenSSLKeyDataDesId) || \
-     (klass == xmlSecOpenSSLKeyDataAesId) || \
-     (klass == xmlSecOpenSSLKeyDataHmacId)))
+static int	xmlSecOpenSSLSymKeyDataKlassCheck	(xmlSecKeyDataKlass* klass);
 
 #define xmlSecOpenSSLSymKeyDataCheckId(data) \
-    (xmlSecKeyDataCheckId((data), xmlSecOpenSSLKeyDataDesId) || \
-     xmlSecKeyDataCheckId((data), xmlSecOpenSSLKeyDataAesId) || \
-     xmlSecKeyDataCheckId((data), xmlSecOpenSSLKeyDataHmacId))
-
+    (xmlSecKeyDataIsValid((data)) && \
+     xmlSecOpenSSLSymKeyDataKlassCheck((data)->id))
 
 static int
 xmlSecOpenSSLSymKeyDataInitialize(xmlSecKeyDataPtr data) {
@@ -190,6 +169,31 @@ xmlSecOpenSSLSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecOpenSSLSymKeyDataCheckId(data));
     
     xmlSecKeyDataBinaryValueDebugXmlDump(data, output);    
+}
+
+static int 
+xmlSecOpenSSLSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {    
+#ifndef XMLSEC_NO_DES
+    if(klass == xmlSecOpenSSLKeyDataDesId) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_AES
+#ifndef XMLSEC_OPENSSL_096
+    if(klass == xmlSecOpenSSLKeyDataAesId) {
+	return(1);
+    }
+#endif /* XMLSEC_OPENSSL_096 */
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_HMAC
+    if(klass == xmlSecOpenSSLKeyDataHmacId) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_HMAC */
+
+    return(0);
 }
 
 #ifndef XMLSEC_NO_AES

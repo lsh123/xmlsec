@@ -37,7 +37,7 @@ typedef struct _xmlSecOpenSSLHmacCtx		xmlSecOpenSSLHmacCtx, *xmlSecOpenSSLHmacCt
 struct _xmlSecOpenSSLHmacCtx {
     const EVP_MD*	hmacDgst;
     HMAC_CTX		hmacCtx;
-    int			hmacCtxInitialized;
+    int			ctxInitialized;
     unsigned char 	dgst[EVP_MAX_MD_SIZE];
     size_t		dgstSize;	/* dgst size in bits */
 };	    
@@ -211,7 +211,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->hmacDgst != NULL, -1);
-    xmlSecAssert2(ctx->hmacCtxInitialized == 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized == 0, -1);
     
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(xmlSecKeyDataCheckId(value, xmlSecOpenSSLKeyDataHmacId), -1);
@@ -233,7 +233,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		xmlSecBufferGetData(buffer),  
 		xmlSecBufferGetSize(buffer), 
 		ctx->hmacDgst); 
-    ctx->hmacCtxInitialized = 1;
+    ctx->ctxInitialized = 1;
     return(0);
 }
 
@@ -313,7 +313,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 
     ctx = xmlSecOpenSSLHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->hmacCtxInitialized != 0, -1);
+    xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     
     if(transform->status == xmlSecTransformStatusNone) {
 	/* we should be already initialized when we set key */

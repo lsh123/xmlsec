@@ -1,3 +1,13 @@
+Mon Jul 14 11:06:16 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/api/sgml/version.sgml docs/download.html
+	docs/api/xmlsec-version.html docs/index.html docs/news.html 
+	docs/xmlsec-man.html include/xmlsec/version.h man/xmlsec1-config.1 
+	man/xmlsec1.1: preparation for 1.0.4 release
+	* docs/api/xmlsec-notes-encrypt.html docs/api/xmlsec-notes-sign.html:
+	fixed a mistype
+	* docs/extra/xmlsec_oscon_2003.ppt: minor update
+
 Fri Jul 11 13:33:28 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am: fixed builddir != sourcedir one more time (use abs_top_*

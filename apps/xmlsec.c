@@ -652,7 +652,7 @@ static int			xmlSecAppPrepareKeyInfoReadCtx	(xmlSecKeyInfoCtxPtr ctx);
 #ifndef XMLSEC_NO_XMLDSIG
 static int			xmlSecAppSignFile		(const char* filename);
 static int			xmlSecAppVerifyFile		(const char* filename);
-static xmlSecDSigCtxPtr		xmlSecAppCreateDSigCtx		(void);
+static xmlSecDSigOldCtxPtr		xmlSecAppCreateDSigCtx		(void);
 static void			xmlSecAppPrintDSigResult	(xmlSecDSigResultPtr result, 
 								 const char* filename); 
 static void			xmlSecAppPrintDSigXmlResult	(xmlSecDSigResultPtr result, 
@@ -826,7 +826,7 @@ fail:
 static int 
 xmlSecAppSignFile(const char* filename) {
     xmlSecAppXmlDataPtr data;
-    xmlSecDSigCtxPtr dsigCtx;
+    xmlSecDSigOldCtxPtr dsigCtx;
     xmlSecDSigResultPtr result;
     clock_t start_time;
 
@@ -853,7 +853,7 @@ xmlSecAppSignFile(const char* filename) {
     /* TODO: session key */
     if(xmlSecDSigGenerate(dsigCtx, NULL, NULL, data->startNode, &result) < 0) {
         fprintf(stderr,"Error: xmlSecDSigGenerate() failed \n");
-	xmlSecDSigCtxDestroy(dsigCtx);
+	xmlSecDSigOldCtxDestroy(dsigCtx);
 	xmlSecAppXmlDataDestroy(data);
 	return(-1);
     }
@@ -881,14 +881,14 @@ xmlSecAppSignFile(const char* filename) {
     if(result != NULL) {
 	xmlSecDSigResultDestroy(result);
     }
-    xmlSecDSigCtxDestroy(dsigCtx);
+    xmlSecDSigOldCtxDestroy(dsigCtx);
     xmlSecAppXmlDataDestroy(data);
     return(0);
 }
 
 static int 
 xmlSecAppVerifyFile(const char* filename) {
-    xmlSecDSigCtxPtr dsigCtx;
+    xmlSecDSigOldCtxPtr dsigCtx;
     int res = -1;
     
     if(filename == NULL) {
@@ -904,15 +904,15 @@ xmlSecAppVerifyFile(const char* filename) {
     /* TODO */
     fprintf(stdout, "verify >> %s\n", filename);
 
-    xmlSecDSigCtxDestroy(dsigCtx);
+    xmlSecDSigOldCtxDestroy(dsigCtx);
     return(res);
 }
 
-static xmlSecDSigCtxPtr	
+static xmlSecDSigOldCtxPtr	
 xmlSecAppCreateDSigCtx(void) {
-    xmlSecDSigCtxPtr dsigCtx;
+    xmlSecDSigOldCtxPtr dsigCtx;
     
-    dsigCtx = xmlSecDSigCtxCreate(gKeysMngr);
+    dsigCtx = xmlSecDSigOldCtxCreate(gKeysMngr);
     if(dsigCtx == NULL) {
 	fprintf(stderr, "Error: failed to create dsig context\n");
 	return(NULL);
@@ -921,7 +921,7 @@ xmlSecAppCreateDSigCtx(void) {
     /* set key info params */
     if(xmlSecAppPrepareKeyInfoReadCtx(&(dsigCtx->keyInfoCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
-	xmlSecDSigCtxDestroy(dsigCtx);
+	xmlSecDSigOldCtxDestroy(dsigCtx);
 	return(NULL);
     }
 

@@ -1,3 +1,9 @@
+Mon Jan  5 12:55:44 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html 
+	docs/news.html docs/xmlsec-man.html include/xmlsec/version.h
+	man/xmlsec1-config.1 man/xmlsec1.1: preparing 1.2.3 release
+
 Mon Jan  5 12:42:52 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in src/gnutls/ciphers.c src/gnutls/digests.c 

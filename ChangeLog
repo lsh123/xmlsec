@@ -1,3 +1,7 @@
+Mon Nov 10 21:22:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/bn.c: fixed xmlSecBnToDecString problem (reported by Edward)
+
 Thu Nov  6 22:52:57 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: use pkgconfig for configuration if possible

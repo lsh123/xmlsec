@@ -364,7 +364,7 @@ xmlSecBnFromDecString(xmlSecBnPtr bn, const xmlChar* str) {
  */
 xmlChar* 
 xmlSecBnToDecString(xmlSecBnPtr bn) {
-    return(xmlSecBnToString(bn, 16));
+    return(xmlSecBnToString(bn, 10));
 }
 
 /**

@@ -1,12 +1,13 @@
 NULL =
 
 man_MANS = \
-    xmlsec1.1 \
-    xmlsec1-config.1 \
-    $(NULL)
+	xmlsec1.1 \
+	xmlsec1-config.1 \
+	$(NULL)
 
 EXTRA_DIST = \
-	$(man_MANS) \
+	xmlsec1.1 \
+	xmlsec1-config.1 \
 	xmlsec.1 \
 	xmlsec-config.1 \
 	$(NULL)
@@ -18,9 +19,12 @@ XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec1
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 XMLSEC_HTML=$(top_builddir)/docs/xmlsec-man.html
 
-all: 
+all: man
 
-man: clean $(man_MANS) $(XMLSEC_HTML)
+man: $(man_MANS) 
+
+docs: clean man $(XMLSEC_HTML)
+	
 
 $(XMLSEC_HTML): xmlsec1.1
 	@man2html xmlsec1.1 | \

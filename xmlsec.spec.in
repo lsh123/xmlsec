@@ -108,37 +108,38 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc AUTHORS ChangeLog NEWS README Copyright
-%doc %{_mandir}/man1/xmlsec.1*  
+%doc %{_mandir}/man1/xmlsec1.1*
 
-%{prefix}/lib/libxmlsec-@RELEASE@.so.*
-%{prefix}/lib/libxmlsec-@RELEASE@.so
-%{prefix}/lib/libxmlsec-@RELEASE@-openssl-*.so.*
-%{prefix}/lib/libxmlsec-@RELEASE@-openssl.so
-%{prefix}/bin/xmlsec
+%{prefix}/lib/libxmlsec1.so.*
+%{prefix}/lib/libxmlsec1.so
+%{prefix}/lib/libxmlsec1-openssl.so.*
+%{prefix}/lib/libxmlsec1-openssl.so
+%{prefix}/bin/xmlsec1
 
 %files devel
 %defattr(-, root, root)  
 
+%{prefix}/bin/xmlsec1-config
+%{prefix}/include/xmlsec1/xmlsec/*.h
+%{prefix}/include/xmlsec1/xmlsec/openssl/*.h
+%{prefix}/lib/libxmlsec1.*a
+%{prefix}/lib/libxmlsec1-openssl.*a
+%{prefix}/lib/pkgconfig/xmlsec1.pc
+%{prefix}/lib/xmlsec1Conf.sh
+%{prefix}/share/doc/xmlsec1/* 
 %doc AUTHORS ChangeLog NEWS README Copyright
-%doc %{_mandir}/man1/xmlsec-config.1*  
-%doc docs/* 
-%{prefix}/bin/xmlsec-config
-%{prefix}/include/@PACKAGE@/xmlsec/*.h
-%{prefix}/include/@PACKAGE@/xmlsec/openssl/*.h
-%{prefix}/lib/libxmlsec-@RELEASE@.*a
-%{prefix}/lib/libxmlsec-openssl-@RELEASE@.*a
-%{prefix}/lib/pkgconfig/xmlsec.pc
+%doc %{_mandir}/man1/xmlsec1-config.1*
 
 #%files nss
 #%defattr(-, root, root)  
 
-#%{prefix}/lib/libxmlsec-nss-@RELEASE@.so.*
-#%{prefix}/lib/libxmlsec-nss-@RELEASE@.so
+#%{prefix}/lib/libxmlsec1-nss.so.*
+#%{prefix}/lib/libxmlsec1-nss.so
 
 #%files nss-devel
 #%defattr(-, root, root)  
 
-#%{prefix}/include/@PACKAGE@/xmlsec/nss/*.h
-#%{prefix}/lib/libxmlsec-nss-@RELEASE@.*a
+#%{prefix}/include/xmlsec1/xmlsec/nss/*.h
+#%{prefix}/lib/libxmlsec1-nss.*a
 
 %changelog

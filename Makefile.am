@@ -13,7 +13,7 @@ DISTCLEANFILES = \
 	xmlsec1Conf.sh \
 	xmlsec1.pc \
 	xmlsec1-config \
-	xmlsec1.spec \
+	xmlsec1-@VERSION@.spec \
 	$NULL
 
 EXTRA_DIST = \
@@ -31,7 +31,7 @@ EXTRA_DIST = \
 	xmlsec1Conf.sh \
 	xmlsec1.pc \
 	xmlsec1-config \
-	xmlsec1.spec \
+	xmlsec1-@VERSION@.spec \
 	$(NULL)
 
 EXTRA_CLEAN = \
@@ -45,7 +45,7 @@ docs-clean:
 	@(cd docs; $(MAKE) clean)
 
 docs-man: 
-	@(cd man;$(MAKE) man)
+	@(cd man;$(MAKE) docs)
 
 check: check-info check-km check-dsig check-enc
 

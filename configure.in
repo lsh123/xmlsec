@@ -685,6 +685,6 @@ man/Makefile
 [xmlsec1Conf.sh:xmlsecConf.sh.in]
 [xmlsec1-config:xmlsec-config.in]
 [xmlsec1.pc:xmlsec.pc.in]
-[xmlsec1.spec:xmlsec.spec.in]
+[xmlsec1-$VERSION.spec:xmlsec.spec.in]
 )
 

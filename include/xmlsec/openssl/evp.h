@@ -20,43 +20,17 @@ extern "C" {
 
 #include <xmlsec/openssl/crypto.h>
 
-/******************************************************************************
- *
- * EVP Block Cipher transforms
- *
- *****************************************************************************/
 
-
-
-/******************************************************************************
- *
- * EVP Signature transforms
- *
- *****************************************************************************/
-#define XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE			40
-
-XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureInitialize	(xmlSecTransformPtr transform,
-								 const EVP_MD* digest);
-XMLSEC_EXPORT void	xmlSecOpenSSLEvpSignatureFinalize	(xmlSecTransformPtr transform);
-XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureSetKey		(xmlSecTransformPtr transform,
+XMLSEC_EXPORT int 		xmlSecOpenSSLEvpKeyDataAdoptEvp	(xmlSecKeyDataPtr data, 
 								 EVP_PKEY* pKey);
-XMLSEC_EXPORT int  	xmlSecOpenSSLEvpSignatureVerify		(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
-								 size_t dataSize,
-								 xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int	xmlSecOpenSSLEvpSignatureExecute	(xmlSecTransformPtr transform, 
-								 int last,
-								 xmlSecTransformCtxPtr transformCtx);
-#define xmlSecOpenSSLEvpSignatureSize	\
-	(sizeof(xmlSecTransform) + sizeof(EVP_MD))
-
+XMLSEC_EXPORT EVP_PKEY* 	xmlSecOpenSSLEvpKeyDataGetEvp	(xmlSecKeyDataPtr data);
 
 /******************************************************************************
  *
  * EVP helper functions
  *
  *****************************************************************************/
-XMLSEC_EXPORT EVP_PKEY*	xmlSecOpenSSLEvpKeyDup			(EVP_PKEY* pKey);
+XMLSEC_EXPORT EVP_PKEY*		xmlSecOpenSSLEvpKeyDup		(EVP_PKEY* pKey);
 XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecOpenSSLEvpKeyAdopt	(EVP_PKEY *pKey);
 
 

@@ -27,6 +27,47 @@ XMLSEC_EXPORT int		xmlSecNssGenerateRandom			(xmlSecBufferPtr buffer,
 
 /********************************************************************
  *
+ * AES transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_AES
+/**
+ * xmlSecAesKey:
+ * 
+ * The AES key id.
+ */
+#define xmlSecNssKeyDataAesId \
+	xmlSecNssKeyDataAesGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataAesGetKlass		(void);
+XMLSEC_EXPORT int		xmlSecNssKeyDataAesSet			(xmlSecKeyDataPtr data,
+									 const unsigned char* buf,
+									 size_t bufSize);
+
+#endif /* XMLSEC_NO_AES */
+
+/********************************************************************
+ *
+ * DES transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DES
+/**
+ * xmlSecDesKey:
+ * 
+ * The DES key id.
+ */
+#define xmlSecNssKeyDataDesId \
+	xmlSecNssKeyDataDesGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId 	xmlSecNssKeyDataDesGetKlass		(void);
+XMLSEC_EXPORT int		xmlSecNssKeyDataDesSet			(xmlSecKeyDataPtr data,
+									 const unsigned char* buf,
+									 size_t bufSize);
+
+#endif /* XMLSEC_NO_DES */
+
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/

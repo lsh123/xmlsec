@@ -56,6 +56,24 @@ static int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform,
 							 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLEvpDigestCheckId		(xmlSecTransformPtr transform);
 
+static int
+xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id)) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_SHA1 */    
+    
+#ifndef XMLSEC_NO_RIPEMD160
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_RIPEMD160 */    
+
+    return(0);
+}
+
 static int 
 xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLDigestCtxPtr ctx;
@@ -251,23 +269,6 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     return(0);
 }
 
-static int
-xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
-
-#ifndef XMLSEC_NO_SHA1
-    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id)) {
-	return(1);
-    }
-#endif /* XMLSEC_NO_SHA1 */    
-    
-#ifndef XMLSEC_NO_RIPEMD160
-    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
-	return(1);
-    }
-#endif /* XMLSEC_NO_RIPEMD160 */    
-
-    return(0);
-}
 
 #ifndef XMLSEC_NO_RIPEMD160
 /******************************************************************************

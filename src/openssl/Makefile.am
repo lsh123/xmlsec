@@ -18,12 +18,12 @@ bn.c \
 ciphers.c \
 crypto.c \
 digests.c \
-dsa.c \
 evp.c \
 hmac.c \
 kw_aes.c \
 kw_des.c \
-rsa.c \
+kt_rsa.c \
+signatures.c \
 symkeys.c \
 x509.c \
 x509vfy.c \

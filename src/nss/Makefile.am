@@ -17,6 +17,7 @@ app.c \
 crypto.c \
 digests.c \
 hmac.c \
+symkeys.c \
 $(NULL)
 
 libxmlsec_nss_la_LIBADD = \

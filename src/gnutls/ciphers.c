@@ -135,7 +135,7 @@ xmlSecGnuTLSBlockCipherCtxInit(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 	}
     }
 
-    ctx->ctxInitialized = 0;
+    ctx->ctxInitialized = 1;
     return(0);
 }
 

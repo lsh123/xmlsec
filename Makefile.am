@@ -31,3 +31,6 @@ api-doc-clean:
 
 memcheck:
 	@export DEBUG_MEMORY=1;make check
+
+perfcheck:
+	@export PERF_TEST=10;make check

@@ -10,8 +10,8 @@ script="$0"
 keysfile=$topfolder/keys.xml
 
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16"
-    export REPEAT=10
+    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
+    export REPEAT=3
     export EXTRA_PARAMS="--repeat $REPEAT"
 fi
 
@@ -61,13 +61,6 @@ echo "--- testDSig started ($timestamp)"
 echo "--- log file is $logfile"
 echo "--- testDSig started ($timestamp)" >> $logfile
 
-
-execDSigTest "merlin-exc-c14n-one/exc-signature" \
-    ""
-    
-execDSigTest "merlin-c14n-three/signature" \
-    ""
-    
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \
     "--privkey $topfolder/keys/dsakey.pem" \
@@ -182,6 +175,14 @@ execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
+
+
+execDSigTest "merlin-exc-c14n-one/exc-signature" \
+    ""
+    
+execDSigTest "merlin-c14n-three/signature" \
+    ""
+    
 
 execDSigTest "merlin-xpath-filter2-three/sign-xfdl" \
     ""

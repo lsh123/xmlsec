@@ -10,9 +10,13 @@ script="$0"
 keysfile=$topfolder/keys.xml
 
 if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16"
+    export VALGRIND="valgrind --leak-check=yes --show-reachable=yes --num-callers=16 -v"
     export REPEAT=1
     export EXTRA_PARAMS="--repeat $REPEAT"
+fi
+
+if [ -n "$PERF_TEST" ] ; then 
+    export EXTRA_PARAMS="--repeat $PERF_TEST"
 fi
 
 printRes() {
@@ -43,7 +47,7 @@ execEncTest() {
 	echo " Error"
     fi
 
-    if [ -n "$3" ] ; then
+    if [ -n "$3"  -a -z "$PERF_TEST" ] ; then
 	printf "    Encrypt document                                     "
 	rm -f $tmpfile
 	echo "$xmlsec_app encrypt $3 $file.tmpl" >>  $logfile 
@@ -68,6 +72,7 @@ execEncTest() {
 }
 
 echo "--- testEnc started ($timestamp)"
+echo "--- log file is $logfile"
 echo "--- testEnc started ($timestamp)" >> $logfile
 
 execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname" \

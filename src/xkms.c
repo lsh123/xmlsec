@@ -33,6 +33,8 @@
 #include <xmlsec/private/xkms.h>
 #include <xmlsec/errors.h>
 
+#define XMLSEC_XKMS_ID_ATTRIBUTE_LEN		32
+
 /* The ID attribute in XKMS is 'Id' */
 static const xmlChar* xmlSecXkmsServerIds[] = { BAD_CAST "Id", NULL };
 
@@ -322,6 +324,7 @@ xmlSecXkmsServerCtxInitialize(xmlSecXkmsServerCtxPtr ctx, xmlSecKeysMngrPtr keys
     ctx->resultMajor 	= xmlSecXkmsResultMajorSuccess;
     ctx->resultMinor 	= xmlSecXkmsResultMinorNone;
     ctx->responseLimit  = XMLSEC_XKMS_NO_RESPONSE_LIMIT;
+    ctx->idLen		= XMLSEC_XKMS_ID_ATTRIBUTE_LEN;
 
     /* initialize key info */
     ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoReadCtx), keysMngr);
@@ -409,6 +412,9 @@ xmlSecXkmsServerCtxFinalize(xmlSecXkmsServerCtxPtr ctx) {
     
     if(ctx->expectedService != NULL) {
 	xmlFree(ctx->expectedService);
+    }
+    if(ctx->idPrefix != NULL) {
+	xmlFree(ctx->idPrefix);
     }
 
     xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoReadCtx));
@@ -523,6 +529,20 @@ xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst, xmlSecXkmsServerCtxP
 	    return(-1);
 	}
     }
+
+    if(src->idPrefix != NULL) {
+	dst->idPrefix = xmlStrdup(src->idPrefix);
+	if(dst->idPrefix == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlStrdup",
+		        XMLSEC_ERRORS_R_MALLOC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }
+    src->idLen = dst->idLen;
+
 
     ret = xmlSecPtrListCopy(&(dst->enabledRespondWithIds), &(src->enabledRespondWithIds));
     if(ret < 0) { 
@@ -2029,7 +2049,16 @@ xmlSecXkmsServerCtxKeyBindingAbstractTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, x
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
 
-    /* todo: generate and add Id attribute */
+    /* generate and add Id attribute */
+    ret = xmlSecGenerateAndAddID(node, xmlSecAttrId, ctx->idPrefix, ctx->idLen);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecGenerateAndAddID",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
 
     /* <dsig:KeyInfo/> node */
     cur = xmlSecAddChild(node, xmlSecNodeKeyInfo, xmlSecDSigNs);
@@ -2251,7 +2280,16 @@ xmlSecXkmsServerCtxResultTypeNodeWrite(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr no
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* todo: generate and write Id attribute */
+    /* generate and add Id attribute */
+    ret = xmlSecGenerateAndAddID(node, xmlSecAttrId, ctx->idPrefix, ctx->idLen);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecGenerateAndAddID",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);  	
+    }
 
     /* todo: generate nonce? */
 

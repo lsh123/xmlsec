@@ -16,6 +16,8 @@ fi
 
 timestamp=`date +%Y%m%d_%H%M%S` 
 tmpfile=$TMPFOLDER/testXKMS.$timestamp-$$.tmp
+tmpfile2=$TMPFOLDER/testXKMS.$timestamp-$$-2.tmp
+tmpfile3=$TMPFOLDER/testXKMS.$timestamp-$$-3.tmp
 logfile=$TMPFOLDER/testXKMS.$timestamp-$$.log
 script="$0"
 
@@ -61,13 +63,16 @@ execXkmsServerRequestTest() {
     res_file=$topfolder/$1-$2.xml
     echo "$1 ($2)"
 
-    rm -f $tmpfile
+    rm -f $tmpfile $tmpfile2 $tmpfile3
     
     printf "    Processing xkms request                              "
     echo "$xmlsec_app --xkms-server-request --output $tmpfile $xmlsec_params $3 $src_file" >> $logfile
     $VALGRIND $xmlsec_app --xkms-server-request  --output $tmpfile $xmlsec_params $3 $src_file >> $logfile 2>> $logfile
     if [ $? = 0 ]; then
-	diff $res_file $tmpfile >> $logfile 2>> $logfile
+	# cleanup Id attribute because it is generated every time
+	sed 's/ Id="[^\"]*"/ Id=""/g' $res_file > $tmpfile2
+	sed 's/ Id="[^\"]*"/ Id=""/g' $tmpfile > $tmpfile3
+	diff $tmpfile2 $tmpfile3 >> $logfile 2>> $logfile
 	printRes $?
     else 
 	echo " Error"
@@ -137,7 +142,7 @@ execXkmsServerRequestTest \
     "--xkms-service http://www.example.com/xkms --xkms-format soap-1.1"
 
 
-rm -rf $tmpfile
+rm -f $tmpfile $tmpfile2 $tmpfile3
 
 echo "--- testXKMS finished" >> $logfile
 echo "--- testXKMS finished"

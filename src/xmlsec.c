@@ -85,6 +85,8 @@ xmlSecInit(void) {
     }
 #endif /* XMLSEC_NO_XKMS */
 
+    /* we use rand() function to generate id attributes */
+    srand(time(NULL));
     return(0);
 }
 

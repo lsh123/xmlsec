@@ -185,6 +185,8 @@ struct _xmlSecXkmsServerCtx {
     xmlSecPtrList		enabledRespondWithIds;
     xmlSecPtrList		enabledServerRequestIds;
     xmlChar* 			expectedService;
+    xmlChar*			idPrefix;
+    xmlSecSize			idLen;
         
     /* these data are returned */
     xmlSecPtrList		keys;

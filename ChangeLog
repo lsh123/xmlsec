@@ -1,3 +1,10 @@
+Thu Feb 19 12:32:55 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/xkms.h include/xmlsec/xmltree.h src/xkms.c 
+	src/xmlsec.c src/xmltree.c: added ID attribute generation for xkms
+	* tests/aleksey-xkms-01/* tests/testXKMS.sh: modified xkms tests
+	to ignore Id attribute in comparison
+
 Fri Feb 13 00:05:02 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/private.h: fixed libxslt configuration

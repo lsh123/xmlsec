@@ -62,10 +62,15 @@ XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 							 const xmlSecByte *buffer, 
 							 xmlSecSize size);
 
-
 XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 xmlNodePtr cur,
 							 const xmlChar** ids);
+XMLSEC_EXPORT int		xmlSecGenerateAndAddID	(xmlNodePtr node,
+							 const xmlChar* attrName,
+							 const xmlChar* prefix,
+							 xmlSecSize len);
+XMLSEC_EXPORT xmlChar*		xmlSecGenerateID	(const xmlChar* prefix,
+							 xmlSecSize len);
 
 XMLSEC_EXPORT xmlDocPtr		xmlSecCreateTree	(const xmlChar* rootNodeName,
 							 const xmlChar* rootNodeNs);

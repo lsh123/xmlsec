@@ -2,11 +2,10 @@
 transformsInternal.h
 
 <!-- ##### SECTION Short_Description ##### -->
-
+The internal transform's functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The internal transform's functions.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

@@ -1983,11 +1983,6 @@ xmlDocPtr doc,xmlNodePtr cur,const xmlChar** ids
     ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
     ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
 </MACRO>
-<FUNCTION>
-<NAME>xmlSecXPathHereFunction</NAME>
-<RETURNS>void  </RETURNS>
-xmlXPathParserContextPtr ctxt,int nargs
-</FUNCTION>
 <MACRO>
 <NAME>XMLSEC_ERRORS_LIB</NAME>
 #define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)

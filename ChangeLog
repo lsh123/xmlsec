@@ -1,3 +1,9 @@
+Thu Aug 15 21:08:41 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/api/* include/xmlsec/Makefile.am  include/xmlsec/xpath.h
+	src/xpath.c: removed xpath "here()" function declaration 
+	from global view and xpath.h file, rebuilt docs.
+
 Thu 15 Aug 2002 08:45:26 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* docs/api/* src/* include/xmlsec/*: finished writing

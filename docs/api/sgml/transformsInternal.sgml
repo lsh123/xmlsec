@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>transformsInternal.h</refname><refpurpose></refpurpose>
+<refname>transformsInternal.h</refname><refpurpose>The internal transform's functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -130,7 +130,6 @@ int         <link linkend="xmlSecTransformStateFinal">xmlSecTransformStateFinal<
 <refsect1>
 <title>Description</title>
 <para>
-The internal transform's functions.
 </para>
 </refsect1>
 

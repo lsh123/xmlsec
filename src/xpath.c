@@ -22,7 +22,6 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/xpath.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
@@ -134,14 +133,12 @@ static const xmlChar xpathPattern[] = "(//. | //@* | //namespace::*)[%s]";
 
 /** 
  * xmlSecXPathHereFunction:
- * @ctxt: the pointer to XPath parser context.
- * @nargs: the args number.
  *
  * The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. the only change is that 
  * we return NodeSet instead of NodeInterval.
  */
-void 
+static void 
 xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
 

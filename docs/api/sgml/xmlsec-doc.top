@@ -18,6 +18,5 @@
 <!ENTITY xmlsec-xmlenc SYSTEM "sgml/xmlenc.sgml">
 <!ENTITY xmlsec-xmlsec SYSTEM "sgml/xmlsec.sgml">
 <!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
-<!ENTITY xmlsec-xpath SYSTEM "sgml/xpath.sgml">
 <!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
 <!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">

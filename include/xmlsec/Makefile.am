@@ -24,8 +24,7 @@ x509.h \
 xmldsig.h \
 xmlenc.h \
 xmlsec.h \
-xmltree.h \
-xpath.h 
+xmltree.h
 
 install-exec-hook:
 	$(mkinstalldirs) $(DESTDIR)$(xmlsecincdir)

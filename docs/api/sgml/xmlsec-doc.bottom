@@ -18,6 +18,5 @@
     &xmlsec-xmlenc;
     &xmlsec-xmlsec;
     &xmlsec-xmltree;
-    &xmlsec-xpath;
     &xmlsec-nodeset;
     &xmlsec-errors;

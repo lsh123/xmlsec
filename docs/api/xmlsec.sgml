@@ -21,7 +21,6 @@
 <!ENTITY xmlsec-xmlenc SYSTEM "sgml/xmlenc.sgml">
 <!ENTITY xmlsec-xmlsec SYSTEM "sgml/xmlsec.sgml">
 <!ENTITY xmlsec-xmltree SYSTEM "sgml/xmltree.sgml">
-<!ENTITY xmlsec-xpath SYSTEM "sgml/xpath.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -95,7 +94,6 @@
     &xmlsec-transforms;
     &xmlsec-version;
     &xmlsec-x509;
-    &xmlsec-xpath;
   </chapter>
   <chapter id="xmlsec-ref-int">
     <title>XML Security Library Internal Functions Reference</title>

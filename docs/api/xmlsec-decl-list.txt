@@ -407,11 +407,6 @@ xmlSecGetHex
 </SECTION>
 
 <SECTION>
-<FILE>xpath</FILE>
-xmlSecXPathHereFunction
-</SECTION>
-
-<SECTION>
 <FILE>errors</FILE>
 XMLSEC_ERRORS_LIB
 XMLSEC_ERRORS_FUNCTION

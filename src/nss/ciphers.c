@@ -314,8 +314,18 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 	}
 	inBuf = xmlSecBufferGetData(in);
 
-	/* todo */
-	memset(inBuf + inSize, 0, blockLen - inSize - 1);
+        /* generate random padding */
+	if((size_t)blockLen > (inSize + 1)) {
+	    rv = PK11_GenerateRandom(inBuf + inSize, blockLen - inSize - 1);
+	    if(rv != SECSuccess) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(cipherName),
+			    "PK11_GenerateRandom",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "size=%d", blockLen - inSize - 1);
+		return(-1);    
+	    }
+	}
 	inBuf[blockLen - 1] = blockLen - inSize;
 	inSize = blockLen;
     } else {

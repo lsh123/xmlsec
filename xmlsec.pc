@@ -4,8 +4,8 @@ libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 Name: xmlsec
-Version: 0.1.0-gnutls
+Version: 0.1.0-nss
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= 2.4.24 libxslt >= 1.0.20 
-Libs: -lxmlsec-gnutls -lxmlsec -L/home/aleksey/lib -lxml2 -lz -lm -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -lz -L/home/aleksey/lib -lgnutls -L/home/aleksey/lib -lgcrypt 
-Cflags: -I${includedir}/xmlsec @XMLSEC_CFLAGS@ -DXMLSEC_CRYPTO=\"gnutls\"
+Libs: -lxmlsec-nss -lxmlsec -L/home/aleksey/lib -lxml2 -lz -lm -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -L/usr/lib -lnss3 -lnspr4 -lplds4 -lplc4 
+Cflags: -I${includedir}/xmlsec @XMLSEC_CFLAGS@ -DXMLSEC_CRYPTO=\"nss\"

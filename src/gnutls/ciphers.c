@@ -272,8 +272,12 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 	    return(-1);
 	}
 	inBuf = xmlSecBufferGetData(in);
-	/* the padding is random */
-	gcry_randomize(inBuf + inSize, blockLen - inSize - 1, GCRY_STRONG_RANDOM);
+
+	/* create random padding */
+	if((size_t)blockLen > (inSize + 1)) {
+    	    gcry_randomize(inBuf + inSize, blockLen - inSize - 1, 
+			GCRY_STRONG_RANDOM); /* as usual, we are paranoid */
+	}
 	inBuf[blockLen - 1] = blockLen - inSize;
 	inSize = blockLen;
     } else {

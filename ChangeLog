@@ -1,3 +1,8 @@
+Mon Oct 20 19:34:35 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: created "--with-html-dir" option 
+	to specify docs installation path
+
 Mon Oct 20 08:40:46 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: load correct static openssl library when 

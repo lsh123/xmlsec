@@ -33,7 +33,6 @@ dnl
 AC_PROG_CC
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
-AC_ARG_PROGRAM
 AC_STDC_HEADERS
 AC_PATH_PROG(RM, rm, /bin/rm)
 AC_PATH_PROG(MV, mv, /bin/mv)
@@ -888,10 +887,13 @@ dnl ==========================================================================
 dnl Where do we want to install docs
 dnl ==========================================================================
 AC_MSG_CHECKING(for docs folder) 
-AC_ARG_VAR(XMLSEC_DOCDIR,  [the doc files installation path $datadir/doc/xmlsec1])
-if test "z$XMLSEC_DOCDIR" = "z" ; then
+AC_ARG_WITH(html-dir,           [  --with-html-dir=PATH     path to installed docs ])
+if test "z$with_html_dir" != "z" ; then
+    XMLSEC_DOCDIR=$with_html_dir
+else
     XMLSEC_DOCDIR=$datadir/doc/xmlsec1
 fi
+
 AC_MSG_RESULT($XMLSEC_DOCDIR)
 AC_SUBST(XMLSEC_DOCDIR)
 

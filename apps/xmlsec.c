@@ -1015,7 +1015,8 @@ int  readTime(const char* str, time_t* t) {
 #ifndef XMLSEC_NO_STRPTIME
     memset(&tm, 0, sizeof(tm));
     tm.tm_isdst = -1;
-    if(strptime(str, "%Y-%m-%d %H:%M:%S", &tm) == NULL) {
+    if((strptime(str, "%Y-%m-%d %H:%M:%S", &tm) == NULL) &&
+       (strptime(str, "%Y-%m-%d+%H:%M:%S", &tm) == NULL)){
 	fprintf(stderr, "Error: the local system time in \"YYYY-MM-DD HH:MM:SS\" is expected isntead of \"%s\"\n", str);
 	return(-1);	
     }

@@ -181,6 +181,8 @@ execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
+execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
+    "--trusted $topfolder/keys/cacert.pem --allowed x509 --verificaiton-time 2002-10-02+10:00:00" 
 
 execDSigTest "merlin-exc-c14n-one/exc-signature" \
     ""
@@ -198,6 +200,10 @@ execDSigTest "merlin-xpath-filter2-three/sign-spec" \
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
     "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem"
+
+execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
+    "--trusted $topfolder/keys/cacert.pem --allowed x509" 
+
     
 rm -rf $tmpfile
 echo "--- testDSig finished" >> $logfile

@@ -1455,6 +1455,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME* t, time_t* res) {
     xmlSecAssert2(res != NULL, -1);
 
     (*res) = 0;
+#ifndef XMLSEC_OPENSSL_096
     if(!ASN1_TIME_check(t)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1463,6 +1464,7 @@ xmlSecOpenSSLX509CertGetTime(ASN1_TIME* t, time_t* res) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+#endif /* XMLSEC_OPENSSL_096 */
         
     memset(&tm, 0, sizeof(tm));
 

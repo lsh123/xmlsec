@@ -1,3 +1,7 @@
+Fri Jun  6 14:53:25 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/openssl/x509.c: skip ASN1 time check for OpenSSL 0.9.6
+
 Thu Jun  5 19:32:12 2003  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* docs/*: fixing online verifier link

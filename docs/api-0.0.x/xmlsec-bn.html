@@ -1,0 +1,791 @@
+<HTML
+><HEAD
+><TITLE
+>bn.h</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Internal Functions Reference"
+HREF="xmlsec-ref-int.html"><LINK
+REL="PREVIOUS"
+TITLE="base64.h"
+HREF="xmlsec-base64.html"><LINK
+REL="NEXT"
+TITLE="buffered.h"
+HREF="xmlsec-buffered.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-base64.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-buffered.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-BN"
+></A
+>bn.h</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN5182"
+></A
+><H2
+>Name</H2
+>bn.h&nbsp;--&nbsp;The big numbers helper functions.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN5185"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+<GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+>*     <A
+HREF="xmlsec-bn.html#XMLSECCRYPTOBINARY2BN"
+>xmlSecCryptoBinary2BN</A
+>           (const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *str,
+                                             <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> **a);
+<GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+>*    <A
+HREF="xmlsec-bn.html#XMLSECBN2CRYPTOBINARY"
+>xmlSecBN2CryptoBinary</A
+>           (const <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> *a);
+<GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+>*     <A
+HREF="xmlsec-bn.html#XMLSECNODEGETBNVALUE"
+>xmlSecNodeGetBNValue</A
+>            (const <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> **a);
+int         <A
+HREF="xmlsec-bn.html#XMLSECNODESETBNVALUE"
+>xmlSecNodeSetBNValue</A
+>            (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             const <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> *a,
+                                             int addLineBreaks);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN5202"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN5205"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5207"
+></A
+><H3
+><A
+NAME="XMLSECCRYPTOBINARY2BN"
+></A
+>xmlSecCryptoBinary2BN ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+>*     xmlSecCryptoBinary2BN           (const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *str,
+                                             <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> **a);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Converts string from CryptoBinary format 
+(http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-CRYPTOBINARY"
+>sec-CryptoBinary</GTKDOCLINK
+>) 
+to a BIGNUM. If no BIGNUM buffer provided then a new
+BIGNUM is created (caller is responsible for freeing it).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5217"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>str</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the CryptoBinary string.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>a</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the buffer to store the result.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to BIGNUM produced from CryptoBinary string
+or NULL if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5234"
+></A
+><H3
+><A
+NAME="XMLSECBN2CRYPTOBINARY"
+></A
+>xmlSecBN2CryptoBinary ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+>*    xmlSecBN2CryptoBinary           (const <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> *a);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Converts BIGNUM to CryptoBinary string
+(http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-CRYPTOBINARY"
+>sec-CryptoBinary</GTKDOCLINK
+>).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5243"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>a</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to BIGNUM.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>newly allocated string (caller is responsible for
+freeing it using <GTKDOCLINK
+HREF="XMLFREE"
+>xmlFree</GTKDOCLINK
+>() function) or NULL if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5257"
+></A
+><H3
+><A
+NAME="XMLSECNODEGETBNVALUE"
+></A
+>xmlSecNodeGetBNValue ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+>*     xmlSecNodeGetBNValue            (const <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> **a);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Converts the node content from CryptoBinary format 
+(http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-CRYPTOBINARY"
+>sec-CryptoBinary</GTKDOCLINK
+>) 
+to a BIGNUM. If no BIGNUM buffer provided then a new
+BIGNUM is created (caller is responsible for freeing it).</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5267"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the poitner to an XML node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>a</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the BIGNUM buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a pointer to BIGNUM produced from CryptoBinary string
+or NULL if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5284"
+></A
+><H3
+><A
+NAME="XMLSECNODESETBNVALUE"
+></A
+>xmlSecNodeSetBNValue ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecNodeSetBNValue            (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> cur,
+                                             const <GTKDOCLINK
+HREF="BIGNUM-CAPS"
+>BIGNUM</GTKDOCLINK
+> *a,
+                                             int addLineBreaks);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Converts BIGNUM to CryptoBinary string
+(http://www.w3.org/TR/xmldsig-core/<GTKDOCLINK
+HREF="SEC-CRYPTOBINARY"
+>sec-CryptoBinary</GTKDOCLINK
+>) 
+and sets it as the content of the given node. If the 
+addLineBreaks is set then line breaks are added 
+before and after the CryptoBinary string.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5293"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cur</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to an XML node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>a</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the BIGNUM.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>addLineBreaks</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> if the flag is equal to 1 then 
+	linebreaks will be added before and after
+	new buffer content.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or -1 otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-base64.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-buffered.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>base64.h</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>buffered.h</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

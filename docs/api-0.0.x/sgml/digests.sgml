@@ -1,0 +1,492 @@
+<refentry id="xmlsec-digests">
+<refmeta>
+<refentrytitle>digests.h</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>digests.h</refname><refpurpose>The digests transform.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+struct      <link linkend="xmlSecDigestTransform">xmlSecDigestTransform</link>;
+typedef     <link linkend="xmlSecDigestTransformId">xmlSecDigestTransformId</link>;
+int         (<link linkend="xmlSecDigestUpdateMethod">*xmlSecDigestUpdateMethod</link>)     (<link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         (<link linkend="xmlSecDigestSignMethod">*xmlSecDigestSignMethod</link>)       (<link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> transform,
+                                             unsigned char **buffer,
+                                             <link linkend="size-t">size_t</link> *size);
+int         (<link linkend="xmlSecDigestVerifyMethod">*xmlSecDigestVerifyMethod</link>)     (<link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecDigestSignNode">xmlSecDigestSignNode</link>            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> valueNode,
+                                             int removeOldContent);
+int         <link linkend="xmlSecDigestVerifyNode">xmlSecDigestVerifyNode</link>          (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             const <link linkend="xmlNodePtr">xmlNodePtr</link> valueNode);
+void        <link linkend="xmlSecDigestSetPushMode">xmlSecDigestSetPushMode</link>         (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             int enabled);
+int         <link linkend="xmlSecDigestUpdate">xmlSecDigestUpdate</link>              (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecDigestSign">xmlSecDigestSign</link>                (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char **buffer,
+                                             <link linkend="size-t">size_t</link> *size);
+int         <link linkend="xmlSecDigestVerify">xmlSecDigestVerify</link>              (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecDigestTransformRead">xmlSecDigestTransformRead</link>       (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecDigestTransformWrite">xmlSecDigestTransformWrite</link>      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecDigestTransformFlush">xmlSecDigestTransformFlush</link>      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecDigestTransform">struct xmlSecDigestTransform</title>
+<programlisting>struct xmlSecDigestTransform {	
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecDigestTransformId		id;    
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+    
+    /* xmlSecBinTransform specific */
+    int					encode;
+    xmlSecDigestTransformPtr		next;
+    xmlSecDigestTransformPtr		prev;   
+    void				*binData;
+    
+    /* xmlSecDigestTransform specific */
+    int					pushModeEnabled;
+    unsigned char			*digest;
+    size_t				digestSize;
+    unsigned char			digestLastByteMask;
+    void 				*digestData;
+};
+</programlisting>
+<para>
+The digests transform.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecDigestTransformId">xmlSecDigestTransformId</link> <structfield>id</structfield></entry>
+<entry> the transform id (pointer to <link linkend="xmlSecBinTransformId">xmlSecBinTransformId</link>).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></entry>
+<entry> the transform status (ok/fail/unknown).
+</entry>
+</row>
+<row>
+<entry>int <structfield>dontDestroy</structfield></entry>
+<entry> the don't automatically destroy flag.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>data</structfield></entry>
+<entry> the pointer to transform specific data.
+</entry>
+</row>
+<row>
+<entry>int <structfield>encode</structfield></entry>
+<entry> encode/decode (encrypt/decrypt) flag.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> <structfield>next</structfield></entry>
+<entry> next binary transform in the chain.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> <structfield>prev</structfield></entry>
+<entry> previous binary transform in the chain.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>binData</structfield></entry>
+<entry> the pointer to binary transform speific data.
+</entry>
+</row>
+<row>
+<entry>int <structfield>pushModeEnabled</structfield></entry>
+<entry> if 1 then the data are sent to next transform, otherwise
+	 we are keeping data for sign or verify call.
+</entry>
+</row>
+<row>
+<entry>unsigned char *<structfield>digest</structfield></entry>
+<entry> the internal digest buffer.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>digestSize</structfield></entry>
+<entry> the internal digest buffer size.
+</entry>
+</row>
+<row>
+<entry>unsigned char <structfield>digestLastByteMask</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>digestData</structfield></entry>
+<entry> the pointer to digest transform specific data.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestTransformId">xmlSecDigestTransformId</title>
+<programlisting>typedef const struct _xmlSecDigestTransformIdStruct	*xmlSecDigestTransformId;
+</programlisting>
+<para>
+The digest transform id (<literal>xmlSecTransformTypeBinary</literal> type).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestUpdateMethod">xmlSecDigestUpdateMethod ()</title>
+<programlisting>int         (*xmlSecDigestUpdateMethod)     (<link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Updates digest with new chunk of data.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to digests transform <link linkend="xmlSecDigestTransform">xmlSecDigestTransform</link>.
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry> the input data.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the input data size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestSignMethod">xmlSecDigestSignMethod ()</title>
+<programlisting>int         (*xmlSecDigestSignMethod)       (<link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> transform,
+                                             unsigned char **buffer,
+                                             <link linkend="size-t">size_t</link> *size);</programlisting>
+<para>
+Finalizes digest and returns result in allocated buffer (<parameter>buffer</parameter>, <parameter>size</parameter>).
+The caller is responsible for freeing returned buffer with <link linkend="xmlFree">xmlFree</link>() function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to digests transform <link linkend="xmlSecDigestTransform">xmlSecDigestTransform</link>.
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry> the pointer to pointer to the output data.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the pointer to outut data size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestVerifyMethod">xmlSecDigestVerifyMethod ()</title>
+<programlisting>int         (*xmlSecDigestVerifyMethod)     (<link linkend="xmlSecDigestTransformPtr">xmlSecDigestTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Verifies digest with new chunk of data. The actual verification
+status is set in <link linkend="status">status</link> member of <link linkend="xmlSecDigestTransform">xmlSecDigestTransform</link> structure.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to digests transform <link linkend="xmlSecDigestTransform">xmlSecDigestTransform</link>.
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry> the input data.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the input data size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestSignNode">xmlSecDigestSignNode ()</title>
+<programlisting>int         xmlSecDigestSignNode            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> valueNode,
+                                             int removeOldContent);</programlisting>
+<para>
+Finalizes the digest result, signs it (if necessary), base64 encodes and
+puts in the given node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digest transform.
+</entry></row>
+<row><entry align="right"><parameter>valueNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:DigestValue&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>removeOldContent</parameter>&nbsp;:</entry>
+<entry> the flag that indicates whether the previous
+            node content will be removed or not.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestVerifyNode">xmlSecDigestVerifyNode ()</title>
+<programlisting>int         xmlSecDigestVerifyNode          (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             const <link linkend="xmlNodePtr">xmlNodePtr</link> valueNode);</programlisting>
+<para>
+Reads the node content, base64 decodes it, finalizes the digest result and
+verifies that it does match with the content of the node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digest transform.
+</entry></row>
+<row><entry align="right"><parameter>valueNode</parameter>&nbsp;:</entry>
+<entry> the pointer to a &lt;dsig:DigestValue&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestSetPushMode">xmlSecDigestSetPushMode ()</title>
+<programlisting>void        xmlSecDigestSetPushMode         (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             int enabled);</programlisting>
+<para>
+Sets the push more flag. If push mode is enabled then the digest is
+finalized and send to next transform when 
+1) read from previous transform returned 0
+2) flush called</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digests transform.
+</entry></row>
+<row><entry align="right"><parameter>enabled</parameter>&nbsp;:</entry>
+<entry> the new "push mode" flag.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestUpdate">xmlSecDigestUpdate ()</title>
+<programlisting>int         xmlSecDigestUpdate              (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Updates data with the new chunk of data (wrapper for 
+xmlSecDigestTransformId::digestUpdate method).</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digests transform.
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry> the input data.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the input data size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestSign">xmlSecDigestSign ()</title>
+<programlisting>int         xmlSecDigestSign                (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char **buffer,
+                                             <link linkend="size-t">size_t</link> *size);</programlisting>
+<para>
+Finalizes digest and writes the result into the allocated 
+buffer (wrapper for xmlSecDigestTransformId::digestSign function).
+Caller is responsble for freeing allocated buffer with <link linkend="xmlFree">xmlFree</link>() function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digests transform.
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry> the pointer to the pointer to the output buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the pointer to the output buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestVerify">xmlSecDigestVerify ()</title>
+<programlisting>int         xmlSecDigestVerify              (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             unsigned char *buffer,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Checks the computed digest and the data in the input buffer
+(wrapper for xmlSecDigestTransformId::digestVerify function).</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digests transform.
+</entry></row>
+<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
+<entry> the input buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the input buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestTransformRead">xmlSecDigestTransformRead ()</title>
+<programlisting>int         xmlSecDigestTransformRead       (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Reads all data from previos transform and digests it. If the 
+push mode enabled then the result is finalized and returned to the caller,
+otherwise we return 0</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digest transform.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the output buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the output buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the number of bytes in the buffer or negative value
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestTransformWrite">xmlSecDigestTransformWrite ()</title>
+<programlisting>int         xmlSecDigestTransformWrite      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Adds new chunk of data to the digest.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the poiter to a digests transform.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the input data buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the input data size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDigestTransformFlush">xmlSecDigestTransformFlush ()</title>
+<programlisting>int         xmlSecDigestTransformFlush      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform);</programlisting>
+<para>
+If the push mode enabled then the function finalizes the result,
+writes it to the next transform and calls flush for it. Otherwise,
+it just calls flush for next transform</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to a digests transform.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

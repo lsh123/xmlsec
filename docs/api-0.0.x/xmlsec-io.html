@@ -1,0 +1,733 @@
+<HTML
+><HEAD
+><TITLE
+>io.h</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Internal Functions Reference"
+HREF="xmlsec-ref-int.html"><LINK
+REL="PREVIOUS"
+TITLE="digests.h"
+HREF="xmlsec-digests.html"><LINK
+REL="NEXT"
+TITLE="keysInternal.h"
+HREF="xmlsec-keysinternal.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-digests.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-keysinternal.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-IO"
+></A
+>io.h</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN6365"
+></A
+><H2
+>Name</H2
+>io.h&nbsp;--&nbsp;The IO transforms.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN6368"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+void        <A
+HREF="xmlsec-io.html#XMLSECIOINIT"
+>xmlSecIOInit</A
+>                    (void);
+void        <A
+HREF="xmlsec-io.html#XMLSECIOSHUTDOWN"
+>xmlSecIOShutdown</A
+>                (void);
+extern      xmlSecTransformId <A
+HREF="xmlsec-io.html#XMLSECINPUTURI"
+>xmlSecInputUri</A
+>;
+int         <A
+HREF="xmlsec-io.html#XMLSECINPUTURITRANSFORMOPEN"
+>xmlSecInputUriTransformOpen</A
+>     (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             const char *uri);
+void        <A
+HREF="xmlsec-io.html#XMLSECCLEANUPINPUTCALLBACKS"
+>xmlSecCleanupInputCallbacks</A
+>     (void);
+void        <A
+HREF="xmlsec-io.html#XMLSECREGISTERDEFAULTINPUTCALLBACKS"
+>xmlSecRegisterDefaultInputCallbacks</A
+>
+                                            (void);
+int         <A
+HREF="xmlsec-io.html#XMLSECREGISTERINPUTCALLBACKS"
+>xmlSecRegisterInputCallbacks</A
+>    (<GTKDOCLINK
+HREF="XMLINPUTMATCHCALLBACK"
+>xmlInputMatchCallback</GTKDOCLINK
+> matchFunc,
+                                             <GTKDOCLINK
+HREF="XMLINPUTOPENCALLBACK"
+>xmlInputOpenCallback</GTKDOCLINK
+> openFunc,
+                                             <GTKDOCLINK
+HREF="XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</GTKDOCLINK
+> readFunc,
+                                             <GTKDOCLINK
+HREF="XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</GTKDOCLINK
+> closeFunc);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6383"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN6386"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6388"
+></A
+><H3
+><A
+NAME="XMLSECIOINIT"
+></A
+>xmlSecIOInit ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecIOInit                    (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The IO initialization (called from <A
+HREF="xmlsec-xmlsec.html#XMLSECINIT"
+>xmlSecInit</A
+>() function).
+Applications should not call this function directly.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6395"
+></A
+><H3
+><A
+NAME="XMLSECIOSHUTDOWN"
+></A
+>xmlSecIOShutdown ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecIOShutdown                (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The IO clenaup (called from <A
+HREF="xmlsec-xmlsec.html#XMLSECSHUTDOWN"
+>xmlSecShutdown</A
+>() function).
+Applications should not call this function directly.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6402"
+></A
+><H3
+><A
+NAME="XMLSECINPUTURI"
+></A
+>xmlSecInputUri</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId xmlSecInputUri;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The input URI transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6408"
+></A
+><H3
+><A
+NAME="XMLSECINPUTURITRANSFORMOPEN"
+></A
+>xmlSecInputUriTransformOpen ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecInputUriTransformOpen     (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             const char *uri);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Opens the given <TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+> for reading.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6416"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to IO transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the URL to open.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6433"
+></A
+><H3
+><A
+NAME="XMLSECCLEANUPINPUTCALLBACKS"
+></A
+>xmlSecCleanupInputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecCleanupInputCallbacks     (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Clears the entire input callback table. this includes the
+compiled-in I/O.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6439"
+></A
+><H3
+><A
+NAME="XMLSECREGISTERDEFAULTINPUTCALLBACKS"
+></A
+>xmlSecRegisterDefaultInputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecRegisterDefaultInputCallbacks
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Registers the default compiled-in I/O handlers.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6445"
+></A
+><H3
+><A
+NAME="XMLSECREGISTERINPUTCALLBACKS"
+></A
+>xmlSecRegisterInputCallbacks ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecRegisterInputCallbacks    (<GTKDOCLINK
+HREF="XMLINPUTMATCHCALLBACK"
+>xmlInputMatchCallback</GTKDOCLINK
+> matchFunc,
+                                             <GTKDOCLINK
+HREF="XMLINPUTOPENCALLBACK"
+>xmlInputOpenCallback</GTKDOCLINK
+> openFunc,
+                                             <GTKDOCLINK
+HREF="XMLINPUTREADCALLBACK"
+>xmlInputReadCallback</GTKDOCLINK
+> readFunc,
+                                             <GTKDOCLINK
+HREF="XMLINPUTCLOSECALLBACK"
+>xmlInputCloseCallback</GTKDOCLINK
+> closeFunc);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Register a new set of I/O callback for handling parser input.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6455"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>matchFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputMatchCallback.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>openFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputOpenCallback.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>readFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputReadCallback.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>closeFunc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  the xmlInputCloseCallback.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the registered handler number or a negative value if 
+an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-digests.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-keysinternal.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>digests.h</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>keysInternal.h</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,1227 @@
+<HTML
+><HEAD
+><TITLE
+>buffered.h</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Internal Functions Reference"
+HREF="xmlsec-ref-int.html"><LINK
+REL="PREVIOUS"
+TITLE="bn.h"
+HREF="xmlsec-bn.html"><LINK
+REL="NEXT"
+TITLE="ciphers.h"
+HREF="xmlsec-ciphers.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-bn.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-ciphers.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-BUFFERED"
+></A
+>buffered.h</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN5319"
+></A
+><H2
+>Name</H2
+>buffered.h&nbsp;--&nbsp;The buffered transform.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN5322"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+struct      <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORM"
+>xmlSecBufferedTransform</A
+>;
+typedef     <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMID"
+>xmlSecBufferedTransformId</A
+>;
+int         (<A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDPROCESSMETHOD"
+>*xmlSecBufferedProcessMethod</A
+>)  (<GTKDOCLINK
+HREF="XMLSECBUFFEREDTRANSFORMPTR"
+>xmlSecBufferedTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> buffer);
+int         <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMREAD"
+>xmlSecBufferedTransformRead</A
+>     (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMWRITE"
+>xmlSecBufferedTransformWrite</A
+>    (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMFLUSH"
+>xmlSecBufferedTransformFlush</A
+>    (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform);
+void        <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDDESTROY"
+>xmlSecBufferedDestroy</A
+>           (<GTKDOCLINK
+HREF="XMLSECBUFFEREDTRANSFORMPTR"
+>xmlSecBufferedTransformPtr</GTKDOCLINK
+> buffered);
+int         <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDPROCESS"
+>xmlSecBufferedProcess</A
+>           (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> buffer);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN5343"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN5346"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5348"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDTRANSFORM"
+></A
+>struct xmlSecBufferedTransform</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecBufferedTransform {	
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecBufferedTransformId		id;    
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+    
+    /* xmlSecBinTransform specific */
+    int					encode;
+    xmlSecBinTransformPtr		next;
+    xmlSecBinTransformPtr		prev;   
+    void				*binData;
+    
+    /* xmlSecBufferedTransform specific */
+    xmlBufferPtr			buffer;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The buffered transform.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5354"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMID"
+>xmlSecBufferedTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id (pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
+>xmlSecBinTransformId</A
+>).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>status</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>encode</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> encode/decode (encrypt/decrypt) flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> next binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> previous binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>binData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to binary transform speific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>buffer</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the internal buffer.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5401"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDTRANSFORMID"
+></A
+>xmlSecBufferedTransformId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef const struct _xmlSecBufferedTransformIdStruct	*xmlSecBufferedTransformId;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The buffered transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5407"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDPROCESSMETHOD"
+></A
+>xmlSecBufferedProcessMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecBufferedProcessMethod)  (<GTKDOCLINK
+HREF="XMLSECBUFFEREDTRANSFORMPTR"
+>xmlSecBufferedTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> buffer);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Processes the data in the buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5415"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to buffered transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to input/output buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 in success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5432"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDTRANSFORMREAD"
+></A
+>xmlSecBufferedTransformRead ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecBufferedTransformRead     (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the all data from previous transform and returns 
+to the caller.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5440"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to a buffered transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the output buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the output buffer size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of bytes in the buffer or negative value
+if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5461"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDTRANSFORMWRITE"
+></A
+>xmlSecBufferedTransformWrite ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecBufferedTransformWrite    (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds the data to the internal buffer.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5469"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the poiter to a buffered transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input data buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input data size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5490"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDTRANSFORMFLUSH"
+></A
+>xmlSecBufferedTransformFlush ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecBufferedTransformFlush    (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Writes internal data to previous transform.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5497"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to a buffered transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if success or negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5510"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDDESTROY"
+></A
+>xmlSecBufferedDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecBufferedDestroy           (<GTKDOCLINK
+HREF="XMLSECBUFFEREDTRANSFORMPTR"
+>xmlSecBufferedTransformPtr</GTKDOCLINK
+> buffered);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Destroys the buffered transform.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5517"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffered</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to a buffered transform.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5526"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDPROCESS"
+></A
+>xmlSecBufferedProcess ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecBufferedProcess           (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> buffer);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Executes buffered transform.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5534"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to a buffered transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the buffered transform result,</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>number of bytes processed or a negative value
+if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-bn.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref-int.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-ciphers.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>bn.h</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>ciphers.h</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,282 @@
+<!-- ##### SECTION Title ##### -->
+keys.h
+
+<!-- ##### SECTION Short_Description ##### -->
+The keys helper functions.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### TYPEDEF xmlSecKeyId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM xmlSecKeyType ##### -->
+<para>
+
+</para>
+
+@xmlSecKeyTypePublic: 
+@xmlSecKeyTypePrivate: 
+@xmlSecKeyTypeAny: 
+
+<!-- ##### ENUM xmlSecKeyUsage ##### -->
+<para>
+
+</para>
+
+@xmlSecKeyUsageAny: 
+@xmlSecKeyUsageSign: 
+@xmlSecKeyUsageVerify: 
+@xmlSecKeyUsageEncrypt: 
+@xmlSecKeyUsageDecrypt: 
+
+<!-- ##### TYPEDEF xmlSecKeyOrigin ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO xmlSecKeyOriginDefault ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginKeyManager ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginKeyName ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginKeyValue ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginRetrievalDocument ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginRetrievalRemote ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginX509 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginPGP ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginEncryptedKey ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyOriginAll ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyIdUnknown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT xmlSecKey ##### -->
+<para>
+
+</para>
+
+@id: 
+@type: 
+@name: 
+@origin: 
+@x509Data: 
+@keyData: 
+
+<!-- ##### FUNCTION xmlSecKeyCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@origin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDestroy ##### -->
+<para>
+
+</para>
+
+@key: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDuplicate ##### -->
+<para>
+
+</para>
+
+@key: 
+@origin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecVerifyKey ##### -->
+<para>
+
+</para>
+
+@key: 
+@name: 
+@id: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDebugDump ##### -->
+<para>
+
+</para>
+
+@key: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReadPemCert ##### -->
+<para>
+
+</para>
+
+@key: 
+@filename: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecKeysMngr ##### -->
+<para>
+
+</para>
+
+@getKey: 
+@allowedOrigins: 
+@maxRetrievalsLevel: 
+@maxEncKeysLevel: 
+@findKey: 
+@keysData: 
+@failIfCertNotFound: 
+@findX509: 
+@verifyX509: 
+@x509Data: 
+
+<!-- ##### USER_FUNCTION xmlSecGetKeyCallback ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@mngr: 
+@context: 
+@keyId: 
+@type: 
+@usage: 
+@certsVerificationTime: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecFindKeyCallback ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@name: 
+@id: 
+@type: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecX509FindCallback ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@subjectName: 
+@issuerName: 
+@issuerSerial: 
+@ski: 
+@cert: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecX509VerifyCallback ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@context: 
+@cert: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@mngr: 
+@context: 
+@keyId: 
+@keyType: 
+@keyUsage: 
+@certsVerificationTime: 
+@Returns: 
+
+

@@ -1,0 +1,5 @@
+100% function docs coverage.
+271 functions documented.
+0 not documented.
+
+

@@ -1,0 +1,3407 @@
+<HTML
+><HEAD
+><TITLE
+>transforms.h</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="XML Security Library Reference"
+HREF="xmlsec-ref.html"><LINK
+REL="PREVIOUS"
+TITLE="keysmngr.h"
+HREF="xmlsec-keysmngr.html"><LINK
+REL="NEXT"
+TITLE="version.h"
+HREF="xmlsec-version.html"></HEAD
+><BODY
+CLASS="REFENTRY"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-keysmngr.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-version.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><H1
+><A
+NAME="XMLSEC-TRANSFORMS"
+></A
+>transforms.h</H1
+><DIV
+CLASS="REFNAMEDIV"
+><A
+NAME="AEN3613"
+></A
+><H2
+>Name</H2
+>transforms.h&nbsp;--&nbsp;The transforms functions.</DIV
+><DIV
+CLASS="REFSYNOPSISDIV"
+><A
+NAME="AEN3616"
+></A
+><H2
+>Synopsis</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>&#13;
+
+enum        <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+>;
+typedef     <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+>;
+#define     <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMUNKNOWN"
+>xmlSecTransformUnknown</A
+>
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCAES128CBC"
+>xmlSecEncAes128Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCAES192CBC"
+>xmlSecEncAes192Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCAES256CBC"
+>xmlSecEncAes256Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWAES128"
+>xmlSecKWAes128</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWAES192"
+>xmlSecKWAes192</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWAES256"
+>xmlSecKWAes256</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCBASE64ENCODE"
+>xmlSecEncBase64Encode</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCBASE64DECODE"
+>xmlSecEncBase64Decode</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NINCLUSIVE"
+>xmlSecC14NInclusive</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NINCLUSIVEWITHCOMMENTS"
+>xmlSecC14NInclusiveWithComments</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NEXCLUSIVE"
+>xmlSecC14NExclusive</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECC14NEXCLUSIVEWITHCOMMENTS"
+>xmlSecC14NExclusiveWithComments</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCDES3CBC"
+>xmlSecEncDes3Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECKWDES3CBC"
+>xmlSecKWDes3Cbc</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECSIGNDSASHA1"
+>xmlSecSignDsaSha1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMENVELOPED"
+>xmlSecTransformEnveloped</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECMACHMACSHA1"
+>xmlSecMacHmacSha1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECMACHMACRIPEMD160"
+>xmlSecMacHmacRipeMd160</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECMACHMACMD5"
+>xmlSecMacHmacMd5</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECDIGESTRIPEMD160"
+>xmlSecDigestRipemd160</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECSIGNRSASHA1"
+>xmlSecSignRsaSha1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCRSAPKCS1"
+>xmlSecEncRsaPkcs1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECENCRSAOAEP"
+>xmlSecEncRsaOaep</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECDIGESTSHA1"
+>xmlSecDigestSha1</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATH"
+>xmlSecTransformXPath</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATH2"
+>xmlSecTransformXPath2</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTER"
+>xmlSecTransformXPointer</A
+>;
+extern      xmlSecTransformId 		<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXSLT"
+>xmlSecTransformXslt</A
+>;
+int         <A
+HREF="xmlsec-transforms.html#XMLSECC14NEXCLADDINCLNAMESPACES"
+>xmlSecC14NExclAddInclNamespaces</A
+> (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *prefixList);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECHMACADDOUTPUTLENGTH"
+>xmlSecHmacAddOutputLength</A
+>       (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bitsLen);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECENCRSAOAEPADDPARAM"
+>xmlSecEncRsaOaepAddParam</A
+>        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATHADD"
+>xmlSecTransformXPathAdd</A
+>         (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *expression,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **namespaces);
+enum        <A
+HREF="xmlsec-transforms.html#XMLSECXPATH2TRANSFORMTYPE"
+>xmlSecXPath2TransformType</A
+>;
+int         <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPATH2ADD"
+>xmlSecTransformXPath2Add</A
+>        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECXPATH2TRANSFORMTYPE"
+>xmlSecXPath2TransformType</A
+> type,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *expression,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **namespaces);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXPOINTERADD"
+>xmlSecTransformXPointerAdd</A
+>      (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *expression,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **namespaces);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMXSLTADD"
+>xmlSecTransformXsltAdd</A
+>          (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *xslt);
+extern      xmlSecKeyId 	 		<A
+HREF="xmlsec-transforms.html#XMLSECAESKEY"
+>xmlSecAesKey</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECDESKEY"
+>xmlSecDesKey</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECDSAKEY"
+>xmlSecDsaKey</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECHMACKEY"
+>xmlSecHmacKey</A
+>;
+extern      xmlSecKeyId 			<A
+HREF="xmlsec-transforms.html#XMLSECRSAKEY"
+>xmlSecRsaKey</A
+>;
+int         <A
+HREF="xmlsec-transforms.html#XMLSECAESKEYGENERATE"
+>xmlSecAesKeyGenerate</A
+>            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECDESKEYGENERATE"
+>xmlSecDesKeyGenerate</A
+>            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECDSAKEYGENERATE"
+>xmlSecDsaKeyGenerate</A
+>            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="DSA-CAPS"
+>DSA</GTKDOCLINK
+> *dsa);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECHMACKEYGENERATE"
+>xmlSecHmacKeyGenerate</A
+>           (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         <A
+HREF="xmlsec-transforms.html#XMLSECRSAKEYGENERATE"
+>xmlSecRsaKeyGenerate</A
+>            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="RSA-CAPS"
+>RSA</GTKDOCLINK
+> *rsa);
+#define     <A
+HREF="xmlsec-transforms.html#XMLSEC-BASE64-LINESIZE-CAPS"
+>XMLSEC_BASE64_LINESIZE</A
+>
+void        <A
+HREF="xmlsec-transforms.html#XMLSECBASE64ENCODESETLINESIZE"
+>xmlSecBase64EncodeSetLineSize</A
+>   (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> lineSize);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3700"
+></A
+><H2
+>Description</H2
+><P
+></P
+></DIV
+><DIV
+CLASS="REFSECT1"
+><A
+NAME="AEN3703"
+></A
+><H2
+>Details</H2
+><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3705"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMSTATUS"
+></A
+>enum xmlSecTransformStatus</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum  {
+    xmlSecTransformStatusNone = 0,
+    xmlSecTransformStatusOk,
+    xmlSecTransformStatusFail
+} xmlSecTransformStatus;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform execution result.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3711"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformStatusNone</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the status unknown.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformStatusOk</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> success.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformStatusFail</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> an error occur.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3728"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMID"
+></A
+>xmlSecTransformId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform id structure.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3734"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMUNKNOWN"
+></A
+>xmlSecTransformUnknown</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define xmlSecTransformUnknown			NULL</PRE
+></TD
+></TR
+></TABLE
+><P
+>The "unknown" transform id (NULL).</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3740"
+></A
+><H3
+><A
+NAME="XMLSECENCAES128CBC"
+></A
+>xmlSecEncAes128Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncAes128Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES-CBC with 128 bits key encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3746"
+></A
+><H3
+><A
+NAME="XMLSECENCAES192CBC"
+></A
+>xmlSecEncAes192Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncAes192Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES-CBC with 192 bits key encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3752"
+></A
+><H3
+><A
+NAME="XMLSECENCAES256CBC"
+></A
+>xmlSecEncAes256Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncAes256Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES-CBC with 256 bits key encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3758"
+></A
+><H3
+><A
+NAME="XMLSECKWAES128"
+></A
+>xmlSecKWAes128</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWAes128;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES with 128 bits key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3764"
+></A
+><H3
+><A
+NAME="XMLSECKWAES192"
+></A
+>xmlSecKWAes192</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWAes192;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES with 192 bits key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3770"
+></A
+><H3
+><A
+NAME="XMLSECKWAES256"
+></A
+>xmlSecKWAes256</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWAes256;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES with 256 bits key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3776"
+></A
+><H3
+><A
+NAME="XMLSECENCBASE64ENCODE"
+></A
+>xmlSecEncBase64Encode</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncBase64Encode;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The base64 encode transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3782"
+></A
+><H3
+><A
+NAME="XMLSECENCBASE64DECODE"
+></A
+>xmlSecEncBase64Decode</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncBase64Decode;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The base64 decode transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3788"
+></A
+><H3
+><A
+NAME="XMLSECC14NINCLUSIVE"
+></A
+>xmlSecC14NInclusive</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NInclusive;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The regular (inclusive) C14N without comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3794"
+></A
+><H3
+><A
+NAME="XMLSECC14NINCLUSIVEWITHCOMMENTS"
+></A
+>xmlSecC14NInclusiveWithComments</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NInclusiveWithComments;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The regular (inclusive) C14N with comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3800"
+></A
+><H3
+><A
+NAME="XMLSECC14NEXCLUSIVE"
+></A
+>xmlSecC14NExclusive</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NExclusive;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The exclusive C14N without comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3806"
+></A
+><H3
+><A
+NAME="XMLSECC14NEXCLUSIVEWITHCOMMENTS"
+></A
+>xmlSecC14NExclusiveWithComments</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecC14NExclusiveWithComments;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The exclusive C14N with comments transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3812"
+></A
+><H3
+><A
+NAME="XMLSECENCDES3CBC"
+></A
+>xmlSecEncDes3Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncDes3Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DES3-CBC encryption transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3818"
+></A
+><H3
+><A
+NAME="XMLSECKWDES3CBC"
+></A
+>xmlSecKWDes3Cbc</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecKWDes3Cbc;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DES3-CBC key wrap transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3824"
+></A
+><H3
+><A
+NAME="XMLSECSIGNDSASHA1"
+></A
+>xmlSecSignDsaSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecSignDsaSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DSA with SHA1 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3830"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMENVELOPED"
+></A
+>xmlSecTransformEnveloped</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformEnveloped;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The "enveloped" transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3836"
+></A
+><H3
+><A
+NAME="XMLSECMACHMACSHA1"
+></A
+>xmlSecMacHmacSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecMacHmacSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC with SHA1 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3842"
+></A
+><H3
+><A
+NAME="XMLSECMACHMACRIPEMD160"
+></A
+>xmlSecMacHmacRipeMd160</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecMacHmacRipeMd160;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC with RipeMD160 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3848"
+></A
+><H3
+><A
+NAME="XMLSECMACHMACMD5"
+></A
+>xmlSecMacHmacMd5</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecMacHmacMd5;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC with MD5 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3854"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTRIPEMD160"
+></A
+>xmlSecDigestRipemd160</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecDigestRipemd160;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RIPEMD160 digest transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3860"
+></A
+><H3
+><A
+NAME="XMLSECSIGNRSASHA1"
+></A
+>xmlSecSignRsaSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecSignRsaSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA with SHA1 signature transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3866"
+></A
+><H3
+><A
+NAME="XMLSECENCRSAPKCS1"
+></A
+>xmlSecEncRsaPkcs1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncRsaPkcs1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA-PKCS1 key transport transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3872"
+></A
+><H3
+><A
+NAME="XMLSECENCRSAOAEP"
+></A
+>xmlSecEncRsaOaep</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecEncRsaOaep;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA-OAEP key transport transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3878"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTSHA1"
+></A
+>xmlSecDigestSha1</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecDigestSha1;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The SHA1 digest transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3884"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPATH"
+></A
+>xmlSecTransformXPath</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXPath;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPath transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3890"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPATH2"
+></A
+>xmlSecTransformXPath2</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXPath2;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPath2 transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3896"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPOINTER"
+></A
+>xmlSecTransformXPointer</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXPointer;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPointer transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3902"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXSLT"
+></A
+>xmlSecTransformXslt</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecTransformId 		xmlSecTransformXslt;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XSLT transform id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3908"
+></A
+><H3
+><A
+NAME="XMLSECC14NEXCLADDINCLNAMESPACES"
+></A
+>xmlSecC14NExclAddInclNamespaces ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecC14NExclAddInclNamespaces (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *prefixList);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Adds "inclusive" namespaces to the ExcC14N transform node <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3917"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>prefixList</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the white space delimited  list of namespace prefixes, 
+	where "<GTKDOCLINK
+HREF="DEFAULT"
+>default</GTKDOCLINK
+>" indicates the default namespace</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3935"
+></A
+><H3
+><A
+NAME="XMLSECHMACADDOUTPUTLENGTH"
+></A
+>xmlSecHmacAddOutputLength ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecHmacAddOutputLength       (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> bitsLen);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creates &lt;dsig:HMACOutputLength&gt;child for the HMAC transform 
+node <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3944"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:Transform&gt; node</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>bitsLen</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the required length in bits</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success and a negatie value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3961"
+></A
+><H3
+><A
+NAME="XMLSECENCRSAOAEPADDPARAM"
+></A
+>xmlSecEncRsaOaepAddParam ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecEncRsaOaepAddParam        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Creates &lt;enc:OAEPParam&gt; child node in the <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3970"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the OAEP param buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the OAEP param buffer size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3991"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPATHADD"
+></A
+>xmlSecTransformXPathAdd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecTransformXPathAdd         (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *expression,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **namespaces);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Writes XPath transform infromation to the &lt;dsig:Transform&gt; node 
+<TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4001"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>expression</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the XPath expression.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>namespaces</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> NULL terminated list of namespace prefix/href pairs.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 for success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4022"
+></A
+><H3
+><A
+NAME="XMLSECXPATH2TRANSFORMTYPE"
+></A
+>enum xmlSecXPath2TransformType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    xmlSecXPathTransformIntersect = 0,
+    xmlSecXPathTransformSubtract,
+    xmlSecXPathTransformUnion
+} xmlSecXPath2TransformType;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XPath2 transform types.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4028"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecXPathTransformIntersect</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> intersect.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecXPathTransformSubtract</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> subtract.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecXPathTransformUnion</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  union.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4045"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPATH2ADD"
+></A
+>xmlSecTransformXPath2Add ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecTransformXPath2Add        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             <A
+HREF="xmlsec-transforms.html#XMLSECXPATH2TRANSFORMTYPE"
+>xmlSecXPath2TransformType</A
+> type,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *expression,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **namespaces);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Writes XPath2 transform infromation to the &lt;dsig:Transform&gt; node 
+<TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4056"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> XPath2 transform type ("union", "intersect" or "subtract").</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>expression</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the XPath expression.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>namespaces</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> NULL terminated list of namespace prefix/href pairs.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 for success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4081"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXPOINTERADD"
+></A
+>xmlSecTransformXPointerAdd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecTransformXPointerAdd      (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *expression,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **namespaces);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node 
+<TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4091"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>expression</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the XPath expression.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>namespaces</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> NULL terminated list of namespace prefix/href pairs.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 for success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4112"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMXSLTADD"
+></A
+>xmlSecTransformXsltAdd ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecTransformXsltAdd          (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *xslt);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Writes the XSLT transform expression to the <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4121"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>xslt</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the XSLT transform exspression.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4138"
+></A
+><H3
+><A
+NAME="XMLSECAESKEY"
+></A
+>xmlSecAesKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 	 		xmlSecAesKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The AES key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4144"
+></A
+><H3
+><A
+NAME="XMLSECDESKEY"
+></A
+>xmlSecDesKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecDesKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DES key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4150"
+></A
+><H3
+><A
+NAME="XMLSECDSAKEY"
+></A
+>xmlSecDsaKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecDsaKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The DSA signature key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4156"
+></A
+><H3
+><A
+NAME="XMLSECHMACKEY"
+></A
+>xmlSecHmacKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecHmacKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The HMAC key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4162"
+></A
+><H3
+><A
+NAME="XMLSECRSAKEY"
+></A
+>xmlSecRsaKey</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>extern xmlSecKeyId 			xmlSecRsaKey;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The RSA key id.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4168"
+></A
+><H3
+><A
+NAME="XMLSECAESKEYGENERATE"
+></A
+>xmlSecAesKeyGenerate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecAesKeyGenerate            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the AES key to the given data or generates a new random key.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4176"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to AES key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to AES key data or NULL if new key should be generated.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the AES key data size or 0 if new key should be generated.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 for success or a negative value otherwise.  </TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4197"
+></A
+><H3
+><A
+NAME="XMLSECDESKEYGENERATE"
+></A
+>xmlSecDesKeyGenerate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDesKeyGenerate            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the DES key from the input buffer or generates a new one.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4205"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to DES key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input key data (or NULL if new key should be generated).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input biffer size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4226"
+></A
+><H3
+><A
+NAME="XMLSECDSAKEYGENERATE"
+></A
+>xmlSecDsaKeyGenerate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecDsaKeyGenerate            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="DSA-CAPS"
+>DSA</GTKDOCLINK
+> *dsa);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the DSA key to geven value or generates a new one if <TT
+CLASS="PARAMETER"
+><I
+>dsa</I
+></TT
+> is NULL.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4235"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to a DSA key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>dsa</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to OpenSSL DSA key structure or NULL.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4252"
+></A
+><H3
+><A
+NAME="XMLSECHMACKEYGENERATE"
+></A
+>xmlSecHmacKeyGenerate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecHmacKeyGenerate           (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the HMAC key <TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+> to data in <TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+> or generates a new HMAC key 
+if <TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+> is NULL.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4263"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to HMAC key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the HMAC key binary data or NULL.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the binary data size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4284"
+></A
+><H3
+><A
+NAME="XMLSECRSAKEYGENERATE"
+></A
+>xmlSecRsaKeyGenerate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecRsaKeyGenerate            (<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             <GTKDOCLINK
+HREF="RSA-CAPS"
+>RSA</GTKDOCLINK
+> *rsa);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the <TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+> to the value of <TT
+CLASS="PARAMETER"
+><I
+>rsa</I
+></TT
+> or generates a new RSA key
+if <TT
+CLASS="PARAMETER"
+><I
+>rsa</I
+></TT
+> is NULL.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4295"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to RSA key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>rsa</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to OpenSSL RSA key or NULL.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4312"
+></A
+><H3
+><A
+NAME="XMLSEC-BASE64-LINESIZE-CAPS"
+></A
+>XMLSEC_BASE64_LINESIZE</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define XMLSEC_BASE64_LINESIZE			64</PRE
+></TD
+></TR
+></TABLE
+><P
+>The default max line size for base64 encoding</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN4318"
+></A
+><H3
+><A
+NAME="XMLSECBASE64ENCODESETLINESIZE"
+></A
+>xmlSecBase64EncodeSetLineSize ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecBase64EncodeSetLineSize   (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> lineSize);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Sets the max line size to <TT
+CLASS="PARAMETER"
+><I
+>lineSize</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN4327"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to BASE64 encode transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>lineSize</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the new max line size.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-keysmngr.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="xmlsec-ref.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Up</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-version.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>keysmngr.h</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>version.h</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

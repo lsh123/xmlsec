@@ -1,0 +1,411 @@
+<refentry id="xmlsec-keysInternal">
+<refmeta>
+<refentrytitle>keysInternal.h</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>keysInternal.h</refname><refpurpose>The internal keys functions.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="xmlSecKeyInifiteRetrivals">xmlSecKeyInifiteRetrivals</link>
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyCreateMethod">*xmlSecKeyCreateMethod</link>)       (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyDuplicateMethod">*xmlSecKeyDuplicateMethod</link>)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+void        (<link linkend="xmlSecKeyDestroyMethod">*xmlSecKeyDestroyMethod</link>)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
+int         (<link linkend="xmlSecKeyReadXmlMethod">*xmlSecKeyReadXmlMethod</link>)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+int         (<link linkend="xmlSecKeyWriteXmlMethod">*xmlSecKeyWriteXmlMethod</link>)      (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent);
+int         (<link linkend="xmlSecKeyReadBinaryMethod">*xmlSecKeyReadBinaryMethod</link>)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         (<link linkend="xmlSecKeyWriteBinaryMethod">*xmlSecKeyWriteBinaryMethod</link>)   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);
+void        <link linkend="xmlSecKeysInit">xmlSecKeysInit</link>                  (void);
+#define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
+#define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
+#define     <link linkend="xmlSecKeyCheckTransform">xmlSecKeyCheckTransform</link>         (key, tr)
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadXml">xmlSecKeyReadXml</link>               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+int         <link linkend="xmlSecKeyWriteXml">xmlSecKeyWriteXml</link>               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyReadBin">xmlSecKeyReadBin</link>               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecKeyWriteBin">xmlSecKeyWriteBin</link>               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecKeyInifiteRetrivals">xmlSecKeyInifiteRetrivals</title>
+<programlisting>#define xmlSecKeyInifiteRetrivals		99999
+</programlisting>
+<para>
+Macro. Inifinite number of retrievals (really big number :) )</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCreateMethod">xmlSecKeyCreateMethod ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyCreateMethod)       (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id);</programlisting>
+<para>
+Key specific creation method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the key id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDuplicateMethod">xmlSecKeyDuplicateMethod ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyDuplicateMethod)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Key specific duplication method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDestroyMethod">xmlSecKeyDestroyMethod ()</title>
+<programlisting>void        (*xmlSecKeyDestroyMethod)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<para>
+Key specific destroy method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadXmlMethod">xmlSecKeyReadXmlMethod ()</title>
+<programlisting>int         (*xmlSecKeyReadXmlMethod)       (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+Key specific reading from XML node method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry> the pointer to key's value XML node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteXmlMethod">xmlSecKeyWriteXmlMethod ()</title>
+<programlisting>int         (*xmlSecKeyWriteXmlMethod)      (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> parent);</programlisting>
+<para>
+Key specific writing to XML node method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the key type to write (public/private).
+</entry></row>
+<row><entry align="right"><parameter>parent</parameter>&nbsp;:</entry>
+<entry> the pointer to key's value XML node parent node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadBinaryMethod">xmlSecKeyReadBinaryMethod ()</title>
+<programlisting>int         (*xmlSecKeyReadBinaryMethod)    (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Key specific reading binary data method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the input data buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the input data buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteBinaryMethod">xmlSecKeyWriteBinaryMethod ()</title>
+<programlisting>int         (*xmlSecKeyWriteBinaryMethod)   (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);</programlisting>
+<para>
+Key specific writing binary data method. The data are returned
+in an allocated <parameter>buf</parameter> and caller is responsible for freeing
+it using <link linkend="xmlFree">xmlFree</link>() function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the key type to write (public/private).
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the pointer to pointer to the output buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the pointer to output buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysInit">xmlSecKeysInit ()</title>
+<programlisting>void        xmlSecKeysInit                  (void);</programlisting>
+<para>
+Initializes the key ids list (called from <link linkend="xmlSecInit">xmlSecInit</link>() function). 
+This function should not be called directly by applications.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyIsValid">xmlSecKeyIsValid()</title>
+<programlisting>#define     xmlSecKeyIsValid(key)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>key</parameter> is not NULL and <parameter>key</parameter>-&gt;id is not NULL
+or 0 otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to key.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCheckId">xmlSecKeyCheckId()</title>
+<programlisting>#define     xmlSecKeyCheckId(key, keyId)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>key</parameter> is valid and <parameter>key</parameter>'s id is equal to <parameter>keyId</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to key.
+</entry></row>
+<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
+<entry> the key Id.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCheckTransform">xmlSecKeyCheckTransform()</title>
+<programlisting>#define     xmlSecKeyCheckTransform(key, tr)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>key</parameter> is valid and could be used for transform <parameter>tr</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to key.
+</entry></row>
+<row><entry align="right"><parameter>tr</parameter>&nbsp;:</entry>
+<entry> the pointer to transform.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadXml">xmlSecKeyReadXml ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadXml               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+Reads the key from XML node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the key id.
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry> the pointer to key value node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteXml">xmlSecKeyWriteXml ()</title>
+<programlisting>int         xmlSecKeyWriteXml               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+Writes the key in the XML node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the key type to write (public/private).
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry> the parent XML node. 
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReadBin">xmlSecKeyReadBin ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyReadBin               (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Reads the key from binary data.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the key id.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the pointer to key binary data buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the size of the binary key data <parameter>buf</parameter>.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyWriteBin">xmlSecKeyWriteBin ()</title>
+<programlisting>int         xmlSecKeyWriteBin               (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *size);</programlisting>
+<para>
+Writes the key in the binary buffer. The caller is responsible
+for freeing the returned buffer using <link linkend="xmlFree">xmlFree</link>() function.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the key type to write (public/private).
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the pointer to pointer to the binary data buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the pointer to the returned buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

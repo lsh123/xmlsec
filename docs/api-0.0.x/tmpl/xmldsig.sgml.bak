@@ -1,0 +1,281 @@
+<!-- ##### SECTION Title ##### -->
+xmldsig.h
+
+<!-- ##### SECTION Short_Description ##### -->
+The <ulink url="http://www.w3.org/Signature/">XML Digital Signature</ulink> 
+standard implementation.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT xmlSecDSigCtx ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@processManifests: 
+@storeSignatures: 
+@storeReferences: 
+@storeManifests: 
+@fakeSignatures: 
+
+<!-- ##### FUNCTION xmlSecDSigCtxCreate ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxDestroy ##### -->
+<para>
+
+</para>
+
+@ctx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigValidate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@key: 
+@signNode: 
+@result: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigGenerate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@key: 
+@signNode: 
+@result: 
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecDSigResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@self: 
+@sign: 
+@result: 
+@signMethod: 
+@key: 
+@firstSignRef: 
+@lastSignRef: 
+@firstManifestRef: 
+@lastManifestRef: 
+@buffer: 
+
+<!-- ##### STRUCT xmlSecReferenceResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@self: 
+@refType: 
+@result: 
+@next: 
+@prev: 
+@uri: 
+@id: 
+@type: 
+@digestMethod: 
+@buffer: 
+
+<!-- ##### ENUM xmlSecReferenceType ##### -->
+<para>
+
+</para>
+
+@xmlSecSignedInfoReference: 
+@xmlSecManifestReference: 
+
+<!-- ##### FUNCTION xmlSecDSigResultCreate ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@signNode: 
+@sign: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigResultDestroy ##### -->
+<para>
+
+</para>
+
+@result: 
+
+
+<!-- ##### FUNCTION xmlSecDSigResultDebugDump ##### -->
+<para>
+
+</para>
+
+@result: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureDestroy ##### -->
+<para>
+
+</para>
+
+@signNode: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddSignedInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddKeyInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignatureAddObject ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddC14NMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@c14nMethod: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@encMethod: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddSignMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@signMethod: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@encMethod: 
+
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddReference ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@digestMethod: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecObjectAddSignProperties ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@target: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecObjectAddManifest ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecManifestAddReference ##### -->
+<para>
+
+</para>
+
+@manifestNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+

@@ -1,0 +1,288 @@
+<HTML
+><HEAD
+><TITLE
+>XML Security Library Reference</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.76b+
+"><LINK
+REL="HOME"
+TITLE="XML Security Library Reference Manual"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="XML Security Library Programming Notes"
+HREF="xmlsec-notes.html"><LINK
+REL="NEXT"
+TITLE="xmlsec.h"
+HREF="xmlsec-xmlsec.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="4"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="5"
+>XML Security Library Reference Manual</FONT
+></TH
+></TR
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-notes.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&nbsp;</B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-xmlsec.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="XMLSEC-REF"
+></A
+>XML Security Library Reference</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="xmlsec-xmlsec.html"
+>xmlsec.h</A
+>&nbsp;--&nbsp;The library initialization/cleanup functions.</DT
+><DT
+><A
+HREF="xmlsec-xmldsig.html"
+>xmldsig.h</A
+>&nbsp;--&nbsp;The <A
+HREF="http://www.w3.org/Signature/"
+TARGET="_top"
+>XML Digital Signature</A
+> 
+standard implementation.</DT
+><DT
+><A
+HREF="xmlsec-xmlenc.html"
+>xmlenc.h</A
+>&nbsp;--&nbsp;The <A
+HREF="http://www.w3.org/Encryption/"
+TARGET="_top"
+>XML Encrypiton</A
+> 
+standard implementation.</DT
+><DT
+><A
+HREF="xmlsec-errors.html"
+>errors.h</A
+>&nbsp;--&nbsp;The errors reporting functions.</DT
+><DT
+><A
+HREF="xmlsec-debug.html"
+>debug.h</A
+>&nbsp;--&nbsp;The usefull debugging functions.</DT
+><DT
+><A
+HREF="xmlsec-keyinfo.html"
+>keyinfo.h</A
+>&nbsp;--&nbsp;The &lt;dsig:KeyInfo&gt; element manipulation functions.</DT
+><DT
+><A
+HREF="xmlsec-keys.html"
+>keys.h</A
+>&nbsp;--&nbsp;The keys helper functions.</DT
+><DT
+><A
+HREF="xmlsec-keysmngr.html"
+>keysmngr.h</A
+>&nbsp;--&nbsp;The simple keys manager implementation.</DT
+><DT
+><A
+HREF="xmlsec-transforms.html"
+>transforms.h</A
+>&nbsp;--&nbsp;The transforms functions.</DT
+><DT
+><A
+HREF="xmlsec-version.html"
+>version.h</A
+>&nbsp;--&nbsp;The library version infromation.</DT
+><DT
+><A
+HREF="xmlsec-x509.html"
+>x509.h</A
+>&nbsp;--&nbsp;The X509 certificates functions.</DT
+></DL
+></DIV
+><P
+>This section contains the API reference for xmlsec. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><BR
+CLEAR="all"><BR><TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="left"
+><A
+HREF="xmlsec-notes.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&#60;&#60;&#60; Previous Page</B
+></FONT
+></A
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#00C000"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>&nbsp;</B
+></FONT
+></TD
+><TD
+WIDTH="25%"
+BGCOLOR="#C00000"
+ALIGN="right"
+><A
+HREF="xmlsec-xmlsec.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Next Page &#62;&#62;&#62;</B
+></FONT
+></A
+></TD
+></TR
+><TR
+><TD
+COLSPAN="2"
+ALIGN="left"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>XML Security Library Programming Notes</B
+></FONT
+></TD
+><TD
+COLSPAN="2"
+ALIGN="right"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>xmlsec.h</B
+></FONT
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

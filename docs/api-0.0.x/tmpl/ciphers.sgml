@@ -1,0 +1,133 @@
+<!-- ##### SECTION Title ##### -->
+ciphers.h
+
+<!-- ##### SECTION Short_Description ##### -->
+The ciphers transform.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT xmlSecCipherTransform ##### -->
+<para>
+
+</para>
+
+@id: 
+@status: 
+@dontDestroy: 
+@data: 
+@encode: 
+@next: 
+@prev: 
+@binData: 
+@bufIn: 
+@bufOut: 
+@cipherCtx: 
+@iv: 
+@ivPos: 
+@cipherData: 
+
+<!-- ##### TYPEDEF xmlSecCipherTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION xmlSecCipherUpdateMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecCipherFinalMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCipherTransformRead ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCipherTransformWrite ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCipherTransformFlush ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEvpCipherUpdate ##### -->
+<para>
+
+</para>
+
+@cipher: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEvpCipherFinal ##### -->
+<para>
+
+</para>
+
+@cipher: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCipherUpdate ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCipherFinal ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+

@@ -1,0 +1,561 @@
+<refentry id="xmlsec-errors">
+<refmeta>
+<refentrytitle>errors.h</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>errors.h</refname><refpurpose>The errors reporting functions.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="XMLSEC-ERRORS-LIB-CAPS">XMLSEC_ERRORS_LIB</link>
+#define     <link linkend="XMLSEC-ERRORS-FUNCTION-CAPS">XMLSEC_ERRORS_FUNCTION</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC_ERRORS_R_XML_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC_ERRORS_R_IO_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_KEY</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_SIZE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC_ERRORS_R_INVALID_USAGE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC_ERRORS_R_INVALID_NODESET</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</link>
+#define     <link linkend="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</link>
+void        (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)         (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg);
+void        <link linkend="xmlSecErrorsInit">xmlSecErrorsInit</link>                (void);
+void        <link linkend="xmlSecErrorsShutdown">xmlSecErrorsShutdown</link>            (void);
+void        <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link>         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);
+extern      int <link linkend="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</link>;
+#define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
+void        <link linkend="xmlSecError">xmlSecError</link>                     (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg,
+                                             ...);
+#define     <link linkend="xmlSecAssert">xmlSecAssert</link>                    ( p )
+#define     <link linkend="xmlSecAssert2">xmlSecAssert2</link>                   ( p, ret )
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+All errors are reported to application provided callback function.
+The default callback function reports an error to OpenSSL using
+<link linkend="ERR-put-error">ERR_put_error</link>() function and to LibXML using <link linkend="xmlGenericError">xmlGenericError</link>() 
+function.
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-LIB-CAPS">XMLSEC_ERRORS_LIB</title>
+<programlisting>#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
+</programlisting>
+<para>
+Macro. The XMLSec library id for OpenSSL errors reporting functions.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-FUNCTION-CAPS">XMLSEC_ERRORS_FUNCTION</title>
+<programlisting>#define XMLSEC_ERRORS_FUNCTION			0
+</programlisting>
+<para>
+Macro. The XMLSec library functions OpenSSL errors reporting functions.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	
+</programlisting>
+<para>
+Failed to allocate memory error.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2
+</programlisting>
+<para>
+An XMLSec function failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3
+</programlisting>
+<para>
+Crypto (OpenSSL) function failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC_ERRORS_R_XML_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_XML_FAILED		 4
+</programlisting>
+<para>
+LibXML function failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_XSLT_FAILED		 5
+</programlisting>
+<para>
+LibXSLT function failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC_ERRORS_R_IO_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_IO_FAILED		 6
+</programlisting>
+<para>
+IO operation failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10
+</programlisting>
+<para>
+Invlaid transform.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11
+</programlisting>
+<para>
+Invlaid transform data.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12
+</programlisting>
+<para>
+Invalid transform or key.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_KEY</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY		 13
+</programlisting>
+<para>
+Key is invalid.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
+</programlisting>
+<para>
+Key data is invalid.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_SIZE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15
+</programlisting>
+<para>
+Invalid key size.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16
+</programlisting>
+<para>
+Invalid key origin.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17
+</programlisting>
+<para>
+Key not found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_SIZE		 18
+</programlisting>
+<para>
+Invalid size.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_DATA		 19
+</programlisting>
+<para>
+Invalid data.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TYPE		 21
+</programlisting>
+<para>
+Invalid type.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC_ERRORS_R_INVALID_USAGE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_USAGE		 22
+</programlisting>
+<para>
+Invalid usage.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23
+</programlisting>
+<para>
+Invalid node,</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC_ERRORS_R_INVALID_NODESET</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24
+</programlisting>
+<para>
+Invalid nodes set,</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25
+</programlisting>
+<para>
+Invalid node content.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26
+</programlisting>
+<para>
+Invalid node attribute.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</title>
+<programlisting>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27
+</programlisting>
+<para>
+Node already present,</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</title>
+<programlisting>#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28
+</programlisting>
+<para>
+The transform requires the same document.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29
+</programlisting>
+<para>
+Node not found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</title>
+<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30
+</programlisting>
+<para>
+Max allowed retrievals level reached.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 41
+</programlisting>
+<para>
+Certificate verification failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 42
+</programlisting>
+<para>
+Requested certificate is not found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 43
+</programlisting>
+<para>
+The certificate is revoked.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
+<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
+</programlisting>
+<para>
+The &lt;dsig:Reference&gt; validation failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</title>
+<programlisting>#define XMLSEC_ERRORS_R_ASSERTION		 100
+</programlisting>
+<para>
+Invalid assertion.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</title>
+<programlisting>#define XMLSEC_ERRORS_R_DISABLED		 101
+</programlisting>
+<para>
+The feature is disabled during compilation.
+Check './configure --help' for details on how to
+enable it.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsCallback">xmlSecErrorsCallback ()</title>
+<programlisting>void        (*xmlSecErrorsCallback)         (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg);</programlisting>
+<para>
+The errors reporting callback function typedef.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
+<entry> the error origin filename (__FILE__).
+</entry></row>
+<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
+<entry> the error origin line number (__LINE__).
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry> the error origin function (__FUNCTIION__).
+</entry></row>
+<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
+<entry> the error code.
+</entry></row>
+<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
+<entry> the error message.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsInit">xmlSecErrorsInit ()</title>
+<programlisting>void        xmlSecErrorsInit                (void);</programlisting>
+<para>
+Initializes the errors reporting. It is called from <link linkend="xmlSecInit">xmlSecInit</link>() function.
+and applications must not call this function directly.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsShutdown">xmlSecErrorsShutdown ()</title>
+<programlisting>void        xmlSecErrorsShutdown            (void);</programlisting>
+<para>
+Cleanups the errors reporting. It is called from <link linkend="xmlSecShutdown">xmlSecShutdown</link>() function.
+and applications must not call this function directly.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback ()</title>
+<programlisting>void        xmlSecErrorsSetCallback         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);</programlisting>
+<para>
+Sets the errors callback function <parameter>callback</parameter> that will be called 
+every time an error occurs.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>callback</parameter>&nbsp;:</entry>
+<entry> the errors callback function.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</title>
+<programlisting>extern int xmlSecPrintErrorMessages;
+</programlisting>
+<para>
+The flag that determines whether the error message will be printed
+out immidiatelly. For default errors reporting callback, this flag
+determines whether the error is reported to LibXML library or not.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</title>
+<programlisting>#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
+</programlisting>
+<para>
+The macro that specifies the location (file, line and function)
+for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecError">xmlSecError ()</title>
+<programlisting>void        xmlSecError                     (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg,
+                                             ...);</programlisting>
+<para>
+Reports an error.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
+<entry> the error origin filename (__FILE__).
+</entry></row>
+<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
+<entry> the error origin line number (__LINE__).
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry> the error origin function (__FUNCTIION__).
+</entry></row>
+<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
+<entry> the error code.
+</entry></row>
+<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
+<entry> the error message in printf format.
+</entry></row>
+<row><entry align="right"><parameter>...</parameter>&nbsp;:</entry>
+<entry> the parameters for the <parameter>msg</parameter>.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAssert">xmlSecAssert()</title>
+<programlisting>#define     xmlSecAssert( p )</programlisting>
+<para>
+Macro. Verifies that <parameter>p</parameter> is true and calls <link linkend="return">return</link>() otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
+<entry> the expression.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAssert2">xmlSecAssert2()</title>
+<programlisting>#define     xmlSecAssert2( p, ret )</programlisting>
+<para>
+Macro. Verifies that <parameter>p</parameter> is true and calls return(<parameter>ret</parameter>) otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
+<entry> the expression.
+</entry></row>
+<row><entry align="right"><parameter>ret</parameter>&nbsp;:</entry>
+<entry> the return value.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,96 @@
+<!-- ##### SECTION Title ##### -->
+buffered.h
+
+<!-- ##### SECTION Short_Description ##### -->
+The buffered transform.
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT xmlSecBufferedTransform ##### -->
+<para>
+
+</para>
+
+@id: 
+@status: 
+@dontDestroy: 
+@data: 
+@encode: 
+@next: 
+@prev: 
+@binData: 
+@buffer: 
+
+<!-- ##### TYPEDEF xmlSecBufferedTransformId ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION xmlSecBufferedProcessMethod ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferedTransformRead ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferedTransformWrite ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buf: 
+@size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferedTransformFlush ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferedDestroy ##### -->
+<para>
+
+</para>
+
+@buffered: 
+
+
+<!-- ##### FUNCTION xmlSecBufferedProcess ##### -->
+<para>
+
+</para>
+
+@transform: 
+@buffer: 
+@Returns: 
+
+

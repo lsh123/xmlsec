@@ -1,0 +1,75 @@
+<refentry id="xmlsec-membuf">
+<refmeta>
+<refentrytitle>membuf.h</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>membuf.h</refname><refpurpose>The memory buffer transform.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+extern      xmlSecTransformId <link linkend="xmlSecMemBuf">xmlSecMemBuf</link>;
+<link linkend="xmlBufferPtr">xmlBufferPtr</link> <link linkend="xmlSecMemBufTransformGetBuffer">xmlSecMemBufTransformGetBuffer</link> (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             int removeBuffer);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecMemBuf">xmlSecMemBuf</title>
+<programlisting>extern xmlSecTransformId xmlSecMemBuf;
+</programlisting>
+<para>
+The memory buffer transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMemBufTransformGetBuffer">xmlSecMemBufTransformGetBuffer ()</title>
+<programlisting><link linkend="xmlBufferPtr">xmlBufferPtr</link> xmlSecMemBufTransformGetBuffer (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             int removeBuffer);</programlisting>
+<para>
+Gets the memory transform buffer.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to memory buffer transform.
+</entry></row>
+<row><entry align="right"><parameter>removeBuffer</parameter>&nbsp;:</entry>
+<entry> the flag that indicates whether the buffer
+	will be removed from the transform.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the xmlBufferPtr. If <parameter>removeBuffer</parameter> is set to 1 then the buffer 
+is removed from transform and the caller is responsible for freeing it
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

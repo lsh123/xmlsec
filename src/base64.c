@@ -165,7 +165,7 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
        
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncBase64Encode");
 	return;
     }
     ctx = (xmlSecBase64CtxPtr)(transform->data);
@@ -197,7 +197,7 @@ xmlSecBase64Create(xmlSecTransformId id) {
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
 	return(NULL);	
     }
     
@@ -249,7 +249,7 @@ xmlSecBase64Destroy(xmlSecTransformPtr transform) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
 	return;
     }
     
@@ -281,7 +281,7 @@ xmlSecBase64Update(xmlSecCipherTransformPtr cipher,
 
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
 	return(-1);
     }
     
@@ -320,7 +320,7 @@ xmlSecBase64Final(xmlSecCipherTransformPtr cipher) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
 	return(-1);
     }    
     ctx = (xmlSecBase64CtxPtr)cipher->data;

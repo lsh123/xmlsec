@@ -21,6 +21,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/errors.h>
 
 static const xmlChar xmlExcC14NNs[] = "http://www.w3.org/2001/10/xml-exc-c14n#";
 static const xmlChar xmlExcC14NWithCommentsNs[] = "http://www.w3.org/2001/10/xml-exc-c14n#WithComments";
@@ -105,26 +106,26 @@ xmlSecTransformId xmlSecC14NExclusiveWithComments = (xmlSecTransformId)&xmlSecC1
  */
 static xmlSecTransformPtr 
 xmlSecC14NTransformCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "";
     xmlSecC14NTransformPtr transform;
-    
-    if((id != xmlSecC14NInclusive) && (id != xmlSecC14NInclusiveWithComments) &&
-       (id != xmlSecC14NExclusive) && (id != xmlSecC14NExclusiveWithComments)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
+    if((id != xmlSecC14NInclusive) && 
+       (id != xmlSecC14NInclusiveWithComments) &&
+       (id != xmlSecC14NExclusive) && 
+       (id != xmlSecC14NExclusiveWithComments)) {
+       
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecC14NInclusive, xmlSecC14NInclusiveWithComments, xmlSecC14NExclusive, xmlSecC14NExclusiveWithComments");
 	return(NULL);
     }
     
     transform = (xmlSecC14NTransformPtr) xmlMalloc(sizeof(xmlSecC14NTransform));  
     if (transform == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: malloc failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(transform, 0, sizeof(xmlSecC14NTransform));
@@ -141,18 +142,18 @@ xmlSecC14NTransformCreate(xmlSecTransformId id) {
  */
 static void
 xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformDestroy";
     xmlSecC14NTransformPtr ptr;
+
+    xmlSecAssert(transform != NULL);
 
     if(!xmlSecTransformCheckId(transform, xmlSecC14NInclusive) &&
        !xmlSecTransformCheckId(transform, xmlSecC14NInclusiveWithComments) &&
        !xmlSecTransformCheckId(transform, xmlSecC14NExclusive) &&
        !xmlSecTransformCheckId(transform, xmlSecC14NExclusiveWithComments) ) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecC14NInclusive, xmlSecC14NInclusiveWithComments, xmlSecC14NExclusive, xmlSecC14NExclusiveWithComments");
 	return;
     }
 
@@ -180,7 +181,6 @@ xmlSecC14NTransformDestroy(xmlSecTransformPtr transform) {
  */
 static int
 xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformReadNode";
     xmlSecC14NTransformPtr ptr;
     xmlNodePtr node;
     xmlChar *buffer;
@@ -188,17 +188,19 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     size_t count, len;
     xmlChar **nsList;        
     
+    xmlSecAssert2(transform != NULL, -1);
+
     if(!xmlSecTransformCheckId(transform, xmlSecC14NInclusive) &&
        !xmlSecTransformCheckId(transform, xmlSecC14NInclusiveWithComments) &&
        !xmlSecTransformCheckId(transform, xmlSecC14NExclusive) &&
        !xmlSecTransformCheckId(transform, xmlSecC14NExclusiveWithComments) ) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecC14NInclusive, xmlSecC14NInclusiveWithComments, xmlSecC14NExclusive, xmlSecC14NExclusiveWithComments");    
 	return(-1);
     }
+
     ptr = (xmlSecC14NTransformPtr)transform;
     if(ptr->data != NULL) {	
 	xmlFree(ptr->data); 
@@ -228,11 +230,9 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     
     ptr->data = buffer = xmlGetProp(node, BAD_CAST "PrefixList");
     if(buffer == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: InclusiveNamespaces node has no PrefixList att\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE,
+		    "<InclusiveNamespaces /> node has no PrefixList attribute");
 	return(-1);
     }
     
@@ -251,10 +251,9 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     
     ptr->c14nData = nsList = (xmlChar**)xmlMalloc(sizeof(xmlChar*) * (count + 2));
     if(ptr->c14nData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "xmlSecC14NTransformInclusivePrefixesListRead: malloc failed\n");
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(-1);
     }
     memset(nsList, 0, sizeof(xmlChar*) * (count + 2));
@@ -289,35 +288,24 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
  */
 int		
 xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixList) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NExclAddInclNamespaces";
     xmlNodePtr node;
-    
-    if((transformNode == NULL) || (prefixList == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transformNode or prefix list is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    }
+
+    xmlSecAssert2(transformNode != NULL, -1);    
+    xmlSecAssert2(prefixList != NULL, -1);
 
     node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
     if(node != NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: InclusiveNamespaces node already present\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    "InclusiveNamespace");
 	return(-1);
     }
     
     node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
     if(node == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create InclusiveNamespaces node\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecAddChild(\"InclusiveNamespaces\")");
 	return(-1);
     }    
     
@@ -338,10 +326,19 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
 static int
 xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
 			xmlSecNodeSetPtr nodes, xmlOutputBufferPtr buffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecC14NTransformExec";
     int ret;
-        
-    if(xmlSecTransformCheckId(transform, xmlSecC14NInclusive)) {    
+
+
+    xmlSecAssert2(doc!= NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    if(transform == NULL) {
+	/* the default c14n trasnform */
+	ret = xmlC14NExecute(doc, 
+			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
+			nodes, 
+			0, NULL, 0, buffer);
+    } else if(xmlSecTransformCheckId(transform, xmlSecC14NInclusive)) {    
     	ret = xmlC14NExecute(doc, 
 			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
@@ -361,38 +358,19 @@ xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
 			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 
 			1, (xmlChar**)(transform->c14nData), 1, buffer);
-    } else if(transform == NULL) {
-	/* the default c14n trasnform */
-	ret = xmlC14NExecute(doc, 
-			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
-			nodes, 
-			0, NULL, 0, buffer);
     } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
-	return(-1);    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecC14NInclusive, xmlSecC14NInclusiveWithComments, xmlSecC14NExclusive, xmlSecC14NExclusiveWithComments");    
+	return(-1);
     }
-
+    
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlC14NExecute");
 	return(-1);
     }    
     return(0);
 }
-
-
-
-
-
-
-
-
-
 

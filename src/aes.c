@@ -305,7 +305,7 @@ xmlSecAesCreate(xmlSecTransformId id) {
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncAes128Cbc, xmlSecEncAes192Cbc, xmlSecEncAes256Cbc");
 	return(NULL);	
     }
     cipherId = (xmlSecCipherTransformId)id;
@@ -350,7 +350,7 @@ xmlSecAesDestroy(xmlSecTransformPtr transform) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecEncAes128Cbc, xmlSecEncAes192Cbc, xmlSecEncAes256Cbc");
 	return;
     }
     
@@ -387,7 +387,7 @@ xmlSecAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
-		    NULL);
+		    "xmlSecEncAes128Cbc, xmlSecEncAes192Cbc, xmlSecEncAes256Cbc");
 	return(-1);
     }
     
@@ -443,10 +443,13 @@ xmlSecKWAesCreate(xmlSecTransformId id) {
 
     xmlSecAssert2(id != NULL, NULL);
         
-    if((id != xmlSecKWAes128) && (id != xmlSecKWAes192) && (id != xmlSecKWAes256)){
+    if((id != xmlSecKWAes128) && 
+       (id != xmlSecKWAes192) && 
+       (id != xmlSecKWAes256)) {
+
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);    
+		    "xmlSecKWAes128, xmlSecKWAes192, xmlSecKWAes256");
 	return(NULL);
     }
 
@@ -484,7 +487,7 @@ xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
 
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecKWAes128, xmlSecKWAes192, xmlSecKWAes256");
 	return;
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -521,7 +524,7 @@ xmlSecKWAesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
 	
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
-		    NULL);
+		    "xmlSecKWAes128, xmlSecKWAes192, xmlSecKWAes256 and xmlSecAesKey");
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -573,7 +576,7 @@ xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
 	
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    NULL);
+		    "xmlSecKWAes128, xmlSecKWAes192, xmlSecKWAes256");
 	return(-1);
     } 
 

@@ -21,23 +21,26 @@ extern "C" {
 /** 
  * Error codes
  */
-#define XMLSEC_ERRORS_R_MALLOC_FAILED		 -1001  /* "failed to allocate memory" */
-#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 -1002	/* "xmlsec operation failed" */
-#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 -1003	/* "crypto operation failed" */
-#define XMLSEC_ERRORS_R_XML_FAILED		 -1004	/* "xml operation failed" */
+#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1  	/* "failed to allocate memory" */
+#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2	/* "xmlsec operation failed" */
+#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3	/* "crypto operation failed" */
+#define XMLSEC_ERRORS_R_XML_FAILED		 4	/* "xml operation failed" */
+#define XMLSEC_ERRORS_R_XSLT_FAILED		 5	/* "xslt operation failed" */
 
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 -2001	/* "invlaid transform" */
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 -2007	/* "invlaid transform data	" */
-#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY -2002	/* "invalid transform or key" */
-#define XMLSEC_ERRORS_R_INVALID_KEY		 -2003	/* "key is invalid" */
-#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 -2004	/* "key data is invalid" */
-#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 -2005	/* "invalid key size" */
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 11	/* "invlaid transform" */
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 12	/* "invlaid transform data	" */
+#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 13	/* "invalid transform or key" */
+#define XMLSEC_ERRORS_R_INVALID_KEY		 14	/* "key is invalid" */
+#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 15	/* "key data is invalid" */
+#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 16	/* "invalid key size" */
 
-#define XMLSEC_ERRORS_R_INVALID_SIZE		 -3001	/* "invalid size" */
-#define XMLSEC_ERRORS_R_INVALID_DATA		 -3002	/* "invalid data" */
-#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 -3003	/* "invalid node content" */
+#define XMLSEC_ERRORS_R_INVALID_SIZE		 21	/* "invalid size" */
+#define XMLSEC_ERRORS_R_INVALID_DATA		 22	/* "invalid data" */
+#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 23	/* "invalid node content" */
+#define XMLSEC_ERRORS_R_INVLAID_NODE_ATTRIBUTE	 24	/* "invalid node attribute" */
+#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 25	/* "node already present" */
 
-#define XMLSEC_ERRORS_R_ASSERTION		 -4001	/* "assertion" */
+#define XMLSEC_ERRORS_R_ASSERTION		 31	/* "assertion" */
 
 /*
 #define XMLSEC_ERRORS_R_

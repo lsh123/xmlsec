@@ -24,6 +24,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/ciphers.h>
+#include <xmlsec/errors.h>
 
 /**
  * BinTransform methods to be used in the Id structure
@@ -39,17 +40,16 @@
 int  	
 xmlSecCipherTransformRead(xmlSecBinTransformPtr transform, 
 			  unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherTransformRead";
     xmlSecCipherTransformPtr cipher;
     size_t res = 0;
     int ret;
     
+    xmlSecAssert2(transform != NULL, -1);
+    
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
     cipher = (xmlSecCipherTransformPtr)transform;
@@ -71,11 +71,9 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 	        /* generate random iv */
 		ret = RAND_bytes(cipher->iv, cipher->id->ivSize);
 		if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: failed to generate iv\n",
-			func);	
-#endif 	    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"RAND_bytes - %d", ret);
 		    return(-1);    
 		}
 	    }
@@ -87,11 +85,9 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 	    if(cipher->ivPos >= cipher->id->ivSize) {
 		ret = EVP_EncryptInit(&(cipher->cipherCtx), NULL, NULL, cipher->iv); 		
 		if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: encrypt init failed\n",
-			func);	
-#endif 	    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"EVP_EncryptInit - %d");
 		    return(-1);    
 		}
 	    }
@@ -102,11 +98,9 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 			    cipher->iv + cipher->ivPos, 
 			    cipher->id->ivSize - cipher->ivPos);
 		if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: previous transform read failed (iv)\n",
-			func);	
-#endif
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecBinTransformRead - %d", ret);
 		    return(-1);
 		}
 		cipher->ivPos += ret;
@@ -114,11 +108,9 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 	    if(cipher->ivPos >= cipher->id->ivSize) {
 		ret = EVP_DecryptInit(&(cipher->cipherCtx), NULL, NULL, cipher->iv);
 		if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: decrypt init failed\n",
-			func);	
-#endif 	    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"EVP_DecryptInit - %d", ret);
 		    return(-1);    
 		}
 	    }	    
@@ -129,20 +121,16 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 	ret = xmlSecBinTransformRead((xmlSecTransformPtr)cipher->prev, 
 				     cipher->bufIn, cipher->id->bufInSize);	
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: previous transform read failed\n",
-		func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBinTransformRead - %d", ret);
 	    return(-1);
 	} else if (ret > 0) {
 	    ret = xmlSecCipherUpdate((xmlSecTransformPtr)cipher, cipher->bufIn, ret);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: cipher update failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecCipherUpdate - %d", ret);
 		return(-1);
 	    } else if (ret > 0) {
 		memcpy(buf + res, cipher->bufOut, ret);
@@ -151,11 +139,9 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 	} else {
 	    ret = xmlSecCipherFinal((xmlSecTransformPtr)cipher);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: cipher final failed\n",
-		    func);	
-#endif
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecCipherFinal - %d", ret);
 		return(-1);
 	    } else if (ret > 0) {
 		memcpy(buf + res, cipher->bufOut, ret);
@@ -180,18 +166,17 @@ xmlSecCipherTransformRead(xmlSecBinTransformPtr transform,
 int  	
 xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform, 
                           const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherTransformWrite";
     xmlSecCipherTransformPtr cipher;
     size_t res = 0;
     size_t block;
     int ret;
+
+    xmlSecAssert2(transform != NULL, -1);
     
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
     cipher = (xmlSecCipherTransformPtr)transform;
@@ -212,32 +197,26 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
 	        /* generate random iv */
 		ret = RAND_bytes(cipher->iv, cipher->id->ivSize);
 		if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: failed to generate iv\n",
-			func);	
-#endif 	    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"RAND_bytes - %d", ret);
 		    return(-1);    
 		}
 	    }
 	    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)cipher->next, 
 					    cipher->iv, cipher->id->ivSize);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-	    	    "%s: next transform write failed (iv)\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecBinTransformWrite - %d", ret);
 	        return(-1);
 	    }		
 	    cipher->ivPos = cipher->id->ivSize;
 	    ret = EVP_EncryptInit(&(cipher->cipherCtx), NULL, NULL, cipher->iv); 		
 	    if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: encrypt init failed\n",
-		    func);	
-#endif 	    
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "EVP_EncryptInit - %d", ret);
 		return(-1);    
 	    }
 	} else {
@@ -256,11 +235,9 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
 	    if(cipher->ivPos >= cipher->id->ivSize) {
 		ret = EVP_DecryptInit(&(cipher->cipherCtx), NULL, NULL, cipher->iv);
 		if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    		    xmlGenericError(xmlGenericErrorContext,
-			"%s: decrypt init failed\n",
-			func);	
-#endif 	    
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				"EVP_DecryptInit - %d", ret);
 		    return(-1);    
 		}
 	    }	    
@@ -278,21 +255,17 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
 	}
 	ret = xmlSecCipherUpdate((xmlSecTransformPtr)cipher, buf + res, block);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: cipher update failed\n",
-	        func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecCipherUpdate - %d", ret);
 	    return(-1);
 	} else if (ret > 0) {
 	    ret = xmlSecBinTransformWrite((xmlSecTransformPtr)cipher->next, 
 					    cipher->bufOut, ret);
 	    if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-	    	    "%s: next transform write failed\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecBinTransformWrite - %d", ret);
 	        return(-1);
 	    }	
 	}
@@ -312,16 +285,16 @@ xmlSecCipherTransformWrite(xmlSecBinTransformPtr transform,
  */
 int
 xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherTransformFlush";
     xmlSecCipherTransformPtr cipher;
     int ret;
     
+
+    xmlSecAssert2(transform != NULL, -1);
+    
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
     cipher = (xmlSecCipherTransformPtr)transform;
@@ -333,21 +306,17 @@ xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
 
     ret = xmlSecCipherFinal((xmlSecTransformPtr)cipher);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-		"%s: cipher final failed\n",
-		func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecCipherFinal - %d", ret);
 	return(-1);
     } else if (ret > 0) {
 	ret = xmlSecBinTransformWrite((xmlSecTransformPtr)cipher->next, 
 				      cipher->bufOut, ret);
 	if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-	        "%s: next transform write failed\n",
-	        func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBinTransformWrite - %d", ret);
 	    return(-1);
 	}	
     }	  
@@ -356,11 +325,9 @@ xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
     /* do not forget to flush next transform */
     ret = xmlSecBinTransformFlush((xmlSecTransformPtr)cipher->next);
     if(ret < 0){
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: next transform flush failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBinTransformFlush - %d", ret);
 	return(-1);
     }	  
     return(0);
@@ -378,25 +345,18 @@ xmlSecCipherTransformFlush(xmlSecBinTransformPtr transform) {
 int 	
 xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 			 const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEvpCipherUpdate";
     int res;
     int ret;
 
-    if(!xmlSecBinTransformCheckSubType(cipher, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
-	return(-1);
-    }
-
-    if(cipher->cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: evp cipher is invalidis invalid\n",
-	    func);	
-#endif
+    xmlSecAssert2(cipher != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+    
+    if(!xmlSecBinTransformCheckSubType(cipher, xmlSecBinTransformSubTypeCipher) ||
+       (cipher->cipherData == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
 
@@ -409,11 +369,9 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
 		cipher->bufOut, &res, (unsigned char *)buffer, size);    		 		 
     }
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: evp cipher update failed\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (cipher->encode) ? "EVP_EncryptUpdate - %d" :  "EVP_DecryptUpdate - %d", ret);
 	return(-1);	
     }
     return(res);    
@@ -426,25 +384,16 @@ xmlSecEvpCipherUpdate(xmlSecCipherTransformPtr cipher,
  */
 int 	
 xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecEvpCipherFinal";
     int res;
     int ret;
 
-    if(!xmlSecBinTransformCheckSubType(cipher, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
-	return(-1);
-    }
+    xmlSecAssert2(cipher != NULL, -1);
     
-    if(cipher->cipherData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: evp cipher is invalidis invalid\n",
-	    func);	
-#endif
+    if(!xmlSecBinTransformCheckSubType(cipher, xmlSecBinTransformSubTypeCipher) ||
+        (cipher->cipherData == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
 
@@ -474,22 +423,18 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 	if(ret == 1) {
 	    res = (b > 0) ? b - cipher->bufOut[b - 1] : 0;
 	    if(res < 0) {
-#ifdef XMLSEC_DEBUG
-    		xmlGenericError(xmlGenericErrorContext,
-		    "%s: padding is greater than buffer\n",
-		    func);	
-#endif
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_INVALID_DATA,
+			    "padding is greater than buffer");
 		return(-1);	
 	    }
 	}
 #endif /* XMLSEC_OPENSSL097 */			
     }
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: evp cipher final failed\n",
-	    func);	
-#endif
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (cipher->encode) ? "EVP_EncryptFinal - %d" : "EVP_DecryptFinal - %d", ret);
 	return(-1);	
     }
     return(res);    
@@ -512,18 +457,18 @@ xmlSecEvpCipherFinal(xmlSecCipherTransformPtr cipher) {
 int 	
 xmlSecCipherUpdate(xmlSecTransformPtr transform,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherUpdate";
     xmlSecCipherTransformPtr cipher;    
 
+    xmlSecAssert2(transform != NULL, -1);
+    
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
     cipher = (xmlSecCipherTransformPtr)transform;
+
     if(((cipher->id->cipherUpdate) != NULL) && (size > 0)) {
 	return((cipher->id->cipherUpdate)(cipher, (unsigned char *)buffer, size)); 
     }
@@ -540,17 +485,17 @@ xmlSecCipherUpdate(xmlSecTransformPtr transform,
  */
 int 	
 xmlSecCipherFinal(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCipherFinal";
     xmlSecCipherTransformPtr cipher;    
 
+    xmlSecAssert2(transform != NULL, -1);
+    
     if(!xmlSecBinTransformCheckSubType(transform, xmlSecBinTransformSubTypeCipher)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecBinTransformSubTypeCipher");
 	return(-1);
     }
+
     cipher = (xmlSecCipherTransformPtr)transform;
     if((cipher->id->cipherFinal) != NULL) {
 	return((cipher->id->cipherFinal)(cipher)); 

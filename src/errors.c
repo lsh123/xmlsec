@@ -37,7 +37,7 @@ xmlSecError(const char* file, int line, const char* func,
 	va_end(va);	
     }
     xmlGenericError(xmlGenericErrorContext,
-	    "%s (%s:%d) - %d - %s \n",
+	    "%s (%s:%d) - error %d - %s \n",
 	    (func != NULL) ? func : "unknown",
 	    (file != NULL) ? file : "unknown",
 	    line,

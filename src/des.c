@@ -30,6 +30,7 @@
 #include <xmlsec/ciphers.h>
 #include <xmlsec/buffered.h> 
 #include <xmlsec/base64.h>
+#include <xmlsec/errors.h>
 
 #define XMLSEC_DES_BLOCK_SIZE			8
 #define XMLSEC_DES3_KEY_SIZE			24
@@ -181,32 +182,29 @@ xmlSecTransformId xmlSecKWDes3Cbc = (xmlSecTransformId)&xmlSecKWDes3CbcId;
  */ 
 static xmlSecTransformPtr 
 xmlSecDesCreate(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesCreate";
     xmlSecCipherTransformId cipherId;
     xmlSecCipherTransformPtr cipher;
     const EVP_CIPHER *type;
 
-    if(id == xmlSecEncDes3Cbc) {
-	type = EVP_des_ede3_cbc();	
-    } else {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+    xmlSecAssert2(id != NULL, NULL);
+        
+    if(id != xmlSecEncDes3Cbc) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncDes3Cbc");
 	return(NULL);	
     }
+    
+    type = EVP_des_ede3_cbc();	
 
     cipherId = (xmlSecCipherTransformId)id;
     cipher = (xmlSecCipherTransformPtr)xmlMalloc(sizeof(xmlSecCipherTransform) +
 			sizeof(unsigned char) * (cipherId->bufInSize + 
         		cipherId->bufOutSize + cipherId->ivSize));
     if(cipher == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: malloc failed\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
 
@@ -232,15 +230,13 @@ xmlSecDesCreate(xmlSecTransformId id) {
  */ 
 static void 	
 xmlSecDesDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesDestroy";
     xmlSecCipherTransformPtr cipher;
-    
+
+    xmlSecAssert(transform != NULL);    
     if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncDes3Cbc");
 	return;
     }
     
@@ -261,30 +257,29 @@ xmlSecDesDestroy(xmlSecTransformPtr transform) {
  */ 
 static int  	
 xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesAddKey";
     xmlSecCipherTransformPtr cipher;
     xmlSecDesKeyDataPtr desKey;
     int ret;
-    
+
+    xmlSecAssert2(transform != NULL, -1);    
+    xmlSecAssert2(key != NULL, -1);    
+
     if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc) || 
-	!xmlSecKeyCheckId(key, xmlSecDesKey) ) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+	!xmlSecKeyCheckId(key, xmlSecDesKey) || (key->keyData == NULL)) {
+
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    "xmlSecEncDes3Cbc and xmlSecDesKey");
 	return(-1);
-    }
-    
+    }    
     cipher = (xmlSecCipherTransformPtr) transform;
     desKey = (xmlSecDesKeyDataPtr)key->keyData;
 
     if(desKey->keySize < cipher->id->keySize) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key (%d bytes) is invalid\n",
-	    func, desKey->keySize);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    "%d bytes when %d bytes expected",
+		    desKey->keySize, cipher->id->keySize);	
 	return(-1);    
     }
     
@@ -299,11 +294,9 @@ xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     }
     
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encrypt/decrypt init failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    (cipher->encode) ? "EVP_EncryptInit - %d" : "EVP_DecryptInit - %d", ret);	
 	return(-1);    
     }
     return(0);
@@ -317,15 +310,14 @@ xmlSecDesAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     
 static xmlSecTransformPtr 
 xmlSecDes3KWCreate(xmlSecTransformId id) {    
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWCreate";
     xmlSecBufferedTransformPtr buffered;
-    
+
+    xmlSecAssert2(id != NULL, NULL);
+        
     if(id != xmlSecKWDes3Cbc){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecKWDes3Cbc");
 	return(NULL);
     }
 
@@ -334,11 +326,9 @@ xmlSecDes3KWCreate(xmlSecTransformId id) {
      */
     buffered = (xmlSecBufferedTransformPtr)xmlMalloc(sizeof(xmlSecBufferedTransform));
     if(buffered == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: xmlSecBufferedTransform malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -349,15 +339,14 @@ xmlSecDes3KWCreate(xmlSecTransformId id) {
 
 static void 	
 xmlSecDes3KWDestroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWDestroy";
     xmlSecBufferedTransformPtr buffered;
-    
+
+    xmlSecAssert(transform != NULL);
+
     if(!xmlSecTransformCheckId(transform, xmlSecKWDes3Cbc)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecKWDes3Cbc");
 	return;
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
@@ -375,35 +364,25 @@ xmlSecDes3KWAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWAddKey";
     xmlSecBufferedTransformPtr buffered;
     xmlSecDesKeyDataPtr desKey;
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecKWDes3Cbc) || 
-       !xmlSecKeyCheckId(key, xmlSecDesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or key is invalid\n",
-	    func);	
-#endif 	    
+
+    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(key != NULL, -1);
+
+    if(!xmlSecTransformCheckId(transform, xmlSecKWDes3Cbc) ||
+       !xmlSecKeyCheckId(key, xmlSecDesKey) || (key->keyData == NULL)) {
+       
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY,
+		    "xmlSecKWDes3Cbc and xmlSecDesKey");
 	return(-1);
     }    
     buffered = (xmlSecBufferedTransformPtr)transform;
-    
-    if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key des data is null\n",
-	    func);	
-#endif 	    
-	return(-1);
-    } 
-    
     desKey = xmlSecDesKeyDataCreate(((xmlSecDesKeyDataPtr)key->keyData)->key,
 				    ((xmlSecDesKeyDataPtr)key->keyData)->keySize);
     if(desKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: DES key duplication failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDesKeyDataCreate");
 	return(-1);    
     }
         
@@ -421,38 +400,35 @@ xmlSecDes3KWAddKey(xmlSecBinTransformPtr transform, xmlSecKeyPtr key) {
  */
 static int
 xmlSecDes3KWProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWProcess";
     size_t size;
     int ret;    
-    
+
+    xmlSecAssert2(buffered != NULL, -1);
+    xmlSecAssert2(buffer!= NULL, -1);
+
     if(!xmlSecTransformCheckId(buffered, xmlSecKWDes3Cbc) ||
-       xmlSecDes3KWKeyData(buffered) == NULL || (buffer == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform or buffer is invalid\n",
-	    func);	
-#endif 	    
+       (xmlSecDes3KWKeyData(buffered) == NULL)) {
+       
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecKWDes3Cbc");
 	return(-1);
     }    
-
+    
     size = xmlBufferLength(buffer);
     if((size % 8) != 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer size is not 8 bytes aligned\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "%d bytes - not 8 bytes aligned", size);
 	return(-1);
     }
     if(buffered->encode) { 
 	/* the encoded key is 16 bytes longer */
 	ret = xmlBufferResize(buffer, size + 16 + 8);
 	if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: buffer re-size failed (%d)\n",
-	        func, size + 16);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			"%d bytes", size + 16); 
 	    return(-1);
 	}
 	
@@ -470,11 +446,9 @@ xmlSecDes3KWProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
 				 (unsigned char *)xmlBufferContent(buffer));
     }
     if(ret <= 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: encryption/decryption failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    (buffered->encode) ? "xmlSecDes3KWEncode - %d" : "xmlSecDes3KWDecode - %d", ret);
 	return(-1);	
     }
     buffer->use = ret;
@@ -511,29 +485,22 @@ static int
 xmlSecDes3KWEncode(const unsigned char *key, size_t keySize,
 		    const unsigned char *in, size_t inSize,
 		    unsigned char *out) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWEncode";
     unsigned char sha1[SHA_DIGEST_LENGTH];    
     unsigned char iv[8];
     size_t s;    
     int ret;
-    
-    if((key == NULL) || (keySize != XMLSEC_DES3_KEY_SIZE) || 
-			(in == NULL) || (inSize == 0) || (out == NULL)) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad input parameters\n",
-	    func);	
-#endif 	    
-	return(-1);	
-    }
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize == XMLSEC_DES3_KEY_SIZE, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     /* step 2: calculate sha1 and CMS */
     if(SHA1(in, inSize, sha1) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SHA1 calculation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "SHA1");
 	return(-1);	    
     }
 
@@ -543,22 +510,18 @@ xmlSecDes3KWEncode(const unsigned char *key, size_t keySize,
     /* step 4: generate random iv */
     ret = RAND_bytes(iv, 8);
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-    	    "%s: failed to generate iv\n",
-	    func);	
-#endif 	 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "RAND_bytes - %d", ret);
 	return(-1);    
     }	
 
     /* step 5: first encryption, result is TEMP1 */
     ret = xmlSecDes3CbcEnc(key, iv, out, inSize + 8, out, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: first encrypt failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDes3CbcEnc - %d", ret);
 	return(-1);	    
     }
 
@@ -570,22 +533,18 @@ xmlSecDes3KWEncode(const unsigned char *key, size_t keySize,
     /* step 7: reverse octets order, result is TEMP3 */
     ret = xmlSecBufferReverse(out, s);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: reverse failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferReverse - %d", ret);
 	return(-1);	    
     }
 
     /* step 8: second encryption with static IV */
     ret = xmlSecDes3CbcEnc(key, xmlSecDes3KWIv, out, s, out, 1);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: second encrypt failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDes3CbcEnc - %d", ret);
 	return(-1);	    
     }
     s = ret; 
@@ -622,29 +581,22 @@ static int
 xmlSecDes3KWDecode(const unsigned char *key, size_t keySize,
 		    const unsigned char *in, size_t inSize,
 		    unsigned char *out) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3KWDecode";
     unsigned char sha1[SHA_DIGEST_LENGTH];    
     size_t s;    
     int ret;
-    
-    if((key == NULL) || (keySize != XMLSEC_DES3_KEY_SIZE) || 
-			(in == NULL) || (inSize == 0) || (out == NULL)) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad input parameters\n",
-	    func);	
-#endif 	    
-	return(-1);	
-    }
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(keySize == XMLSEC_DES3_KEY_SIZE, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     /* step 2: first decryption with static IV, result is TEMP3 */
     ret = xmlSecDes3CbcEnc(key, xmlSecDes3KWIv, in, inSize, out, 0);
     if((ret < 0) || (ret < 8)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: first decrypt failed or result length < 8\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDes3CbcEnc - %d", ret);
 	return(-1);	    
     }
     s = ret; 
@@ -652,42 +604,34 @@ xmlSecDes3KWDecode(const unsigned char *key, size_t keySize,
     /* step 3: reverse octets order in TEMP3, result is TEMP2 */
     ret = xmlSecBufferReverse(out, s);
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: reverse failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferReverse - %d", ret);
 	return(-1);	    
     }
 
     /* steps 4 and 5: get IV and decrypt second time, result is WKCKS */
     ret = xmlSecDes3CbcEnc(key, out, out + 8, s - 8, out, 0);
     if((ret < 0) || (ret < 8)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: second decrypt failed or result length < 8\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDes3CbcEnc - %d", ret);
 	return(-1);	    
     }
     s = ret; 
     
     /* steps 6 and 7: calculate SHA1 and validate it */
     if(SHA1(out, s - 8, sha1) == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SHA1 calculation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "SHA1");
 	return(-1);	    
     }
 
     if(memcmp(sha1, out + s - 8, 8) != 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: SHA1 validation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_DATA,
+		    "SHA1 does not match");
 	return(-1);	    
     }
     
@@ -698,29 +642,23 @@ static int
 xmlSecDes3CbcEnc(const unsigned char *key, const unsigned char *iv,
                 const unsigned char *in, size_t inSize,
 	        unsigned char *out, int enc) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDes3CbcEnc";
     EVP_CIPHER_CTX cipherCtx;
     int updateLen;
     int finalLen;
     int ret;
     
-    if((key == NULL) || (iv == NULL) || (in == NULL) || (inSize == 0) || (out == NULL)) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: bad input parameters\n",
-	    func);	
-#endif 	    
-	return(-1);	
-    }
-
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(iv != NULL, -1);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize > 0, -1);
+    xmlSecAssert2(out != NULL, -1);
+    
     EVP_CIPHER_CTX_init(&cipherCtx);
     ret = EVP_CipherInit(&cipherCtx, EVP_des_ede3_cbc(), key, iv, enc);  
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: init failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "EVP_CipherInit - %d", ret);
 	return(-1);	
     }
 
@@ -730,21 +668,17 @@ xmlSecDes3CbcEnc(const unsigned char *key, const unsigned char *iv,
     
     ret = EVP_CipherUpdate(&cipherCtx, out, &updateLen, in, inSize);
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s:  update failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "EVP_CipherUpdate - %d", ret);
 	return(-1);	
     }
     
     ret = EVP_CipherFinal(&cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: final failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "EVP_CipherFinal - %d", ret);
 	return(-1);	
     }    
     EVP_CIPHER_CTX_cleanup(&cipherCtx);
@@ -754,19 +688,11 @@ xmlSecDes3CbcEnc(const unsigned char *key, const unsigned char *iv,
 
 static int 
 xmlSecBufferReverse(unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecBufferReverse";
     size_t s;
     size_t i;
     unsigned char c;
     
-    if(buf == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buf is null\n",
-	    func);	
-#endif 	    
-	return(-1);	
-    }
+    xmlSecAssert2(buf != NULL, -1);
     
     s = size / 2;
     --size;
@@ -788,25 +714,22 @@ xmlSecBufferReverse(unsigned char *buf, size_t size) {
  */
 static xmlSecKeyPtr	
 xmlSecDesKeyCreate(xmlSecKeyId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyCreate";
     xmlSecKeyPtr key;
     
-    if((id != xmlSecDesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is unknown\n",
-	    func);
-#endif 	    
+    xmlSecAssert2(id != NULL, NULL);
+    
+    if(id != xmlSecDesKey) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(NULL);	
     }
     
     key = (xmlSecKeyPtr)xmlMalloc(sizeof(struct _xmlSecKey));
     if(key == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(key, 0, sizeof(struct _xmlSecKey));  
@@ -823,14 +746,13 @@ xmlSecDesKeyCreate(xmlSecKeyId id) {
  */
 static void
 xmlSecDesKeyDestroy(xmlSecKeyPtr key) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyDestroy";
+
+    xmlSecAssert(key != NULL);
 
     if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return;
     }
     
@@ -846,23 +768,20 @@ static xmlSecKeyPtr
 xmlSecDesKeyDuplicate(xmlSecKeyPtr key) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyDuplicate";
     xmlSecKeyPtr newKey;
-    
+
+    xmlSecAssert2(key != NULL, NULL);    
     if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(NULL);
     }
     
     newKey = xmlSecDesKeyCreate(key->id);
     if(newKey == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDesKeyCreate");	
 	return(NULL);
     }
     
@@ -872,11 +791,9 @@ xmlSecDesKeyDuplicate(xmlSecKeyPtr key) {
 	data = (xmlSecDesKeyDataPtr)key->keyData;
 	newKey->keyData = xmlSecDesKeyDataCreate(data->key, data->keySize);
 	if(newKey->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: key data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDesKeyDataCreate");
 	    xmlSecKeyDestroy(newKey);
 	    return(NULL);    
 	}
@@ -892,26 +809,23 @@ xmlSecDesKeyDuplicate(xmlSecKeyPtr key) {
  */
 int		
 xmlSecDesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyGenerate";
     xmlSecDesKeyDataPtr data;
     int ret;
     
+    xmlSecAssert2(key != NULL, -1);    
+
     if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(-1);
     }
     
     data = xmlSecDesKeyDataCreate(buf, size);
     if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key data creation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecDesKeyDataCreate");
 	return(-1);    
     }
 
@@ -919,11 +833,9 @@ xmlSecDesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
 	/* generate the key */
 	ret = RAND_bytes(data->key, data->keySize);
 	if(ret != 1) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to generate key\n",
-		func);	
-#endif 	 
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"RAND_bytes - %d", ret);
 	    xmlSecDesKeyDataDestroy(data);   
 	    return(-1);    
 	}	
@@ -947,38 +859,33 @@ xmlSecDesKeyGenerate(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
  */
 static int
 xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyRead";
     xmlChar *keyStr;
     size_t keyLen;
     int ret;
+
+    xmlSecAssert2(key != NULL, -1);    
+    xmlSecAssert2(node != NULL, -1);
     
-    if((!xmlSecKeyCheckId(key, xmlSecDesKey)) || 
-	(node == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or node is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(-1);
     }
-
+    
     keyStr = xmlNodeGetContent(node);
     if(keyStr == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to get key\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+		    NULL);
 	return(-1);
     }
     /* usual trick: decode into the same buffer */
     ret = xmlSecBase64Decode(keyStr, (unsigned char*)keyStr, xmlStrlen(keyStr));
     if(ret < 0) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key base64 decode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Decode - %d", ret);
 	xmlFree(keyStr);
 	return(-1);
     }
@@ -992,11 +899,9 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
     if(keyLen > 0) {
 	key->keyData = xmlSecDesKeyDataCreate((unsigned char*)keyStr, keyLen);
 	if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDesKeyDataCreate");
 	    xmlFree(keyStr);
 	    return(-1);
 	}
@@ -1019,16 +924,16 @@ xmlSecDesKeyRead(xmlSecKeyPtr key, xmlNodePtr node) {
  */
 static int
 xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyWrite";
     xmlSecDesKeyDataPtr ptr;
     xmlChar *str;
+
+    xmlSecAssert2(key != NULL, -1);    
+    xmlSecAssert2(parent != NULL, -1);
     
-    if((!xmlSecKeyCheckId(key, xmlSecDesKey)) || (parent == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or parent is null\n",
-	    func);	
-#endif 	    
+    if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(-1);
     }
     ptr = (xmlSecDesKeyDataPtr)key->keyData;
@@ -1045,11 +950,9 @@ xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
     
     str = xmlSecBase64Encode(ptr->key, ptr->keySize, 0);
     if(str == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key base64 encode failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBase64Encode");
 	return(-1);
     }    
     xmlNodeSetContent(parent, str);
@@ -1069,14 +972,12 @@ xmlSecDesKeyWrite(xmlSecKeyPtr key, xmlSecKeyType type, xmlNodePtr parent) {
  */
 static  int
 xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyReadBinary";
-    
+    xmlSecAssert2(key != NULL, -1);    
+
     if(!xmlSecKeyCheckId(key, xmlSecDesKey)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(-1);
     }
 
@@ -1088,11 +989,9 @@ xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
     if((buf != NULL) && (size > 0)) {
 	key->keyData = xmlSecDesKeyDataCreate(buf, size);
 	if(key->keyData == NULL) {
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: data creation failed\n",
-		func);	
-#endif 	    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecDesKeyDataCreate");
 	    return(-1);
 	}
 	key->type = xmlSecKeyTypePrivate;
@@ -1114,38 +1013,34 @@ xmlSecDesKeyReadBinary(xmlSecKeyPtr key, const unsigned char *buf, size_t size) 
 static  int
 xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
 			unsigned char **buf, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyWriteBinary";
     xmlSecDesKeyDataPtr keyData;
-        
-    if(!xmlSecKeyCheckId(key, xmlSecDesKey) || 
-       (buf == NULL) || (size == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: key is invalid or buf, size is null\n",
-	    func);	
-#endif 	    
+
+    xmlSecAssert2(key != NULL, -1);    
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size != NULL, -1);
+    
+    if(!xmlSecKeyCheckId(key, xmlSecDesKey) || (key->keyData == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    "xmlSecDesKey");	
 	return(-1);
     }
     (*buf) = NULL;
     (*size) = 0;
     
     keyData = (xmlSecDesKeyDataPtr)key->keyData;
-    if((keyData == NULL) || (keyData->key == NULL) || (keyData->keySize <= 0)) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: invalid keyData\n",
-	    func);	
-#endif 	    
+    if((keyData->key == NULL) || (keyData->keySize <= 0)) {	
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+		    NULL);
 	return(-1);
     }
     
     (*buf) = (unsigned char *)xmlMalloc(sizeof(unsigned char) * keyData->keySize);
     if((*buf) == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to allocate buffer\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(-1);
     }
     memcpy((*buf), keyData->key, keyData->keySize);
@@ -1170,18 +1065,15 @@ xmlSecDesKeyWriteBinary(xmlSecKeyPtr key, xmlSecKeyType type ATTRIBUTE_UNUSED,
  */
 static xmlSecDesKeyDataPtr	
 xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyDataCreate";
     xmlSecDesKeyDataPtr data;
     
     data = (xmlSecDesKeyDataPtr) xmlMalloc(
 		sizeof(xmlSecDesKeyData) +
 		sizeof(unsigned char) * keySize);	    
     if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: memory allocation failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL);
 	return(NULL);
     }
     memset(data, 0,  sizeof(xmlSecDesKeyData) + 
@@ -1203,16 +1095,7 @@ xmlSecDesKeyDataCreate(const unsigned char *key, size_t keySize) {
  */
 static void
 xmlSecDesKeyDataDestroy(xmlSecDesKeyDataPtr data) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDesKeyDataDestroy";
-
-    if(data == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: data is null\n",
-	    func);	
-#endif 	    
-	return;
-    }
+    xmlSecAssert(data != NULL);
     
     memset(data, 0, sizeof(struct _xmlSecDesKeyData) +  
 		    sizeof(unsigned char) * data->keySize);

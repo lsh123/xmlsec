@@ -13,3 +13,201 @@
 @keyReq: 
 @Returns: 
 
+<!-- ##### STRUCT xmlSecXkissServerCtx ##### -->
+<para>
+
+</para>
+
+@userData: 
+@flags: 
+@flags2: 
+@keyInfoReadCtx: 
+@keyInfoWriteCtx: 
+@enabledRespondWith: 
+@result: 
+@keys: 
+@mode: 
+@opaqueClientDataNode: 
+@firtsMsgExtNode: 
+@firtsRespMechNode: 
+@keyInfoNode: 
+@respWithList: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxCopyUserPref ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxCreate ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@output: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@output: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxDestroy ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxFinalize ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxInitialize ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@keysMngr: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxLocate ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxReset ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+
+<!-- ##### FUNCTION xmlSecXkissServerCtxValidate ##### -->
+<para>
+
+</para>
+
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithDefaultReadNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithDefaultWriteNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithIdListFindByName ##### -->
+<para>
+
+</para>
+
+@list: 
+@name: 
+@Returns: 
+
+<!-- ##### STRUCT xmlSecXkmsRespondWithKlass ##### -->
+<para>
+
+</para>
+
+@name: 
+@nodeName: 
+@nodeNs: 
+@readNode: 
+@writeNode: 
+
+<!-- ##### MACRO xmlSecXkmsRespondWithKlassGetName ##### -->
+<para>
+
+</para>
+
+@id: 
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithReadNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecXkmsRespondWithReadNodeMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecXkmsRespondWithWriteNode ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### USER_FUNCTION xmlSecXkmsRespondWithWriteNodeMethod ##### -->
+<para>
+
+</para>
+
+@id: 
+@xkissServerCtx: 
+@node: 
+@Returns: 
+
+<!-- ##### ENUM xmlXkissServerCtxMode ##### -->
+<para>
+
+</para>
+
+@xmlXkissServerCtxModeLocateRequest: 
+@xmlXkissServerCtxModeValidateRequest: 
+

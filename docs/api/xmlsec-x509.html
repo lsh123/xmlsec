@@ -88,9 +88,9 @@
 <h1>
 <a name="XMLSEC-X509"></a>x509</h1>
 <div class="REFNAMEDIV">
-<a name="AEN16822"></a><h2>Name</h2>x509 -- </div>
+<a name="AEN18080"></a><h2>Name</h2>x509 -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN16825"></a><h2>Synopsis</h2>
+<a name="AEN18083"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-x509.html#XMLSEC-X509DATA-CERTIFICATE-NODE-CAPS">XMLSEC_X509DATA_CERTIFICATE_NODE</a>
@@ -104,40 +104,37 @@ int         <a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509Da
                                              <a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtxPtr</a> keyInfoCtx);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN16837"></a><h2>Description</h2>
+<a name="AEN18095"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN16840"></a><h2>Details</h2>
+<a name="AEN18098"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN16842"></a><h3>
+<a name="AEN18100"></a><h3>
 <a name="XMLSEC-X509DATA-CERTIFICATE-NODE-CAPS"></a>XMLSEC_X509DATA_CERTIFICATE_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CERTIFICATE_NODE			0x00000001</pre>
-<p>
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node found or would be written back.</p>
+<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate" target="_top">&lt;dsig:X509Certificate/&gt;</a> node found or would be written back.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16849"></a><h3>
+<a name="AEN18107"></a><h3>
 <a name="XMLSEC-X509DATA-SUBJECTNAME-NODE-CAPS"></a>XMLSEC_X509DATA_SUBJECTNAME_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SUBJECTNAME_NODE			0x00000002</pre>
-<p>
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node found or would be written back.</p>
+<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName" target="_top">&lt;dsig:X509SubjectName/&gt;</a> node found or would be written back.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16856"></a><h3>
+<a name="AEN18114"></a><h3>
 <a name="XMLSEC-X509DATA-ISSUERSERIAL-NODE-CAPS"></a>XMLSEC_X509DATA_ISSUERSERIAL_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_ISSUERSERIAL_NODE			0x00000004</pre>
-<p>
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node found or would be written back.</p>
+<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial" target="_top">&lt;dsig:X509IssuerSerial/&gt;</a> node found or would be written back.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16863"></a><h3>
+<a name="AEN18121"></a><h3>
 <a name="XMLSEC-X509DATA-SKI-NODE-CAPS"></a>XMLSEC_X509DATA_SKI_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_SKI_NODE				0x00000008</pre>
 <p>&lt;dsig:/X509SKI&gt; node found or would be written back.</p>
@@ -145,16 +142,15 @@ int         <a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509Da
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16869"></a><h3>
+<a name="AEN18127"></a><h3>
 <a name="XMLSEC-X509DATA-CRL-NODE-CAPS"></a>XMLSEC_X509DATA_CRL_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_X509DATA_CRL_NODE				0x00000010</pre>
-<p>
-<a href="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL" target="_top">&lt;dsig:X509CRL/&gt;</a> node found or would be written back.</p>
+<p><a href="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL" target="_top">&lt;dsig:X509CRL/&gt;</a> node found or would be written back.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16876"></a><h3>
+<a name="AEN18134"></a><h3>
 <a name="XMLSEC-X509DATA-DEFAULT-CAPS"></a>XMLSEC_X509DATA_DEFAULT</h3>
 <pre class="PROGRAMLISTING">#define     XMLSEC_X509DATA_DEFAULT</pre>
 <p>Default set of nodes to write in case of empty
@@ -163,7 +159,7 @@ int         <a href="xmlsec-x509.html#XMLSECX509DATAGETNODECONTENT">xmlSecX509Da
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN16883"></a><h3>
+<a name="AEN18141"></a><h3>
 <a name="XMLSECX509DATAGETNODECONTENT"></a>xmlSecX509DataGetNodeContent ()</h3>
 <pre class="PROGRAMLISTING">int         xmlSecX509DataGetNodeContent    (<font>xmlNodePtr</font> node,
                                              int deleteChildren,
@@ -174,19 +170,19 @@ a bits mask.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16893"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18151"><span style="white-space: nowrap"><var class="PARAMETER">node</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16899"><span style="white-space: nowrap"><var class="PARAMETER">deleteChildren</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18157"><span style="white-space: nowrap"><var class="PARAMETER">deleteChildren</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>	the flag that indicates whether to remove node children after reading.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16904"><span style="white-space: nowrap"><var class="PARAMETER">keyInfoCtx</var> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18162"><span style="white-space: nowrap"><var class="PARAMETER">keyInfoCtx</var> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo" target="_top">&lt;dsig:KeyInfo/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN16910"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18168"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the bit mask representing the <a href="http://www.w3.org/TR/xmldsig-core/#sec-X509Data" target="_top">&lt;dsig:X509Data/&gt;</a> node content
 or a negative value if an error occurs.</p></td>
 </tr>

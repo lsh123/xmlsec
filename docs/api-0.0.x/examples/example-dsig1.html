@@ -57,8 +57,7 @@ it's   the way to  go.<br>
       source code</a>
       , <a href="dsig1/test.tmpl">the original template</a>
        and <a href="dsig1/test.xml">the signed document</a>
-      . <br>
-</p>
+      . <br></p>
 <h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.</h4>
 <p>
         Before using the libraries we need to initialize them. This should
@@ -83,8 +82,7 @@ it's   the way to  go.<br>
     <code> /**<br>
      * Init xmlsec<br>
      */<br>
-    xmlSecInit();    <br></code><br>
-</p>
+    xmlSecInit();    <br></code><br></p>
 <h4>Step 1. Loading key and creating the DSig context.</h4>
 <p>
         Before signing or verifying the document you should create DSig context 
@@ -115,8 +113,7 @@ per application<br><br><code>
     if(dsigCtx == NULL) {<br>
       fprintf(stderr,"Error: failed to create dsig context\n");<br>
       goto done; <br>
-    }</code><br>
-</p>
+    }</code><br></p>
 <h4>Step 2. Loading the template.</h4>
 <p>
         XMLDSig requires the XML document to be loaded with all default attributes
@@ -155,8 +152,7 @@ empty    document for file \"%s\"\n", argv[2]);<br>
         In this example we set global flags to control how the document is
  loaded.    In the real life you would probably want to control the loading
  on "per-document"    basis. Check the libxml/c14n.h header file from LibXML
- distribution for  details.<br>
-</p>
+ distribution for  details.<br></p>
 <h4>Step 3. Adding or changing data in the template.</h4>
 <p>
         Now it's time to change the data in the template. We will simply
@@ -171,8 +167,7 @@ add   one   more node with some text:<br><br>
                 fprintf(stderr,"Error: 
 failed    to add data\n");<br>
                 goto done;<br>
-            }</code><br>
-</p>
+            }</code><br></p>
 <h4>Step 4. Sign It!</h4>
 <p>
         We are ready to sign the document!<br><br><code>
@@ -185,8 +180,7 @@ failed    to add data\n");<br>
 	        fprintf(stderr,"Error: signature failed\n");<br>
 	        goto done; <br>
 	     }     <br>
-	    </code>  <br>
-</p>
+	    </code>  <br></p>
 <h4>Step 5. Now we can print the result.</h4>
 <p>
 Print the document to stdout:<br><br><code>
@@ -202,8 +196,7 @@ Print the document to stdout:<br><br><code>
               goto done;<br>
             }<br>
             fwrite(string, len, 1, stdout);<br>
-            xmlFree(string);</code><br>
-</p>
+            xmlFree(string);</code><br></p>
 <h4>Step 6. Cleanup.</h4>
 <p>
         At the end we need to destroy DSig context, the doc and KeysManager;

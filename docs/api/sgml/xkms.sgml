@@ -15,27 +15,66 @@
 
 
 
-enum        <link linkend="xmlXkissServerCtxMode">xmlXkissServerCtxMode</link>;
-struct      <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtx</link>;
-<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> <link linkend="xmlSecXkissServerCtxCreate">xmlSecXkissServerCtxCreate</link>
+enum        <link linkend="xmlSecXkmsResultMajor">xmlSecXkmsResultMajor</link>;
+enum        <link linkend="xmlSecXkmsResultMinor">xmlSecXkmsResultMinor</link>;
+enum        <link linkend="xmlSecXkmsKeyBindingStatus">xmlSecXkmsKeyBindingStatus</link>;
+enum        <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link>;
+<link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> <link linkend="xmlSecXkmsServerFormatFromString">xmlSecXkmsServerFormatFromString</link>
+                                            (const <link linkend="xmlChar">xmlChar</link> *str);
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecXkmsServerFormatToString">xmlSecXkmsServerFormatToString</link>
+                                            (<link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format);
+struct      <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtx</link>;
+<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> <link linkend="xmlSecXkmsServerCtxCreate">xmlSecXkmsServerCtxCreate</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecXkissServerCtxDestroy">xmlSecXkissServerCtxDestroy</link>     (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx);
-int         <link linkend="xmlSecXkissServerCtxInitialize">xmlSecXkissServerCtxInitialize</link>  (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+void        <link linkend="xmlSecXkmsServerCtxDestroy">xmlSecXkmsServerCtxDestroy</link>      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);
+int         <link linkend="xmlSecXkmsServerCtxInitialize">xmlSecXkmsServerCtxInitialize</link>   (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-void        <link linkend="xmlSecXkissServerCtxFinalize">xmlSecXkissServerCtxFinalize</link>    (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx);
-int         <link linkend="xmlSecXkissServerCtxCopyUserPref">xmlSecXkissServerCtxCopyUserPref</link>
-                                            (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> dst,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> src);
-void        <link linkend="xmlSecXkissServerCtxReset">xmlSecXkissServerCtxReset</link>       (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx);
-int         <link linkend="xmlSecXkissServerCtxLocate">xmlSecXkissServerCtxLocate</link>      (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+void        <link linkend="xmlSecXkmsServerCtxFinalize">xmlSecXkmsServerCtxFinalize</link>     (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);
+void        <link linkend="xmlSecXkmsServerCtxReset">xmlSecXkmsServerCtxReset</link>        (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);
+int         <link linkend="xmlSecXkmsServerCtxCopyUserPref">xmlSecXkmsServerCtxCopyUserPref</link> (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> dst,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> src);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxProcess">xmlSecXkmsServerCtxProcess</link>      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);
+int         <link linkend="xmlSecXkmsServerCtxRequestRead">xmlSecXkmsServerCtxRequestRead</link>  (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-int         <link linkend="xmlSecXkissServerCtxValidate">xmlSecXkissServerCtxValidate</link>    (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="xmlNode">xmlNodePtr</link> node);
-void        <link linkend="xmlSecXkissServerCtxDebugDump">xmlSecXkissServerCtxDebugDump</link>   (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxResponseWrite">xmlSecXkmsServerCtxResponseWrite</link>
+                                            (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxRequestUnwrap">xmlSecXkmsServerCtxRequestUnwrap</link>
+                                            (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxResponseWrap">xmlSecXkmsServerCtxResponseWrap</link> (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxFatalErrorResponseCreate">xmlSecXkmsServerCtxFatalErrorResponseCreate</link>
+                                            (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);
+void        <link linkend="xmlSecXkmsServerCtxSetResult">xmlSecXkmsServerCtxSetResult</link>    (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlSecXkmsResultMajor">xmlSecXkmsResultMajor</link> resultMajor,
+                                             <link linkend="xmlSecXkmsResultMinor">xmlSecXkmsResultMinor</link> resultMinor);
+void        <link linkend="xmlSecXkmsServerCtxDebugDump">xmlSecXkmsServerCtxDebugDump</link>    (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-void        <link linkend="xmlSecXkissServerCtxDebugXmlDump">xmlSecXkissServerCtxDebugXmlDump</link>
-                                            (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+void        <link linkend="xmlSecXkmsServerCtxDebugXmlDump">xmlSecXkmsServerCtxDebugXmlDump</link> (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
+#define     <link linkend="xmlSecXkmsServerCtxPtrListId">xmlSecXkmsServerCtxPtrListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecXkmsServerCtxPtrListGetKlass">xmlSecXkmsServerCtxPtrListGetKlass</link>
+                                            (void);
+#define     <link linkend="XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-RESPONSE-MECHANISM-CAPS">XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM</link>
+#define     <link linkend="XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-RESPOND-WITH-CAPS">XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH</link>
+#define     <link linkend="XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-KEY-USAGE-CAPS">XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE</link>
+#define     <link linkend="XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-PENDING-CAPS">XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_PENDING</link>
+#define     <link linkend="XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-REPRESENT-CAPS">XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT</link>
+#define     <link linkend="XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-REQUEST-SIGNATURE-VALUE-CAPS">XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE</link>
+#define     <link linkend="XMLSEC-XKMS-NO-RESPONSE-LIMIT-CAPS">XMLSEC_XKMS_NO_RESPONSE_LIMIT</link>
+#define     <link linkend="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-ISSUER-TRAST-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST</link>
+#define     <link linkend="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-REVOCATION-STATUS-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS</link>
+#define     <link linkend="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-VALIDITY-INTERVAL-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL</link>
+#define     <link linkend="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-SIGNATURE-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE</link>
 <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecXkmsRespondWithIdsGet">xmlSecXkmsRespondWithIdsGet</link>
                                             (void);
 int         <link linkend="xmlSecXkmsRespondWithIdsInit">xmlSecXkmsRespondWithIdsInit</link>    (void);
@@ -45,46 +84,36 @@ int         <link linkend="xmlSecXkmsRespondWithIdsRegisterDefault">xmlSecXkmsRe
                                             (void);
 int         <link linkend="xmlSecXkmsRespondWithIdsRegister">xmlSecXkmsRespondWithIdsRegister</link>
                                             (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id);
-int         <link linkend="xmlSecXkmsRespondWithReadNode">xmlSecXkmsRespondWithReadNode</link>   (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+int         <link linkend="xmlSecXkmsRespondWithNodeRead">xmlSecXkmsRespondWithNodeRead</link>   (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-int         <link linkend="xmlSecXkmsRespondWithWriteNode">xmlSecXkmsRespondWithWriteNode</link>  (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+int         <link linkend="xmlSecXkmsRespondWithNodeWrite">xmlSecXkmsRespondWithNodeWrite</link>  (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
 void        <link linkend="xmlSecXkmsRespondWithDebugDump">xmlSecXkmsRespondWithDebugDump</link>  (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecXkmsRespondWithDebugXmlDump">xmlSecXkmsRespondWithDebugXmlDump</link>
                                             (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-int         <link linkend="xmlSecXkmsRespondWithDefaultReadNode">xmlSecXkmsRespondWithDefaultReadNode</link>
+int         <link linkend="xmlSecXkmsRespondWithDefaultNodeRead">xmlSecXkmsRespondWithDefaultNodeRead</link>
                                             (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-int         <link linkend="xmlSecXkmsRespondWithDefaultWriteNode">xmlSecXkmsRespondWithDefaultWriteNode</link>
+int         <link linkend="xmlSecXkmsRespondWithDefaultNodeWrite">xmlSecXkmsRespondWithDefaultNodeWrite</link>
                                             (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-int         (<link linkend="xmlSecXkmsRespondWithReadNodeMethod">*xmlSecXkmsRespondWithReadNodeMethod</link>)
-                                            (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="xmlNode">xmlNodePtr</link> node);
-int         (<link linkend="xmlSecXkmsRespondWithWriteNodeMethod">*xmlSecXkmsRespondWithWriteNodeMethod</link>)
-                                            (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="xmlNode">xmlNodePtr</link> node);
-struct      <link linkend="xmlSecXkmsRespondWithKlass">xmlSecXkmsRespondWithKlass</link>;
-#define     <link linkend="xmlSecXkmsRespondWithKlassGetName">xmlSecXkmsRespondWithKlassGetName</link>(id)
 #define     <link linkend="xmlSecXkmsRespondWithIdListId">xmlSecXkmsRespondWithIdListId</link>
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecXkmsRespondWithIdListGetKlass">xmlSecXkmsRespondWithIdListGetKlass</link>
                                             (void);
 int         <link linkend="xmlSecXkmsRespondWithIdListFind">xmlSecXkmsRespondWithIdListFind</link> (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                              <link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id);
-<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> <link linkend="xmlSecXkmsRespondWithIdListFindByName">xmlSecXkmsRespondWithIdListFindByName</link>
+<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> <link linkend="xmlSecXkmsRespondWithIdListFindByNodeValue">xmlSecXkmsRespondWithIdListFindByNodeValue</link>
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             const <link linkend="xmlChar">xmlChar</link> *name);
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);
 int         <link linkend="xmlSecXkmsRespondWithIdListWrite">xmlSecXkmsRespondWithIdListWrite</link>
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
 #define     <link linkend="xmlSecXkmsRespondWithIdUnknown">xmlSecXkmsRespondWithIdUnknown</link>
 #define     <link linkend="xmlSecXkmsRespondWithKeyNameId">xmlSecXkmsRespondWithKeyNameId</link>
@@ -114,6 +143,59 @@ int         <link linkend="xmlSecXkmsRespondWithIdListWrite">xmlSecXkmsRespondWi
 #define     <link linkend="xmlSecXkmsRespondWithSPKIId">xmlSecXkmsRespondWithSPKIId</link>
 <link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> <link linkend="xmlSecXkmsRespondWithSPKIGetKlass">xmlSecXkmsRespondWithSPKIGetKlass</link>
                                             (void);
+<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecXkmsServerRequestIdsGet">xmlSecXkmsServerRequestIdsGet</link>
+                                            (void);
+int         <link linkend="xmlSecXkmsServerRequestIdsInit">xmlSecXkmsServerRequestIdsInit</link>  (void);
+void        <link linkend="xmlSecXkmsServerRequestIdsShutdown">xmlSecXkmsServerRequestIdsShutdown</link>
+                                            (void);
+int         <link linkend="xmlSecXkmsServerRequestIdsRegisterDefault">xmlSecXkmsServerRequestIdsRegisterDefault</link>
+                                            (void);
+int         <link linkend="xmlSecXkmsServerRequestIdsRegister">xmlSecXkmsServerRequestIdsRegister</link>
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id);
+int         <link linkend="xmlSecXkmsServerRequestNodeRead">xmlSecXkmsServerRequestNodeRead</link> (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);
+int         <link linkend="xmlSecXkmsServerRequestExecute">xmlSecXkmsServerRequestExecute</link>  (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerRequestNodeWrite">xmlSecXkmsServerRequestNodeWrite</link>
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);
+void        <link linkend="xmlSecXkmsServerRequestDebugDump">xmlSecXkmsServerRequestDebugDump</link>
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecXkmsServerRequestDebugXmlDump">xmlSecXkmsServerRequestDebugXmlDump</link>
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+#define     <link linkend="xmlSecXkmsServerRequestIdListId">xmlSecXkmsServerRequestIdListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecXkmsServerRequestIdListGetKlass">xmlSecXkmsServerRequestIdListGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecXkmsServerRequestIdListFind">xmlSecXkmsServerRequestIdListFind</link>
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id);
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestIdListFindByName">xmlSecXkmsServerRequestIdListFindByName</link>
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *name);
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestIdListFindByNode">xmlSecXkmsServerRequestIdListFindByNode</link>
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);
+#define     <link linkend="xmlSecXkmsServerRequestIdUnknown">xmlSecXkmsServerRequestIdUnknown</link>
+#define     <link linkend="xmlSecXkmsServerRequestResultId">xmlSecXkmsServerRequestResultId</link>
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestResultGetKlass">xmlSecXkmsServerRequestResultGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecXkmsServerRequestStatusId">xmlSecXkmsServerRequestStatusId</link>
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestStatusGetKlass">xmlSecXkmsServerRequestStatusGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecXkmsServerRequestCompoundId">xmlSecXkmsServerRequestCompoundId</link>
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestCompoundGetKlass">xmlSecXkmsServerRequestCompoundGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecXkmsServerRequestLocateId">xmlSecXkmsServerRequestLocateId</link>
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestLocateGetKlass">xmlSecXkmsServerRequestLocateGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecXkmsServerRequestValidateId">xmlSecXkmsServerRequestValidateId</link>
+<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <link linkend="xmlSecXkmsServerRequestValidateGetKlass">xmlSecXkmsServerRequestValidateGetKlass</link>
+                                            (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -133,49 +215,290 @@ int         <link linkend="xmlSecXkmsRespondWithIdListWrite">xmlSecXkmsRespondWi
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="xmlXkissServerCtxMode">enum xmlXkissServerCtxMode</title>
+<title><anchor id="xmlSecXkmsResultMajor">enum xmlSecXkmsResultMajor</title>
 <programlisting>typedef enum {
-    xmlXkissServerCtxModeLocateRequest = 0,
-    xmlXkissServerCtxModeValidateRequest
-} xmlXkissServerCtxMode;
+    xmlSecXkmsResultMajorSuccess = 0,
+    xmlSecXkmsResultMajorVersionMismatch,
+    xmlSecXkmsResultMajorSender,
+    xmlSecXkmsResultMajorReceiver,
+    xmlSecXkmsResultMajorRepresent,
+    xmlSecXkmsResultMajorPending
+} xmlSecXkmsResultMajor;
 </programlisting>
 <para>
-XKMS request processing mode.</para>
+The values for ResultMajor attribute.</para>
 <para>
 
 </para><variablelist role="enum">
 <varlistentry>
-<term><literal>xmlXkissServerCtxModeLocateRequest</literal></term>
-<listitem><simpara> 	the &lt;xkms:LocateRequest/&gt; node processing.
+<term><literal>xmlSecXkmsResultMajorSuccess</literal></term>
+<listitem><simpara>               The operation succeeded.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><literal>xmlXkissServerCtxModeValidateRequest</literal></term>
-<listitem><simpara>	the &lt;xkms:ValidateRequest/&gt; node processing.
+<term><literal>xmlSecXkmsResultMajorVersionMismatch</literal></term>
+<listitem><simpara>       The service does not support 
+                                             the protocol version specified 
+                                             in the request.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMajorSender</literal></term>
+<listitem><simpara>                An error occurred that was due
+                                             to the message sent by the sender.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMajorReceiver</literal></term>
+<listitem><simpara>              An error occurred at the receiver.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMajorRepresent</literal></term>
+<listitem><simpara>             The service has not acted on the 
+                                             request. In order for the request
+                                             to be acted upon the request MUST 
+                                             be represented with the specified
+                                             nonce in accordance with the two
+                                             phase protocol.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMajorPending</literal></term>
+<listitem><simpara>               The request has been accepted 
+                                             for processing and the service 
+                                             will return the result asynchronously.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtx">struct xmlSecXkissServerCtx</title>
-<programlisting>struct xmlSecXkissServerCtx {
+<title><anchor id="xmlSecXkmsResultMinor">enum xmlSecXkmsResultMinor</title>
+<programlisting>typedef enum {
+    xmlSecXkmsResultMinorNone = 0,
+    xmlSecXkmsResultMinorNoMatch,
+    xmlSecXkmsResultMinorTooManyResponses,
+    xmlSecXkmsResultMinorIncomplete,
+    xmlSecXkmsResultMinorFailure,
+    xmlSecXkmsResultMinorRefused,
+    xmlSecXkmsResultMinorNoAuthentication,
+    xmlSecXkmsResultMinorMessageNotSupported,
+    xmlSecXkmsResultMinorUnknownResponseId,
+    xmlSecXkmsResultMinorSynchronous
+} xmlSecXkmsResultMinor;
+</programlisting>
+<para>
+The values for ResultMinor attribute.</para>
+<para>
+
+</para><variablelist role="enum">
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorNone</literal></term>
+<listitem><simpara>                  No minor result code available.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorNoMatch</literal></term>
+<listitem><simpara>               No match was found for the search 
+                                             prototype provided.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorTooManyResponses</literal></term>
+<listitem><simpara>      The request resulted in the 
+                                             number of responses that 
+                                             exceeded either the ResponseLimit 
+                                             value specified in the request or 
+                                             some other limit determined by 
+                                             the service. The service MAY 
+                                             either return a subset of the 
+                                             possible responses or none at all.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorIncomplete</literal></term>
+<listitem><simpara>            Only part of the information 
+                                             requested could be provided.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorFailure</literal></term>
+<listitem><simpara>               The service attempted to perform 
+                                             the request but the operation 
+                                             failed for unspecified reasons.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorRefused</literal></term>
+<listitem><simpara>               The operation was refused. The 
+                                             service did not attempt to 
+                                             perform the request.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorNoAuthentication</literal></term>
+<listitem><simpara>      The operation was refused 
+                                             because the necessary authentication 
+                                             information was incorrect or missing.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorMessageNotSupported</literal></term>
+<listitem><simpara>   The receiver does not implement 
+                                             the specified operation.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorUnknownResponseId</literal></term>
+<listitem><simpara>     The ResponseId for which pending 
+                                             status was requested is unknown to 
+                                             the service.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsResultMinorSynchronous</literal></term>
+<listitem><simpara>           The receiver does not support 
+                                             synchronous processing of this 
+                                             type of request.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsKeyBindingStatus">enum xmlSecXkmsKeyBindingStatus</title>
+<programlisting>typedef enum {
+    xmlSecXkmsKeyBindingStatusNone,
+    xmlSecXkmsKeyBindingStatusValid,
+    xmlSecXkmsKeyBindingStatusInvalid,
+    xmlSecXkmsKeyBindingStatusIndeterminate
+} xmlSecXkmsKeyBindingStatus;
+</programlisting>
+<para>
+The values for key binding StatusValue attribute.</para>
+<para>
+
+</para><variablelist role="enum">
+<varlistentry>
+<term><literal>xmlSecXkmsKeyBindingStatusNone</literal></term>
+<listitem><simpara>             The key status is not available.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsKeyBindingStatusValid</literal></term>
+<listitem><simpara>            The key is valid.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsKeyBindingStatusInvalid</literal></term>
+<listitem><simpara>          The key is not valid.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsKeyBindingStatusIndeterminate</literal></term>
+<listitem><simpara>    Could not determine key status.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerFormat">enum xmlSecXkmsServerFormat</title>
+<programlisting>typedef enum {
+    xmlSecXkmsServerFormatUnknown = 0,
+    xmlSecXkmsServerFormatPlain,
+    xmlSecXkmsServerFormatSoap11,
+    xmlSecXkmsServerFormatSoap12
+} xmlSecXkmsServerFormat;
+</programlisting>
+<para>
+The xkms server request/response format.</para>
+<para>
+
+</para><variablelist role="enum">
+<varlistentry>
+<term><literal>xmlSecXkmsServerFormatUnknown</literal></term>
+<listitem><simpara>              The format is unknown.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsServerFormatPlain</literal></term>
+<listitem><simpara>                The request/response are not enveloped.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsServerFormatSoap11</literal></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecXkmsServerFormatSoap12</literal></term>
+<listitem><simpara>
+
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerFormatFromString">xmlSecXkmsServerFormatFromString ()</title>
+<programlisting><link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> xmlSecXkmsServerFormatFromString
+                                            (const <link linkend="xmlChar">xmlChar</link> *str);</programlisting>
+<para>
+Gets xmlSecXkmsServerFormat from string <parameter>str</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>str</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>corresponding format or xmlSecXkmsServerFormatUnknown
+if format could not be recognized.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerFormatToString">xmlSecXkmsServerFormatToString ()</title>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecXkmsServerFormatToString
+                                            (<link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format);</programlisting>
+<para>
+Gets string from <parameter>format</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>     the format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>string corresponding to <parameter>format</parameter> or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtx">struct xmlSecXkmsServerCtx</title>
+<programlisting>struct xmlSecXkmsServerCtx {
 
     /* these data user can set before performing the operation */
     void*			userData;
-    unsigned int		flags;
-    unsigned int		flags2;    
+    xmlSecBitMask		flags;
+    xmlSecBitMask		flags2;    
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
-    xmlSecPtrList		enabledRespondWith;
-    
+    xmlSecPtrList		enabledRespondWithIds;
+    xmlSecPtrList		enabledServerRequestIds;
+    xmlChar* 			expectedService;
+    xmlChar*			idPrefix;
+    xmlSecSize			idLen;
+        
     /* these data are returned */
-    xmlDocPtr			result;
     xmlSecPtrList		keys;
+    xmlSecXkmsResultMajor	resultMajor;
+    xmlSecXkmsResultMinor	resultMinor;
+    xmlSecXkmsServerRequestId	requestId;
+    xmlChar*			id;    
+    xmlChar*			service;
+    xmlChar*			nonce;
+    xmlChar*			originalRequestId;
+    xmlChar*                    pendingNotificationMechanism;
+    xmlChar*                    pendingNotificationIdentifier;
+    int 			responseLimit;
+    xmlSecBitMask		responseMechanismMask;
+    xmlSecPtrListPtr		compoundRequestContexts;
 
     /* these are internal data, nobody should change that except us */
-    xmlXkissServerCtxMode	mode;
+    xmlNodePtr			requestNode;
     xmlNodePtr			opaqueClientDataNode;
     xmlNodePtr 			firtsMsgExtNode;
-    xmlNodePtr 			firtsRespMechNode;
     xmlNodePtr 			keyInfoNode;
     xmlSecPtrList		respWithList;
     
@@ -196,12 +519,12 @@ XKMS context.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>unsigned int <structfield>flags</structfield></term>
+<term><link linkend="xmlSecBitMask">xmlSecBitMask</link> <structfield>flags</structfield></term>
 <listitem><simpara>			the XML Encryption processing flags.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term>unsigned int <structfield>flags2</structfield></term>
+<term><link linkend="xmlSecBitMask">xmlSecBitMask</link> <structfield>flags2</structfield></term>
 <listitem><simpara>			the XML Encryption processing flags.
 </simpara></listitem>
 </varlistentry>
@@ -216,12 +539,27 @@ XKMS context.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledRespondWith</structfield></term>
+<term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledRespondWithIds</structfield></term>
 <listitem><simpara>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="xmlDoc">xmlDocPtr</link> <structfield>result</structfield></term>
+<term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>enabledServerRequestIds</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>expectedService</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>idPrefix</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>idLen</structfield></term>
 <listitem><simpara>
 </simpara></listitem>
 </varlistentry>
@@ -231,7 +569,67 @@ XKMS context.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="xmlXkissServerCtxMode">xmlXkissServerCtxMode</link> <structfield>mode</structfield></term>
+<term><link linkend="xmlSecXkmsResultMajor">xmlSecXkmsResultMajor</link> <structfield>resultMajor</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecXkmsResultMinor">xmlSecXkmsResultMinor</link> <structfield>resultMinor</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> <structfield>requestId</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>service</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>nonce</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>originalRequestId</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>pendingNotificationMechanism</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>pendingNotificationIdentifier</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>int <structfield>responseLimit</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecBitMask">xmlSecBitMask</link> <structfield>responseMechanismMask</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <structfield>compoundRequestContexts</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>requestNode</structfield></term>
 <listitem><simpara>
 </simpara></listitem>
 </varlistentry>
@@ -242,11 +640,6 @@ XKMS context.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link> <structfield>firtsMsgExtNode</structfield></term>
-<listitem><simpara>
-</simpara></listitem>
-</varlistentry>
-<varlistentry>
-<term><link linkend="xmlNode">xmlNodePtr</link> <structfield>firtsRespMechNode</structfield></term>
 <listitem><simpara>
 </simpara></listitem>
 </varlistentry>
@@ -272,185 +665,441 @@ XKMS context.</para>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxCreate">xmlSecXkissServerCtxCreate ()</title>
-<programlisting><link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xmlSecXkissServerCtxCreate
+<title><anchor id="xmlSecXkmsServerCtxCreate">xmlSecXkmsServerCtxCreate ()</title>
+<programlisting><link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> xmlSecXkmsServerCtxCreate
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Creates XKMS/XKISS request server side processing context.
+Creates XKMS request server side processing context.
 The caller is responsible for destroying returend object by calling 
-<link linkend="xmlSecXkissServerCtxDestroy">xmlSecXkissServerCtxDestroy</link> function.</para>
+<link linkend="xmlSecXkmsServerCtxDestroy">xmlSecXkmsServerCtxDestroy</link> function.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara> 	the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly allocated context object or NULL if an error
 occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxDestroy">xmlSecXkissServerCtxDestroy ()</title>
-<programlisting>void        xmlSecXkissServerCtxDestroy     (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx);</programlisting>
+<title><anchor id="xmlSecXkmsServerCtxDestroy">xmlSecXkmsServerCtxDestroy ()</title>
+<programlisting>void        xmlSecXkmsServerCtxDestroy      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);</programlisting>
 <para>
-Destroy context object created with <link linkend="xmlSecXkissServerCtxCreate">xmlSecXkissServerCtxCreate</link> function.</para>
+Destroy context object created with <link linkend="xmlSecXkmsServerCtxCreate">xmlSecXkmsServerCtxCreate</link> function.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxInitialize">xmlSecXkissServerCtxInitialize ()</title>
-<programlisting>int         xmlSecXkissServerCtxInitialize  (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+<title><anchor id="xmlSecXkmsServerCtxInitialize">xmlSecXkmsServerCtxInitialize ()</title>
+<programlisting>int         xmlSecXkmsServerCtxInitialize   (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Initializes XKMS/XKISS element processing context.
+Initializes XKMS element processing context.
 The caller is responsible for cleaing up returend object by calling 
-<link linkend="xmlSecXkissServerCtxFinalize">xmlSecXkissServerCtxFinalize</link> function.</para>
+<link linkend="xmlSecXkmsServerCtxFinalize">xmlSecXkmsServerCtxFinalize</link> function.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara> 	the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxFinalize">xmlSecXkissServerCtxFinalize ()</title>
-<programlisting>void        xmlSecXkissServerCtxFinalize    (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx);</programlisting>
+<title><anchor id="xmlSecXkmsServerCtxFinalize">xmlSecXkmsServerCtxFinalize ()</title>
+<programlisting>void        xmlSecXkmsServerCtxFinalize     (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);</programlisting>
 <para>
-Cleans up <parameter>xkissServerCtx</parameter> object.</para>
+Cleans up <parameter>ctx</parameter> object.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxCopyUserPref">xmlSecXkissServerCtxCopyUserPref ()</title>
-<programlisting>int         xmlSecXkissServerCtxCopyUserPref
-                                            (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> dst,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> src);</programlisting>
+<title><anchor id="xmlSecXkmsServerCtxReset">xmlSecXkmsServerCtxReset ()</title>
+<programlisting>void        xmlSecXkmsServerCtxReset        (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);</programlisting>
+<para>
+Resets <parameter>ctx</parameter> object, user settings are not touched.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxCopyUserPref">xmlSecXkmsServerCtxCopyUserPref ()</title>
+<programlisting>int         xmlSecXkmsServerCtxCopyUserPref (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> dst,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> src);</programlisting>
 <para>
 Copies user preference from <parameter>src</parameter> context to <parameter>dst</parameter>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to destination context.
+<listitem><simpara>	the pointer to destination context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>src</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to source context.
+<listitem><simpara>	the pointer to source context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxReset">xmlSecXkissServerCtxReset ()</title>
-<programlisting>void        xmlSecXkissServerCtxReset       (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx);</programlisting>
+<title><anchor id="xmlSecXkmsServerCtxProcess">xmlSecXkmsServerCtxProcess ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecXkmsServerCtxProcess      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
 <para>
-Resets <parameter>xkissServerCtx</parameter> object, user settings are not touched.</para>
+Reads XKMS request from <parameter>node</parameter> and creates response to a newly created node. 
+Caller is responsible for adding the returned node to the XML document.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to request node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>     the request/response format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to response parent XML document (might be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created XKMS response node or NULL
+if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxLocate">xmlSecXkissServerCtxLocate ()</title>
-<programlisting>int         xmlSecXkissServerCtxLocate      (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+<title><anchor id="xmlSecXkmsServerCtxRequestRead">xmlSecXkmsServerCtxRequestRead ()</title>
+<programlisting>int         xmlSecXkmsServerCtxRequestRead  (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
-Process "locate key data" request from <parameter>node</parameter> and returns key data 
-in the <link linkend="result">result</link> member of the <parameter>xkissServerCtx</parameter> structure.
+Reads XKMS request from <parameter>node</parameter> and stores data in <parameter>ctx</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to request node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxResponseWrite">xmlSecXkmsServerCtxResponseWrite ()</title>
+<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecXkmsServerCtxResponseWrite
+                                            (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
+<para>
+Writes XKMS response from context to a newly created node. Caller is 
+responsible for adding the returned node to the XML document.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to response parent XML document (might be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created XKMS response node or NULL
+if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxRequestUnwrap">xmlSecXkmsServerCtxRequestUnwrap ()</title>
+<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecXkmsServerCtxRequestUnwrap
+                                            (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format);</programlisting>
+<para>
+Removes SOAP or other envelope from XKMS request.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to request node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>     the request/response format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to "real" XKMS request node or NULL if an error occurs. 
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxResponseWrap">xmlSecXkmsServerCtxResponseWrap ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecXkmsServerCtxResponseWrap (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
+<para>
+Creates SOAP or other envelope around XKMS response.
+Caller is responsible for adding the returned node to the XML document.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to response node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>     the request/response format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to response parent XML document (might be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created response envelope node or NULL
+if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxFatalErrorResponseCreate">xmlSecXkmsServerCtxFatalErrorResponseCreate ()</title>
+<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecXkmsServerCtxFatalErrorResponseCreate
+                                            (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
+<para>
+Creates a "fatal error" SOAP or other envelope respons. Caller is 
+responsible for adding the returned node to the XML document.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&nbsp;:</term>
+<listitem><simpara>     the request/response format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to response parent XML document (might be NULL).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created fatal error response (it might be NULL).
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxSetResult">xmlSecXkmsServerCtxSetResult ()</title>
+<programlisting>void        xmlSecXkmsServerCtxSetResult    (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlSecXkmsResultMajor">xmlSecXkmsResultMajor</link> resultMajor,
+                                             <link linkend="xmlSecXkmsResultMinor">xmlSecXkmsResultMinor</link> resultMinor);</programlisting>
+<para>
+Sets the major/minor result code in the context if no other result is already
+reported.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	 the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>resultMajor</parameter>&nbsp;:</term>
+<listitem><simpara> the major result code.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>resultMinor</parameter>&nbsp;:</term>
+<listitem><simpara> the minor result code.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxDebugDump">xmlSecXkmsServerCtxDebugDump ()</title>
+<programlisting>void        xmlSecXkmsServerCtxDebugDump    (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints the debug information about <parameter>ctx</parameter> to <parameter>output</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxDebugXmlDump">xmlSecXkmsServerCtxDebugXmlDump ()</title>
+<programlisting>void        xmlSecXkmsServerCtxDebugXmlDump (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints the debug information about <parameter>ctx</parameter> to <parameter>output</parameter> in XML format.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to XKMS processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxPtrListId">xmlSecXkmsServerCtxPtrListId</title>
+<programlisting>#define xmlSecXkmsServerCtxPtrListId	xmlSecXkmsServerCtxPtrListGetKlass()
+</programlisting>
+<para>
+zmlSecXkmsServerCtx klasses list klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerCtxPtrListGetKlass">xmlSecXkmsServerCtxPtrListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecXkmsServerCtxPtrListGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-RESPONSE-MECHANISM-CAPS">XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM</title>
+<programlisting>#define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM	0x00000001
+</programlisting>
+<para>
+If flag is set then we abort if an unknown &lt;xkms:ResponseMechanism/&gt; 
+value is found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-RESPOND-WITH-CAPS">XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH</title>
+<programlisting>#define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH		0x00000002
+</programlisting>
+<para>
+If flag is set then we abort if an unknown &lt;xkms:RespondWith/&gt; 
+value is found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-KEY-USAGE-CAPS">XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE</title>
+<programlisting>#define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE		0x00000004
+</programlisting>
+<para>
+If flag is set then we abort if an unknown &lt;xkms:KeyUsage/&gt; 
+value is found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-PENDING-CAPS">XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_PENDING</title>
+<programlisting>#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_PENDING			0x00000001	
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-REPRESENT-CAPS">XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT</title>
+<programlisting>#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT			0x00000002
+</programlisting>
+<para>
+XKMS ResponseMechanism element value. The requestor is prepared to 
+accept a response that uses the two phase protocol, i.e. the service 
+MAY return the MajorResult code Represent.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-REQUEST-SIGNATURE-VALUE-CAPS">XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE</title>
+<programlisting>#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE	0x00000004
+</programlisting>
+<para>
+XKMS ResponseMechanism element value. The requestor is prepared to 
+accept a response that carries a &lt;RequestSignatureValue&gt; element.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-NO-RESPONSE-LIMIT-CAPS">XMLSEC_XKMS_NO_RESPONSE_LIMIT</title>
+<programlisting>#define XMLSEC_XKMS_NO_RESPONSE_LIMIT			        -1
+</programlisting>
+<para>
+The ResponseLimit is not specified.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-ISSUER-TRAST-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST</title>
+<programlisting>#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST	0x00000001
+</programlisting>
+<para>
+The issuer of the information on which the key binding is based is 
+considered to be trustworthy by the XKMS service.
 </para>
 <para>
-&lt;xkms:LocateRequest Id Service Nonce? OriginalRequestId? ResponseLimit? &gt;
-	<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink>?
-&lt;xkms:MessageExtension/&gt;*
-	&lt;xkms:OpaqueClientData/&gt;?
-&lt;xkms:ResponseMechanism/&gt;*
-	&lt;xkms:RespondWith/&gt;*
-&lt;xkms:PendingNotification Mechanism Identifier /&gt;?
-&lt;xkms:QueryKeyBinding Id? &gt;
-		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink>?
-	&lt;xkms:KeyUsage/&gt;*
-	&lt;xkms:UseKeyWith Application Identifier /&gt;*
-	&lt;xkms:TimeInstant Time /&gt;?
-&lt;/xkms:QueryKeyBinding&gt;
-&lt;/xkms:LocateRequest&gt;</para>
+X.509 Equivalents
+  - Valid:	Certificate path anchored by trusted root successfully constructed.
+  - Invalid:	Certificate path could not be constructed to a trusted root.</para>
 <para>
 
-</para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to &lt;xkms:LocateRequest/&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxValidate">xmlSecXkissServerCtxValidate ()</title>
-<programlisting>int         xmlSecXkissServerCtxValidate    (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<title><anchor id="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-REVOCATION-STATUS-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS</title>
+<programlisting>#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS	0x00000002
+</programlisting>
 <para>
-Process "locate and validate key data" request from <parameter>node</parameter> and returns key data 
-in the <link linkend="result">result</link> member of the <parameter>xkissServerCtx</parameter> structure.</para>
+The XKMS service has affirmatively verified the status of the 
+key binding with an authoritative source
+</para>
+<para>
+X.509 Equivalents
+  - Valid:	Certificate status validated using CRL or OCSP.
+  - Invalid:	Certificate status returned revoked or suspended.</para>
 <para>
 
-</para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to &lt;xkms:ValidateRequest/&gt; node.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxDebugDump">xmlSecXkissServerCtxDebugDump ()</title>
-<programlisting>void        xmlSecXkissServerCtxDebugDump   (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<title><anchor id="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-VALIDITY-INTERVAL-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL</title>
+<programlisting>#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL	 0x00000004
+</programlisting>
 <para>
-Prints the debug information about <parameter>xkissServerCtx</parameter> to <parameter>output</parameter>.</para>
+The requested time instant was within the validity interval of 
+the key binding
+</para>
+<para>
+X.509 Equivalents
+  - Valid:	The certificate chain was valid at the requested time instant.
+  - Invalid:	The requested time instant was before or after the certificate 
+             chain validity interval.</para>
 <para>
 
-</para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkissServerCtxDebugXmlDump">xmlSecXkissServerCtxDebugXmlDump ()</title>
-<programlisting>void        xmlSecXkissServerCtxDebugXmlDump
-                                            (<link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<title><anchor id="XMLSEC-XKMS-KEY-BINDING-REASON-MASK-SIGNATURE-CAPS">XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE</title>
+<programlisting>#define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE		 0x00000008
+</programlisting>
 <para>
-Prints the debug information about <parameter>xkissServerCtx</parameter> to <parameter>output</parameter> in XML format.</para>
+Signature on signed data provided by the client in the &lt;Keyinfo&gt; element was 
+successfully verified.
+</para>
+<para>
+X.509 Equivalents
+  - Valid: 	Certificate Signature verified.
+  - Invalid: Certificate Signature verification failed.</para>
 <para>
 
-</para><variablelist role="params">
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to XKMS/XKISS processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to output FILE.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecXkmsRespondWithIdsGet">xmlSecXkmsRespondWithIdsGet ()</title>
 <programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecXkmsRespondWithIdsGet
@@ -508,51 +1157,51 @@ Registers <parameter>id</parameter> in the global list of RespondWith klasses.</
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>			the RespondWith klass.
+<listitem><simpara>		the RespondWith klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkmsRespondWithReadNode">xmlSecXkmsRespondWithReadNode ()</title>
-<programlisting>int         xmlSecXkmsRespondWithReadNode   (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+<title><anchor id="xmlSecXkmsRespondWithNodeRead">xmlSecXkmsRespondWithNodeRead ()</title>
+<programlisting>int         xmlSecXkmsRespondWithNodeRead   (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
-Reads the content of the &lt;xkiss:RespondWith/&gt; <parameter>node</parameter>.</para>
+Reads the content of the &lt;xkms:RespondWith/&gt; <parameter>node</parameter>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>			the RespondWith class.
+<listitem><simpara>		the RespondWith class.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>	the XKISS request processing context.
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the XKMS request processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to &lt;xkiss:RespondWith/&gt; node.
+<listitem><simpara>	the pointer to &lt;xkms:RespondWith/&gt; node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkmsRespondWithWriteNode">xmlSecXkmsRespondWithWriteNode ()</title>
-<programlisting>int         xmlSecXkmsRespondWithWriteNode  (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+<title><anchor id="xmlSecXkmsRespondWithNodeWrite">xmlSecXkmsRespondWithNodeWrite ()</title>
+<programlisting>int         xmlSecXkmsRespondWithNodeWrite  (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
-Writes the content of the &lt;xkiss:RespondWith/&gt; <parameter>node</parameter>.</para>
+Writes the content of the &lt;xkms:RespondWith/&gt; <parameter>node</parameter>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>			the RespondWith class.
+<listitem><simpara>		the RespondWith class.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>	the XKISS request processing context.
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the XKMS request processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to &lt;xkiss:RespondWith/&gt; node.
+<listitem><simpara>	the pointer to &lt;xkms:RespondWith/&gt; node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -567,10 +1216,10 @@ Writes debug information about <parameter>id</parameter> into the <parameter>out
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>			the RespondWith class.
+<listitem><simpara>		the RespondWith class.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>		the output file.
+<listitem><simpara>	the output file.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -584,17 +1233,17 @@ Writes debug information about <parameter>id</parameter> into the <parameter>out
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>			the RespondWith class.
+<listitem><simpara>		the RespondWith class.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
-<listitem><simpara>		the output file.
+<listitem><simpara>	the output file.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkmsRespondWithDefaultReadNode">xmlSecXkmsRespondWithDefaultReadNode ()</title>
-<programlisting>int         xmlSecXkmsRespondWithDefaultReadNode
+<title><anchor id="xmlSecXkmsRespondWithDefaultNodeRead">xmlSecXkmsRespondWithDefaultNodeRead ()</title>
+<programlisting>int         xmlSecXkmsRespondWithDefaultNodeRead
                                             (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 
@@ -602,7 +1251,7 @@ Writes debug information about <parameter>id</parameter> into the <parameter>out
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
@@ -614,10 +1263,10 @@ Writes debug information about <parameter>id</parameter> into the <parameter>out
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkmsRespondWithDefaultWriteNode">xmlSecXkmsRespondWithDefaultWriteNode ()</title>
-<programlisting>int         xmlSecXkmsRespondWithDefaultWriteNode
+<title><anchor id="xmlSecXkmsRespondWithDefaultNodeWrite">xmlSecXkmsRespondWithDefaultNodeWrite ()</title>
+<programlisting>int         xmlSecXkmsRespondWithDefaultNodeWrite
                                             (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 
@@ -625,86 +1274,13 @@ Writes debug information about <parameter>id</parameter> into the <parameter>out
 <varlistentry><term><parameter>id</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecXkmsRespondWithReadNodeMethod">xmlSecXkmsRespondWithReadNodeMethod ()</title>
-<programlisting>int         (*xmlSecXkmsRespondWithReadNodeMethod)
-                                            (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecXkmsRespondWithWriteNodeMethod">xmlSecXkmsRespondWithWriteNodeMethod ()</title>
-<programlisting>int         (*xmlSecXkmsRespondWithWriteNodeMethod)
-                                            (<link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> id,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
-                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecXkmsRespondWithKlass">struct xmlSecXkmsRespondWithKlass</title>
-<programlisting>struct xmlSecXkmsRespondWithKlass {
-
-    const xmlChar*				name;
-    const xmlChar*				nodeName;
-    const xmlChar*				nodeNs;
-    
-    xmlSecXkmsRespondWithReadNodeMethod		readNode;
-    xmlSecXkmsRespondWithWriteNodeMethod	writeNode;
-};
-</programlisting>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecXkmsRespondWithKlassGetName">xmlSecXkmsRespondWithKlassGetName()</title>
-<programlisting>#define     xmlSecXkmsRespondWithKlassGetName(id)</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
-<listitem><simpara>
 
 
 </simpara></listitem></varlistentry>
@@ -749,17 +1325,17 @@ XKMS RespondWith  klasses list klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecXkmsRespondWithIdListFindByName">xmlSecXkmsRespondWithIdListFindByName ()</title>
-<programlisting><link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> xmlSecXkmsRespondWithIdListFindByName
+<title><anchor id="xmlSecXkmsRespondWithIdListFindByNodeValue">xmlSecXkmsRespondWithIdListFindByNodeValue ()</title>
+<programlisting><link linkend="xmlSecXkmsRespondWithId">xmlSecXkmsRespondWithId</link> xmlSecXkmsRespondWithIdListFindByNodeValue
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
@@ -771,7 +1347,7 @@ XKMS RespondWith  klasses list klass.</para>
 <title><anchor id="xmlSecXkmsRespondWithIdListWrite">xmlSecXkmsRespondWithIdListWrite ()</title>
 <programlisting>int         xmlSecXkmsRespondWithIdListWrite
                                             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
-                                             <link linkend="xmlSecXkissServerCtx">xmlSecXkissServerCtxPtr</link> xkissServerCtx,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
 
@@ -779,15 +1355,13 @@ XKMS RespondWith  klasses list klass.</para>
 <varlistentry><term><parameter>list</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>xkissServerCtx</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
 <listitem><simpara>
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -977,6 +1551,356 @@ The respond with SPKI klass.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>respond with SPKI klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdsGet">xmlSecXkmsServerRequestIdsGet ()</title>
+<programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecXkmsServerRequestIdsGet
+                                            (void);</programlisting>
+<para>
+Gets global registered ServerRequest klasses list.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to list of all registered ServerRequest klasses.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdsInit">xmlSecXkmsServerRequestIdsInit ()</title>
+<programlisting>int         xmlSecXkmsServerRequestIdsInit  (void);</programlisting>
+<para>
+Initializes the ServerRequest klasses. This function is called from the 
+<link linkend="xmlSecInit">xmlSecInit</link> function and the application should not call it directly.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdsShutdown">xmlSecXkmsServerRequestIdsShutdown ()</title>
+<programlisting>void        xmlSecXkmsServerRequestIdsShutdown
+                                            (void);</programlisting>
+<para>
+Shuts down the keys data klasses. This function is called from the 
+<link linkend="xmlSecShutdown">xmlSecShutdown</link> function and the application should not call it directly.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdsRegisterDefault">xmlSecXkmsServerRequestIdsRegisterDefault ()</title>
+<programlisting>int         xmlSecXkmsServerRequestIdsRegisterDefault
+                                            (void);</programlisting>
+<para>
+Registers default (implemented by XML Security Library)
+ServerRequest klasses: KeyName, KeyValue,...</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdsRegister">xmlSecXkmsServerRequestIdsRegister ()</title>
+<programlisting>int         xmlSecXkmsServerRequestIdsRegister
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id);</programlisting>
+<para>
+Registers <parameter>id</parameter> in the global list of ServerRequest klasses.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>		the ServerRequest klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestNodeRead">xmlSecXkmsServerRequestNodeRead ()</title>
+<programlisting>int         xmlSecXkmsServerRequestNodeRead (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<para>
+Reads the content of the &lt;xkms:ServerRequest/&gt; <parameter>node</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>		the ServerRequest class.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>	the XKMS request processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>	the pointer to &lt;xkms:ServerRequest/&gt; node.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestExecute">xmlSecXkmsServerRequestExecute ()</title>
+<programlisting>int         xmlSecXkmsServerRequestExecute  (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestNodeWrite">xmlSecXkmsServerRequestNodeWrite ()</title>
+<programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecXkmsServerRequestNodeWrite
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+                                             <link linkend="xmlDoc">xmlDocPtr</link> doc,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ctx</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>doc</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestDebugDump">xmlSecXkmsServerRequestDebugDump ()</title>
+<programlisting>void        xmlSecXkmsServerRequestDebugDump
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Writes debug information about <parameter>id</parameter> into the <parameter>output</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>			the ServerRequest class.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the output file.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestDebugXmlDump">xmlSecXkmsServerRequestDebugXmlDump ()</title>
+<programlisting>void        xmlSecXkmsServerRequestDebugXmlDump
+                                            (<link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Writes debug information about <parameter>id</parameter> into the <parameter>output</parameter> in XML format.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>			the ServerRequest class.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>		the output file.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdListId">xmlSecXkmsServerRequestIdListId</title>
+<programlisting>#define xmlSecXkmsServerRequestIdListId	xmlSecXkmsServerRequestIdListGetKlass()
+</programlisting>
+<para>
+XKMS ServerRequest  klasses list klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdListGetKlass">xmlSecXkmsServerRequestIdListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecXkmsServerRequestIdListGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdListFind">xmlSecXkmsServerRequestIdListFind ()</title>
+<programlisting>int         xmlSecXkmsServerRequestIdListFind
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> id);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>id</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdListFindByName">xmlSecXkmsServerRequestIdListFindByName ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestIdListFindByName
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *name);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdListFindByNode">xmlSecXkmsServerRequestIdListFindByNode ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestIdListFindByNode
+                                            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>node</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestIdUnknown">xmlSecXkmsServerRequestIdUnknown</title>
+<programlisting>#define xmlSecXkmsServerRequestIdUnknown			NULL
+</programlisting>
+<para>
+The "unknown" ServerRequest id (NULL).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestResultId">xmlSecXkmsServerRequestResultId</title>
+<programlisting>#define     xmlSecXkmsServerRequestResultId</programlisting>
+<para>
+The Result response klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestResultGetKlass">xmlSecXkmsServerRequestResultGetKlass ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestResultGetKlass
+                                            (void);</programlisting>
+<para>
+The Result response klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>Result response klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestStatusId">xmlSecXkmsServerRequestStatusId</title>
+<programlisting>#define     xmlSecXkmsServerRequestStatusId</programlisting>
+<para>
+The StatusRequest klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestStatusGetKlass">xmlSecXkmsServerRequestStatusGetKlass ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestStatusGetKlass
+                                            (void);</programlisting>
+<para>
+The StatusRequest klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>StatusRequest klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestCompoundId">xmlSecXkmsServerRequestCompoundId</title>
+<programlisting>#define     xmlSecXkmsServerRequestCompoundId</programlisting>
+<para>
+The CompoundRequest klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestCompoundGetKlass">xmlSecXkmsServerRequestCompoundGetKlass ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestCompoundGetKlass
+                                            (void);</programlisting>
+<para>
+The CompoundRequest klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>CompoundRequest klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestLocateId">xmlSecXkmsServerRequestLocateId</title>
+<programlisting>#define     xmlSecXkmsServerRequestLocateId</programlisting>
+<para>
+The LocateRequest klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestLocateGetKlass">xmlSecXkmsServerRequestLocateGetKlass ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestLocateGetKlass
+                                            (void);</programlisting>
+<para>
+The LocateRequest klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>LocateRequest klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestValidateId">xmlSecXkmsServerRequestValidateId</title>
+<programlisting>#define     xmlSecXkmsServerRequestValidateId</programlisting>
+<para>
+The ValidateRequest klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXkmsServerRequestValidateGetKlass">xmlSecXkmsServerRequestValidateGetKlass ()</title>
+<programlisting><link linkend="xmlSecXkmsServerRequestId">xmlSecXkmsServerRequestId</link> xmlSecXkmsServerRequestValidateGetKlass
+                                            (void);</programlisting>
+<para>
+The ValidateRequest klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>ValidateRequest klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

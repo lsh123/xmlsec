@@ -92,6 +92,7 @@
 <li><p><a href="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE-UNUSED</a></p></li>
 <li><p><a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECADDCHILD">xmlSecAddChild</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECADDCHILDNODE">xmlSecAddChildNode</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECADDIDS">xmlSecAddIDs</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECADDNEXTSIBLING">xmlSecAddNextSibling</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECADDPREVSIBLING">xmlSecAddPrevSibling</a></p></li>
@@ -107,6 +108,7 @@
 <li><p><a href="xmlsec-base64.html#XMLSECBASE64DECODE">xmlSecBase64Decode</a></p></li>
 <li><p><a href="xmlsec-base64.html#XMLSECBASE64ENCODE">xmlSecBase64Encode</a></p></li>
 <li><p><a href="xmlsec-base64.html#XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC-BASE64-LINESIZE</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECBITMASK">xmlSecBitMask</a></p></li>
 <li><p><a href="xmlsec-bn.html#XMLSECBNADD">xmlSecBnAdd</a></p></li>
 <li><p><a href="xmlsec-bn.html#XMLSECBNBLOBSETNODEVALUE">xmlSecBnBlobSetNodeValue</a></p></li>
 <li><p><a href="xmlsec-bn.html#XMLSECBNCOMPARE">xmlSecBnCompare</a></p></li>
@@ -309,10 +311,13 @@
 <li><p><a href="xmlsec-xmltree.html#XMLSECFINDCHILD">xmlSecFindChild</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECFINDNODE">xmlSecFindNode</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECFINDPARENT">xmlSecFindParent</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECGENERATEANDADDID">xmlSecGenerateAndAddID</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECGENERATEID">xmlSecGenerateID</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETHEX">xmlSecGetHex</a></p></li>
 <li><p><a href="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK">xmlSecGetKeyCallback</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE">xmlSecGetNextElementNode</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETNODENSHREF">xmlSecGetNodeNsHref</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECGETQNAME">xmlSecGetQName</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPDEFAULTKEYSMNGRINIT">xmlSecGnuTLSAppDefaultKeysMngrInit</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPDEFAULTKEYSMNGRLOAD">xmlSecGnuTLSAppDefaultKeysMngrLoad</a></p></li>
@@ -534,6 +539,8 @@
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREADBUFFER">xmlSecKeyReadBuffer</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREADMEMORY">xmlSecKeyReadMemory</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQCOPY">xmlSecKeyReqCopy</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYREQDEBUGDUMP">xmlSecKeyReqDebugDump</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYREQDEBUGXMLDUMP">xmlSecKeyReqDebugXmlDump</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE">xmlSecKeyReqFinalize</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQINITIALIZE">xmlSecKeyReqInitialize</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYREQMATCHKEY">xmlSecKeyReqMatchKey</a></p></li>
@@ -568,9 +575,23 @@
 <li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGEANY">xmlSecKeyUsageAny</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGEDECRYPT">xmlSecKeyUsageDecrypt</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGEENCRYPT">xmlSecKeyUsageEncrypt</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGEKEYEXCHANGE">xmlSecKeyUsageKeyExchange</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGESIGN">xmlSecKeyUsageSign</a></p></li>
 <li><p><a href="xmlsec-keys.html#XMLSECKEYUSAGEVERIFY">xmlSecKeyUsageVerify</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHCOPY">xmlSecKeyUseWithCopy</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHCREATE">xmlSecKeyUseWithCreate</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHDEBUGDUMP">xmlSecKeyUseWithDebugDump</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHDEBUGXMLDUMP">xmlSecKeyUseWithDebugXmlDump</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHDESTROY">xmlSecKeyUseWithDestroy</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHDUPLICATE">xmlSecKeyUseWithDuplicate</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHFINALIZE">xmlSecKeyUseWithFinalize</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHINITIALIZE">xmlSecKeyUseWithInitialize</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWith</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHPTRLISTGETKLASS">xmlSecKeyUseWithPtrListGetKlass</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHPTRLISTID">xmlSecKeyUseWithPtrListId</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHRESET">xmlSecKeyUseWithReset</a></p></li>
+<li><p><a href="xmlsec-keys.html#XMLSECKEYUSEWITHSET">xmlSecKeyUseWithSet</a></p></li>
 <li><p><a href="xmlsec-mscrypto-app.html#XMLSECMSCRYPTOAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecMSCryptoAppDefaultKeysMngrAdoptKey</a></p></li>
 <li><p><a href="xmlsec-mscrypto-app.html#XMLSECMSCRYPTOAPPDEFAULTKEYSMNGRINIT">xmlSecMSCryptoAppDefaultKeysMngrInit</a></p></li>
 <li><p><a href="xmlsec-mscrypto-app.html#XMLSECMSCRYPTOAPPDEFAULTKEYSMNGRLOAD">xmlSecMSCryptoAppDefaultKeysMngrLoad</a></p></li>
@@ -896,6 +917,28 @@
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTSETDEFAULTALLOCMODE">xmlSecPtrListSetDefaultAllocMode</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTSET">xmlSecPtrListSet</a></p></li>
 <li><p><a href="xmlsec-xmlsec.html#XMLSECPTR">xmlSecPtr</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGDUMP">xmlSecQName2BitMaskDebugDump</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKDEBUGXMLDUMP">xmlSecQName2BitMaskDebugXmlDump</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASKFROMSTRING">xmlSecQName2BitMaskGetBitMaskFromString</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETBITMASK">xmlSecQName2BitMaskGetBitMask</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETINFO">xmlSecQName2BitMaskGetInfo</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKGETSTRINGFROMBITMASK">xmlSecQName2BitMaskGetStringFromBitMask</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKINFOCONSTPTR">xmlSecQName2BitMaskInfoConstPtr</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKINFO">xmlSecQName2BitMaskInfo</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESREAD">xmlSecQName2BitMaskNodesRead</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2BITMASKNODESWRITE">xmlSecQName2BitMaskNodesWrite</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEREAD">xmlSecQName2IntegerAttributeRead</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERATTRIBUTEWRITE">xmlSecQName2IntegerAttributeWrite</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGDUMP">xmlSecQName2IntegerDebugDump</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERDEBUGXMLDUMP">xmlSecQName2IntegerDebugXmlDump</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINFO">xmlSecQName2IntegerGetInfo</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGERFROMSTRING">xmlSecQName2IntegerGetIntegerFromString</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETINTEGER">xmlSecQName2IntegerGetInteger</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERGETSTRINGFROMINTEGER">xmlSecQName2IntegerGetStringFromInteger</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERINFOCONSTPTR">xmlSecQName2IntegerInfoConstPtr</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERINFO">xmlSecQName2IntegerInfo</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEREAD">xmlSecQName2IntegerNodeRead</a></p></li>
+<li><p><a href="xmlsec-xmltree.html#XMLSECQNAME2INTEGERNODEWRITE">xmlSecQName2IntegerNodeWrite</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECREPLACECONTENT">xmlSecReplaceContent</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECREPLACENODEBUFFER">xmlSecReplaceNodeBuffer</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECREPLACENODE">xmlSecReplaceNode</a></p></li>
@@ -906,6 +949,30 @@
 <li><p><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD">xmlSecSimpleKeysStoreLoad</a></p></li>
 <li><p><a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE">xmlSecSimpleKeysStoreSave</a></p></li>
 <li><p><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a></p></li>
+<li><p><font>xmlSecSoap11AddBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap11AddFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap11CheckEnvelope</font></p></li>
+<li><p><font>xmlSecSoap11CreateEnvelope</font></p></li>
+<li><p><font>xmlSecSoap11EnsureHeader</font></p></li>
+<li><p><font>xmlSecSoap11GetBodyEntriesNumber</font></p></li>
+<li><p><font>xmlSecSoap11GetBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap11GetBody</font></p></li>
+<li><p><font>xmlSecSoap11GetFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap11GetHeader</font></p></li>
+<li><p><font>xmlSecSoap12AddBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultDetailEntry</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultReasonText</font></p></li>
+<li><p><font>xmlSecSoap12AddFaultSubcode</font></p></li>
+<li><p><font>xmlSecSoap12CheckEnvelope</font></p></li>
+<li><p><font>xmlSecSoap12CreateEnvelope</font></p></li>
+<li><p><font>xmlSecSoap12EnsureHeader</font></p></li>
+<li><p><font>xmlSecSoap12FaultCode</font></p></li>
+<li><p><font>xmlSecSoap12GetBodyEntriesNumber</font></p></li>
+<li><p><font>xmlSecSoap12GetBodyEntry</font></p></li>
+<li><p><font>xmlSecSoap12GetBody</font></p></li>
+<li><p><font>xmlSecSoap12GetFaultEntry</font></p></li>
+<li><p><font>xmlSecSoap12GetHeader</font></p></li>
 <li><p><a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC-STACK-OF-X509-CRL</a></p></li>
 <li><p><a href="xmlsec-openssl-x509.html#XMLSEC-STACK-OF-X509-CAPS">XMLSEC-STACK-OF-X509</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECSTRINGLISTGETKLASS">xmlSecStringListGetKlass</a></p></li>
@@ -1134,22 +1201,17 @@
 <li><p><a href="xmlsec-x509.html#XMLSEC-X509DATA-SUBJECTNAME-NODE-CAPS">XMLSEC-X509DATA-SUBJECTNAME-NODE</a></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECX509STOREGETKLASS">xmlSecX509StoreGetKlass</a></p></li>
 <li><p><a href="xmlsec-app.html#XMLSECX509STOREID">xmlSecX509StoreId</a></p></li>
-<li><p><font>xmlSecXkissServerCtxCopyUserPref</font></p></li>
-<li><p><font>xmlSecXkissServerCtxCreate</font></p></li>
-<li><p><font>xmlSecXkissServerCtxDebugDump</font></p></li>
-<li><p><font>xmlSecXkissServerCtxDebugXmlDump</font></p></li>
-<li><p><font>xmlSecXkissServerCtxDestroy</font></p></li>
-<li><p><font>xmlSecXkissServerCtxFinalize</font></p></li>
-<li><p><font>xmlSecXkissServerCtxInitialize</font></p></li>
-<li><p><font>xmlSecXkissServerCtxLocate</font></p></li>
-<li><p><font>xmlSecXkissServerCtx</font></p></li>
-<li><p><font>xmlSecXkissServerCtxReset</font></p></li>
-<li><p><font>xmlSecXkissServerCtxValidate</font></p></li>
+<li><p><font>XMLSEC-XKMS-KEY-BINDING-REASON-MASK-ISSUER-TRAST</font></p></li>
+<li><p><font>XMLSEC-XKMS-KEY-BINDING-REASON-MASK-REVOCATION-STATUS</font></p></li>
+<li><p><font>XMLSEC-XKMS-KEY-BINDING-REASON-MASK-SIGNATURE</font></p></li>
+<li><p><font>XMLSEC-XKMS-KEY-BINDING-REASON-MASK-VALIDITY-INTERVAL</font></p></li>
+<li><p><font>xmlSecXkmsKeyBindingStatus</font></p></li>
+<li><p><font>XMLSEC-XKMS-NO-RESPONSE-LIMIT</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithDebugDump</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithDebugXmlDump</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithDefaultReadNode</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithDefaultWriteNode</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithIdListFindByName</font></p></li>
+<li><p><font>xmlSecXkmsRespondWithDefaultNodeRead</font></p></li>
+<li><p><font>xmlSecXkmsRespondWithDefaultNodeWrite</font></p></li>
+<li><p><font>xmlSecXkmsRespondWithIdListFindByNodeValue</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithIdListFind</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithIdListGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithIdListId</font></p></li>
@@ -1164,27 +1226,77 @@
 <li><p><font>xmlSecXkmsRespondWithKeyNameId</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithKeyValueGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithKeyValueId</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithKlassGetName</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithKlass</font></p></li>
+<li><p><font>xmlSecXkmsRespondWithNodeRead</font></p></li>
+<li><p><font>xmlSecXkmsRespondWithNodeWrite</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithPGPGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithPGPId</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithPrivateKeyGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithPrivateKeyId</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithReadNodeMethod</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithReadNode</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithRetrievalMethodGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithRetrievalMethodId</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithSPKIGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithSPKIId</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithWriteNodeMethod</font></p></li>
-<li><p><font>xmlSecXkmsRespondWithWriteNode</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithX509CertGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithX509CertId</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithX509ChainGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithX509ChainId</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithX509CRLGetKlass</font></p></li>
 <li><p><font>xmlSecXkmsRespondWithX509CRLId</font></p></li>
-<li><p><font>xmlXkissServerCtxMode</font></p></li>
+<li><p><font>XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-PENDING</font></p></li>
+<li><p><font>XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-REPRESENT</font></p></li>
+<li><p><font>XMLSEC-XKMS-RESPONSE-MECHANISM-MASK-REQUEST-SIGNATURE-VALUE</font></p></li>
+<li><p><font>xmlSecXkmsResultMajor</font></p></li>
+<li><p><font>xmlSecXkmsResultMinor</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxCopyUserPref</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxCreate</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxDebugDump</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxDebugXmlDump</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxDestroy</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxFatalErrorResponseCreate</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxFinalize</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxInitialize</font></p></li>
+<li><p><font>xmlSecXkmsServerCtx</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxProcess</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxPtrListGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxPtrListId</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxRequestRead</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxRequestUnwrap</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxReset</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxResponseWrap</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxResponseWrite</font></p></li>
+<li><p><font>xmlSecXkmsServerCtxSetResult</font></p></li>
+<li><p><font>XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-KEY-USAGE</font></p></li>
+<li><p><font>XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-RESPOND-WITH</font></p></li>
+<li><p><font>XMLSEC-XKMS-SERVER-FLAGS-STOP-ON-UNKNOWN-RESPONSE-MECHANISM</font></p></li>
+<li><p><font>xmlSecXkmsServerFormatFromString</font></p></li>
+<li><p><font>xmlSecXkmsServerFormat</font></p></li>
+<li><p><font>xmlSecXkmsServerFormatToString</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestCompoundGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestCompoundId</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestDebugDump</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestDebugXmlDump</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestExecute</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdListFindByName</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdListFindByNode</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdListFind</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdListGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdListId</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdsGet</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdsInit</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdsRegisterDefault</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdsRegister</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdsShutdown</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestIdUnknown</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestLocateGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestLocateId</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestNodeRead</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestNodeWrite</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestResultGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestResultId</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestStatusGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestStatusId</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestValidateGetKlass</font></p></li>
+<li><p><font>xmlSecXkmsServerRequestValidateId</font></p></li>
 </ul>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">

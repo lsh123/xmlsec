@@ -15,6 +15,7 @@
     &xmlsec-nodeset;
     &xmlsec-parser;
     &xmlsec-private;
+    &xmlsec-soap;
     &xmlsec-templates;
     &xmlsec-transforms;
     &xmlsec-version;

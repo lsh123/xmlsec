@@ -53,8 +53,7 @@ previous</a>
  example.    The source code for this example is included into the package:
       <a href="dsig4/dsig4.c">           source code</a>
    and <a href="dsig4/test.xml"> the signed document.</a>
-      <br>
-</p>
+      <br></p>
 <h4>Step 0. Initializing LibXML, OpenSSL and XML Security Library.
 Creating DSig context.             </h4>
 <p>
@@ -95,8 +94,7 @@ keys manager\n");<br>
 dsig context\n");<br>
          goto done; <br>
      }<br>
-        </code><br>
-</p>
+        </code><br></p>
 <h4>Step 1. Loading the document.</h4>
 <p>
              XMLDSig requires the XML document to be loaded with all default
@@ -139,8 +137,7 @@ dsig context\n");<br>
              In this example we set global flags to control how the document
   is  loaded.    In the real life you would probably want to control the
 loading    on "per-document"    basis. Check the libxml/c14n.h header file
-from LibXML    distribution for  details.<br>
-</p>
+from LibXML    distribution for  details.<br></p>
 <h4>Step 2. Verify It!</h4>
 <p>
              We are ready to sign the document but first we need to find
@@ -173,8 +170,7 @@ verification results. Real application should process signature objects list
      <code>  /*<br>
       * Print out result     <br>
       */<br>
-     xmlSecDSigResultDebugDump(result, stdout); </code><br>
-</p>
+     xmlSecDSigResultDebugDump(result, stdout); </code><br></p>
 <h4>Step 4. Cleanup.</h4>
 <p>
              At the end we need to destroy DSig context, the doc and KeysManager; 

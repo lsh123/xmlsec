@@ -48,11 +48,134 @@ keys
 
 
 
+<!-- ##### MACRO xmlSecKeyUsageKeyExchange ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO xmlSecKeyUsageAny ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithInitialize ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithFinalize ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithReset ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithCopy ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithCreate ##### -->
+<para>
+
+</para>
+
+@application: 
+@identifier: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithDuplicate ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithDestroy ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithSet ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+@application: 
+@identifier: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithDebugDump ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@keyUseWith: 
+@output: 
+
+
+<!-- ##### STRUCT xmlSecKeyUseWith ##### -->
+<para>
+
+</para>
+
+@application: 
+@identifier: 
+@reserved1: 
+@reserved2: 
+
+<!-- ##### MACRO xmlSecKeyUseWithPtrListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyUseWithPtrListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### STRUCT xmlSecKeyReq ##### -->
@@ -64,6 +187,9 @@ keys
 @keyType: 
 @keyUsage: 
 @keyBitsSize: 
+@keyUseWithList: 
+@reserved1: 
+@eserved2: 
 
 <!-- ##### FUNCTION xmlSecKeyReqInitialize ##### -->
 <para>
@@ -118,6 +244,24 @@ keys
 @keyReq: 
 @value: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqDebugDump ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+@output: 
 
 
 <!-- ##### STRUCT xmlSecKey ##### -->

@@ -20,7 +20,29 @@ typedef     <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
 #define     <link linkend="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</link>
 #define     <link linkend="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</link>
 #define     <link linkend="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</link>
+#define     <link linkend="xmlSecKeyUsageKeyExchange">xmlSecKeyUsageKeyExchange</link>
 #define     <link linkend="xmlSecKeyUsageAny">xmlSecKeyUsageAny</link>
+int         <link linkend="xmlSecKeyUseWithInitialize">xmlSecKeyUseWithInitialize</link>      (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
+void        <link linkend="xmlSecKeyUseWithFinalize">xmlSecKeyUseWithFinalize</link>        (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
+void        <link linkend="xmlSecKeyUseWithReset">xmlSecKeyUseWithReset</link>           (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
+int         <link linkend="xmlSecKeyUseWithCopy">xmlSecKeyUseWithCopy</link>            (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> dst,
+                                             <link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> src);
+<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> <link linkend="xmlSecKeyUseWithCreate">xmlSecKeyUseWithCreate</link>  (const <link linkend="xmlChar">xmlChar</link> *application,
+                                             const <link linkend="xmlChar">xmlChar</link> *identifier);
+<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> <link linkend="xmlSecKeyUseWithDuplicate">xmlSecKeyUseWithDuplicate</link>
+                                            (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
+void        <link linkend="xmlSecKeyUseWithDestroy">xmlSecKeyUseWithDestroy</link>         (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);
+int         <link linkend="xmlSecKeyUseWithSet">xmlSecKeyUseWithSet</link>             (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
+                                             const <link linkend="xmlChar">xmlChar</link> *application,
+                                             const <link linkend="xmlChar">xmlChar</link> *identifier);
+void        <link linkend="xmlSecKeyUseWithDebugDump">xmlSecKeyUseWithDebugDump</link>       (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecKeyUseWithDebugXmlDump">xmlSecKeyUseWithDebugXmlDump</link>    (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+struct      <link linkend="xmlSecKeyUseWith">xmlSecKeyUseWith</link>;
+#define     <link linkend="xmlSecKeyUseWithPtrListId">xmlSecKeyUseWithPtrListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyUseWithPtrListGetKlass">xmlSecKeyUseWithPtrListGetKlass</link>
+                                            (void);
 struct      <link linkend="xmlSecKeyReq">xmlSecKeyReq</link>;
 int         <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>          (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
 void        <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>            (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
@@ -31,6 +53,10 @@ int         <link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>    
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
 int         <link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>       (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
                                              <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);
+void        <link linkend="xmlSecKeyReqDebugDump">xmlSecKeyReqDebugDump</link>           (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecKeyReqDebugXmlDump">xmlSecKeyReqDebugXmlDump</link>        (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecKey">xmlSecKey</link>;
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (void);
 void        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
@@ -104,7 +130,7 @@ The key usage.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyUsageSign">xmlSecKeyUsageSign</title>
-<programlisting>#define	xmlSecKeyUsageSign		0x0001
+<programlisting>#define	xmlSecKeyUsageSign		0x00000001
 </programlisting>
 <para>
 Key can be used in any way.</para>
@@ -113,7 +139,7 @@ Key can be used in any way.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</title>
-<programlisting>#define	xmlSecKeyUsageVerify		0x0002
+<programlisting>#define	xmlSecKeyUsageVerify		0x00000002
 </programlisting>
 <para>
 Key for signing.</para>
@@ -122,7 +148,7 @@ Key for signing.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</title>
-<programlisting>#define	xmlSecKeyUsageEncrypt		0x0004
+<programlisting>#define	xmlSecKeyUsageEncrypt		0x00000004
 </programlisting>
 <para>
 Key for signature verification.</para>
@@ -131,7 +157,7 @@ Key for signature verification.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</title>
-<programlisting>#define	xmlSecKeyUsageDecrypt		0x0008
+<programlisting>#define	xmlSecKeyUsageDecrypt		0x00000008
 </programlisting>
 <para>
 An encryption key.</para>
@@ -139,8 +165,17 @@ An encryption key.</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyUsageKeyExchange">xmlSecKeyUsageKeyExchange</title>
+<programlisting>#define	xmlSecKeyUsageKeyExchange	0x00000010
+</programlisting>
+<para>
+The key is used for key exchange.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyUsageAny">xmlSecKeyUsageAny</title>
-<programlisting>#define	xmlSecKeyUsageAny		0xFFFF
+<programlisting>#define	xmlSecKeyUsageAny		0xFFFFFFFF
 </programlisting>
 <para>
 A decryption key.</para>
@@ -148,13 +183,234 @@ A decryption key.</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyUseWithInitialize">xmlSecKeyUseWithInitialize ()</title>
+<programlisting>int         xmlSecKeyUseWithInitialize      (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
+<para>
+Initializes <parameter>keyUseWith</parameter> object.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithFinalize">xmlSecKeyUseWithFinalize ()</title>
+<programlisting>void        xmlSecKeyUseWithFinalize        (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
+<para>
+Finalizes <parameter>keyUseWith</parameter> object.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithReset">xmlSecKeyUseWithReset ()</title>
+<programlisting>void        xmlSecKeyUseWithReset           (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
+<para>
+Resets the <parameter>keyUseWith</parameter> to its state after initialization.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithCopy">xmlSecKeyUseWithCopy ()</title>
+<programlisting>int         xmlSecKeyUseWithCopy            (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> dst,
+                                             <link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> src);</programlisting>
+<para>
+Copies information from <parameter>dst</parameter> to <parameter>src</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to destination object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to source object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithCreate">xmlSecKeyUseWithCreate ()</title>
+<programlisting><link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> xmlSecKeyUseWithCreate  (const <link linkend="xmlChar">xmlChar</link> *application,
+                                             const <link linkend="xmlChar">xmlChar</link> *identifier);</programlisting>
+<para>
+Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
+returned object with <parameter>xmlSecKeyUseWithDestroy</parameter> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>application</parameter>&nbsp;:</term>
+<listitem><simpara>        the application value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>identifier</parameter>&nbsp;:</term>
+<listitem><simpara>         the identifier value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created object or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithDuplicate">xmlSecKeyUseWithDuplicate ()</title>
+<programlisting><link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> xmlSecKeyUseWithDuplicate
+                                            (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
+<para>
+Duplicates <parameter>keyUseWith</parameter> object. The caller is responsible for destroying
+returned object with <parameter>xmlSecKeyUseWithDestroy</parameter> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created object or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithDestroy">xmlSecKeyUseWithDestroy ()</title>
+<programlisting>void        xmlSecKeyUseWithDestroy         (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith);</programlisting>
+<para>
+Destroys <parameter>keyUseWith</parameter> created with <parameter>xmlSecKeyUseWithCreate</parameter> or <parameter>xmlSecKeyUseWithDuplicate</parameter>
+functions.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithSet">xmlSecKeyUseWithSet ()</title>
+<programlisting>int         xmlSecKeyUseWithSet             (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
+                                             const <link linkend="xmlChar">xmlChar</link> *application,
+                                             const <link linkend="xmlChar">xmlChar</link> *identifier);</programlisting>
+<para>
+Sets <parameter>application</parameter> and <parameter>identifier</parameter> in the <parameter>keyUseWith</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>application</parameter>&nbsp;:</term>
+<listitem><simpara>        the new application value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>identifier</parameter>&nbsp;:</term>
+<listitem><simpara>         the new identifier value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithDebugDump">xmlSecKeyUseWithDebugDump ()</title>
+<programlisting>void        xmlSecKeyUseWithDebugDump       (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithDebugXmlDump">xmlSecKeyUseWithDebugXmlDump ()</title>
+<programlisting>void        xmlSecKeyUseWithDebugXmlDump    (<link linkend="xmlSecKeyUseWith">xmlSecKeyUseWithPtr</link> keyUseWith,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints xmlSecKeyUseWith debug information to a file <parameter>output</parameter> in XML format.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyUseWith</parameter>&nbsp;:</term>
+<listitem><simpara>         the pointer to information about key application/user.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara>             the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWith">struct xmlSecKeyUseWith</title>
+<programlisting>struct xmlSecKeyUseWith {
+
+    xmlChar*                    application;
+    xmlChar*                    identifier;
+
+    void*                       reserved1;
+    void*                       reserved2;
+};
+</programlisting>
+<para>
+Information about application and user of the key.</para>
+<para>
+
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>application</structfield></term>
+<listitem><simpara>        the application.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlChar">xmlChar</link> *<structfield>identifier</structfield></term>
+<listitem><simpara>         the identifier.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved2</structfield></term>
+<listitem><simpara>
+
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithPtrListId">xmlSecKeyUseWithPtrListId</title>
+<programlisting>#define xmlSecKeyUseWithPtrListId	xmlSecKeyUseWithPtrListGetKlass()
+</programlisting>
+<para>
+The keys list klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUseWithPtrListGetKlass">xmlSecKeyUseWithPtrListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyUseWithPtrListGetKlass
+                                            (void);</programlisting>
+<para>
+The key data list klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key data list klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyReq">struct xmlSecKeyReq</title>
 <programlisting>struct xmlSecKeyReq {
 
-    xmlSecKeyDataId			keyId;
-    xmlSecKeyDataType			keyType;
-    xmlSecKeyUsage			keyUsage;
-    xmlSecSize				keyBitsSize;
+    xmlSecKeyDataId	        keyId;
+    xmlSecKeyDataType		keyType;
+    xmlSecKeyUsage		keyUsage;
+    xmlSecSize			keyBitsSize;
+    xmlSecPtrList               keyUseWithList;    
+
+    void*                       reserved1;
+    void*                       eserved2;
 };
 </programlisting>
 <para>
@@ -180,6 +436,22 @@ The key requirements information.</para>
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link> <structfield>keyBitsSize</structfield></term>
 <listitem><simpara>	the desired key size (in bits!).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>keyUseWithList</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>eserved2</structfield></term>
+<listitem><simpara>
+
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -277,6 +549,38 @@ Checks whether <parameter>keyValue</parameter> matches key requirements <paramet
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>1 if key value matches requirements, 0 if not and a negative value
 if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReqDebugDump">xmlSecKeyReqDebugDump ()</title>
+<programlisting>void        xmlSecKeyReqDebugDump           (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints debug information about <parameter>keyReq</parameter> into <parameter>output</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyReq</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key requirements object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to output FILE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyReqDebugXmlDump">xmlSecKeyReqDebugXmlDump ()</title>
+<programlisting>void        xmlSecKeyReqDebugXmlDump        (<link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints debug information about <parameter>keyReq</parameter> into <parameter>output</parameter> in XML format.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>keyReq</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to key requirements object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>output</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

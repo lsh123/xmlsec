@@ -236,7 +236,7 @@ CPPFLAGS = /nologo
 
 # The compiler and its options.
 CC = cl.exe
-CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /W1 /MD $(XMLSEC_CRYPTO_CFLAGS)
+CFLAGS = /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_REENTRANT" /W1 /MD $(XMLSEC_CRYPTO_CFLAGS)
 CFLAGS = $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include /I$(XMLSEC_SRCDIR)
 CFLAGS = $(CFLAGS) /I$(INCPREFIX)
 

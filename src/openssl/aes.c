@@ -9,7 +9,7 @@
  * Author: Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
 #include "globals.h"
 
 #include <stdlib.h>
@@ -956,6 +956,6 @@ xmlSecOpenSSLKWAesDecode(const unsigned char *key, size_t keySize,
     return(inSize - XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE);
 }
 
-#endif /* XMLSEC_OPENSSL096 */
+#endif /* XMLSEC_OPENSSL_096 */
 #endif /* XMLSEC_NO_AES */
 

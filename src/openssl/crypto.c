@@ -138,14 +138,14 @@ xmlSecOpenSSLErrorsInit(void) {
 static int		
 xmlSecOpenSSLKeysInit(void) {
 #ifndef XMLSEC_NO_AES    
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register aes key");
 	return(-1);
     }
-#endif /* XMLSEC_OPENSSL096 */    
+#endif /* XMLSEC_OPENSSL_096 */    
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_DES    
@@ -291,7 +291,7 @@ xmlSecOpenSSLTransformsInit(void) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES    
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
     if(xmlSecTransformRegister(xmlSecOpenSSLTransformAes128CbcId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -329,7 +329,7 @@ xmlSecOpenSSLTransformsInit(void) {
 		    "failed to register aes256 key wrapper transform");
 	return(-1);
     }
-#endif /* XMLSEC_OPENSSL096 */    
+#endif /* XMLSEC_OPENSSL_096 */    
 #endif /* XMLSEC_NO_AES */
 
     return(0);

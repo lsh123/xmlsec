@@ -32,7 +32,7 @@ XMLSEC_EXPORT int		xmlSecOpenSSLGenerateRandom		(xmlSecBufferPtr buffer,
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
 /**
  * xmlSecAesKey:
  * 
@@ -98,7 +98,7 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecOpenSSLTransformKWAes192GetKlass	(void);
 	xmlSecOpenSSLTransformKWAes256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecOpenSSLTransformKWAes256GetKlass	(void);
 
-#endif /* XMLSEC_OPENSSL096 */
+#endif /* XMLSEC_OPENSSL_096 */
 #endif /* XMLSEC_NO_AES */
 
 /********************************************************************

@@ -101,9 +101,9 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, const unsigned c
      * it is possible to disable padding and do it by yourself
      * For OpenSSL 0.9.6 you have interop problems
      */
-#ifndef XMLSEC_OPENSSL096	
+#ifndef XMLSEC_OPENSSL_096	
     EVP_CIPHER_CTX_set_padding(xmlSecOpenSSLEvpBlockCipherGetCtx(transform), 0);    
-#endif /* XMLSEC_OPENSSL096 */	
+#endif /* XMLSEC_OPENSSL_096 */	
     
     return(0);
 }
@@ -297,7 +297,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
      * compatibility with previous versions of xmlsec.
      * This needs to be fixed in the next XMLSEC API refresh.
      */
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
     if(!transform->encode) {
 	if(ctx->final_used) {
 	    memcpy(outBuf, ctx->final, blockLen);
@@ -307,7 +307,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
 	    fixLength = 0;
 	}
     }
-#endif /* XMLSEC_OPENSSL096 */
+#endif /* XMLSEC_OPENSSL_096 */
 
     /* encrypt/decrypt */
     ret = EVP_CipherUpdate(ctx, outBuf, &outLen, xmlSecBufferGetData(in), inSize);
@@ -318,7 +318,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
 	return(-1);
     }
 
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
     if(!transform->encode) {
 	/*
 	 * The logic below is copied from EVP_DecryptUpdate() function.
@@ -337,7 +337,7 @@ xmlSecOpenSSLEvpBlockCipherUpdate(xmlSecTransformPtr transform, xmlSecTransformC
 	    outLen += blockLen;
 	}
     }
-#endif /* XMLSEC_OPENSSL096 */
+#endif /* XMLSEC_OPENSSL_096 */
     
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
@@ -410,7 +410,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
      * compatibility with previous versions of xmlsec.
      * This needs to be fixed in the next XMLSEC API refresh.
      */
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
     if(transform->encode) {
 	unsigned char pad[EVP_MAX_BLOCK_LENGTH];
 	int padLen;
@@ -442,7 +442,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 	}
 	outBuf += outLen;
     }
-#endif /* XMLSEC_OPENSSL096 */			
+#endif /* XMLSEC_OPENSSL_096 */			
 
     /* finalize transform */
     ret = EVP_CipherFinal(ctx, outBuf, &outLen2);
@@ -464,7 +464,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
      * compatibility with previous versions of xmlsec.
      * This needs to be fixed in the next XMLSEC API refresh.
      */
-#ifndef XMLSEC_OPENSSL096
+#ifndef XMLSEC_OPENSSL_096
      if(!transform->encode) {
 	/* we instructed openssl to do not use padding so there 
 	 * should be no final block 
@@ -485,7 +485,7 @@ xmlSecOpenSSLEvpBlockCipherFinal(xmlSecTransformPtr transform, xmlSecTransformCt
 	    }
 	}
     } 
-#endif /* XMLSEC_OPENSSL096 */			
+#endif /* XMLSEC_OPENSSL_096 */			
 
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen + outLen2);

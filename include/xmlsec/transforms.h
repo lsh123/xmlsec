@@ -61,7 +61,7 @@ typedef enum  {
     xmlSecTransformStatusOk,
     xmlSecTransformStatusFail
 } xmlSecTransformStatus;
-
+		    
 /**************************************************************************
  *
  * xmlSecTransformMode
@@ -134,7 +134,7 @@ typedef unsigned char			xmlSecTransformDataType;
 /**
  * xmlSecTransformCtx:
  *
- * The transform context.
+	 * The transform context.
  */
 struct _xmlSecTransformCtx {
     xmlSecTransformStatus	status;
@@ -142,6 +142,7 @@ struct _xmlSecTransformCtx {
     
     xmlSecTransformPtr		first;
     xmlSecTransformPtr		last;
+    xmlSecBufferPtr		result;
 };
 
 XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize	(xmlSecTransformCtxPtr ctx);
@@ -164,15 +165,22 @@ XMLSEC_EXPORT xmlSecTransformPtr 	xmlSecTransformCtxNodeRead	(xmlSecTransformCtx
 XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead	(xmlSecTransformCtxPtr ctx,
 									 xmlNodePtr node,
 									 xmlSecTransformUsage usage);
-XMLSEC_EXPORT xmlSecBufferPtr		xmlSecTransformCtxExecute	(xmlSecTransformCtxPtr ctx,
-									 xmlDocPtr doc,
-									 const unsigned char* data,
+XMLSEC_EXPORT int			xmlSecTransformCtxPrepare	(xmlSecTransformCtxPtr ctx,
+									 xmlSecTransformDataType inputDataType);
+XMLSEC_EXPORT int			xmlSecTransformCtxBinaryExecute	(xmlSecTransformCtxPtr ctx, 
+									 const unsigned char* data, 
 									 size_t dataSize);
+XMLSEC_EXPORT int 			xmlSecTransformCtxUriExecute	(xmlSecTransformCtxPtr ctx, 
+									 const xmlChar* uri);
+XMLSEC_EXPORT int			xmlSecTransformCtxXmlExecute	(xmlSecTransformCtxPtr ctx, 
+									 xmlSecNodeSetPtr nodes);
+XMLSEC_EXPORT int			xmlSecTransformCtxExecute	(xmlSecTransformCtxPtr ctx,
+									 xmlDocPtr doc);
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump 	(xmlSecTransformCtxPtr ctx,
 								        FILE* output);
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump	(xmlSecTransformCtxPtr ctx,
 									 FILE* output);
-
+	
 /**************************************************************************
  *
  * xmlSecTransform

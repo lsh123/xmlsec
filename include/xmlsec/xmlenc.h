@@ -77,13 +77,16 @@ XMLSEC_EXPORT void 		xmlSecEncCtxDestroy		(xmlSecEncCtxPtr ctx);
 XMLSEC_EXPORT int		xmlSecEncCtxInitialize		(xmlSecEncCtxPtr ctx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecEncCtxFinalize		(xmlSecEncCtxPtr ctx);
-XMLSEC_EXPORT int		xmlSecEncCtxEncryptUri		(xmlSecEncCtxPtr ctx,
-								 xmlNodePtr node,
+XMLSEC_EXPORT int		xmlSecEncCtxXmlEncrypt		(xmlSecEncCtxPtr ctx,
+								 xmlNodePtr tmpl,
+								 xmlNodePtr node);
+XMLSEC_EXPORT int		xmlSecEncCtxUriEncrypt		(xmlSecEncCtxPtr ctx,
+								 xmlNodePtr tmpl,
 								 const xmlChar *uri);
 XMLSEC_EXPORT int		xmlSecEncCtxDecrypt		(xmlSecEncCtxPtr ctx,
 								 xmlNodePtr node);
 XMLSEC_EXPORT xmlSecBufferPtr	xmlSecEncCtxDecryptToBuffer	(xmlSecEncCtxPtr ctx,
-								 xmlNodePtr node);
+								 xmlNodePtr node		);
 XMLSEC_EXPORT void		xmlSecEncCtxDebugDump		(xmlSecEncCtxPtr ctx,
 								 FILE* output);
 XMLSEC_EXPORT void		xmlSecEncCtxDebugXmlDump	(xmlSecEncCtxPtr ctx,

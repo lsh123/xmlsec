@@ -963,7 +963,7 @@ xmlSecAppEncryptFile(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
     xmlDocPtr doc = NULL;
-    xmlNodePtr startNode;
+    xmlNodePtr startTmplNode;
     int res = -1;
 
     if(filename == NULL) {
@@ -977,8 +977,8 @@ xmlSecAppEncryptFile(const char* filename) {
 		filename);
 	goto done;
     }
-    startNode = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
-    if(startNode == NULL) {
+    startTmplNode = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
+    if(startTmplNode == NULL) {
 	fprintf(stderr, "Error: failed to find default node with name=\"%s\"\n", 
 		xmlSecNodeEncryptedData);
 	goto done;
@@ -991,7 +991,8 @@ xmlSecAppEncryptFile(const char* filename) {
     }
 
     if(xmlSecAppCmdLineParamGetString(&binaryParam) != NULL) {
-	if(xmlSecEncCtxEncryptUri(encCtx, startNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryParam)) < 0) {
+	/* encrypt */
+	if(xmlSecEncCtxUriEncrypt(encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryParam)) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt file \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&binaryParam));
 	    goto done;
@@ -1004,8 +1005,13 @@ xmlSecAppEncryptFile(const char* filename) {
 		    xmlSecAppCmdLineParamGetString(&xmlParam));
 	    goto done;
 	}
-	
-	/* TODO */
+
+	/* encrypt */
+	if(xmlSecEncCtxXmlEncrypt(encCtx, startTmplNode, data->startNode) < 0) {
+	    fprintf(stderr, "Error: failed to encrypt xml file \"%s\"\n", 
+		    xmlSecAppCmdLineParamGetString(&xmlParam));
+	    goto done;
+	}
     } else {
 	fprintf(stderr, "Error: encryption data not specified (use \"--xml\" or \"--binary\" options)\n");
 	goto done;
@@ -1014,7 +1020,7 @@ xmlSecAppEncryptFile(const char* filename) {
     /* print out result only once per execution */
     if(repeats <= 1) {
 	if(encCtx->replaced) {
-	    if(xmlSecAppWriteResult(doc, NULL) < 0) {
+	    if(xmlSecAppWriteResult((data != NULL) ? data->doc : doc, NULL) < 0) {
 		goto done;
 	    }
 	} else {

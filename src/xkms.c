@@ -31,8 +31,12 @@
 #include <xmlsec/errors.h>
 
 /* The ID attribute in XKMS is 'Id' */
-static const xmlChar*		xmlSecXkmsIds[] = { BAD_CAST "Id", NULL };
+static const xmlChar* xmlSecXkmsIds[] = { BAD_CAST "Id", NULL };
 
+static int	xmlSecXkmsCtxReadLocateRequestNode	(xmlSecXkmsCtxPtr xkmsCtx,
+							 xmlNodePtr node);
+static int	xmlSecXkmsCtxReadQueryKeyBindingNode	(xmlSecXkmsCtxPtr xkmsCtx,
+							 xmlNodePtr node);
 
 /**
  * xmlSecXkmsCtxCreate:
@@ -130,6 +134,18 @@ xmlSecXkmsCtxInitialize(xmlSecXkmsCtxPtr xkmsCtx, xmlSecKeysMngrPtr keysMngr) {
     }
     xkmsCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
 
+    /* initialize keys list */
+    ret = xmlSecPtrListInitialize(&(xkmsCtx->keys), xmlSecKeyPtrListId);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);   
+    }
+
+
     return(0);
 }
 
@@ -147,7 +163,7 @@ xmlSecXkmsCtxFinalize(xmlSecXkmsCtxPtr xkmsCtx) {
     
     xmlSecKeyInfoCtxFinalize(&(xkmsCtx->keyInfoReadCtx));
     xmlSecKeyInfoCtxFinalize(&(xkmsCtx->keyInfoWriteCtx));
-
+    xmlSecPtrListFinalize(&(xkmsCtx->keys));
     memset(xkmsCtx, 0, sizeof(xmlSecXkmsCtx));
 }
 
@@ -163,7 +179,13 @@ xmlSecXkmsCtxReset(xmlSecXkmsCtxPtr xkmsCtx) {
     
     xmlSecKeyInfoCtxReset(&(xkmsCtx->keyInfoReadCtx));
     xmlSecKeyInfoCtxReset(&(xkmsCtx->keyInfoWriteCtx));
+    xmlSecPtrListEmpty(&(xkmsCtx->keys));
     
+    xkmsCtx->firtsMsgExtNode 	= NULL;
+    xkmsCtx->firtsRespMechNode	= NULL;
+    xkmsCtx->firtsRespWithNode	= NULL;
+    xkmsCtx->keyInfoNode	= NULL;
+
     if(xkmsCtx->result != NULL) {
 	xmlFreeDoc(xkmsCtx->result);
 	xkmsCtx->result = NULL;
@@ -221,15 +243,70 @@ xmlSecXkmsCtxCopyUserPref(xmlSecXkmsCtxPtr dst, xmlSecXkmsCtxPtr src) {
  *
  * Process "locate key data" request from @node and returns key data 
  * in the #result member of the @xkmsCtx structure.
+ * 
+ * <xkms:LocateRequest Id Service Nonce? OriginalRequestId? ResponseLimit? >
+ * 	<dsig:Signature/>?
+ *	<xkms:MessageExtension/>*
+ * 	<xkms:OpaqueClientData/>?
+ *	<xkms:ResponseMechanism/>*
+ * 	<xkms:RespondWith/>*
+ *	<xkms:PendingNotification Mechanism Identifier />?
+ *	<xkms:QueryKeyBinding Id? >
+ * 		<dsig:KeyInfo/>?
+ *		<xkms:KeyUsage/>*
+ *		<xkms:UseKeyWith Application Identifier />*
+ *		<xkms:TimeInstant Time />?
+ *	</xkms:QueryKeyBinding>
+ * </xkms:LocateRequest> 
+ *
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsCtxLocate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
+    xmlSecKeyPtr key = NULL;
+    int ret;
+
     xmlSecAssert2(xkmsCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
+
+    xmlSecAddIDs(node->doc, node, xmlSecXkmsIds);
+
+    ret = xmlSecXkmsCtxReadLocateRequestNode(xkmsCtx, node);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsCtxReadLocateRequestNode",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    /* now we are ready to search for key */
+    if((xkmsCtx->keyInfoReadCtx.keysMngr != NULL) && (xkmsCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
+	key = (xkmsCtx->keyInfoReadCtx.keysMngr->getKey)(xkmsCtx->keyInfoNode, 
+						         &(xkmsCtx->keyInfoReadCtx));
+    }
     
-    xkmsCtx->mode = xmlXkmsCtxModeLocateRequest;
+    /* check that we got what we needed */
+    if((key != NULL) && (!xmlSecKeyMatch(key, NULL, &(xkmsCtx->keyInfoReadCtx.keyReq)))) {
+	xmlSecKeyDestroy(key);
+	key = NULL;
+    } else if(key != NULL) {
+	ret = xmlSecPtrListAdd(&(xkmsCtx->keys), key);
+	if(ret < 0) {
+    	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecPtrListAdd",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlSecKeyDestroy(key);
+	    key = NULL;
+	    return(-1);
+	}
+    }
+
+    /* todo: write back the result */
     
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
@@ -238,6 +315,146 @@ xmlSecXkmsCtxLocate(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
 		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		XMLSEC_ERRORS_NO_MESSAGE);
     return(-1);
+}
+
+static int 
+xmlSecXkmsCtxReadLocateRequestNode(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(xkmsCtx != NULL, -1);
+    xmlSecAssert2(xkmsCtx->mode == xmlXkmsCtxModeLocateRequest, -1);
+    xmlSecAssert2(xkmsCtx->firtsMsgExtNode == NULL, -1);
+    xmlSecAssert2(xkmsCtx->firtsRespMechNode == NULL, -1);
+    xmlSecAssert2(xkmsCtx->firtsRespWithNode == NULL, -1);
+    xmlSecAssert2(xkmsCtx->keyInfoNode == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    
+    cur = xmlSecGetNextElementNode(node->children);
+    
+    /* first node is optional <dsig:Signature/> node */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeSignature, xmlSecDSigNs))) {
+	/* todo: verify signature and make sure that correct data was signed */
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* next is zero or more <xkms:MessageExtension/> nodes */
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeMessageExtension, xmlSecXkmsNs))) {
+	if(xkmsCtx->firtsMsgExtNode == NULL) {
+	    xkmsCtx->firtsMsgExtNode = cur;
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* next is optional <xkms:OpaqueClientData/> node */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeOpaqueClientData, xmlSecXkmsNs))) {
+	/* todo */
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is zero or more <xkms:ResponseMechanism/> nodes */
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeResponseMechanism, xmlSecXkmsNs))) {
+	if(xkmsCtx->firtsRespMechNode == NULL) {
+	    xkmsCtx->firtsRespMechNode = cur;
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* next is zero or more <xkms:RespondWith/> nodes */
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRespondWith, xmlSecXkmsNs))) {
+	if(xkmsCtx->firtsRespWithNode == NULL) {
+	    xkmsCtx->firtsRespWithNode = cur;
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional <xkms:PendingNotification/> node */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodePendingNotification, xmlSecXkmsNs))) {
+	/* todo */
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* the last is a required <xkms:QueryKeyBinding/> node */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeQueryKeyBinding, xmlSecXkmsNs))) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_INVALID_NODE,
+		    "node=%s", 
+		    xmlSecErrorsSafeString(xmlSecNodeQueryKeyBinding));
+	return(-1);
+    }
+    
+    /* read <xkms:QueryKeyBinding/> node */    
+    ret = xmlSecXkmsCtxReadQueryKeyBindingNode(xkmsCtx, cur);
+    if(ret < 0) {
+    	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXkmsCtxReadQueryKeyBindingNode",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    cur = xmlSecGetNextElementNode(cur->next);    
+
+    /* check that there is nothing after the last node */
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    return(0);
+}
+
+static int 
+xmlSecXkmsCtxReadQueryKeyBindingNode(xmlSecXkmsCtxPtr xkmsCtx, xmlNodePtr node) {
+    xmlNodePtr cur;
+    
+    xmlSecAssert2(xkmsCtx != NULL, -1);
+    xmlSecAssert2(xkmsCtx->keyInfoNode == NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    
+    cur = xmlSecGetNextElementNode(node->children);
+    
+    /* first node is optional <dsig:KeyInfo/> node */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs))) {
+	xkmsCtx->keyInfoNode = cur;
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* next is zero or more <xkms:KeyUsage/> nodes */
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeKeyUsage, xmlSecXkmsNs))) {
+	/* todo: convert key usage in the xmlSecKeyInfoCtx */
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* next is zero or more <xkms:UseKeyWith/> nodes */
+    while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeUseKeyWith, xmlSecXkmsNs))) {
+	/* todo: convert key usage in the xmlSecKeyInfoCtx */
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* next is optional <xkms:TimeInstant/> node */
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTimeInstant, xmlSecXkmsNs))) {
+	/* todo */
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    /* check that there is nothing after the last node */
+    if(cur != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    return(0);
 }
 
 /**
@@ -293,6 +510,9 @@ xmlSecXkmsCtxDebugDump(xmlSecXkmsCtxPtr xkmsCtx, FILE* output) {
     
     fprintf(output, "== Key Info Write Ctx:\n");
     xmlSecKeyInfoCtxDebugDump(&(xkmsCtx->keyInfoWriteCtx), output);
+
+    fprintf(output, "== Keys:\n");
+    xmlSecPtrListDebugDump(&(xkmsCtx->keys), output);
 }
 
 /**
@@ -325,6 +545,10 @@ xmlSecXkmsCtxDebugXmlDump(xmlSecXkmsCtxPtr xkmsCtx, FILE* output) {
     fprintf(output, "<KeyInfoWriteCtx>\n");
     xmlSecKeyInfoCtxDebugXmlDump(&(xkmsCtx->keyInfoWriteCtx), output);
     fprintf(output, "</KeyInfoWriteCtx>\n");
+
+    fprintf(output, "<Keys>\n");
+    xmlSecPtrListDebugXmlDump(&(xkmsCtx->keys), output);
+    fprintf(output, "</Keys\n");
 
     switch(xkmsCtx->mode) {
 	case xmlXkmsCtxModeLocateRequest:

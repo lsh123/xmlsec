@@ -24,6 +24,7 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/list.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/keyinfo.h>
@@ -65,6 +66,13 @@ struct _xmlSecXkmsCtx {
     
     /* these data are returned */
     xmlDocPtr			result;
+    xmlSecPtrList		keys;
+
+    /* these are internal data, nobody should change that except us */
+    xmlNodePtr 			firtsMsgExtNode;
+    xmlNodePtr 			firtsRespMechNode;
+    xmlNodePtr 			firtsRespWithNode;
+    xmlNodePtr 			keyInfoNode;
     
     /* reserved for future */
     void*			reserved0;

@@ -861,7 +861,8 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     
     /* ignore <dsig:KeyInfo /> if there is the key is already set */
     /* todo: throw an error if key is set and node != NULL? */
-    if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {	
+    if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL) 
+			&& (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {	
 	dsigCtx->signKey = (dsigCtx->keyInfoReadCtx.keysMngr->getKey)(node, &(dsigCtx->keyInfoReadCtx));
     }
     

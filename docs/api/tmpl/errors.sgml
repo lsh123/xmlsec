@@ -1,0 +1,332 @@
+<!-- ##### SECTION Title ##### -->
+errors
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_LIB ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_FUNCTION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MALLOC_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_XMLSEC_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CRYPTO_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_XML_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_XSLT_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_IO_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_DATA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_SIZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_KEY_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_SIZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_DATA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_USAGE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODESET ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE_CONTENT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_NODE_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_VERIFY_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_NOT_FOUND ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_REVOKED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_ASSERTION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_DISABLED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION xmlSecErrorsCallback ##### -->
+<para>
+
+</para>
+
+@file: 
+@line: 
+@func: 
+@reason: 
+@msg: 
+
+
+<!-- ##### FUNCTION xmlSecErrorsInit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecErrorsShutdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecErrorsSetCallback ##### -->
+<para>
+
+</para>
+
+@callback: 
+
+
+<!-- ##### VARIABLE xmlSecPrintErrorMessages ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_HERE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecError ##### -->
+<para>
+
+</para>
+
+@file: 
+@line: 
+@func: 
+@reason: 
+@msg: 
+
+
+<!-- ##### MACRO xmlSecAssert ##### -->
+<para>
+
+</para>
+
+@p: 
+
+
+<!-- ##### MACRO xmlSecAssert2 ##### -->
+<para>
+
+</para>
+
+@p: 
+@ret: 
+
+

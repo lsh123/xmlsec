@@ -1,0 +1,469 @@
+<refentry id="xmlsec-errors">
+<refmeta>
+<refentrytitle>errors</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>errors</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="XMLSEC-ERRORS-LIB-CAPS">XMLSEC_ERRORS_LIB</link>
+#define     <link linkend="XMLSEC-ERRORS-FUNCTION-CAPS">XMLSEC_ERRORS_FUNCTION</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC_ERRORS_R_XML_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC_ERRORS_R_IO_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_KEY</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_SIZE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC_ERRORS_R_INVALID_USAGE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC_ERRORS_R_INVALID_NODESET</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</link>
+#define     <link linkend="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</link>
+void        (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)         (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg);
+void        <link linkend="xmlSecErrorsInit">xmlSecErrorsInit</link>                (void);
+void        <link linkend="xmlSecErrorsShutdown">xmlSecErrorsShutdown</link>            (void);
+void        <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link>         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);
+extern      int <link linkend="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</link>;
+#define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
+void        <link linkend="xmlSecError">xmlSecError</link>                     (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg);
+#define     <link linkend="xmlSecAssert">xmlSecAssert</link>                    ( p )
+#define     <link linkend="xmlSecAssert2">xmlSecAssert2</link>                   ( p, ret )
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-LIB-CAPS">XMLSEC_ERRORS_LIB</title>
+<programlisting>#define XMLSEC_ERRORS_LIB				(ERR_LIB_USER + 57)
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-FUNCTION-CAPS">XMLSEC_ERRORS_FUNCTION</title>
+<programlisting>#define XMLSEC_ERRORS_FUNCTION				0
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1  	/* "failed to allocate memory" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 2	/* "xmlsec operation failed" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 3	/* "crypto operation failed" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC_ERRORS_R_XML_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_XML_FAILED		 4	/* "xml operation failed" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_XSLT_FAILED		 5	/* "xslt operation failed" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC_ERRORS_R_IO_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_IO_FAILED		 6	/* "io operation failed" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10	/* "invlaid transform" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11	/* "invlaid transform data	" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12	/* "invalid transform or key" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_KEY</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY		 13	/* "key is invalid" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14	/* "key data is invalid" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_SIZE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15	/* "invalid key size" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16	/* "invalid key origin" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17	/* "key not found" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_SIZE		 18	/* "invalid size" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_DATA		 19	/* "invalid data" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TYPE		 21	/* "invalid type" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC_ERRORS_R_INVALID_USAGE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_USAGE		 22	/* "invalid usage" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23	/* "invalid node" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC_ERRORS_R_INVALID_NODESET</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24	/* "invalid nodes set" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25	/* "invalid node content" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26	/* "invalid node attribute" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</title>
+<programlisting>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27	/* "node already present" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</title>
+<programlisting>#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28	/* "same document required" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29	/* "node not found" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</title>
+<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30	/* "max retrievals level reached" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31	/* "cert verification failed" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32	/* "cert not found" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 33	/* "cert revoked" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
+<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34	/* "invalid reference" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</title>
+<programlisting>#define XMLSEC_ERRORS_R_ASSERTION		 100	/* "assertion" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</title>
+<programlisting>#define XMLSEC_ERRORS_R_DISABLED		 101	/* "disabled" */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsCallback">xmlSecErrorsCallback ()</title>
+<programlisting>void        (*xmlSecErrorsCallback)         (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsInit">xmlSecErrorsInit ()</title>
+<programlisting>void        xmlSecErrorsInit                (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsShutdown">xmlSecErrorsShutdown ()</title>
+<programlisting>void        xmlSecErrorsShutdown            (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback ()</title>
+<programlisting>void        xmlSecErrorsSetCallback         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>callback</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</title>
+<programlisting>extern int xmlSecPrintErrorMessages;	/* whether the error messages will be printed immidiatelly */
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</title>
+<programlisting>#define XMLSEC_ERRORS_HERE			__FILE__,__LINE__,__FUNCTION__
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecError">xmlSecError ()</title>
+<programlisting>void        xmlSecError                     (const char *file,
+                                             int line,
+                                             const char *func,
+                                             int reason,
+                                             const char *msg);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAssert">xmlSecAssert()</title>
+<programlisting>#define     xmlSecAssert( p )</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAssert2">xmlSecAssert2()</title>
+<programlisting>#define     xmlSecAssert2( p, ret )</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>ret</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

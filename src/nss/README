@@ -1,73 +1,9 @@
-8/4/2003
-       1.  NSS needs to provide a way to convert a DER integer string to
-           an ASCII decimal string. Once NSS is fixed, the function
-           xmlSecNssASN1IntegerWrite in src/nss/x509.c needs to be 
-           implemented. Updated the following related NSS & xmlsec bugs.
-	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=212864
-           xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118633
-
-7/28/2003
-       1. RSA Encryption/Decryption using PKCS#1 v1.5 padding not currently
-          exposed in NSS. This causes some tests to fail.
-          
-	  NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=214236
-	  xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118628
-
-7/24/2003
-
-	1. RSA-OAEP is not yet implemented in NSS. This is the only
-	   REQUIRED algorithm that is missing from xmlsec-nss.
-           
-	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=158747
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118629    
-
-	2. There are 2 fixes in NSS that will be rolled into the next 
-	   release (3.9). They are:
-	   http://bugzilla.mozilla.org/show_bug.cgi?id=208194 
-		Once available, need to change src/nss/x509.c. Replace 
-		    PR_AtomicIncrement(&(crlSrc->referenceCount));
-		with
-		    SEC_DupCrl(crlSrc);
-		(there is a comment there that already has the correct line)
-
-	   http://bugzilla.mozilla.org/show_bug.cgi?id=211384
-		No changes required. The "NSS_Shutdown failed" in some of the
-		current tests will go away
-
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118630
-
-	3. CERT_FindCertByNameString does not work in all cases
-
-	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=210709
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118631
-
-	4. CERT_FindCertBySubjectKeyID does not work in all cases
-	   
-	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=211051
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118632
-
-	5. Finding a cert by Issuer & Serial Number needs the ability to
-	   convert an ASCII decimal string to a DER integer string. Filed
-	   an RFE against NSS. Once fixed, xmlSecNumToItem in x509vfy.c 
-	   needs to be changed to use the new function(s) provided
-
-	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=212864
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118633
-
-	6. RIPEMD160 Digest and RIPEMD160 HMAC is not supported by NSS
-
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118634
-	    
-	7. AES Key wrap algorithm is implemented in NSS but not exposed
-	   due to some bug
-           src/nss/kw_aes.c uses a workaround which should be removed
-           when the bug is fixed
-
-	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=213795
-	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118635
+WHAT VERSION OF NSS?
+------------------------------------------------------------------------
+NSS 3.8 or greater and NSPR 4.3 or greater are required.
 
 KEYS MANAGER
-------------
+------------------------------------------------------------------------
 
 xmlsec-nss key manager uses a custom Keys Store, and a custom X509 Store.
 The custom Keys Store and the X509 Store use the NSS database as the underlying 
@@ -105,10 +41,73 @@ are:
 - NSS Database
 
 
+KNOWN ISSUES.
+------------------------------------------------------------------------
+1)  NSS needs to provide a way to convert a DER integer string to an ASCII 
+decimal string. Once NSS is fixed, the function xmlSecNssASN1IntegerWrite 
+in src/nss/x509.c needs to be implemented. 
+    NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=212864
+    xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118633
 
-MISC
-----
-. xmlSecNssAppKeyLoad(): This function loads a PKI key from a file. 
+2) RSA Encryption/Decryption using PKCS#1 v1.5 padding not currently exposed 
+in NSS. This causes some tests to fail.
+          
+    NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=214236
+    xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118628
+
+3) RSA-OAEP is not yet implemented in NSS. This is the only REQUIRED algorithm 
+that is missing from xmlsec-nss.
+           
+    NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=158747
+    xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118629    
+
+4) There are 2 fixes in NSS that will be rolled into the next release (3.9). 
+They are:
+    - http://bugzilla.mozilla.org/show_bug.cgi?id=208194 
+    Once available, need to change src/nss/x509.c. Replace 
+        PR_AtomicIncrement(&(crlSrc->referenceCount));
+    with
+        SEC_DupCrl(crlSrc);
+    (there is a comment there that already has the correct line)
+
+    - http://bugzilla.mozilla.org/show_bug.cgi?id=211384
+    No changes required. The "NSS_Shutdown failed" in some of the
+    current tests will go away
+
+xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118630
+
+5) CERT_FindCertByNameString does not work in all cases
+
+   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=210709
+   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118631
+
+6) CERT_FindCertBySubjectKeyID does not work in all cases
+	   
+   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=211051
+   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118632
+
+7) Finding a cert by Issuer & Serial Number needs the ability to
+convert an ASCII decimal string to a DER integer string. Filed
+an RFE against NSS. Once fixed, xmlSecNumToItem in x509vfy.c 
+needs to be changed to use the new function(s) provided
+
+    NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=212864
+    xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118633
+
+8) RIPEMD160 Digest and RIPEMD160 HMAC is not supported by NSS
+
+   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118634
+	    
+9) AES Key wrap algorithm is implemented in NSS but not exposed due to 
+some bug src/nss/kw_aes.c uses a workaround which should be removed
+when the bug is fixed
+
+   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=213795
+   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118635
+
+10) Not all file formats are supported
+
+- xmlSecNssAppKeyLoad(): This function loads a PKI key from a file. 
     The following formats are supported:
 	. xmlSecKeyDataFormatDer: This expects the private key to be in 
 		PrivateKeyInfo format. Note that the DER files containing 
@@ -120,19 +119,19 @@ MISC
 	. xmlSecKeyDataFormatPkcs8Der
 
 
-. xmlSecNssAppCertLoad(): This function loads a cert from a file. 
+- xmlSecNssAppCertLoad(): This function loads a cert from a file. 
     The following formats are supported:
 	xmlSecKeyDataFormatDer
 
     The following formats are not supported:
 	xmlSecKeyDataFormatPem
 
-. "Trusted" vs "Untrusted" certificates: 
-    The distinction between "trusted" and "untrusted" certificates in 
-    xmlsec-openssl is maintained because the OPENSSL application (and
-    not the OPENSSL library) has to maintain a cert store and verify 
-    certificates. With NSS, no such distinction is necessary in the
-    application.
+11) "Trusted" vs "Untrusted" certificates: 
+The distinction between "trusted" and "untrusted" certificates in 
+xmlsec-openssl is maintained because the OPENSSL application (and
+not the OPENSSL library) has to maintain a cert store and verify 
+certificates. With NSS, no such distinction is necessary in the
+application.
 
-
+Aleksey: Not sure that I understand this point but thats what Tej wrote.
 

@@ -1,0 +1,17 @@
+WHAT VERSION OF OPENSSL?
+------------------------------------------------------------------------
+OpenSSL 0.9.6 is supported but some functionality requires 0.9.7 or greater.
+
+KEYS MANAGER
+------------------------------------------------------------------------
+
+OpenSSL does not have a keys or certificates storage implementation. The 
+default xmlsec-openssl key manager uses a simple keys store from xmlsec 
+core library based on plain keys list. Trusted/untrusted certificates
+are stored in STACK_OF(X509) structures.
+
+KNOWN ISSUES.
+------------------------------------------------------------------------
+1) One day we might decide to drop OpenSSL 0.9.6 supprot and remove all 
+these ifdef's to simplify the code.
+

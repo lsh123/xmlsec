@@ -1,3 +1,8 @@
+Wed Oct  1 19:05:13 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/gnutls/README src/mscrypto/README src/nss/README 
+	src/openssl/README: updated README files
+
 Wed 01 Oct 2003 09:11:58 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/dl.h: moved closing bracket for "extern "C"

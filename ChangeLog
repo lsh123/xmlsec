@@ -1,3 +1,9 @@
+Wed Oct 29 07:55:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in include/xmlsec/xmltree.h src/dl.c
+	src/errors.c src/mscrypto/crypto.c src/nss/crypto.c 
+	src/openssl/app.c: fixed snprintf and vsnprintf warnings (bug #125684)
+
 Mon Oct 20 19:34:35 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: created "--with-html-dir" option 

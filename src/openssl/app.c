@@ -22,6 +22,7 @@
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 
 #include <xmlsec/openssl/app.h>
@@ -32,11 +33,6 @@
 static int 		xmlSecOpenSSLAppLoadRANDFile		(const char *file);
 static int 		xmlSecOpenSSLAppSaveRANDFile		(const char *file);
 static int		xmlSecOpenSSLDefaultPasswordCallback	(char *buf, int bufsiz, int verify, void *userdata);
-
-
-#if defined(_MSC_VER)
-#define snprintf _snprintf
-#endif
 
 /**
  * xmlSecOpenSSLAppInit:
@@ -1438,7 +1434,7 @@ static int
 xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *userdata) {
     char* filename = (char*)userdata;
     char* buf2;
-    char prompt[2048];
+    xmlChar prompt[2048];
     int i, ret;
         
     xmlSecAssert2(buf != NULL, -1);
@@ -1446,11 +1442,11 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
     /* try 3 times */
     for(i = 0; i < 3; i++) {
         if(filename != NULL) {
-    	    snprintf(prompt, sizeof(prompt), "Enter password for \"%s\" file: ", filename); 
+    	    xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password for \"%s\" file: ", filename); 
 	} else {
-	    snprintf(prompt, sizeof(prompt), "Enter password: "); 
+	    xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password: "); 
         }
-	ret = EVP_read_pw_string(buf, bufsize, prompt, 0);
+	ret = EVP_read_pw_string(buf, bufsize, (char*)prompt, 0);
         if(ret != 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -1466,9 +1462,9 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
         }
 
 	if(filename != NULL) {
-	    snprintf(prompt, sizeof(prompt), "Enter password for \"%s\" file again: ", filename); 
+	    xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password for \"%s\" file again: ", filename); 
 	} else {
-	    snprintf(prompt, sizeof(prompt), "Enter password again: "); 
+	    xmlSecStrPrintf(prompt, sizeof(prompt), BAD_CAST "Enter password again: "); 
 	}
 
 	buf2 = (char*)xmlMalloc(bufsize);
@@ -1480,7 +1476,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 			"size=%d", bufsize);
 	    return(-1);
 	}
-	ret = EVP_read_pw_string(buf2, bufsize, prompt, 0);
+	ret = EVP_read_pw_string(buf2, bufsize, (char*)prompt, 0);
 	if(ret != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,

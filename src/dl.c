@@ -26,16 +26,13 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
 
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 #include "xmlsec-ltdl.h"
-
-#if defined(_MSC_VER)
-#define snprintf _snprintf
-#endif
 
 /***********************************************************************
  *
@@ -239,7 +236,7 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
 		    "size=%d", len + 1); 
 	return(NULL);
     }
-    snprintf(BAD_CAST res, len, BAD_CAST tmpl, PACKAGE, name);
+    xmlSecStrPrintf(res, len, tmpl, PACKAGE, name);
     
     return(res);
 }
@@ -262,7 +259,7 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
 		    "size=%d", len + 1); 
 	return(NULL);
     }
-    snprintf(BAD_CAST res, len, BAD_CAST tmpl, name);
+    xmlSecStrPrintf(res, len, tmpl, name);
     
     return(res);
 }

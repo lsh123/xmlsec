@@ -150,6 +150,11 @@ else
         LIBXML_CFLAGS="`$LIBXML_CONFIG --cflags`"
 	LIBXML_VERSION="`$LIBXML_CONFIG --version`"
 	XMLSEC_NO_LIBXML="0"
+	if test "$vers" -ge "2006002" ;  then 
+	    XMLSEC_DEFINES="-DXMLSEC_LIBXML_260=1 $XMLSEC_DEFINES"
+	elif test "z$ac_cv_func_snprintf" != "zyes" -o "z$ac_cv_func_vsnprintf" != "zyes" ; then
+	    AC_MSG_ERROR(Functions snprintf and/or vsnprintf are not available on your platform. You need at least libxml2 2.6.2 for this version of $PACKAGE)
+	fi
         AC_MSG_RESULT(yes ('$LIBXML_VERSION'))
     else
         AC_MSG_ERROR(You need at least libxml2 $LIBXML_MIN_VERSION for this version of $PACKAGE)
@@ -158,6 +163,7 @@ fi
 AM_CONDITIONAL(XMLSEC_NO_LIBXML, test "z$XMLSEC_NO_LIBXML" == "z1")
 AC_SUBST(XMLSEC_NO_LIBXML)
 AC_SUBST(LIBXML_MIN_VERSION)
+AC_SUBST(LIBXML_VERSION)
 AC_SUBST(LIBXML_CONFIG)	
 AC_SUBST(LIBXML_PREFIX)
 AC_SUBST(LIBXML_CFLAGS)

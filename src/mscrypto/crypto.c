@@ -16,15 +16,12 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
+#include <xmlsec/xmltree.h>
 #include <xmlsec/private.h>
 
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
-
-#if defined(_MSC_VER)
-#define snprintf _snprintf
-#endif
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 
@@ -295,7 +292,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
 				int reason, const char* msg) {
     DWORD dwError;
     LPVOID lpMsgBuf;
-    char buf[500];
+    xmlChar buf[500];
 
     dwError = GetLastError();
     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
@@ -308,13 +305,13 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
 		  0,
 		  NULL);
     if((msg != NULL) && ((*msg) != '\0')) {
-        snprintf(buf, sizeof(buf), "%s;last error=%d (0x%08x);last error msg=%s", msg, dwError, dwError, (LPTSTR)lpMsgBuf);
+        xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "%s;last error=%d (0x%08x);last error msg=%s", msg, dwError, dwError, (LPTSTR)lpMsgBuf);
     } else {
-        snprintf(buf, sizeof(buf), "last error=%d (0x%08x);last error msg=%s", dwError, dwError, (LPTSTR)lpMsgBuf);
+        xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "last error=%d (0x%08x);last error msg=%s", dwError, dwError, (LPTSTR)lpMsgBuf);
     }
     xmlSecErrorsDefaultCallback(file, line, func, 
 		errorObject, errorSubject, 
-		reason, buf);
+		reason, (char*)buf);
 
     LocalFree(lpMsgBuf);
 }

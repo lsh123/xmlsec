@@ -23,14 +23,11 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
 #include <xmlsec/private.h>
+#include <xmlsec/xmltree.h>
 
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 #include <xmlsec/nss/x509.h>
-
-#if defined(_MSC_VER)
-#define snprintf _snprintf
-#endif
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 
@@ -302,12 +299,12 @@ void
 xmlSecNssErrorsDefaultCallback(const char* file, int line, const char* func,
 				const char* errorObject, const char* errorSubject,
 				int reason, const char* msg) {
-    char buf[500];
+    xmlChar buf[500];
     int err;
 
     err = PORT_GetError();
-    snprintf(buf, sizeof(buf), "%s;last nss error=%d (0x%08X)", msg, err, err);
+    xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "%s;last nss error=%d (0x%08X)", msg, err, err);
     xmlSecErrorsDefaultCallback(file, line, func, 
 		errorObject, errorSubject, 
-		reason, buf);
+		reason, (char*)buf);
 }

@@ -1,5 +1,6 @@
 NULL =
 
+SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
 SUBDIRS 	= include src apps man docs
 TEST_APP 	= apps/xmlsec1
 
@@ -13,7 +14,7 @@ DISTCLEANFILES = \
 	xmlsec1Conf.sh \
 	xmlsec1.pc \
 	xmlsec1-config \
-	xmlsec1-@VERSION@.spec \
+	xmlsec1.spec \
 	$NULL
 
 EXTRA_DIST = \
@@ -31,7 +32,7 @@ EXTRA_DIST = \
 	xmlsec1Conf.sh \
 	xmlsec1.pc \
 	xmlsec1-config \
-	xmlsec1-@VERSION@.spec \
+	xmlsec1.spec \
 	$(NULL)
 
 EXTRA_CLEAN = \
@@ -45,7 +46,7 @@ docs-clean:
 	@(cd docs; $(MAKE) clean)
 
 docs-man: 
-	@(cd man;$(MAKE) docs)
+	@(cd man;$(MAKE) man)
 
 check: check-info check-km check-dsig check-enc
 
@@ -86,4 +87,9 @@ cleantar:
 
 rpm: cleantar
 	@(unset CDPATH ; $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
+
+tag-release:
+	@cvs tag -F xmlsec-$(SAFE_VERSION) > /dev/null
+
+rpm-release: clean cleantar rpm tag-release
 

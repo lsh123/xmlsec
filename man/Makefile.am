@@ -12,14 +12,11 @@ EXTRA_DIST = \
 	xmlsec-config.1 \
 	$(NULL)
 
-EXTRA_CLEAN = $(man_MANS)
-
-
 XMLSEC_PROGRAM=$(top_builddir)/apps/xmlsec1
 XMLSEC_CONFIG_PROGRAM=$(top_builddir)/xmlsec1-config
 XMLSEC_HTML=$(top_builddir)/docs/xmlsec-man.html
 
-all: man
+all:
 
 man: $(man_MANS) 
 
@@ -53,3 +50,6 @@ xmlsec1-config.1: xmlsec-config.1
 
 $(XMLSEC_PROGRAM): 
 	@cd ../apps;make
+
+clean:
+	

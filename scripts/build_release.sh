@@ -1,7 +1,7 @@
 #!/bin/sh 
 
-version=$1
-branch=$2
+branch=
+
 build_root=/tmp
 rpm_root=/usr/src/redhat
 remote_root=ftp.aleksey.com:/var/ftp/pub/xmlsec/releases
@@ -20,10 +20,9 @@ fi
 cd xmlsec
 version_cvs=`echo $version | sed 's/\./_/g'`
 cvs tag -F xmlsec-$version_cvs
-rm -rf `find . -name "CVS"`
 ./autogen.sh --prefix=/usr --sysconfdir=/etc
 rm -rf config.cache
-make dist
-mv xmlsec*-$version.tar.gz $rpm_root/SOURCES
-rpmbuild -ba xmlsec1.spec
+make distclean
+make rpm
+mv xmlsec*.tar.gz $rpm_root/SOURCES
 

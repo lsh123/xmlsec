@@ -21,6 +21,7 @@
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
+#include <xmlsec/errors.h>
 
 typedef struct _xmlSecExtMemoryParserCtx {
     const unsigned char 	*prefix;
@@ -40,23 +41,13 @@ typedef struct _xmlSecExtMemoryParserCtx {
  */
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseFile";
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     char *directory = NULL;
     
-    if(filename == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: filename is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
-
+    xmlSecAssert2(filename != NULL, NULL);
 
     xmlInitParser();
-
     ctxt = xmlCreateFileParserCtxt(filename);
     if (ctxt == NULL) {
 	return(NULL);
@@ -87,18 +78,13 @@ xmlSecParseFile(const char *filename) {
 }
 
 static int xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecExtMemoryParserRead";
     xmlSecExtMemoryParserCtxPtr ctx;
     size_t size;
-    
-    if((context == NULL) || (buffer == NULL) || (len <= 0)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: context or buffer is null\n", 
-	    func);	
-#endif
-	return(-1);	
-    }
+
+    xmlSecAssert2(context != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(len > 0, -1);
+        
     ctx = (xmlSecExtMemoryParserCtxPtr)context;
     
     if((ctx->prefix != NULL) && (ctx->prefixSize > 0)) {
@@ -133,19 +119,12 @@ xmlDocPtr
 xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
 		     const unsigned char *buffer, size_t bufferSize, 
 		     const unsigned char *postfix, size_t postfixSize) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseMemoryExt";
     xmlSecExtMemoryParserCtx extCtx;
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     
-    if(buffer == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(buffer != NULL, NULL);
+
     extCtx.prefix = prefix;
     extCtx.prefixSize = prefixSize;
     extCtx.buffer = buffer;
@@ -157,11 +136,9 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
     ctxt = xmlCreateIOParserCtxt(NULL, NULL, xmlSecExtMemoryParserRead, 
 				 NULL, &extCtx, XML_CHAR_ENCODING_NONE);
     if (ctxt == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create parser\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlCreateIOParserCtxt");
 	return(NULL);
     }
 
@@ -185,26 +162,16 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
  */
 xmlDocPtr
 xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecParseMemory";
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
-    
-    if(buffer == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: buffer is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
+
+    xmlSecAssert2(buffer != NULL, NULL);
     
     ctxt = xmlCreateMemoryParserCtxt((char*)buffer, size);
     if (ctxt == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create parser\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlCreateMemoryParserCtxt");
 	return(NULL);
     }
 
@@ -236,17 +203,10 @@ xmlSecParseMemory(const unsigned char *buffer, size_t size, int recovery) {
  */
 xmlNodePtr
 xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindChild";
     xmlNodePtr cur;
         
-    if((parent == NULL) || (name == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the node or name is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(parent != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);
     
     cur = parent->children;
     while(cur != NULL) {
@@ -262,16 +222,8 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
 
 xmlNodePtr
 xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindParent";
-        
-    if((cur == NULL) || (name == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the node or name is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(cur != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);        
 
     if(xmlSecCheckNodeName(cur, name, ns)) {
 	return(cur);
@@ -283,18 +235,10 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
 
 xmlNodePtr		
 xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindChild";
     xmlNodePtr cur;
     xmlNodePtr ret;
         
-    if(name == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the name is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
+    xmlSecAssert2(name != NULL, NULL); 
     
     cur = parent;
     while(cur != NULL) {
@@ -325,7 +269,6 @@ dis * @name:
  */
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecCheckNodeName";
     
     if((cur != NULL) && xmlStrEqual(cur->name, name)) {
 	if(cur->ns == NULL && ns == NULL) {
@@ -353,28 +296,19 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
  */
 xmlNodePtr		
 xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddChild";
     xmlNodePtr cur;
     xmlNodePtr text;
-        
-    if((parent == NULL) || (name == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: parent node or name is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(parent != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);        
 
     if(parent->children == NULL) {
         /* TODO: add indents */
 	text = xmlNewText(BAD_CAST "\n"); 
         if(text == NULL) {	
-#ifdef XMLSEC_DEBUG
-    	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to create line break text node\n",
-	        func);	
-#endif
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XML_FAILED,
+			"xmlNewText");
 	    return(NULL);
 	}
 	xmlAddChild(parent, text);
@@ -382,11 +316,9 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 
     cur = xmlNewChild(parent, NULL, name, NULL);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewChild");
 	return(NULL);
     }
 
@@ -403,11 +335,9 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     /* TODO: add indents */
     text = xmlNewText(BAD_CAST "\n"); 
     if(text == NULL) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create line break text node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewText");
 	return(NULL);
     }
     xmlAddChild(parent, text);
@@ -424,26 +354,17 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
  */
 xmlNodePtr
 xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddNextSibling";
     xmlNodePtr cur;
     xmlNodePtr text;
-    
-    if((node == NULL) || (name == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: sibling node or name is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);    
 
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNode");
 	return(NULL);
     }
     xmlAddNextSibling(node, cur);
@@ -461,11 +382,9 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     /* TODO: add indents */
     text = xmlNewText(BAD_CAST "\n");
     if(text == NULL) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create line break text node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewText");
 	return(NULL);
     }
     xmlAddNextSibling(node, text);
@@ -482,26 +401,17 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
  */
 xmlNodePtr
 xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddPrevSibling";
     xmlNodePtr cur;
     xmlNodePtr text;
-    
-    if((node == NULL) || (name == NULL)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: sibling node or name is null\n",
-	    func);	
-#endif
-	return(NULL);
-    }
+
+    xmlSecAssert2(node != NULL, NULL);
+    xmlSecAssert2(name != NULL, NULL);    
 
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewNode");
 	return(NULL);
     }
     xmlAddPrevSibling(node, cur);
@@ -519,11 +429,9 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     /* TODO: add indents */
     text = xmlNewText(BAD_CAST "\n");
     if(text == NULL) {	
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create line break text node\n",
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewText");
 	return(NULL);
     }
     xmlAddPrevSibling(node, text);
@@ -555,27 +463,18 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReplaceNode";
     xmlNodePtr old;
     xmlNodePtr ptr;
     xmlNodePtr dummy;
-    
-    if((node == NULL) || (newNode == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: node or new node is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }    
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(newNode != NULL, -1);    
 	    
     dummy = xmlNewDocNode(newNode->doc, NULL, BAD_CAST "dummy", NULL);
     if(dummy == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: dummy node creation failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewDocNode");
 	return(-1);
     }
 	    
@@ -585,11 +484,9 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 	ptr = xmlReplaceNode(newNode, dummy);
     }
     if(ptr == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to replace template node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlDocSetRootElement or xmlReplaceNode");
 	xmlFreeNode(dummy);
 	return(-1);
     }
@@ -600,11 +497,9 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 	old = xmlReplaceNode(node, ptr);
     }
     if(old == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to replace node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+                    "xmlDocSetRootElement or xmlReplaceNode");
 	xmlFreeNode(ptr);
 	return(-1);
     }
@@ -621,26 +516,17 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReplaceContent";
     xmlNodePtr dummy;
     xmlNodePtr ptr;
 
-    if((node == NULL) || (newNode == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: node or new node is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(newNode != NULL, -1);  
 	    
     dummy = xmlNewDocNode(newNode->doc, NULL, BAD_CAST "dummy", NULL);
     if(dummy == NULL) {
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: dummy node creation failed\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlNewDocNode");
 	return(-1);
     }
 	    
@@ -650,11 +536,9 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 	ptr = xmlReplaceNode(newNode, dummy);
     }
     if(ptr == NULL) {
-#ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to replace template node\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlDocSetRootElement or xmlReplaceNode");
 	xmlFreeNode(dummy);
 	return(-1);
     }
@@ -674,41 +558,29 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecReplaceNodeBuffer";
     static const char dummyPrefix[] = "<dummy>";
     static const char dummyPostfix[] = "</dummy>";
     xmlDocPtr doc;
     xmlNodePtr ptr1, ptr2;
-    
-    if((node == NULL) || (buffer == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: node is null\n", 
-	    func);	
-#endif
-	return(-1);	    
-    }
 
-	    
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(buffer != NULL, -1);    
+    
     doc = xmlSecParseMemoryExt((unsigned char*)dummyPrefix, strlen(dummyPrefix),
 			       buffer, size,
 			       (unsigned char*)dummyPostfix, strlen(dummyPostfix));
     if(doc == NULL){
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to parse buffer\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlSecParseMemoryExt");
 	return(-1);	    	
     }
 	    
     ptr1 = xmlDocGetRootElement(doc);
     if(ptr1 == NULL){
-#ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: doc root is null\n", 
-	    func);	
-#endif
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "root is null");
 	xmlFreeDoc(doc);
 	return(-1);	    	
     }
@@ -729,17 +601,10 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t siz
 
 void	
 xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddIDs";
     xmlNodePtr children = NULL;
-    
-    if((doc == NULL) || (ids == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: doc or ids list is null\n", 
-	    func);	
-#endif
-	return;	    
-    }
+
+    xmlSecAssert(doc != NULL);
+    xmlSecAssert(ids != NULL);    
     
     if((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
 	xmlAttrPtr attr;
@@ -756,11 +621,9 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 			if(tmp == NULL) {
 			    xmlAddID(NULL, doc, name, attr);
 			} else if(tmp != attr) {
-#ifdef XMLSEC_DEBUG
-		    	    xmlGenericError(xmlGenericErrorContext,
-				"%s: id \"%s\" already defined\n", 
-				func, name);	
-#endif
+			    xmlSecError(XMLSEC_ERRORS_HERE,
+					XMLSEC_ERRORS_R_INVALID_DATA,
+					"id=%s already defined", name);
 			}
 			xmlFree(name);
 		    }		    

@@ -22,6 +22,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/digests.h>
+#include <xmlsec/errors.h>
 
 static xmlSecTransformPtr xmlSecDigestSha1Create(xmlSecTransformId id);
 static void 	xmlSecDigestSha1Destroy		(xmlSecTransformPtr transform);
@@ -79,15 +80,13 @@ xmlSecTransformId xmlSecDigestSha1 = (xmlSecTransformId)&xmlSecDigestSha1Id;
  */
 static xmlSecTransformPtr 
 xmlSecDigestSha1Create(xmlSecTransformId id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Create";
     xmlSecDigestTransformPtr digest;
-    
+
+    xmlSecAssert2(id != NULL, NULL);    
     if(id != xmlSecDigestSha1){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is not recognized\n",
-	    func);
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		     "xmlSecDigestSha1");
 	return(NULL);
     }
 
@@ -96,11 +95,9 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
      */
     digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_SHA1_TRANSFORM_SIZE);
     if(digest == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: XMLSEC_SHA1_TRANSFORM_SIZE malloc failed\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		     XMLSEC_ERRORS_R_MALLOC_FAILED,
+		     NULL);
 	return(NULL);
     }
     memset(digest, 0, XMLSEC_SHA1_TRANSFORM_SIZE);
@@ -123,15 +120,14 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
  */
 static void 	
 xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Destroy";
     xmlSecDigestTransformPtr digest;
+
+    xmlSecAssert(transform != NULL);    
     
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		     "xmlSecDigestSha1");
 	return;
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -152,15 +148,13 @@ xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
 static int 	
 xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
 			const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Update";
     xmlSecDigestTransformPtr digest;
     
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		     "xmlSecDigestSha1");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -185,15 +179,13 @@ xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
 static int 	
 xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
 			unsigned char **buffer, size_t *size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Sign";
     xmlSecDigestTransformPtr digest;
     
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		     "xmlSecDigestSha1");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;
@@ -223,15 +215,13 @@ xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
 static int
 xmlSecDigestSha1Verify(xmlSecDigestTransformPtr transform,
 			 const unsigned char *buffer, size_t size) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecDigestSha1Verify";
     xmlSecDigestTransformPtr digest;
     
+    xmlSecAssert2(transform != NULL, -1);
     if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: transform is invalid\n",
-	    func);	
-#endif 	    
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		     "xmlSecDigestSha1");
 	return(-1);
     }    
     digest = (xmlSecDigestTransformPtr)transform;

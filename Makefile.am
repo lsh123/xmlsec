@@ -1,6 +1,6 @@
 NULL =
 
-SUBDIRS = include src apps tests man 
+SUBDIRS = include src apps tests
 TEST_APP = apps/xmlsec
 bin_SCRIPTS = xmlsec-config
 
@@ -13,6 +13,7 @@ EXTRA_DIST = \
 	docs/api/chapters/*.sgml \
 	docs/api/images \
 	docs/images \
+	man \
 	examples \
 	NEWS \
 	ChangeLog \
@@ -65,7 +66,7 @@ docs-format:
 	    mv $$i.tmp $$i; \
 	done)
 
-docs-man:
+docs-man: 
 	@cd man;make
 
 check-km: $(TEST_APP)

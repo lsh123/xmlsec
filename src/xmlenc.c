@@ -984,6 +984,10 @@ xmlSecEncCtxDebugDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     }
     fprintf(output, "== Status: %s\n",
 	    (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
+
+    fprintf(output, "== flags: 0x%08x\n", encCtx->flags);
+    fprintf(output, "== flags2: 0x%08x\n", encCtx->flags2);
+
     if(encCtx->id != NULL) {
 	fprintf(output, "== Id: \"%s\"\n", encCtx->id);
     }
@@ -1055,6 +1059,9 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
 	    break;
     }
     fprintf(output, "status=\"%s\" >\n", (encCtx->resultReplaced) ? "replaced" : "not-replaced" );
+
+    fprintf(output, "<Flags>%08x</Flags>\n", encCtx->flags);
+    fprintf(output, "<Flags2>%08x</Flags2>\n", encCtx->flags2);
 
     if(encCtx->id != NULL) {
 	fprintf(output, "<Id>%s</Id>\n", encCtx->id);

@@ -877,7 +877,6 @@ xmlSecKeyDataListGetKlass(void) {
  *
  * Keys Data Ids list
  *
- * TODO: debug dump
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataIdListKlass = {
     BAD_CAST "key-data-ids-list",

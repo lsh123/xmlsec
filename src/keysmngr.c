@@ -650,7 +650,6 @@ xmlSecSimpleKeysStoreFind(xmlSecKeyStorePtr store,  xmlSecKeyPtr key,
     storedKey = xmlSecSimpleKeysStoreFindKey(store, name, keyInfoCtx);
     if(storedKey == NULL) {
 	/* found nothing */
-	/* todo: add key info ctx parameter to report error/bail out in this case */
 	return(0);
     }
     

@@ -117,12 +117,6 @@ XMLSEC_EXPORT void 		xmlSecDSigCtxDestroy		(xmlSecDSigCtxPtr dsigCtx);
 XMLSEC_EXPORT int		xmlSecDSigCtxInitialize		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlSecKeysMngrPtr keysMngr);
 XMLSEC_EXPORT void		xmlSecDSigCtxFinalize		(xmlSecDSigCtxPtr dsigCtx);
-
-/* set signature/verification parameters */
-XMLSEC_EXPORT int		xmlSecDSigCtxAdoptSignatureKey	(xmlSecDSigCtxPtr dsigCtx,
-								 xmlSecKeyPtr key);
-
-
 XMLSEC_EXPORT int		xmlSecDSigCtxSign		(xmlSecDSigCtxPtr dsigCtx,
 								 xmlNodePtr tmpl);
 XMLSEC_EXPORT int		xmlSecDSigCtxVerify		(xmlSecDSigCtxPtr dsigCtx,

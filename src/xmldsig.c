@@ -160,18 +160,6 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 }
 
-int
-xmlSecDSigCtxAdoptSignatureKey(xmlSecDSigCtxPtr dsigCtx, xmlSecKeyPtr key) {
-    xmlSecAssert2(dsigCtx != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
-    
-    if(dsigCtx->signKey != NULL) {
-	xmlSecKeyDestroy(dsigCtx->signKey);
-    }
-    dsigCtx->signKey = key;
-    return(0);
-}
-
 xmlSecBufferPtr 
 xmlSecDSigCtxPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert2(dsigCtx != NULL, NULL);
@@ -960,6 +948,9 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 	    fprintf(output, "== Status: invalid\n");
 	    break;
     }
+    fprintf(output, "== flags: 0x%08x\n", dsigCtx->flags);
+    fprintf(output, "== flags2: 0x%08x\n", dsigCtx->flags2);
+
     if(dsigCtx->id != NULL) {
 	fprintf(output, "== Id: \"%s\"\n", dsigCtx->id);
     }
@@ -969,7 +960,18 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     fprintf(output, "== Key Info Write Ctx:\n");
     xmlSecKeyInfoCtxDebugDump(&(dsigCtx->keyInfoWriteCtx), output);
 
+    fprintf(output, "== Signature Transform Ctx:\n");
     xmlSecTransformCtxDebugDump(&(dsigCtx->signTransformCtx), output);
+
+    if(dsigCtx->signMethod != NULL) {
+        fprintf(output, "== Signature Method:\n");
+	xmlSecTransformDebugDump(dsigCtx->signMethod, output);
+    }
+
+    if(dsigCtx->signKey != NULL) {
+        fprintf(output, "== Signature Key:\n");
+	xmlSecKeyDebugDump(dsigCtx->signKey, output);
+    }
     
     fprintf(output, "== SignedInfo References List:\n");
     xmlSecPtrListDebugDump(&(dsigCtx->references), output);
@@ -996,9 +998,6 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 	       1, output);
 	fprintf(output, "\n== PreSigned data - end buffer\n");       
     }
-        
-    /* todo: sign key */
-    /* todo: sign method */
 }
 
 void 
@@ -1022,6 +1021,9 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 	    break;
     }
 
+    fprintf(output, "<Flags>%08x</Flags>\n", dsigCtx->flags);
+    fprintf(output, "<Flags2>%08x</Flags2>\n", dsigCtx->flags2);
+
     if(dsigCtx->id != NULL) {
 	fprintf(output, "<Id>%s</Id>\n", dsigCtx->id);
     }
@@ -1034,7 +1036,21 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecKeyInfoCtxDebugXmlDump(&(dsigCtx->keyInfoWriteCtx), output);
     fprintf(output, "</KeyInfoWriteCtx>\n");
 
+    fprintf(output, "<SignatureTransformCtx>\n");
     xmlSecTransformCtxDebugXmlDump(&(dsigCtx->signTransformCtx), output);
+    fprintf(output, "</SignatureTransformCtx>\n");
+
+    if(dsigCtx->signMethod != NULL) {
+        fprintf(output, "<SignatureMethod>\n");
+	xmlSecTransformDebugXmlDump(dsigCtx->signMethod, output);
+        fprintf(output, "</SignatureMethod>\n");
+    }
+
+    if(dsigCtx->signKey != NULL) {
+        fprintf(output, "<SignatureKey>\n");
+	xmlSecKeyDebugXmlDump(dsigCtx->signKey, output);
+        fprintf(output, "</SignatureKey>\n");
+    }
 
     fprintf(output, "<SignedInfoReferences>\n");
     xmlSecPtrListDebugXmlDump(&(dsigCtx->references), output);
@@ -1063,11 +1079,6 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 	       1, output);
 	fprintf(output, "</PreSignedData>\n");       
     }
-
-    /* todo: preSignMemBufMethod */
-    /* todo: references and manifests */
-    /* todo: sign key */
-    /* todo: sign method */
 
     if(dsigCtx->operation == xmlSecTransformOperationSign) {    
 	fprintf(output, "</SignatureContext>\n");
@@ -1176,7 +1187,6 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     if(dsigRefCtx->type != NULL) {
 	xmlFree(dsigRefCtx->type);
     }	
-    /* TODO: cleanup all */
     memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
 }
 
@@ -1447,9 +1457,13 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
 	fprintf(output, "== Type: \"%s\"\n", dsigRefCtx->type);
     }
 
-    /* todo: digestMethod */
-
+    fprintf(output, "== Reference Transform Ctx:\n");
     xmlSecTransformCtxDebugDump(&(dsigRefCtx->digestTransformCtx), output);
+
+    if(dsigRefCtx->digestMethod != NULL) {
+        fprintf(output, "== Digest Method:\n");
+	xmlSecTransformDebugDump(dsigRefCtx->digestMethod, output);
+    }
 
     if((xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)) != NULL)) {
@@ -1504,8 +1518,15 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
 	fprintf(output, "<Type>%s</Type>\n", dsigRefCtx->type);
     }
 
-    /* todo: digestMethod */
+    fprintf(output, "<ReferenceTransformCtx>\n");
     xmlSecTransformCtxDebugXmlDump(&(dsigRefCtx->digestTransformCtx), output);
+    fprintf(output, "</ReferenceTransformCtx>\n");
+
+    if(dsigRefCtx->digestMethod != NULL) {
+        fprintf(output, "<DigestMethod>\n");
+	xmlSecTransformDebugXmlDump(dsigRefCtx->digestMethod, output);
+        fprintf(output, "</DigestMethod>\n");
+    }
 
     if((dsigRefCtx->result != NULL) && 
        (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {

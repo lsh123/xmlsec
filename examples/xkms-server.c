@@ -23,7 +23,7 @@
 #ifdef XMLSEC_NO_XKMS
 
 int main(int argc, char** argv) {
-	printf(stderr, "ERROR: XKMS is disabled.\n");
+	fprintf(stderr, "ERROR: XKMS is disabled.\n");
 	return 1;
 }
 

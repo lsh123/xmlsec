@@ -2069,7 +2069,7 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
 
 done:
     if (hProv != 0) {
-    	CryptReleaseContext(ctx->hProv, 0);
+    	CryptReleaseContext(hProv, 0);
     }
 
     if (hKey != 0) {

@@ -24,9 +24,6 @@ typedef struct _xmlSecObjKlass				xmlSecObjKlass,
 typedef struct _xmlSecObj				xmlSecObj,
 							*xmlSecObjPtr;
 
-
-	    
-
 /*********************************************************************
  *
  * klasses registration and creation helpers
@@ -48,7 +45,7 @@ typedef struct _xmlSecObj				xmlSecObj,
 	((xmlSecObjKlassPtr)(kl))->klassInfo : NULL)
 #define xmlSecObjGetKlass(obj) \
 	(((obj) != NULL) ? \
-	((xmlSecObjPtr)(obj))->klass : (xmlSecObjKlassPtr)NULL)
+	(((xmlSecObjPtr)(obj))->klass) : (xmlSecObjKlassPtr)NULL)
 #define xmlSecObjGetKlassInfo(obj) \
 	(xmlSecObjKlassGetKlassInfo(xmlSecObjGetKlass((obj))))	
 
@@ -56,9 +53,9 @@ XMLSEC_EXPORT xmlSecObjKlassPtr 	xmlSecObjKlassRegister	   (xmlSecPtr buf,
 								    size_t size,
 								    xmlSecObjKlassInfoPtr klassInfo,
 								    xmlSecObjKlassPtr parent);
-XMLSEC_EXPORT const char*		xmlSecObjKlassGetKlassName (xmlSecObjKlassPtr klass);
-XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecObjKlassCheckCastFunc(xmlSecObjKlassPtr klass,
-    								    xmlSecObjKlassPtr dst);
+XMLSEC_EXPORT const char*		xmlSecObjKlassGetKlassName (const xmlSecObjKlassPtr klass);
+XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecObjKlassCheckCastFunc(const xmlSecObjKlassPtr klass,
+    								    const xmlSecObjKlassPtr dst);
 
 /*********************************************************************
  *

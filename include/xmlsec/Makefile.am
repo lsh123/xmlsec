@@ -17,6 +17,7 @@ keys.h \
 keyvalue.h \
 keysInternal.h \
 keysmngr.h \
+list.h \
 membuf.h \
 nodeset.h \
 object.h \

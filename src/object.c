@@ -90,7 +90,7 @@ xmlSecObjKlassRegister(xmlSecPtr buf, size_t size, xmlSecObjKlassInfoPtr klassIn
 }
 
 const char*		
-xmlSecObjKlassGetKlassName(xmlSecObjKlassPtr klass) {
+xmlSecObjKlassGetKlassName(const xmlSecObjKlassPtr klass) {
     xmlSecObjKlassInfoPtr klassInfo = xmlSecObjKlassGetKlassInfo(klass);
 
     return(((klassInfo != NULL) && 
@@ -99,17 +99,27 @@ xmlSecObjKlassGetKlassName(xmlSecObjKlassPtr klass) {
 }
 
 xmlSecObjKlassPtr	
-xmlSecObjKlassCheckCastFunc(xmlSecObjKlassPtr klass, xmlSecObjKlassPtr dst) {
+xmlSecObjKlassCheckCastFunc(const xmlSecObjKlassPtr klass, const xmlSecObjKlassPtr dst) {
+    xmlSecObjKlassPtr res = NULL;
+    	
     xmlSecAssert2(xmlSecObjKlassIsValid(klass), NULL);
     xmlSecAssert2(xmlSecObjKlassIsValid(dst), NULL);
     
     if(klass == dst) {
-	return(klass);
+	res = klass;
+    } else if(klass->klassParent != NULL) {
+	res = xmlSecObjKlassCheckCastFunc(klass->klassParent, dst);
     }
-    if(klass->klassParent != NULL) {
-	return(xmlSecObjKlassCheckCastFunc(klass->klassParent, dst));
+    
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+    		XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED,	
+		"unable to cast from \"%s\" klass to \"%s\" klass",
+		xmlSecObjKlassGetKlassName(klass),
+		xmlSecObjKlassGetKlassName(dst));
+	return(NULL);
     }
-    return(NULL);
+    return(res);
 }
 
 static void

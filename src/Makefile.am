@@ -26,6 +26,7 @@ keyinfo.c \
 keys.c \
 keysmngr.c \
 keyvalue.c \
+list.c \
 membuf.c \
 nodeset.c \
 object.c \

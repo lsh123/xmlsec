@@ -712,6 +712,7 @@ AC_SUBST(NSS_LIBS)
 AC_SUBST(NSS_CRYPTO_LIB)
 AC_SUBST(NSS_MIN_VERSION)
 AC_SUBST(NSPR_MIN_VERSION)
+AC_SUBST(MOZILLA_MIN_VERSION)
 
 dnl ==========================================================================
 dnl Do we have a crypto library?

@@ -623,7 +623,7 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 	ctx->pubPrivKey,
 	ctx->algorithmIdentifier, 
 	bufData, 
-	xmlSecBufferGetSize(buffer), 
+	/*xmlSecBufferGetSize(buffer)*/ ctx->keySize, 
 	&(ctx->cryptKey)))  {
 	return xmlSecMSError(GetLastError());
     }

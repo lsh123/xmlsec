@@ -711,7 +711,7 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     header->bType = PUBLICKEYBLOB;
     header->bVersion = 0x02;
     header->reserved = 0;
-    header->aiKeyAlg = CALG_RSA_SIGN;
+    header->aiKeyAlg = CALG_RSA_KEYX | CALG_RSA_SIGN;
 
     /* Set the public key header */
     pubkey = (RSAPUBKEY *) (xmlSecBufferGetData(blob) + sizeof(BLOBHEADER));

@@ -1,3 +1,17 @@
+9/14/2003
+	3 fixes: 
+	1) The keyname was not set when a certificate (key) was
+	retrieved from MS Certificate store and transferred to the
+	(cache) simple keystore (This resulted in errors in key lookup
+	procedures).
+	2) Symmetric key import failed, when keysize of given key was not
+	exact same size as key definition. Now a bigger size then
+	needed kan be given to SetKey, following behaviour of rest of
+	xmlsec library
+	3) RSA keyimport changed, so imported keys are allowed to be used
+	for signing *and* encryption, instead of only for signing.
+
+
 9/11/2003
 	Support for DSA has been added: DSA keys (certificates) and
 	DSA-SHA1 signatures are now supported. 

@@ -490,6 +490,18 @@ done:
     * store adopt it */
     if (retval) {
 	if (xmlSecKeyIsValid(retval)) {
+    	    /* Set the name of the key to the given name */
+	    ret = xmlSecKeySetName(retval, name);
+	    if (ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			    "xmlSecKeySetName",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		xmlSecKeyDestroy(retval);
+		retval = NULL;
+	    }
+
 	    ret = xmlSecSimpleKeysStoreAdoptKey(*ss, retval);
 	    if (ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,

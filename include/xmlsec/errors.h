@@ -323,7 +323,7 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 
 
 /* __FUNCTION_ may not be defined */
-#ifndef __GNUC__
+#if !defined(__GNUC__) && !defined(_MSC_VER)
 #define __FUNCTION__   ""
 #endif /* __GNUC__ */
 

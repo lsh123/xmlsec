@@ -167,6 +167,7 @@ static const char helpNodeSelection[] =
     "                        with given <name> and <namespace> URI\n"
     "  --node-xpath <expr>   set the operation start point to the first node \n"
     "                        selected by the specified XPath expression\n"
+    "  --dtdfile <file>      Load the specified file as the DTD\n"
     "\n";
     
 static const char helpKeysMngmt[] = 
@@ -235,12 +236,13 @@ typedef struct _xmlSecDSigStatus {
 } xmlSecDSigStatus, *xmlSecDSigStatusPtr;
 
 /**
- * Init/Shutdown
+ * Init/Shutdown, parsing
  */
 int  initXmlsec(xmlsecCommand command);
 void shutdownXmlsec(void);
 int app_RAND_load_file(const char *file);
 int app_RAND_write_file(const char *file);
+int findIDnodes(xmlDtdPtr dtd, xmlDocPtr doc);
 
 
 xmlNodePtr findStartNode(xmlDocPtr doc, const xmlChar* defNodeName, const xmlChar* defNodeNs);
@@ -321,6 +323,7 @@ int main(int argc, char **argv) {
     int res = 1;
     xmlsecCommand command = xmlsecCommandNone;
     xmlDocPtr doc = NULL;
+    xmlDtdPtr dtd = NULL;
     int i;
     int pos;
     int ret;
@@ -406,6 +409,17 @@ int main(int argc, char **argv) {
 	    } else {
 		nodeXPath = argv[++pos];
 	    }
+        } else if((strcmp(argv[pos], "--dtdfile") == 0) && (pos + 1 < argc)) {
+            if(dtd != NULL){
+                fprintf(stderr, "Error: DTD already specified\n");
+                ret = -1;
+            } else {
+                dtd = xmlParseDTD(NULL, (const xmlChar*)argv[++pos]);
+                if(dtd == NULL) {
+                    fprintf(stderr, "Could not parse DTD\n");
+                    ret = -1;
+                }
+            }
 	} else 
 
 	/**
@@ -760,9 +774,11 @@ int main(int argc, char **argv) {
 		    printUsage(NULL);
 	    	    goto done;
 		}
-	
-    		switch(command) {
-	    
+                if (dtd) {
+                    findIDNodes(dtd, doc);
+		}
+			
+    		switch(command) {	    
 #ifndef XMLSEC_NO_XMLDSIG	    
     		case xmlsecCommandSign:
 		    ret = generateDSig(doc);
@@ -816,6 +832,9 @@ done:
     }
     if(doc != NULL) {
 	xmlFreeDoc(doc); 
+    }
+    if(dtd != NULL) {
+	xmlFreeDtd(dtd);
     }
     shutdownXmlsec();
     return(res);
@@ -1825,6 +1844,13 @@ int app_RAND_write_file(const char *file) {
     }
 
     return 1;
+}
+
+int findIDNodes(xmlDtdPtr dtd, xmlDocPtr doc) {
+    xmlValidCtxt c = { 0 };
+
+    xmlValidateDtd(&c, doc, dtd);
+    return 0;
 }
 
 

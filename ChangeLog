@@ -1,3 +1,8 @@
+Wed Jan 22 11:37:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c man/xmlsec.xml: applied patch from Rich Salz
+	to allo external DTD specification for the xmlsec application
+
 Mon 30 Dec 2002 09:52:58 AM PST Aleksey Sanin <aleksey@aleksey.com
 	* configure.in docs/examples/dsig1/Makefile docs/examples/dsig2/Makefile
 	docs/examples/dsig3/Makefile docs/examples/dsig4/Makefile 

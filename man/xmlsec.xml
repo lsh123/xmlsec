@@ -240,6 +240,17 @@
         </varlistentry>
 
         <varlistentry>
+          <term><option>--dtdfile</option> <replaceable>file</replaceable></term>
+          <listitem>
+            <simpara>Instructs the <application>xmlsec</application>
+            program to validate the input document against the
+            DTD specified in <replaceable>file</replaceable>.
+            This is mostly used in order to pick up ID attribute
+            declarations.</simpara>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
           <term><option>--keys</option> <replaceable>file</replaceable></term>
             <listitem>
               <simpara>Loads keys from XML keys <replaceable>file</replaceable>.</simpara>
@@ -359,6 +370,16 @@
 	      program to sign only &lt;dsig:Signature&gt; element with given
 	      <replaceable>id</replaceable>.</simpara>
             </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--dtdfile</option> <replaceable>file</replaceable></term>
+          <listitem>
+            <simpara>Instructs the <application>xmlsec</application>
+            program to validate the input document against the
+            DTD specified in <replaceable>file</replaceable>.
+            This is mostly used in order to pick up ID attribute
+            declarations.</simpara>
+          </listitem>
         </varlistentry>
         <varlistentry>
           <term><option>--print-result</option></term>
@@ -527,6 +548,17 @@
         </varlistentry>
 
         <varlistentry>
+          <term><option>--dtdfile</option> <replaceable>file</replaceable></term>
+          <listitem>
+            <simpara>Instructs the <application>xmlsec</application>
+            program to validate the input document against the
+            DTD specified in <replaceable>file</replaceable>.
+            This is mostly used in order to pick up ID attribute
+            declarations.</simpara>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
           <term><option>--node-name</option> 
 	  <optional>[<replaceable>namespace-uri</replaceable>:]</optional><replaceable>name</replaceable></term>
             <listitem>
@@ -655,6 +687,17 @@
               <simpara>Instructs the <application>xmlsec</application>
 	      program to decrypt only element with given <replaceable>id</replaceable>.</simpara>
             </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><option>--dtdfile</option> <replaceable>file</replaceable></term>
+          <listitem>
+            <simpara>Instructs the <application>xmlsec</application>
+            program to validate the input document against the
+            DTD specified in <replaceable>file</replaceable>.
+            This is mostly used in order to pick up ID attribute
+            declarations.</simpara>
+          </listitem>
         </varlistentry>
 
         <varlistentry>

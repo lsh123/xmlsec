@@ -482,13 +482,13 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     /* create simple keys store if needed */        
     if(xmlSecKeysMngrGetKeysStore(mngr) == NULL) {
-	xmlSecKeyDataStorePtr keysStore;
+	xmlSecKeyStorePtr keysStore;
 
-	keysStore = xmlSecKeyDataStoreCreate(xmlSecSimpleKeysStoreId);
+	keysStore = xmlSecKeyStoreCreate(xmlSecSimpleKeysStoreId);
 	if(keysStore == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecKeyDataStoreCreate",
+			"xmlSecKeyStoreCreate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecSimpleKeysStoreId");
 	    return(-1);
@@ -501,7 +501,7 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 			"xmlSecKeysMngrAdoptKeysStore",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecKeyDataStoreDestroy(keysStore);
+	    xmlSecKeyStoreDestroy(keysStore);
 	    return(-1);        
 	}
     }
@@ -541,7 +541,7 @@ xmlSecOpenSSLAppSimpleKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
 int 
 xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
-    xmlSecKeyDataStorePtr store;
+    xmlSecKeyStorePtr store;
     int ret;
     
     xmlSecAssert2(mngr != NULL, -1);
@@ -572,7 +572,7 @@ xmlSecOpenSSLAppSimpleKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
 
 int 
 xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
-    xmlSecKeyDataStorePtr store;
+    xmlSecKeyStorePtr store;
     int ret;
     
     xmlSecAssert2(mngr != NULL, -1);
@@ -603,7 +603,7 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 
 int 
 xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
-    xmlSecKeyDataStorePtr store;
+    xmlSecKeyStorePtr store;
     int ret;
     
     xmlSecAssert2(mngr != NULL, -1);

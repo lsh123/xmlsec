@@ -1090,29 +1090,6 @@ xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
     xmlFree(store);
 }
 
-int 
-xmlSecKeyDataStoreFind(xmlSecKeyDataStorePtr store, xmlSecKeyPtr key, 
-		       const xmlChar** params, size_t paramsSize,
-		       xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    int ret;
-    
-    xmlSecAssert2(xmlSecKeyDataStoreIsValid(store), -1);    
-    xmlSecAssert2(store->id->find != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    ret = store->id->find(store, key, params, paramsSize, keyInfoCtx);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-		    "id->find",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
-    }
-    return(ret);
-}
-
 /***********************************************************************
  *
  * Keys Data Store list

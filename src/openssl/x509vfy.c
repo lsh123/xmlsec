@@ -71,12 +71,11 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     xmlSecOpenSSLX509StoreSize,
 
     /* data */
-    xmlSecNameX509Store,		/* const xmlChar* name; */ 
+    xmlSecNameX509Store,			/* const xmlChar* name; */ 
         
     /* constructors/destructor */
-    xmlSecOpenSSLX509StoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
-    xmlSecOpenSSLX509StoreFinalize,	/* xmlSecKeyDataStoreFinalizeMethod finalize; */
-    NULL,				/* xmlSecKeyDataStoreFindMethod find; */
+    xmlSecOpenSSLX509StoreInitialize,		/* xmlSecKeyDataStoreInitializeMethod initialize; */
+    xmlSecOpenSSLX509StoreFinalize,		/* xmlSecKeyDataStoreFinalizeMethod finalize; */
 
     /* reserved for the future */
     NULL,					/* void* reserved0; */

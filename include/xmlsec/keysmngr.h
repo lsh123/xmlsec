@@ -20,29 +20,10 @@ extern "C" {
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keyinfo.h>
 
-/****************************************************************************
- *
- * Simple Keys Store
- *
- ***************************************************************************/
-/**
- * xmlSecSimpleKeysStoreId:
- *
- * A simple keys store klass id.
- */
-#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
-XMLSEC_EXPORT xmlSecKeyDataStoreId	xmlSecSimpleKeysStoreGetKlass	(void);
-XMLSEC_EXPORT int			xmlSecSimpleKeysStoreAdoptKey	(xmlSecKeyDataStorePtr store,
-									 xmlSecKeyPtr key);
-XMLSEC_EXPORT xmlSecKeyPtr		xmlSecSimpleKeysStoreFindKey	(xmlSecKeyDataStorePtr store,
-									 const xmlChar* name,
-									 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int			xmlSecSimpleKeysStoreLoad 	(xmlSecKeyDataStorePtr store,
-									 const char *uri,
-									 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT int			xmlSecSimpleKeysStoreSave	(xmlSecKeyDataStorePtr store, 
-									 const char *filename,
-									 xmlSecKeyDataType type);
+typedef const struct _xmlSecKeyKlass 			xmlSecKeyKlass, 
+							*xmlSecKeyId; 
+typedef const struct _xmlSecKeyStoreKlass 		xmlSecKeyStoreKlass, 
+							*xmlSecKeyStoreId; 
 
 
 /****************************************************************************
@@ -57,17 +38,10 @@ XMLSEC_EXPORT int			xmlSecKeysMngrFindKey		(xmlSecKeysMngrPtr mngr,
 									 xmlSecKeyPtr key,
 									 const xmlChar* name,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int			xmlSecKeysMngrFindKeyData	(xmlSecKeysMngrPtr mngr,
-									 xmlSecKeyDataStoreId storeId,
-									 xmlSecKeyPtr key,
-									 const xmlChar** params,
-									 size_t paramsSize,
-									 xmlSecKeyInfoCtxPtr keyInfoCtx);
-
 
 XMLSEC_EXPORT int			xmlSecKeysMngrAdoptKeysStore	(xmlSecKeysMngrPtr mngr,
-									 xmlSecKeyDataStorePtr store);
-XMLSEC_EXPORT xmlSecKeyDataStorePtr	xmlSecKeysMngrGetKeysStore	(xmlSecKeysMngrPtr mngr);
+									 xmlSecKeyStorePtr store);
+XMLSEC_EXPORT xmlSecKeyStorePtr		xmlSecKeysMngrGetKeysStore	(xmlSecKeysMngrPtr mngr);
 
 XMLSEC_EXPORT int			xmlSecKeysMngrAdoptDataStore	(xmlSecKeysMngrPtr mngr,
 									 xmlSecKeyDataStorePtr store);
@@ -96,7 +70,7 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
  * The keys manager structure.
  */
 struct _xmlSecKeysMngr {	
-    xmlSecKeyDataStorePtr	keysStore;	
+    xmlSecKeyStorePtr		keysStore;	
     xmlSecPtrListPtr		storesList;	
     xmlSecGetKeyCallback	getKey;		
 };
@@ -104,6 +78,187 @@ struct _xmlSecKeysMngr {
 
 XMLSEC_EXPORT xmlSecKeyPtr 	xmlSecKeysMngrGetKey	(xmlNodePtr keyInfoNode,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+
+/**************************************************************************
+ *
+ * xmlSecKeyStore
+ *
+ *************************************************************************/
+/**
+ * xmlSecKeyStore:
+ * @id: 		the store id (#xmlSecKeyStoreId).
+ * @reserved0:		reserved for the future.
+ * @reserved1:		reserved for the future.
+ *
+ * The keys store. 
+ */
+struct _xmlSecKeyStore {
+    xmlSecKeyStoreId			id;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};
+
+XMLSEC_EXPORT xmlSecKeyStorePtr xmlSecKeyStoreCreate		(xmlSecKeyStoreId id);
+XMLSEC_EXPORT void		xmlSecKeyStoreDestroy		(xmlSecKeyStorePtr store);
+XMLSEC_EXPORT int		xmlSecKeyStoreFind		(xmlSecKeyStorePtr store,
+								 xmlSecKeyPtr key,
+								 const xmlChar* name,
+ 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+/**
+ * xmlSecKeyStoreGetName:
+ * @store: 		the pointer to store.
+ *
+ * Macro. Returns key store name.
+ */
+#define xmlSecKeyStoreGetName(store) \
+    ((xmlSecKeyStoreIsValid((store))) ? \
+      xmlSecKeyStoreKlassGetName((store)->id) : NULL)
+
+/**
+ * xmlSecKeyStoreIsValid:
+ * @store: 		the pointer to store.
+ *
+ * Macro. Returns 1 if @store is not NULL and @store->id is not NULL
+ * or 0 otherwise.
+ */ 
+#define xmlSecKeyStoreIsValid(store) \
+	((( store ) != NULL) && ((( store )->id) != NULL))
+/**
+ * xmlSecKeyStoreCheckId:
+ * @store: 		the pointer to store.
+ * @storeId: 		the store Id.
+ *
+ * Macro. Returns 1 if @store is valid and @store's id is equal to @storeId.
+ */
+#define xmlSecKeyStoreCheckId(store, storeId) \
+ 	(xmlSecKeyStoreIsValid(( store )) && \
+	((( store )->id) == ( storeId )))
+
+/**
+ * xmlSecKeyStoreCheckSize:
+ * @store: 		the pointer to store.
+ * @size: 		the expected size.
+ *
+ * Macro. Returns 1 if @store is valid and @stores's object has at least @size bytes.
+ */
+#define xmlSecKeyStoreCheckSize(store, size) \
+ 	(xmlSecKeyStoreIsValid(( store )) && \
+	 (( store )->id->objSize >= size))
+
+
+/**************************************************************************
+ *
+ * xmlSecKeyStoreKlass
+ *
+ *************************************************************************/
+/**
+ * xmlSecKeyStoreIdUnknown:
+ *
+ * The "unknown" id.
+ */
+#define xmlSecKeyStoreIdUnknown 			NULL
+
+/** 
+ * xmlSecKeyStoreInitializeMethod:
+ * @store: 		the store.
+ *
+ * Keys store specific initialization method.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef int			(*xmlSecKeyStoreInitializeMethod)	(xmlSecKeyStorePtr store);
+
+/** 
+ * xmlSecKeyStoreFinalizeMethod:
+ * @store: 		the store.
+ *
+ * Keys store specific finalization (destroy) method.
+ */
+typedef void			(*xmlSecKeyStoreFinalizeMethod)		(xmlSecKeyStorePtr store);
+
+/** 
+ * xmlSecKeyStoreFindMethod:
+ * @store: 		the store.
+ * @key: 		the destination key.
+ * @name:		the desired key name.
+ * @keyInfoCtx: 	the pointer to key info context.
+ *
+ * Keys store specific find method.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+typedef int			(*xmlSecKeyStoreFindMethod)	(xmlSecKeyStorePtr store,
+								 xmlSecKeyPtr key,
+								 const xmlChar* name,
+								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
+/**
+ * xmlSecKeyStoreIdKlass:
+ * @klassSize:		the store klass size.
+ * @objSize:		the store obj size.
+ * @name:		the store's name.
+ * @initialize:		the store's initialization method.
+ * @finalize:		the store's finalization (destroy) method.
+ * @find:		the store's find method.
+ * @reserved0:		reserved for the future.
+ * @reserved1:		reserved for the future.
+ *
+ * The keys store id (klass).
+ */
+struct _xmlSecKeyStoreKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
+    /* data */
+    const xmlChar*			name;    
+        
+    /* constructors/destructor */
+    xmlSecKeyStoreInitializeMethod	initialize;
+    xmlSecKeyStoreFinalizeMethod	finalize;
+    xmlSecKeyStoreFindMethod		find;
+
+    /* for the future */
+    void*				reserved0;
+    void*				reserved1;
+};
+
+/**
+ * xmlSecKeyStoreKlassGetName:
+ * @klass:		the pointer to store klass.
+ * 
+ * Macro. Returns store klass name.
+ */
+#define xmlSecKeyStoreKlassGetName(klass) \
+	(((klass)) ? ((klass)->name) : NULL)
+
+
+/****************************************************************************
+ *
+ * Simple Keys Store
+ *
+ ***************************************************************************/
+/**
+ * xmlSecSimpleKeysStoreId:
+ *
+ * A simple keys store klass id.
+ */
+#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
+XMLSEC_EXPORT xmlSecKeyStoreId		xmlSecSimpleKeysStoreGetKlass	(void);
+XMLSEC_EXPORT int			xmlSecSimpleKeysStoreAdoptKey	(xmlSecKeyStorePtr store,
+									 xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyPtr		xmlSecSimpleKeysStoreFindKey	(xmlSecKeyStorePtr store,
+									 const xmlChar* name,
+									 xmlSecKeyInfoCtxPtr keyInfoCtx);
+XMLSEC_EXPORT int			xmlSecSimpleKeysStoreLoad 	(xmlSecKeyStorePtr store,
+									 const char *uri,
+									 xmlSecKeysMngrPtr keysMngr);
+XMLSEC_EXPORT int			xmlSecSimpleKeysStoreSave	(xmlSecKeyStorePtr store, 
+									 const char *filename,
+									 xmlSecKeyDataType type);
+
 
 #ifdef __cplusplus
 }

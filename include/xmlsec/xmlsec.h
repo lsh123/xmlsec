@@ -29,6 +29,7 @@ typedef struct _xmlSecKeyData 			xmlSecKeyData, *xmlSecKeyDataPtr;
 typedef struct _xmlSecKeyDataStore		xmlSecKeyDataStore, *xmlSecKeyDataStorePtr; 
 typedef struct _xmlSecKeyInfoCtx  		xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr; 
 typedef struct _xmlSecKey 			xmlSecKey, *xmlSecKeyPtr; 
+typedef struct _xmlSecKeyStore			xmlSecKeyStore, *xmlSecKeyStorePtr; 
 typedef struct _xmlSecKeysMngr  		xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
 typedef struct _xmlSecTransform 		xmlSecTransform, *xmlSecTransformPtr; 
 typedef struct _xmlSecTransformCtx 		xmlSecTransformCtx, *xmlSecTransformCtxPtr; 

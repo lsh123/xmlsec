@@ -662,11 +662,7 @@ struct _xmlSecKeyDataStore {
 
 XMLSEC_EXPORT xmlSecKeyDataStorePtr xmlSecKeyDataStoreCreate	(xmlSecKeyDataStoreId id);
 XMLSEC_EXPORT void		xmlSecKeyDataStoreDestroy	(xmlSecKeyDataStorePtr store);
-XMLSEC_EXPORT int		xmlSecKeyDataStoreFind		(xmlSecKeyDataStorePtr store,
-								 xmlSecKeyPtr key,
-								 const xmlChar** params,
-								 size_t paramsSize,
- 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+
 /**
  * xmlSecKeyDataStoreGetName:
  * @store: 		the pointer to store.
@@ -723,7 +719,7 @@ XMLSEC_EXPORT int		xmlSecKeyDataStoreFind		(xmlSecKeyDataStorePtr store,
 
 /** 
  * xmlSecKeyDataStoreInitializeMethod:
- * @data: 		the data store.
+ * @store: 		the data store.
  *
  * Key data store specific initialization method.
  *
@@ -733,29 +729,11 @@ typedef int			(*xmlSecKeyDataStoreInitializeMethod)	(xmlSecKeyDataStorePtr store
 
 /** 
  * xmlSecKeyDataStoreFinalizeMethod:
- * @data: 		the data store.
+ * @store: 		the data store.
  *
- * Key	data dtore specific finalization (destroy) method.
+ * Key data store specific finalization (destroy) method.
  */
 typedef void			(*xmlSecKeyDataStoreFinalizeMethod)	(xmlSecKeyDataStorePtr store);
-
-/** 
- * xmlSecKeyDataStoreFindMethod:
- * @data: 		the data store.
- * @key: 		the destination key.
- * @params: 		the params strings array.
- * @paramsSize: 	the params strings array @params.
- * @keyInfoCtx: 	the pointer to key info context.
- *
- * Key data store specific find method.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-typedef int			(*xmlSecKeyDataStoreFindMethod)	(xmlSecKeyDataStorePtr store,
-								 xmlSecKeyPtr key,
-								 const xmlChar** params,
-								 size_t paramsSize,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /**
  * xmlSecKeyDataStoreIdKlass:
@@ -764,7 +742,6 @@ typedef int			(*xmlSecKeyDataStoreFindMethod)	(xmlSecKeyDataStorePtr store,
  * @name:		the store's name.
  * @initialize:		the store's initialization method.
  * @finalize:		the store's finalization (destroy) method.
- * @find:		the store's find method.
  * @reserved0:		reserved for the future.
  * @reserved1:		reserved for the future.
  *
@@ -780,7 +757,6 @@ struct _xmlSecKeyDataStoreKlass {
     /* constructors/destructor */
     xmlSecKeyDataStoreInitializeMethod	initialize;
     xmlSecKeyDataStoreFinalizeMethod	finalize;
-    xmlSecKeyDataStoreFindMethod	find;
 
     /* for the future */
     void*				reserved0;

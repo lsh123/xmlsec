@@ -2080,6 +2080,12 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     case xmlSecAppCommandVersion:
 	fprintf(stdout, "%s\n", helpVersion);
         break;
+    case xmlSecAppCommandListKeyData:
+	fprintf(stdout, "%s\n", helpListKeyData);
+        break;
+    case xmlSecAppCommandListTransforms:
+	fprintf(stdout, "%s\n", helpListTransforms);
+        break;
     case xmlSecAppCommandKeys:
 	fprintf(stdout, "%s\n", helpKeys);
         break;

@@ -1,6 +1,37 @@
 /** 
  * XML Security Library
  *
+ * The Transforms Element (http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
+ * 
+ * The optional Transforms element contains an ordered list of Transform 
+ * elements; these describe how the signer obtained the data object that 
+ * was digested.
+ *
+ * Schema Definition:
+ * 
+ *  <element name="Transforms" type="ds:TransformsType"/>
+ *  <complexType name="TransformsType">
+ *    <sequence>
+ *      <element ref="ds:Transform" maxOccurs="unbounded"/> 
+ *    </sequence>
+ *   </complexType>
+ *
+ *  <element name="Transform" type="ds:TransformType"/>
+ *  <complexType name="TransformType" mixed="true">
+ *    <choice minOccurs="0" maxOccurs="unbounded"> 
+ *      <any namespace="##other" processContents="lax"/>
+ *      <!-- (1,1) elements from (0,unbounded) namespaces -->
+ *      <element name="XPath" type="string"/> 
+ *    </choice>
+ *    <attribute name="Algorithm" type="anyURI" use="required"/> 
+ *  </complexType>
+ *    
+ * DTD:
+ *    
+ *  <!ELEMENT Transforms (Transform+)>
+ *  <!ELEMENT Transform (#PCDATA|XPath %Transform.ANY;)* >
+ *  <!ATTLIST Transform Algorithm    CDATA    #REQUIRED >
+ *  <!ELEMENT XPath (#PCDATA) >
  * 
  * See Copyright for the status of this software.
  * 
@@ -40,8 +71,16 @@ static int  xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state);
 static int xmlSecTransformPreBase64Decode(const xmlNodePtr node, xmlSecNodeSetPtr nodeSet, 
 					  xmlOutputBufferPtr output);
 
-/** 
+/**********************************************************************
+ *
  * Hi-level functions
+ *
+ *********************************************************************/
+/**
+ * xmlSecTransformsInit:
+ *
+ * Trnasforms engine initialization (called from xmlSecInit() function).
+ * The applications should not call this function directly.
  */
 void xmlSecTransformsInit(void) {
     int i = 0;
@@ -125,42 +164,13 @@ void xmlSecTransformsInit(void) {
 
 /**
  * xmlSecTransformsNodeRead:
- * @state:
- * @transformsNode:
- * 
- * The Transforms Element (http://www.w3.org/TR/xmldsig-core/#sec-Transforms)
- * 
- * The optional Transforms element contains an ordered list of Transform 
- * elements; these describe how the signer obtained the data object that 
- * was digested.
+ * @state: the pointer to current transform state.
+ * @transformsNode: the pointer to the <dsig:Transform> node.
  *
- * Schema Definition:
- * 
- *  <element name="Transforms" type="ds:TransformsType"/>
- *  <complexType name="TransformsType">
- *    <sequence>
- *      <element ref="ds:Transform" maxOccurs="unbounded"/> 
- *    </sequence>
- *   </complexType>
+ * Reads the transform node and updates @state,
  *
- *  <element name="Transform" type="ds:TransformType"/>
- *  <complexType name="TransformType" mixed="true">
- *    <choice minOccurs="0" maxOccurs="unbounded"> 
- *      <any namespace="##other" processContents="lax"/>
- *      <!-- (1,1) elements from (0,unbounded) namespaces -->
- *      <element name="XPath" type="string"/> 
- *    </choice>
- *    <attribute name="Algorithm" type="anyURI" use="required"/> 
- *  </complexType>
- *    
- * DTD:
- *    
- *  <!ELEMENT Transforms (Transform+)>
- *  <!ELEMENT Transform (#PCDATA|XPath %Transform.ANY;)* >
- *  <!ATTLIST Transform Algorithm    CDATA    #REQUIRED >
- *  <!ELEMENT XPath (#PCDATA) >
- *
- */
+ * Returns 0 on success or a negative value otherwise.
+ */ 
 int
 xmlSecTransformsNodeRead(xmlSecTransformStatePtr state, 
 			 xmlNodePtr transformsNode) {
@@ -202,16 +212,18 @@ xmlSecTransformsNodeRead(xmlSecTransformStatePtr state,
 
 /** 
  * xmlSecTransformNodeRead:
- * @transformNode:
- * @usage:
- * @dontDestroy:
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @usage: the usage of the transfomr (signature, encryption, etc.).
+ * @dontDestroy: the flag whether we need to destroy the transform.
  *
- * Reads transform from current transform node as follows:
- *   1) reads "Algorithm" attribute
- *   2) checks the list of known algorithms
- *   3) calls transform create method
- *   4) calls transform read transform node method
+ * Reads transform from the @transformNode as follows:
+ *    1) reads "Algorithm" attribute;
+ *    2) checks the list of known algorithms;
+ *    3) calls transform create method;
+ *    4) calls transform read transform node method.
  *
+ * Returns the pointer to newly allocated #xmlSecTransform structure
+ * or NULL if an error occurs.
  */
 xmlSecTransformPtr	
 xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
@@ -265,10 +277,12 @@ xmlSecTransformNodeRead(xmlNodePtr transformNode, xmlSecTransformUsage usage,
 
 /**
  * xmlSecTransformNodeWrite:
- * @transformNode:
- * @id:
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @id: the transform id.
  *
- * Writes transform Agorithm in the transform node as follows
+ * Writes Agorithm attribute in the transform node.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
@@ -285,15 +299,19 @@ xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
     return(0);
 }
 
-/**
+/**************************************************************************
+ *
  * Transform Info
- */ 
+ *
+ **************************************************************************/ 
 /**
  * xmlSecTransformInfoByHref:
- * @id:		
+ * @href: the transform href.
  *
- * Searches the table of known transforms for transform with given href
+ * Searches the list of known transforms for transform with given href
  *
+ * Returns the id of the found transform or NULL if an error occurs 
+ * or transform is not found.
  */ 
 xmlSecTransformId
 xmlSecTransformFind(const xmlChar* href) {
@@ -316,17 +334,22 @@ xmlSecTransformFind(const xmlChar* href) {
     return(xmlSecTransformUnknown);
 }
 
-/**
+/**********************************************************************
+ *
  * Transform 
- */ 
+ *
+ *********************************************************************/ 
 /**
  * xmlSecTransformCreate:
- * @ptr:
- * @usage:
- * @dontDestroy:	the flag that controls wherther the transforms
- *			can destroy the transforms automatically
+ * @id: the transform id to create.
+ * @usage: the proposed transform usage.
+ * @dontDestroy: the flag that controls wherther the transforms
+ *		can destroy the transforms automatically
  *
- * Creates new transform from the transform id object
+ * Creates new transform from the transform id object.
+ *
+ * Returns the pointer to newly created #xmlSecTransform structure
+ * or NULL if an error occurs.
  */ 
 xmlSecTransformPtr	
 xmlSecTransformCreate(xmlSecTransformId id, xmlSecTransformUsage usage, 
@@ -358,10 +381,11 @@ xmlSecTransformCreate(xmlSecTransformId id, xmlSecTransformUsage usage,
 
 /**
  * xmlSecTransformDestroy:
- * @transform:
- * @forceDestroy:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @forceDestroy: the flag whether the transform destruction will be
+ *   forced.
  *
- * Destroys transform
+ * Destroys transform by calling appropriate transform specific function.
  */
 void
 xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
@@ -384,7 +408,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
     }
 
     if((transform->dontDestroy) && (!forceDestroy)){
-	/* requested do not destroy trasnform */
+	/* requested do not destroy transform */
 	return;
     }    
     transform->id->destroy(transform);
@@ -392,10 +416,13 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
 
 /** 
  * xmlSecTransformRead:
- * @transform:
- * @transformNode:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @transformNode: the pointer to the <dsig:Transform> node.
  *
- * Reads data about transform from the node where transform is declared.
+ * Reads transform information from the @transformNode using 
+ * transform specific function.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
@@ -415,13 +442,20 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
     return(0);
 }
 
-/**
+/**********************************************************************
+ *
  * Binary transform
- */ 
+ *
+ *********************************************************************/ 
 /**
  * xmlSecTransformAddKey:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @key: the pointer to #xmlSecKey structure. 
  *
- * Wrapper for xmlSecBinTransformPtr addBinKey method
+ * Sets the key for binary transform (wrapper for transform specific 
+ * addBinKey() method).
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
@@ -446,9 +480,15 @@ xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 /**
  * xmlSecBinTransformRead:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the output buffer.
+ * @size: the output buffer size.
  *
+ * Reads chunk of data from the transform (wrapper transform specific
+ * readBin() function).
  *
- * Wrapper for xmlSecBinTransformPtr readBin method
+ * Returns the number of bytes in the buffer or negative value
+ * if an error occurs.
  */
 int
 xmlSecBinTransformRead(xmlSecTransformPtr transform, 
@@ -473,9 +513,15 @@ xmlSecBinTransformRead(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecBinTransformWrite
+ * xmlSecBinTransformWrite:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @buf: the input data buffer.
+ * @size: the input data size.
  *
- * Wrapper for xmlSecBinTransformPtr writeBin method
+ * Writes data to the transform (wrapper to the transform specific
+ * writeBin() function).
+ * 
+ * Returns 0 if success or a negative value otherwise.
  */
 int
 xmlSecBinTransformWrite(xmlSecTransformPtr transform, 
@@ -500,10 +546,12 @@ xmlSecBinTransformWrite(xmlSecTransformPtr transform,
 }
 
 /**
- * xmlSecBinTransformFlush
+ * xmlSecBinTransformFlush:
+ * @transform: the pointer to #xmlSecTransform structure.
  *
+ * Finalizes writing (wrapper for transform specific flushBin() method). 
  *
- * Wrapper for xmlSecBinTransformPtr flushBin method
+ * Returns 0 if success or negative value otherwise.
  */
 int
 xmlSecBinTransformFlush(xmlSecTransformPtr transform) {
@@ -526,9 +574,13 @@ xmlSecBinTransformFlush(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecBinTransformAddAfter
+ * xmlSecBinTransformAddAfter:
+ * @curTransform: the pointer to current transform (may be NULL).
+ * @newTransform: the pointer to new transform.
+ * 
+ * Adds @newTransform after the @curTransform.
  *
- * Adding new transform in the chain after current transform
+ * Returns pointer to the new transforms chain or NULL if an error occurs.
  */
 xmlSecTransformPtr	
 xmlSecBinTransformAddAfter(xmlSecTransformPtr curTransform, 
@@ -564,8 +616,12 @@ xmlSecBinTransformAddAfter(xmlSecTransformPtr curTransform,
 
 /**
  * xmlSecBinTransformAddBefore
+ * @curTransform: the pointer to current transform (may be NULL).
+ * @newTransform: the pointer to new transform.
+ * 
+ * Adds @newTransform before the @curTransform.
  *
- * Adding new transform in the chain before current transform
+ * Returns pointer to the new transforms chain or NULL if an error occurs.
  */
 xmlSecTransformPtr	
 xmlSecBinTransformAddBefore(xmlSecTransformPtr curTransform, 
@@ -601,10 +657,11 @@ xmlSecBinTransformAddBefore(xmlSecTransformPtr curTransform,
 }
 
 /**
- * xmlSecBinTransformRemove
+ * xmlSecBinTransformRemove:
+ * @transform: the pointer to #xmlSecTransform structure.
  *
- * Removes transform from the chain. This method MUST be called by any 
- * bin transform id
+ * Removes @transform from the chain. This method MUST be called by any 
+ * bin transform id destructor.
  */
 void
 xmlSecBinTransformRemove(xmlSecTransformPtr transform) {
@@ -630,9 +687,10 @@ xmlSecBinTransformRemove(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecBinTransformDestroyAll
+ * xmlSecBinTransformDestroyAll:
+ * @transform: the pointer to #xmlSecTransform structure.
  *
- * Destroys all transforms in the chain
+ * Destroys all transforms in the chain.
  */
 void
 xmlSecBinTransformDestroyAll(xmlSecTransformPtr transform) {
@@ -657,6 +715,13 @@ xmlSecBinTransformDestroyAll(xmlSecTransformPtr transform) {
     xmlSecTransformDestroy((xmlSecTransformPtr)t, 0);
 }
 
+/**
+ * xmlSecBinTransformSetEncrypt:
+ * @transform: the pointer to #xmlSecTransform structure.
+ * @encrypt: the encrypt/decrypt (or encode/decode) flag.
+ *
+ * Sets the @transform direction - encrypt/decrypt (or encode/decode).
+ */
 void	
 xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
     xmlSecBinTransformPtr t;
@@ -675,13 +740,23 @@ xmlSecBinTransformSetEncrypt(xmlSecTransformPtr transform, int encrypt) {
 }
 
     
-/** 
+/**************************************************************************
+ *
  * XML Transform
- */
+ *
+ *************************************************************************/
 /**
- * xmlSecXmlTransformExecute
+ * xmlSecXmlTransformExecute:
+ * @transform: the pointer to XML transform.
+ * @ctxDoc: the pointer to the document containing the transform's 
+ *		<dsig:Transform> node.
+ * @doc: the pointer to the pointer to current document.
+ * @nodes: the pointer to the pointer to current and result nodes set.
  *
+ * Executes the XML @transform and returns result nodes set in @nodes
+ * (wrapper for transform specific executeXml() method).
  *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecXmlTransformExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
@@ -707,13 +782,24 @@ xmlSecXmlTransformExecute(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     return(0);
 }
 
-/**
+/*************************************************************************
+ *
  * C14N Transform
- */ 
+ *
+ ************************************************************************/ 
 /**
- * xmlSecC14NTransformExecute
+ * xmlSecC14NTransformExecute:
+ * @transform: the pointer to C14N transform.
+ * @doc: the pointer to current document.
+ * @nodes: the pointer to current nodes set.
+ * @buffer: the result buffer.
  *
+ * Executes the C14N @transform and returns result in the @buffer
+ * (wrapper for transform specific executeC14n() method). If the 
+ * @trnaform is NULL then the default #xmlSecC14NInclusive 
+ * transform is executed.
  *
+ * Returns 0 on success or a negative value otherwise.
  */
 int	
 xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
@@ -744,15 +830,21 @@ xmlSecC14NTransformExecute(xmlSecTransformPtr transform,
 }
 
 
-/**
- * Transforms State
- */
-/**
- * xmlSecTransformStateCreate
- * @doc:
- * @nodeSet:
- * @uri:
+/***************************************************************************
  *
+ * Transforms State
+ *
+ **************************************************************************/
+/**
+ * xmlSecTransformStateCreate:
+ * @doc: the pointer to XML document that contains <dsig:Signature> node.
+ * @nodeSet: the original nodes set.
+ * @uri: the original uri.
+ *
+ * Creates new transform state.
+ *
+ * Returns pointer to newly allocated #xmlSecTransformState structure
+ * or NULL if an error occurs.
  */
 xmlSecTransformStatePtr	
 xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet, 
@@ -797,10 +889,10 @@ xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet,
 }
 
 /**
- * xmlSecTransformStateDestroy
- * @state:
+ * xmlSecTransformStateDestroy:
+ * @state: the pointer to #xmlSecTransformState structure.
  *
- * Destroys the transform state object
+ * Destroys the transform state.
  */
 void
 xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
@@ -824,13 +916,14 @@ xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
 }
 
 /**
- * xmlSecTransformStateUpdate
- * 
- * @state:
- * @transform:
+ * xmlSecTransformStateUpdate:
+ * @state: the pointer to #xmlSecTransformState structure.
+ * @transform: the pointer to #xmlSecTransform structure.
  *
- * Updates the current state with transform. Note all transforms are
- * applied immidiatelly!
+ * Updates the current @state with @transform. Note all transforms are
+ * applied immidiatelly.
+ *
+ * Returns 0 on success or negative value otherwise.
  */
 int
 xmlSecTransformStateUpdate(xmlSecTransformStatePtr state, 
@@ -917,10 +1010,14 @@ xmlSecTransformStateUpdate(xmlSecTransformStatePtr state,
 }
 
 /**
- * xmlSecTransformStateFinal
+ * xmlSecTransformStateFinal:
+ * @state: the pointer to #xmlSecTransformState structure.
+ * @type: the desired final type.
  *
- * @state:
- * @type:
+ * Finalazies transforms @state (applies all pending transforms) and 
+ * creates a result of the desired @type.
+ *
+ * Returns 0 on success or negative value otherwise.
  */
 int
 xmlSecTransformStateFinal(xmlSecTransformStatePtr state, 
@@ -954,8 +1051,6 @@ xmlSecTransformStateFinal(xmlSecTransformStatePtr state,
 
 /**
  * xmlSecTransformStateParseUri:
- * @state:
- * @uri:
  *
  * Parses uri and loads the document if required:
  *
@@ -1101,10 +1196,6 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 
 /**
  * xmlSecTransformStateDestroyCurrentDoc:
- * @state:
- *
- * Destroys the current doc and nodeSet if they are not the same as
- * original ones.
  */
 static void 
 xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
@@ -1122,7 +1213,6 @@ xmlSecTransformStateDestroyCurrentDoc(xmlSecTransformStatePtr state) {
 
 /**
  * xmlSecTransformCreateXml:
- * @state: 
  *
  * Creates XML document from current state:
  *   1) if there is a pending c14n or binary transforms -- apply
@@ -1187,9 +1277,6 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
 
 /**
  * xmlSecTransformCreateBin:
- * @state: 
- *
- * Creates binary buffer from current state
  */
 static int 
 xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
@@ -1219,10 +1306,6 @@ xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
 
 /**
  * xmlSecTransformCreateBinFromXml:
- * @state:
- *
- * Creates binary buffer from current XML Doc
- *
  */
 static int  
 xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
@@ -1332,10 +1415,6 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
 
 /**
  * xmlSecTransformCreateBinFromXml:
- * @state:
- *
- * Creates binary buffer from init Uri
- *
  */
 static int  
 xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
@@ -1398,9 +1477,6 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
 
 /**
  * xmlSecTransformPreBase64Decode:
- * @node:
- * @nodes:
- * @output:
  *
  * http://www.w3.org/TR/xmldsig-core/#sec-Base-64:
  *

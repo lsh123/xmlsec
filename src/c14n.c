@@ -276,7 +276,7 @@ xmlSecC14NTransformExec(xmlSecC14NTransformPtr transform, xmlDocPtr doc,
     xmlSecAssert2(buffer != NULL, -1);
 
     if(transform == NULL) {
-	/* the default c14n trasnform */
+	/* the default c14n transform */
 	ret = xmlC14NExecute(doc, 
 			(xmlC14NIsVisibleCallback)xmlSecNodeSetContains, 
 			nodes, 

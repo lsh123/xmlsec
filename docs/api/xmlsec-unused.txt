@@ -1,6 +1,10 @@
 xmlSecGetHex
+xmlSecBinTransform
 xmlSecIsHex
 xmlSecTransform
 xmlSecKeysMngr
+xmlSecTransformState
 extern
+xmlSecXmlTransform
 ATTRIBUTE_UNUSED
+xmlSecC14NTransform

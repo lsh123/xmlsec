@@ -92,9 +92,6 @@ xmlSecTransformId xmlSecTransformXslt = (xmlSecTransformId)&xmlSecTransformXsltI
 
 /**
  * xmlSecTransformXsltCreate:
- * @id:
- *
- * Creates new xslt transform
  */
 static xmlSecTransformPtr 
 xmlSecTransformXsltCreate(xmlSecTransformId id) {
@@ -127,9 +124,6 @@ xmlSecTransformXsltCreate(xmlSecTransformId id) {
 
 /**
  * xmlSecTransformXsltDestroy:
- * @transform:
- *
- * Destroys the current object
  */
 static void
 xmlSecTransformXsltDestroy(xmlSecTransformPtr transform) {
@@ -159,12 +153,7 @@ xmlSecTransformXsltDestroy(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecTransformXsltRead
- * @transform:
- * @buf:
- * @size:
- *
- * Reads data from previous transform and stores them in the buffer
+ * xmlSecTransformXsltRead:
  */
 static int
 xmlSecTransformXsltRead(xmlSecBinTransformPtr transform, 
@@ -238,12 +227,7 @@ xmlSecTransformXsltRead(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecTransformXsltWrite
- * @transform:
- * @buf:
- * @size:
- *
- * Writes data to the buffer
+ * xmlSecTransformXsltWrite:
  */
 static int
 xmlSecTransformXsltWrite(xmlSecBinTransformPtr transform, 
@@ -283,11 +267,7 @@ xmlSecTransformXsltWrite(xmlSecBinTransformPtr transform,
 }
 
 /**
- * xmlSecTransformXsltFlush
- * @transform:
- *
- * Flushes the next transform
- *
+ * xmlSecTransformXsltFlush:
  */
 static int
 xmlSecTransformXsltFlush(xmlSecBinTransformPtr transform) {
@@ -352,9 +332,6 @@ xmlSecTransformXsltFlush(xmlSecBinTransformPtr transform) {
 
 /**
  * xmlSecTransformXsltReadNode:
- * @transform:
- * @transformNode:
- *
  */
 static int
 xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
@@ -397,11 +374,12 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
 
 /**
  * xmlSecTransformXsltAdd:
- * @transformNode:	the transform ndoe
- * @xlst:		the XSLT transform
+ * @transformNode: the pointer to <dsig:Transform> node.
+ * @xslt: the XSLT transform exspression.
  * 
+ * Writes the XSLT transform expression to the @transformNode.
  *
- *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
@@ -415,9 +393,6 @@ xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
 
 /**
  * xmlSecTransformXsltExecute:
- * @buffer:
- * @xslt:
- *
  */
 static int
 xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {

@@ -249,7 +249,7 @@ finalized and send to next transform when
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to a digests trasnform.
+<entry> the pointer to a digests transform.
 </entry></row>
 <row><entry align="right"><parameter>enabled</parameter>&nbsp;:</entry>
 <entry> the new "push mode" flag.
@@ -271,7 +271,7 @@ xmlSecDigestTransformId::digestUpdate method).</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to a digests trasnform.
+<entry> the pointer to a digests transform.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
 <entry> the input data.
@@ -299,7 +299,7 @@ Caller is responsble for freeing allocated buffer with <link linkend="xmlFree">x
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to a digests trasnform.
+<entry> the pointer to a digests transform.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
 <entry> the pointer to the pointer to the output buffer.
@@ -326,7 +326,7 @@ Checks the computed digest and the data in the input buffer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the pointer to a digests trasnform.
+<entry> the pointer to a digests transform.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
 <entry> the input buffer.
@@ -397,8 +397,8 @@ Adds new chunk of data to the digest.</para>
 <programlisting>int         xmlSecDigestTransformFlush      (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform);</programlisting>
 <para>
 If the push mode enabled then the function finalizes the result,
-writes it to the next trasnform and calls flush for it. Otherwise,
-it just calls flush for next trasnform</para>
+writes it to the next transform and calls flush for it. Otherwise,
+it just calls flush for next transform</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">

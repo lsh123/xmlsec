@@ -558,6 +558,13 @@ xmlSecRsaKeyDuplicate(xmlSecKeyPtr key) {
 
 /**
  * xmlSecRsaKeyGenerate:
+ * @key: the pointer to RSA key.
+ * @rsa: the pointer to OpenSSL RSA key or NULL.
+ *
+ * Sets the @key to the value of @rsa or generates a new RSA key
+ * if @rsa is NULL.
+ *
+ * Returns 0 on success or a negative value otherwise.
  */
 int		
 xmlSecRsaKeyGenerate(xmlSecKeyPtr key, RSA *rsa) {

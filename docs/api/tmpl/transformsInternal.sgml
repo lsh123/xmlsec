@@ -505,8 +505,10 @@ transformsInternal.h
 
 </para>
 
-@trasnform: 
+@transform: 
 @here: 
+<!-- # Unused Parameters # -->
+@trasnform: 
 
 
 <!-- ##### FUNCTION xmlSecC14NTransformExecute ##### -->

@@ -1,29 +1,17 @@
-70% symbol docs coverage.
-261 symbols documented.
-112 not documented.
+78% symbol docs coverage.
+291 symbols documented.
+82 not documented.
 
 
 xmlSecAssert
 xmlSecAssert2
 xmlSecBase64CtxInit
-xmlSecBinTransformAddKeyMethod
-xmlSecBinTransformCheckSubType
-xmlSecBinTransformFlushMethod
 xmlSecBinTransformId
-xmlSecBinTransformIdCheckKeyId
-xmlSecBinTransformIdGetDecKeyType
-xmlSecBinTransformIdGetEncKeyType
-xmlSecBinTransformIdGetKeyId
 xmlSecBinTransformIdStruct
-xmlSecBinTransformReadMethod
-xmlSecBinTransformSetEncrypt
 xmlSecBinTransformSubType
-xmlSecBinTransformWriteMethod
 xmlSecBufferedProcessMethod
 xmlSecBufferedTransformId
 xmlSecBufferedTransformIdStruct
-xmlSecC14NTransformExecute
-xmlSecC14NTransformExecuteMethod
 xmlSecC14NTransformId
 xmlSecC14NTransformIdStruct
 xmlSecCipherFinalMethod
@@ -66,29 +54,13 @@ xmlSecParseMemory
 xmlSecParseMemoryExt
 xmlSecReferenceResult
 xmlSecReferenceType
-xmlSecRsaKeyGenerate
-xmlSecTransformCheckId
-xmlSecTransformCheckType
-xmlSecTransformCreateMethod
-xmlSecTransformDestroyMethod
 xmlSecTransformFind
 xmlSecTransformId
 xmlSecTransformIdStruct
-xmlSecTransformIsValid
-xmlSecTransformReadNodeMethod
 xmlSecTransformResult
-xmlSecTransformStateCreate
 xmlSecTransformStatus
 xmlSecTransformType
 xmlSecTransformUsage
-xmlSecTransformXsltAdd
-xmlSecTransformsInit
-xmlSecUsageAny
-xmlSecUsageDSigC14N
-xmlSecUsageDSigDigest
-xmlSecUsageDSigSignature
-xmlSecUsageDSigTransform
-xmlSecUsageEncryptionMethod
 xmlSecX509DataCreate
 xmlSecX509DataCreateKey
 xmlSecX509DataDebugDump
@@ -110,8 +82,6 @@ xmlSecX509StoreLoadPemCert
 xmlSecX509StorePtr
 xmlSecX509StoreVerify
 xmlSecXPath2TransformType
-xmlSecXmlTransformExecute
-xmlSecXmlTransformExecuteMethod
 xmlSecXmlTransformId
 xmlSecXmlTransformIdStruct
 xmlSecXmlTransformSetHere

@@ -136,7 +136,7 @@ xmlSecDigestVerifyNode(xmlSecTransformPtr transform, const xmlNodePtr valueNode)
 
 /**
  * xmlSecDigestSetPushMode:
- * @transform: the pointer to a digests trasnform.
+ * @transform: the pointer to a digests transform.
  * @enabled: the new "push mode" flag.
  *
  * Sets the push more flag. If push mode is enabled then the digest is
@@ -167,7 +167,7 @@ xmlSecDigestSetPushMode(xmlSecTransformPtr transform, int enabled) {
  ***********************************************************************/ 
 /**
  * xmlSecDigestUpdate:
- * @transform: the pointer to a digests trasnform.
+ * @transform: the pointer to a digests transform.
  * @buffer: the input data.
  * @size: the input data size.
  *
@@ -198,7 +198,7 @@ xmlSecDigestUpdate(xmlSecTransformPtr transform,
 
 /**
  * xmlSecDigestSign:
- * @transform: the pointer to a digests trasnform.
+ * @transform: the pointer to a digests transform.
  * @buffer: the pointer to the pointer to the output buffer.
  * @size: the pointer to the output buffer size.
  *
@@ -230,7 +230,7 @@ xmlSecDigestSign(xmlSecTransformPtr transform,
 
 /**
  * xmlSecDigestVerify:
- * @transform: the pointer to a digests trasnform.
+ * @transform: the pointer to a digests transform.
  * @buffer: the input buffer.
  * @size: the input buffer size.
  *
@@ -389,8 +389,8 @@ xmlSecDigestTransformWrite(xmlSecBinTransformPtr transform,
  * @transform: the pointer to a digests transform.
  *
  * If the push mode enabled then the function finalizes the result,
- * writes it to the next trasnform and calls flush for it. Otherwise,
- * it just calls flush for next trasnform
+ * writes it to the next transform and calls flush for it. Otherwise,
+ * it just calls flush for next transform
  * 
  * Returns 0 if success or negative value otherwise.
  */

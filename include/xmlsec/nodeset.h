@@ -57,7 +57,7 @@ typedef enum {
 } xmlSecNodeSetOp;
 
 /**
- * struct xmlSecNodeSet:
+ * struct _xmlSecNodeSet:
  *
  * The enchanced nodes set.
  */

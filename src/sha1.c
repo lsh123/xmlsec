@@ -73,10 +73,7 @@ xmlSecTransformId xmlSecDigestSha1 = (xmlSecTransformId)&xmlSecDigestSha1Id;
     ((SHA_CTX*)(((xmlSecDigestTransformPtr)( t ))->digestData))
 
 /**
- * xmlSecDigestSha1Create
- * @id:
- *  
- * Creates transform
+ * xmlSecDigestSha1Create:
  */
 static xmlSecTransformPtr 
 xmlSecDigestSha1Create(xmlSecTransformId id) {
@@ -113,10 +110,7 @@ xmlSecDigestSha1Create(xmlSecTransformId id) {
 }
 
 /**
- * xmlSecDigestSha1Destroy
- * 
- * @transform
- *
+ * xmlSecDigestSha1Destroy:
  */
 static void 	
 xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
@@ -137,13 +131,7 @@ xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
 }
 
 /**
- * xmlSecDigestSha1Update
- *
- * @transform:
- * @buffer:
- * @size:
- *
- * Simply call SHA1_Update
+ * xmlSecDigestSha1Update:
  */
 static int 	
 xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
@@ -169,12 +157,7 @@ xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
 }
 
 /**
- * xmlSecDigestSha1Sign
- * @transform:
- * @buffer:
- * @size:
- *
- * Call SHA1_Final, store digest in internal buffer and return the result
+ * xmlSecDigestSha1Sign:
  */
 static int 	
 xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
@@ -206,11 +189,6 @@ xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
 
 /**
  * xmlSecDigestSha1Verify:
- * @transform: 
- * @buffer: 
- * @size:
- *
- * Call SHA1_Final and compare result with data in given buffer
  */
 static int
 xmlSecDigestSha1Verify(xmlSecDigestTransformPtr transform,

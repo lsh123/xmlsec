@@ -554,7 +554,7 @@ Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node
 <programlisting>int         xmlSecTransformXsltAdd          (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
                                              const <link linkend="xmlChar">xmlChar</link> *xslt);</programlisting>
 <para>
-</para>
+Writes the XSLT transform expression to the <parameter>transformNode</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -563,14 +563,12 @@ Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
-<entry>	the transform ndoe
+<entry> the pointer to &lt;dsig:Transform&gt; node.
 </entry></row>
 <row><entry align="right"><parameter>xslt</parameter>&nbsp;:</entry>
-<entry>
+<entry> the XSLT transform exspression.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -724,7 +722,8 @@ if <parameter>buf</parameter> is NULL.</para>
 <programlisting>int         xmlSecRsaKeyGenerate            (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="RSA-CAPS">RSA</link> *rsa);</programlisting>
 <para>
-</para>
+Sets the <parameter>key</parameter> to the value of <parameter>rsa</parameter> or generates a new RSA key
+if <parameter>rsa</parameter> is NULL.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -733,14 +732,12 @@ if <parameter>buf</parameter> is NULL.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to RSA key.
 </entry></row>
 <row><entry align="right"><parameter>rsa</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to OpenSSL RSA key or NULL.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

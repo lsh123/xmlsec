@@ -2177,13 +2177,18 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
-></P
+>Writes the XSLT transform expression to the <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3641"><P
+NAME="AEN3642"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2208,7 +2213,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->	the transform ndoe</TD
+> the pointer to &lt;dsig:Transform&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -2225,7 +2230,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the XSLT transform exspression.</TD
 ></TR
 ><TR
 ><TD
@@ -2243,7 +2248,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2254,7 +2259,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3658"
+NAME="AEN3659"
 ></A
 ><H3
 ><A
@@ -2282,7 +2287,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3664"
+NAME="AEN3665"
 ></A
 ><H3
 ><A
@@ -2310,7 +2315,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3670"
+NAME="AEN3671"
 ></A
 ><H3
 ><A
@@ -2338,7 +2343,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3676"
+NAME="AEN3677"
 ></A
 ><H3
 ><A
@@ -2366,7 +2371,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3682"
+NAME="AEN3683"
 ></A
 ><H3
 ><A
@@ -2394,7 +2399,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3688"
+NAME="AEN3689"
 ></A
 ><H3
 ><A
@@ -2429,7 +2434,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3696"><P
+NAME="AEN3697"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2517,7 +2522,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3717"
+NAME="AEN3718"
 ></A
 ><H3
 ><A
@@ -2552,7 +2557,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3725"><P
+NAME="AEN3726"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2640,7 +2645,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3746"
+NAME="AEN3747"
 ></A
 ><H3
 ><A
@@ -2679,7 +2684,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3755"><P
+NAME="AEN3756"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2750,7 +2755,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3772"
+NAME="AEN3773"
 ></A
 ><H3
 ><A
@@ -2801,7 +2806,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3783"><P
+NAME="AEN3784"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2889,7 +2894,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3804"
+NAME="AEN3805"
 ></A
 ><H3
 ><A
@@ -2917,13 +2922,29 @@ HREF="RSA-CAPS"
 ></TR
 ></TABLE
 ><P
-></P
+>Sets the <TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+> to the value of <TT
+CLASS="PARAMETER"
+><I
+>rsa</I
+></TT
+> or generates a new RSA key
+if <TT
+CLASS="PARAMETER"
+><I
+>rsa</I
+></TT
+> is NULL.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3812"><P
+NAME="AEN3816"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2948,7 +2969,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to RSA key.</TD
 ></TR
 ><TR
 ><TD
@@ -2965,7 +2986,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to OpenSSL RSA key or NULL.</TD
 ></TR
 ><TR
 ><TD
@@ -2983,7 +3004,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2994,7 +3015,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3829"
+NAME="AEN3833"
 ></A
 ><H3
 ><A
@@ -3022,7 +3043,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3835"
+NAME="AEN3839"
 ></A
 ><H3
 ><A
@@ -3061,7 +3082,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3844"><P
+NAME="AEN3848"><P
 ></P
 ><TABLE
 BORDER="0"

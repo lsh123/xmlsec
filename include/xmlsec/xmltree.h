@@ -64,6 +64,28 @@ XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 xmlNodePtr cur,
 							 const xmlChar** ids);
+/**
+ * xmlSecIsHex:
+ * @c: the character.
+ * 
+ * Macro. Returns 1 if @c is a hex digit or 0 other wise.
+ */
+#define xmlSecIsHex(c) \
+    (( (('0' <= (c)) && ((c) <= '9')) || \
+       (('a' <= (c)) && ((c) <= 'f')) || \
+       (('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
+
+/**
+ * xmlSecGetHex:
+ * @c: the character,
+ *
+ * Macro. Returns the hex value of the @c.
+ */
+#define xmlSecGetHex(c) \
+    ( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
+    ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
+    ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
+
 
 #ifdef __cplusplus
 }

@@ -32,19 +32,39 @@ extern "C" {
 #endif /* defined(_MSC_VER) */
 #endif /* defined(_MSC_VER) */
 
-/* XMLSec namespace */
+/**
+ * xmlSecNs:
+ * 
+ * The  XML Security library namespace 
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 
-/* XMLDSig namespace */
+/**
+ * xmlSecDSigNs:
+ *
+ * The XML DSig namespace 
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecDSigNs[];
 
-/* XMLEnc namespace */
+/**
+ * xmlSecEncNs:
+ *
+ * The XML Encription namespace 
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 
-/* XPath transform namespace */
+/**
+ * xmlSecXPathNs:
+ * 
+ * The XPath transform namespace 
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPathNs[];
 
-/* XPath2 transform namespace */
+/**
+ * xmlSecXPath2Ns:
+ * 
+ * The XPath2 transform namespace 
+ */
 XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 
 /* XPointer transform namespace */
@@ -52,18 +72,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecXPointerNs[];
 
 XMLSEC_EXPORT void	xmlSecInit			(void);
 XMLSEC_EXPORT void	xmlSecShutdown			(void);
-
-
-#define xmlSecIsHex(c) \
-    (( (('0' <= (c)) && ((c) <= '9')) || \
-       (('a' <= (c)) && ((c) <= 'f')) || \
-       (('A' <= (c)) && ((c) <= 'F')) ) ? 1 : 0)
-
-#define xmlSecGetHex(c) \
-    ( (('0' <= (c)) && ((c) <= '9')) ? (c) - '0' : \
-    ( (('a' <= (c)) && ((c) <= 'f')) ? (c) - 'a' + 10 :  \
-    ( (('A' <= (c)) && ((c) <= 'F')) ? (c) - 'A' + 10 : 0 )))
-
 
 
 /**

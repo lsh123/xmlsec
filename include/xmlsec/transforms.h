@@ -32,55 +32,6 @@ typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr
 
 
 
-/******************************************************************** 
- *
- * Base64 Transform
- *
- *******************************************************************/
-#define XMLSEC_BASE64_LINESIZE			64
-/**
- * XMLSEC_BASE64_LINESIZE:
- *
- * The default max line size for base64 encoding
- */ 
-#define xmlSecTransformBase64Id \
-	xmlSecTransformBase64GetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
-XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr transform,
-									 size_t lineSize);
-
-
-/********************************************************************
- *
- * Memory Buffer transform 
- *
- *******************************************************************/
-/**
- * xmlSecTransformMemBufId:
- * 
- * The XSLT transform id.
- */
-#define xmlSecTransformMemBufId \
-	xmlSecTransformMemBufGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformMemBufGetKlass		(void);
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecTransformMemBufGetBuffer		(xmlSecTransformPtr transform, 
-									 int removeBuffer);
-
-/********************************************************************
- *
- * XSLT transform 
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_XSLT
-/**
- * xmlSecTransformXsltId:
- * 
- * The XSLT transform id.
- */
-#define xmlSecTransformXsltId \
-	xmlSecTransformXsltGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
-#endif /* XMLSEC_NO_XSLT */
 
 /**************************************************************************
  *
@@ -563,6 +514,80 @@ struct _xmlSecTransformKlass {
 
 #define xmlSecTransformKlassGetName(klass) \
 	(((klass)) ? ((klass)->name) : NULL)
+
+
+
+
+
+
+
+/******************************************************************** 
+ *
+ * Base64 Transform
+ *
+ *******************************************************************/
+#define XMLSEC_BASE64_LINESIZE			64
+/**
+ * XMLSEC_BASE64_LINESIZE:
+ *
+ * The default max line size for base64 encoding
+ */ 
+#define xmlSecTransformBase64Id \
+	xmlSecTransformBase64GetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformBase64GetKlass		(void);
+XMLSEC_EXPORT     void xmlSecTransformBase64SetLineSize			(xmlSecTransformPtr transform,
+									 size_t lineSize);
+
+
+/********************************************************************
+ *
+ * Memory Buffer transform 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformMemBufId:
+ * 
+ * The Memory Buffer transform id.
+ */
+#define xmlSecTransformMemBufId \
+	xmlSecTransformMemBufGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformMemBufGetKlass		(void);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecTransformMemBufGetBuffer		(xmlSecTransformPtr transform, 
+									 int removeBuffer);
+
+/********************************************************************
+ *
+ * Input URI transform 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformInputURIId:
+ * 
+ * The Input URI transform id.
+ */
+#define xmlSecTransformInputURIId \
+	xmlSecTransformInputURIGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInputURIGetKlass		(void);
+XMLSEC_EXPORT int 	xmlSecTransformInputURIOpen			(xmlSecTransformPtr transform,
+									 const char *uri);
+
+/********************************************************************
+ *
+ * XSLT transform 
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XSLT
+/**
+ * xmlSecTransformXsltId:
+ * 
+ * The XSLT transform id.
+ */
+#define xmlSecTransformXsltId \
+	xmlSecTransformXsltGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
+#endif /* XMLSEC_NO_XSLT */
+
+
 
 
 #include "transforms-old.h"

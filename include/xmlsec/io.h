@@ -20,25 +20,14 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/transforms.h>
 
-/**
- * xmlSecInputUri:
- * 
- * The input URI transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecInputUri;
-
-XMLSEC_EXPORT void	xmlSecIOInit			(void);
-XMLSEC_EXPORT void	xmlSecIOShutdown		(void);
-
-XMLSEC_EXPORT int 	xmlSecInputUriTransformOpen	(xmlSecTransformPtr transform,
-							 const char *uri);
-
-XMLSEC_EXPORT void	xmlSecCleanupInputCallbacks	(void);
-XMLSEC_EXPORT void	xmlSecRegisterDefaultInputCallbacks (void);
-XMLSEC_EXPORT int     	xmlSecRegisterInputCallbacks	(xmlInputMatchCallback matchFunc,
-							 xmlInputOpenCallback openFunc,
-							 xmlInputReadCallback readFunc,
-							 xmlInputCloseCallback closeFunc);
+XMLSEC_EXPORT void	xmlSecIOInit				(void);
+XMLSEC_EXPORT void	xmlSecIOShutdown			(void);
+XMLSEC_EXPORT void	xmlSecIOCleanupCallbacks		(void);
+XMLSEC_EXPORT void	xmlSecIORegisterDefaultCallbacks 	(void);
+XMLSEC_EXPORT int     	xmlSecIORegisterCallbacks		(xmlInputMatchCallback matchFunc,
+								 xmlInputOpenCallback openFunc,
+								 xmlInputReadCallback readFunc,
+								 xmlInputCloseCallback closeFunc);
 
 #ifdef __cplusplus
 }

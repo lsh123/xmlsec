@@ -1069,22 +1069,22 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
     xmlSecAssert2(state->initUri != NULL, -1);
 
     /* add the uri load at the beginning */
-    ptr = xmlSecTransformCreate(xmlSecInputUri, 0);
+    ptr = xmlSecTransformCreate(xmlSecTransformInputURIId, 0);
     if(ptr == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "transform=\"%s\"",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecInputUri)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInputURIId)));
 	return(-1);	
     }    
     
-    ret = xmlSecInputUriTransformOpen(ptr, state->initUri);
+    ret = xmlSecTransformInputURIOpen(ptr, state->initUri);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecInputUriTransformOpen",
+		    "xmlSecTransformInputURIOpen",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=\"%s\"",
 		    xmlSecErrorsSafeString(state->initUri));

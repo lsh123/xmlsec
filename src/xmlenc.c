@@ -317,24 +317,24 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     }
     
     /* add the uri load at the beginning */
-    inputUri = xmlSecTransformCreate(xmlSecInputUri, 0);
+    inputUri = xmlSecTransformCreate(xmlSecTransformInputURIId, 0);
     if(inputUri == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecTransformCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecInputUri)));
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInputURIId)));
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
 	return(-1);	
     }    
     
-    ret = xmlSecInputUriTransformOpen(inputUri, uri);
+    ret = xmlSecTransformInputURIOpen(inputUri, uri);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecInputUriTransformOpen",
+		    "xmlSecTransformInputURIOpen",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=%s",
 		    xmlSecErrorsSafeString(uri));

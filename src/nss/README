@@ -1,13 +1,17 @@
 7/28/2003
        1. RSA Encryption/Decryption using PKCS#1 v1.5 padding not currently
           exposed in NSS. This causes some tests to fail.
-          (http://bugzilla.mozilla.org/show_bug.cgi?id=214236)
+          
+	  NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=214236
+	  xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118628
 
 7/24/2003
 
 	1. RSA-OAEP is not yet implemented in NSS. This is the only
 	   REQUIRED algorithm that is missing from xmlsec-nss.
-           (http://bugzilla.mozilla.org/show_bug.cgi?id=158747)
+           
+	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=158747
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118629    
 
 	2. There are 2 fixes in NSS that will be rolled into the next 
 	   release (3.9). They are:
@@ -22,27 +26,37 @@
 		No changes required. The "NSS_Shutdown failed" in some of the
 		current tests will go away
 
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118630
+
 	3. CERT_FindCertByNameString does not work in all cases
-	   http://bugzilla.mozilla.org/show_bug.cgi?id=210709
+
+	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=210709
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118631
 
 	4. CERT_FindCertBySubjectKeyID does not work in all cases
-	   http://bugzilla.mozilla.org/show_bug.cgi?id=211051
+	   
+	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=211051
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118632
 
 	5. Finding a cert by Issuer & Serial Number needs the ability to
 	   convert an ASCII decimal string to a DER integer string. Filed
-	   an RFE 
-	   http://bugzilla.mozilla.org/show_bug.cgi?id=212864
-           Once fixed, xmlSecNumToItem in x509vfy.c needs to be
-	   changed to use the new function(s) provided
+	   an RFE against NSS. Once fixed, xmlSecNumToItem in x509vfy.c 
+	   needs to be changed to use the new function(s) provided
+
+	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=212864
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118633
 
 	6. RIPEMD160 Digest and RIPEMD160 HMAC is not supported by NSS
 
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118634
+	    
 	7. AES Key wrap algorithm is implemented in NSS but not exposed
 	   due to some bug
            src/nss/kw_aes.c uses a workaround which should be removed
            when the bug is fixed
-	   http://bugzilla.mozilla.org/show_bug.cgi?id=213795
-	   
+
+	   NSS bug: http://bugzilla.mozilla.org/show_bug.cgi?id=213795
+	   xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118635
 
 KEYS MANAGER
 ------------

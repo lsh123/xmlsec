@@ -1,3 +1,7 @@
+Tue Jul 29 20:20:33 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/nss/README: created xmlsec bugs for remian xmlsec-nss problems
+
 Tue 29 Jul 2003 07:41:18 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/ include/ docs/ man/ configure.in: merged xmlsec-nss 

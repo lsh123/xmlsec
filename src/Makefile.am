@@ -39,7 +39,7 @@ $(NULL)
 
 
 libxmlsec_la_LIBADD = \
--L./$(XMLSEC_CRYPTO) -l$(XMLSEC_CRYPTO_LIB) \
+-L$(XMLSEC_CRYPTO)/.libs $(XMLSEC_CRYPTO_LIB) \
 $(LIBXSLT_LIBS) \
 $(LIBXML_LIBS) \
 $(NULL)

@@ -14,6 +14,8 @@
 #include <string.h>
 
 #include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/dsa.h>
 #include <openssl/rand.h>
 
 #include <libxml/tree.h>

@@ -1,3 +1,8 @@
+Fri 26 Sep 2003 05:27:08 PM PDT   Aleksey Sanin  <aleksey@aleksey.com>
+	* src/mscrypto/ include/xmlsec/mscrypto/ : added API documentation
+	from Wouter
+	* docs/ : re-run the docs generation to pickup the new documentation
+
 Thu Sep 25 23:10:19 2003  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* docs/authors.html: added "authors and contributors" page

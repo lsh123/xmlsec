@@ -61,9 +61,9 @@
 <h1>
 <a name="XMLSEC-NSS-PKIKEYS"></a>pkikeys</h1>
 <div class="REFNAMEDIV">
-<a name="AEN21515"></a><h2>Name</h2>pkikeys -- </div>
+<a name="AEN21529"></a><h2>Name</h2>pkikeys -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN21518"></a><h2>Synopsis</h2>
+<a name="AEN21532"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIADOPTKEY">xmlSecNssPKIAdoptKey</a>       (<font>SECKEYPrivateKey</font> *privkey,
@@ -77,13 +77,13 @@ int         <a href="xmlsec-nss-pkikeys.html#XMLSECNSSPKIKEYDATADUPLICATE">xmlSe
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN21537"></a><h2>Description</h2>
+<a name="AEN21551"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN21540"></a><h2>Details</h2>
+<a name="AEN21554"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN21542"></a><h3>
+<a name="AEN21556"></a><h3>
 <a name="XMLSECNSSPKIADOPTKEY"></a>xmlSecNssPKIAdoptKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecNssPKIAdoptKey       (<font>SECKEYPrivateKey</font> *privkey,
                                              <font>SECKEYPublicKey</font> *pubkey);</pre></td></tr></table>
@@ -93,22 +93,22 @@ Key handles.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21552"><span style="white-space: nowrap"><tt class="PARAMETER"><i>privkey</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21566"><span style="white-space: nowrap"><tt class="PARAMETER"><i>privkey</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>        the NSS Private Key handle</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21557"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pubkey</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21571"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pubkey</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>         the NSS Public Key handle</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21562"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21576"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>pointer to KeyData object or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21567"></a><h3>
+<a name="AEN21581"></a><h3>
 <a name="XMLSECNSSPKIKEYDATAGETPUBKEY"></a>xmlSecNssPKIKeyDataGetPubKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>SECKEYPublicKey</font>* xmlSecNssPKIKeyDataGetPubKey
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
@@ -117,11 +117,11 @@ Key handles.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21576"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21590"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>               the pointer to NSS Key data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21581"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21595"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>pointer to SECKEYPublicKey or NULL if an error occurs.
 Caller is responsible for freeing the key when done</p></td>
 </tr>
@@ -129,7 +129,7 @@ Caller is responsible for freeing the key when done</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21586"></a><h3>
+<a name="AEN21600"></a><h3>
 <a name="XMLSECNSSPKIKEYDATAGETPRIVKEY"></a>xmlSecNssPKIKeyDataGetPrivKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>SECKEYPrivateKey</font>* xmlSecNssPKIKeyDataGetPrivKey
                                             (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
@@ -138,11 +138,11 @@ Caller is responsible for freeing the key when done</p></td>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21595"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21609"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>               the pointer to NSS Key data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21600"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21614"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>pointer to SECKEYPrivateKey or NULL if an error occurs.
 Caller is responsible for freeing the key when done</p></td>
 </tr>
@@ -150,7 +150,7 @@ Caller is responsible for freeing the key when done</p></td>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21605"></a><h3>
+<a name="AEN21619"></a><h3>
 <a name="XMLSECNSSPKIKEYDATAGETKEYTYPE"></a>xmlSecNssPKIKeyDataGetKeyType ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><font>KeyType</font>     xmlSecNssPKIKeyDataGetKeyType   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre></td></tr></table>
 <p>Gets the Key Type from the key data.</p>
@@ -158,18 +158,18 @@ Caller is responsible for freeing the key when done</p></td>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21614"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21628"><span style="white-space: nowrap"><tt class="PARAMETER"><i>data</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>               the pointer to NSS Key data.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21619"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21633"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>Key Type </p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN21624"></a><h3>
+<a name="AEN21638"></a><h3>
 <a name="XMLSECNSSPKIKEYDATADUPLICATE"></a>xmlSecNssPKIKeyDataDuplicate ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecNssPKIKeyDataDuplicate    (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> dst,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> src);</pre></td></tr></table>
@@ -178,15 +178,15 @@ Caller is responsible for freeing the key when done</p></td>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21633"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dst</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21647"><span style="white-space: nowrap"><tt class="PARAMETER"><i>dst</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>               the pointer to NSS Key data to copy to.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21638"><span style="white-space: nowrap"><tt class="PARAMETER"><i>src</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21652"><span style="white-space: nowrap"><tt class="PARAMETER"><i>src</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>               the pointer to NSS Key data to copy from.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21643"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN21657"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>-1 on error, 0 on success</p></td>
 </tr>
 </tbody></table>

@@ -71,62 +71,6 @@ crypto
 @msg: 
 
 
-<!-- ##### MACRO xmlSecMSCryptoKeyDataHmacId ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataHmacGetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataHmacSet ##### -->
-<para>
-
-</para>
-
-@data: 
-@buf: 
-@bufSize: 
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacSha1Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformHmacSha1GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecMSCryptoTransformHmacMd5Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoTransformHmacMd5GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### MACRO xmlSecMSCryptoKeyDataDsaId ##### -->
 <para>
 
@@ -300,17 +244,6 @@ crypto
 
 </para>
 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDesSet ##### -->
-<para>
-
-</para>
-
-@data: 
-@buf: 
-@bufSize: 
 @Returns: 
 
 

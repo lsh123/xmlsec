@@ -46,7 +46,7 @@ int         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoadMemory">xmlSecMSCryp
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppKeyLoadMemory">xmlSecMSCryptoAppKeyLoadMemory</link> (const <link linkend="xmlSecByte">xmlSecByte</link> *bdata,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppKeyLoadMemory">xmlSecMSCryptoAppKeyLoadMemory</link> (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const char *pwd,
@@ -57,7 +57,7 @@ int         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoadMemory">xmlSecMSCryp
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecMSCryptoAppPkcs12LoadMemory">xmlSecMSCryptoAppPkcs12LoadMemory</link>
-                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *bdata,
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              const char *pwd,
                                              void *pwdCallback,
@@ -136,14 +136,15 @@ Gets the MS Crypto certs store name set by <parameter>xmlSecMSCryptoAppInit</par
 <programlisting>int         xmlSecMSCryptoAppDefaultKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
+Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+and a default MSCrypto crypto key data stores.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -152,17 +153,18 @@ Gets the MS Crypto certs store name set by <parameter>xmlSecMSCryptoAppInit</par
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link>
+function.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the pointer to key.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -171,17 +173,18 @@ Gets the MS Crypto certs store name set by <parameter>xmlSecMSCryptoAppInit</par
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *uri);</programlisting>
 <para>
+Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
+with <link linkend="xmlSecMSCryptoAppDefaultKeysMngrInit">xmlSecMSCryptoAppDefaultKeysMngrInit</link> function.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the uri.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -191,20 +194,20 @@ Gets the MS Crypto certs store name set by <parameter>xmlSecMSCryptoAppInit</par
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
+Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the destination filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the type of keys to save (public/private/symmetric).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -245,26 +248,28 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).</para>
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
+Reads cert from <parameter>data</parameter> and adds to the list of trusted or known
+untrusted certs in <parameter>store</parameter>.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the binary certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>           size of binary certificate (data)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the flag that indicates is the certificate in <parameter>filename</parameter>
+   			trusted or not.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -299,7 +304,7 @@ Reads key from the a file.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppKeyLoadMemory">xmlSecMSCryptoAppKeyLoadMemory ()</title>
-<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppKeyLoadMemory (const <link linkend="xmlSecByte">xmlSecByte</link> *bdata,
+<programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppKeyLoadMemory (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const char *pwd,
@@ -310,7 +315,7 @@ Reads key from the a file.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>bdata</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
 <listitem><simpara>		the key binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
@@ -338,8 +343,7 @@ Reads key from the a file.</para>
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
 <para>
-Reads key and all associated certificates from the PKCS12 file
-(not implemented yet).</para>
+Reads key and all associated certificates from the PKCS12 file</para>
 <para>
 
 </para><variablelist role="params">
@@ -361,32 +365,32 @@ Reads key and all associated certificates from the PKCS12 file
 <refsect2>
 <title><anchor id="xmlSecMSCryptoAppPkcs12LoadMemory">xmlSecMSCryptoAppPkcs12LoadMemory ()</title>
 <programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecMSCryptoAppPkcs12LoadMemory
-                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *bdata,
+                                            (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);</programlisting>
 <para>
+Reads key and all associated certificates from the PKCS12 binary</para>
+<para>
 
 </para><variablelist role="params">
-<varlistentry><term><parameter>bdata</parameter>&nbsp;:</term>
-<listitem><simpara>
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>		the binary PKCS12 key in data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>           size of binary pkcs12 data
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>	the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>	the user context for password callback.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -419,23 +423,23 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
                                              <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
 <para>
+Reads the certificate from $<parameter>data</parameter> and adds it to key.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the binary certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>           size of certificate binary (data)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>		the certificate file format.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

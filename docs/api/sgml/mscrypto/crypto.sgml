@@ -29,18 +29,6 @@ void        <link linkend="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoEr
                                              const char *errorSubject,
                                              int reason,
                                              const char *msg);
-#define     <link linkend="xmlSecMSCryptoKeyDataHmacId">xmlSecMSCryptoKeyDataHmacId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataHmacGetKlass">xmlSecMSCryptoKeyDataHmacGetKlass</link>
-                                            (void);
-int         <link linkend="xmlSecMSCryptoKeyDataHmacSet">xmlSecMSCryptoKeyDataHmacSet</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecMSCryptoTransformHmacSha1Id">xmlSecMSCryptoTransformHmacSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformHmacSha1GetKlass">xmlSecMSCryptoTransformHmacSha1GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformHmacMd5Id">xmlSecMSCryptoTransformHmacMd5Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformHmacMd5GetKlass">xmlSecMSCryptoTransformHmacMd5GetKlass</link>
-                                            (void);
 #define     <link linkend="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</link>
                                             (void);
@@ -77,9 +65,6 @@ int         <link linkend="xmlSecMSCryptoKeyDataAesSet">xmlSecMSCryptoKeyDataAes
 #define     <link linkend="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataDesGetKlass">xmlSecMSCryptoKeyDataDesGetKlass</link>
                                             (void);
-int         <link linkend="xmlSecMSCryptoKeyDataDesSet">xmlSecMSCryptoKeyDataDesSet</link>     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
 #define     <link linkend="xmlSecMSCryptoTransformDes3CbcId">xmlSecMSCryptoTransformDes3CbcId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformDes3CbcGetKlass">xmlSecMSCryptoTransformDes3CbcGetKlass</link>
                                             (void);
@@ -203,88 +188,6 @@ The default errors reporting callback function.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
 <listitem><simpara>		the additional error message.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataHmacId">xmlSecMSCryptoKeyDataHmacId</title>
-<programlisting>#define     xmlSecMSCryptoKeyDataHmacId</programlisting>
-<para>
-The DHMAC key data klass.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataHmacGetKlass">xmlSecMSCryptoKeyDataHmacGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataHmacGetKlass
-                                            (void);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataHmacSet">xmlSecMSCryptoKeyDataHmacSet ()</title>
-<programlisting>int         xmlSecMSCryptoKeyDataHmacSet    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformHmacSha1Id">xmlSecMSCryptoTransformHmacSha1Id</title>
-<programlisting>#define     xmlSecMSCryptoTransformHmacSha1Id</programlisting>
-<para>
-The HMAC with SHA1 signature transform klass.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformHmacSha1GetKlass">xmlSecMSCryptoTransformHmacSha1GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformHmacSha1GetKlass
-                                            (void);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformHmacMd5Id">xmlSecMSCryptoTransformHmacMd5Id</title>
-<programlisting>#define     xmlSecMSCryptoTransformHmacMd5Id</programlisting>
-<para>
-The HMAC with MD5 signature transform klass.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformHmacMd5GetKlass">xmlSecMSCryptoTransformHmacMd5GetKlass ()</title>
-<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformHmacMd5GetKlass
-                                            (void);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -513,6 +416,8 @@ AES 256 CBC encryption transform klass.</para>
 <title><anchor id="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</title>
 <programlisting>#define     xmlSecMSCryptoKeyDataDesId</programlisting>
 <para>
+The DES key data klass.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
@@ -525,28 +430,6 @@ The DES key data klass.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DES key data klass.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataDesSet">xmlSecMSCryptoKeyDataDesSet ()</title>
-<programlisting>int         xmlSecMSCryptoKeyDataDesSet     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
-<para>
-
-</para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
-<listitem><simpara>
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

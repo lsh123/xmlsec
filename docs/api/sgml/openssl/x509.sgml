@@ -14,6 +14,8 @@
 
 
 
+#define     <link linkend="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</link>
+#define     <link linkend="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</link>
 #define     <link linkend="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecOpenSSLKeyDataX509GetKlass">xmlSecOpenSSLKeyDataX509GetKlass</link>
                                             (void);
@@ -78,6 +80,24 @@ int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="XMLSEC-STACK-OF-X509-CAPS">XMLSEC_STACK_OF_X509</title>
+<programlisting>#define XMLSEC_STACK_OF_X509		STACK_OF(X509)
+</programlisting>
+<para>
+Macro. To make docbook happy.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-STACK-OF-X509-CRL-CAPS">XMLSEC_STACK_OF_X509_CRL</title>
+<programlisting>#define XMLSEC_STACK_OF_X509_CRL	STACK_OF(X509_CRL)
+</programlisting>
+<para>
+Macro. To make docbook happy.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLKeyDataX509Id">xmlSecOpenSSLKeyDataX509Id</title>
 <programlisting>#define     xmlSecOpenSSLKeyDataX509Id</programlisting>

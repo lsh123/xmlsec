@@ -33,16 +33,6 @@ certkeys
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoKeyDataDuplicate ##### -->
-<para>
-
-</para>
-
-@dst: 
-@src: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecMSCryptoCertDup ##### -->
 <para>
 

@@ -505,15 +505,10 @@
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataAesSet">xmlSecMSCryptoKeyDataAesSet</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataDesGetKlass">xmlSecMSCryptoKeyDataDesGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoKeyDataDesSet">xmlSecMSCryptoKeyDataDesSet</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoKeyDataDuplicate">xmlSecMSCryptoKeyDataDuplicate</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoKeyDataHmacGetKlass">xmlSecMSCryptoKeyDataHmacGetKlass</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoKeyDataHmacId">xmlSecMSCryptoKeyDataHmacId</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoKeyDataHmacSet">xmlSecMSCryptoKeyDataHmacSet</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataRawX509CertGetKlass">xmlSecMSCryptoKeyDataRawX509CertGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataRawX509CertId">xmlSecMSCryptoKeyDataRawX509CertId</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoKeyDataRsaGetKlass">xmlSecMSCryptoKeyDataRsaGetKlass</link></para></listitem>
@@ -545,10 +540,6 @@
 <listitem><para><link linkend="xmlSecMSCryptoTransformDes3CbcId">xmlSecMSCryptoTransformDes3CbcId</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoTransformDsaSha1GetKlass">xmlSecMSCryptoTransformDsaSha1GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoTransformHmacMd5GetKlass">xmlSecMSCryptoTransformHmacMd5GetKlass</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoTransformHmacMd5Id">xmlSecMSCryptoTransformHmacMd5Id</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoTransformHmacSha1GetKlass">xmlSecMSCryptoTransformHmacSha1GetKlass</link></para></listitem>
-<listitem><para><link linkend="xmlSecMSCryptoTransformHmacSha1Id">xmlSecMSCryptoTransformHmacSha1Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoTransformRsaPkcs1GetKlass">xmlSecMSCryptoTransformRsaPkcs1GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoTransformRsaPkcs1Id">xmlSecMSCryptoTransformRsaPkcs1Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecMSCryptoTransformRsaSha1GetKlass">xmlSecMSCryptoTransformRsaSha1GetKlass</link></para></listitem>

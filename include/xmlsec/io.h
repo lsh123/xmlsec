@@ -43,7 +43,7 @@ XMLSEC_EXPORT int     	xmlSecIORegisterCallbacks		(xmlInputMatchCallback matchFu
 	xmlSecTransformInputURIGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInputURIGetKlass		(void);
 XMLSEC_EXPORT int 	xmlSecTransformInputURIOpen			(xmlSecTransformPtr transform,
-									 const char *uri);
+									 const xmlChar* uri);
 
 
 

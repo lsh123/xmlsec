@@ -41,8 +41,7 @@ XMLSEC_EXPORT int	xmlSecTransformsRegister	(xmlSecTransformId keyId);
 xmlSecTransformId	xmlSecTransformsFind		(const xmlChar *href,
 							 xmlSecTransformUsage usage);
 
-/**************************************************************************
- *
+/************************************************************************** *
  * xmlSecTransformStatus
  *
  *************************************************************************/
@@ -94,30 +93,40 @@ typedef unsigned char			xmlSecTransformDataType;
  * The transform context.
  */
 struct _xmlSecTransformCtx {
-    xmlDocPtr		ctxDoc;
-    xmlSecTransformPtr	first;
-    xmlSecTransformPtr	last;
+    xmlSecTransformStatus	status;
+    xmlChar*			uri;
+    
+    xmlSecTransformPtr		first;
+    xmlSecTransformPtr		last;
 };
 
-XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx);
-XMLSEC_EXPORT void			xmlSecTransformCtxFinalize  (xmlSecTransformCtxPtr ctx);
-XMLSEC_EXPORT xmlSecTransformCtxPtr	xmlSecTransformCtxCreate    (void);
-XMLSEC_EXPORT void			xmlSecTransformCtxDestroy   (xmlSecTransformCtxPtr ctx);
-XMLSEC_EXPORT int 			xmlSecTransformCtxAppend    (xmlSecTransformCtxPtr ctx,
-								     xmlSecTransformPtr transform);
-XMLSEC_EXPORT int 			xmlSecTransformCtxPrepend   (xmlSecTransformCtxPtr ctx,
-								     xmlSecTransformPtr transform);
-XMLSEC_EXPORT xmlSecTransformPtr 	xmlSecTransformCtxNodeRead  (xmlSecTransformCtxPtr ctx,
-								     xmlNodePtr node,
-								     xmlSecTransformUsage usage);
-XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx,
-								     xmlNodePtr node,
-								     xmlSecTransformUsage usage);
-XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCtxAppendMemBuf(xmlSecTransformCtxPtr ctx);
-XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump (xmlSecTransformCtxPtr ctx,
-								     FILE* output);
-XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx,
-								     FILE* output);
+XMLSEC_EXPORT int 			xmlSecTransformCtxInitialize	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT void			xmlSecTransformCtxFinalize  	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT xmlSecTransformCtxPtr	xmlSecTransformCtxCreate    	(void);
+XMLSEC_EXPORT void			xmlSecTransformCtxDestroy   	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT int			xmlSecTransformCtxSetUri	(xmlSecTransformCtxPtr ctx,
+									 const xmlChar* uri);
+XMLSEC_EXPORT int 			xmlSecTransformCtxAppend    	(xmlSecTransformCtxPtr ctx,
+									 xmlSecTransformPtr transform);
+XMLSEC_EXPORT int 			xmlSecTransformCtxPrepend	(xmlSecTransformCtxPtr ctx,
+									 xmlSecTransformPtr transform);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx,
+									 xmlSecTransformId id);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx,
+									 xmlSecTransformId id);
+XMLSEC_EXPORT xmlSecTransformPtr 	xmlSecTransformCtxNodeRead	(xmlSecTransformCtxPtr ctx,
+									 xmlNodePtr node,
+									 xmlSecTransformUsage usage);
+XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead	(xmlSecTransformCtxPtr ctx,
+									 xmlNodePtr node,
+									 xmlSecTransformUsage usage);
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCtxAppendMemBuf	(xmlSecTransformCtxPtr ctx);
+XMLSEC_EXPORT xmlSecBufferPtr		xmlSecTransformCtxExecute	(xmlSecTransformCtxPtr ctx,
+									 xmlDocPtr doc);
+XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump 	(xmlSecTransformCtxPtr ctx,
+								        FILE* output);
+XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump	(xmlSecTransformCtxPtr ctx,
+									 FILE* output);
 
 /**************************************************************************
  *
@@ -550,6 +559,9 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPath2GetKlass		(void);
 #define xmlSecTransformXPointerId \
 	xmlSecTransformXPointerGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXPointerGetKlass		(void);
+XMLSEC_EXPORT int		xmlSecTransformXPointerSetExpr		(xmlSecTransformPtr transform,
+									 const xmlChar* expr,
+									 xmlSecNodeSetType nodeSetType);
 
 /********************************************************************
  *

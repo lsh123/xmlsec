@@ -822,7 +822,7 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
 	return(-1);	
     }    
     
-    ret = xmlSecTransformInputURIOpen(ptr, state->initUri);
+    ret = xmlSecTransformInputURIOpen(ptr, BAD_CAST state->initUri);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1161,8 +1161,6 @@ xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,
     xmlSecAssert2(nodes != NULL, -1);
     
     memset(&ctx, 0, sizeof(ctx));
-
-    ctx.ctxDoc = ctxDoc;
 
     /* execute our transform */
     transform->inNodes = (*nodes);

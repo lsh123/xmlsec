@@ -243,7 +243,7 @@ xmlSecTransformInputURIGetKlass(void) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const char *uri) {
+xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     int i;
     char *unescaped;
         
@@ -257,7 +257,7 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const char *uri) {
      * Go in reverse to give precedence to user defined handlers.
      * try with an unescaped version of the uri
      */
-    unescaped = xmlURIUnescapeString(uri, 0, NULL);
+    unescaped = xmlURIUnescapeString((char*)uri, 0, NULL);
     if (unescaped != NULL) {
 	for (i = xmlSecIOCallbackNr - 1;i >= 0;i--) {
 	    if ((xmlSecIOCallbackTable[i].matchcallback != NULL) &&

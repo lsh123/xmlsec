@@ -27,7 +27,7 @@ standards "XML Digital Signature" and "XML Encryption".
 %package devel 
 Summary: Libraries, includes, etc. to develop applications with XML Digital Signatures and XML Encryption support.
 Group: Development/Libraries 
-Requires: xmlsec = %{version}
+Requires: xmlsec1 = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Requires: openssl-devel >= @OPENSSL_MIN_VERSION@
@@ -40,7 +40,7 @@ Signatures and XML Encryption support.
 %package nss
 Summary: NSS crypto plugin for XML Security Library
 Group: Development/Libraries 
-Requires: xmlsec = %{version}
+Requires: xmlsec1 = %{version}
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
 Requires: mozilla-nss >= @NSS_MIN_VERSION@
@@ -52,9 +52,9 @@ for the xmlsec library
 %package nss-devel
 Summary: NSS crypto plugin for XML Security Library
 Group: Development/Libraries 
-Requires: xmlsec = %{version}
-Requires: xmlsec-devel = %{version}
-Requires: xmlsec-nss = %{version}
+Requires: xmlsec1 = %{version}
+Requires: xmlsec1-devel = %{version}
+Requires: xmlsec1-nss = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Requires: mozilla-nss-devel >= @NSS_MIN_VERSION@

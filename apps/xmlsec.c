@@ -126,6 +126,8 @@ static const char helpVerify[] =
     "  --print-signature     store and print the pre-signated\n"
     "                        data (<SignedInfo> element)\n"
     "  --print-all           combination of the all \"--print-*\" options\n"
+    "  --print-xml           print the result information in XML format\n"
+    "  --print-to-file <file> print the result to file <file>\n"
     "  --fake-signatures     disable actual signature calc for perf tests\n"
 #else  /* XMLSEC_NO_XMLDSIG */
     "XML Digital Signatures support was disabled during compilation\n"
@@ -297,6 +299,8 @@ char *nodeName = NULL;
 char *nodeNs = NULL;
 int repeats = 1;
 int printResult = 0;
+int printXml = 0;
+FILE* printFile = NULL;
 clock_t total_time = 0;
 char *global_pwd = NULL;
 int print_openssl_errors = 0;
@@ -618,6 +622,16 @@ int main(int argc, char **argv) {
 	    dsigCtx->storeManifests = 1; 
 	    dsigCtx->storeSignatures = 1; 	    
 	    printResult = 1;
+	} else if((strcmp(argv[pos], "--print-xml") == 0) && (dsigCtx != NULL))  {
+	    printXml = 1;
+	    printResult = 1;
+	} else if((strcmp(argv[pos], "--print-to-file") == 0) && (dsigCtx != NULL) && 
+		  (pos + 1 < argc) && (printFile == NULL)) {
+	    printFile = fopen(argv[++pos], "w");
+	    if(printFile == NULL) {
+		fprintf(stderr, "Error: failed to open result file \"%s\"\n", argv[pos]);
+		ret = -1;
+	    }
 	} else 
 #endif /* XMLSEC_NO_XMLDSIG */
 
@@ -1207,6 +1221,9 @@ int generateDSig(xmlDocPtr doc) {
     res = 0;
     
 done:    
+    if(printFile != NULL) {
+	fclose(printFile);
+    }
     if(string != NULL) {
 	xmlFree(string);        
     }
@@ -1242,7 +1259,13 @@ int validateDSig(xmlDocPtr doc) {
     } 
 	    
     if(printResult) {
-    	xmlSecDSigResultDebugDump(result, stderr);
+	if(printXml) {	
+    	    xmlSecDSigResultDebugXmlDump(result, 
+		    (printFile != NULL) ? printFile : stderr);
+	} else {
+    	    xmlSecDSigResultDebugDump(result, 
+		    (printFile != NULL) ? printFile : stderr);
+	}	
     }	
 	    
     /** 
@@ -1251,8 +1274,8 @@ int validateDSig(xmlDocPtr doc) {
      */
     memset(&status, 0, sizeof(status));
     getDSigResult(result, &status);
-
-    if(repeats <= 1) { 
+    
+    if(repeats <= 1){ 
         
 	fprintf(stderr, "= Status:\n");
 	fprintf(stderr, "== Signatures ok: %d\n", status.signaturesOk);

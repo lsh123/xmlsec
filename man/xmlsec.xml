@@ -385,6 +385,18 @@
               <simpara>Prints all available data.</simpara>
             </listitem>
         </varlistentry>
+        <varlistentry>
+          <term><option>--print-xml</option></term>
+            <listitem>
+              <simpara>Prints result in xml format.</simpara>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--print-to-file <replaceable>file</replaceable></option></term>
+            <listitem>
+              <simpara>Prints result to file <replaceable>file</replaceable>.</simpara>
+            </listitem>
+        </varlistentry>
 
         <varlistentry>
           <term><option>--keys</option> <replaceable>file</replaceable></term>

@@ -103,7 +103,8 @@ XMLSEC_EXPORT int	xmlSecHmacAddOutputLength	(xmlNodePtr transformNode,
 XMLSEC_EXPORT int  	xmlSecEncRsaOaepAddParam	(xmlNodePtr transformNode,
 							 const unsigned char *buf,
 							 size_t size);
-
+XMLSEC_EXPORT int	xmlSecXsltAddStylesheet		(xmlNodePtr node, 
+							 const xmlChar *xslt);
 
 #ifdef __cplusplus
 }

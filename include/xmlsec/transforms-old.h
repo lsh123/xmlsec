@@ -135,19 +135,4 @@ XMLSEC_EXPORT int 	xmlSecTransformXPointerAdd(xmlNodePtr transformNode,
 						 const xmlChar *expression,
 						 const xmlChar **namespaces);
 
-/********************************************************************
- *
- * XSLT transform 
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_XSLT
-/**
- * xmlSecTransformXslt:
- * 
- * The XSLT transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecTransformXslt;
-XMLSEC_EXPORT int 	xmlSecTransformXsltAdd	(xmlNodePtr transformNode, 
-						 const xmlChar *xslt);
-#endif /* XMLSEC_NO_XSLT */
 

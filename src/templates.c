@@ -1394,3 +1394,42 @@ xmlSecEncRsaOaepAddParam(xmlNodePtr transformNode, const unsigned char *buf,
     return(0);
 }
 
+/**
+ * xmlSecXsltAddStylesheet:
+ * @node: the pointer to <dsig:Transform> node.
+ * @xslt: the XSLT transform exspression.
+ * 
+ * Writes the XSLT transform expression to the @node.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecXsltAddStylesheet(xmlNodePtr node, const xmlChar *xslt) {
+    xmlDocPtr xslt_doc;
+    int ret;
+        
+    xmlSecAssert2(node != NULL, -1);    
+    xmlSecAssert2(xslt != NULL, -1);    
+    
+    xslt_doc = xmlParseMemory((const char*)xslt, xmlStrlen(xslt));
+    if(xslt_doc == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlParseMemory");
+	return(-1);
+    }
+    
+    ret = xmlSecReplaceContent(node, xmlDocGetRootElement(xslt_doc));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecReplaceContent");
+	xmlFreeDoc(xslt_doc);
+	return(-1);
+    }
+    
+    xmlFreeDoc(xslt_doc);
+    return(0);
+}
+
+

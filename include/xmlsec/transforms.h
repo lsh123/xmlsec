@@ -30,6 +30,23 @@ typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransfo
 typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr; 
 typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
 
+
+/********************************************************************
+ *
+ * XSLT transform 
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_XSLT
+/**
+ * xmlSecTransformXsltId:
+ * 
+ * The XSLT transform id.
+ */
+#define xmlSecTransformXsltId \
+	xmlSecTransformXsltGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
+#endif /* XMLSEC_NO_XSLT */
+
 /**************************************************************************
  *
  * xmlSecTransformStatus

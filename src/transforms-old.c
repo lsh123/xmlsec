@@ -98,7 +98,7 @@ xmlSecTransformsInit(void) {
     }
 
 #ifndef XMLSEC_NO_XSLT
-    if(xmlSecTransformRegister(xmlSecTransformXslt) < 0) {
+    if(xmlSecTransformRegister(xmlSecTransformXsltId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "failed to register xslt transform");

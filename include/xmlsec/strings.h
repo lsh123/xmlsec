@@ -177,6 +177,16 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRawX509Cert[];
 
 /*************************************************************************
  *
+ * Xslt strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameXslt[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
+
+
+
+/*************************************************************************
+ *
  * RetrievalMethod
  *
  ************************************************************************/

@@ -124,8 +124,8 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,
 		    "xmlSecBufferSetSize",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", size);
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "size=%d", size);
 	return(-1);
     }
         
@@ -136,7 +136,7 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
 		    NULL,
 		    "RAND_bytes",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%d", size);
+		    "size=%d", size);
 	return(-1);    
     }	
     return(0);

@@ -161,10 +161,11 @@ xmlSecOpenSSLAppPemKeyLoad(const char *filename, const char *pwd,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		    NULL,
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
 	xmlSecKeyDestroy(key);
 	xmlSecKeyDataDestroy(data);
 	return(NULL);
@@ -216,10 +217,11 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
     ret = xmlSecOpenSSLKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		    NULL,
 		    "xmlSecOpenSSLKeyDataX509AdoptCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
 	X509_free(cert);
 	return(-1);    
     }
@@ -256,7 +258,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 
     xmlSecAssert2(filename != NULL, NULL);
         
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -323,20 +325,22 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
     tmpcert = X509_dup(cert);
     if(tmpcert == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
+		    NULL,
 		    "X509_dup",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	goto done;	
     }
     
     ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, tmpcert);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
+		    NULL,
 		    "xmlSecOpenSSLKeyDataX509AdoptKeyCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	X509_free(tmpcert);
 	goto done;
     }
@@ -347,10 +351,11 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 	tmpcert = X509_dup(sk_X509_value(chain, i));
         if(tmpcert == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
+			NULL,
 			"X509_dup",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"data=%s",
+			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	    X509_free(tmpcert);
 	    goto done;	
 	}
@@ -358,10 +363,11 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
 	ret = xmlSecOpenSSLKeyDataX509AdoptCert(x509Data, tmpcert);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
+			NULL,
 			"xmlSecOpenSSLKeyDataX509AdoptCert",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
+			"data=%s",
+		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	    goto done;
 	}
     }
@@ -379,10 +385,11 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		    NULL,
 		    "xmlSecKeySetValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	xmlSecKeyDestroy(key);
 	key = NULL;
 	goto done;
@@ -392,10 +399,11 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
     ret = xmlSecKeyAdoptData(key, x509Data);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)),
+		    NULL,
 		    "xmlSecKeyAdoptData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "data=%s",
+		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	xmlSecKeyDestroy(key);
 	key = NULL;
 	goto done;
@@ -647,7 +655,7 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "	xmlSecSimpleKeysStoreLoad",
+		    "xmlSecSimpleKeysStoreLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "uri=%s", xmlSecErrorsSafeString(uri));
 	return(-1);

@@ -153,8 +153,8 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_DATA,
-		    "data=%d;dgst=%d;data and digest sizes are different)", 
+		    XMLSEC_ERRORS_R_INVALID_SIZE,
+		    "data_size=%d;dgst_size=%d", 
 		    dataSize, ctx->dgstSize);
 	transform->status = xmlSecTransformStatusFail;
 	return(0);

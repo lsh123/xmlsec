@@ -192,7 +192,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", XMLSEC_OPENSSL_DES3_KEY_LENGTH);
+		    "size=%d", XMLSEC_OPENSSL_DES3_KEY_LENGTH);
 	return(-1);    
     }
 
@@ -254,7 +254,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", outSize);
+			"size=%d", outSize);
 	    return(-1);
 	}
 
@@ -294,7 +294,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", outSize);
+			"size=%d", outSize);
 	    return(-1);
 	}
 	
@@ -304,7 +304,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", inSize);
+			"size=%d", inSize);
 	    return(-1);
 	}
 	
@@ -317,7 +317,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "%d", transform->status);
+		    "status=%d", transform->status);
 	return(-1);
     }
     return(0);
@@ -386,7 +386,7 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, size_t keySize,
 		    NULL,
 		    "RAND_bytes",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%d", ret);
+		    "ret=%d", ret);
 	return(-1);    
     }	
 

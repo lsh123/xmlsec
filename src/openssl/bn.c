@@ -110,7 +110,7 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 		    NULL,
 		    "xmlSecBufferInitialize",
 	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", BN_num_bytes(a) + 1);
+		    "size=%d", BN_num_bytes(a) + 1);
 	return(-1);
     }    
 
@@ -132,7 +132,7 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
 		    NULL,
 		    "xmlSecBufferSetSize",
 	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", size);
+		    "size=%d", size);
 	xmlSecBufferFinalize(&buf);
 	return(-1);
     }

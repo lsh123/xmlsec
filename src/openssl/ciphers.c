@@ -411,7 +411,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize + outLen + outLen2);
+		    "size=%d", outSize + outLen + outLen2);
 	return(-1);
     }
 

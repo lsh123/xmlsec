@@ -500,7 +500,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 	if(algorithm == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			xmlSecNodeGetName(cur),
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 			"attr=%s", 
 			xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
@@ -511,7 +511,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 	if(strcmp(algorithm, xmlSecHrefSha1) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			(char*)algorithm,
+			xmlSecErrorsSafeString(algorithm),
 			XMLSEC_ERRORS_R_INVALID_TRANSFORM,
 			"digest algorithm is not supported for rsa/oaep");
 	    xmlFree(algorithm);
@@ -525,9 +525,9 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecNodeGetName(cur),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "no nodes expected");
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
         

@@ -780,7 +780,7 @@ xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
 	return(NULL);	
     }
 
-    f = fopen(filename, "r");
+    f = fopen(filename, "rb");
     if(f == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),

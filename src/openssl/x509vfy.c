@@ -264,7 +264,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "X509_verify_cert",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    	    "err=%d;msg=%s", err, 
+		    	    "err=%d;msg=%s", 
+			    err, 
 			    xmlSecErrorsSafeString(err_msg));
 		goto done;
 	    }
@@ -549,7 +550,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			NULL,
 			"xmlSecOpenSSLX509NameRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%s", xmlSecErrorsSafeString(subjectName));
+			"subject=%s", 
+			xmlSecErrorsSafeString(subjectName));
 	    return(NULL);    
 	}
 
@@ -574,7 +576,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			NULL,
 			"xmlSecOpenSSLX509NameRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%s", xmlSecErrorsSafeString(issuerName));
+			"issuer=%s", 
+			xmlSecErrorsSafeString(issuerName));
 	    return(NULL);    
 	}
 		
@@ -641,7 +644,8 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			NULL,
 			"xmlSecBase64Decode",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%s", xmlSecErrorsSafeString(ski));
+			"ski=%s", 
+			xmlSecErrorsSafeString(ski));
 	    return(NULL);    	
 	}
 	for(i = 0; i < certs->num; ++i) {

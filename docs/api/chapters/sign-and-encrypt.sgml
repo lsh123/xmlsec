@@ -38,7 +38,7 @@
 	    </para></listitem>
 	    <listitem><para>
 		Load signature key in <link linkend="xmlSecKeysMngr">keys manager</link> 
-		or generate a sesison key and set it in the signature context 
+		or generate a session key and set it in the signature context 
 		(<structfield>signKey</structfield> member of 
 		<link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link> structure).
 	    </para></listitem>
@@ -163,7 +163,7 @@ done:
 	    </para></listitem>
 	    <listitem><para>
 		Load encryption key in <link linkend="xmlSecKeysMngr">keys manager</link> 
-		or generate a sesison key and set it in the encryption context
+		or generate a session key and set it in the encryption context
 		(<structfield>encKey</structfield> member of 
 		<link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure).
 	    </para></listitem>

@@ -39,18 +39,15 @@
     <!-- top navigation menu end -->
      
     <td valign="Top" align="Left">
-       
       <div align="Center">       
-      <h2>Download</h2>
-
-       
-      <div align="Left">The latest XML Security Library version is <b>0.0.13</b>:
-      <br>
-       
+      <h1>Download</h1>
+      </div>
+      <h2>Stable release.</h2>       
+      The latest stable XML Security Library version is <b>0.0.13</b>:
       <ul>
-        <li><a href="download/xmlsec-0.0.13.tar.gz">Sources</a>
-	(<a href="ftp://ftp.xmlsoft.org/xmlsec/releases">XMLSoft.org</a> and 
- 	<a href="ftp://ftp.rpmfind.net/pub/XML/xmlsec/releases">RPMFind.net</a> mirrors).
+        <li><a href="download/xmlsec-0.0.13.tar.gz">Sources</a> 
+	    (<a href="ftp://ftp.xmlsoft.org/xmlsec/releases">XMLSoft.org</a> and 
+ 	     <a href="ftp://ftp.rpmfind.net/pub/XML/xmlsec/releases">RPMFind.net</a> mirrors).
         </li>
         <li>Red Hat RPM 
 	<a href="http://rpmfind.net/linux/rpm2html/search.php?query=xmlsec">xmlsec</a> 
@@ -67,40 +64,42 @@
 	from <a href="mailto:jvb@prairienet.org">John Belmonte</a>.
 	</li>
       </ul>
-    The <a href="ftp://ftp.aleksey.com/pub/xmlsec/snapshots/">daily snapshots</a>
-    and <a href="ftp://ftp.aleksey.com/pub/xmlsec/releases/">previous versions</a>
-    are also available.        
-
-    <p><b>ATTENTION</b><br>
-    I am doing some 
-    <a href="http://www.aleksey.com/pipermail/xmlsec/2002/000305.html">major
-    code refactoring</a> these days. The snapshot builds most likely are 
-    broken. Please, use <b>0.0.13</b> version instead.<br>
-    If you want to use sources from GNOME CVS <b>do not</b> check out the tip.
-    It is broken and most likely does not compile. The stable 0.0.13+ branch
-    is <b>XMLSEC_0_0_X_BRANCH</b>.
-        
-
-      <p>     <b>Requirements</b><br>
-       <br>
- The XML Security Library requires <br>
-       </p>
+      The <a href="ftp://ftp.aleksey.com/pub/xmlsec/releases/">previous versions</a>
+      are also available.        
+          
+      <h2>Development release.</h2>
+      The latest development XML Security Library version is <b>0.1.0</b>:
       <ul>
-         <li><a href="http://xmlsoft.org/downloads.html">LibXML version 2.4.24</a>
- or geater</li>
-         <li><a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT 1.0.20</a>
- or greater (optional)</li>
-         <li><a href="ftp://ftp.openssl.org/snapshot/">OpenSSL version 0.9.7</a>
- (prefered) or           <a href="http://www.openssl.org/source/openssl-0.9.6c.tar.gz">
-OpenSSL version 0.9.6c</a>
+        <li><a href="download/xmlsec-0.1.0.tar.gz">Sources</a> 
+	    (<a href="ftp://ftp.xmlsoft.org/xmlsec/releases">XMLSoft.org</a> and 
+ 	     <a href="ftp://ftp.rpmfind.net/pub/XML/xmlsec/releases">RPMFind.net</a> mirrors).
+        </li>
+      </ul>
+      The <a href"ftp://ftp.aleksey.com/pub/xmlsec/snapshots/">daily snapshots</a>
+      are also available.
+      <p>The development release and daily snapshots are not promised to be 
+      stable or even compile. API or ABI can change at any time without any 
+      notice.
+
+      <h2>GNOME CVS</h2>
+      <p>XML Security Library is available from the 
+      <a href="http://developer.gnome.org/tools/cvs.html">Gnome CVS</a>
+      (the module name is <b>xmlsec</b>, stable branch is 
+      <b>XMLSEC_0_0_X_BRANCH</b>). The online source browser: 
+      <a href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=xmlsec">Gnome CVS base</a>
+
+      <h2>Requirements</h2>
+      The XML Security Library requires:
+      <ul>
+         <li><a href="http://xmlsoft.org/downloads.html">LibXML version 2.4.24</a> or geater</li>
+         <li><a href="http://xmlsoft.org/XSLT/downloads.html">LibXSLT 1.0.20</a> or greater (optional)</li>
+         <li><a href="http://www.openssl.org/source/openssl-0.9.7a.tar.gz">OpenSSL version 0.9.7a</a> (prefered) or 
+	     <a href="http://www.openssl.org/source/openssl-0.9.6i.tar.gz">OpenSSL version 0.9.6i</a>
          </li>
-       
       </ul>
      
-      <p>     <b>Installation (source archive)</b><br>
-       <br>
- All steps are usual:<br>
-       </p>
+      <h2>Installation (source archive)</h2>
+      All steps are usual:<br>
       <blockquote><code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br>
          <code>cd xmlsec-xxxx</code><br>
          <code>./configure --help</code><br>
@@ -109,19 +108,9 @@ OpenSSL version 0.9.6c</a>
          <code>make install</code><br>
          <code>make check</code></blockquote>
        The last step is optional and requires Internet connection to execute
-  some  tests.<br>
-         <br>
-        <b>CVS</b><br>
-        <p>XML Security Library is also available from the <a href="http://developer.gnome.org/tools/cvs.html">
-Gnome CVS</a>
- (the module name is <b>xmlsec</b>). The online source browser: <a href="http://cvs.gnome.org/bonsai/rview.cgi?cvsroot=/cvs/gnome&amp;dir=xmlsec">
-Gnome     CVS base</a>
-.&nbsp;</p>
-         </div>
-         </div>
+       some tests.<br>
       
-        <p>     <a href="bugs.html">Aleksey Sanin</a>
-         </p>
+        <p><a href="bugs.html">Aleksey Sanin</a></p>
         </td>
        </tr>
      

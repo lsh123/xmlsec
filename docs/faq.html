@@ -72,12 +72,15 @@
       <a href="http://www.gnu.org/licenses/gpl-faq.html#WritingFSWithNFLibs">exception</a>
       in the GPL (also check what <a href="http://www.openssl.org/support/faq.cgi#LEGAL2">OpenSSL 
       FAQ</a> says about this).
+
       <h3>2. Installation.</h3>
+
       <h4>2.1. Where can I get xmlsec?</h4>
       The original distribution comes from 
       <a href="http://www.aleksey.com/xmlsec/">XML Security Library page</a>.
       Also xmlsec is available from 
       <a href="ftp://rpmfind.net/pub/libxml/xmlsec">rpmfind.net miror</a>.
+
       <h4>2.2. How to compile xmlsec?</h4>
       On Unix just follow the "standard":
          <blockquote>
@@ -93,6 +96,7 @@
       list of installed shared libs.<br>
       On Windows the process is more complicated. Please check
       readme file in <code>xmlsec-xxxx/win32</code> folder.
+
       <h4>2.3. What other libraries are needed to compile/install xmlsec?</h4>
       The XML Security Library requires:
       <ul>
@@ -102,6 +106,7 @@
 	 (prefered) or version 0.9.6c
          </li>
       </ul>
+
       <h4>2.4. Why does make check fail for some tests?</h4>
       First of all, some tests <b>must</b> fail! Please read the 
       messages printed before the tests.<br>
@@ -113,6 +118,7 @@
       or in the xmlsec tests. Please submit the 
       <a href="http://www.aleksey.com/xmlsec/bugs.html">bug report</a>
       and I'll try to fix it.
+
       <h4>2.5. I get the xmlsec sources from CVS and there is no 
       configure script. Where can I get it?</h4>
       The configure (and other Makefiles) are generated. Use the 
@@ -121,12 +127,73 @@
 	<blockquote>   
     	<code>./autogen.sh --prefix=/usr</code>
         </blockquote>
+
       <h4>2.5. I do not need all these features supported by xmlsec.
       Can I disable some of them?</h4>
       Yes, you can. Please run <code>./configure --help</code>
       for the list of possible configuration options.
 
-
+      <h4>2.6. I am compiling XMLSec library on Windows and 
+      it does not compile (crashes right after the launch). 
+      Can you help me?</h4>
+      There are several possible reasons why you might have problems
+      on Windows. All of them originated in the MS C compiler/linker 
+      and are specific to Windows. Thanks to Igor Zlatkovic for writing these
+      long explanations. 
+      
+      <p><b>1) Incorrect MS C runtime libraries.</b>
+      <p>Windows basically has two C runtimes. The one is called libc.lib and 
+      can only be linked to statically. The other is called msvcrt.dll and 
+      can only be linked to dynamically. The first one occurs in its 
+      single-threaded and multithreaded variant, which gives three 
+      different runtimes. These three then live in their debug and 
+      release incarnations, which results in six C runtimes.
+      The rule is simple: exactly the same runtime must be used throughout 
+      the application. Client code must use the same runtime as XMLSec, 
+      LibXML, LibXSLT, OpenSSL or any other library used.<br> 
+      
+      If you downloaded XMLSec, LibXML, LibXSLT and OpenSSL binaries
+      from Igor's <a href="http://www.zlatkovic.com/projects/libxml/index.html">page</a>
+      then all libraries are all linked to msvcrt.dll (Multithreaded DLL;
+      /MD compiler switch). 
+      The click-next click-finish wizardry from Visual Studio chooses the 
+      single-threaded libc.lib as the default when you create a new project. 
+      And this causes great problems because you program crashes on first 
+      IO operation, first malloc/free from different runtimes or something
+      even more trivial.<br>
+      
+      Do not forget that tf you need a different runtime for some reason, 
+      then you MUST recompile not only XMLSec, but LibXML, LibXSLT and 
+      OpenSSL as well.
+      
+      <p><b>2) Static linking without correct defines.<b>
+      <p>When people link statically to XMLSec, then they must 
+      <code>#define XMLSEC_STATIC</code> in their source files before 
+      including any XMLSec header. Almost none is doing that :) 
+      This macro has no effect on Unix, but it is vital on Windows.<br>
+      
+      This applies to LibXML and LibXSLT as well, no matter if 
+      these are used directly or not. If just XMLSec is used, but 
+      everything is linked statically, then there must be a
+        <blockquote><code>
+        #define LIBXML_STATIC<br>
+	#define LIBXSLT_STATIC<br>
+	#define XMLSEC_STATIC<br>
+	</code></blockquote>
+      before any xmlsec header is included. Even if the client code 
+      doesn't call into libxml at all, still this must be defined. 
+      XMLSec headers will include LibXML headers and they must have 
+      these definitions. Without them, every variable XMLSec includes from 
+      LibXML headers will have <code>__declspec(dllimport)</code> 
+      prepended and that will give headaches if static LibXML is used 
+      for linking.<br>
+      
+      This scheme makes it possible to have any combination of static and 
+      dynamic libraries in the resulting executable. Its cost is the need 
+      to <code>#define</code> apropriate macros. People would ideally define 
+      them by using the compiler's <code>/D</code> switch in projects that 
+      link statically.
+	    
       <h3>3. Programming with XMLSec.</h3>
       <h4>3.1. xmlSecDSigValidate() function returned 0. Does this mean
       that the signature is valid?</h4>
@@ -207,6 +274,7 @@
       <p>	  
       <p><a href="bugs.html">Aleksey Sanin</a></p>
       </td>
+
   </tr>
                        
   </tbody>      

@@ -575,7 +575,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
     xmlSecTransformDataType type = xmlSecTransformDataTypeUnknown;
     
     xmlSecAssert2(xmlSecTransformIsValid(transform), xmlSecTransformDataTypeUnknown);
-    xmlSecAssert2(transform != transformCtx, xmlSecTransformDataTypeUnknown);
+    xmlSecAssert2(transformCtx != NULL, xmlSecTransformDataTypeUnknown);
 
     /* we'll try to guess the data type based on the handlers we have */
     switch(mode) {

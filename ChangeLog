@@ -1,3 +1,35 @@
+Mon Feb 24 10:04:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xmltree.c src/xslt.c: fixed bug in xmlSecTransformXsltAdd
+
+Fri Feb 21 13:06:44 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in include/xmlsec/version.h 
+	docs/download.html docs/index.html docs/news.html	
+	xmlsec.pc xmlsec.spec: 0.0.13 release
+
+Fri Feb 21 12:59:48 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c: fixed incorrect processing of more than
+	3 binary transforms in a row
+
+Mon Feb 17 09:34:12 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/api/* include/xmlsec/xmldsig.h
+	src/keysmngr.c src/xmldsig.c: minor documentation bug fixes
+	based on Jesse Pelton's email
+
+Fri Feb 14 12:44:48 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/x509.c: set "verified" cert when loading pkcs12 file.
+
+Wed Feb  5 09:49:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c include/xmlsec/keysmngr.h
+	src/keysmngr.c src/x509.c: provide an ability
+	to specify max cert verification depth
+	(based on patch from Jean-Etienne SCHWARTZ)
+
 Sun Jan 26 22:04:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* config.h.in configure.in include/xmlsec/version.h

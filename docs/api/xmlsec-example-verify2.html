@@ -42,12 +42,12 @@
 <h1>
 <a name="XMLSEC-EXAMPLE-VERIFY2"></a>verify2.c</h1>
 <div class="REFNAMEDIV">
-<a name="AEN15242"></a><h2>Name</h2>verify2.c -- Verifying a file using keys manager.</div>
+<a name="AEN15541"></a><h2>Name</h2>verify2.c -- Verifying a file using keys manager.</div>
 <div class="REFSECT1">
-<a name="AEN15245"></a><h2>Example: Verifying a file using keys manager.</h2>
+<a name="AEN15544"></a><h2>Example: Verifying a file using keys manager.</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN15248"></a><p></p>
+<a name="AEN15547"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a file using keys manager.
  *
@@ -197,7 +197,7 @@ load_keys(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL);
+	key = xmlSecCryptoAppKeyLoad(files[i], xmlSecKeyDataFormatPem, NULL, NULL, NULL);
 	if(key == NULL) {
     	    fprintf(stderr,&quot;Error: failed to load pem key from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeysMngrDestroy(mngr);

@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-GNUTLS-APP"></a>app</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14616"></a><h2>Name</h2>app -- </div>
+<a name="AEN14899"></a><h2>Name</h2>app -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN14619"></a><h2>Synopsis</h2>
+<a name="AEN14902"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPINIT">xmlSecGnuTLSAppInit</a>             (const char *config);
@@ -61,14 +61,15 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSIMPLEKEYSMNGRSAVE">x
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRPEMCERTLOAD">xmlSecGnuTLSAppKeysMngrPemCertLoad</a>
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRCERTLOAD">xmlSecGnuTLSAppKeysMngrCertLoad</a> (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
-                                             int trusted);
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
 int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRADDCERTSPATH">xmlSecGnuTLSAppKeysMngrAddCertsPath</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *path);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPPEMKEYLOAD">xmlSecGnuTLSAppPemKeyLoad</a>      (const char *filename,
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYLOAD">xmlSecGnuTLSAppKeyLoad</a>         (const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);
@@ -76,36 +77,37 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRADDCERTSPATH"
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);
-int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSecGnuTLSAppKeyPemCertLoad</a>   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const char *filename);</pre></td></tr></table>
+int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYCERTLOAD">xmlSecGnuTLSAppKeyCertLoad</a>      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN14644"></a><h2>Description</h2>
+<a name="AEN14931"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN14647"></a><h2>Details</h2>
+<a name="AEN14934"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN14649"></a><h3>
+<a name="AEN14936"></a><h3>
 <a name="XMLSECGNUTLSAPPINIT"></a>xmlSecGnuTLSAppInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppInit             (const char *config);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14653"></a><h3>
+<a name="AEN14940"></a><h3>
 <a name="XMLSECGNUTLSAPPSHUTDOWN"></a>xmlSecGnuTLSAppShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppShutdown         (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14657"></a><h3>
+<a name="AEN14944"></a><h3>
 <a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRINIT"></a>xmlSecGnuTLSAppSimpleKeysMngrInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrInit
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14662"></a><h3>
+<a name="AEN14949"></a><h3>
 <a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRADOPTKEY"></a>xmlSecGnuTLSAppSimpleKeysMngrAdoptKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrAdoptKey
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -113,7 +115,7 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14668"></a><h3>
+<a name="AEN14955"></a><h3>
 <a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRLOAD"></a>xmlSecGnuTLSAppSimpleKeysMngrLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrLoad
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -121,7 +123,7 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14673"></a><h3>
+<a name="AEN14960"></a><h3>
 <a name="XMLSECGNUTLSAPPSIMPLEKEYSMNGRSAVE"></a>xmlSecGnuTLSAppSimpleKeysMngrSave ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppSimpleKeysMngrSave
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -130,16 +132,16 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14679"></a><h3>
-<a name="XMLSECGNUTLSAPPKEYSMNGRPEMCERTLOAD"></a>xmlSecGnuTLSAppKeysMngrPemCertLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeysMngrPemCertLoad
-                                            (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
+<a name="AEN14966"></a><h3>
+<a name="XMLSECGNUTLSAPPKEYSMNGRCERTLOAD"></a>xmlSecGnuTLSAppKeysMngrCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeysMngrCertLoad (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
-                                             int trusted);</pre></td></tr></table>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14684"></a><h3>
+<a name="AEN14973"></a><h3>
 <a name="XMLSECGNUTLSAPPKEYSMNGRADDCERTSPATH"></a>xmlSecGnuTLSAppKeysMngrAddCertsPath ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeysMngrAddCertsPath
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -147,16 +149,17 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14689"></a><h3>
-<a name="XMLSECGNUTLSAPPPEMKEYLOAD"></a>xmlSecGnuTLSAppPemKeyLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecGnuTLSAppPemKeyLoad      (const char *filename,
+<a name="AEN14978"></a><h3>
+<a name="XMLSECGNUTLSAPPKEYLOAD"></a>xmlSecGnuTLSAppKeyLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecGnuTLSAppKeyLoad         (const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              void *pwdCallback,
                                              void *pwdCallbackCtx);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14694"></a><h3>
+<a name="AEN14984"></a><h3>
 <a name="XMLSECGNUTLSAPPPKCS12LOAD"></a>xmlSecGnuTLSAppPkcs12Load ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecGnuTLSAppPkcs12Load      (const char *filename,
                                              const char *pwd,
@@ -165,10 +168,11 @@ int         <a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSe
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14699"></a><h3>
-<a name="XMLSECGNUTLSAPPKEYPEMCERTLOAD"></a>xmlSecGnuTLSAppKeyPemCertLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeyPemCertLoad   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const char *filename);</pre></td></tr></table>
+<a name="AEN14989"></a><h3>
+<a name="XMLSECGNUTLSAPPKEYCERTLOAD"></a>xmlSecGnuTLSAppKeyCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecGnuTLSAppKeyCertLoad      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
 </div>
 </div>
 <div class="NAVFOOTER">

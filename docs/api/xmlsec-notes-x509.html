@@ -59,8 +59,8 @@
 	</p>
 <p></p>
 <ul>
-<li><p>	    <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xmlSecOpenSSLAppKeyPemCertLoad</a> - loads
-	    certificate from a PEM file and adds to the key;
+<li><p>	    <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYCERTLOAD">xmlSecOpenSSLAppKeyCertLoad</a> - loads
+	    certificate from a file and adds to the key;
 	    </p></li>
 <li><p>	    <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPKCS12LOAD">xmlSecOpenSSLAppPkcs12Load</a> -
 	    loads private key and all the certificates associated with it from a PKCS12 file;
@@ -72,14 +72,14 @@
 <div class="EXAMPLE">
 <a name="AEN383"></a><p><b>Example 15. Loading private key and X509 certificate.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* load private key, assuming that there is not password */
-    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
         fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;
     }
     
     /* load certificate and add to the key */
-    if(xmlSecCryptoAppKeyPemCertLoad(key, cert_file) &lt; 0) {
+    if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
         fprintf(stderr,&quot;Error: failed to load pem certificate \&quot;%s\&quot;\n&quot;, cert_file);
 	goto done;
     }
@@ -159,7 +159,7 @@
 	is signed by itself. There is no way to verify the validity of the
 	root certificate and application have to &quot;trust&quot; it
 	(another name for root certificates is &quot;trusted&quot; certificates).
-	<p>	Application can use <font>xmlSecCryptoAppKeysMngrPemCertLoad</font>
+	<p>	Application can use <font>xmlSecCryptoAppKeysMngrCertLoad</font>
 	function to load both &quot;trusted&quot; and &quot;un-trusted&quot;
 	certificates. However, the selection of &quot;trusted&quot;
 	certificates is very sensitive process and this function might be
@@ -209,7 +209,7 @@ load_trusted_certs(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load trusted cert */
-	if(xmlSecCryptoAppKeysMngrPemCertLoad(mngr, files[i], 1) &lt; 0) {
+	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
     	    fprintf(stderr,&quot;Error: failed to load pem certificate from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
 	    return(NULL);

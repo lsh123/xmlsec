@@ -49,11 +49,11 @@
 #define     <link linkend="xmlSecCryptoAppSimpleKeysMngrAdoptKey">xmlSecCryptoAppSimpleKeysMngrAdoptKey</link>
 #define     <link linkend="xmlSecCryptoAppSimpleKeysMngrLoad">xmlSecCryptoAppSimpleKeysMngrLoad</link>
 #define     <link linkend="xmlSecCryptoAppSimpleKeysMngrSave">xmlSecCryptoAppSimpleKeysMngrSave</link>
-#define     <link linkend="xmlSecCryptoAppKeysMngrPemCertLoad">xmlSecCryptoAppKeysMngrPemCertLoad</link>
+#define     <link linkend="xmlSecCryptoAppKeysMngrCertLoad">xmlSecCryptoAppKeysMngrCertLoad</link>
 #define     <link linkend="xmlSecCryptoAppKeysMngrAddCertsPath">xmlSecCryptoAppKeysMngrAddCertsPath</link>
-#define     <link linkend="xmlSecCryptoAppPemKeyLoad">xmlSecCryptoAppPemKeyLoad</link>
+#define     <link linkend="xmlSecCryptoAppKeyLoad">xmlSecCryptoAppKeyLoad</link>
 #define     <link linkend="xmlSecCryptoAppPkcs12Load">xmlSecCryptoAppPkcs12Load</link>
-#define     <link linkend="xmlSecCryptoAppKeyPemCertLoad">xmlSecCryptoAppKeyPemCertLoad</link>
+#define     <link linkend="xmlSecCryptoAppKeyCertLoad">xmlSecCryptoAppKeyCertLoad</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -248,8 +248,8 @@
 </programlisting>
 </refsect2>
 <refsect2>
-<title><anchor id="xmlSecCryptoAppKeysMngrPemCertLoad">xmlSecCryptoAppKeysMngrPemCertLoad</title>
-<programlisting>#define xmlSecCryptoAppKeysMngrPemCertLoad	xmlSecGnuTLSAppKeysMngrPemCertLoad
+<title><anchor id="xmlSecCryptoAppKeysMngrCertLoad">xmlSecCryptoAppKeysMngrCertLoad</title>
+<programlisting>#define xmlSecCryptoAppKeysMngrCertLoad		xmlSecGnuTLSAppKeysMngrCertLoad
 </programlisting>
 </refsect2>
 <refsect2>
@@ -258,8 +258,8 @@
 </programlisting>
 </refsect2>
 <refsect2>
-<title><anchor id="xmlSecCryptoAppPemKeyLoad">xmlSecCryptoAppPemKeyLoad</title>
-<programlisting>#define xmlSecCryptoAppPemKeyLoad		xmlSecGnuTLSAppPemKeyLoad
+<title><anchor id="xmlSecCryptoAppKeyLoad">xmlSecCryptoAppKeyLoad</title>
+<programlisting>#define xmlSecCryptoAppKeyLoad			xmlSecGnuTLSAppKeyLoad
 </programlisting>
 </refsect2>
 <refsect2>
@@ -268,8 +268,8 @@
 </programlisting>
 </refsect2>
 <refsect2>
-<title><anchor id="xmlSecCryptoAppKeyPemCertLoad">xmlSecCryptoAppKeyPemCertLoad</title>
-<programlisting>#define xmlSecCryptoAppKeyPemCertLoad		xmlSecGnuTLSAppKeyPemCertLoad
+<title><anchor id="xmlSecCryptoAppKeyCertLoad">xmlSecCryptoAppKeyCertLoad</title>
+<programlisting>#define xmlSecCryptoAppKeyCertLoad		xmlSecGnuTLSAppKeyCertLoad
 </programlisting>
 </refsect2>
 

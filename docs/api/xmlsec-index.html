@@ -83,10 +83,10 @@
 <li><p><a href="xmlsec-buffer.html#XMLSECBUFFERSETSIZE">xmlSecBufferSetSize</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECCHECKNODENAME">xmlSecCheckNodeName</a></p></li>
 <li><p><font>xmlSecCryptoAppInit</font></p></li>
-<li><p><font>xmlSecCryptoAppKeyPemCertLoad</font></p></li>
+<li><p><font>xmlSecCryptoAppKeyCertLoad</font></p></li>
+<li><p><font>xmlSecCryptoAppKeyLoad</font></p></li>
 <li><p><font>xmlSecCryptoAppKeysMngrAddCertsPath</font></p></li>
-<li><p><font>xmlSecCryptoAppKeysMngrPemCertLoad</font></p></li>
-<li><p><font>xmlSecCryptoAppPemKeyLoad</font></p></li>
+<li><p><font>xmlSecCryptoAppKeysMngrCertLoad</font></p></li>
 <li><p><font>xmlSecCryptoAppPkcs12Load</font></p></li>
 <li><p><font>xmlSecCryptoAppShutdown</font></p></li>
 <li><p><font>xmlSecCryptoAppSimpleKeysMngrAdoptKey</font></p></li>
@@ -142,7 +142,7 @@
 <li><p><a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERROR">xmlSecError</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERRORSCALLBACK">xmlSecErrorsCallback</a></p></li>
-<li><p><font>xmlSecErrorsDefaultCallbackEnableOutput</font></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACKENABLEOUTPUT">xmlSecErrorsDefaultCallbackEnableOutput</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERRORSDEFAULTCALLBACK">xmlSecErrorsDefaultCallback</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERRORSGETCODE">xmlSecErrorsGetCode</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSECERRORSGETMSG">xmlSecErrorsGetMsg</a></p></li>
@@ -158,45 +158,41 @@
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC-ERRORS-R-CERT-REVOKED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC-ERRORS-R-CERT-VERIFY-FAILED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC-ERRORS-R-CRYPTO-FAILED</a></p></li>
-<li><p><font>XMLSEC-ERRORS-R-DATA-NOT-FOUND</font></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC-ERRORS-R-DATA-NOT-MATCH</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC-ERRORS-R-DISABLED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE</a></p></li>
-<li><p><font>XMLSEC-ERRORS-R-DSIG-NO-REFERENCES</font></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-DSIG-NO-REFERENCES-CAPS">XMLSEC-ERRORS-R-DSIG-NO-REFERENCES</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC-ERRORS-R-INVALID-DATA</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-FORMAT-CAPS">XMLSEC-ERRORS-R-INVALID-FORMAT</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC-ERRORS-R-INVALID-KEY-DATA</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC-ERRORS-R-INVALID-KEY</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC-ERRORS-R-INVALID-KEY-SIZE</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE-CAPS">XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC-ERRORS-R-INVALID-NODE-CONTENT</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC-ERRORS-R-INVALID-NODE</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC-ERRORS-R-INVALID-NODESET</a></p></li>
-<li><p><font>XMLSEC-ERRORS-R-INVALID-OPERATION</font></p></li>
-<li><p><font>XMLSEC-ERRORS-R-INVALID-RESULT</font></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-OPERATION-CAPS">XMLSEC-ERRORS-R-INVALID-OPERATION</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-RESULT-CAPS">XMLSEC-ERRORS-R-INVALID-RESULT</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC-ERRORS-R-INVALID-SIZE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC-ERRORS-R-INVALID-STATUS</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY-CAPS">XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC-ERRORS-R-INVALID-TRANSFORM</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC-ERRORS-R-INVALID-TYPE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC-ERRORS-R-INVALID-URI-TYPE</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC-ERRORS-R-INVALID-USAGE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC-ERRORS-R-IO-FAILED</a></p></li>
-<li><p><font>XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST</font></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST-CAPS">XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS">XMLSEC-ERRORS-R-KEYDATA-DISABLED</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND-CAPS">XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC-ERRORS-R-KEY-NOT-FOUND</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC-ERRORS-R-MALLOC-FAILED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL</a></p></li>
-<li><p><font>XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH</font></p></li>
-<li><p><font>XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE</font></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH-CAPS">XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE-CAPS">XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC-ERRORS-R-NODE-NOT-FOUND</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC-ERRORS-R-NOT-IMPLEMENTED</a></p></li>
-<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED</a></p></li>
-<li><p><font>XMLSEC-ERRORS-R-STRDUP-FAILED</font></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-STRDUP-FAILED-CAPS">XMLSEC-ERRORS-R-STRDUP-FAILED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC-ERRORS-R-TRANSFORM-DISABLED</a></p></li>
+<li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC-ERRORS-R-UNEXPECTED-NODE</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC-ERRORS-R-XML-FAILED</a></p></li>
 <li><p><a href="xmlsec-errors.html#XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC-ERRORS-R-XMLSEC-FAILED</a></p></li>
@@ -212,10 +208,10 @@
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETNEXTELEMENTNODE">xmlSecGetNextElementNode</a></p></li>
 <li><p><a href="xmlsec-xmltree.html#XMLSECGETNODENSHREF">xmlSecGetNodeNsHref</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPINIT">xmlSecGnuTLSAppInit</a></p></li>
-<li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYPEMCERTLOAD">xmlSecGnuTLSAppKeyPemCertLoad</a></p></li>
+<li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYCERTLOAD">xmlSecGnuTLSAppKeyCertLoad</a></p></li>
+<li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYLOAD">xmlSecGnuTLSAppKeyLoad</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRADDCERTSPATH">xmlSecGnuTLSAppKeysMngrAddCertsPath</a></p></li>
-<li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRPEMCERTLOAD">xmlSecGnuTLSAppKeysMngrPemCertLoad</a></p></li>
-<li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPPEMKEYLOAD">xmlSecGnuTLSAppPemKeyLoad</a></p></li>
+<li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPKEYSMNGRCERTLOAD">xmlSecGnuTLSAppKeysMngrCertLoad</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPPKCS12LOAD">xmlSecGnuTLSAppPkcs12Load</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSHUTDOWN">xmlSecGnuTLSAppShutdown</a></p></li>
 <li><p><a href="xmlsec-gnutls-app.html#XMLSECGNUTLSAPPSIMPLEKEYSMNGRADOPTKEY">xmlSecGnuTLSAppSimpleKeysMngrAdoptKey</a></p></li>
@@ -295,6 +291,7 @@
 <li><p><a href="xmlsec-keyinfo.html#XMLSECKEYDATAENCRYPTEDKEYGETKLASS">xmlSecKeyDataEncryptedKeyGetKlass</a></p></li>
 <li><p><a href="xmlsec-keyinfo.html#XMLSECKEYDATAENCRYPTEDKEYID">xmlSecKeyDataEncryptedKeyId</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAFINALIZEMETHOD">xmlSecKeyDataFinalizeMethod</a></p></li>
+<li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAGENERATEMETHOD">xmlSecKeyDataGenerateMethod</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAGENERATE">xmlSecKeyDataGenerate</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAGETIDENTIFIERMETHOD">xmlSecKeyDataGetIdentifierMethod</a></p></li>
@@ -354,6 +351,7 @@
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPEPUBLIC">xmlSecKeyDataTypePublic</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPESESSION">xmlSecKeyDataTypeSession</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPESYMMETRIC">xmlSecKeyDataTypeSymmetric</a></p></li>
+<li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPETRUSTED">xmlSecKeyDataTypeTrusted</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPEUNKNOWN">xmlSecKeyDataTypeUnknown</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGEANY">xmlSecKeyDataUsageAny</a></p></li>
 <li><p><a href="xmlsec-keysdata.html#XMLSECKEYDATAUSAGEKEYINFONODE">xmlSecKeyDataUsageKeyInfoNode</a></p></li>
@@ -470,10 +468,10 @@
 <li><p><a href="xmlsec-nodeset.html#XMLSECNODESETWALKCALLBACK">xmlSecNodeSetWalkCallback</a></p></li>
 <li><p><a href="xmlsec-nodeset.html#XMLSECNODESETWALK">xmlSecNodeSetWalk</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPINIT">xmlSecNssAppInit</a></p></li>
-<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYPEMCERTLOAD">xmlSecNssAppKeyPemCertLoad</a></p></li>
+<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYCERTLOAD">xmlSecNssAppKeyCertLoad</a></p></li>
+<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYLOAD">xmlSecNssAppKeyLoad</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYSMNGRADDCERTSPATH">xmlSecNssAppKeysMngrAddCertsPath</a></p></li>
-<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYSMNGRPEMCERTLOAD">xmlSecNssAppKeysMngrPemCertLoad</a></p></li>
-<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPPEMKEYLOAD">xmlSecNssAppPemKeyLoad</a></p></li>
+<li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPKEYSMNGRCERTLOAD">xmlSecNssAppKeysMngrCertLoad</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPPKCS12LOAD">xmlSecNssAppPkcs12Load</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPSHUTDOWN">xmlSecNssAppShutdown</a></p></li>
 <li><p><a href="xmlsec-nss-app.html#XMLSECNSSAPPSIMPLEKEYSMNGRADOPTKEY">xmlSecNssAppSimpleKeysMngrAdoptKey</a></p></li>
@@ -510,10 +508,10 @@
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1GETKLASS">xmlSecNssTransformSha1GetKlass</a></p></li>
 <li><p><a href="xmlsec-nss-crypto.html#XMLSECNSSTRANSFORMSHA1ID">xmlSecNssTransformSha1Id</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPINIT">xmlSecOpenSSLAppInit</a></p></li>
-<li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xmlSecOpenSSLAppKeyPemCertLoad</a></p></li>
+<li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYCERTLOAD">xmlSecOpenSSLAppKeyCertLoad</a></p></li>
+<li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYLOAD">xmlSecOpenSSLAppKeyLoad</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRADDCERTSPATH">xmlSecOpenSSLAppKeysMngrAddCertsPath</a></p></li>
-<li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRPEMCERTLOAD">xmlSecOpenSSLAppKeysMngrPemCertLoad</a></p></li>
-<li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPEMKEYLOAD">xmlSecOpenSSLAppPemKeyLoad</a></p></li>
+<li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRCERTLOAD">xmlSecOpenSSLAppKeysMngrCertLoad</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPKCS12LOAD">xmlSecOpenSSLAppPkcs12Load</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSHUTDOWN">xmlSecOpenSSLAppShutdown</a></p></li>
 <li><p><a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRADOPTKEY">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey</a></p></li>
@@ -606,6 +604,7 @@
 <li><p><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREGETKLASS">xmlSecOpenSSLX509StoreGetKlass</a></p></li>
 <li><p><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREID">xmlSecOpenSSLX509StoreId</a></p></li>
 <li><p><a href="xmlsec-openssl-x509.html#XMLSECOPENSSLX509STOREVERIFY">xmlSecOpenSSLX509StoreVerify</a></p></li>
+<li><p><a href="xmlsec-version.html#XMLSEC-PACKAGE-CAPS">XMLSEC-PACKAGE</a></p></li>
 <li><p><a href="xmlsec-parser.html#XMLSECPARSEFILE">xmlSecParseFile</a></p></li>
 <li><p><a href="xmlsec-parser.html#XMLSECPARSEMEMORYEXT">xmlSecParseMemoryExt</a></p></li>
 <li><p><a href="xmlsec-parser.html#XMLSECPARSEMEMORY">xmlSecParseMemory</a></p></li>
@@ -620,7 +619,7 @@
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTDEBUGXMLDUMP">xmlSecPtrListDebugXmlDump</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTDESTROY">xmlSecPtrListDestroy</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTDUPLICATE">xmlSecPtrListDuplicate</a></p></li>
-<li><p><font>xmlSecPtrListEmpty</font></p></li>
+<li><p><a href="xmlsec-list.html#XMLSECPTRLISTEMPTY">xmlSecPtrListEmpty</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE">xmlSecPtrListFinalize</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTGETITEM">xmlSecPtrListGetItem</a></p></li>
 <li><p><a href="xmlsec-list.html#XMLSECPTRLISTGETNAME">xmlSecPtrListGetName</a></p></li>

@@ -75,6 +75,14 @@ list
 @list: 
 
 
+<!-- ##### FUNCTION xmlSecPtrListEmpty ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
 <!-- ##### FUNCTION xmlSecPtrListCopy ##### -->
 <para>
 

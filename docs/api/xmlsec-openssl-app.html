@@ -42,9 +42,9 @@
 <h1>
 <a name="XMLSEC-OPENSSL-APP"></a>app</h1>
 <div class="REFNAMEDIV">
-<a name="AEN13888"></a><h2>Name</h2>app -- </div>
+<a name="AEN14161"></a><h2>Name</h2>app -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN13891"></a><h2>Synopsis</h2>
+<a name="AEN14164"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPINIT">xmlSecOpenSSLAppInit</a>            (const char *config);
@@ -61,14 +61,16 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRSAVE"
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRPEMCERTLOAD">xmlSecOpenSSLAppKeysMngrPemCertLoad</a>
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRCERTLOAD">xmlSecOpenSSLAppKeysMngrCertLoad</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
-                                             int trusted);
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
 int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRADDCERTSPATH">xmlSecOpenSSLAppKeysMngrAddCertsPath</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *path);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPEMKEYLOAD">xmlSecOpenSSLAppPemKeyLoad</a>     (const char *filename,
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYLOAD">xmlSecOpenSSLAppKeyLoad</a>        (const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              <font>pem_password_cb</font> *pwdCallback,
                                              void *pwdCallbackCtx);
@@ -76,36 +78,37 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYSMNGRADDCERTSPAT
                                              const char *pwd,
                                              <font>pem_password_cb</font> *pwdCallback,
                                              void *pwdCallbackCtx);
-int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xmlSecOpenSSLAppKeyPemCertLoad</a>  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const char *filename);</pre></td></tr></table>
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYCERTLOAD">xmlSecOpenSSLAppKeyCertLoad</a>     (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN13918"></a><h2>Description</h2>
+<a name="AEN14195"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN13921"></a><h2>Details</h2>
+<a name="AEN14198"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN13923"></a><h3>
+<a name="AEN14200"></a><h3>
 <a name="XMLSECOPENSSLAPPINIT"></a>xmlSecOpenSSLAppInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppInit            (const char *config);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13927"></a><h3>
+<a name="AEN14204"></a><h3>
 <a name="XMLSECOPENSSLAPPSHUTDOWN"></a>xmlSecOpenSSLAppShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppShutdown        (void);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13931"></a><h3>
+<a name="AEN14208"></a><h3>
 <a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT"></a>xmlSecOpenSSLAppSimpleKeysMngrInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrInit
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13936"></a><h3>
+<a name="AEN14213"></a><h3>
 <a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRADOPTKEY"></a>xmlSecOpenSSLAppSimpleKeysMngrAdoptKey ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrAdoptKey
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -113,7 +116,7 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xml
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13942"></a><h3>
+<a name="AEN14219"></a><h3>
 <a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRLOAD"></a>xmlSecOpenSSLAppSimpleKeysMngrLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrLoad
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -121,7 +124,7 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xml
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13947"></a><h3>
+<a name="AEN14224"></a><h3>
 <a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRSAVE"></a>xmlSecOpenSSLAppSimpleKeysMngrSave ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrSave
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -130,16 +133,17 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xml
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13953"></a><h3>
-<a name="XMLSECOPENSSLAPPKEYSMNGRPEMCERTLOAD"></a>xmlSecOpenSSLAppKeysMngrPemCertLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrPemCertLoad
+<a name="AEN14230"></a><h3>
+<a name="XMLSECOPENSSLAPPKEYSMNGRCERTLOAD"></a>xmlSecOpenSSLAppKeysMngrCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrCertLoad
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
-                                             int trusted);</pre></td></tr></table>
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13958"></a><h3>
+<a name="AEN14237"></a><h3>
 <a name="XMLSECOPENSSLAPPKEYSMNGRADDCERTSPATH"></a>xmlSecOpenSSLAppKeysMngrAddCertsPath ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrAddCertsPath
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -147,16 +151,17 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xml
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13963"></a><h3>
-<a name="XMLSECOPENSSLAPPPEMKEYLOAD"></a>xmlSecOpenSSLAppPemKeyLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecOpenSSLAppPemKeyLoad     (const char *filename,
+<a name="AEN14242"></a><h3>
+<a name="XMLSECOPENSSLAPPKEYLOAD"></a>xmlSecOpenSSLAppKeyLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecOpenSSLAppKeyLoad        (const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
                                              const char *pwd,
                                              <font>pem_password_cb</font> *pwdCallback,
                                              void *pwdCallbackCtx);</pre></td></tr></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13969"></a><h3>
+<a name="AEN14249"></a><h3>
 <a name="XMLSECOPENSSLAPPPKCS12LOAD"></a>xmlSecOpenSSLAppPkcs12Load ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecOpenSSLAppPkcs12Load     (const char *filename,
                                              const char *pwd,
@@ -165,10 +170,11 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYPEMCERTLOAD">xml
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN13975"></a><h3>
-<a name="XMLSECOPENSSLAPPKEYPEMCERTLOAD"></a>xmlSecOpenSSLAppKeyPemCertLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeyPemCertLoad  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const char *filename);</pre></td></tr></table>
+<a name="AEN14255"></a><h3>
+<a name="XMLSECOPENSSLAPPKEYCERTLOAD"></a>xmlSecOpenSSLAppKeyCertLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeyCertLoad     (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                             const char *filename,
+                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
 </div>
 </div>
 <div class="NAVFOOTER">

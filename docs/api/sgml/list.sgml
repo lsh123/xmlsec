@@ -24,6 +24,7 @@ int         <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</lin
 void        <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>           (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
 <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link>        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
 void        <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link>            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
+void        <link linkend="xmlSecPtrListEmpty">xmlSecPtrListEmpty</link>              (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
 int         <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>               (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> dst,
                                              <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);
 <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);
@@ -191,6 +192,18 @@ by calling <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link> func
 <programlisting>void        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
 <para>
 Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link> function.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to list.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListEmpty">xmlSecPtrListEmpty ()</title>
+<programlisting>void        xmlSecPtrListEmpty              (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list);</programlisting>
+<para>
+Remove all items from <parameter>list</parameter> (if any).</para>
 <para>
 
 </para><variablelist role="params">

@@ -870,5 +870,3 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
     return 1;
 }
 
-
-

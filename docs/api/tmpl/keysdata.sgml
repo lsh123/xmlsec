@@ -152,12 +152,29 @@ keysdata
 
 
 
+<!-- ##### MACRO xmlSecKeyDataTypeTrusted ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO xmlSecKeyDataTypeAny ##### -->
 <para>
 
 </para>
 
 
+
+<!-- ##### ENUM xmlSecKeyDataFormat ##### -->
+<para>
+
+</para>
+
+@xmlSecKeyDataFormatUnknown: 
+@xmlSecKeyDataFormatBinary: 
+@xmlSecKeyDataFormatPem: 
+@xmlSecKeyDataFormatDer: 
 
 <!-- ##### FUNCTION xmlSecKeyDataIdsGet ##### -->
 <para>

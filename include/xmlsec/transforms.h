@@ -46,9 +46,7 @@ XMLSEC_EXPORT void 		xmlSecTransformIdsShutdown	(void);
 XMLSEC_EXPORT int 		xmlSecTransformIdsRegisterDefault(void);
 XMLSEC_EXPORT int		xmlSecTransformIdsRegister	(xmlSecTransformId id);
 
-/************************************************************************** 
- *
-
+/**
  * xmlSecTransformStatus:
  * @xmlSecTransformStatusNone: 		the status unknown.
  * @xmlSecTransformStatusWorking: 	the transform is executed.
@@ -57,8 +55,7 @@ XMLSEC_EXPORT int		xmlSecTransformIdsRegister	(xmlSecTransformId id);
  * @xmlSecTransformStatusFail: 		the transform failed (an error occur).
  *
  * The transform execution status.
- *
- *************************************************************************/
+ */
 typedef enum  {
     xmlSecTransformStatusNone = 0,
     xmlSecTransformStatusWorking,
@@ -67,24 +64,21 @@ typedef enum  {
     xmlSecTransformStatusFail
 } xmlSecTransformStatus;
 
-/**************************************************************************
- *
+/**
  * xmlSecTransformMode:
  * @xmlSecTransformModeNone: 		the mode is unknown.
  * @xmlSecTransformModePush: 		pushing data thru transform. 
  * @xmlSecTransformModePop: 		popping data from transform.
  *
  * The transform operation mode
- *
- *************************************************************************/
+ */
 typedef enum  {
     xmlSecTransformModeNone = 0,
     xmlSecTransformModePush,
     xmlSecTransformModePop
 } xmlSecTransformMode;
 
-/**************************************************************************
- *
+/**
  * xmlSecTransformOperation:
  * @xmlSecTransformOperationNone:	the operation is unknown.
  * @xmlSecTransformOperationEncode:	the encode operation (for base64 transform).	
@@ -95,8 +89,7 @@ typedef enum  {
  * @xmlSecTransformOperationDecrypt:	the decryption operation.
  * 
  * The transform operation.
- *
- *************************************************************************/
+ */
 typedef enum  {
     xmlSecTransformOperationNone = 0,
     xmlSecTransformOperationEncode,

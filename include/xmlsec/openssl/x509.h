@@ -21,13 +21,11 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
-/****************************************************************************
- *
+/**
  * xmlSecOpenSSLKeyDataX509Id:
  * 
  * The OpenSSL X509 data klass.
- *
- ***************************************************************************/
+ */
 #define xmlSecOpenSSLKeyDataX509Id \
 	xmlSecOpenSSLKeyDataX509GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataX509GetKlass(void);
@@ -49,24 +47,20 @@ XMLSEC_CRYPTO_EXPORT X509_CRL*		xmlSecOpenSSLKeyDataX509GetCrl	(xmlSecKeyDataPtr
 XMLSEC_CRYPTO_EXPORT size_t 		xmlSecOpenSSLKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data);
 
 
-/****************************************************************************
- *
+/**
  * xmlSecOpenSSLKeyDataRawX509CertId:
  * 
  * The OpenSSL raw X509 certificate klass.
- *
- ***************************************************************************/
+ */
 #define xmlSecOpenSSLKeyDataRawX509CertId \
 	xmlSecOpenSSLKeyDataRawX509CertGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecOpenSSLKeyDataRawX509CertGetKlass(void);
 
-/****************************************************************************
- *
+/**
  * xmlSecOpenSSLX509StoreId:
  * 
  * The OpenSSL X509 store klass.
- *
- ***************************************************************************/
+ */
 #define xmlSecOpenSSLX509StoreId \
 	xmlSecOpenSSLX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass(void);

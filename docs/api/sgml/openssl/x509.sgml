@@ -51,7 +51,7 @@ int         <link linkend="xmlSecOpenSSLKeyDataX509AdoptCrl">xmlSecOpenSSLKeyDat
 <link linkend="X509-CAPS">X509</link>*       <link linkend="xmlSecOpenSSLX509StoreVerify">xmlSecOpenSSLX509StoreVerify</link>    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store);
 int         <link linkend="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert</link> (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
-                                             int trusted);
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath</link>
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              const char *path);
@@ -160,7 +160,7 @@ int         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509
 <title><anchor id="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert ()</title>
 <programlisting>int         xmlSecOpenSSLX509StoreAdoptCert (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
-                                             int trusted);</programlisting>
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 </refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath ()</title>

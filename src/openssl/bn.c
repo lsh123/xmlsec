@@ -36,7 +36,6 @@
  * Returns a pointer to BIGNUM produced from CryptoBinary string
  * or NULL if an error occurs.
  */
-
 BIGNUM*
 xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
     xmlSecBuffer buf;

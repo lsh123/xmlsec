@@ -127,7 +127,7 @@ load_keys(char** files, int files_size) {
 	assert(files[i]);
 
 	/* load key */
-	key = xmlSecCryptoAppPemKeyLoad(files[i], NULL, NULL);
+	key = xmlSecCryptoAppKeyLoad(files[i], xmlSecKeyDataFormatPem, NULL, NULL, NULL);
 	if(key == NULL) {
     	    fprintf(stderr,&quot;Error: failed to load pem key from \&quot;%s\&quot;\n&quot;, files[i]);
 	    xmlSecKeysMngrDestroy(mngr);
@@ -214,7 +214,7 @@ load_rsa_keys(char* key_file) {
     }    
     
     /* load private RSA key */
-    key = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(key == NULL) {
         fprintf(stderr,&quot;Error: failed to load rsa key from file \&quot;%s\&quot;\n&quot;, key_file);
         xmlSecKeysMngrDestroy(mngr);
@@ -592,7 +592,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     
     if((keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx-&gt;keyReq.keyId == xmlSecKeyDataRsaId)) {
 	/* load key from a pem file, if key is not found then it's an error (is it?) */
-	key = xmlSecCryptoAppPemKeyLoad(name, NULL, NULL);
+	key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
 	if(key == NULL) {
     	    fprintf(stderr,&quot;Error: failed to load pem key from \&quot;%s\&quot;\n&quot;, name);
 	    return(NULL);

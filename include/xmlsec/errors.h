@@ -431,7 +431,7 @@ XMLSEC_EXPORT const char* 	xmlSecErrorsGetMsg		(size_t pos);
 /** 
  * XMLSEC_ERRORS_NO_MESSAGE:
  * 
- * Returns empty error message " ".
+ * Empty error message " ".
  */
 #define XMLSEC_ERRORS_NO_MESSAGE 		" "
 

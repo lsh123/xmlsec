@@ -14,49 +14,53 @@
 
 
 
-#define     <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-STRDUP-FAILED-CAPS">XMLSEC_ERRORS_R_STRDUP_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC_ERRORS_R_XML_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC_ERRORS_R_IO_FAILED</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_KEY</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_SIZE</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</link>
-#define     <link linkend="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</link>
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-RESULT-CAPS">XMLSEC_ERRORS_R_INVALID_RESULT</link>
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC_ERRORS_R_INVALID_USAGE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-OPERATION-CAPS">XMLSEC_ERRORS_R_INVALID_OPERATION</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-FORMAT-CAPS">XMLSEC_ERRORS_R_INVALID_FORMAT</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</link>
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC_ERRORS_R_INVALID_NODESET</link>
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</link>
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</link>
 #define     <link linkend="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</link>
-#define     <link linkend="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</link>
 #define     <link linkend="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST-CAPS">XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID-CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED-CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES-CAPS">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</link>
 #define     <link linkend="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</link>
-#define     <link linkend="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</link>
-#define     <link linkend="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</link>
-#define     <link linkend="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</link>
-#define     <link linkend="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</link>
 #define     <link linkend="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
-#define     <link linkend="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</link>
-#define     <link linkend="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</link>
-#define     <link linkend="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</link>
-#define     <link linkend="XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</link>
 #define     <link linkend="XMLSEC-ERRORS-MAX-NUMBER-CAPS">XMLSEC_ERRORS_MAX_NUMBER</link>
 void        (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)         (const char *file,
                                              int line,
@@ -75,6 +79,8 @@ void        <link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallb
                                              const char *errorSubject,
                                              int reason,
                                              const char *msg);
+void        <link linkend="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput</link>
+                                            (int enabled);
 int         <link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link>             (<link linkend="size-t">size_t</link> pos);
 const char* <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>              (<link linkend="size-t">size_t</link> pos);
 #define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
@@ -109,17 +115,8 @@ void        <link linkend="xmlSecError">xmlSecError</link>                     (
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	
-</programlisting>
-<para>
-Failed to allocate memory error.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 3
+<programlisting>#define XMLSEC_ERRORS_R_XMLSEC_FAILED		 	1
 </programlisting>
 <para>
 An XMLSec function failed (error subject is the failed function).</para>
@@ -127,8 +124,26 @@ An XMLSec function failed (error subject is the failed function).</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED		 	2
+</programlisting>
+<para>
+Failed to allocate memory error.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-STRDUP-FAILED-CAPS">XMLSEC_ERRORS_R_STRDUP_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_STRDUP_FAILED		 	3
+</programlisting>
+<para>
+Failed to duplicate string error.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 4
+<programlisting>#define XMLSEC_ERRORS_R_CRYPTO_FAILED		 	4
 </programlisting>
 <para>
 Crypto (OpenSSL) function failed (error subject is the failed function).</para>
@@ -137,7 +152,7 @@ Crypto (OpenSSL) function failed (error subject is the failed function).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-XML-FAILED-CAPS">XMLSEC_ERRORS_R_XML_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_XML_FAILED		 5
+<programlisting>#define XMLSEC_ERRORS_R_XML_FAILED		 	5
 </programlisting>
 <para>
 LibXML function failed (error subject is the failed function).</para>
@@ -146,7 +161,7 @@ LibXML function failed (error subject is the failed function).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-XSLT-FAILED-CAPS">XMLSEC_ERRORS_R_XSLT_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_XSLT_FAILED		 6
+<programlisting>#define XMLSEC_ERRORS_R_XSLT_FAILED		 	6
 </programlisting>
 <para>
 LibXSLT function failed (error subject is the failed function).</para>
@@ -155,7 +170,7 @@ LibXSLT function failed (error subject is the failed function).</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-IO-FAILED-CAPS">XMLSEC_ERRORS_R_IO_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_IO_FAILED		 7
+<programlisting>#define XMLSEC_ERRORS_R_IO_FAILED		 	7
 </programlisting>
 <para>
 IO operation failed.</para>
@@ -163,304 +178,8 @@ IO operation failed.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 10
-</programlisting>
-<para>
-This transform is invlaid here.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_DATA	 11
-</programlisting>
-<para>
-Invlaid transform data.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-OR-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_OR_KEY 12
-</programlisting>
-<para>
-Invalid transform or key.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_KEY</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY		 13
-</programlisting>
-<para>
-Key is invalid.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 14
-</programlisting>
-<para>
-Key data is invalid.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_SIZE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_SIZE	 15
-</programlisting>
-<para>
-Invalid key size.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-ORIGIN-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_ORIGIN	 16
-</programlisting>
-<para>
-Invalid key origin.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</title>
-<programlisting>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 17
-</programlisting>
-<para>
-Key not found.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_SIZE		 18
-</programlisting>
-<para>
-Invalid size.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_DATA		 19
-</programlisting>
-<para>
-Invalid data.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_TYPE		 21
-</programlisting>
-<para>
-Invalid type.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-USAGE-CAPS">XMLSEC_ERRORS_R_INVALID_USAGE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_USAGE		 22
-</programlisting>
-<para>
-Invalid usage.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE	 	 23
-</programlisting>
-<para>
-Invalid node (error subject is the node name).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODESET-CAPS">XMLSEC_ERRORS_R_INVALID_NODESET</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODESET	 	 24
-</programlisting>
-<para>
-Invalid nodes set,</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 25
-</programlisting>
-<para>
-Invalid node content (error subject is the node name).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 26
-</programlisting>
-<para>
-Invalid node attribute (error subject is the node name).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</title>
-<programlisting>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 27
-</programlisting>
-<para>
-Node already present,</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED</title>
-<programlisting>#define XMLSEC_ERRORS_R_SAME_DOCUMENT_REQUIRED	 28
-</programlisting>
-<para>
-The transform requires the input document to be the same as context.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</title>
-<programlisting>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 29
-</programlisting>
-<para>
-Node not found (error subject is the required node name).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</title>
-<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 30
-</programlisting>
-<para>
-Max allowed retrievals level reached.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 41
-</programlisting>
-<para>
-Certificate verification failed.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 42
-</programlisting>
-<para>
-Requested certificate is not found.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 43
-</programlisting>
-<para>
-The certificate is revoked.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED	 44
-</programlisting>
-<para>
-Failed to get certificate issuer.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID-CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID	 45
-</programlisting>
-<para>
-"Not valid before" verification failed.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED-CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 46
-</programlisting>
-<para>
-"Not valid after" verification failed.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
-<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
-</programlisting>
-<para>
-The &lt;dsig:Reference&gt; validation failed.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_STATUS 52
-</programlisting>
-<para>
-Invalid status.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</title>
-<programlisting>#define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 53
-</programlisting>
-<para>
-The data do not match our expectation.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</title>
-<programlisting>#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54
-</programlisting>
-<para>
-Unexpected node (error subject is the node name).</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</title>
-<programlisting>#define XMLSEC_ERRORS_R_INVALID_URI_TYPE 	 55
-</programlisting>
-<para>
-Invalid URI type.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</title>
-<programlisting>#define     XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</programlisting>
-<para>
-Max EncryptedKey level reached.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</title>
-<programlisting>#define XMLSEC_ERRORS_R_ASSERTION		 100
-</programlisting>
-<para>
-Invalid assertion.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</title>
-<programlisting>#define XMLSEC_ERRORS_R_DISABLED		 8
+<programlisting>#define XMLSEC_ERRORS_R_DISABLED		 	8
 </programlisting>
 <para>
 The feature is disabled during compilation.
@@ -471,7 +190,7 @@ enable it.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</title>
-<programlisting>#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 9
+<programlisting>#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 	9
 </programlisting>
 <para>
 Feature is not implemented.</para>
@@ -479,22 +198,351 @@ Feature is not implemented.</para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</title>
-<programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED	111
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_SIZE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_SIZE		 	11
 </programlisting>
+<para>
+Invalid size.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_DATA		 	12
+</programlisting>
+<para>
+Invalid data.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-RESULT-CAPS">XMLSEC_ERRORS_R_INVALID_RESULT</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_RESULT		 	13
+</programlisting>
+<para>
+Invalid result.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_TYPE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TYPE		 	14
+</programlisting>
+<para>
+Invalid type.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-OPERATION-CAPS">XMLSEC_ERRORS_R_INVALID_OPERATION</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_OPERATION	 	15
+</programlisting>
+<para>
+Invalid operation.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_STATUS 			16
+</programlisting>
+<para>
+Invalid status.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-FORMAT-CAPS">XMLSEC_ERRORS_R_INVALID_FORMAT</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_FORMAT 			17
+</programlisting>
+<para>
+Invalid format.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</title>
+<programlisting>#define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 	18
+</programlisting>
+<para>
+The data do not match our expectation.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE	 	 	21
+</programlisting>
+<para>
+Invalid node (error subject is the node name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-CONTENT-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_CONTENT</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_CONTENT	 	22
+</programlisting>
+<para>
+Invalid node content (error subject is the node name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE	 	23
+</programlisting>
+<para>
+Invalid node attribute (error subject is the node name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MISSING-NODE-ATTRIBUTE-CAPS">XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE</title>
+<programlisting>#define XMLSEC_ERRORS_R_MISSING_NODE_ATTRIBUTE	 	25
+</programlisting>
+<para>
+Missing node attribute (error subject is the node name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NODE-ALREADY-PRESENT-CAPS">XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT</title>
+<programlisting>#define XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT	 	26
+</programlisting>
+<para>
+Node already present,</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</title>
+<programlisting>#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 	27
+</programlisting>
+<para>
+Unexpected node (error subject is the node name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NODE-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_NODE_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_NODE_NOT_FOUND 	 	 	28
+</programlisting>
+<para>
+Node not found (error subject is the required node name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM	 	31
+</programlisting>
+<para>
+This transform is invlaid here.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-TRANSFORM-KEY-CAPS">XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY		32
+</programlisting>
+<para>
+Key is invalid for this transform.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_URI_TYPE 	 	33
+</programlisting>
+<para>
+Invalid URI type.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-TRANSFORM-SAME-DOCUMENT-REQUIRED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED</title>
+<programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED 	34
+</programlisting>
+<para>
+The transform requires the input document to be the same as context.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</title>
+<programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED		35
+</programlisting>
+<para>
+The transform is disabled.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA	 	41
+</programlisting>
+<para>
+Key data is invalid.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-KEY-DATA-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND		42
+</programlisting>
+<para>
+Data is not found (error subject is the data name).</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-KEY-DATA-ALREADY-EXIST-CAPS">XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST</title>
+<programlisting>#define XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST	 	43
+</programlisting>
+<para>
+The key data is already exist.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-KEY-DATA-SIZE-CAPS">XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE	 	44
+</programlisting>
+<para>
+Invalid key size.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-KEY-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_KEY_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_KEY_NOT_FOUND		 	45
+</programlisting>
+<para>
+Key not found.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</title>
-<programlisting>#define XMLSEC_ERRORS_R_KEYDATA_DISABLED	112
+<programlisting>#define XMLSEC_ERRORS_R_KEYDATA_DISABLED		46
 </programlisting>
+<para>
+The key data type disabled.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MAX-RETRIEVALS-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL</title>
+<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVALS_LEVEL	 	51
+</programlisting>
+<para>
+Max allowed retrievals level reached.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MAX-RETRIEVAL-TYPE-MISMATCH-CAPS">XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH</title>
+<programlisting>#define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH	52
+</programlisting>
+<para>
+The retrieved key data type does not match the one specified 
+in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</title>
+<programlisting>#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 	61
+</programlisting>
+<para>
+Max EncryptedKey level reached.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 	71
+</programlisting>
+<para>
+Certificate verification failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 	72
+</programlisting>
+<para>
+Requested certificate is not found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 	73
+</programlisting>
+<para>
+The certificate is revoked.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED	 	74
+</programlisting>
+<para>
+Failed to get certificate issuer.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID-CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID	 	75
+</programlisting>
+<para>
+"Not valid before" verification failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED-CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 	76
+</programlisting>
+<para>
+"Not valid after" verification failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DSIG-NO-REFERENCES-CAPS">XMLSEC_ERRORS_R_DSIG_NO_REFERENCES</title>
+<programlisting>#define XMLSEC_ERRORS_R_DSIG_NO_REFERENCES 	 	81
+</programlisting>
+<para>
+The &lt;dsig:Reference&gt; nodes not found.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
+<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 	82
+</programlisting>
+<para>
+The &lt;dsig:Reference&gt; validation failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</title>
+<programlisting>#define XMLSEC_ERRORS_R_ASSERTION		 	100
+</programlisting>
+<para>
+Invalid assertion.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-MAX-NUMBER-CAPS">XMLSEC_ERRORS_MAX_NUMBER</title>
-<programlisting>#define XMLSEC_ERRORS_MAX_NUMBER		256
+<programlisting>#define XMLSEC_ERRORS_MAX_NUMBER			256
 </programlisting>
 <para>
 The maximum xmlsec errors number.</para>
@@ -606,6 +654,20 @@ error reporting <link linkend="xmlGenericError">xmlGenericError</link> function.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecErrorsDefaultCallbackEnableOutput">xmlSecErrorsDefaultCallbackEnableOutput ()</title>
+<programlisting>void        xmlSecErrorsDefaultCallbackEnableOutput
+                                            (int enabled);</programlisting>
+<para>
+Enables or disables calling LibXML2 callback from the default
+errors callback.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>enabled</parameter>&nbsp;:</term>
+<listitem><simpara>		the flag.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecErrorsGetCode">xmlSecErrorsGetCode ()</title>
 <programlisting>int         xmlSecErrorsGetCode             (<link linkend="size-t">size_t</link> pos);</programlisting>
 <para>
@@ -662,7 +724,7 @@ Macro. Returns <parameter>str</parameter> if it is not NULL or pointer to "NULL"
 <programlisting>#define XMLSEC_ERRORS_NO_MESSAGE 		" "
 </programlisting>
 <para>
-</para>
+Empty error message " ".</para>
 <para>
 
 </para></refsect2>

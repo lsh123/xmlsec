@@ -169,7 +169,7 @@ sign_file(const char* xml_file, const char* key_file) {
     }
 
     /* load private key, assuming that there is not password */
-    dsigCtx-&gt;signKey = xmlSecCryptoAppPemKeyLoad(key_file, NULL, NULL);
+    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx-&gt;signKey == NULL) {
         fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
 	goto done;

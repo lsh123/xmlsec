@@ -43,7 +43,7 @@ sgml: templates
 	@gtkdoc-mkdb --module=xmlsec --main-sgml-file xmlsec.sgml \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
-	@gtkdoc-mkdb --module=xmlsec-openssl --main-sgml-file xmlsec-openssl.sgml \
+	gtkdoc-mkdb --module=xmlsec-openssl --main-sgml-file xmlsec-openssl.sgml \
 		    --tmpl-dir=tmpl/openssl --output-dir=sgml/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
@@ -72,13 +72,13 @@ scan: doc_sources example_sources
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
 	@gtkdoc-scan --module=xmlsec-openssl \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
 	@gtkdoc-scan --module=xmlsec-gnutls \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
 	@gtkdoc-scan --module=xmlsec-nss \
-		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
 
 #
@@ -149,18 +149,19 @@ dist-hook:
 	@cp -p $(srcdir)/*.html $(srcdir)/*.sgml $(distdir)
 
 clean: clean-sources
-	@rm -rf $(DOC_SOURCE_DIR)
-	@rm -f sgml/*~ sgml/*.bak  
-	@rm -f tmpl/*~ tmpl/*.bak  
-	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
+	-@rm -rf $(DOC_SOURCE_DIR)
+	-@rm -rf sgml/*~ sgml/*.bak  
+	-@rm -rf tmpl/*~ tmpl/*.bak  
+	-@rm -rf *~ *.bak *.hierarchy *.signals *-unused.txt *.stamp
 
 clean-sources:
-	@rm -rf code examples
+	-@rm -rf code examples
 
 clean-local:
-	@rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
+	-@rm -rf *~ *.bak *.hierarchy *.signals *-unused.txt
 
 maintainer-clean-local: clean
-	@rm -rf *.html *.txt \
-	    sgml/*.sgml sgml/openssl/*.sgml \
-	    sgml/gnutls/*.sgml sgml/nss/*.sgml
+	-@rm *.html *.txt
+	-@rm sgml/*.sgml sgml/openssl/*.sgml
+	-@rm sgml/gnutls/*.sgml sgml/nss/*.sgml
+

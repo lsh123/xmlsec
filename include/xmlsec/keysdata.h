@@ -768,7 +768,7 @@ typedef int			(*xmlSecKeyDataStoreInitializeMethod)	(xmlSecKeyDataStorePtr store
 typedef void			(*xmlSecKeyDataStoreFinalizeMethod)	(xmlSecKeyDataStorePtr store);
 
 /**
- * xmlSecKeyDataStoreIdKlass:
+ * xmlSecKeyDataStoreKlass:
  * @klassSize:		the data store klass size.
  * @objSize:		the data store obj size.
  * @name:		the store's name.

@@ -194,13 +194,13 @@ typedef xmlSecKeyPtr		(*xmlSecKeyStoreFindKeyMethod)	(xmlSecKeyStorePtr store,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 /**
- * xmlSecKeyStoreIdKlass:
+ * xmlSecKeyStoreKlass:
  * @klassSize:		the store klass size.
  * @objSize:		the store obj size.
  * @name:		the store's name.
  * @initialize:		the store's initialization method.
  * @finalize:		the store's finalization (destroy) method.
- * @find:		the store's find method.
+ * @findKey:		the store's find method.
  * @reserved0:		reserved for the future.
  * @reserved1:		reserved for the future.
  *

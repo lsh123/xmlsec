@@ -34,7 +34,9 @@ typedef     <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>;
 #define     <link linkend="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</link>
 #define     <link linkend="xmlSecKeyDataTypeSession">xmlSecKeyDataTypeSession</link>
 #define     <link linkend="xmlSecKeyDataTypePermanent">xmlSecKeyDataTypePermanent</link>
+#define     <link linkend="xmlSecKeyDataTypeTrusted">xmlSecKeyDataTypeTrusted</link>
 #define     <link linkend="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</link>
+enum        <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link>;
 <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <link linkend="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet</link>        (void);
 int         <link linkend="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit</link>            (void);
 void        <link linkend="xmlSecKeyDataIdsShutdown">xmlSecKeyDataIdsShutdown</link>        (void);
@@ -393,6 +395,15 @@ The key data contain permanent key (stored in keys manager).</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyDataTypeTrusted">xmlSecKeyDataTypeTrusted</title>
+<programlisting>#define xmlSecKeyDataTypeTrusted			0x0100
+</programlisting>
+<para>
+The key data is trusted.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</title>
 <programlisting>#define xmlSecKeyDataTypeAny				0xFFFF
 </programlisting>
@@ -401,6 +412,41 @@ Any key data.</para>
 <para>
 
 </para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataFormat">enum xmlSecKeyDataFormat</title>
+<programlisting>typedef enum {
+    xmlSecKeyDataFormatUnknown = 0,
+    xmlSecKeyDataFormatBinary,
+    xmlSecKeyDataFormatPem,
+    xmlSecKeyDataFormatDer
+} xmlSecKeyDataFormat;
+</programlisting>
+<para>
+The key data format (binary, der, pem, etc.).</para>
+<para>
+
+</para><variablelist role="enum">
+<varlistentry>
+<term><literal>xmlSecKeyDataFormatUnknown</literal></term>
+<listitem><simpara>		the key data format is unknown.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecKeyDataFormatBinary</literal></term>
+<listitem><simpara>		the binary key data.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecKeyDataFormatPem</literal></term>
+<listitem><simpara>		the PEM key data (cert or public/private key).
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>xmlSecKeyDataFormatDer</literal></term>
+<listitem><simpara>		the DER key data (cert or public/private key).
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet ()</title>
 <programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecKeyDataIdsGet        (void);</programlisting>
@@ -1823,8 +1869,46 @@ Key data store specific finalization (destroy) method.</para>
 };
 </programlisting>
 <para>
+The data store id (klass).</para>
+<para>
 
-</para></refsect2>
+</para><variablelist role="struct">
+<varlistentry>
+<term><link linkend="size-t">size_t</link> <structfield>klassSize</structfield></term>
+<listitem><simpara>		the data store klass size.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="size-t">size_t</link> <structfield>objSize</structfield></term>
+<listitem><simpara>		the data store obj size.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></term>
+<listitem><simpara>		the store's name.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecKeyDataStoreInitializeMethod">xmlSecKeyDataStoreInitializeMethod</link> <structfield>initialize</structfield></term>
+<listitem><simpara>		the store's initialization method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecKeyDataStoreFinalizeMethod">xmlSecKeyDataStoreFinalizeMethod</link> <structfield>finalize</structfield></term>
+<listitem><simpara>		the store's finalization (destroy) method.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved0</structfield></term>
+<listitem><simpara>		reserved for the future.
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>void *<structfield>reserved1</structfield></term>
+<listitem><simpara>		reserved for the future.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataStoreKlassGetName">xmlSecKeyDataStoreKlassGetName()</title>
 <programlisting>#define     xmlSecKeyDataStoreKlassGetName(klass)</programlisting>

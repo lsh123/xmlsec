@@ -15,6 +15,7 @@
 
 
 #define     <link linkend="XMLSEC-VERSION-CAPS">XMLSEC_VERSION</link>
+#define     <link linkend="XMLSEC-PACKAGE-CAPS">XMLSEC_PACKAGE</link>
 #define     <link linkend="XMLSEC-VERSION-MAJOR-CAPS">XMLSEC_VERSION_MAJOR</link>
 #define     <link linkend="XMLSEC-VERSION-MINOR-CAPS">XMLSEC_VERSION_MINOR</link>
 #define     <link linkend="XMLSEC-VERSION-SUBMINOR-CAPS">XMLSEC_VERSION_SUBMINOR</link>
@@ -44,6 +45,15 @@
 <para>
 The library version string in the format
 "&lt;major-number&gt;.&lt;minor-number&gt;.&lt;sub-minor-number&gt;".</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-PACKAGE-CAPS">XMLSEC_PACKAGE</title>
+<programlisting>#define XMLSEC_PACKAGE			"xmlsec1"
+</programlisting>
+<para>
+The library packaqge name.</para>
 <para>
 
 </para></refsect2>

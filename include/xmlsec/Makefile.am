@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 SUBDIRS = $(XMLSEC_CRYPTO_LIST)
+EXTRA_DIST = $(XMLSEC_CRYPTO_DISABLED_LIST)
 
 xmlsecincdir = $(includedir)/xmlsec
 

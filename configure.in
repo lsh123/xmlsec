@@ -142,6 +142,7 @@ dnl See if we can find a crypto library
 dnl ==========================================================================
 XMLSEC_CRYPTO=""
 XMLSEC_CRYPTO_LIST=""
+XMLSEC_CRYPTO_DISABLED_LIST=""
 XMLSEC_CRYPTO_LIB=""
 XMLSEC_CRYPTO_CFLAGS=""
 XMLSEC_CRYPTO_LIBS=""
@@ -165,6 +166,7 @@ AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION)
 AC_ARG_WITH(openssl, [  --with-openssl=[PFX]    openssl location])
 if test "$with_openssl" = "no" ; then
     OPENSSL_WITHOUT="yes"
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
     AC_MSG_RESULT(no)
 else
     if test "$with_openssl" != "" ; then
@@ -245,9 +247,9 @@ else
 	    XMLSEC_CRYPTO_LDADDS="$OPENSSL_LDADDS"
 	fi	
 	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"
-
         AC_MSG_RESULT(yes ('$OPENSSL_VERSION'))
     else
+	XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
         AC_MSG_RESULT(no)
     fi
 fi
@@ -277,6 +279,7 @@ AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION)
 AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]    gnutls location])
 if test "$with_gnutls" = "no" ; then
     GNUTLS_WITHOUT="yes"
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
     AC_MSG_RESULT(no)
 else
     if test "$with_gnutls" != "" ; then
@@ -288,8 +291,6 @@ else
 	GNUTLS_WITHOUT="yes"
 	if test "$with_gnutls" != "" ; then
 	    AC_MSG_ERROR(Unable to find gnutls at '$with_gnutls')
-	else 
-	    AC_MSG_RESULT(no)
 	fi
     else
         vers=`$GNUTLS_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
@@ -299,9 +300,7 @@ else
     	    GNUTLS_LIBS="`$GNUTLS_CONFIG --libs`"
 	    GNUTLS_CFLAGS="`$GNUTLS_CONFIG --cflags`"
 	    GNUTLS_VERSION="`$GNUTLS_CONFIG --version`"
-    	    AC_MSG_RESULT(yes ('$GNUTLS_VERSION'))
 	else
-	    GNUTLS_WITHOUT="yes"
     	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $PACKAGE)
 	fi	
     fi
@@ -319,6 +318,10 @@ else
 	    XMLSEC_CRYPTO_LDADDS="$GNUTLS_LDADDS"
 	fi	
 	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
+    	AC_MSG_RESULT(yes ('$GNUTLS_VERSION'))
+    else
+	XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
+	AC_MSG_RESULT(no)
     fi
 fi
 AC_SUBST(GNUTLS_WITHOUT)
@@ -351,6 +354,7 @@ AC_MSG_CHECKING(for nss libraries >= $NSS_MIN_VERSION)
 AC_ARG_WITH(nss, [  --with-nss=[PFX]    nss location])
 if test "$with_nss" = "no" ; then
     NSS_WITHOUT="yes"
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST nss"
     AC_MSG_RESULT(no)
 else
     if test "$with_nss" != "" ; then
@@ -411,6 +415,7 @@ else
 	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST nss"
 	AC_MSG_RESULT(yes ('$NSS_VERSION'))
     else
+	XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST nss"
 	AC_MSG_RESULT(no)
     fi
 fi
@@ -648,6 +653,7 @@ AC_SUBST(XMLSEC_DEFINES)
 
 AC_SUBST(XMLSEC_CRYPTO)
 AC_SUBST(XMLSEC_CRYPTO_LIST)
+AC_SUBST(XMLSEC_CRYPTO_DISABLED_LIST)
 AC_SUBST(XMLSEC_CRYPTO_LIB)
 AC_SUBST(XMLSEC_CRYPTO_CFLAGS)
 AC_SUBST(XMLSEC_CRYPTO_LIBS)

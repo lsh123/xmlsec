@@ -172,16 +172,6 @@ execDSigTest "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
-execDSigTest "01-geuerp-xfilter2/xpath2filterOmitComments" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" 
-
-execDSigTest "01-geuerp-xfilter2/xpath2filterWithComments" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" 
-
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \

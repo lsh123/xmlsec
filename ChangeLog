@@ -1,3 +1,9 @@
+Wed Jul 31 11:45:09 2002  Aleksey Sanin  <aleksey@aleksey.com>
+	* include/xmlsec/xmlsec.h src/keyinfo.c src/xmlsec.c src/xpath.c
+	tests/Makefile.am tests/testDSig.sh tests/merlin-xpath-filter2-three:
+	updated XPath2 transform implementation according to the
+	latest spec and added Merlin's tests for it
+
 Thu 18 Jul 2002 08:51:16 AM PDT  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/x509.c: fixed problems with using self-signed certs
 	for signatures

@@ -868,12 +868,18 @@ xmlSecRetrievalMethodNodeRead(xmlNodePtr retrievalMethodNode, xmlSecKeyInfoNodeS
 	/* same document uri */
 	if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginRetrievalDocument)) {
 	    /* not allowed */
+	    xmlGenericError(xmlGenericErrorContext,
+		"%s: local (the same document) RetrievalMethod is not allowed\n",
+		func);	
 	    xmlFree(uri);
 	    return(NULL);
 	}
     } else {
 	/* remote document */
 	if(!xmlSecKeyInfoNodeCheckOrigin(status, xmlSecKeyOriginRetrievalRemote)) {
+	    xmlGenericError(xmlGenericErrorContext,
+		"%s: remote (not the same document) RetrievalMethod is not allowed\n",
+		func);	
 	    xmlFree(uri);
 	    return(NULL);
 	}

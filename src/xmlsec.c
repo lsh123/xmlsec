@@ -24,7 +24,7 @@
 const xmlChar xmlSecDSigNs[] = "http://www.w3.org/2000/09/xmldsig#";
 const xmlChar xmlSecEncNs[] = "http://www.w3.org/2001/04/xmlenc#";
 const xmlChar xmlSecNs[] = "http://www.aleksey.com/xmlsec/2002";
-const xmlChar xmlSecXPath2[] = "http://www.w3.org/2002/04/xmldsig-filter2";
+const xmlChar xmlSecXPath2Ns[] = "http://www.w3.org/2002/06/xmldsig-filter2";
 
 
 void

@@ -43,7 +43,7 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecEncNs[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNs[];
 
 /* XPath2 transform namespace */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecXPath2Ns[];
 
 XMLSEC_EXPORT void	xmlSecInit			(void);
 XMLSEC_EXPORT void	xmlSecShutdown			(void);

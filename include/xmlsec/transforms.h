@@ -415,7 +415,7 @@ struct _xmlSecTransform {
 
 XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCreate	(xmlSecTransformId id);
 XMLSEC_EXPORT void			xmlSecTransformDestroy	(xmlSecTransformPtr transform);
-xmlSecTransformPtr			xmlSecTransformNodeRead	(xmlNodePtr node, 
+XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformNodeRead	(xmlNodePtr node, 
 								 xmlSecTransformUsage usage,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPump	(xmlSecTransformPtr left,

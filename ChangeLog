@@ -1,4 +1,7 @@
 2005-02-28  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/mscrypto/certkeys.c: preparation for WinNT 4.0 support
+
+2005-02-28  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/mscrypto/x509.c: enable private key search for
 	a given certificate (based on the OO.org patch)
 

@@ -9,7 +9,7 @@ pkgconfigdir 	= $(libdir)/pkgconfig
 confexecdir	= $(libdir)
 confexec_DATA 	= xmlsec1Conf.sh
 
-CLEANFILES = \
+MAINTAINERCLEANFILES = \
 	xmlsec1Conf.sh \
 	xmlsec1.pc \
 	xmlsec1-config \

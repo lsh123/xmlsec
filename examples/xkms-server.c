@@ -20,6 +20,15 @@
 #include <assert.h>
 #include <errno.h>
 
+#ifdef XMLSEC_NO_XKMS
+
+int main(int argc, char** argv) {
+	printf(stderr, "ERROR: XKMS is disabled.\n");
+	return 1;
+}
+
+#else /* XMLSEC_NO_XKMS */
+
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -808,4 +817,6 @@ my_strnstr(const xmlChar* str, xmlSecSize strLen, const xmlChar* tmpl, xmlSecSiz
 
     return(NULL);
 }
+
+#endif /* XMLSEC_NO_XKMS */
 

@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     int rnd_seed = 0;
     xmlNodePtr signNode;
             
-    if(argc < 1) {
+    if(argc < 2) {
 	fprintf(stderr, "Error: missed required parameter. Usage: %s <xml-file>\n", argv[0]);
 	return(1);
     }

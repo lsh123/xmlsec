@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     int rnd_seed = 0;
     int len; 
         
-    if(argc < 2) {
+    if(argc < 3) {
 	fprintf(stderr, "Error: missed required parameter. Usage: %s <key-file> <xml-file>\n", argv[0]);
 	return(1);
     }

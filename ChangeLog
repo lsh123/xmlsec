@@ -1,3 +1,6 @@
+Thu 29 Aug 2002 01:48:35 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	* docs/examples/dsig3 docs/examples/dsig4: fixed minor problems
+
 Thu 29 Aug 2002 08:52:02 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	* apps/xmlsec.c: fixed minor copy/paste typo (thanks to Devin Heitmueller)
 

@@ -1,3 +1,7 @@
+Wed Jun  4 08:25:46 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/openssl/x509.c: fix my_gmtime function
+
 Mon 02 Jun 2003 09:38:13 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
     
 	* removed debian folder

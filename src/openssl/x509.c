@@ -1415,22 +1415,33 @@ extern time_t timegm (struct tm *tm);
  * (like timegm) use it instead.
  */
 static time_t 
-my_timegm (struct tm *tm) { 
-    time_t ret;
-    char *tz;                   
-    
-    tz = getenv("TZ");
-    setenv("TZ", "", 1);
-    tzset();
-    ret = mktime(tm);
-    if (tz) {
-	setenv("TZ", tz, 1); 
-    } else {
-	unsetenv("TZ");
-	tzset(); 
-	return ret;
-    }
+my_timegm(struct tm *t) {  
+    time_t tl, tb;  
+    struct tm *tg;  
+
+    tl = mktime (t);  
+    if(tl == -1) {
+	t->tm_hour--;
+	tl = mktime (t);
+	if (tl == -1) {
+	    return -1;
+	}
+	tl += 3600;    
+    }  
+    tg = gmtime (&tl);  
+    tg->tm_isdst = 0;  
+    tb = mktime (tg);  
+    if (tb == -1) {
+	tg->tm_hour--;
+	tb = mktime (tg);
+	if (tb == -1) {
+	    return -1;
+	}
+	tb += 3600;    
+    }  
+    return (tl - (tb - tl)); 
 }
+
 #define timegm(tm) my_timegm(tm)
 #endif /* WIN32 */
 #endif /* HAVE_TIMEGM */

@@ -66,7 +66,7 @@ static const struct _xmlSecTransformKlass xmlSecInputUriTransformId = {
 
 
     /* same as xmlSecTransformId */    
-    BAD_CAST "input-uri",
+    "input-uri",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
@@ -140,15 +140,8 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
     int i;
     char *unescaped;
         
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecInputUri), -1);
     xmlSecAssert2(uri != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecInputUri");
-	return(-1);
-    }
 
     t = (xmlSecTransformPtr)transform;
     /* todo: add an ability to use custom protocol handlers */
@@ -192,6 +185,8 @@ xmlSecInputUriTransformOpen(xmlSecTransformPtr transform, const char *uri) {
 
     if(t->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    NULL,
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    "uri=%s (errno=%d)", uri, errno);
 	return(-1);
@@ -209,21 +204,16 @@ xmlSecInputUriTransformRead(xmlSecTransformPtr transform,
     xmlSecTransformPtr t;
     int ret;
     
-    xmlSecAssert2(transform != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecInputUri), -1);
     xmlSecAssert2(buf != NULL, -1);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecInputUri");
-	return(-1);
-    }
     
     t = (xmlSecTransformPtr)transform;
     if((t->reserved0 != NULL) && (xmlSecInputUriTransformReadClbk(t) != NULL)) {
 	ret = xmlSecInputUriTransformReadClbk(t)(t->reserved0, (char*)buf, (int)size);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecTransformGetName(transform),
+			"xmlSecInputUriTransformReadClbk",
 			XMLSEC_ERRORS_R_IO_FAILED,
 			"errno=%d", errno);
 	    return(-1);
@@ -334,6 +324,8 @@ xmlSecRegisterInputCallbacks(xmlInputMatchCallback matchFunc,
 
     if (xmlSecInputCallbackNr >= MAX_INPUT_CALLBACK) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
 		    "too many input callbacks (>%d)", MAX_INPUT_CALLBACK);
 	return(-1);

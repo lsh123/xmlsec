@@ -45,6 +45,8 @@ XMLSEC_EXPORT void		xmlSecPtrListDebugDump	(xmlSecPtrListPtr list,
 							 FILE* output);
 XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list,
 							 FILE* output);
+#define xmlSecPtrListGetName(list) \
+	(((list) != NULL) ? xmlSecPtrListKlassGetName((list)->id) : NULL)
 
 /**
  * xmlSecPtrListIsValid:
@@ -85,11 +87,15 @@ typedef void			(*xmlSecPtrDebugDumpItemMethod)	(xmlSecPtr ptr,
 								 FILE* output);
 
 struct _xmlSecPtrListKlass {
+    const char*				name;
     xmlSecPtrDuplicateItemMethod	duplicateItem;
     xmlSecPtrDestroyItemMethod		destroyItem;
     xmlSecPtrDebugDumpItemMethod	debugDumpItem;
     xmlSecPtrDebugDumpItemMethod	debugXmlDumpItem;
 };
+#define xmlSecPtrListKlassGetName(klass) \
+	(((klass) != NULL) ? ((klass)->name) : NULL)
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

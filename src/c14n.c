@@ -41,7 +41,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveTransformId = {
     sizeof(xmlSecTransform),		/* size_t objSize */
 
     /* same as xmlSecTransformId */    
-    BAD_CAST "c14n-inc",
+    "c14n-inc",
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
     BAD_CAST "http://www.w3.org/TR/2001/REC-xml-c14n-20010315", /* const xmlChar href; */
@@ -74,7 +74,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveWithCommentsTransfo
     sizeof(xmlSecTransform),		/* size_t objSize */
 
     /* same as xmlSecTransformId */    
-    BAD_CAST "c14n-inc-with-comments",
+    "c14n-inc-with-comments",
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
     BAD_CAST "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments", /* const xmlChar href; */
@@ -107,7 +107,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveTransformId = {
     sizeof(xmlSecTransform),		/* size_t objSize */
 
     /* same as xmlSecTransformId */    
-    BAD_CAST "c14n-exc",
+    "c14n-exc",
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
     BAD_CAST "http://www.w3.org/2001/10/xml-exc-c14n#", /* const xmlChar href; */
@@ -140,7 +140,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveWithCommentsTransfo
     sizeof(xmlSecTransform),		/* size_t objSize */
 
     /* same as xmlSecTransformId */    
-    BAD_CAST "c14n-exc-with-comments",
+    "c14n-exc-with-comments",
     xmlSecTransformTypeC14N,		/* xmlSecTransformType type; */
     xmlSecTransformUsageC14NMethod | xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
     BAD_CAST "http://www.w3.org/2001/10/xml-exc-c14n#WithComments", /* const xmlChar href; */
@@ -242,6 +242,8 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     transform->reserved0 = buffer = xmlGetProp(node, BAD_CAST "PrefixList");
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "PrefixList",
 		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 		    "<InclusiveNamespaces /> node has no PrefixList attribute");
 	return(-1);
@@ -263,6 +265,8 @@ xmlSecC14NTransformReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     transform->reserved3 = nsList = (xmlChar**)xmlMalloc(sizeof(xmlChar*) * (count + 2));
     if(transform->reserved3 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlMalloc",
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
 		    "%d", sizeof(xmlChar*) * (count + 2));
 	return(-1);
@@ -327,6 +331,8 @@ xmlSecC14NTransformExec(xmlSecTransformPtr transform, xmlDocPtr doc,
 			1, (xmlChar**)(transform->reserved3), 1, buffer);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
 		    "xmlSecC14NInclusive, xmlSecC14NInclusiveWithComments, xmlSecC14NExclusive, xmlSecC14NExclusiveWithComments");    
 	return(-1);
@@ -334,8 +340,10 @@ xmlSecC14NTransformExec(xmlSecTransformPtr transform, xmlDocPtr doc,
     
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecTransformGetName(transform),
+		    "xmlC14NExecute",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlC14NExecute");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }    
     return(0);
@@ -361,16 +369,20 @@ xmlSecC14NExclAddInclNamespaces(xmlNodePtr transformNode, const xmlChar *prefixL
     node = xmlSecFindChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
     if(node != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecNodeGetName(transformNode),
+		    "xmlSecFindChild",
 		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
-		    "InclusiveNamespace");
+		    "<dsig:InclusiveNamespaces>");
 	return(-1);
     }
     
     node = xmlSecAddChild(transformNode, BAD_CAST "InclusiveNamespaces", xmlExcC14NNs);
     if(node == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecNodeGetName(transformNode),
+		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecAddChild(\"InclusiveNamespaces\")");
+		    "<dsig:InclusiveNamespaces>");
 	return(-1);
     }    
     

@@ -140,8 +140,10 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     buffer = xmlBufferCreate();
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xmlBufferCreate",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlSecBufferCreate");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }    
     cur = node->children;
@@ -155,8 +157,10 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
 			     xmlBufferLength(buffer), 1);
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xmlSecParseMemory",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecParseMemory");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	xmlBufferFree(buffer);
 	return(-1);
     }
@@ -165,8 +169,10 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
     transform->reserved0 = xsltParseStylesheetDoc(doc);
     if(transform->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecTransformGetName(transform),
+		    "xsltParseStylesheetDoc",
 		    XMLSEC_ERRORS_R_XSLT_FAILED,
-		    "xsltParseStylesheetDoc");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	/* after parsing stylesheet doc is assigned
 	 * to it and will be freed by xsltFreeStylesheet() */    
 	xmlFreeDoc(doc);
@@ -202,16 +208,20 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 	ret = xmlSecXslProcess(in, out, xmlSecXsltGetStylesheet(transform));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecXslProcess",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecXslProcess");
+			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}
 	
 	ret = xmlSecBufferRemoveHead(in, inSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			xmlSecTransformGetName(transform),
+			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecBufferRemoveHead(%d)", inSize);
+			"%d", inSize);
 	    return(-1);
 	}
 	
@@ -221,8 +231,10 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "invalid transform status %d", transform->status);
+		    xmlSecTransformGetName(transform),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_STATUS,
+		    "%d", transform->status);
 	return(-1);
     }
     return(0);
@@ -243,32 +255,40 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
     docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 1);
     if(docIn == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecParseMemory",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecParseMemory");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
 
     docOut = xsltApplyStylesheet(stylesheet, docIn, NULL);
     if(docOut == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xsltApplyStylesheet",
 		    XMLSEC_ERRORS_R_XSLT_FAILED,
-		    "xsltApplyStylesheet");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
     
     output = xmlAllocOutputBuffer(NULL);
     if(output == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlAllocOutputBuffer",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlAllocOutputBuffer");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
 
     ret = xsltSaveResultTo(output, docOut, stylesheet);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xsltSaveResultTo",
 		    XMLSEC_ERRORS_R_XSLT_FAILED,
-		    "xsltSaveResultTo - %d", ret);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
 
@@ -276,8 +296,10 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
 			    xmlBufferLength(output->buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecBufferSetData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecBufferSetData");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;	
     }
     

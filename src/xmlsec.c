@@ -35,15 +35,19 @@ xmlSecInit(void) {
     
     if(xmlSecKeyDataIdsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecKeyDataIdsInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to init key data");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     
     if(xmlSecTransformsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformsInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to init transforms");
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
     xmlSecIOInit();

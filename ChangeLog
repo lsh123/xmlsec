@@ -1,3 +1,10 @@
+Wed Jul  2 08:53:50 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/openssl/x509vfy.c: fixed certificates subject 
+	comparison function to handle multiple occurence
+	of entries with the same value (bug report from 
+	Roumen)
+
 Tue Jun 17 19:22:17 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs/download.html: fixing links to tarballs for local 

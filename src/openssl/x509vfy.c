@@ -956,41 +956,29 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
 }
 
 static
-int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
-	{
-	int i,j;
-	X509_NAME_ENTRY *na,*nb;
+int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b) {
+    int i,ret;
+    X509_NAME_ENTRY *na,*nb;
 
-	xmlSecAssert2(a != NULL, -1);
-	xmlSecAssert2(b != NULL, 1);
+    xmlSecAssert2(a != NULL, -1);
+    xmlSecAssert2(b != NULL, 1);
 	
-	if (sk_X509_NAME_ENTRY_num(a->entries)
-	    != sk_X509_NAME_ENTRY_num(b->entries))
-		return sk_X509_NAME_ENTRY_num(a->entries)
-		  -sk_X509_NAME_ENTRY_num(b->entries);
-	for (i=sk_X509_NAME_ENTRY_num(a->entries)-1; i>=0; i--)
-		{
-		na=sk_X509_NAME_ENTRY_value(a->entries,i);
-		nb=sk_X509_NAME_ENTRY_value(b->entries,i);
-		j=na->value->length-nb->value->length;
-		if (j) return(j);
-		j=memcmp(na->value->data,nb->value->data,
-			na->value->length);
-		if (j) return(j);
-		}
-
-	/* We will check the object types after checking the values
-	 * since the values will more often be different than the object
-	 * types. */
-	for (i=sk_X509_NAME_ENTRY_num(a->entries)-1; i>=0; i--)
-		{
-		na=sk_X509_NAME_ENTRY_value(a->entries,i);
-		nb=sk_X509_NAME_ENTRY_value(b->entries,i);
-		j=OBJ_cmp(na->object,nb->object);
-		if (j) return(j);
-		}
-	return(0);
+    if (sk_X509_NAME_ENTRY_num(a->entries) != sk_X509_NAME_ENTRY_num(b->entries)) {
+	return sk_X509_NAME_ENTRY_num(a->entries) - sk_X509_NAME_ENTRY_num(b->entries);
+    }
+	
+    for (i=sk_X509_NAME_ENTRY_num(a->entries)-1; i>=0; i--) {
+	na=sk_X509_NAME_ENTRY_value(a->entries,i);
+	nb=sk_X509_NAME_ENTRY_value(b->entries,i);
+	
+	ret = xmlSecOpenSSLX509_NAME_ENTRY_cmp(&na, &nb);
+	if(ret != 0) {
+	    return(ret);
 	}
+    }	
+
+    return(0);
+}
 
 
 /** 
@@ -1048,9 +1036,33 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
  */
 static int 
 xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, const X509_NAME_ENTRY **b) {
+    int ret;
+    
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(b != NULL, 1);
+    xmlSecAssert2((*a) != NULL, -1);
+    xmlSecAssert2((*b) != NULL, 1);
 
+    /* first compare values */    
+    if(((*a)->value == NULL) && ((*b)->value != NULL)) {
+	return(-1);
+    } else if(((*a)->value != NULL) && ((*b)->value == NULL)) {
+	return(1);
+    } else if(((*a)->value == NULL) && ((*b)->value == NULL)) {
+	return(0);
+    }	
+    
+    ret = (*a)->value->length - (*b)->value->length;
+    if(ret != 0) {
+	return(ret);
+    }
+		
+    ret = memcmp((*a)->value->data, (*b)->value->data, (*a)->value->length);
+    if(ret != 0) {
+	return(ret);
+    }
+
+    /* next compare names */
     return(OBJ_cmp((*a)->object, (*b)->object));
 }
 

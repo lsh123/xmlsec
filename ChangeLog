@@ -1,3 +1,7 @@
+Fri Feb 13 00:05:57 2004  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in include/xmlsec/private.h: fixed libxslt configuration problem
+
 Mon Feb  9 08:54:50 2004  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/xmltree.c: allow decryption of an empty node

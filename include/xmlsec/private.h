@@ -440,6 +440,7 @@ struct _xmlSecCryptoDLFunctions {
 };
 
 #ifdef XMLSEC_LIBXML_260
+#include <libxml/xmlstring.h>
 #define xmlSecStrPrintf 	xmlStrPrintf
 #else  /* XMLSEC_LIBXML_260 */
 #ifdef HAVE_SNPRINTF
@@ -454,6 +455,7 @@ struct _xmlSecCryptoDLFunctions {
 #endif /* XMLSEC_LIBXML_260 */
 
 #ifdef XMLSEC_LIBXML_260
+#include <libxml/xmlstring.h>
 #define xmlSecStrVPrintf 	xmlStrVPrintf
 #else  /* XMLSEC_LIBXML_260 */
 #ifdef HAVE_VSNPRINTF

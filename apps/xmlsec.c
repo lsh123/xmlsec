@@ -230,6 +230,9 @@ typedef struct _xmlSecDSigStatus {
  */
 int  initXmlsec(xmlsecCommand command);
 void shutdownXmlsec(void);
+int app_RAND_load_file(const char *file);
+int app_RAND_write_file(const char *file);
+
 
 /**
  * Read command line options
@@ -816,21 +819,16 @@ void printVersion(void) {
  * Init/Shutdown
  */
 int initXmlsec(xmlsecCommand command) {
-    time_t t = 0;
-
     /* 
      * Init OpenSSL
      */
     OpenSSL_add_all_algorithms();
-    
-    /**
-     * Probably not the best way
-     */
-    time(&t);
-    while (RAND_status() != 1) {
-	RAND_seed(&t, sizeof(t));
+    if((RAND_status() != 1) && (app_RAND_load_file(NULL) != 1)) {
+	fprintf(stderr, "Failed to initialize random numbers\n"); 
+	return(-1);
     }
-
+	
+    
     /*
      * Init libxml
      */     
@@ -936,6 +934,7 @@ void shutdownXmlsec(void) {
     /**
      * Shutdown OpenSSL
      */    
+    app_RAND_write_file(NULL);
     RAND_cleanup();
     EVP_cleanup();    
 #ifndef XMLSEC_NO_X509
@@ -1612,3 +1611,69 @@ xmlSecKeyPtr genHmac(const char *name) {
     return(NULL);
 #endif /* XMLSEC_NO_HMAC */ 
 }   
+
+/**
+ * Random numbers initialization from openssl (apps/app_rand.c)
+ */
+static int seeded = 0;
+static int egdsocket = 0;
+
+int app_RAND_load_file(const char *file) {
+    char buffer[1024];
+	
+    if(file == NULL) {
+	file = RAND_file_name(buffer, sizeof(buffer));
+    }else if(RAND_egd(file) > 0) {
+	/* we try if the given filename is an EGD socket.
+	 * if it is, we don't write anything back to the file. */
+	egdsocket = 1;
+	return 1;
+    }
+
+    if((file == NULL) || !RAND_load_file(file, -1)) {
+	if(RAND_status() == 0) {
+	    fprintf(stderr, "Random numbers initialization failed (file=%s)\n", (file) ? file : "NULL"); 
+	    return 0;
+	}
+    }
+    seeded = 1;
+    return 1;
+}
+
+int app_RAND_write_file(const char *file) {
+    char buffer[1024];
+	
+    if(egdsocket || !seeded) {
+	/* If we did not manage to read the seed file,
+	 * we should not write a low-entropy seed file back --
+	 * it would suppress a crucial warning the next time
+	 * we want to use it. */
+	return 0;
+    }
+    
+    if(file == NULL) {
+	file = RAND_file_name(buffer, sizeof(buffer));
+    }
+    if((file == NULL) || !RAND_write_file(file)) {
+	    fprintf(stderr, "Failed to write random init file (file=%s)\n", (file) ? file : "NULL"); 
+	    return 0;
+    }
+
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

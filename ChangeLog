@@ -1,18 +1,26 @@
+Wed 14 Aug 2002 09:44:31 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c: fixed random numbers initialization
+
 Tue 13 Aug 2002 09:11:45 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
 	* win32/* src/errors.c apps/xmlsec.c: made required changes
 	to support new stuff in win32 port
 
 Tue Aug 13 13:59:32 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* apps/xmlsec.c configure.in src/ciphers.c src/des.c src/dsa.c 
 	src/hmac.c src/rsa.c: replaced XMLSEC_OPENSSL097 define with 
 	XMLSEC_OPENSSL096 define
 	* docs/api/*: updated docs with new errors reporting functions
 
 Tue 13 Aug 2002 01:36:16 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
 	* include/xmlsec/errors.h src/*.c configure.in: changed
 	error reporting system and updated all files accordingly
 
 Thu 08 Aug 2002 10:56:56 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/xpath.c: removed XPointer support from  XPath 2 filter
 
 Wed Aug  7 14:32:44 2002  Aleksey Sanin  <aleksey@aleksey.com>

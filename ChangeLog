@@ -1,3 +1,8 @@
+Tue Sep  9 16:14:01 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* win32/Makefile.msvc win32/configure.js win32/mycfg.bat win32/mycfg_nss.bat:
+	windows build cleanup
+
 Tue Sep  9 12:52:00 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* Makefile.am apps/* configure.in include/* src/* tests/*: implemented

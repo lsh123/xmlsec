@@ -48,6 +48,7 @@ var withIconv = 1;
 /* Win32 build options. */
 var buildDebug = 0;
 var buildStatic = 1;
+var buildWithDLSupport = 1;
 var buildPrefix = ".";
 var buildBinPrefix = "$(PREFIX)\\bin";
 var buildIncPrefix = "$(PREFIX)\\include";
@@ -99,6 +100,7 @@ function usage()
 	txt += "\nWin32 build options, default value given in parentheses:\n\n";
 	txt += "  debug:      Build unoptimised debug executables (" + (buildDebug? "yes" : "no")  + ")\n";
 	txt += "  static:     Link libxmlsec statically to xmlsec (" + (buildStatic? "yes" : "no")  + ")\n";
+	txt += "  with-dl:    Enable dynamic loading of xmlsec-crypto libraries (" + (buildWithDLSupport? "yes" : "no")  + ")\n";
 	txt += "  prefix:     Base directory for the installation (" + buildPrefix + ")\n";
 	txt += "  bindir:     Directory where xmlsec and friends should be installed\n";
 	txt += "              (" + buildBinPrefix + ")\n";
@@ -157,6 +159,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_ICONV=" + (withIconv ? "1" : "0"));
 	vf.WriteLine("DEBUG=" + (buildDebug? "1" : "0"));
 	vf.WriteLine("STATIC=" + (buildStatic? "1" : "0"));
+	vf.WriteLine("WITH_DL=" + (buildWithDLSupport ? "1" : "0"));
 	vf.WriteLine("PREFIX=" + buildPrefix);
 	vf.WriteLine("BINPREFIX=" + buildBinPrefix);
 	vf.WriteLine("INCPREFIX=" + buildIncPrefix);
@@ -266,6 +269,8 @@ for (i = 0; (i < WScript.Arguments.length) && (error == 0); i++) {
 			buildDebug = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "static")
 			buildStatic = strToBool(arg.substring(opt.length + 1, arg.length));
+		else if (opt == "with-dl")
+			buildWithDLSupport = strToBool(arg.substring(opt.length + 1, arg.length));
 		else if (opt == "prefix")
 			buildPrefix = arg.substring(opt.length + 1, arg.length);
 		else if (opt == "incdir")
@@ -365,6 +370,7 @@ txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";
 txtOut += "     Debug symbols: " + boolToStr(buildDebug) + "\n";
 txtOut += "     Static xmlsec: " + boolToStr(buildStatic) + "\n";
+txtOut += "  Enable DL suport: " + boolToStr(buildWithDLSupport) + "\n";
 txtOut += "    Install prefix: " + buildPrefix + "\n";
 txtOut += "      Put tools in: " + buildBinPrefix + "\n";
 txtOut += "    Put headers in: " + buildIncPrefix + "\n";

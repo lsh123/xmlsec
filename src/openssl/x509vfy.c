@@ -497,7 +497,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}    
-	X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
+	X509_LOOKUP_add_dir(lookup, (char*)path, X509_FILETYPE_DEFAULT);
     }
     ctx->xst->depth = 9; /* the default cert verification path in openssl */	
 	

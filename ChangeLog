@@ -1,3 +1,8 @@
+Thu Oct  2 10:28:59 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/dl.c src/openssl/app.c src/openssl/x509vfy.c: fixing
+	compilation warnings reported in bug #123692
+
 Wed Oct  1 19:05:13 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/gnutls/README src/mscrypto/README src/nss/README 

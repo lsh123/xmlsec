@@ -62,7 +62,7 @@ xmlSecOpenSSLAppInit(const char* config) {
 	return(-1);
     }
     
-    if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(config) < 0)) {
+    if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(BAD_CAST config) < 0)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecOpenSSLSetDefaultTrustedCertsFolder",

@@ -239,7 +239,7 @@ xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
 		    "size=%d", len + 1); 
 	return(NULL);
     }
-    snprintf(res, len, tmpl, PACKAGE, name);
+    snprintf(BAD_CAST res, len, BAD_CAST tmpl, PACKAGE, name);
     
     return(res);
 }
@@ -262,7 +262,7 @@ xmlSecCryptoDLLibraryConstructGetFunctionsName(const xmlChar* name) {
 		    "size=%d", len + 1); 
 	return(NULL);
     }
-    snprintf(res, len, tmpl, name);
+    snprintf(BAD_CAST res, len, BAD_CAST tmpl, name);
     
     return(res);
 }

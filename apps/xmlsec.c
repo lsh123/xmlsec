@@ -197,6 +197,7 @@ static const char helpX509[] =
 static const char helpMisc[] = 
     "Misc. options:\n"
     "  --repeat <number>     repeat the operation <number> times\n"
+    "  --pwd <password>      the password to use for reading keys and certs\n"
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -287,6 +288,7 @@ char *nodeNs = NULL;
 int repeats = 1;
 int printResult = 0;
 clock_t total_time = 0;
+char *global_pwd = NULL;
 
 int main(int argc, char **argv) {
     int res = 1;
@@ -493,6 +495,9 @@ int main(int argc, char **argv) {
 	 */	
 	if((strcmp(argv[pos], "--repeat") == 0) && (pos + 1 < argc)) {
 	    ret = readNumber(argv[++pos], &repeats);
+	} else if((strcmp(argv[pos], "--pwd") == 0) && (pos + 1 < argc)) {
+	    global_pwd = argv[++pos];
+	    ret = 0;
 	} else 
 
 	/**
@@ -1001,7 +1006,7 @@ int readPemKey(int privateKey, char *param, char *name) {
     int ret;
     
     p = strtok(param, ","); 
-    key = xmlSecSimpleKeysMngrLoadPemKey(keyMgr, p, NULL, NULL, privateKey);
+    key = xmlSecSimpleKeysMngrLoadPemKey(keyMgr, p, global_pwd, NULL, privateKey);
     if(key == NULL) {
 	fprintf(stderr, "Error: failed to load key from \"%s\"\n", p);
 	return(-1);
@@ -1036,14 +1041,17 @@ int readPKCS12Key(char *filename, char *name) {
     char prompt[1024];
     int ret;
     
-    snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
-    ret = EVP_read_pw_string(pwd, sizeof(pwd), prompt, 0);
-    if(ret != 0) {
-	fprintf(stderr, "Error: password propmpt failed for file \"%s\"\n", filename); 
-	return(-1);
-    }
-    
-    ret = xmlSecSimpleKeysMngrLoadPkcs12(keyMgr, name, filename, pwd);
+    if(global_pwd == NULL) {
+	snprintf(prompt, sizeof(prompt), "Password for pkcs12 file \"%s\": ", filename); 
+	ret = EVP_read_pw_string(pwd, sizeof(pwd), prompt, 0);
+	if(ret != 0) {
+	    fprintf(stderr, "Error: password propmpt failed for file \"%s\"\n", filename); 
+	    return(-1);
+	}	
+    } 
+
+    ret = xmlSecSimpleKeysMngrLoadPkcs12(keyMgr, name, filename, 
+				(global_pwd != NULL) ? global_pwd : pwd);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to load pkcs12 file \"%s\"\n", filename); 
 	return(-1);

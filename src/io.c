@@ -422,9 +422,11 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     if((ctx->clbks == NULL) || (ctx->clbksCtx == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(uri),
+		    "opencallback",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "errno=%d", errno);
+		    "uri=%s;errno=%d", 
+		    xmlSecErrorsSafeString(uri),
+		    errno);
 	return(-1);
     }
     

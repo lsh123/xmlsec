@@ -418,7 +418,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "type=\"%s\"", 
+		    "type=%s", 
 		    xmlSecErrorsSafeString(encCtx->type));
 	xmlOutputBufferClose(output);
 	return(-1);	    	
@@ -479,7 +479,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "type=\"%s\"", 
+		    "type=%s", 
 		    xmlSecErrorsSafeString(encCtx->type));
 	return(-1);	    	
     }
@@ -713,7 +713,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 			    NULL,
 			    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
 			    XMLSEC_ERRORS_R_INVALID_NODE,
-			    "expected=\"%s\"",
+			    "expected=%s",
 			    xmlSecErrorsSafeString(xmlSecNodeEncryptedData));
 		return(-1);	    
 	    }
@@ -724,7 +724,7 @@ xmlSecEncCtxEncDataNodeRead(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
 			    NULL,
 			    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
 			    XMLSEC_ERRORS_R_INVALID_NODE,
-			    "expected=\"%s\"",
+			    "expected=%s",
 			    xmlSecErrorsSafeString(xmlSecNodeEncryptedKey));
 		return(-1);	    
 	    }

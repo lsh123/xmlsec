@@ -360,8 +360,8 @@ xmlSecAppCryptoKeyGenerate(const char* keyKlassAndSize, const char* name, xmlSec
     if(buf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "strdup",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    NULL,
+		    XMLSEC_ERRORS_R_STRDUP_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(name));
 	return(NULL);    

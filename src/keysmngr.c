@@ -679,7 +679,7 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
 		    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
 		    "xmlSaveFormatFile",
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "filename=\"%s\"", 
+		    "filename=%s", 
 		    xmlSecErrorsSafeString(filename));
 	xmlFreeDoc(doc); 
 	return(-1);

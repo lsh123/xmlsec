@@ -1249,7 +1249,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
 		    NULL,
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=\"%s\"", 
+		    "node=%s", 
 		    xmlSecErrorsSafeString(xmlSecNodeEncryptedKey));
 	return(NULL);	
     }

@@ -991,10 +991,10 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName),
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
 		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	return(-1);
     }    
     issuerName = xmlNodeGetContent(cur);
@@ -1024,10 +1024,10 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
     if(issuerSerial == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber),
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
 		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	xmlFree(issuerName);
 	return(-1);
     }

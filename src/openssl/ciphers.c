@@ -586,7 +586,7 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
 		    "keySize=%d;expected=%d",
 		    xmlSecBufferGetSize(buffer), cipherKeyLen);
 	return(-1);

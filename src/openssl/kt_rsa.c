@@ -234,7 +234,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "%d", transform->status);
+		    "status=%d", transform->status);
 	return(-1);
     }
     return(0);
@@ -294,7 +294,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize);
+		    "size=%d", outSize);
 	return(-1);
     }
 
@@ -307,7 +307,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"RSA_public_encrypt",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"%d", inSize);
+			"size=%d", inSize);
 	    return(-1);
 	}
 	outSize = ret;
@@ -320,7 +320,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"RSA_private_decrypt",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"%d", inSize);
+			"size=%d", inSize);
 	    return(-1);
 	}
 	outSize = ret;
@@ -332,7 +332,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetSize",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize);
+		    "size=%d", outSize);
 	return(-1);
     }
 	
@@ -342,7 +342,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferRemoveHead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", inSize);
+		    "size=%d", inSize);
 	return(-1);
     }
     
@@ -500,10 +500,10 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
 	if(algorithm == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+			xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"attr=%s", 
-			xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
+			"node=%s", 
+			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	    return(-1);		
         }
 
@@ -637,7 +637,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "%d", transform->status);
+		    "status=%d", transform->status);
 	return(-1);
     }
     return(0);
@@ -698,7 +698,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetMaxSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize);
+		    "size=%d", outSize);
 	return(-1);
     }
 
@@ -727,7 +727,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", keySize);
+			"size=%d", keySize);
 	    return(-1);
 	}
 	
@@ -843,7 +843,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize);
+		    "size=%d", outSize);
 	return(-1);
     }
 	
@@ -853,7 +853,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferRemoveHead",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", inSize);
+		    "size=%d", inSize);
 	return(-1);
     }
     

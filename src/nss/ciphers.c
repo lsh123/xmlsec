@@ -390,7 +390,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "xmlSecBufferSetSize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", outSize + outLen);
+		    "size=%d", outSize + outLen);
 	return(-1);
     }
 
@@ -570,7 +570,7 @@ xmlSecNssEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
 		    "keySize=%d;expected=%d",
 		    xmlSecBufferGetSize(buffer), ctx->keySize);
 	return(-1);

@@ -474,7 +474,7 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecParseMemoryExt",
-		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	    	
     }
@@ -537,7 +537,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
 			} else if(tmp != attr) {
 			    xmlSecError(XMLSEC_ERRORS_HERE,
 					NULL,
-					"xmlGetID",
+					NULL,
 					XMLSEC_ERRORS_R_INVALID_DATA,
 					"id=%s already defined", 
 					xmlSecErrorsSafeString(name));

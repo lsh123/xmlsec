@@ -178,7 +178,7 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
 		    "key length %d is not enough (%d expected)",
 		    keySize, XMLSEC_OPENSSL_DES3_KEY_LENGTH);
 	return(-1);

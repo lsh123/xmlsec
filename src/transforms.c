@@ -804,7 +804,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_URI_TYPE,
-		    "uri=\"%s\"", 
+		    "uri=%s", 
 		    xmlSecErrorsSafeString(uri));
 	return(-1);
     }
@@ -1473,7 +1473,7 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 		    NULL,
 		    "xmlSecTransformIdsListFindByHref",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "href=\"%s\"", 
+		    "href=%s", 
 		    xmlSecErrorsSafeString(href));
 	xmlFree(href);
 	return(NULL);		

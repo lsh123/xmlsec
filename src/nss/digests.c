@@ -104,7 +104,7 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
     if(ctx->digest == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecNssDigestGetOid",
+		    "SECOID_FindOIDByTag",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);

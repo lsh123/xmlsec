@@ -740,7 +740,7 @@ xmlSecKeyGenerateByName(const xmlChar* name, size_t sizeBits, xmlSecKeyDataType 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    xmlSecErrorsSafeString(name),
-		    XMLSEC_ERRORS_R_DATA_NOT_FOUND,
+		    XMLSEC_ERRORS_R_KEY_DATA_NOT_FOUND,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(NULL);    
     }

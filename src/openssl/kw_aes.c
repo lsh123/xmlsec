@@ -245,7 +245,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
 		    "key=%d;expected=%d",
 		    keySize, expectedKeySize);
 	return(-1);
@@ -587,9 +587,9 @@ xmlSecOpenSSLKWAesDecode(const unsigned char *key, size_t keySize,
     if(memcmp(xmlSecOpenSSLKWAesMagicBlock, out, XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,
-		    "xmlSecOpenSSLKWAesMagicBlock",
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_DATA,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "bad magic block");
 	return(-1);	
     }
 	

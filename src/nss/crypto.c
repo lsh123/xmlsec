@@ -87,7 +87,7 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,
 		    "xmlSecBufferSetSize",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "size=%d", size);
 	return(-1);
     }

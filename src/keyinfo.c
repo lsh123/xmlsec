@@ -115,7 +115,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
 			    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 			    "xmlSecKeyDataXmlRead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "node=\"%s\"", 
+			    "node=%s", 
 			    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 		return(-1);
 	    }
@@ -182,7 +182,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
 			    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(dataId)),
 			    "xmlSecKeyDataXmlWrite",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "node=\"%s\"", 
+			    "node=%s", 
 			    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 		return(-1);
 	    }

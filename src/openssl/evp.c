@@ -208,7 +208,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY,
+		    XMLSEC_ERRORS_R_INVALID_TYPE,
 		    "evp key type %d not supported", pKey->type);
 	return(NULL);
     }
@@ -478,7 +478,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(xmlSecKeyGetValue(key) != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyGetValue",
+		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
@@ -1350,7 +1350,7 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKe
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "RSA_generate_key",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%d", sizeBits);
+		    "sizeBits=%d", sizeBits);
 	return(-1);    
     }
 

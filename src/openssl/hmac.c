@@ -231,7 +231,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
+		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
 		    "keySize=0");
 	return(-1);    
     }
@@ -342,7 +342,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			    "xmlSecBufferRemoveHead",
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "%d", inSize);
+			    "size=%d", inSize);
 		return(-1);
 	    }
 	}

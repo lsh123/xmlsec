@@ -56,7 +56,7 @@
 #include <xmlsec/base64.h>
 #include <xmlsec/errors.h>
 
-/* #define XMLSEC_BUFFER_DEBUG 1 */
+#define XMLSEC_BUFFER_DEBUG 1
 
 /**************************************************************************
  *
@@ -246,12 +246,54 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyInfoCtxPtr keyIn
 
 int 
 xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
-			size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
+		    size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->verify != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     return((transform->id->verify)(transform, data, dataSize, transformCtx));
+}
+
+int 
+xmSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+		    size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->id->pushBin != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    return((transform->id->pushBin)(transform, data, dataSize, final, transformCtx));    
+}
+
+int 
+xmSecTransformPopBin(xmlSecTransformPtr transform, unsigned char* data,
+		    size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->id->popBin != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    return((transform->id->popBin)(transform, data, dataSize, transformCtx));    
+}
+
+int 
+xmSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
+		    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->id->pushXml != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    return((transform->id->pushXml)(transform, nodes, transformCtx));    
+}
+
+int 
+xmSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
+		    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transform->id->popXml != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    return((transform->id->popXml)(transform, nodes, transformCtx));    
 }
 
 int 
@@ -706,6 +748,196 @@ xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
     return(0);
 }
 
+int 
+xmSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+			size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
+    size_t outSize;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    /* append data to input buffer */    
+    if(dataSize > 0) {
+	xmlSecAssert2(data != NULL, -1);
+
+	ret = xmlSecBufferAppend(&(transform->inBuf), data, dataSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecBufferAppend",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"size=%d", dataSize);
+	    return(-1);
+	}	
+    }
+
+    /* process data if any or it's the end */
+    if((xmlSecBufferGetSize(&(transform->inBuf)) > 0) || (final != 0)) {    
+	ret = xmlSecTransformExecute(transform, final, transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformExecute",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }
+
+    /* push data to the next transform */
+    outSize = xmlSecBufferGetSize(&(transform->outBuf));
+    if((transform->next != NULL) && ((outSize > 0) || (final != 0))) {
+       
+	ret = xmSecTransformPushBin(transform->next, 
+			    xmlSecBufferGetData(&(transform->outBuf)),
+			    outSize,
+			    final,
+			    transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform->next)),
+			"xmlSecTransformPushBin",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+
+	ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecBufferAppend",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"size=%d", outSize);
+	    return(-1);
+	}	
+    }
+    
+    return(0);
+}
+
+int 
+xmSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
+			    size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
+    size_t outSize;
+    int final = 0;
+    int ret;
+
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    while((xmlSecBufferGetSize(&(transform->outBuf)) == 0) && (final == 0)) {
+	/* read data from previous transform if exist */
+	if(transform->prev != NULL) {    
+    	    size_t inSize, chunkSize;
+
+	    inSize = xmlSecBufferGetSize(&(transform->inBuf));
+	    chunkSize = XMLSEC_TRANSFORM_BINARY_CHUNK;
+
+	    /* ensure that we have space for at least one data chunk */
+    	    ret = xmlSecBufferSetMaxSize(&(transform->inBuf), inSize + chunkSize);
+    	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			    "xmlSecBufferSetMaxSize",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "size=%d", inSize + chunkSize);
+		return(-1);
+	    }	
+
+	    /* get data from previous transform */
+	    ret = xmSecTransformPopBin(transform->prev, 
+			    xmlSecBufferGetData(&(transform->inBuf)) + inSize,
+			    &chunkSize, transformCtx);
+	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform->prev)),
+			    "xmlSecTransformPopBin",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	
+	    /* adjust our size if needed */
+	    if(chunkSize > 0) {
+		ret = xmlSecBufferSetSize(&(transform->inBuf), inSize + chunkSize);
+		if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+				"xmlSecBufferSetSize",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"size=%d", inSize + chunkSize);
+		    return(-1);
+	        }
+		final = 0; /* the previous transform returned some data..*/
+	    } else {
+		final = 1; /* no data returned from previous transform, we are done */
+	    }
+	} else {
+	    final = 1; /* no previous transform, we are "permanently final" */
+	}	
+
+	/* execute our transform */
+    	ret = xmlSecTransformExecute(transform, final, transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecTransformExecute",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }
+    
+    /* copy result (if any) */
+    outSize = xmlSecBufferGetSize(&(transform->outBuf)); 
+    if(outSize > (*dataSize)) {
+	outSize = (*dataSize);
+    }
+    if(outSize > 0) {
+	xmlSecAssert2(xmlSecBufferGetData(&(transform->outBuf)), -1);
+	
+	memcpy(data, xmlSecBufferGetData(&(transform->outBuf)), outSize);
+    	    
+	ret = xmlSecBufferRemoveHead(&(transform->outBuf), outSize);
+    	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			"xmlSecBufferRemoveHead",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"size=%d", outSize);
+	    return(-1);
+	}	
+    }
+    
+    /* set the result */
+    (*dataSize) = outSize;
+    return(0);
+}
+
+int 
+xmSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes, 
+			    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    /* TODO */
+    return(0);
+}
+
+int xmSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, 
+			    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
+    xmlSecAssert2(nodes != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    /* TODO */
+    return(0);
+}
 
 
 #include "transforms-old.c"

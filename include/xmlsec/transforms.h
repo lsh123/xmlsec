@@ -181,28 +181,42 @@ XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform,
 XMLSEC_EXPORT int			xmSecTransformPushBin	(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
-								 int final);
+								 int final,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmSecTransformPopBin	(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t dataSize);
+								 size_t* dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmSecTransformPushXml	(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr nodes);
+								 xmlSecNodeSetPtr nodes,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmSecTransformPopXml	(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr* nodes);
+								 xmlSecNodeSetPtr* nodes,
+								 xmlSecTransformCtxPtr transformCtx);
 
 
 
 XMLSEC_EXPORT int			xmSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
-								 int final);
+								 int final,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t dataSize);
+								 size_t* dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr nodes);
+								 xmlSecNodeSetPtr nodes,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmSecTransformDefaultPopXml(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr* nodes);
+								 xmlSecNodeSetPtr* nodes,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
+XMLSEC_EXPORT int 			xmlSecTransformExecute	(xmlSecTransformPtr transform, 
+								 int last, 
+								 xmlSecTransformCtxPtr transformCtx);
+
 
 
 XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
@@ -429,14 +443,18 @@ typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform,
 typedef int		(*xmSecTransformPushBinMethod)		(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
-								 int final);
+								 int final,
+								 xmlSecTransformCtxPtr transformCtx);
 typedef int		(*xmSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
 								 unsigned char* data,
-								 size_t dataSize);
+								 size_t* dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
 typedef int		(*xmSecTransformPushXmlMethod)		(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr nodes);
+								 xmlSecNodeSetPtr nodes,
+								 xmlSecTransformCtxPtr transformCtx);
 typedef int		(*xmSecTransformPopXmlMethod)		(xmlSecTransformPtr transform, 
-								 xmlSecNodeSetPtr* nodes);
+								 xmlSecNodeSetPtr* nodes,
+								 xmlSecTransformCtxPtr transformCtx);
 typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform, 
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);

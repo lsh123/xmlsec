@@ -7,5 +7,5 @@ Name: xmlsec
 Version: 0.1.1-openssl
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= 2.4.24 libxslt >= 1.0.20 
-Libs: -L -lxmlsec-openssl -lxmlsec -L/home/aleksey/lib -lxml2 -lz -lm -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -L/home/aleksey/lib -lcrypto 
-Cflags:  -I -I/home/aleksey/include/libxml2 -I/home/aleksey/include -I/home/aleksey/include/libxml2 -I/home/aleksey/include -DXMLSEC_CRYPTO_OPENSSL=1 -DXMLSEC_CRYPTO="openssl" -g -O2 -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls 
+Libs: -L${exec_prefix}/lib/xmlsec-0.1 -lxmlsec-openssl -lxmlsec -L/home/aleksey/lib -lxml2 -lz -lm -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -L/home/aleksey/lib -lcrypto 
+Cflags:  -I${prefix}/include/xmlsec-0.1 -I/home/aleksey/include/libxml2 -I/home/aleksey/include -I/home/aleksey/include/libxml2 -I/home/aleksey/include -DXMLSEC_CRYPTO_OPENSSL=1 -DXMLSEC_CRYPTO="openssl" -g -O2 -pedantic -Wall -ansi -W -Wunused -Wimplicit -Wreturn-type -Wswitch -Wcomment -Wtrigraphs -Wformat -Wchar-subscripts -Wuninitialized -Wparentheses -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wmissing-prototypes -Wnested-externs -Winline -Wredundant-decls 

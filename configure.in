@@ -642,8 +642,8 @@ AM_CONDITIONAL(XMLSEC_DYNAMIC_LINKING, test "$enable_dynamic" = "yes")
 dnl ==========================================================================
 dnl Final steps: xmlsec config
 dnl ==========================================================================
-XMLSEC_CFLAGS="$XMLSEC_DEFINES -I${pkgincludedir} $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
-XMLSEC_LIBS="-L${pkglibdir} -l$XMLSEC_CRYPTO_LIB -lxmlsec $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
+XMLSEC_CFLAGS="$XMLSEC_DEFINES -I${includedir}/${PACKAGE} $LIBXML_CFLAGS $LIBXSLT_CFLAGS $XMLSEC_CRYPTO_CFLAGS -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\""
+XMLSEC_LIBS="-L${libdir}/${PACKAGE} -l$XMLSEC_CRYPTO_LIB -lxmlsec $LIBXML_LIBS $LIBXSLT_LIBS $XMLSEC_CRYPTO_LIBS"
 
 AC_SUBST(XMLSEC_CFLAGS)
 AC_SUBST(XMLSEC_LIBS)

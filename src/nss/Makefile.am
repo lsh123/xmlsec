@@ -37,5 +37,7 @@ libxmlsec_nss_la_LIBADD = \
 libxmlsec_nss_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	-release @XMLSEC_RELEASE@ \
+	-rpath $(pkglibdir) \
+	-R $(pkglibdir) \
 	$(NULL)
 

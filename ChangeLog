@@ -1,3 +1,9 @@
+Sun Jan 26 22:04:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* config.h.in configure.in include/xmlsec/version.h
+	docs/news.html docs/download.html docs/index.html
+	xmlsec.pc xmlsec.spec: preparation for 0.0.12 release
+
 Sun Jan 26 21:39:56 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/digests.h src/hmac.c: fixed 91 bits HMAC

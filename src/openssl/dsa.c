@@ -342,12 +342,12 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecGetNextElementNode(node->children);
 
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "P", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeDSAP, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "<dsig:P> expected");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
 	DSA_free(dsa);	
 	return(-1);
     }
@@ -356,19 +356,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:P>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
 	DSA_free(dsa);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is Q node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Q", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAQ, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "<dsig:Q> expected");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
 	DSA_free(dsa);
 	return(-1);
     }
@@ -377,19 +377,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Q>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
 	DSA_free(dsa);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is G node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "G", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAG, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "<dsig:G>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
 	DSA_free(dsa);
 	return(-1);
     }
@@ -398,13 +398,13 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Q>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
 	DSA_free(dsa);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "X", xmlSecNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAX, xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
 	 * we are not sure exactly what do we read */
 	if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->priv_key)) == NULL) {
@@ -412,7 +412,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLNodeGetBNValue",
 		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<xmlsec:X>");
+			"%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
 	    DSA_free(dsa);
 	    return(-1);
 	}
@@ -420,12 +420,12 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     /* next is Y node. */
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Y", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDSAY, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "<dsig:Y>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
 	DSA_free(dsa);
 	return(-1);
     }
@@ -434,19 +434,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Y>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
 	DSA_free(dsa);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
     
     /* todo: add support for seed */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "Seed", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
 	cur = xmlSecGetNextElementNode(cur->next);  
     }
 
     /* todo: add support for pgencounter */
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PgenCounter", xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
 	cur = xmlSecGetNextElementNode(cur->next);  
     }
 
@@ -454,8 +454,8 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "no more nodes expected");
+		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	DSA_free(dsa);
 	return(-1);
     }
@@ -520,13 +520,13 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     
     /* first is P node */
     xmlSecAssert2(dsa->p != NULL, -1);
-    cur = xmlSecAddChild(node, BAD_CAST "P", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:P>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->p, 1);
@@ -535,19 +535,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:P>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAP));
 	return(-1);
     }    
 
     /* next is Q node. */
     xmlSecAssert2(dsa->q != NULL, -1);
-    cur = xmlSecAddChild(node, BAD_CAST "Q", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, xmlSecNodeDSAQ, xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Q>");	
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->q, 1);
@@ -556,19 +556,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Q>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAQ));
 	return(-1);
     }
 
     /* next is G node. */
     xmlSecAssert2(dsa->g != NULL, -1);
-    cur = xmlSecAddChild(node, BAD_CAST "G", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, xmlSecNodeDSAG, xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:G>");	
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->g, 1);
@@ -577,19 +577,19 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:G>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAG));
 	return(-1);
     }
 
     /* next is X node: write it ONLY for private keys and ONLY if it is requested */
     if(((keyInfoCtx->keyType & xmlSecKeyDataTypePrivate) != 0) && (dsa->priv_key != NULL)) {
-	cur = xmlSecAddChild(node, BAD_CAST "X", xmlSecNs);
+	cur = xmlSecAddChild(node, xmlSecNodeDSAX, xmlSecNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:X>");	
+			"%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
 	    return(-1);	
 	}
 	ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->priv_key, 1);
@@ -598,20 +598,20 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLNodeSetBNValue",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:X>");
+			"%s", xmlSecErrorsSafeString(xmlSecNodeDSAX));
 	    return(-1);
 	}
     }
 
     /* next is Y node. */
     xmlSecAssert2(dsa->pub_key != NULL, -1);
-    cur = xmlSecAddChild(node, BAD_CAST "Y", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, xmlSecNodeDSAY, xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Y>");	
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->pub_key, 1);
@@ -620,7 +620,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Y>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeDSAY));
 	return(-1);
     }
     return(0);

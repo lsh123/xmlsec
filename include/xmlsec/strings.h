@@ -164,6 +164,15 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDSAKeyValue[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAP[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAQ[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAG[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAX[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAY[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSASeed[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAPgenCounter[];
+
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha1[];
 
@@ -222,6 +231,13 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKeyValue[];
 
 /*************************************************************************
  *
+ * Memory Buffer strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMemBuf[];
+
+/*************************************************************************
+ *
  * RetrievalMethod
  *
  ************************************************************************/
@@ -244,6 +260,10 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRipemd160[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAKeyValue[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRSAKeyValue[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAModulus[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAExponent[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAPrivateExponent[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha1[];
@@ -272,8 +292,18 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Data[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509Data[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefX509Data[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509Certificate[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509CRL[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509SubjectName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509IssuerSerial[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509IssuerName[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509SerialNumber[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeX509SKI[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRawX509Cert[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRawX509Cert[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameX509Store[];
 
 /*************************************************************************
  *
@@ -293,10 +323,11 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefXslt[];
 
 /*************************************************************************
  *
- * Memory Buffer strings
+ * Utility strings
  *
  ************************************************************************/
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMemBuf[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStringEmpty[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecStringCR[];
 
 
 

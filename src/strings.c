@@ -141,6 +141,13 @@ const xmlChar xmlSecHrefKWDes3[]	= "http://www.w3.org/2001/04/xmlenc#kw-triplede
 const xmlChar xmlSecNameDSAKeyValue[]	= "dsa";
 const xmlChar xmlSecNodeDSAKeyValue[]	= "DSAKeyValue";
 const xmlChar xmlSecHrefDSAKeyValue[]	= "http://www.w3.org/2000/09/xmldsig#DSAKeyValue";
+const xmlChar xmlSecNodeDSAP[]		= "P";
+const xmlChar xmlSecNodeDSAQ[]		= "Q";
+const xmlChar xmlSecNodeDSAG[]		= "G";
+const xmlChar xmlSecNodeDSAX[]		= "X";
+const xmlChar xmlSecNodeDSAY[]		= "Y";
+const xmlChar xmlSecNodeDSASeed[]	= "Seed";
+const xmlChar xmlSecNodeDSAPgenCounter[]= "PgenCounter";
 
 const xmlChar xmlSecNameDsaSha1[]	= "dsa-sha1";
 const xmlChar xmlSecHrefDsaSha1[]	= "http://www.w3.org/2000/09/xmldsig#dsa-sha1";
@@ -229,6 +236,9 @@ const xmlChar xmlSecHrefRipemd160[]	= "http://www.w3.org/2001/04/xmlenc#ripemd16
 const xmlChar xmlSecNameRSAKeyValue[]	= "rsa";
 const xmlChar xmlSecNodeRSAKeyValue[]	= "RSAKeyValue";
 const xmlChar xmlSecHrefRSAKeyValue[]	= "http://www.w3.org/2000/09/xmldsig#RSAKeyValue";
+const xmlChar xmlSecNodeRSAModulus[]	= "Modulus";
+const xmlChar xmlSecNodeRSAExponent[]	= "Exponent";
+const xmlChar xmlSecNodeRSAPrivateExponent[] = "PrivateExponent";
 
 const xmlChar xmlSecNameRsaSha1[]	= "rsa-sha1";
 const xmlChar xmlSecHrefRsaSha1[]	= "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
@@ -253,12 +263,22 @@ const xmlChar xmlSecHrefSha1[]		= "http://www.w3.org/2000/09/xmldsig#sha1";
  * X509 strings
  *
  ************************************************************************/
-const xmlChar xmlSecNameX509Data[]	= "x509";
+const xmlChar xmlSecNameX509Data[]	= "x509-data";
 const xmlChar xmlSecNodeX509Data[]	= "X509Data";
 const xmlChar xmlSecHrefX509Data[]	= "http://www.w3.org/2000/09/xmldsig#X509Data";
 
+const xmlChar xmlSecNodeX509Certificate[]	= "X509Certificate";
+const xmlChar xmlSecNodeX509CRL[]		= "X509CRL";
+const xmlChar xmlSecNodeX509SubjectName[]	= "X509SubjectName";
+const xmlChar xmlSecNodeX509IssuerSerial[]	= "X509IssuerSerial";
+const xmlChar xmlSecNodeX509IssuerName[]	= "X509IssuerName";
+const xmlChar xmlSecNodeX509SerialNumber[]	= "X509SerialNumber";
+const xmlChar xmlSecNodeX509SKI[]		= "X509SKI";
+
 const xmlChar xmlSecNameRawX509Cert[]	= "raw-x509";
 const xmlChar xmlSecHrefRawX509Cert[]	= "http://www.w3.org/2000/09/xmldsig#rawX509Certificate";
+
+const xmlChar xmlSecNameX509Store[]	= "x509-store";
 
 /*************************************************************************
  *
@@ -276,6 +296,13 @@ const xmlChar xmlSecNodeXPointer[]	= "XPointer";
 const xmlChar xmlSecNameXslt[]		= "xslt";
 const xmlChar xmlSecHrefXslt[]		= "http://www.w3.org/TR/1999/REC-xslt-19991116";
 
+/*************************************************************************
+ *
+ * Utility strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecStringEmpty[]	= "";
+const xmlChar xmlSecStringCR[]		= "\n";
 
 
 

@@ -29,6 +29,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/membuf.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/debug.h>
 #include <xmlsec/errors.h>
 
@@ -313,12 +314,12 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     cur = xmlSecGetNextElementNode(node->children);
     
     /* first is Modulus node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  BAD_CAST "Modulus", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "<dsig:Modulus>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
 	RSA_free(rsa);	
 	return(-1);
     }
@@ -327,19 +328,19 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Modulus>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
 	RSA_free(rsa);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is Exponent node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, BAD_CAST "Exponent", xmlSecDSigNs))) {
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "<dsig:Exponent>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
 	RSA_free(rsa);
 	return(-1);
     }
@@ -348,13 +349,13 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeGetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Exponent>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
 	RSA_free(rsa);
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next);
 
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, BAD_CAST "PrivateExponent", xmlSecNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
         /* next is X node. It is REQUIRED for private key but
 	 * we are not sure exactly what do we read */
 	if(xmlSecOpenSSLNodeGetBNValue(cur, &(rsa->d)) == NULL) {
@@ -362,7 +363,7 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLNodeGetBNValue",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:PrivateExponent>");
+			"%s", xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
 	    RSA_free(rsa);
 	    return(-1);
 	}
@@ -438,13 +439,13 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }    
 
     /* first is Modulus node */
-    cur = xmlSecAddChild(node, BAD_CAST "Modulus", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Modulus>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, rsa->n, 1);
@@ -453,18 +454,18 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Modulus>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
 	return(-1);
     }    
 
     /* next is Exponent node. */
-    cur = xmlSecAddChild(node, BAD_CAST "Exponent", xmlSecDSigNs);
+    cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
     if(cur == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecAddChild",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Exponent>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
 	return(-1);	
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, rsa->e, 1);
@@ -473,19 +474,19 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    "xmlSecOpenSSLNodeSetBNValue",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "<dsig:Exponent>");
+		    "%s", xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
 	return(-1);
     }
 
     /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
     if(((keyInfoCtx->keyType & xmlSecKeyDataTypePrivate) != 0) && (rsa->d != NULL)) {
-	cur = xmlSecAddChild(node, BAD_CAST "PrivateExponent", xmlSecNs);
+	cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:PrivateExponent>");
+		        "%s", xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
 	    return(-1);	
 	}
 	ret = xmlSecOpenSSLNodeSetBNValue(cur, rsa->d, 1);
@@ -494,7 +495,7 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLNodeSetBNValue",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:PrivateExponent>");
+		        "%s", xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
 	    return(-1);
 	}
     }
@@ -1118,7 +1119,8 @@ xmlSecOpenSSLRsaOaepReadNode(xmlSecTransformPtr transform, xmlNodePtr node) {
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			xmlSecNodeGetName(cur),
 			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"%s", xmlSecAttrAlgorithm);
+			"attr=%s", 
+			xmlSecErrorsSafeString(xmlSecAttrAlgorithm));
 	    return(-1);		
         }
 

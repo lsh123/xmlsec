@@ -37,7 +37,6 @@
 #define XMLSEC_OPENSSL_AES_IV_SIZE			16
 #define XMLSEC_OPENSSL_AES_BLOCK_SIZE			16
 
-
 /**************************************************************************
  *
  * <xmlsec:AESKeyValue> processing
@@ -635,7 +634,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
-		    "key length %d is not enough (%d expected)",
+		    "key=%d;expected=%d",
 		    keySize, expectedKeySize);
 	return(-1);
     }
@@ -648,7 +647,7 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    "xmlSecBufferSetData",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", expectedKeySize);
+		    "expected-size=%d", expectedKeySize);
 	return(-1);    
     }
 
@@ -688,7 +687,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			NULL,
 			XMLSEC_ERRORS_R_INVALID_SIZE,
-			"%d bytes - not 8 bytes aligned", inSize);
+			"size=%d(not 8 bytes aligned)", inSize);
 	    return(-1);
 	}	
 	
@@ -706,7 +705,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetMaxSize",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", outSize);
+			"outSize=%d", outSize);
 	    return(-1);
 	}
 
@@ -744,7 +743,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferSetSize", 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", outSize);
+			"outSize=%d", outSize);
 	    return(-1);
 	}
 	
@@ -754,7 +753,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 			"xmlSecBufferRemoveHead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", inSize);
+			"inSize%d", inSize);
 	    return(-1);
 	}
 	
@@ -767,7 +766,7 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "%d", transform->status);
+		    "status=%d", transform->status);
 	return(-1);
     }
     return(0);

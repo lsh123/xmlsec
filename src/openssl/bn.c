@@ -137,9 +137,9 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
     }
 
     if(addLineBreaks) {
-	xmlNodeSetContent(cur, BAD_CAST "\n");
+	xmlNodeSetContent(cur, xmlSecStringCR);
     } else {
-	xmlNodeSetContent(cur, BAD_CAST "");
+	xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
     
     ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, XMLSEC_BASE64_LINESIZE);
@@ -154,7 +154,7 @@ xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) 
     }
 
     if(addLineBreaks) {
-	xmlNodeAddContent(cur, BAD_CAST "\n");
+	xmlNodeAddContent(cur, xmlSecStringCR);
     }
 
     xmlSecBufferFinalize(&buf);

@@ -102,7 +102,8 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
 		    NULL,
 		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "keyfile=%s, errno=%d", keyfile, errno);
+		    "keyfile=%s;errno=%d", 
+		    xmlSecErrorsSafeString(keyfile), errno);
 	return(NULL);    
     }
     
@@ -116,7 +117,7 @@ xmlSecOpenSSLAppPemKeyLoad(const char *keyfile, const char *keyPwd,
 		    NULL,
 		    (privateKey) ? "PEM_read_PrivateKey" : "PEM_read_PUBKEY",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%s", keyfile);
+		    "file=%s", xmlSecErrorsSafeString(keyfile));
 	fclose(f);
 	return(NULL);    
     }
@@ -175,7 +176,8 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 		    NULL,
 		    "xmlSecKeyEnsureData",		    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataX509Id");
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id)));
 	return(-1);
     }
 
@@ -185,7 +187,7 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 		    NULL,
 		    "xmlSecOpenSSLAppPemCertLoad", 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	return(-1);    
     }    	
     
@@ -195,7 +197,7 @@ xmlSecOpenSSLAppKeyPemCertLoad(xmlSecKeyPtr key, const char* filename) {
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecX509DataAddCert",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%d", ret);
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	X509_free(cert);
 	return(-1);    
     }
@@ -225,7 +227,8 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    NULL,
 		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "filename=%s,errno=%d", filename,errno);
+		    "filename=%s;errno=%d", 
+		    xmlSecErrorsSafeString(filename),errno);
 	goto done;
     }
     
@@ -235,7 +238,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    NULL,
 		    "d2i_PKCS12_fp",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	goto done;
     }
 
@@ -245,7 +248,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    NULL,
 		    "PKCS12_verify_mac",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	goto done;
     }    
         
@@ -255,7 +258,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    NULL,
 		    "PKCS12_parse",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	goto done;
     }    
 
@@ -265,7 +268,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    NULL,
 		    "xmlSecOpenSSLEvpKeyAdopt",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	EVP_PKEY_free(pKey);	
 	goto done;
     }    
@@ -277,7 +280,8 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd) {
 		    NULL,
 		    "xmlSecKeyDataCreate",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataX509Id");
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecOpenSSLKeyDataX509Id)));
 	goto done;
     }    
 
@@ -398,7 +402,7 @@ xmlSecOpenSSLAppKeysMngrPemCertLoad(xmlSecKeysMngrPtr mngr, const char *filename
 		    NULL,
 		    "xmlSecOpenSSLAppPemCertLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	return(-1);    
     }    	
     
@@ -440,7 +444,7 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
 		    NULL,
 		    "xmlSecOpenSSLX509StoreAddCertsPath",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", path);
+		    "path=%s", xmlSecErrorsSafeString(path));
 	return(-1);    
     }
     
@@ -575,7 +579,7 @@ xmlSecOpenSSLAppSimpleKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 		    NULL,
 		    "xmlSecSimpleKeysStoreLoad",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", uri);
+		    "uri=%s", xmlSecErrorsSafeString(uri));
 	return(-1);
     }
     
@@ -606,7 +610,7 @@ xmlSecOpenSSLAppSimpleKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
 		    NULL,
 		    "xmlSecSimpleKeysStoreSave",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "%s", filename);
+		    "filename%s", xmlSecErrorsSafeString(filename));
 	return(-1);
     }
     
@@ -635,7 +639,11 @@ xmlSecOpenSSLAppLoadRANDFile(const char *file) {
 
     if((file == NULL) || !RAND_load_file(file, -1)) {
 	if(RAND_status() == 0) {
-	    fprintf(stderr, "Random numbers initialization failed (file=%s)\n", (file) ? file : "NULL"); 
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"RAND_load_file",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"file=%s", xmlSecErrorsSafeString(file));
 	    return 0;
 	}
     }
@@ -659,8 +667,13 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
 	file = RAND_file_name(buffer, sizeof(buffer));
     }
     if((file == NULL) || !RAND_write_file(file)) {
-	    fprintf(stderr, "Failed to write random init file (file=%s)\n", (file) ? file : "NULL"); 
-	    return 0;
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "RAND_write_file",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "file=%s", 
+		    xmlSecErrorsSafeString(file));
+	return 0;
     }
 
     return 1;
@@ -679,7 +692,8 @@ xmlSecOpenSSLAppPemCertLoad(const char* filename) {
 		    NULL,
 		    "fopen",
 		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "filename=%s,errno=%d", filename, errno);
+		    "filename=%s;errno=%d", 
+		    xmlSecErrorsSafeString(filename), errno);
 	return(NULL);    
     }
     
@@ -689,12 +703,10 @@ xmlSecOpenSSLAppPemCertLoad(const char* filename) {
 		    NULL,
 		    "PEM_read_X509_AUX",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "%s", filename);
+		    "filename=%s", xmlSecErrorsSafeString(filename));
 	fclose(f);
 	return(NULL);    
     }    	
     fclose(f);
     return(cert);
 }
-
-

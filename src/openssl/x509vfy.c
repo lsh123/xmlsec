@@ -51,7 +51,7 @@ static xmlSecKeyDataStoreKlass xmlSecOpenSSLX509StoreKlass = {
     sizeof(xmlSecKeyDataStore),
 
     /* data */
-    BAD_CAST "x509-store",		/* const xmlChar* name; */ 
+    xmlSecNameX509Store,		/* const xmlChar* name; */ 
         
     /* constructors/destructor */
     xmlSecOpenSSLX509StoreInitialize,	/* xmlSecKeyDataStoreInitializeMethod initialize; */
@@ -241,11 +241,15 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 		res = cert;
 		goto done;
 	    } else if(ret < 0) {
+		const char* err_msg;
+		
+		err_msg = X509_verify_cert_error_string(err);
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			    "X509_verify_cert",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    	    "%d (%s)", err, X509_verify_cert_error_string(err));
+		    	    "err=%d;msg=%s", err, 
+			    xmlSecErrorsSafeString(err_msg));
 		goto done;
 	    }
 	}
@@ -254,6 +258,9 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
     /* if we came here then we found nothing. do we have any error? */
     if((err != 0) && (err_cert != NULL)) {
 	char buf[256];
+	const char* err_msg;
+
+	err_msg = X509_verify_cert_error_string(err);
 	switch (err) {
 	case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
 	    X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
@@ -261,8 +268,10 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-		        "error=%d (%s); issuer=\"%s\"", err,
-		        X509_verify_cert_error_string(err), buf);
+		        "err=%d;msg=%s;issuer=%s", 
+			err, 
+			xmlSecErrorsSafeString(err_msg),
+			xmlSecErrorsSafeString(buf));
 	    break;
 	case X509_V_ERR_CERT_NOT_YET_VALID:
 	case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
@@ -270,8 +279,8 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
+			"err=%d;msg=%s", err,
+			xmlSecErrorsSafeString(err_msg));
 	    break;
 	case X509_V_ERR_CERT_HAS_EXPIRED:
 	case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
@@ -279,16 +288,16 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
+			"err=%d;msg=%s", err,
+			xmlSecErrorsSafeString(err_msg));
 	    break;
 	default:			
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 			NULL,
 			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
+			"err=%d;msg=%s", err,
+			xmlSecErrorsSafeString(err_msg));
 	}		    
     }
     
@@ -508,7 +517,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			NULL,
 			"xmlSecOpenSSLX509NameRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%s", subjectName);
+			"%s", xmlSecErrorsSafeString(subjectName));
 	    return(NULL);    
 	}
 
@@ -533,7 +542,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			NULL,
 			"xmlSecOpenSSLX509NameRead",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%s", issuerName);
+			"%s", xmlSecErrorsSafeString(issuerName));
 	    return(NULL);    
 	}
 		
@@ -600,7 +609,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			NULL,
 			"xmlSecBase64Decode",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%s", ski);
+			"%s", xmlSecErrorsSafeString(ski));
 	    return(NULL);    	
 	}
 	for(i = 0; i < certs->num; ++i) {

@@ -615,19 +615,20 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	    return(-1);
 	}
 	
-	cur = xmlSecAddChild(node, BAD_CAST "X509Certificate", xmlSecDSigNs);
+	cur = xmlSecAddChild(node, xmlSecNodeX509Certificate, xmlSecDSigNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:X509Certificate>");    
+			"node=%s",
+			xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
 	    xmlFree(buf);
 	    return(-1);	
 	}
 	/* todo: add \n around base64 data - from context */
 	/* todo: add errors check */
-	xmlNodeSetContent(cur, BAD_CAST "\n");
+	xmlNodeSetContent(cur, xmlSecStringCR);
 	xmlNodeSetContent(cur, buf);
 	xmlFree(buf);
     }    
@@ -641,7 +642,7 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecOpenSSLKeyDataX509GetCrl",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"%d", pos);
+			"pos=%d", pos);
 	    return(-1);
 	}
 	
@@ -656,19 +657,19 @@ xmlSecOpenSSLKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 	    return(-1);
 	}
 	
-	cur = xmlSecAddChild(node, BAD_CAST "X509CRL", xmlSecDSigNs);
+	cur = xmlSecAddChild(node, xmlSecNodeX509CRL, xmlSecDSigNs);
 	if(cur == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 			"xmlSecAddChild",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"<dsig:X509CRL>");
+			xmlSecErrorsSafeString(xmlSecNodeX509CRL));
 	    xmlFree(buf);
 	    return(-1);	
 	}
 	/* todo: add \n around base64 data - from context */
 	/* todo: add errors check */
-	xmlNodeSetContent(cur, BAD_CAST "\n");
+	xmlNodeSetContent(cur, xmlSecStringCR);
 	xmlNodeSetContent(cur, buf);	
     }    
     
@@ -776,15 +777,15 @@ xmlSecOpenSSLX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
 	cur = xmlSecGetNextElementNode(cur->next)) {
 	
 	ret = 0;
-	if(xmlSecCheckNodeName(cur, BAD_CAST "X509Certificate", xmlSecDSigNs)) {
+	if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
 	    ret = xmlSecOpenSSLX509CertificateNodeRead(data, cur, keyInfoCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SubjectName", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
 	    ret = xmlSecOpenSSLX509SubjectNameNodeRead(data, cur, keyInfoCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerSerial", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
 	    ret = xmlSecOpenSSLX509IssuerSerialNodeRead(data, cur, keyInfoCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509SKI", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
 	    ret = xmlSecOpenSSLX509SKINodeRead(data, cur, keyInfoCtx);
-	} else if(xmlSecCheckNodeName(cur, BAD_CAST "X509CRL", xmlSecDSigNs)) {
+	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
 	    ret = xmlSecOpenSSLX509CRLNodeRead(data, cur, keyInfoCtx);
 	} else if(0) {
 	    /* todo: laxi schema validation: ignore unknown nodes */	    
@@ -893,7 +894,8 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLX509StoreFindCert",
 		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    "subject=\"%s\"", subject);
+		    "subject=%s", 
+		    xmlSecErrorsSafeString(subject));
 	xmlFree(subject);
 	return((keyInfoCtx->failIfCertNotFound) ? -1 : 0);
     }
@@ -953,12 +955,12 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
     cur = xmlSecGetNextElementNode(node->children);
 
     /* the first is required node X509IssuerName */
-    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509IssuerName", xmlSecDSigNs)) {
+    if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerName, xmlSecDSigNs)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "<dsig:X509IssuerName>");
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
 	return(-1);
     }    
     issuerName = xmlNodeGetContent(cur);
@@ -967,18 +969,18 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    "<dsig:X509IssuerName>");    
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
 	return(-1);
     }
     cur = xmlSecGetNextElementNode(cur->next); 
 
     /* next is required node X509SerialNumber */
-    if((cur == NULL) || !xmlSecCheckNodeName(cur, BAD_CAST "X509SerialNumber", xmlSecDSigNs)) {
+    if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    xmlSecNodeGetName(cur),
 		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    "<dsig:X509SerialNumber>");
+		    xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
 	xmlFree(issuerName);
 	return(-1);
     }    
@@ -1011,8 +1013,9 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLX509StoreFindCert",
 		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    "issuerName=\"%s\",issuerSerial=\"%s\"",
-		    issuerName, issuerSerial);
+		    "issuerName=%s;issuerSerial=%s",
+		    xmlSecErrorsSafeString(issuerName), 
+		    xmlSecErrorsSafeString(issuerSerial));
 	xmlFree(issuerSerial);
 	xmlFree(issuerName);
 	return((keyInfoCtx->failIfCertNotFound) ? -1 : 0);    
@@ -1077,7 +1080,7 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    xmlSecNodeGetName(node),
 		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    "<dsig:X509SKI>");
+		    xmlSecErrorsSafeString(xmlSecNodeX509SKI));
 	return(-1);
     }
 
@@ -1087,7 +1090,7 @@ xmlSecOpenSSLX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyIn
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
 		    "xmlSecOpenSSLX509StoreFindCert",
 		    XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-		    "ski=\"%s\"", ski);
+		    "ski=%s", xmlSecErrorsSafeString(ski));
 	xmlFree(ski);
 	return((keyInfoCtx->failIfCertNotFound) ? -1 : 0);    
     }
@@ -1516,9 +1519,9 @@ xmlSecOpenSSLX509CertDebugDump(X509* cert, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "==== Subject Name: %s\n", 
-	 X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))); 
+	X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf))); 
     fprintf(output, "==== Issuer Name: %s\n", 
-	 X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf))); 
+	X509_NAME_oneline(X509_get_issuer_name(cert), buf, sizeof(buf))); 
     fprintf(output, "==== Issuer Serial: ");
     bn = ASN1_INTEGER_to_BN(X509_get_serialNumber(cert),NULL);
     if(bn != NULL) {

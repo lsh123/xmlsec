@@ -317,8 +317,6 @@ keysdata
 @node: 
 @keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@dataNode: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDataXmlWrite ##### -->
@@ -331,8 +329,6 @@ keysdata
 @node: 
 @keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@dataNode: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDataBinRead ##### -->

@@ -1,12 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>XML Security Library Examples.</title>
+<title>Examples.</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
-<link rel="PREVIOUS" title="crypto" href="xmlsec-nss-crypto.html">
-<link rel="NEXT" title="sign1.c" href="xmlsec-example-sign1.html">
+<link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
+<link rel="PREVIOUS" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
+<link rel="NEXT" title="Signing a template file." href="xmlsec-examples-sign-template-file.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -32,80 +33,50 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-sign1.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-examples-sign-template-file.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
 <div class="CHAPTER">
 <h1>
-<a name="XMLSEC-EXAMPLES"></a>XML Security Library Examples.</h1>
+<a name="XMLSEC-EXAMPLES"></a>Examples.</h1>
 <div class="TOC"><dl>
 <dt><b>Table of Contents</b></dt>
-<dt>
-<a href="xmlsec-example-sign1.html">sign1.c</a> -- Signing a template file.</dt>
-<dt>
-<a href="xmlsec-example-sign2.html">sign2.c</a> -- Signing a file with a dynamicaly created template.</dt>
-<dt>
-<a href="xmlsec-example-sign3.html">sign3.c</a> -- Signing a file with a dynamicaly created template and an X509 certificate.</dt>
-<dt>
-<a href="xmlsec-example-verify1.html">verify1.c</a> -- Verifying a file using a single key.</dt>
-<dt>
-<a href="xmlsec-example-verify2.html">verify2.c</a> -- Verifying a file using keys manager.</dt>
-<dt>
-<a href="xmlsec-example-verify3.html">verify3.c</a> -- Verifying a file signed with X509 certificate</dt>
-<dt>
-<a href="xmlsec-example-encrypt1.html">encrypt1.c</a> -- Encrypting data using a template file.</dt>
-<dt>
-<a href="xmlsec-example-encrypt2.html">encrypt2.c</a> -- Encrypting XML file with a dynamicaly created template.</dt>
-<dt>
-<a href="xmlsec-example-encrypt3.html">encrypt3.c</a> -- Encrypting XML file with a session key and dynamicaly created template.</dt>
-<dt>
-<a href="xmlsec-example-decrypt1.html">decrypt1.c</a> -- Decrypting an encrypted file using a single key.</dt>
-<dt>
-<a href="xmlsec-example-decrypt2.html">decrypt2.c</a> -- Decrypting an encrypted file using keys manager.</dt>
-<dt>
-<a href="xmlsec-example-decrypt3.html">decrypt3.c</a> -- Decrypting an encrypted file using a custom keys manager.</dt>
-<dt>
-<a href="xmlsec-example-sign1-tmpl.html">sign1-tmpl.xml</a> -- Simple signature template file for sign1 example. </dt>
-<dt>
-<a href="xmlsec-example-sign1-res.html">sign1-res.xml</a> -- Signed file (sign1 example). </dt>
-<dt>
-<a href="xmlsec-example-sign2-doc.html">sign2-doc.xml</a> -- Original XML doc file for sign2 example. </dt>
-<dt>
-<a href="xmlsec-example-sign2-res.html">sign2-res.xml</a> -- Signed XML doc file (sign2 example). </dt>
-<dt>
-<a href="xmlsec-example-sign3-doc.html">sign3-doc.xml</a> -- Original XML doc file for sign3 example. </dt>
-<dt>
-<a href="xmlsec-example-sign3-res.html">sign3-res.xml</a> -- Signed XML doc file (sign3 example). </dt>
-<dt>
-<a href="xmlsec-example-encrypt1-tmpl.html">encrypt1-tmpl.xml</a> -- Simple encryption template file for encrypt1 example. </dt>
-<dt>
-<a href="xmlsec-example-encrypt1-res.html">encrypt1-res.xml</a> -- Encrypted binary data (encrypt1 example).</dt>
-<dt>
-<a href="xmlsec-example-encrypt2-doc.html">encrypt2-doc.xml</a> -- Original XML doc file before encryption (encrypt2 example). </dt>
-<dt>
-<a href="xmlsec-example-encrypt2-res.html">encrypt2-res.xml</a> -- Encrypted XML file (encrypt2 example). </dt>
-<dt>
-<a href="xmlsec-example-encrypt3-doc.html">encrypt3-doc.xml</a> -- Original XML doc file before encryption (encrypt3 example). </dt>
-<dt>
-<a href="xmlsec-example-encrypt3-res.html">encrypt3-res.xml</a> -- XML doc file encrypted with a session DES key (encrypt3 example). </dt>
+<dt><a href="xmlsec-examples.html#XMLSEC-EXAMPLES-OVERVIEW">XML Security Library Examples.</a></dt>
+<dt><a href="xmlsec-examples-sign-template-file.html">Signing a template file.</a></dt>
+<dt><a href="xmlsec-examples-sign-dynamimc-template.html">Signing a dynamicaly created template.</a></dt>
+<dt><a href="xmlsec-examples-sign-x509.html">Signing with X509 certificate.</a></dt>
+<dt><a href="xmlsec-verify-with-key.html">Verifying a signature with a single key.</a></dt>
+<dt><a href="xmlsec-verify-with-keys-mngr.html">Verifying a signature with keys manager.</a></dt>
+<dt><a href="xmlsec-verify-with-x509.html">Verifying a signature with X509 certificates.</a></dt>
+<dt><a href="xmlsec-verify-with-restrictions.html">Verifying a signature with additional restrictions.</a></dt>
+<dt><a href="xmlsec-encrypt-template-file.html">Encrypting data with a template file.</a></dt>
+<dt><a href="xmlsec-encrypt-dynamic-template.html">Encrypting data with a dynamicaly created template.</a></dt>
+<dt><a href="xmlsec-encrypt-with-session-key.html">Encrypting data with a session key.</a></dt>
+<dt><a href="xmlsec-decrypt-with-signle-key.html">Decrypting data with a single key.</a></dt>
+<dt><a href="xmlsec-decrypt-with-keys-mngr.html">Decrypting data with keys manager.</a></dt>
+<dt><a href="xmlsec-custom-keys-manager.html">Writing a custom keys manager.</a></dt>
 </dl></div>
+<br clear="all"><div class="SECT1">
+<h1 class="SECT1">
+<a name="XMLSEC-EXAMPLES-OVERVIEW"></a>XML Security Library Examples.</h1>
 <p>This section contains several examples of using XML Security Library
 	to sign, veiryf, encrypt or decrypt XML documents.</p>
+</div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-nss-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
-<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b> </b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-example-sign1.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-examples-sign-template-file.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>crypto</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>sign1.c</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Adding support for new cryptographic library.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Signing a template file.</b></font></td>
 </tr>
 </table>
 </div>

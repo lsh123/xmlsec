@@ -1,18 +1,20 @@
 <chapter id="xmlsec-notes-keysmngr">
     <title>Keys manager.</title>
-    <para>Processing some of the key data objects require additional 
+    <sect1 id="xmlsec-notes-keysmngr-overview">
+        <title>Overview.</title>
+        <para>Processing some of the key data objects require additional 
 	information which is global across the application (or in the 
 	particular area of the application). For example, X509 certificates 
 	processing require a common list of trusted certificates to be 
 	available. XML Security Library keeps all the common information 
 	for key data processing in a a collection of key data stores called 
 	"keys manager".
-    </para>
-    <figure>
-	<title>The keys manager structure.</title>
-	<graphic fileref="images/keysmngr.png" align="center"></graphic>
-    </figure>	 
-    <para>Keys manager has a special "keys store" which lists the keys 
+        </para>
+	<figure>
+	    <title>The keys manager structure.</title>
+	    <graphic fileref="images/keysmngr.png" align="center"></graphic>
+	</figure>	 
+        <para>Keys manager has a special "keys store" which lists the keys 
 	known to the application. This "keys store" is used by XML Security 
 	Library to lookup keys by name, type and crypto algorithm (for example,
 	during 
@@ -21,8 +23,8 @@
 	provides default "flat list" based implementation of a simple keys 
 	store. The application can replace it with any other keys store 
 	(for example, based on an SQL database).
-    </para>
-    <para>Keys manager is the only object in XML Security Library which 
+	</para>
+        <para>Keys manager is the only object in XML Security Library which 
 	is supposed to be shared by many different operations. Usually keys 
 	manager is initialized once at the application startup and later is 
 	used by XML Security library routines in "read-only" mode. If 
@@ -31,8 +33,9 @@
 	implemented. In the same time, application can create a new keys 
 	manager each time it needs to perform XML signature, verification, 
 	encryption or decryption.
-    </para>
-	
+	</para>
+    </sect1>
+    
     <sect1 id="xmlsec-notes-simple-keys-store">
 	<title>Simple keys store.</title>
 	<para>XML Security Library has a built-in simple keys store 

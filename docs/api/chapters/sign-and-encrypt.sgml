@@ -1,6 +1,8 @@
 <chapter id="xmlsec-notes-sign-encrypt">
     <title>Signing and encrypting documents.</title>
-    <para>XML Security Library performs signature or encryption by processing 
+    <sect1 id="xmlsec-notes-sign-encrypt-overview">
+        <title>Overview.</title>    
+	<para>XML Security Library performs signature or encryption by processing 
 	input xml or binary data and a template that specifies a signature or 
 	encryption skeleton: the transforms, algorithms, the key selection 
 	process. A template has the same structure as the desired result but 
@@ -14,7 +16,9 @@
 	    <graphic fileref="images/sign-enc-model.png" align="center"></graphic>
 	  </figure>
 	</para>
-	<sect1 id="xmlsec-notes-sign" >
+    </sect1>
+    
+    <sect1 id="xmlsec-notes-sign" >
 	<title>Signing a document.</title>
 	<para>The typical siganture process includes following steps:
 	  <itemizedlist>
@@ -138,9 +142,9 @@ done:
 		<simpara><link linkend="xmlsec-example-sign1-tmpl">Simple signature template file</link></simpara>
 	    </example>
 	</para>
-	</sect1>
+    </sect1>
 	
-	<sect1 id="xmlsec-notes-encrypt">
+    <sect1 id="xmlsec-notes-encrypt">
 	<title>Encrypting data.</title>
 	<para>The typical encryption process includes following steps:
 	  <itemizedlist>

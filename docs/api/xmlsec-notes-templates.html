@@ -6,8 +6,8 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
-<link rel="NEXT" title="Verifing and decrypting documents." href="xmlsec-notes-verify-decrypt.html">
+<link rel="PREVIOUS" title="Encrypting data." href="xmlsec-notes-encrypt.html">
+<link rel="NEXT" title="Creating dynamic signature templates." href="xmlsec-notes-dynamic-signature-templates.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,341 +33,45 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-dynamic-signature-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
+<div class="CHAPTER">
+<h1>
+<a name="XMLSEC-NOTES-TEMPLATES"></a>Creating dynamic templates.</h1>
+<div class="TOC"><dl>
+<dt><b>Table of Contents</b></dt>
+<dt><a href="xmlsec-notes-templates.html#XMLSEC-NOTES-TEMPLATES-OVERVIEW">Overview.</a></dt>
+<dt><a href="xmlsec-notes-dynamic-signature-templates.html">Creating dynamic signature templates.</a></dt>
+<dt><a href="xmlsec-notes-dynamic-encryption-templates.html">Creating dynamic encryption templates.</a></dt>
+</dl></div>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
-<a name="XMLSEC-NOTES-TEMPLATES"></a>Creating dynamic templates.</h1>
+<a name="XMLSEC-NOTES-TEMPLATES-OVERVIEW"></a>Overview.</h1>
 <p>The XML Security Library uses templates to describe
-    how and what data should be signed or encrypted. The template
-    is a regular XML file. You can create templates in advance
-    using your favorite XML files editor, load them from a file
-    and use for creating signature or encrypting data. You can 
-    also create templates dynamicaly. The XML Security Library
-    provides helper functions to quickly create dynamic templates
-    inside your application.</p>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2">
-<a name="AEN205"></a>Creating dynamic signature templates.</h2>
-<p>The signature template has structure similar 
-	to the XML Digital Signature structure as it is described in 
-	<a href="http://www.w3.org/TR/xmldsig-core" target="_top">specification</a>.
-	The only difference is that some nodes (for example,
-	&lt;dsig:DigestValue/&gt; or &lt;SignatureValue/&gt;)
-	are empty. The XML Security Library sets the content of these
-	nodes after doing necessary calculations.
-	</p>
-<div class="FIGURE">
-<a name="AEN209"></a><p><b>Figure 3. XML Digital Signature structure</b></p>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;dsig:Signature ID?&gt; 
-    &lt;dsig:SignedInfo&gt;
-        &lt;dsig:CanonicalizationMethod Algorithm /&gt;
-        &lt;dsig:SignatureMethod Algorithm /&gt;
-        (&lt;dsig:Reference URI? &gt;
-    	    (&lt;dsig:Transforms&gt;
-		(&lt;dsig:Transform Algorithm /&gt;)+
-	     &lt;/dsig:Transforms&gt;)?
-	    &lt;dsig:DigestMethod Algorithm &gt;
-	    &lt;dsig:DigestValue&gt;
-	&lt;/dsig:Reference&gt;)+
-    &lt;/dsig:SignedInfo&gt;
-    &lt;dsig:SignatureValue&gt; 
-    (&lt;dsig:KeyInfo&gt;
-	&lt;dsig:KeyName&gt;?
-	&lt;dsig:KeyValue&gt;?
-	&lt;dsig:RetrievalMethod&gt;?
-	&lt;dsig:X509Data&gt;?
-	&lt;dsig:PGPData&gt;?
-	&lt;enc:EncryptedKey&gt;?
-	&lt;enc:AgreementMethod&gt;?
-	&lt;dsig:KeyName&gt;?
-	&lt;dsig:RetrievalMethod&gt;?
-	&lt;*&gt;?
-    &lt;/dsig:KeyInfo&gt;)?
-    (&lt;dsig:Object ID?&gt;)*
-&lt;/dsig:Signature&gt;
-	    </pre></td></tr></table>
+        how and what data should be signed or encrypted. The template
+        is a regular XML file. You can create templates in advance
+        using your favorite XML files editor, load them from a file
+        and use for creating signature or encrypting data. You can 
+        also create templates dynamicaly. The XML Security Library
+        provides helper functions to quickly create dynamic templates
+        inside your application.</p>
 </div>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN213"></a><p><b>Example 7. Creating dynamic signature template.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * sign_file:
- * @xml_file:		the XML file name.
- * @key_file:		the PEM private key file name.
- *
- * Signs the #xml_file using private key from #key_file and dynamicaly
- * created enveloped signature template.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int 
-sign_file(const char* xml_file, const char* key_file) {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr signNode = NULL;
-    xmlNodePtr refNode = NULL;
-    xmlNodePtr keyInfoNode = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
-    int res = -1;
-    
-    assert(xml_file);
-    assert(key_file);
-
-    /* load doc file */
-    doc = xmlParseFile(xml_file);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
-	goto done;	
-    }
-    
-    /* create signature template for RSA-SHA1 enveloped signature */
-    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-				         xmlSecTransformRsaSha1Id, NULL);
-    if(signNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to create signature template\n&quot;);
-	goto done;		
-    }
-
-    /* add &lt;dsig:Signature/&gt; node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
-    
-    /* add reference */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-					NULL, NULL, NULL);
-    if(refNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add reference to signature template\n&quot;);
-	goto done;		
-    }
-
-    /* add enveloped transform */
-    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add enveloped transform to reference\n&quot;);
-	goto done;		
-    }
-
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
-    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
-    if(keyInfoNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
-	goto done;		
-    }
-
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key name\n&quot;);
-	goto done;		
-    }
-
-    /* create signature context, we don't need keys manager in this example */
-    dsigCtx = xmlSecDSigCtxCreate(NULL);
-    if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
-	goto done;
-    }
-
-    /* load private key, assuming that there is not password */
-    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* sign the template */
-    if(xmlSecDSigCtxSign(dsigCtx, signNode) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature failed\n&quot;);
-	goto done;
-    }
-        
-    /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
-    
-    /* success */
-    res = 0;
-
-done:    
-    /* cleanup */
-    if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
-    }
-    
-    if(doc != NULL) {
-	xmlFreeDoc(doc); 
-    }
-    return(res);
-}
-		</pre></td></tr></table>
-<p><a href="xmlsec-example-sign2.html">Full program listing</a></p>
-</div>
-	</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2">
-<a name="AEN218"></a>Creating dynamic encryption templates.</h2>
-<p>The encryption template has structure similar 
-	to the XML Encryption structure as it is described in 
-	<a href="http://www.w3.org/TR/xmlenc-core" target="_top">specification</a>.
-	The only difference is that some nodes (for example,
-	&lt;enc:CipherValue/&gt;)
-	are empty. The XML Security Library sets the content of these
-	nodes after doing necessary calculations.
-	</p>
-<div class="FIGURE">
-<a name="AEN222"></a><p><b>Figure 4. XML Encryption structure</b></p>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;enc:EncryptedData Id? Type? MimeType? Encoding?&gt;
-    &lt;enc:EncryptionMethod Algorithm /&gt;?
-    (&lt;dsig:KeyInfo&gt;
-	&lt;dsig:KeyName&gt;?
-	&lt;dsig:KeyValue&gt;?
-	&lt;dsig:RetrievalMethod&gt;?
-	&lt;dsig:X509Data&gt;?
-	&lt;dsig:PGPData&gt;?
-	&lt;enc:EncryptedKey&gt;?
-	&lt;enc:AgreementMethod&gt;?
-	&lt;dsig:KeyName&gt;?
-	&lt;dsig:RetrievalMethod&gt;?
-	&lt;*&gt;?
-    &lt;/dsig:KeyInfo&gt;)?
-    &lt;enc:CipherData&gt;
-	&lt;enc:CipherValue&gt;?
-	&lt;enc:CipherReference URI?&gt;?
-    &lt;/enc:CipherData&gt;
-    &lt;enc:EncryptionProperties&gt;?
-&lt;/enc:EncryptedData&gt;	
-	    </pre></td></tr></table>
-</div>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN226"></a><p><b>Example 8. Creating dynamic encrytion template.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
- * encrypt_file:
- * @xml_file:		the encryption template file name.
- * @key_file:		the Triple DES key file.
- *
- * Encrypts #xml_file using a dynamicaly created template and DES key from
- * #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int 
-encrypt_file(const char* xml_file, const char* key_file) {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr encDataNode = NULL;
-    xmlNodePtr keyInfoNode = NULL;
-    xmlSecEncCtxPtr encCtx = NULL;
-    int res = -1;
-    
-    assert(xml_file);
-    assert(key_file);
-
-    /* load template */
-    doc = xmlParseFile(xml_file);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, xml_file);
-	goto done;	
-    }
-    
-    /* create encryption template to encrypt XML file and replace 
-     * its content with encryption result */
-    encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
-				NULL, xmlSecTypeEncElement, NULL, NULL);
-    if(encDataNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to create encryption template\n&quot;);
-	goto done;   
-    }
-
-    /* we want to put encrypted data in the &lt;enc:CipherValue/&gt; node */
-    if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add CipherValue node\n&quot;);
-	goto done;   
-    }
-
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:KeyName/&gt; nodes to put key name in the signed document */
-    keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
-    if(keyInfoNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
-	goto done;		
-    }
-
-    if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode, NULL) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key name\n&quot;);
-	goto done;		
-    }
-
-    /* create encryption context, we don't need keys manager in this example */
-    encCtx = xmlSecEncCtxCreate(NULL);
-    if(encCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
-	goto done;
-    }
-
-    /* load DES key, assuming that there is not password */
-    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
-    if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* encrypt the data */
-    if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) &lt; 0) {
-        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
-	goto done;
-    }
-    
-    /* we template is inserted in the doc */
-    encDataNode = NULL;
-        
-    /* print encrypted data with document to stdout */
-    xmlDocDump(stdout, doc);
-    
-    /* success */
-    res = 0;
-
-done:    
-
-    /* cleanup */
-    if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
-    }
-
-    if(encDataNode != NULL) {
-	xmlFreeNode(encDataNode);
-    }
-        
-    if(doc != NULL) {
-	xmlFreeDoc(doc); 
-    }
-    return(res);
-}
-		</pre></td></tr></table>
-<p><a href="xmlsec-example-encrypt2.html">Full program listing</a></p>
-</div>
-	</div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-encrypt.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-verify-decrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-dynamic-signature-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Signing and encrypting documents.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Verifing and decrypting documents.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Encrypting data.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Creating dynamic signature templates.</b></font></td>
 </tr>
 </table>
 </div>

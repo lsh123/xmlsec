@@ -279,9 +279,6 @@ keys
 @sizeBits: 
 @type: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@klass: 
-@name: 
 
 
 <!-- ##### FUNCTION xmlSecKeyGenerateByName ##### -->

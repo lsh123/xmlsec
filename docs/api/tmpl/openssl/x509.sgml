@@ -1,8 +1,8 @@
 <!-- ##### SECTION Title ##### -->
-x509.h
+x509
 
 <!-- ##### SECTION Short_Description ##### -->
-The X509 certificates functions.
+
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>

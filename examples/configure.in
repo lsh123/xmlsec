@@ -20,7 +20,7 @@ AM_PROG_LIBTOOL
 dnl 
 dnl Check for xmlsec and friends
 dnl
-PKG_CHECK_MODULES(XMLSEC, xmlsec1 xml2 libxslt,,exit)
+PKG_CHECK_MODULES(XMLSEC, xmlsec1 >= 1.0.0 xml2 libxslt,,exit)
 AC_SUBST(XMLSEC_CFLAGS)
 AC_SUBST(XMLSEC_LIBS)
 

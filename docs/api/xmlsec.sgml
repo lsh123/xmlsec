@@ -10,6 +10,7 @@
 <!ENTITY chapter-using-transforms	SYSTEM "chapters/using-transforms.sgml">
 <!ENTITY chapter-using-contexts		SYSTEM "chapters/using-contexts.sgml">
 <!ENTITY chapter-new-crypto		SYSTEM "chapters/new-crypto.sgml">
+<!ENTITY chapter-examples		SYSTEM "chapters/examples.sgml">
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
 
@@ -54,6 +55,7 @@
 <!ENTITY xmlsec-example-verify1 	SYSTEM "examples/verify1.sgml">
 <!ENTITY xmlsec-example-verify2 	SYSTEM "examples/verify2.sgml">
 <!ENTITY xmlsec-example-verify3 	SYSTEM "examples/verify3.sgml">
+<!ENTITY xmlsec-example-verify4 	SYSTEM "examples/verify4.sgml">
 
 <!ENTITY xmlsec-example-encrypt1 	SYSTEM "examples/encrypt1.sgml">
 <!ENTITY xmlsec-example-encrypt2 	SYSTEM "examples/encrypt2.sgml">
@@ -69,6 +71,11 @@
 <!ENTITY xmlsec-example-sign2-res	SYSTEM "examples/sign2-res.sgml">
 <!ENTITY xmlsec-example-sign3-doc	SYSTEM "examples/sign3-doc.sgml">
 <!ENTITY xmlsec-example-sign3-res	SYSTEM "examples/sign3-res.sgml">
+<!ENTITY xmlsec-example-verify4-res 	SYSTEM "examples/verify4-res.sgml">
+<!ENTITY xmlsec-example-verify4-tmpl 	SYSTEM "examples/verify4-tmpl.sgml">
+<!ENTITY xmlsec-example-verify4-bad-res  SYSTEM "examples/verify4-bad-res.sgml">
+<!ENTITY xmlsec-example-verify4-bad-tmpl SYSTEM "examples/verify4-bad-tmpl.sgml">
+
 <!ENTITY xmlsec-example-encrypt1-tmpl	SYSTEM "examples/encrypt1-tmpl.sgml">
 <!ENTITY xmlsec-example-encrypt1-res	SYSTEM "examples/encrypt1-res.sgml">
 <!ENTITY xmlsec-example-encrypt2-doc	SYSTEM "examples/encrypt2-doc.sgml">
@@ -116,24 +123,24 @@
     </abstract>
   </bookinfo>
 
-  <chapter id="xmlsec-notes">
+  <part id="xmlsec-notes">
     <title>XML Security Library Programming Notes</title>
-    <sect1 id="xmlsec-notes-overview">
+    <chapter id="xmlsec-notes-overview">
 	<title>Overview.</title>
 	<para>XML Security Library provides support for XML Digital Signature 
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
 	practicaly any crypto library (currently there is "out of the box" 
 	support for OpenSSL, GnuTLS and NSS).
 	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-structure">
+    </chapter>
+    <chapter id="xmlsec-notes-structure">
 	<title>XML Security Library Structure.</title>
 	<para>In order to provide the an ability to use different crypto engines, 
 	the XML Security Library is splitted in two parts: core library (xmlsec)
 	and crypto library (xmlsec-openssl, xmlsec-gnutls, xmlsec-nss, ...). 
 	<figure>
 	    <title>The library structure and dependencies.</title>
-	    <graphic fileref="images/structure.png" align="center" />
+	    <graphic fileref="images/structure.png" align="center"></graphic>
 	</figure>	 
 	</para>
 	<para>The core library has no dependency on any crypto library and provides 
@@ -145,7 +152,7 @@
 	Crypto library (or even libraries), but the actual application 
 	code might be general enough so switching crypto engine would be 
 	a matter of changing several #include directives.</para>
-    </sect1>
+    </chapter>
     
     &chapter-compiling-and-linking;
     &chapter-init-and-shutdown;
@@ -158,10 +165,30 @@
     &chapter-using-transforms;
     &chapter-using-contexts;
     &chapter-new-crypto;
-  </chapter>
+    &chapter-examples;
+    
+    <chapter id="xmlsec-signature-klasses">
+    <title>APPENDIX A. XML Security Library Signature Klasses.</title>
+	<figure>
+	    <title>XML Security Library Signature Klasses..</title>
+	    <graphic fileref="images/signature-structure.png" align="center"></graphic>
+	</figure>	 
+    </chapter>
 
-  <chapter id="xmlsec-ref">
+    <chapter id="xmlsec-encryption-klasses">
+    <title>APPENDIX B. XML Security Library Encryption Klasses.</title>
+	<figure>
+	    <title>XML Security Library Encryption Klasses..</title>
+	    <graphic fileref="images/encryption-structure.png" align="center"></graphic>
+	</figure>	 
+    </chapter>
+  </part>
+
+  <part id="xmlsec-reference">
     <title>XML Security Library API Reference.</title>
+    
+    <chapter id="xmlsec-ref">
+    <title>XML Security Core Library API Reference.</title>
     <para>This section contains the API reference for xmlsec. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
@@ -185,9 +212,9 @@
     &xmlsec-xmlenc;
     &xmlsec-xmlsec;
     &xmlsec-xmltree;
-  </chapter>
+    </chapter>
 
-  <chapter id="xmlsec-openssl-ref">
+    <chapter id="xmlsec-openssl-ref">
     <title>XML Security Library for OpenSLL API Reference.</title>
     <para>This section contains the API reference for xmlsec-openssl. All
     the public interfaces are documented here. This reference guide is
@@ -197,64 +224,33 @@
     &xmlsec-openssl-bn;
     &xmlsec-openssl-crypto;
     &xmlsec-openssl-x509;
-  </chapter>
+    </chapter>
 
-  <chapter id="xmlsec-gnutls-ref">
+    <chapter id="xmlsec-gnutls-ref">
     <title>XML Security Library for GnuTLS API Reference.</title>
     <para>This section contains the API reference for xmlsec-gnutls. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
     &xmlsec-gnutls-app;
     &xmlsec-gnutls-crypto;
-  </chapter>
+    </chapter>
 
-  <chapter id="xmlsec-nss-ref">
+    <chapter id="xmlsec-nss-ref">
     <title>XML Security Library for NSS API Reference.</title>
     <para>This section contains the API reference for xmlsec-nss. All
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
     &xmlsec-nss-app;
     &xmlsec-nss-crypto;
-  </chapter>
+    </chapter>
     
-  <chapter id="xmlsec-examples">
-    <title>XML Security Library Examples.</title>
-    <para>This section contains several examples of using XML Security Library
-	to sign, veiryf, encrypt or decrypt XML documents.</para>
-
-    &xmlsec-example-sign1;
-    &xmlsec-example-sign2;
-    &xmlsec-example-sign3;
-    &xmlsec-example-verify1;
-    &xmlsec-example-verify2;
-    &xmlsec-example-verify3;
-    &xmlsec-example-encrypt1;
-    &xmlsec-example-encrypt2;
-    &xmlsec-example-encrypt3;
-    &xmlsec-example-decrypt1;
-    &xmlsec-example-decrypt2;
-    &xmlsec-example-decrypt3;
-
-    &xmlsec-example-sign1-tmpl;
-    &xmlsec-example-sign1-res;
-    &xmlsec-example-sign2-doc;
-    &xmlsec-example-sign2-res;
-    &xmlsec-example-sign3-doc;
-    &xmlsec-example-sign3-res;
-    &xmlsec-example-encrypt1-tmpl;
-    &xmlsec-example-encrypt1-res;
-    &xmlsec-example-encrypt2-doc;
-    &xmlsec-example-encrypt2-res;
-    &xmlsec-example-encrypt3-doc;
-    &xmlsec-example-encrypt3-res;
-  </chapter>
-  
-  <chapter id="xmlsec-index">
+    <chapter id="xmlsec-index">
     <title>XML Security Library Reference Index</title>
     <para>
 	<itemizedlist>
 	&xmlsec-index;
 	</itemizedlist>
     </para>	
-  </chapter>
+    </chapter>
+  </part>
 </book>

@@ -139,18 +139,16 @@ example_sources:
 	    file_ext=`echo $$i | sed 's#.*/##' | sed 's#.*\.##'`; \
 	    echo Converting $$file_name.$$file_ext to $$file_name.sgml ...; \
 	    file_title=`cat $$i | grep 'XML Security Library example: ' | sed 's#^.*: *##'`; \
-	    echo "<refentry id=\"xmlsec-example-$$file_name\">" > \
+	    echo "<sect2 id=\"xmlsec-example-$$file_name\" >" > \
 		examples/$$file_name.sgml; \
-	    echo "<refnamediv><refname>$$file_name.$$file_ext</refname><refpurpose>$$file_title</refpurpose></refnamediv>" >> \
-		examples/$$file_name.sgml; \
-	    echo "<refsect1><title>Example: $$file_title</title><para><informalexample><programlisting>" >> \
+	    echo "<title>$$file_name.$$file_ext</title><para><informalexample><programlisting>" >> \
 		examples/$$file_name.sgml; \
 	    cat $$i | \
 		sed "s#&#\&amp;#g" | \
 		sed "s#<#\&lt;#g" | \
 		sed "s#>#\&gt;#g" >> \
 		examples/$$file_name.sgml; \
-	    echo "</programlisting></informalexample></para></refsect1></refentry>" >> \
+	    echo "</programlisting></informalexample></para></sect2>" >> \
 		examples/$$file_name.sgml; \
 	done);
 
@@ -171,6 +169,5 @@ clean-local:
 
 maintainer-clean-local: clean
 	-@rm *.html *.txt
-	-@rm sgml/*.sgml sgml/openssl/*.sgml
-	-@rm sgml/gnutls/*.sgml sgml/nss/*.sgml
+	-@rm -rf `find sgml -name "*.sgml" -print`
 

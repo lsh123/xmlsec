@@ -3,7 +3,6 @@
 <!ENTITY xmlsec-openssl-bn SYSTEM "sgml/bn.sgml">
 <!ENTITY xmlsec-openssl-crypto SYSTEM "sgml/crypto.sgml">
 <!ENTITY xmlsec-openssl-evp SYSTEM "sgml/evp.sgml">
-<!ENTITY xmlsec-openssl-symbols SYSTEM "sgml/symbols.sgml">
 <!ENTITY xmlsec-openssl-x509 SYSTEM "sgml/x509.sgml">
 ]>
 <book id="index">
@@ -17,7 +16,6 @@
     &xmlsec-openssl-bn;
     &xmlsec-openssl-crypto;
     &xmlsec-openssl-evp;
-    &xmlsec-openssl-symbols;
     &xmlsec-openssl-x509;
   </chapter>
 </book>

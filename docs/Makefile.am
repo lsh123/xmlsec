@@ -16,7 +16,7 @@ docs: api-docs-create docs-format
 api-docs-create:
 	@(cd api; \
 	    $(MAKE) docs; \
-	    @echo "Cleaning up result files"; \
+	    echo "Cleaning up result files"; \
 	    perl ../../scripts/remove-gtkdoclink.pl `find . -name "*.html" -print` \
 	)
 

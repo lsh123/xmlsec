@@ -1,14 +1,16 @@
 <chapter id="xmlsec-notes-x509">
     <title>Using X509 Certificates.</title>
-    <para>
-    X509 certificate is one of many possible keys data object that can be
-    associated with a key. Application may read and write X509 data
-    from/to XML file. The X509 certificates management policies significantly
-    vary from one crypto library to another. The examples in this chapter
-    were tested with OpenSSL and they might be broken if anither crypto
-    engine is used. Check API reference documentation for more specific 
-    information about your crypto engine.
-    </para>
+    <sect1 id="xmlsec-notes-x509-overview">
+        <title>Overview.</title>
+        <para>X509 certificate is one of many possible keys data object that can be
+        associated with a key. Application may read and write X509 data
+	from/to XML file. The X509 certificates management policies significantly
+        vary from one crypto library to another. The examples in this chapter
+        were tested with OpenSSL and they might be broken if anither crypto
+	engine is used. Check API reference documentation for more specific 
+        information about your crypto engine.
+	</para>
+    </sect1>
     
     <sect1 id="xmlsec-notes-sign-x509" >
 	<title>Signing data with X509 certificate.</title>

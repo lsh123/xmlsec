@@ -7,7 +7,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
 <link rel="PREVIOUS" title="Initialization and shutdown." href="xmlsec-notes-init-shutdown.html">
-<link rel="NEXT" title="Creating dynamic templates." href="xmlsec-notes-templates.html">
+<link rel="NEXT" title="Signing a document." href="xmlsec-notes-sign.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -36,12 +36,21 @@
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-init-shutdown.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-sign.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
+<div class="CHAPTER">
+<h1>
+<a name="XMLSEC-NOTES-SIGN-ENCRYPT"></a>Signing and encrypting documents.</h1>
+<div class="TOC"><dl>
+<dt><b>Table of Contents</b></dt>
+<dt><a href="xmlsec-notes-sign-encrypt.html#XMLSEC-NOTES-SIGN-ENCRYPT-OVERVIEW">Overview.</a></dt>
+<dt><a href="xmlsec-notes-sign.html">Signing a document.</a></dt>
+<dt><a href="xmlsec-notes-encrypt.html">Encrypting data.</a></dt>
+</dl></div>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
-<a name="XMLSEC-NOTES-SIGN-ENCRYPT"></a>Signing and encrypting documents.</h1>
+<a name="XMLSEC-NOTES-SIGN-ENCRYPT-OVERVIEW"></a>Overview.</h1>
 <p>XML Security Library performs signature or encryption by processing 
 	input xml or binary data and a template that specifies a signature or 
 	encryption skeleton: the transforms, algorithms, the key selection 
@@ -53,256 +62,8 @@
 	process and stores the required temporary data.
 	  </p>
 <div class="FIGURE">
-<a name="AEN117"></a><p><b>Figure 2. The signature or encryption processing model.</b></p>
+<a name="AEN133"></a><p><b>Figure 1. The signature or encryption processing model.</b></p>
 <p><img src="images/sign-enc-model.png" align="CENTER"></p>
-</div>
-	<br clear="all"><div class="SECT2">
-<h2 class="SECT2">
-<a name="AEN120"></a>Signing a document.</h2>
-<p>The typical siganture process includes following steps:
-	  </p>
-<p></p>
-<ul>
-<li><p>		Prepare data for signature.
-	    </p></li>
-<li><p>		Create or load signature template and select start
-    		<a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a>
-		node.
-	    </p></li>
-<li><p>		Create signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
-		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE">xmlSecDSigCtxCreate</a> or
-		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE">xmlSecDSigCtxInitialize</a>
-		functions.
-	    </p></li>
-<li><p>		Load signature key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
-		or generate a sesison key and set it in the signature context 
-		(<tt class="STRUCTFIELD"><i>signKey</i></tt> member of 
-		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a> structure).
-	    </p></li>
-<li><p>		Sign data by calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN">xmlSecDSigCtxSign</a> 
-		function.
-	    </p></li>
-<li><p>		Check returned value and consume signed data.
-	    </p></li>
-<li><p>		Destroy signature context <a href="xmlsec-xmldsig.html#XMLSECDSIGCTX">xmlSecDSigCtx</a>
-		using <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXDESTROY">xmlSecDSigCtxDestroy</a> or
-		<a href="xmlsec-xmldsig.html#XMLSECDSIGCTXFINALIZE">xmlSecDSigCtxFinalize</a>
-		functions.
-	    </p></li>
-</ul>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN150"></a><p><b>Example 5. Signing a template.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
- * sign_file:
- * @tmpl_file:		the signature template file name.
- * @key_file:		the PEM private key file name.
- *
- * Signs the #tmpl_file using private key from #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int 
-sign_file(const char* tmpl_file, const char* key_file) {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
-    int res = -1;
-    
-    assert(tmpl_file);
-    assert(key_file);
-
-    /* load template */
-    doc = xmlParseFile(tmpl_file);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
-	goto done;	
-    }
-    
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
-    if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
-	goto done;	
-    }
-
-    /* create signature context, we don't need keys manager in this example */
-    dsigCtx = xmlSecDSigCtxCreate(NULL);
-    if(dsigCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create signature context\n&quot;);
-	goto done;
-    }
-
-    /* load private key, assuming that there is not password */
-    dsigCtx-&gt;signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(dsigCtx-&gt;signKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(dsigCtx-&gt;signKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* sign the template */
-    if(xmlSecDSigCtxSign(dsigCtx, node) &lt; 0) {
-        fprintf(stderr,&quot;Error: signature failed\n&quot;);
-	goto done;
-    }
-        
-    /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
-    
-    /* success */
-    res = 0;
-
-done:    
-    /* cleanup */
-    if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
-    }
-    
-    if(doc != NULL) {
-	xmlFreeDoc(doc); 
-    }
-    return(res);
-}
-		</pre></td></tr></table>
-<p><a href="xmlsec-example-sign1.html">Full program listing</a></p>
-<p><a href="xmlsec-example-sign1-tmpl.html">Simple signature template file</a></p>
-</div>
-	</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2">
-<a name="AEN157"></a>Encrypting data.</h2>
-<p>The typical encryption process includes following steps:
-	  </p>
-<p></p>
-<ul>
-<li><p>		Prepare data for encryption.
-	    </p></li>
-<li><p>		Create or load encryption template and select start
-		&lt;enc:EncryptedData/&gt; node.
-	    </p></li>
-<li><p>		Create encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
-		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a> or
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>
-		functions.
-	    </p></li>
-<li><p>		Load encryption key in <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">keys manager</a> 
-		or generate a sesison key and set it in the encryption context
-		(<tt class="STRUCTFIELD"><i>encKey</i></tt> member of 
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a> structure).
-	    </p></li>
-<li>
-<p>		Encrypt data by calling one of the following functions:
-		</p>
-<p></p>
-<ul>
-<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT">xmlSecEncCtxBinaryEncrypt</a>
-		    </p></li>
-<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a>
-		    </p></li>
-<li><p>			<a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>
-		    </p></li>
-</ul>
-</li>
-<li><p>		Check returned value and if necessary consume encrypted data.
-	    </p></li>
-<li><p>		Destroy encryption context <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>
-		using <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a> or
-		<a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>
-		functions.
-	    </p></li>
-</ul>
-<p>	     </p>
-<div class="EXAMPLE">
-<a name="AEN195"></a><p><b>Example 6. Encrypting binary data with a template.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
- * encrypt_file:
- * @tmpl_file:		the encryption template file name.
- * @key_file:		the Triple DES key file.
- * @data:		the binary data to encrypt.
- * @dataSize:		the binary data size.
- *
- * Encrypts binary #data using template from #tmpl_file and DES key from
- * #key_file.
- *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int 
-encrypt_file(const char* tmpl_file, const char* key_file, const unsigned char* data, size_t dataSize) {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
-    xmlSecEncCtxPtr encCtx = NULL;
-    int res = -1;
-    
-    assert(tmpl_file);
-    assert(key_file);
-    assert(data);
-
-    /* load template */
-    doc = xmlParseFile(tmpl_file);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, &quot;Error: unable to parse file \&quot;%s\&quot;\n&quot;, tmpl_file);
-	goto done;	
-    }
-    
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
-    if(node == NULL) {
-	fprintf(stderr, &quot;Error: start node not found in \&quot;%s\&quot;\n&quot;, tmpl_file);
-	goto done;	
-    }
-
-    /* create encryption context, we don't need keys manager in this example */
-    encCtx = xmlSecEncCtxCreate(NULL);
-    if(encCtx == NULL) {
-        fprintf(stderr,&quot;Error: failed to create encryption context\n&quot;);
-	goto done;
-    }
-
-    /* load DES key */
-    encCtx-&gt;encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
-    if(encCtx-&gt;encKey == NULL) {
-        fprintf(stderr,&quot;Error: failed to load des key from binary file \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(encCtx-&gt;encKey, key_file) &lt; 0) {
-    	fprintf(stderr,&quot;Error: failed to set key name for key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-
-    /* encrypt the data */
-    if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) &lt; 0) {
-        fprintf(stderr,&quot;Error: encryption failed\n&quot;);
-    	goto done;
-    }
-        
-    /* print encrypted data with document to stdout */
-    xmlDocDump(stdout, doc);
-    
-    /* success */
-    res = 0;
-
-done:    
-    /* cleanup */
-    if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
-    }
-    
-    if(doc != NULL) {
-	xmlFreeDoc(doc); 
-    }
-    return(res);
-}
-		</pre></td></tr></table>
-<p><a href="xmlsec-example-encrypt1.html">Full program listing</a></p>
-<p><a href="xmlsec-example-encrypt1-tmpl.html">Simple encryption template file</a></p>
 </div>
 	</div>
 </div>
@@ -312,11 +73,11 @@ done:
 <td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-init-shutdown.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-templates.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-sign.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Initialization and shutdown.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Creating dynamic templates.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Signing a document.</b></font></td>
 </tr>
 </table>
 </div>

@@ -47,8 +47,6 @@ crypto
 @buffer: 
 @size: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@sizeBytes: 
 
 
 <!-- ##### MACRO xmlSecNssKeyDataAesId ##### -->

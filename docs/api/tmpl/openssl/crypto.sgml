@@ -47,8 +47,6 @@ crypto
 @buffer: 
 @size: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@sizeBytes: 
 
 
 <!-- ##### MACRO xmlSecOpenSSLKeyDataAesId ##### -->
@@ -265,8 +263,6 @@ crypto
 @data: 
 @pKey: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@key: 
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLKeyDataDsaGetEvp ##### -->
@@ -421,8 +417,6 @@ crypto
 @data: 
 @pKey: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@key: 
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLKeyDataRsaGetEvp ##### -->

@@ -1,9 +1,12 @@
 <chapter id="xmlsec-notes-compiling">
     <title>Building the application with XML Security Library.</title>
-    <para>As usual, compiling and linking application with XML Security
-    Library requires specifing correct compilation flags, library files 
-    and paths to include and library files.
-    </para>
+    <sect1 id="xmlsec-notes-compiling-overview">
+        <title>Overview.</title>
+        <para>As usual, compiling and linking application with XML Security
+	Library requires specifing correct compilation flags, library files 
+        and paths to include and library files.
+	</para>
+    </sect1>
     <sect1 id="xmlsec-notes-include-files" >
 	<title>Include files</title>
 	<para>In order to use XML Security Library an application should include 

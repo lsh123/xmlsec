@@ -1,5 +1,5 @@
 <chapter id="xmlsec-examples">
-    <title>APPENDIX C. XML Security Library Examples.</title>
+    <title>Examples.</title>
     <sect1 id="xmlsec-examples-overview" >
 	<title>XML Security Library Examples.</title>
 	<para>This section contains several examples of using XML Security Library

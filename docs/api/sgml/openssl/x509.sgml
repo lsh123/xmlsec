@@ -1,12 +1,12 @@
 <refentry id="xmlsec-openssl-x509">
 <refmeta>
-<refentrytitle>x509.h</refentrytitle>
+<refentrytitle>x509</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC-OPENSSL Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>x509.h</refname><refpurpose>The X509 certificates functions.</refpurpose>
+<refname>x509</refname><refpurpose></refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>

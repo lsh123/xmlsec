@@ -6,8 +6,8 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Keys manager." href="xmlsec-notes-keysmngr.html">
-<link rel="NEXT" title="Transforms and transforms chain." href="xmlsec-notes-transforms.html">
+<link rel="PREVIOUS" title="Implementing a custom keys store." href="xmlsec-notes-custom-keys-store.html">
+<link rel="NEXT" title="Signing data with X509 certificate." href="xmlsec-notes-sign-x509.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -33,207 +33,45 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-custom-keys-store.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-sign-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
+<div class="CHAPTER">
+<h1>
+<a name="XMLSEC-NOTES-X509"></a>Using X509 Certificates.</h1>
+<div class="TOC"><dl>
+<dt><b>Table of Contents</b></dt>
+<dt><a href="xmlsec-notes-x509.html#XMLSEC-NOTES-X509-OVERVIEW">Overview.</a></dt>
+<dt><a href="xmlsec-notes-sign-x509.html">Signing data with X509 certificate.</a></dt>
+<dt><a href="xmlsec-notes-verify-x509.html">Verifing document signed with X509 certificates.</a></dt>
+</dl></div>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
-<a name="XMLSEC-NOTES-X509"></a>Using X509 Certificates.</h1>
-<p>    X509 certificate is one of many possible keys data object that can be
-    associated with a key. Application may read and write X509 data
-    from/to XML file. The X509 certificates management policies significantly
-    vary from one crypto library to another. The examples in this chapter
-    were tested with OpenSSL and they might be broken if anither crypto
-    engine is used. Check API reference documentation for more specific 
-    information about your crypto engine.
-    </p>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2">
-<a name="AEN370"></a>Signing data with X509 certificate.</h2>
-<p>To sign a file using X509 certificate, 
-	an application need to associate the certificate (or certificates) 
-	with the private key using one of the following functions:
+<a name="XMLSEC-NOTES-X509-OVERVIEW"></a>Overview.</h1>
+<p>X509 certificate is one of many possible keys data object that can be
+        associated with a key. Application may read and write X509 data
+	from/to XML file. The X509 certificates management policies significantly
+        vary from one crypto library to another. The examples in this chapter
+        were tested with OpenSSL and they might be broken if anither crypto
+	engine is used. Check API reference documentation for more specific 
+        information about your crypto engine.
 	</p>
-<p></p>
-<ul>
-<li><p>	    <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYCERTLOAD">xmlSecOpenSSLAppKeyCertLoad</a> - loads
-	    certificate from a file and adds to the key;
-	    </p></li>
-<li><p>	    <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPPKCS12LOAD">xmlSecOpenSSLAppPkcs12Load</a> -
-	    loads private key and all the certificates associated with it from a PKCS12 file;
-	    </p></li>
-<li><p>	    <a href="xmlsec-keys.html#XMLSECKEYADOPTDATA">xmlSecKeyAdoptData</a> - low level
-	    function to add key data (including X509 key data) to the key.
-	    </p></li>
-</ul>
-<div class="EXAMPLE">
-<a name="AEN383"></a><p><b>Example 15. Loading private key and X509 certificate.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* load private key, assuming that there is not password */
-    key = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(key == NULL) {
-        fprintf(stderr,&quot;Error: failed to load private pem key from \&quot;%s\&quot;\n&quot;, key_file);
-	goto done;
-    }
-    
-    /* load certificate and add to the key */
-    if(xmlSecCryptoAppKeyCertLoad(key, cert_file, xmlSecKeyDataFormatPem) &lt; 0) {
-        fprintf(stderr,&quot;Error: failed to load pem certificate \&quot;%s\&quot;\n&quot;, cert_file);
-	goto done;
-    }
-	    </pre></td></tr></table>
-<p><a href="xmlsec-example-sign3.html">Full program listing</a></p>
 </div>
-	<p>Next step is to prepare signature template with &lt;dsig:X509Data/&gt;
-	child of the &lt;dsig:KeyInfo/&gt; element. When XML Security Library finds
-	this node in the template, it automaticaly creates &lt;dsig:X509Certificate/&gt; 
-	children of the &lt;dsig:X509Data/&gt; element and writes to result XML document
-	all the certificates associated with the signature key. 
-	</p>
-<div class="EXAMPLE">
-<a name="AEN389"></a><p><b>Example 16. Dynamicaly creating a signature template for signing document using X509 certificate.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* create signature template for RSA-SHA1 enveloped signature */
-    signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-				         xmlSecTransformRsaSha1Id, NULL);
-    if(signNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to create signature template\n&quot;);
-	goto done;		
-    }
-
-    /* add &lt;dsig:Signature/&gt; node to the doc */
-    xmlAddChild(xmlDocGetRootElement(doc), signNode);
-    
-    /* add reference */
-    refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-					NULL, NULL, NULL);
-    if(refNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add reference to signature template\n&quot;);
-	goto done;		
-    }
-
-    /* add enveloped transform */
-    if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add enveloped transform to reference\n&quot;);
-	goto done;		
-    }
-    
-    /* add &lt;dsig:KeyInfo/&gt; and &lt;dsig:X509Data/&gt; */
-    keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
-    if(keyInfoNode == NULL) {
-	fprintf(stderr, &quot;Error: failed to add key info\n&quot;);
-	goto done;		
-    }
-    
-    if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
-	fprintf(stderr, &quot;Error: failed to add X509Data node\n&quot;);
-	goto done;		
-    }
-	    </pre></td></tr></table>
-<p><a href="xmlsec-example-sign3.html">Full program listing</a></p>
-</div>
-	</div>
-<br clear="all"><div class="SECT2">
-<h2 class="SECT2">
-<a name="AEN394"></a>Verifing document signed with X509 certificates.</h2>
-<p>	If the document is signed with an X509 certificate then the signature
-	verification consist of two steps:
-	</p>
-<p></p>
-<ul>
-<li><p>Creating and verifing X509 certificates chain.
-	    </p></li>
-<li><p>Verifing signature itself using key exrtacted from 
-	    a certificate verified on previous step.
-	    </p></li>
-</ul>
-	Certificates chain is constructed from certificates in a way that
-	each certificate in the chain is signed with previous one:
-	<div class="FIGURE">
-<a name="AEN402"></a><p><b>Figure 8. Certificates chain.</b></p>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">Certificate A (signed with B) &lt;- Certificate B (signed with C) &lt;- ... &lt;- Root Certificate (signed by itself)
-	    </pre></td></tr></table>
-</div>
-	At the end of the chain there is a &quot;Root Certificate&quot; which
-	is signed by itself. There is no way to verify the validity of the
-	root certificate and application have to &quot;trust&quot; it
-	(another name for root certificates is &quot;trusted&quot; certificates).
-	<p>	Application can use <font>xmlSecCryptoAppKeysMngrCertLoad</font>
-	function to load both &quot;trusted&quot; and &quot;un-trusted&quot;
-	certificates. However, the selection of &quot;trusted&quot;
-	certificates is very sensitive process and this function might be
-	not implemented for some crypto engines. In this case, the 
-	&quot;trusted&quot; certificates list is loaded during initialization
-	or specified in crypto engine configuration files.
-	Check XML Security Library API reference for more details. 
-	</p>
-<div class="EXAMPLE">
-<a name="AEN407"></a><p><b>Example 17. Loading trusted X509 certificate.</b></p>
-<table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/**
- * load_trusted_certs:
- * @files:		the list of filenames.
- * @files_size:		the number of filenames in #files.
- *
- * Creates simple keys manager and load trusted certificates from PEM #files.
- * The caller is responsible for destroing returned keys manager using
- * @xmlSecKeysMngrDestroy.
- *
- * Returns the pointer to newly created keys manager or NULL if an error
- * occurs.
- */
-xmlSecKeysMngrPtr 
-load_trusted_certs(char** files, int files_size) {
-    xmlSecKeysMngrPtr mngr;
-    int i;
-        
-    assert(files);
-    assert(files_size &gt; 0);
-    
-    /* create and initialize keys manager, we use a simple list based
-     * keys manager, implement your own xmlSecKeysStore klass if you need
-     * something more sophisticated 
-     */
-    mngr = xmlSecKeysMngrCreate();
-    if(mngr == NULL) {
-	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
-	return(NULL);
-    }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
-	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
-    }    
-    
-    for(i = 0; i &lt; files_size; ++i) {
-	assert(files[i]);
-
-	/* load trusted cert */
-	if(xmlSecCryptoAppKeysMngrCertLoad(mngr, files[i], xmlSecKeyDataFormatPem, xmlSecKeyDataTypeTrusted) &lt; 0) {
-    	    fprintf(stderr,&quot;Error: failed to load pem certificate from \&quot;%s\&quot;\n&quot;, files[i]);
-	    xmlSecKeysMngrDestroy(mngr);
-	    return(NULL);
-	}
-    }
-
-    return(mngr);
-}
-	    </pre></td></tr></table>
-<p><a href="xmlsec-example-verify3.html">Full program listing</a></p>
-</div>
-	</div>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-keysmngr.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-custom-keys-store.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
-<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-transforms.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-sign-x509.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Keys manager.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Transforms and transforms chain.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Implementing a custom keys store.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Signing data with X509 certificate.</b></font></td>
 </tr>
 </table>
 </div>

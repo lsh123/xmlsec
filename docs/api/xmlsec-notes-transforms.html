@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Using X509 Certificates." href="xmlsec-notes-x509.html">
+<link rel="PREVIOUS" title="Verifing document signed with X509 certificates." href="xmlsec-notes-verify-x509.html">
 <link rel="NEXT" title="Using context objects." href="xmlsec-notes-contexts.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
@@ -33,14 +33,14 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-verify-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-contexts.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1">
+<div class="CHAPTER">
+<h1>
 <a name="XMLSEC-NOTES-TRANSFORMS"></a>Transforms and transforms chain.</h1>
 <p>XML Digital Signature and XML Encryption standards are 
 	very flexible and provide an XML developer many different ways to 
@@ -74,7 +74,7 @@
 	directly is more efficient.
     </p>
 <div class="FIGURE">
-<a name="AEN430"></a><p><b>Figure 9. The XML Security Library transform.</b></p>
+<a name="AEN454"></a><p><b>Figure 1. The XML Security Library transform.</b></p>
 <p><img src="images/transform.png" align="CENTER"></p>
 </div>
 <p>XML Security Library constructs transforms chain according to the 
@@ -90,12 +90,12 @@
 	in the chain. 
     </p>
 <div class="FIGURE">
-<a name="AEN435"></a><p><b>Figure 10. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
+<a name="AEN459"></a><p><b>Figure 2. Transforms chain created for &lt;dsig:Reference/&gt; element processing.</b></p>
 <p><img src="images/transforms-chain.png" align="CENTER"></p>
 </div>
 <p>	</p>
 <div class="EXAMPLE">
-<a name="AEN439"></a><p><b>Example 18. Walking through transforms chain.</b></p>
+<a name="AEN463"></a><p><b>Example 1. Walking through transforms chain.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">TODO
 	    </pre></td></tr></table>
 </div>
@@ -103,13 +103,13 @@
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-verify-x509.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-contexts.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Using X509 Certificates.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Verifing document signed with X509 certificates.</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Using context objects.</b></font></td>
 </tr>
 </table>

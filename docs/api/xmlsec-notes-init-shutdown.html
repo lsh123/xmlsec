@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library Programming Notes" href="xmlsec-notes.html">
-<link rel="PREVIOUS" title="Building the application with XML Security Library." href="xmlsec-compiling.html">
+<link rel="PREVIOUS" title="Compiling and linking on other systems." href="xmlsec-notes-compiling-others.html">
 <link rel="NEXT" title="Signing and encrypting documents." href="xmlsec-notes-sign-encrypt.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
@@ -33,14 +33,14 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-compiling.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-compiling-others.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 </table></div>
-<br clear="all"><div class="SECT1">
-<h1 class="SECT1">
+<div class="CHAPTER">
+<h1>
 <a name="XMLSEC-NOTES-INIT-SHUTDOWN"></a>Initialization and shutdown.</h1>
 <p>XML Security Library initialization/shutdown 
 	process includes initialization and shutdown of the
@@ -69,7 +69,7 @@
 	by itself.
 	<p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN107"></a><p><b>Example 3. Initializing application.</b></p>
+<a name="AEN121"></a><p><b>Example 1. Initializing application.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
@@ -100,7 +100,7 @@
 </div>
 	<p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN111"></a><p><b>Example 4. Shutting down application.</b></p>
+<a name="AEN125"></a><p><b>Example 2. Shutting down application.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
     
@@ -117,17 +117,17 @@
     xmlCleanupParser();		
 		</pre></td></tr></table>
 </div>
-	</div>
+    </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-compiling.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-compiling-others.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-sign-encrypt.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Building the application with XML Security Library.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Compiling and linking on other systems.</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Signing and encrypting documents.</b></font></td>
 </tr>
 </table>

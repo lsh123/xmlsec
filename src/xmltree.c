@@ -183,7 +183,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 
     if(parent->children == NULL) {
         /* TODO: add indents */
-	text = xmlNewText(BAD_CAST "\n"); 
+	text = xmlNewText(xmlSecStringCR); 
         if(text == NULL) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -217,7 +217,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     }
     
     /* TODO: add indents */
-    text = xmlNewText(BAD_CAST "\n"); 
+    text = xmlNewText(xmlSecStringCR); 
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -249,7 +249,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
 
     if(parent->children == NULL) {
         /* TODO: add indents */
-	text = xmlNewText(BAD_CAST "\n"); 
+	text = xmlNewText(xmlSecStringCR); 
         if(text == NULL) {	
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -264,7 +264,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
     xmlAddChild(parent, child);
 
     /* TODO: add indents */
-    text = xmlNewText(BAD_CAST "\n"); 
+    text = xmlNewText(xmlSecStringCR); 
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -319,7 +319,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     }
 
     /* TODO: add indents */
-    text = xmlNewText(BAD_CAST "\n");
+    text = xmlNewText(xmlSecStringCR);
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -374,7 +374,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     }
 
     /* TODO: add indents */
-    text = xmlNewText(BAD_CAST "\n");
+    text = xmlNewText(xmlSecStringCR);
     if(text == NULL) {	
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

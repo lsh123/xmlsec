@@ -617,6 +617,7 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
 	        return(-1);	
 	    }
 	    
+	    xmlFree(id);
 	    return(0);
 	}
 	xmlFree(id);

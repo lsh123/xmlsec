@@ -72,7 +72,7 @@
  * @files:		the list of filenames.
  * @files_size:		the number of filenames in #files.
  *
- * Creates simple keys manager and load DES keys from #files in it.
+ * Creates default keys manager and load DES keys from #files in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -88,7 +88,7 @@ load_des_keys(char** files, int files_size) {
     assert(files);
     assert(files_size &gt; 0);
     
-    /* create and initialize keys manager, we use a simple list based
+    /* create and initialize keys manager, we use a default list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
      * something more sophisticated 
      */
@@ -97,7 +97,7 @@ load_des_keys(char** files, int files_size) {
 	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -125,7 +125,7 @@ load_des_keys(char** files, int files_size) {
 	/* add key to keys manager, from now on keys manager is responsible 
 	 * for destroying key 
 	 */
-	if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+	if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
     	    fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, files[i]);
 	    xmlSecKeyDestroy(key);
 	    xmlSecKeysMngrDestroy(mngr);

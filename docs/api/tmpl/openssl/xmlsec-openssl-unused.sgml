@@ -18,3 +18,39 @@
 app
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLAppSimpleKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppSimpleKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppSimpleKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecOpenSSLAppSimpleKeysMngrSave ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@type: 
+@Returns: 
+

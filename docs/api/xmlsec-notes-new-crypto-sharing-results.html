@@ -6,7 +6,7 @@
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<link rel="PREVIOUS" title="Simple keys manager." href="xmlsec-notes-new-crypto-simple-keys-mngr.html">
+<link rel="PREVIOUS" title="Default keys manager." href="xmlsec-notes-new-crypto-simple-keys-mngr.html">
 <link rel="NEXT" title="Examples." href="xmlsec-examples.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
@@ -55,9 +55,36 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-NEW-CRYPTO-SHARING-RESULTS"></a>Sharing the results.</h1>
-<p>	TODO
+<p>If you implemented support for new cryptographic library
+	(or extended an existing one) and both you and your company/university/...
+	are willing to share the code I would be glad to add your work
+	to XML Security Library. Many people will thank you for this 
+	and will use your library. Of course, you'll get all the credits 
+	for your work.
 	</p>
-</div>
+<p>The best way to submit your enchancements is to provide a diff 
+	with the current CVS version. In order to do this, 
+	</p>
+<p></p>
+<ul>
+<li><p>Checkout the sources from <a href="http://developer.gnome.org/tools/cvs.html" target="_top">GNOME CVS</a>
+	(module name is &quot;xmlsec&quot;).
+	</p></li>
+<li><p>Add all the new files with &quot;cvs add&quot; command (this will not 
+	create files in CVS but mark them as &quot;added&quot; localy). You'll not be able
+	to create new folders without a valid GNOME CVS account, let me know
+	what you need and I'll be happy to help.
+	</p></li>
+<li><p>Get a diff of all existing and new files using 
+	&quot;cvs -z3 diff -u -N&quot; command.
+	</p></li>
+<li><p>Send the resulting diff file to the xmlsec mailing list
+	with some information about yourself so I can update the authors 
+	and coping information.
+	</p></li>
+</ul>
+	I will try to review and check in your patch as soon as possible.
+	</div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
@@ -67,7 +94,7 @@
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-examples.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Simple keys manager.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Default keys manager.</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Examples.</b></font></td>
 </tr>
 </table>

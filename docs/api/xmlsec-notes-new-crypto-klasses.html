@@ -55,8 +55,127 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-NEW-CRYPTO-KLASSES"></a>Klasses and objects.</h1>
-<p>	TODO
+<p>The XML Security Library is written in C but it uses some OOP techniques:
+	the objects in the library have &quot;klasses&quot; and there is &quot;klasses&quot; inheritance.
+	(see <a href="xmlsec-signature-klasses.html">signature</a> and
+	<a href="xmlsec-encryption-klasses.html">encryption</a> klasses 
+	diagrams). The &quot;klass&quot; is different from C++ &quot;class&quot; (btw, this is 
+	one of the reasons why it is spelled differently). The idea of &quot;klasses&quot; 
+	used in XML Security Library are close to one in the GLIB/GTK/GNOME
+	and many other C projects. If you ever seen an OOP code written in C
+	you should find everything familiar.
 	</p>
+<p>XML Security Library &quot;klass&quot; includes three main parts:
+	</p>
+<p></p>
+<ul>
+<li>
+<p>&quot;Klass&quot; declaration structure that defines &quot;klass&quot; interfaces
+	and global constand data (for example, the human-readable name of 
+	the &quot;klass&quot;).
+	</p>
+<div class="EXAMPLE">
+<a name="AEN546"></a><p><b>Example 6. Base transform &quot;klass&quot; and its child XPath transform &quot;klass&quot; structure.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct _xmlSecTransformKlass {
+    /* data */
+    size_t				klassSize;
+    size_t				objSize;
+    const xmlChar*			name;
+    const xmlChar*			href;
+    xmlSecTransformUsage		usage;
+
+    /* methods */
+    xmlSecTransformInitializeMethod	initialize;
+    xmlSecTransformFinalizeMethod	finalize;
+
+    xmlSecTransformNodeReadMethod	readNode;
+    xmlSecTransformNodeWriteMethod	writeNode;
+
+    ...
+};
+
+...
+
+static xmlSecTransformKlass xmlSecTransformXPathKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    xmlSecXPathTransformSize,		/* size_t objSize */
+
+    xmlSecNameXPath,			/* const xmlChar* name; */
+    xmlSecXPathNs, 			/* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,	/* xmlSecTransformUsage	usage; */
+
+    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPathNodeRead,	/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,				/* xmlSecTransformNodeWriteMethod writeNode; */
+    
+    ...
+};
+	    </pre></td></tr></table>
+</div>
+	</li>
+<li>
+<p>&quot;Klass&quot; id which is simply a pointer to the &quot;klass&quot;
+	declaration strucutre. &quot;Klass&quot; id is used to bind &quot;klass&quot; objects 
+	to the &quot;klass&quot; declaration and to pass &quot;klass&quot; strucutre to functions.
+	</p>
+<div class="EXAMPLE">
+<a name="AEN551"></a><p><b>Example 7. Base transform &quot;klass&quot; id declaration and its child XPath transform &quot;klass&quot; id implementation.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
+
+...
+
+#define xmlSecTransformXPathId 		xmlSecTransformXPathGetKlass()
+
+...
+
+xmlSecTransformId 
+xmlSecTransformXPathGetKlass(void) {
+    return(&amp;xmlSecTransformXPathKlass);
+}
+	    </pre></td></tr></table>
+</div>
+	</li>
+<li>
+<p>&quot;Klass&quot; object structure that contains object specific
+	data. The child object specific data are placed after the parent &quot;klass&quot;
+	object data.
+	</p>
+<div class="EXAMPLE">
+<a name="AEN556"></a><p><b>Example 8. Base transform object strucutre and its child XPath transform object.</b></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">struct _xmlSecTransform {
+    xmlSecTransformId 			id; 
+    xmlSecTransformOperation		operation;
+    xmlSecTransformStatus		status;
+    xmlNodePtr				hereNode;
+
+    /* transforms chain */
+    xmlSecTransformPtr			next;
+    xmlSecTransformPtr			prev;
+    
+    ...
+};
+
+...
+
+/******************************************************************************
+ *
+ * XPath/XPointer transforms
+ *
+ * xmlSecPtrList with XPath expressions is located after xmlSecTransform structure
+ * 
+ *****************************************************************************/
+#define xmlSecXPathTransformSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
+#define xmlSecXPathTransformGetDataList(transform) \
+    ((xmlSecTransformCheckSize((transform), xmlSecXPathTransformSize)) ? \
+	(xmlSecPtrListPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecPtrListPtr)NULL)
+	    </pre></td></tr></table>
+</div>
+	</li>
+</ul>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">

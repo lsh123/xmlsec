@@ -147,6 +147,10 @@
 <listitem><para><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link></para></listitem>
 <listitem><para><link linkend="xmlSecGetNextElementNode">xmlSecGetNextElementNode</link></para></listitem>
 <listitem><para><link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link></para></listitem>
+<listitem><para><link linkend="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</link></para></listitem>
+<listitem><para><link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecGnuTLSAppDefaultKeysMngrLoad">xmlSecGnuTLSAppDefaultKeysMngrLoad</link></para></listitem>
+<listitem><para><link linkend="xmlSecGnuTLSAppDefaultKeysMngrSave">xmlSecGnuTLSAppDefaultKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSAppKeyCertLoad">xmlSecGnuTLSAppKeyCertLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSAppKeyLoad">xmlSecGnuTLSAppKeyLoad</link></para></listitem>
@@ -154,10 +158,6 @@
 <listitem><para><link linkend="xmlSecGnuTLSAppKeysMngrCertLoad">xmlSecGnuTLSAppKeysMngrCertLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSAppPkcs12Load">xmlSecGnuTLSAppPkcs12Load</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSAppShutdown">xmlSecGnuTLSAppShutdown</link></para></listitem>
-<listitem><para><link linkend="xmlSecGnuTLSAppSimpleKeysMngrAdoptKey">xmlSecGnuTLSAppSimpleKeysMngrAdoptKey</link></para></listitem>
-<listitem><para><link linkend="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeysMngrInit</link></para></listitem>
-<listitem><para><link linkend="xmlSecGnuTLSAppSimpleKeysMngrLoad">xmlSecGnuTLSAppSimpleKeysMngrLoad</link></para></listitem>
-<listitem><para><link linkend="xmlSecGnuTLSAppSimpleKeysMngrSave">xmlSecGnuTLSAppSimpleKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass</link></para></listitem>
@@ -400,6 +400,10 @@
 <listitem><para><link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link></para></listitem>
 <listitem><para><link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link></para></listitem>
 <listitem><para><link linkend="xmlSecNodeSetWalk">xmlSecNodeSetWalk</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssAppDefaultKeysMngrAdoptKey">xmlSecNssAppDefaultKeysMngrAdoptKey</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssAppDefaultKeysMngrInit">xmlSecNssAppDefaultKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssAppDefaultKeysMngrLoad">xmlSecNssAppDefaultKeysMngrLoad</link></para></listitem>
+<listitem><para><link linkend="xmlSecNssAppDefaultKeysMngrSave">xmlSecNssAppDefaultKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssAppInit">xmlSecNssAppInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssAppKeyCertLoad">xmlSecNssAppKeyCertLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssAppKeyLoad">xmlSecNssAppKeyLoad</link></para></listitem>
@@ -407,10 +411,6 @@
 <listitem><para><link linkend="xmlSecNssAppKeysMngrCertLoad">xmlSecNssAppKeysMngrCertLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssAppPkcs12Load">xmlSecNssAppPkcs12Load</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssAppShutdown">xmlSecNssAppShutdown</link></para></listitem>
-<listitem><para><link linkend="xmlSecNssAppSimpleKeysMngrAdoptKey">xmlSecNssAppSimpleKeysMngrAdoptKey</link></para></listitem>
-<listitem><para><link linkend="xmlSecNssAppSimpleKeysMngrInit">xmlSecNssAppSimpleKeysMngrInit</link></para></listitem>
-<listitem><para><link linkend="xmlSecNssAppSimpleKeysMngrLoad">xmlSecNssAppSimpleKeysMngrLoad</link></para></listitem>
-<listitem><para><link linkend="xmlSecNssAppSimpleKeysMngrSave">xmlSecNssAppSimpleKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssGenerateRandom">xmlSecNssGenerateRandom</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssInit">xmlSecNssInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link></para></listitem>
@@ -440,6 +440,10 @@
 <listitem><para><link linkend="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLAppDefaultKeysMngrInit">xmlSecOpenSSLAppDefaultKeysMngrInit</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLAppDefaultKeysMngrLoad">xmlSecOpenSSLAppDefaultKeysMngrLoad</link></para></listitem>
+<listitem><para><link linkend="xmlSecOpenSSLAppDefaultKeysMngrSave">xmlSecOpenSSLAppDefaultKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLAppInit">xmlSecOpenSSLAppInit</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLAppKeyCertLoad">xmlSecOpenSSLAppKeyCertLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLAppKeyLoad">xmlSecOpenSSLAppKeyLoad</link></para></listitem>
@@ -447,10 +451,6 @@
 <listitem><para><link linkend="xmlSecOpenSSLAppKeysMngrCertLoad">xmlSecOpenSSLAppKeysMngrCertLoad</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLAppPkcs12Load">xmlSecOpenSSLAppPkcs12Load</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLAppShutdown">xmlSecOpenSSLAppShutdown</link></para></listitem>
-<listitem><para><link linkend="xmlSecOpenSSLAppSimpleKeysMngrAdoptKey">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey</link></para></listitem>
-<listitem><para><link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit</link></para></listitem>
-<listitem><para><link linkend="xmlSecOpenSSLAppSimpleKeysMngrLoad">xmlSecOpenSSLAppSimpleKeysMngrLoad</link></para></listitem>
-<listitem><para><link linkend="xmlSecOpenSSLAppSimpleKeysMngrSave">xmlSecOpenSSLAppSimpleKeysMngrSave</link></para></listitem>
 <listitem><para><link linkend="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErrorsDefaultCallback</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-OPENSSL-ERRORS-FUNCTION-CAPS">XMLSEC-OPENSSL-ERRORS-FUNCTION</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-OPENSSL-ERRORS-LIB-CAPS">XMLSEC-OPENSSL-ERRORS-LIB</link></para></listitem>
@@ -714,7 +714,7 @@
 <listitem><para><link linkend="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformSetKey">xmlSecTransformSetKey</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformSetKeyReq">xmlSecTransformSetKeyReq</link></para></listitem>
-<listitem><para><link linkend="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformSetKeyRequirementsMethod">xmlSecTransformSetKeyRequirementsMethod</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformUriTypeAny">xmlSecTransformUriTypeAny</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformUriTypeCheck">xmlSecTransformUriTypeCheck</link></para></listitem>

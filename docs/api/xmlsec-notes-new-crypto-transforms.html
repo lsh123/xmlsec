@@ -7,7 +7,7 @@
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
 <link rel="PREVIOUS" title="Klasses and objects." href="xmlsec-notes-new-crypto-klasses.html">
-<link rel="NEXT" title="Keys." href="xmlsec-notes-new-crypto-keys.html">
+<link rel="NEXT" title="Keys data and keys data stores." href="xmlsec-notes-new-crypto-keys.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
@@ -55,7 +55,75 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-NEW-CRYPTO-TRANSFORMS"></a>Cryptographic transforms.</h1>
-<p>	TODO
+<p>The cryptographic transforms (digests, signatures and encryption)
+	implementation is the main goal of &quot;xmlsec-&lt;crypto&gt;&quot; library.
+	Most of the cryptographic <a href="xmlsec-notes-transforms.html">transforms</a> 
+	use default <tt class="STRUCTFIELD"><i>pushBin</i></tt> and <tt class="STRUCTFIELD"><i>popBin</i></tt> 
+	methods and provide custom <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method. 
+	The binary transform <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method 
+	processes data from the input buffer
+	<tt class="STRUCTFIELD"><i>inBuf</i></tt> and pushes results to
+	<tt class="STRUCTFIELD"><i>outBuf</i></tt>. The transform should try to
+	consume and remove data from <tt class="STRUCTFIELD"><i>inBuf</i></tt> buffer
+	as soon as the data became available. However, it might happen
+	that current data size in the input buffer is not enough (for example,
+	RSA-PKCS1 algorithm requires that all the data are available in 
+	one buffer). In this case, transform might keep the data in the 
+	input buffer till the next call to 
+	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+	method. The &quot;last&quot; parameter of the 
+	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+	indicates that transform MUST process all the data in the input buffer
+	and return as much as possible in the output buffer. The 
+	<a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a> method 
+	might be called multiple times with non-zero &quot;last&quot; parameter until 
+	the transforms returns nothing
+	in the output buffer. In addition, the transform implementation is 
+	responsible for managing the transform <tt class="STRUCTFIELD"><i>status</i></tt> 
+	variable.
+	</p>
+<div class="TABLE">
+<a name="AEN574"></a><p><b>Table 2. Typical transform status managing.</b></p>
+<table border="1" class="CALSTABLE"><tbody>
+<tr>
+<td align="LEFT" valign="TOP">xmlSecTransformStatusNone</td>
+<td align="LEFT" valign="TOP">Transform initializes itself (for example, cipher transform 
+	generates or reads IV) and sets <tt class="STRUCTFIELD"><i>status</i></tt> 
+	variable to xmlSecTransformStatusWorking.</td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP">xmlSecTransformStatusWorking</td>
+<td align="LEFT" valign="TOP">Transform process the next (if &quot;last&quot; parameter is zero) or
+	last block of data (if &quot;last&quot; parameter is non-zero).
+	When transform returns all the data, it sets the 
+	<tt class="STRUCTFIELD"><i>status</i></tt> variable to 
+	xmlSecTransformStatusFinished.</td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP">xmlSecTransformStatusFinished</td>
+<td align="LEFT" valign="TOP">Transform returns no data to indicate that it finished
+	processing.</td>
+</tr>
+</tbody></table>
+</div>	
+	<p>In adition to <a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">execute</a>
+	methods, signature, hmac or digest transforms 
+	MUST implement <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method. 
+	The <a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method is called
+	after transform execution is finished. The 
+	<a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">verify</a> method implementation 
+	must set the &quot;status&quot; member to <font>xmlSecTransformStatusOk</font>
+	if signature, hmac or digest is successfuly verified or to
+	<font>xmlSecTransformStatusFail</font>
+	otherwise.
+	</p>
+<p>The transforms that require a key (signature or encryption 
+	transforms, for example) MUST imlpement 
+	<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQUIREMENTSMETHOD">setKeyReq</a> 
+	(prepares the <a href="xmlsec-keys.html#XMLSECKEYREQ">key requirements</a>
+	for key search) and
+	<a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYMETHOD">setKey</a> 
+	(sets the key in the transform) methods. 
 	</p>
 </div>
 <div class="NAVFOOTER">
@@ -68,7 +136,7 @@
 </tr>
 <tr>
 <td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Klasses and objects.</b></font></td>
-<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Keys.</b></font></td>
+<td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Keys data and keys data stores.</b></font></td>
 </tr>
 </table>
 </div>

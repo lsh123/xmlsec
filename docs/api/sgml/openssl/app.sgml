@@ -16,15 +16,15 @@
 
 int         <link linkend="xmlSecOpenSSLAppInit">xmlSecOpenSSLAppInit</link>            (const char *config);
 int         <link linkend="xmlSecOpenSSLAppShutdown">xmlSecOpenSSLAppShutdown</link>        (void);
-int         <link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit</link>
+int         <link linkend="xmlSecOpenSSLAppDefaultKeysMngrInit">xmlSecOpenSSLAppDefaultKeysMngrInit</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecOpenSSLAppSimpleKeysMngrAdoptKey">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey</link>
+int         <link linkend="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecOpenSSLAppSimpleKeysMngrLoad">xmlSecOpenSSLAppSimpleKeysMngrLoad</link>
+int         <link linkend="xmlSecOpenSSLAppDefaultKeysMngrLoad">xmlSecOpenSSLAppDefaultKeysMngrLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *uri);
-int         <link linkend="xmlSecOpenSSLAppSimpleKeysMngrSave">xmlSecOpenSSLAppSimpleKeysMngrSave</link>
+int         <link linkend="xmlSecOpenSSLAppDefaultKeysMngrSave">xmlSecOpenSSLAppDefaultKeysMngrSave</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
@@ -96,8 +96,8 @@ by XMLSec command line utility and called after
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit ()</title>
-<programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrInit
+<title><anchor id="xmlSecOpenSSLAppDefaultKeysMngrInit">xmlSecOpenSSLAppDefaultKeysMngrInit ()</title>
+<programlisting>int         xmlSecOpenSSLAppDefaultKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
@@ -112,12 +112,12 @@ and a default OpenSSL crypto key data stores.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrAdoptKey">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey ()</title>
-<programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrAdoptKey
+<title><anchor id="xmlSecOpenSSLAppDefaultKeysMngrAdoptKey">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ()</title>
+<programlisting>int         xmlSecOpenSSLAppDefaultKeysMngrAdoptKey
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit</link>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecOpenSSLAppDefaultKeysMngrInit">xmlSecOpenSSLAppDefaultKeysMngrInit</link>
 function.</para>
 <para>
 
@@ -132,13 +132,13 @@ function.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrLoad">xmlSecOpenSSLAppSimpleKeysMngrLoad ()</title>
-<programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrLoad
+<title><anchor id="xmlSecOpenSSLAppDefaultKeysMngrLoad">xmlSecOpenSSLAppDefaultKeysMngrLoad ()</title>
+<programlisting>int         xmlSecOpenSSLAppDefaultKeysMngrLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *uri);</programlisting>
 <para>
 Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
-with <link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKeysMngrInit</link> function.</para>
+with <link linkend="xmlSecOpenSSLAppDefaultKeysMngrInit">xmlSecOpenSSLAppDefaultKeysMngrInit</link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -152,8 +152,8 @@ with <link linkend="xmlSecOpenSSLAppSimpleKeysMngrInit">xmlSecOpenSSLAppSimpleKe
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecOpenSSLAppSimpleKeysMngrSave">xmlSecOpenSSLAppSimpleKeysMngrSave ()</title>
-<programlisting>int         xmlSecOpenSSLAppSimpleKeysMngrSave
+<title><anchor id="xmlSecOpenSSLAppDefaultKeysMngrSave">xmlSecOpenSSLAppDefaultKeysMngrSave ()</title>
+<programlisting>int         xmlSecOpenSSLAppDefaultKeysMngrSave
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>

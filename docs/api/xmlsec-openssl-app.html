@@ -55,22 +55,22 @@
 <h1>
 <a name="XMLSEC-OPENSSL-APP"></a>app</h1>
 <div class="REFNAMEDIV">
-<a name="AEN14448"></a><h2>Name</h2>app -- </div>
+<a name="AEN14517"></a><h2>Name</h2>app -- </div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN14451"></a><h2>Synopsis</h2>
+<a name="AEN14520"></a><h2>Synopsis</h2>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="SYNOPSIS">
 
 int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPINIT">xmlSecOpenSSLAppInit</a>            (const char *config);
 int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSHUTDOWN">xmlSecOpenSSLAppShutdown</a>        (void);
-int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT">xmlSecOpenSSLAppSimpleKeysMngrInit</a>
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRINIT">xmlSecOpenSSLAppDefaultKeysMngrInit</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);
-int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRADOPTKEY">xmlSecOpenSSLAppSimpleKeysMngrAdoptKey</a>
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRADOPTKEY">xmlSecOpenSSLAppDefaultKeysMngrAdoptKey</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRLOAD">xmlSecOpenSSLAppSimpleKeysMngrLoad</a>
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRLOAD">xmlSecOpenSSLAppDefaultKeysMngrLoad</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *uri);
-int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRSAVE">xmlSecOpenSSLAppSimpleKeysMngrSave</a>
+int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRSAVE">xmlSecOpenSSLAppDefaultKeysMngrSave</a>
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
@@ -96,13 +96,13 @@ int         <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPKEYCERTLOAD">xmlSec
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format);</pre></td></tr></table>
 </div>
 <div class="REFSECT1">
-<a name="AEN14482"></a><h2>Description</h2>
+<a name="AEN14551"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN14485"></a><h2>Details</h2>
+<a name="AEN14554"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN14487"></a><h3>
+<a name="AEN14556"></a><h3>
 <a name="XMLSECOPENSSLAPPINIT"></a>xmlSecOpenSSLAppInit ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppInit            (const char *config);</pre></td></tr></table>
 <p>General crypto engine initialization. This function is used
@@ -112,18 +112,18 @@ by XMLSec command line utility and called before
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14495"><span style="white-space: nowrap"><tt class="PARAMETER"><i>config</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14564"><span style="white-space: nowrap"><tt class="PARAMETER"><i>config</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the path to crypto library configuration (unused).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14500"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14569"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14505"></a><h3>
+<a name="AEN14574"></a><h3>
 <a name="XMLSECOPENSSLAPPSHUTDOWN"></a>xmlSecOpenSSLAppShutdown ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppShutdown        (void);</pre></td></tr></table>
 <p>General crypto engine shutdown. This function is used
@@ -132,15 +132,15 @@ by XMLSec command line utility and called after
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody><tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14513"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14582"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14518"></a><h3>
-<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT"></a>xmlSecOpenSSLAppSimpleKeysMngrInit ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrInit
+<a name="AEN14587"></a><h3>
+<a name="XMLSECOPENSSLAPPDEFAULTKEYSMNGRINIT"></a>xmlSecOpenSSLAppDefaultKeysMngrInit ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppDefaultKeysMngrInit
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr);</pre></td></tr></table>
 <p>Initializes <tt class="PARAMETER"><i>mngr</i></tt> with simple keys store <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">xmlSecSimpleKeysStoreId</a>
 and a default OpenSSL crypto key data stores.</p>
@@ -148,72 +148,72 @@ and a default OpenSSL crypto key data stores.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14528"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14597"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14533"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14602"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14538"></a><h3>
-<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRADOPTKEY"></a>xmlSecOpenSSLAppSimpleKeysMngrAdoptKey ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrAdoptKey
+<a name="AEN14607"></a><h3>
+<a name="XMLSECOPENSSLAPPDEFAULTKEYSMNGRADOPTKEY"></a>xmlSecOpenSSLAppDefaultKeysMngrAdoptKey ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppDefaultKeysMngrAdoptKey
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre></td></tr></table>
-<p>Adds <tt class="PARAMETER"><i>key</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created with <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT">xmlSecOpenSSLAppSimpleKeysMngrInit</a>
+<p>Adds <tt class="PARAMETER"><i>key</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created with <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRINIT">xmlSecOpenSSLAppDefaultKeysMngrInit</a>
 function.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14550"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14619"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14555"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14624"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14560"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14629"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14565"></a><h3>
-<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRLOAD"></a>xmlSecOpenSSLAppSimpleKeysMngrLoad ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrLoad
+<a name="AEN14634"></a><h3>
+<a name="XMLSECOPENSSLAPPDEFAULTKEYSMNGRLOAD"></a>xmlSecOpenSSLAppDefaultKeysMngrLoad ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppDefaultKeysMngrLoad
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *uri);</pre></td></tr></table>
 <p>Loads XML keys file from <tt class="PARAMETER"><i>uri</i></tt> to the keys manager <tt class="PARAMETER"><i>mngr</i></tt> created 
-with <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT">xmlSecOpenSSLAppSimpleKeysMngrInit</a> function.</p>
+with <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPDEFAULTKEYSMNGRINIT">xmlSecOpenSSLAppDefaultKeysMngrInit</a> function.</p>
 <p></p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14576"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14645"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14581"><span style="white-space: nowrap"><tt class="PARAMETER"><i>uri</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14650"><span style="white-space: nowrap"><tt class="PARAMETER"><i>uri</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the uri.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14586"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14655"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14591"></a><h3>
-<a name="XMLSECOPENSSLAPPSIMPLEKEYSMNGRSAVE"></a>xmlSecOpenSSLAppSimpleKeysMngrSave ()</h3>
-<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppSimpleKeysMngrSave
+<a name="AEN14660"></a><h3>
+<a name="XMLSECOPENSSLAPPDEFAULTKEYSMNGRSAVE"></a>xmlSecOpenSSLAppDefaultKeysMngrSave ()</h3>
+<table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppDefaultKeysMngrSave
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
                                              const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre></td></tr></table>
@@ -222,26 +222,26 @@ with <a href="xmlsec-openssl-app.html#XMLSECOPENSSLAPPSIMPLEKEYSMNGRINIT">xmlSec
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14601"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14670"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14606"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14675"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the destination filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14611"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14680"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the type of keys to save (public/private/symmetric).</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14616"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14685"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14621"></a><h3>
+<a name="AEN14690"></a><h3>
 <a name="XMLSECOPENSSLAPPKEYSMNGRCERTLOAD"></a>xmlSecOpenSSLAppKeysMngrCertLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrCertLoad
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -254,31 +254,31 @@ untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14633"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14702"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14638"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14707"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the certificate file.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14643"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14712"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the certificate file format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14648"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14717"><span style="white-space: nowrap"><tt class="PARAMETER"><i>type</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the flag that indicates is the certificate in <tt class="PARAMETER"><i>filename</i></tt>
    			trusted or not.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14654"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14723"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14659"></a><h3>
+<a name="AEN14728"></a><h3>
 <a name="XMLSECOPENSSLAPPKEYSMNGRADDCERTSPATH"></a>xmlSecOpenSSLAppKeysMngrAddCertsPath ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeysMngrAddCertsPath
                                             (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> mngr,
@@ -288,22 +288,22 @@ untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14668"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14737"><span style="white-space: nowrap"><tt class="PARAMETER"><i>mngr</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p> 		the keys manager.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14673"><span style="white-space: nowrap"><tt class="PARAMETER"><i>path</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14742"><span style="white-space: nowrap"><tt class="PARAMETER"><i>path</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the path to trusted certificates.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14678"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14747"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14683"></a><h3>
+<a name="AEN14752"></a><h3>
 <a name="XMLSECOPENSSLAPPKEYLOAD"></a>xmlSecOpenSSLAppKeyLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecOpenSSLAppKeyLoad        (const char *filename,
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATAFORMAT">xmlSecKeyDataFormat</a> format,
@@ -315,34 +315,34 @@ untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14693"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14762"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the key filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14698"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14767"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the key file format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14703"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14772"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the PEM key file password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14708"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14777"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the PEM key password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14713"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14782"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14718"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14787"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14723"></a><h3>
+<a name="AEN14792"></a><h3>
 <a name="XMLSECOPENSSLAPPPKCS12LOAD"></a>xmlSecOpenSSLAppPkcs12Load ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecOpenSSLAppPkcs12Load     (const char *filename,
                                              const char *pwd,
@@ -353,30 +353,30 @@ untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14732"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14801"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 key filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14737"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14806"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwd</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the PKCS12 file password.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14742"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14811"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallback</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14747"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14816"><span style="white-space: nowrap"><tt class="PARAMETER"><i>pwdCallbackCtx</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>	the user context for password callback.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14752"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14821"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>pointer to the key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN14757"></a><h3>
+<a name="AEN14826"></a><h3>
 <a name="XMLSECOPENSSLAPPKEYCERTLOAD"></a>xmlSecOpenSSLAppKeyCertLoad ()</h3>
 <table border="0" bgcolor="#D6E8FF" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">int         xmlSecOpenSSLAppKeyCertLoad     (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
                                              const char *filename,
@@ -386,19 +386,19 @@ untrusted certs in <tt class="PARAMETER"><i>store</i></tt>.</p>
 <p></p>
 <table class="VARIABLELIST" border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#FFD0D0"><tbody>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14767"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14836"><span style="white-space: nowrap"><tt class="PARAMETER"><i>key</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14772"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14841"><span style="white-space: nowrap"><tt class="PARAMETER"><i>filename</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the certificate filename.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14777"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14846"><span style="white-space: nowrap"><tt class="PARAMETER"><i>format</i></tt> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>		the certificate file format.</p></td>
 </tr>
 <tr>
-<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14782"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="RIGHT" valign="TOP" width="20%"><a name="AEN14851"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP" width="80%"><p>0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>

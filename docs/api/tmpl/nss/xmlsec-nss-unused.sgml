@@ -1,0 +1,36 @@
+<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrSave ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@type: 
+@Returns: 
+

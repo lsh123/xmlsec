@@ -31,7 +31,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrInit ##### -->
+<!-- ##### FUNCTION xmlSecNssAppDefaultKeysMngrInit ##### -->
 <para>
 
 </para>
@@ -40,7 +40,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecNssAppDefaultKeysMngrAdoptKey ##### -->
 <para>
 
 </para>
@@ -50,7 +50,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrLoad ##### -->
+<!-- ##### FUNCTION xmlSecNssAppDefaultKeysMngrLoad ##### -->
 <para>
 
 </para>
@@ -60,7 +60,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecNssAppSimpleKeysMngrSave ##### -->
+<!-- ##### FUNCTION xmlSecNssAppDefaultKeysMngrSave ##### -->
 <para>
 
 </para>

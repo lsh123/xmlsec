@@ -55,9 +55,9 @@
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
 <a name="XMLSEC-NOTES-CUSTOM-KEYS-STORE"></a>Implementing a custom keys store.</h1>
-<p>In many cases, a simple built-in list based keys store
+<p>In many cases, a default built-in list based keys store
 	is not good enough. For example, XML Security Library (and 
-	the built-in simple keys store) have no synchronization and 
+	the built-in default keys store) have no synchronization and 
 	you'll need to implement a custom keys store if you want to 
 	add or remove keys while other threads use the store.</p>
 <p>	     </p>
@@ -149,7 +149,7 @@ files_keys_store_get_klass(void) {
 
 /**
  * files_keys_store_find_key:
- * @store:		the pointer to simple keys store.
+ * @store:		the pointer to default keys store.
  * @name:		the desired key name.
  * @keyInfoCtx:		the pointer to &lt;dsig:KeyInfo/&gt; node processing context.
  *  

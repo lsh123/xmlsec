@@ -60,7 +60,7 @@
 <a name="XMLSEC-EXAMPLE-VERIFY3"></a>verify3.c</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN630"></a><p></p>
+<a name="AEN699"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a file signed with X509 certificate
  *
@@ -201,7 +201,7 @@ load_trusted_certs(char** files, int files_size) {
 	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);

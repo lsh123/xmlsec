@@ -20,7 +20,7 @@
     xmlSecCryptoApp* functions.
     </para></listitem>
     <listitem><para>
-    Cryptographic transforms and keys implementation.
+    Cryptographic transforms and keys data implementation.
     </para></listitem>
     <listitem><para>
     Keys store support (X509, PGP, etc.).
@@ -260,13 +260,13 @@ make
 	and many other C projects. If you ever seen an OOP code written in C
 	you should find everything familiar.
 	</para>
-	<para>XML Security Library does not have a common base "klass".
-	Transforms, keys data, keys data stores, etc. have different
-	base "klasses". The "klass" defines interfaces and global
-	constant data common for all objects of the "klass" (for example, 
-	the human-readable name of the "klass").
+	<para>XML Security Library "klass" includes three main parts:
+	<itemizedlist>
+	<listitem><para>"Klass" declaration structure that defines "klass" interfaces
+	and global constand data (for example, the human-readable name of 
+	the "klass").
 	<example>
-	    <title>Base transform "klass".</title>
+	    <title>Base transform "klass" and its child XPath transform "klass" structure.</title>
 	    <programlisting><![CDATA[
 struct _xmlSecTransformKlass {
     /* data */
@@ -284,18 +284,57 @@ struct _xmlSecTransformKlass {
     xmlSecTransformNodeWriteMethod	writeNode;
 
     ...
+};
+
+...
+
+static xmlSecTransformKlass xmlSecTransformXPathKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    xmlSecXPathTransformSize,		/* size_t objSize */
+
+    xmlSecNameXPath,			/* const xmlChar* name; */
+    xmlSecXPathNs, 			/* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,	/* xmlSecTransformUsage	usage; */
+
+    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPathNodeRead,	/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,				/* xmlSecTransformNodeWriteMethod writeNode; */
     
-    /* reserved for future */ 
-    void* 				reserved0;
-    void* 				reserved1;
+    ...
 };
 	    ]]></programlisting>
 	</example>
-	The "object" structure has a pointer to the "klass" structure (we call
-	it "id") and any data specific to the particular instance
-	of the klass.
+	</para></listitem>
+	
+	<listitem><para>"Klass" id which is simply a pointer to the "klass"
+	declaration strucutre. "Klass" id is used to bind "klass" objects 
+	to the "klass" declaration and to pass "klass" strucutre to functions.
 	<example>
-	    <title>Base transform "object".</title>
+	    <title>Base transform "klass" id declaration and its child XPath transform "klass" id implementation.</title>
+	    <programlisting><![CDATA[
+typedef const struct _xmlSecTransformKlass		xmlSecTransformKlass, *xmlSecTransformId;
+
+...
+
+#define xmlSecTransformXPathId 		xmlSecTransformXPathGetKlass()
+
+...
+
+xmlSecTransformId 
+xmlSecTransformXPathGetKlass(void) {
+    return(&xmlSecTransformXPathKlass);
+}
+	    ]]></programlisting>
+	</example>
+	</para></listitem>
+	
+	<listitem><para>"Klass" object structure that contains object specific
+	data. The child object specific data are placed after the parent "klass"
+	object data.
+	<example>
+	    <title>Base transform object strucutre and its child XPath transform object.</title>
 	    <programlisting><![CDATA[
 struct _xmlSecTransform {
     xmlSecTransformId 			id; 
@@ -306,66 +345,146 @@ struct _xmlSecTransform {
     /* transforms chain */
     xmlSecTransformPtr			next;
     xmlSecTransformPtr			prev;
-
-    ...
     
-    /* reserved for the future */    
-    void*				reserved0;
-    void*				reserved1;
+    ...
 };
-	    ]]></programlisting>
-	</example>
 
-	<itemizedlist>
-	<listitem><para>Base "klass".
-	</para></listitem>
-	<listitem><para>"Klass" declaration.
-	<example>
-	    <title>XPath transform "klass" declaration.</title>
-	    <programlisting><![CDATA[
-	    ]]></programlisting>
-	</example>
-	</para></listitem>
-	<listitem><para>"Klass" implementation.
-	<example>
-	    <title>XPath transform "klass" implementation.</title>
-	    <programlisting><![CDATA[
+...
+
+/******************************************************************************
+ *
+ * XPath/XPointer transforms
+ *
+ * xmlSecPtrList with XPath expressions is located after xmlSecTransform structure
+ * 
+ *****************************************************************************/
+#define xmlSecXPathTransformSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
+#define xmlSecXPathTransformGetDataList(transform) \
+    ((xmlSecTransformCheckSize((transform), xmlSecXPathTransformSize)) ? \
+	(xmlSecPtrListPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecPtrListPtr)NULL)
 	    ]]></programlisting>
 	</example>
 	</para></listitem>
 	</itemizedlist>
 	</para>
-	<para>The "xmlsec-&lt;crypto&gt;" library needs to implement  
-	</para>
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-transforms">
 	<title>Cryptographic transforms.</title>
-	<para>
-	TODO
+	<para>The cryptographic transforms (digests, signatures and encryption)
+	implementation is the main goal of "xmlsec-&lt;crypto&gt;" library.
+	Most of the cryptographic <link linkend="xmlsec-notes-transforms">transforms</link> 
+	use default <structfield>pushBin</structfield> and <structfield>popBin</structfield> 
+	methods and provide custom <link linkend="xmlSecTransformExecuteMethod">execute</link> method. 
+	The binary transform <link linkend="xmlSecTransformExecuteMethod">execute</link> method 
+	processes data from the input buffer
+	<structfield>inBuf</structfield> and pushes results to
+	<structfield>outBuf</structfield>. The transform should try to
+	consume and remove data from <structfield>inBuf</structfield> buffer
+	as soon as the data became available. However, it might happen
+	that current data size in the input buffer is not enough (for example,
+	RSA-PKCS1 algorithm requires that all the data are available in 
+	one buffer). In this case, transform might keep the data in the 
+	input buffer till the next call to 
+	<link linkend="xmlSecTransformExecuteMethod">execute</link>
+	method. The "last" parameter of the 
+	<link linkend="xmlSecTransformExecuteMethod">execute</link>
+	indicates that transform MUST process all the data in the input buffer
+	and return as much as possible in the output buffer. The 
+	<link linkend="xmlSecTransformExecuteMethod">execute</link> method 
+	might be called multiple times with non-zero "last" parameter until 
+	the transforms returns nothing
+	in the output buffer. In addition, the transform implementation is 
+	responsible for managing the transform <structfield>status</structfield> 
+	variable.
+	<table>
+	<title>Typical transform status managing.</title>
+	<tgroup cols="2"><tbody>
+	<row><entry>xmlSecTransformStatusNone</entry>
+	<entry>Transform initializes itself (for example, cipher transform 
+	generates or reads IV) and sets <structfield>status</structfield> 
+	variable to xmlSecTransformStatusWorking.</entry></row>
+	<row><entry>xmlSecTransformStatusWorking</entry>
+	<entry>Transform process the next (if "last" parameter is zero) or
+	last block of data (if "last" parameter is non-zero).
+	When transform returns all the data, it sets the 
+	<structfield>status</structfield> variable to 
+	xmlSecTransformStatusFinished.</entry></row>
+	<row><entry>xmlSecTransformStatusFinished</entry>
+	<entry>Transform returns no data to indicate that it finished
+	processing.</entry></row>
+	</tbody></tgroup></table>	
+	</para>
+	<para>In adition to <link linkend="xmlSecTransformExecuteMethod">execute</link>
+	methods, signature, hmac or digest transforms 
+	MUST implement <link linkend="xmlSecTransformVerifyMethod">verify</link> method. 
+	The <link linkend="xmlSecTransformVerifyMethod">verify</link> method is called
+	after transform execution is finished. The 
+	<link linkend="xmlSecTransformVerifyMethod">verify</link> method implementation 
+	must set the "status" member to <link linkend="xmlSecTransformStatusOk">xmlSecTransformStatusOk</link>
+	if signature, hmac or digest is successfuly verified or to
+	<link linkend="xmlSecTransformStatusFail">xmlSecTransformStatusFail</link>
+	otherwise.
+	</para>
+	<para>The transforms that require a key (signature or encryption 
+	transforms, for example) MUST imlpement 
+	<link linkend="xmlSecTransformSetKeyRequirementsMethod">setKeyReq</link> 
+	(prepares the <link linkend="xmlSecKeyReq">key requirements</link>
+	for key search) and
+	<link linkend="xmlSecTransformSetKeyMethod">setKey</link> 
+	(sets the key in the transform) methods. 
 	</para>
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-keys">
-	<title>Keys.</title>
+	<title>Keys data and keys data stores.</title>
 	<para>
-	TODO
+	There are two key data types: key value data (for example, AES, DES, DSA, 
+	HMAC or RSA key data) and others (for example, key name, X509 or PGP data).
+	The key data implementation should implement at least one of 
+	<link linkend="xmlSecKeyDataXmlReadMethod">xmlRead</link>
+	or <link linkend="xmlSecKeyDataBinReadMethod">binRead</link> methods.
 	</para>
-    </sect1>
-    <sect1 id="xmlsec-notes-new-crypto-key-stores">
-	<title>Key stores.</title>
-	<para>
-	TODO
-	</para>
+	<para>TODO</para>
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-simple-keys-mngr">
-	<title>Simple keys manager.</title>
-	<para>
-	TODO
+	<title>Default keys manager.</title>
+	<para>Any "xmlsec-&lt;crypto&gt;" library implementation must provide
+	a default keys store. The XML Security Library 	has a built-in flat 
+	list based <link linkend="xmlSecSimpleKeysStoreId">simple keys 
+	store</link> which could be used if cryptographic library does not
+	have one itself.
 	</para>
     </sect1>
     <sect1 id="xmlsec-notes-new-crypto-sharing-results">
 	<title>Sharing the results.</title>
-	<para>
-	TODO
+	<para>If you implemented support for new cryptographic library
+	(or extended an existing one) and both you and your company/university/...
+	are willing to share the code I would be glad to add your work
+	to XML Security Library. Many people will thank you for this 
+	and will use your library. Of course, you'll get all the credits 
+	for your work.
+	</para>
+	<para>The best way to submit your enchancements is to provide a diff 
+	with the current CVS version. In order to do this, 
+	<itemizedlist>
+	<listitem><para>Checkout the sources from <ulink URL="http://developer.gnome.org/tools/cvs.html">GNOME CVS</ulink>
+	(module name is "xmlsec").
+	</para></listitem>
+	<listitem><para>Add all the new files with "cvs add" command (this will not 
+	create files in CVS but mark them as "added" localy). You'll not be able
+	to create new folders without a valid GNOME CVS account, let me know
+	what you need and I'll be happy to help.
+	</para></listitem>
+	<listitem><para>Get a diff of all existing and new files using 
+	"cvs -z3 diff -u -N" command.
+	</para></listitem>
+	<listitem><para>Send the resulting diff file to the xmlsec mailing list
+	with some information about yourself so I can update the authors 
+	and coping information.
+	</para></listitem>
+	</itemizedlist>
+	I will try to review and check in your patch as soon as possible.
 	</para>
     </sect1>
 </chapter>

@@ -835,7 +835,7 @@ transforms
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecTransformSetKeyRequirements ##### -->
+<!-- ##### USER_FUNCTION xmlSecTransformSetKeyRequirementsMethod ##### -->
 <para>
 
 </para>

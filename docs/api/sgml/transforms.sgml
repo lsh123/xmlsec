@@ -190,7 +190,7 @@ int         (<link linkend="xmlSecTransformNodeWriteMethod">*xmlSecTransformNode
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);
-int         (<link linkend="xmlSecTransformSetKeyRequirements">*xmlSecTransformSetKeyRequirements</link>)
+int         (<link linkend="xmlSecTransformSetKeyRequirementsMethod">*xmlSecTransformSetKeyRequirementsMethod</link>)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);
 int         (<link linkend="xmlSecTransformSetKeyMethod">*xmlSecTransformSetKeyMethod</link>)  (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
@@ -2044,8 +2044,8 @@ The transform specific method to write transform information to an XML node <par
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements ()</title>
-<programlisting>int         (*xmlSecTransformSetKeyRequirements)
+<title><anchor id="xmlSecTransformSetKeyRequirementsMethod">xmlSecTransformSetKeyRequirementsMethod ()</title>
+<programlisting>int         (*xmlSecTransformSetKeyRequirementsMethod)
                                             (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
                                              <link linkend="xmlSecKeyReq">xmlSecKeyReqPtr</link> keyReq);</programlisting>
 <para>
@@ -2258,7 +2258,7 @@ Transform specific method to process a chunk of data.</para>
     xmlSecTransformNodeReadMethod	readNode;
     xmlSecTransformNodeWriteMethod	writeNode;
 
-    xmlSecTransformSetKeyRequirements	setKeyReq;
+    xmlSecTransformSetKeyRequirementsMethod	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
     xmlSecTransformVerifyMethod		verify;
     xmlSecTransformGetDataTypeMethod	getDataType;
@@ -2327,7 +2327,7 @@ The transform klass desccription structure.</para>
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="xmlSecTransformSetKeyRequirements">xmlSecTransformSetKeyRequirements</link> <structfield>setKeyReq</structfield></term>
+<term><link linkend="xmlSecTransformSetKeyRequirementsMethod">xmlSecTransformSetKeyRequirementsMethod</link> <structfield>setKeyReq</structfield></term>
 <listitem><simpara>			the set key requirements method.
 </simpara></listitem>
 </varlistentry>

@@ -117,7 +117,7 @@ load_trusted_certs(char** files, int files_size) {
 	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);

@@ -77,7 +77,7 @@
  * load_rsa_keys:
  * @key_file:		the key filename.
  *
- * Creates simple keys manager and load RSA key from #key_file in it.
+ * Creates default keys manager and load RSA key from #key_file in it.
  * The caller is responsible for destroing returned keys manager using
  * @xmlSecKeysMngrDestroy.
  *
@@ -91,7 +91,7 @@ load_rsa_keys(char* key_file) {
     
     assert(key_file);
     
-    /* create and initialize keys manager, we use a simple list based
+    /* create and initialize keys manager, we use a default list based
      * keys manager, implement your own xmlSecKeysStore klass if you need
      * something more sophisticated 
      */
@@ -100,7 +100,7 @@ load_rsa_keys(char* key_file) {
 	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -125,7 +125,7 @@ load_rsa_keys(char* key_file) {
     /* add key to keys manager, from now on keys manager is responsible 
      * for destroying key 
      */
-    if(xmlSecCryptoAppSimpleKeysMngrAdoptKey(mngr, key) &lt; 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrAdoptKey(mngr, key) &lt; 0) {
         fprintf(stderr,&quot;Error: failed to add key from \&quot;%s\&quot; to keys manager\n&quot;, key_file);
         xmlSecKeyDestroy(key);
         xmlSecKeysMngrDestroy(mngr);

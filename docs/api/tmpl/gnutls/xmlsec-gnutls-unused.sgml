@@ -1,0 +1,36 @@
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrAdoptKey ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@key: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrInit ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@uri: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrSave ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@filename: 
+@type: 
+@Returns: 
+

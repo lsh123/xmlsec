@@ -16,15 +16,15 @@
 
 int         <link linkend="xmlSecGnuTLSAppInit">xmlSecGnuTLSAppInit</link>             (const char *config);
 int         <link linkend="xmlSecGnuTLSAppShutdown">xmlSecGnuTLSAppShutdown</link>         (void);
-int         <link linkend="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeysMngrInit</link>
+int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-int         <link linkend="xmlSecGnuTLSAppSimpleKeysMngrAdoptKey">xmlSecGnuTLSAppSimpleKeysMngrAdoptKey</link>
+int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecGnuTLSAppSimpleKeysMngrLoad">xmlSecGnuTLSAppSimpleKeysMngrLoad</link>
+int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrLoad">xmlSecGnuTLSAppDefaultKeysMngrLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *uri);
-int         <link linkend="xmlSecGnuTLSAppSimpleKeysMngrSave">xmlSecGnuTLSAppSimpleKeysMngrSave</link>
+int         <link linkend="xmlSecGnuTLSAppDefaultKeysMngrSave">xmlSecGnuTLSAppDefaultKeysMngrSave</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
@@ -95,8 +95,8 @@ by XMLSec command line utility and called after
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeysMngrInit ()</title>
-<programlisting>int         xmlSecGnuTLSAppSimpleKeysMngrInit
+<title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit ()</title>
+<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrInit
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Initializes <parameter>mngr</parameter> with simple keys store <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
@@ -111,12 +111,12 @@ and a default GnuTLS crypto key data stores.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSAppSimpleKeysMngrAdoptKey">xmlSecGnuTLSAppSimpleKeysMngrAdoptKey ()</title>
-<programlisting>int         xmlSecGnuTLSAppSimpleKeysMngrAdoptKey
+<title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrAdoptKey">xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ()</title>
+<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrAdoptKey
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeysMngrInit</link>
+Adds <parameter>key</parameter> to the keys manager <parameter>mngr</parameter> created with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link>
 function.</para>
 <para>
 
@@ -131,13 +131,13 @@ function.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSAppSimpleKeysMngrLoad">xmlSecGnuTLSAppSimpleKeysMngrLoad ()</title>
-<programlisting>int         xmlSecGnuTLSAppSimpleKeysMngrLoad
+<title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrLoad">xmlSecGnuTLSAppDefaultKeysMngrLoad ()</title>
+<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrLoad
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *uri);</programlisting>
 <para>
 Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
-with <link linkend="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeysMngrInit</link> function.</para>
+with <link linkend="xmlSecGnuTLSAppDefaultKeysMngrInit">xmlSecGnuTLSAppDefaultKeysMngrInit</link> function.</para>
 <para>
 
 </para><variablelist role="params">
@@ -151,8 +151,8 @@ with <link linkend="xmlSecGnuTLSAppSimpleKeysMngrInit">xmlSecGnuTLSAppSimpleKeys
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSAppSimpleKeysMngrSave">xmlSecGnuTLSAppSimpleKeysMngrSave ()</title>
-<programlisting>int         xmlSecGnuTLSAppSimpleKeysMngrSave
+<title><anchor id="xmlSecGnuTLSAppDefaultKeysMngrSave">xmlSecGnuTLSAppDefaultKeysMngrSave ()</title>
+<programlisting>int         xmlSecGnuTLSAppDefaultKeysMngrSave
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>

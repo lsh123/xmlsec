@@ -31,7 +31,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrInit ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrInit ##### -->
 <para>
 
 </para>
@@ -40,7 +40,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ##### -->
 <para>
 
 </para>
@@ -50,7 +50,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrLoad ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrLoad ##### -->
 <para>
 
 </para>
@@ -60,7 +60,7 @@ app
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppSimpleKeysMngrSave ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrSave ##### -->
 <para>
 
 </para>

@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Simple keys manager.</title>
+<title>Default keys manager.</title>
 <meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.76b+
 ">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="Adding support for new cryptographic library." href="xmlsec-notes-new-crypto.html">
-<link rel="PREVIOUS" title="Key stores." href="xmlsec-notes-new-crypto-key-stores.html">
+<link rel="PREVIOUS" title="Keys data and keys data stores." href="xmlsec-notes-new-crypto-keys.html">
 <link rel="NEXT" title="Sharing the results." href="xmlsec-notes-new-crypto-sharing-results.html">
 </head>
 <body><table witdh="100%" valign="top"><tr valign="top">
@@ -46,7 +46,7 @@
 <div class="NAVHEADER"><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr><th colspan="4" align="center"><font color="#FFFFFF" size="5">XML Security Library Reference Manual</font></th></tr>
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto-key-stores.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-new-crypto-sharing-results.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
@@ -54,20 +54,24 @@
 </table></div>
 <br clear="all"><div class="SECT1">
 <h1 class="SECT1">
-<a name="XMLSEC-NOTES-NEW-CRYPTO-SIMPLE-KEYS-MNGR"></a>Simple keys manager.</h1>
-<p>	TODO
+<a name="XMLSEC-NOTES-NEW-CRYPTO-SIMPLE-KEYS-MNGR"></a>Default keys manager.</h1>
+<p>Any &quot;xmlsec-&lt;crypto&gt;&quot; library implementation must provide
+	a default keys store. The XML Security Library 	has a built-in flat 
+	list based <a href="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID">simple keys 
+	store</a> which could be used if cryptographic library does not
+	have one itself.
 	</p>
 </div>
 <div class="NAVFOOTER">
 <br clear="all"><br><table width="100%" border="0" bgcolor="#000000" cellpadding="1" cellspacing="0">
 <tr>
-<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto-key-stores.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
+<td width="25%" bgcolor="#C00000" align="left"><a href="xmlsec-notes-new-crypto-keys.html"><font color="#FFFFFF" size="3"><b>&lt;&lt;&lt; Previous Page</b></font></a></td>
 <td width="25%" bgcolor="#0000C0" align="center"><font color="#FFFFFF" size="3"><b><a href="index.html"><font color="#FFFFFF" size="3"><b>Home</b></font></a></b></font></td>
 <td width="25%" bgcolor="#00C000" align="center"><font color="#FFFFFF" size="3"><b><a href="xmlsec-notes-new-crypto.html"><font color="#FFFFFF" size="3"><b>Up</b></font></a></b></font></td>
 <td width="25%" bgcolor="#C00000" align="right"><a href="xmlsec-notes-new-crypto-sharing-results.html"><font color="#FFFFFF" size="3"><b>Next Page &gt;&gt;&gt;</b></font></a></td>
 </tr>
 <tr>
-<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Key stores.</b></font></td>
+<td colspan="2" align="left"><font color="#FFFFFF" size="3"><b>Keys data and keys data stores.</b></font></td>
 <td colspan="2" align="right"><font color="#FFFFFF" size="3"><b>Sharing the results.</b></font></td>
 </tr>
 </table>

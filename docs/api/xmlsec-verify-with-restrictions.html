@@ -60,7 +60,7 @@
 <a name="XMLSEC-EXAMPLE-VERIFY4"></a>verify4.c</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN637"></a><p></p>
+<a name="AEN706"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">/** 
  * XML Security Library example: Verifying a simple SAML response with X509 certificate
  *
@@ -209,7 +209,7 @@ load_trusted_certs(char** files, int files_size) {
 	fprintf(stderr, &quot;Error: failed to create keys manager.\n&quot;);
 	return(NULL);
     }
-    if(xmlSecCryptoAppSimpleKeysMngrInit(mngr) &lt; 0) {
+    if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) &lt; 0) {
 	fprintf(stderr, &quot;Error: failed to initialize keys manager.\n&quot;);
 	xmlSecKeysMngrDestroy(mngr);
 	return(NULL);
@@ -340,7 +340,7 @@ done:
 <a name="XMLSEC-EXAMPLE-VERIFY4-TMPL"></a>verify4-tmpl.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN642"></a><p></p>
+<a name="AEN711"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
@@ -396,7 +396,7 @@ Sign it using the following command (replace __ with double dashes):
 <a name="XMLSEC-EXAMPLE-VERIFY4-RES"></a>verify4-res.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN647"></a><p></p>
+<a name="AEN716"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!-- 
 XML Security Library example: A simple SAML response template (verify4 example). 
@@ -485,7 +485,7 @@ NJ2D&lt;/X509Certificate&gt;
 <a name="XMLSEC-EXAMPLE-VERIFY4-BAD-TMPL"></a>verify4-bad-tmpl.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN652"></a><p></p>
+<a name="AEN721"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response template (verify4 example). 
@@ -548,7 +548,7 @@ Sign it using the following command (replace __ with double dashes):
 <a name="XMLSEC-EXAMPLE-VERIFY4-BAD-RES"></a>verify4-bad-res.xml</h2>
 <p></p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN657"></a><p></p>
+<a name="AEN726"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!-- 
 XML Security Library example: A simple bad SAML response (verify4 example). 

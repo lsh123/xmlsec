@@ -1414,16 +1414,11 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 	    result->ctx->keysMngrCtx->keyType = xmlSecBinTransformIdGetDecKeyType(result->signMethod);
 	    result->ctx->keysMngrCtx->keyUsage = xmlSecKeyUsageVerify;
 	}
-	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->signMethod);
+	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->signMethod);	
 	
-	if(keyInfoNode != NULL) {
-	    result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
+	result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
 					   result->ctx->keysMngrCtx,
 					   keyInfoNode);
-	} else {
-	    result->key = xmlSecKeysMngrFindKey(result->ctx->keysMngrCtx->keysMngr,
-					   result->ctx->keysMngrCtx);
-	}
     }    
     if(result->key == NULL) {
     	xmlSecError(XMLSEC_ERRORS_HERE,

@@ -31,6 +31,7 @@
 #endif /* XMLSEC_NO_XSLT */
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/strings.h>
 #include <xmlsec/xmltree.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/keysmngr.h>
@@ -494,7 +495,7 @@ int main(int argc, char **argv) {
 	    char* type = argv[pos] + 6;
 	    key = genKey(type, argv[++pos]);
 	    if(key != NULL) {
-		ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
+		ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
 	    } else {
 		/* we ignore this error because it might be cause 
 		by a missed algorithm */
@@ -605,7 +606,7 @@ int main(int argc, char **argv) {
 	for(i = 0; (i < repeats); ++i) {
 	    if(command == xmlsecCommandKeys) {
 		/* simply save keys */
-		ret = xmlSecSimpleKeysMngrSave(xmlSecSimpleKeysMngrCast(keysMngr), argv[pos]);
+		ret = xmlSecSimpleKeysStoreSave(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), argv[pos]);
 	    } else {
 		doc = xmlSecParseFile(argv[pos]);
 	        if(doc == NULL) {
@@ -775,7 +776,7 @@ int initXmlsec(xmlsecCommand command) {
     /** 
      * Create Keys and x509 managers
      */
-    keysMngr = xmlSecSimpleKeysMngrCreate();    
+    keysMngr = xmlSecCryptoAppKeysMngrCreate();    
     if(keysMngr == NULL) {
 	fprintf(stderr, "Error: failed to create keys manager\n");
 	return(-1);
@@ -915,7 +916,7 @@ int  readPEMCertificate(const char *file, int trusted) {
 #ifndef XMLSEC_NO_X509	    
     int ret;
 /* todo
-    ret = xmlSecSimpleKeysMngrLoadPemCert(xmlSecSimpleKeysMngrCast(keysMngr), 
+    ret = xmlSecSimpleKeysStoreLoadPemCert(xmlSecSimpleKeysStoreCast(keysMngr), 
 					file, trusted);
     if(ret < 0) {
 	fprintf(stderr, "Error: unable to load certificate file \"%s\".\n", file);
@@ -932,7 +933,7 @@ int  readPEMCertificate(const char *file, int trusted) {
 int  readKeys(char *file) {
     int ret;
     
-    ret = xmlSecSimpleKeysMngrLoad(xmlSecSimpleKeysMngrCast(keysMngr), file, 0);
+    ret = xmlSecSimpleKeysStoreLoad(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), file, 0);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to load keys from \"%s\".\n", file);
 	return(-1);
@@ -1008,7 +1009,7 @@ int readPemKey(int privateKey, char *param, char *name) {
     }
 #endif /* XMLSEC_NO_X509 */        
     
-    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
+    ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
     if(ret < 0) {
 	fprintf(stderr, "Error: failed to add key.\n");
 	xmlSecKeyDestroy(key);
@@ -1048,7 +1049,7 @@ int readPKCS12Key(char *filename, char *name) {
     	key->name = xmlStrdup(BAD_CAST name);
     }
     
-    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
+    ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);
 	fprintf(stderr, "Error: failed to add hmac key\n"); 
@@ -1105,7 +1106,7 @@ int readHmacKey(char *filename, char *name) {
     }    
     xmlSecKeyValueDestroy(keyValue);
 
-    ret = xmlSecSimpleKeysMngrAddKey(xmlSecSimpleKeysMngrCast(keysMngr), key);
+    ret = xmlSecSimpleKeysStoreAddKey(xmlSecSimpleKeysStoreCast(keysMngr->keysStore), key);
     if(ret < 0) {
 	xmlSecKeyDestroy(key);
 	fprintf(stderr, "Error: failed to add hmac key\n"); 
@@ -1169,7 +1170,7 @@ int generateDSig(xmlDocPtr doc) {
     clock_t start_time;
 
     signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecDSigNs);
+			      BAD_CAST "Signature", xmlSecNsDSig);
     if(signNode == NULL) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
@@ -1228,7 +1229,7 @@ int validateDSig(xmlDocPtr doc) {
     int ret;
     	    
     signNode = xmlSecFindNode(xmlDocGetRootElement(doc), 
-			      BAD_CAST "Signature", xmlSecDSigNs);
+			      BAD_CAST "Signature", xmlSecNsDSig);
     if(signNode == NULL) {
         fprintf(stderr,"Error: failed to find Signature node\n");
 	return(-1);
@@ -1411,7 +1412,7 @@ int decrypt(xmlDocPtr doc) {
     int ret;
     int res = -1;
 
-    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST "EncryptedData", xmlSecEncNs);
+    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST "EncryptedData", xmlSecNsEnc);
     if(cur == NULL) {
         fprintf(stderr,"Error: unable to find EncryptedData node\n");
 	goto done;    

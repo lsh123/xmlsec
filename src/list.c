@@ -17,27 +17,13 @@
 #include <xmlsec/list.h>
 #include <xmlsec/errors.h>
 
-static void		xmlSecListKlassInit		(xmlSecObjKlassPtr klass);
-static int		xmlSecListConstructor		(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr obj);
-static int		xmlSecListDuplicator		(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr dst, 
-							 xmlSecObjPtr src);
-static void		xmlSecListDestructor		(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr dst);
-static void		xmlSecListDebugDump		(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static void		xmlSecListDebugXmlDump		(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static int		xmlSecListReallocate		(xmlSecListPtr list,
-							size_t delta);
 /*********************************************************************
  *
  * Binary List
  *
  *********************************************************************/
+static void		xmlSecListKlassInit		(xmlSecObjKlassPtr klass);
+
 xmlSecObjKlassPtr
 xmlSecListKlassGet(void) {
     static xmlSecObjKlassPtr klass = NULL;
@@ -53,45 +39,49 @@ xmlSecListKlassGet(void) {
 	    
 	    /* obj info */
 	    sizeof(xmlSecList),
-	    xmlSecListConstructor,	/* xmlSecObjKlassConstructorMethod */
-	    xmlSecListDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
-	    xmlSecListDestructor,	/* xmlSecObjKlassDestructorMethod */
+	    NULL,			/* xmlSecObjKlassConstructorMethod */
+	    NULL,			/* xmlSecObjKlassDuplicatorMethod */
+	    NULL,			/* xmlSecObjKlassDestructorMethod */
 	};
 	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
-				       &kklassInfo, xmlSecObjKlassId); 
+				       &kklassInfo, xmlSecBaseBufferKlassId); 
     } 
     return(klass);   
 }
 
 xmlSecPtr
 xmlSecListGetData(xmlSecListPtr list, size_t pos) {
-    xmlSecAssert2(list != NULL, NULL);
+    xmlSecBaseBufferPtr baseBuf = xmlSecBaseBufferCast(list);
+    xmlSecPtr* data;
     
-    if(pos < list->size) {
-	xmlSecAssert2(list->data != NULL, NULL);
-
-	return(list->data[pos]);
-    }
+    xmlSecAssert2(baseBuf != NULL, NULL);
     
-    return(NULL);
+    data = (xmlSecPtr*)xmlSecBaseBufferGetData(baseBuf, pos);
+    return((data != NULL) ? (*data) : NULL);
 }
 
 size_t
 xmlSecListGetSize(xmlSecListPtr list) {
-    xmlSecAssert2(list != NULL, 0);
+    xmlSecBaseBufferPtr baseBuf = xmlSecBaseBufferCast(list);
     
-    return(list->size);
+    xmlSecAssert2(baseBuf != NULL, 0);
+    
+    return(xmlSecBaseBufferGetSize(baseBuf));
 }
 
 int
 xmlSecListFind(xmlSecListPtr list, xmlSecPtr data) {
+    xmlSecBaseBufferPtr baseBuf = xmlSecBaseBufferCast(list);
+    xmlSecPtr item;
+    size_t size;
     size_t i;
-    
-    xmlSecAssert2(list != NULL, -1);
 
-    for(i = 0; i < list->size; ++i) {
-	xmlSecAssert2(list->data != NULL, -1);
-	if(list->data[i] == data) {
+    xmlSecAssert2(baseBuf != NULL, -1);
+
+    size = xmlSecBaseBufferGetSize(baseBuf);
+    for(i = 0; i < size; ++i) {
+	item = xmlSecListGetData(list, i);
+	if(item == data) {
 	    return(i);
 	}
     }
@@ -102,7 +92,7 @@ int
 xmlSecListAppend(xmlSecListPtr list, xmlSecPtr data) {
     xmlSecAssert2(list != NULL, -1);
     
-    return (xmlSecListInsert(list, list->size, data));
+    return (xmlSecListInsert(list, xmlSecListGetSize(list), data));
 }
 
 int
@@ -113,166 +103,52 @@ xmlSecListPrepend(xmlSecListPtr list, xmlSecPtr data) {
 }
 
 int
-xmlSecListInsert(xmlSecListPtr list, size_t pos, xmlSecPtr data	) {
-    size_t i;
+xmlSecListInsert(xmlSecListPtr list, size_t pos, xmlSecPtr data) {
+    xmlSecBaseBufferPtr baseBuf = xmlSecBaseBufferCast(list);
+    xmlSecPtr* item;
     int ret;
-    
-    xmlSecAssert2(list != NULL, -1);
-    xmlSecAssert2(pos <= list->size, -1);
+
+    xmlSecAssert2(baseBuf != NULL, -1);
+    xmlSecAssert2(pos <= baseBuf->size, -1);
     xmlSecAssert2(data != NULL, -1);
     
-    
-    ret = xmlSecListReallocate(list, 1);
+    ret = xmlSecBaseBufferInsert(baseBuf, pos, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,	
-		    "xmlSecListReallocate(delta=%d)", 1);
+		    "xmlSecBaseBufferInsert(pos=%d, size=%d)", pos, 1);
 	return(-1);			
     }
-    xmlSecAssert2(list->data != NULL, -1);
-    xmlSecAssert2(list->maxSize >= list->size + 1, -1);
+
+    item = (xmlSecPtr*)xmlSecBaseBufferGetData(baseBuf, pos);
+    xmlSecAssert2(item != NULL, -1);
     
-    if(list->size > 0) {
-	for(i = list->size - 1; i >= pos; --i) {
-	    list->data[i + 1] = list->data[i];
-	}
-    }
-    list->data[pos] = data;
-    ++list->size;
+    (*item) = data;
     return(0);    
 }
 
 void
 xmlSecListRemove(xmlSecListPtr list, size_t pos) {
-    size_t i;
+    xmlSecBaseBufferPtr baseBuf = xmlSecBaseBufferCast(list);
+
+    xmlSecAssert(baseBuf != NULL);
     
-    xmlSecAssert(list != NULL);
-    xmlSecAssert(pos < list->size);
-    
-    if(list->size > 0) {
-	for(i = list->size - 1; i > pos ; --i) {
-    	    xmlSecAssert(list->data != NULL);
-    	    list->data[i - 1] = list->data[i];
-	}
-    }
-    --list->size;
+    xmlSecBaseBufferRemove(baseBuf, pos, 1);
 }
 
 void
 xmlSecListEmpty(xmlSecListPtr list) {
-    xmlSecAssert(list != NULL);
+    xmlSecBaseBufferPtr baseBuf = xmlSecBaseBufferCast(list);
 
-    if(list->maxSize > 0) {
-	xmlSecAssert(list->data != NULL);
-	memset(list->data, 0, list->maxSize * sizeof(xmlSecPtr));
-    }
-    list->size = 0;
+    xmlSecAssert(baseBuf != NULL);
+    
+    xmlSecBaseBufferEmpty(baseBuf);
 }
 
 static void
 xmlSecListKlassInit(xmlSecObjKlassPtr klass) {
-    klass->debugDump 		= xmlSecListDebugDump;
-    klass->debugXmlDump 	= xmlSecListDebugXmlDump;
-}
+    xmlSecBaseBufferKlassPtr baseBufferKlass = (xmlSecBaseBufferKlassPtr)klass;
 
-static int
-xmlSecListConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
-			xmlSecObjPtr obj) {
-    xmlSecListPtr list = xmlSecListCast(obj);
-
-    xmlSecAssert2(list != NULL, -1);
-
-    list->data 	= NULL;
-    list->size	= 0;
-    list->maxSize= 0;
-    
-    return(0);
-}
-
-static int
-xmlSecListDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
-			xmlSecObjPtr dst, xmlSecObjPtr src) {
-    xmlSecListPtr listDst = xmlSecListCast(dst);
-    xmlSecListPtr listSrc = xmlSecListCast(src);
-    size_t i;
-    int ret;
-        
-    xmlSecAssert2(listDst != NULL, -1);
-    xmlSecAssert2(listSrc != NULL, -1);
-
-    xmlSecListEmpty(listDst);
-    for(i = 0; i < xmlSecListGetSize(listSrc); ++i) {
-	ret = xmlSecListAppend(listDst, xmlSecListGetData(listSrc, i));
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_XMLSEC_FAILED,	
-		    "xmlSecListAppend");
-	    return(-1);			
-	}
-    }    
-    return(0);
-}
-
-static void
-xmlSecListDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
-				    xmlSecObjPtr obj) {
-    xmlSecListPtr list = xmlSecListCast(obj);
-
-    xmlSecAssert(list != NULL);
-
-    xmlSecListEmpty(list);
-    if(list->data != NULL) {
-	xmlFree(list->data);
-    }
-    list->data   = NULL;
-    list->size	 = 0;
-    list->maxSize= 0;
-}
-
-static void
-xmlSecListDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecListPtr list = xmlSecListCast(obj);
-
-    xmlSecAssert(list != NULL);
-    xmlSecAssert(output != NULL);
-
-    xmlSecObjDebugIndent(output, level);
-    fprintf(output, "list size: %d\n", list->size);
-}
-
-static void
-xmlSecListDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecListPtr list = xmlSecListCast(obj);
-	    
-    xmlSecAssert(list != NULL);
-    xmlSecAssert(output != NULL);
-
-    xmlSecObjDebugIndent(output, level);
-    fprintf(output, "<List size=\"%d\"/>\n", list->size);
-}
-
-static int
-xmlSecListReallocate(xmlSecListPtr list, size_t delta) {
-    xmlSecPtr* p;
-    size_t size;
-    
-    xmlSecAssert2(list != NULL, -1);
-    
-    if(list->size + delta < list->maxSize) {
-	return(0);
-    }
-    
-    size = 4 * (list->size + delta) / 3 + 1;
-    p = (xmlSecPtr*)xmlRealloc(list->data, size * sizeof(xmlSecPtr));
-    if(p == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_MALLOC_FAILED,	
-		    "%d", size);
-	return(-1);			
-    }
-    
-    list->data = p;
-    list->maxSize = size;
-    return(0);	
+    baseBufferKlass->itemSize	= sizeof(xmlSecPtr);    
 }
 

@@ -17,33 +17,31 @@ extern "C" {
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/object.h>
+#include <xmlsec/serializable.h>
+
 
 typedef struct _xmlSecListKlass				xmlSecListKlass,
 							*xmlSecListKlassPtr;
 typedef struct _xmlSecList				xmlSecList,
 							*xmlSecListPtr;
+
 /*********************************************************************
  *
- * List
+ * Simple List
  *
  *********************************************************************/
-#define xmlSecListKlassId 		xmlSecListKlassGet()
-#define xmlSecListKlassCast(klass) 	xmlSecObjKlassCastMacro((klass), xmlSecListKlassId, xmlSecListKlassPtr)
-#define xmlSecListKlassCheckCast(klass) xmlSecObjKlassCheckCastMacro((klass), xmlSecListKlassId)
-#define xmlSecListCast(obj) 		xmlSecObjCastMacro((obj), xmlSecListKlassId, xmlSecListPtr)
-#define xmlSecListCheckCast(obj) 	xmlSecObjCheckCastMacro((obj), xmlSecListKlassId)
+#define xmlSecListKlassId 				xmlSecListKlassGet()
+#define xmlSecListKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecListKlassId, xmlSecListKlassPtr)
+#define xmlSecListKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecListKlassId)
+#define xmlSecListCast(obj) 				xmlSecObjCastMacro((obj), xmlSecListKlassId, xmlSecListPtr)
+#define xmlSecListCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecListKlassId)
 
 struct _xmlSecListKlass {
-    xmlSecObjKlass			parent;
+    xmlSecBaseBufferKlass		parent;
 };
 		
 struct _xmlSecList {
-    xmlSecObj				parent;
-    
-    /* private data */
-    xmlSecPtr*				data;
-    size_t				size;
-    size_t				maxSize;
+    xmlSecBaseBuffer			parent;
 };
 
 #define xmlSecListNew()			((xmlSecListPtr)xmlSecObjNew(xmlSecListKlassId))

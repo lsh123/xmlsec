@@ -3,16 +3,16 @@
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-hmac-sha1</KeyName>
 <KeyValue>
-<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">xb7N59dXatv7ClBQSqmYk7TRkuZwPAjF</HMACKeyValue>
+<HMACKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">w1U2Ty4isB1S9k2h05jmZLaJAFU/XiWK</HMACKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-rsa</KeyName>
 <KeyValue>
 <RSAKeyValue>
-<Modulus>1D6pkhoKRcmIDtz6BPt0LEgANIp74L9uxEE2dXWyT8TdUWxx0gJhAnhqCIkHQrv4+9rb1/iacLypZEm25MBDLyqHprMeDSpJ6rj3BG/WHsN7UdKbgEzhOUQo2sWCTCiPFPTy07/yfNkdRJXfcULdw8vpvG0v5kgUU9D5xCCb350=</Modulus>
+<Modulus>vw2yA7J/79VyYlkIFGYWAqU6p4B8cjakQbovSBp5lEiShr5sX9AWkVpZ7fQSBaUCM/C6Bns2uHZUGrMZEQ+af1NgfLBpMyTNinoZifFgR75c28kc28VqafNBOjJxlcPNeKPvnp2BEKbNCz8CkUE+0xnr1Seg22xAXjhxdlonRXk=</Modulus>
 <Exponent>Aw==</Exponent>
-<PrivateExponent xmlns="http://www.aleksey.com/xmlsec/2002">jX8btrwG2TEFXz38A1JNctqqzbGn6ypJ2Ct5o6PMNS3o4PL2jAGWAaWcBbCvgdKl/TySj/sRoH3GQtvPQyrXc4+H/BdKSP3qAcQPt/rQKKKcvgpfVtWWtDWCxs5vTybb6BZyQ1DIdCMZyu3LhkpKEae0q89Q60ETIac40CGMBas=</PrivateExponent>
+<PrivateExponent xmlns="http://www.aleksey.com/xmlsec/2002">f152rSGqn+OhluYFYu65VxjRxQBS9s8YK9F02rxRDYW3BH7y6oq5tjw78/gMA8NWzUsmrvzPJaQ4Ecy7YLURqRBsevlTdrUA3mQaslecUuf+LMPtcUf0xL/rYsglcwpm4t1py4KHEr5D6Rcs6nzG3SW9SEgGQymNNw/bEA0ps6M=</PrivateExponent>
 </RSAKeyValue>
 </KeyValue>
 </KeyInfo>
@@ -20,36 +20,36 @@
 <KeyName>test-dsa</KeyName>
 <KeyValue>
 <DSAKeyValue>
-<P>23aV3al5zENnHI4W6rbRwu7pvjX2JMFHoDkJtKiwijuu6z0QcbcWUrZaKZkz8nK3zzU1SccCp3rs2ATNtXX7yIqhx/lHlB9JLbFopgIsc/cnlOtHLHq0fkUrfiJROID7B3vMo34a7WT6HDTGnGvhv97hmkjc1WgOqyMINSsl/i0=</P>
-<Q>/qIAICaLjgl7Qfb1ig9U0t2xD2U=</Q>
-<G>W2LPTwnKNUvIRI0xKHu2ndygGlIKkR2SFfnoyhWDIELOKeOHNrB5qOJu7CmtOsrviv3bjwe8wkP0JptufmEUsnjZTr9nmuW3tVNAAPVBrImEOw5Syd2IB++vEQHt7MP4WRRTws35Idtl4FObUYaCRbqO9c0JJNMQ3kYzVmIQAKM=</G>
-<X xmlns="http://www.aleksey.com/xmlsec/2002">nThNC/2xdHJ3g9CSh3VBVb/xYeI=</X>
-<Y>tQ8H43yt5dxSPYUkUyyazZYSXjAYbrcwDSPTIqdr1I8+VwxfVllA1m6LTs/LjwPw2zX9zvPLMInIaqqRR3EbvsrXhu18zuh+uKPnGHNl9+Y+HElzynDoYy5uKejiueIbicH9ajwzsUcm5A+wMbwWiUD3uqyQn62zEieqZky3450=</Y>
+<P>scUYcGHN8ldisScXmiiwHbThrJCgi4TF8ojjgg4YA7Nc3FprrlEFNubiOyLMtKXO6GsNwyXlm6PVTKxdFG6vjfI0TbKhUZ/d5jU1d+5kUDeK+25ah8wkU3+8XTVK4uzQ3xbvuUE8CB4Zu2najXMfp3KwUfGEdBeLpeZ+9dinDMc=</P>
+<Q>hUUgGQ2H+zbE82/Y/ZIIrlBcFus=</Q>
+<G>TpMP7eZVsZVs1wCZ0XyqGVtB+faFil+Ot4iCcEkr3vX+9yv0hN9kjX81dfzrO59H877+0ukuTdS7dvd7cmzpdb+nbsd8actwj/xd3TNWedrBsthXbaP9y2ukG47tjwQ65ISyjnzhFqz9zhnDTWKiMxeV3hBVecpD4BNzM7D5e1I=</G>
+<X xmlns="http://www.aleksey.com/xmlsec/2002">Zb3E0Srwm+moEiEzNh2bcaYDJKo=</X>
+<Y>Gr8l5gfQ+Xa0PLtCY3fnmMeiPjgFNn5hWo49T+bRiY7/LYNSwjWAvL3z35T3qCKZKFWozh9Ui7zDZtnPM40VDz98MfO7tJsiU1FUGZ30rwertVvDqps6RYLYSkKnkbDrWeXyLH3qP41xmDLyEowDqYjN34GfeJWSIwZXa+F3blA=</Y>
 </DSAKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-des</KeyName>
 <KeyValue>
-<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">4JjMNXpgzKvmhgS1aTszR6cMU3OhTRE8</DESKeyValue>
+<DESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">mQtBRpz3ZvV0cNc4KkOixFhih+QGwXJD</DESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes128</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">dqSgTDUkiXczGw9CdPW1kQ==</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">ZRh9XP3oLF55RCCgNTKtwg==</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes192</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">mjAMt/rJS4gJhjVFCJTr8pL89F8E85PJ</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">zfe/0ce5J1KVKD7/flfmv0FkK8hVhI9p</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
 <KeyName>test-aes256</KeyName>
 <KeyValue>
-<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">g19pNNNQ4i4e7kzh9g+I46bjBXVtFUC05umETuuTdx0=</AESKeyValue>
+<AESKeyValue xmlns="http://www.aleksey.com/xmlsec/2002">wiKujgI+NkdXoO3qDEz5+K24ayBOXlDwxInklPRgDX4=</AESKeyValue>
 </KeyValue>
 </KeyInfo>
 </Keys>

@@ -38,6 +38,597 @@
 #include <xmlsec/openssl/x509.h>
 #include <xmlsec/errors.h>
 
+
+
+
+/*********************************************************************
+ *
+ * OpenSSL X509 store
+ *
+ *********************************************************************/
+static void		xmlSecOpenSSLX509StoreKlassInit		(xmlSecObjKlassPtr klass);
+static int		xmlSecOpenSSLX509StoreConstructor	(xmlSecObjKlassPtr klass, 
+							    	 xmlSecObjPtr obj);
+static int		xmlSecOpenSSLX509StoreDuplicator	(xmlSecObjKlassPtr klass, 
+								 xmlSecObjPtr dst, 
+							         xmlSecObjPtr src);
+static void		xmlSecOpenSSLX509StoreDestructor	(xmlSecObjKlassPtr klass, 
+								 xmlSecObjPtr obj);
+static void		xmlSecOpenSSLX509StoreDebugDump		(xmlSecObjPtr obj,
+								 FILE* output,
+								 size_t level);
+static void		xmlSecOpenSSLX509StoreDebugXmlDump	(xmlSecObjPtr obj,
+								 FILE* output,
+								 size_t level);
+static int 		xmlSecOpenSSLX509StoreFind		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data,
+								 xmlSecKeysMngrCtxPtr keysMngrCtx,
+								 xmlChar *subjectName,
+								 xmlChar *issuerName,
+								 xmlChar *issuerSerial,
+								 xmlChar *ski);
+static int	 	xmlSecOpenSSLX509StoreVerify		(xmlSecX509StorePtr store, 
+								 xmlSecX509DataPtr data, 
+								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+static int		xmlSecOpenSSLX509StoreSetFolder		(xmlSecX509StorePtr store,
+								 const char* folder);
+static int		xmlSecOpenSSLX509StoreLoadPemFile	(xmlSecX509StorePtr store,
+								 const char* filename,
+								 xmlSecX509ObjectType type);
+
+
+xmlSecObjKlassPtr
+xmlSecOpenSSLX509StoreKlassGet(void) {
+    static xmlSecObjKlassPtr klass = NULL;
+    static xmlSecOpenSSLX509StoreKlass kklass;
+    
+    if(klass == NULL) {
+	static xmlSecObjKlassInfo kklassInfo = {
+	    /* klass data */
+	    sizeof(xmlSecOpenSSLX509StoreKlass),
+	    "xmlSecOpenSSLX509Store",
+	    xmlSecOpenSSLX509StoreKlassInit,	/* xmlSecObjKlassInitMethod */
+	    NULL,				/* xmlSecObjKlassFinalizeMethod */
+	    
+	    /* obj info */
+	    sizeof(xmlSecOpenSSLX509Store),
+	    xmlSecOpenSSLX509StoreConstructor,	/* xmlSecObjKlassConstructorMethod */
+	    xmlSecOpenSSLX509StoreDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
+	    xmlSecOpenSSLX509StoreDestructor,	/* xmlSecObjKlassDestructorMethod */
+	};
+	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
+    				       &kklassInfo, xmlSecX509StoreKlassId); 
+    } 
+    return(klass);   
+}
+
+static void
+xmlSecOpenSSLX509StoreKlassInit(xmlSecObjKlassPtr klass) {
+    xmlSecX509StoreKlassPtr storeKlass = (xmlSecX509StoreKlassPtr)klass;
+    
+    xmlSecAssert(storeKlass != NULL);
+    klass->debugDump		= xmlSecOpenSSLX509StoreDebugDump;
+    klass->debugXmlDump		= xmlSecOpenSSLX509StoreDebugXmlDump;
+    storeKlass->find		= xmlSecOpenSSLX509StoreFind;
+    storeKlass->verify		= xmlSecOpenSSLX509StoreVerify; 
+    storeKlass->setFolder	= xmlSecOpenSSLX509StoreSetFolder;
+    storeKlass->loadPemFile	= xmlSecOpenSSLX509StoreLoadPemFile;    
+}
+
+static int
+xmlSecOpenSSLX509StoreConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
+		xmlSecObjPtr obj) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(obj);
+    
+    xmlSecAssert2(openSslStore != NULL, -1);
+    
+    openSslStore->xst = X509_STORE_new();
+    if(openSslStore->xst == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_new");
+	return(-1);
+    }
+    if(!X509_STORE_set_default_paths(openSslStore->xst)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_set_default_paths");
+	return(-1);
+    }
+	
+    openSslStore->untrusted = sk_X509_new_null();
+    if(openSslStore->untrusted == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "sk_X509_new_null");
+	return(-1);
+    }    
+
+    openSslStore->crls = sk_X509_CRL_new_null();
+    if(openSslStore->crls == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "sk_X509_CRL_new_null");
+	return(-1);
+    }
+    
+    return(0);
+}
+
+static int
+xmlSecOpenSSLX509StoreDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
+		    xmlSecObjPtr dst, xmlSecObjPtr src) {
+    xmlSecOpenSSLX509StorePtr openSslStoreDst = xmlSecOpenSSLX509StoreCast(dst);
+    xmlSecOpenSSLX509StorePtr openSslStoreSrc = xmlSecOpenSSLX509StoreCast(src);
+    
+    xmlSecAssert2(openSslStoreDst != NULL, -1);
+    xmlSecAssert2(openSslStoreSrc != NULL, -1);
+    xmlSecAssert2("todo: not implemented" == NULL, -1);
+    
+    return(0);
+}
+
+static void
+xmlSecOpenSSLX509StoreDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
+		    xmlSecObjPtr obj) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(obj);
+    
+    xmlSecAssert(openSslStore != NULL);
+
+    if(openSslStore->xst != NULL) {
+	X509_STORE_free(openSslStore->xst);
+	openSslStore->xst = NULL;
+    }
+    if(openSslStore->untrusted != NULL) {
+	sk_X509_pop_free(openSslStore->untrusted, X509_free);
+	openSslStore->untrusted = NULL;
+    }
+    if(openSslStore->crls != NULL) {
+	sk_X509_CRL_pop_free(openSslStore->crls, X509_CRL_free);
+	openSslStore->crls = NULL;
+    }
+}
+
+static void
+xmlSecOpenSSLX509StoreDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(obj);
+    
+    xmlSecAssert(openSslStore != NULL);
+    xmlSecAssert(output != NULL);
+    xmlSecAssert("todo: not implemented" == NULL);
+}
+
+static void
+xmlSecOpenSSLX509StoreDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(obj);
+    
+    xmlSecAssert(openSslStore != NULL);
+    xmlSecAssert(output != NULL);
+    xmlSecAssert("todo: not implemented" == NULL);
+}
+
+static int
+xmlSecOpenSSLX509StoreFind(xmlSecX509StorePtr store, xmlSecX509DataPtr data,
+			xmlSecKeysMngrCtxPtr keysMngrCtx, xmlChar *subjectName,
+			xmlChar *issuerName, xmlChar *issuerSerial, xmlChar *ski) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
+    
+    xmlSecAssert2(openSslStore != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+    
+    /* todo : */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr data, 
+			xmlSecKeysMngrCtxPtr keysMngrCtx) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
+    
+    xmlSecAssert2(openSslStore != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(keysMngrCtx != NULL, -1);
+
+    /* todo : */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLX509StoreSetFolder(xmlSecX509StorePtr store, const char* folder) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
+    
+    xmlSecAssert2(openSslStore != NULL, -1);
+    xmlSecAssert2(folder != NULL, -1);
+
+    /* todo : */
+    return(0);
+}
+
+static int
+xmlSecOpenSSLX509StoreLoadPemFile(xmlSecX509StorePtr store, const char* filename,
+			xmlSecX509ObjectType type) {
+    xmlSecOpenSSLX509StorePtr openSslStore = xmlSecOpenSSLX509StoreCast(store);
+    
+    xmlSecAssert2(openSslStore != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
+    /* todo : */
+    return(0);
+}
+
+
+#if 0
+
+/***********************************************************************
+ *
+ * X509 Store
+ *
+ **********************************************************************/
+static int
+xmlSecOpenSSLX509StoreVerify(xmlSecOpenSSLX509StorePtr store, xmlSecKeyDataPtr data) {
+    xmlSecOpenSSLKeyDataX509Ptr x509Data;
+    int ret = 0;
+    
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
+
+    if(!xmlSecKeyDataCheckId(data, xmlSecKeyDataX509)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_INVALID_ID,
+		    "xmlSecKeyDataX509");
+	return(-1);
+    }
+    x509Data = (xmlSecOpenSSLKeyDataX509Ptr)data;
+
+    
+    /*
+     * verify all crls in the X509Data (if any) and remove
+     * all not verified
+     */
+    if(x509Data->crls != NULL) {
+	X509_CRL *crl;
+	int i;
+
+	for(i = 0; i < x509Data->crls->num;) { 
+	    crl = ((X509_CRL**)(x509Data->crls->data))[i];
+	    ret = xmlSecOpenSSLX509StoreVerifyCRL(store, crl);
+	    if(ret == 1) {
+		++i;
+	    } else if(ret == 0) {
+		sk_delete(x509Data->crls, i);
+		X509_CRL_free(crl); 
+	    } else {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "xmlSecOpenSSLX509StoreVerifyCRL - %d", ret);
+		return(-1);
+	    }
+	}
+    }
+
+    if(x509Data->certs != NULL) {
+	X509 *cert;
+	int i;
+	STACK_OF(X509)* certs;
+	X509 *err_cert = NULL;
+        int err = 0, depth;
+
+	/** 
+         * dup certs and add untrusted certs to the stack
+	 */ 
+        certs = sk_X509_dup(x509Data->certs);
+	if(certs == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"sk_X509_dup");
+	    return(-1);
+        }
+	if(store->untrusted != NULL) {
+	    for(i = 0; i < store->untrusted->num; ++i) { 
+		sk_X509_push(certs, ((X509**)(store->untrusted->data))[i]);
+	    }
+	}
+	
+	/* remove all revoked certs */
+	for(i = 0; i < certs->num; ++i) { 
+	    cert = ((X509**)(certs->data))[i];
+	    if(x509Data->crls != NULL) {
+		ret = xmlSecOpenSSL509VerifyCertAgainstCrls(x509Data->crls, cert);
+		if(ret == 0) {
+		    sk_X509_delete(certs, i);
+		    continue;
+		} else if(ret != 1) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecOpenSSL509VerifyCertAgainstCrls - %d", ret);
+		    sk_X509_free(certs);
+		    return(-1);
+		}
+	    }	    	    
+	    if(store->crls != NULL) {
+		ret = xmlSecOpenSSL509VerifyCertAgainstCrls(store->crls, cert);
+		if(ret == 0) {
+		    sk_X509_delete(certs, i);
+		    continue;
+		} else if(ret != 1) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"xmlSecOpenSSL509VerifyCertAgainstCrls - %d", ret);
+		    sk_X509_free(certs);
+		    return(-1);
+		}
+	    }
+	    ++i;
+	}	
+	
+	for(i = 0; i < certs->num; ++i) { 
+	    cert = ((X509**)(certs->data))[i];
+	    if(xmlSecOpenSSLX509FindNextChainCert(certs, cert) == NULL) {
+		X509_STORE_CTX xsc; 
+    
+		X509_STORE_CTX_init (&xsc, store->xst, cert, certs);
+#if 0 
+	TODO
+		if(store->x509_store_flags & X509_V_FLAG_USE_CHECK_TIME) {
+		    X509_STORE_CTX_set_time(&xsc, 0, 
+			x509Data->certsVerificationTime);
+		}
+		if((store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME)) != 0) {
+		    X509_STORE_CTX_set_flags(&xsc, 
+			store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME));
+		}
+#endif /* 0 */
+		ret = X509_verify_cert(&xsc); 
+		err_cert = X509_STORE_CTX_get_current_cert(&xsc);
+		err	 = X509_STORE_CTX_get_error(&xsc);
+		depth	 = X509_STORE_CTX_get_error_depth(&xsc);
+		X509_STORE_CTX_cleanup (&xsc);  
+
+		if(ret == 1) {
+		    x509Data->verified = cert;
+		    sk_X509_free(certs);
+		    return(1);
+		} else if(ret < 0) {
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    	    "X509_verify_cert - %d (%s)", err,
+			    X509_verify_cert_error_string(err));
+		    sk_X509_free(certs);
+		    return(-1);
+		}
+	    }
+	}
+
+	if((err != 0) && (err_cert != NULL)) {
+	    char buf[256];
+	    switch (err) {
+	    case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
+		X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
+		        "error=%d (%s); issuer=\"%s\"", err,
+		        X509_verify_cert_error_string(err), buf);
+		break;
+	    case X509_V_ERR_CERT_NOT_YET_VALID:
+	    case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
+			"error=%d (%s)", err,
+			X509_verify_cert_error_string(err));
+		break;
+	    case X509_V_ERR_CERT_HAS_EXPIRED:
+	    case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+			"error=%d (%s)", err,
+			X509_verify_cert_error_string(err));
+		break;
+	    default:			
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
+			"error=%d (%s)", err,
+			X509_verify_cert_error_string(err));
+	    }		    
+	}
+	sk_X509_free(certs);
+    }
+    return(0);
+}
+
+/**
+ * xmlSecOpenSSLX509StoreFind:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
+ * @subjectName: the subject name string.
+ * @issuerName: the issuer name string.
+ * @issuerSerial: the issuer serial.
+ * @ski: the SKI string.
+ * @data: the current X509 certs data (may be NULL). 
+ *
+ * Searches for matching certificate in the keys manager.
+ *
+ * Returns the pointer to certificate that matches given criteria or NULL 
+ * if an error occurs or certificate not found.
+ */
+xmlSecKeyPtr	
+xmlSecOpenSSLX509StoreFind(xmlSecOpenSSLX509StorePtr store, xmlSecKeysMngrCtxPtr keysMngrCtx,
+		 xmlSecKeyDataPtr data, xmlChar *subjectName, 
+		 xmlChar *issuerName,  xmlChar *issuerSerial, xmlChar *ski) {
+    xmlSecOpenSSLKeyDataX509Ptr x509Data = NULL;
+    X509 *cert = NULL;
+    int ret;
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(store->untrusted != NULL, NULL);
+
+    cert = xmlSecOpenSSLX509Find(store->untrusted, subjectName, issuerName, issuerSerial, ski);
+    if(cert != NULL) {
+	x509Data = (xmlSecOpenSSLKeyDataX509Ptr)xmlSecKeyDataCreate(xmlSecKeyDataX509);
+	if(x509Data == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509Create");
+	    return(NULL);
+	}
+	ret = xmlSecOpenSSLKeyDataX509AddCert(x509Data, cert = X509_dup(cert));
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509AddCert - %d", ret);
+	    if(cert != NULL) X509_free(cert);
+	    return(NULL);	
+	}
+    }
+    if(x509Data != NULL) {
+    	return(xmlSecOpenSSLX509StoreGetKey(store, keysMngrCtx, x509Data));
+    }
+    return(NULL);
+}
+
+/**
+ * xmlSecOpenSSLX509StoreLoadPemCert:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
+ * @filename: the PEM file.
+ * @trusted: the flag that indicates is the certificate in @filename
+ *    trusted or not.
+ * 
+ * Reads cert from PEM @filename and adds to the list of trusted or known
+ * untrusted certs in @store.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLX509StoreLoadPemCert(xmlSecOpenSSLX509StorePtr store, const char *filename, 
+			   int trusted) {
+    int ret;
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+    
+    if(trusted) {
+        X509_LOOKUP *lookup = NULL; 
+
+	lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_file());
+	if(lookup == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"X509_STORE_add_lookup");
+	    return(-1);
+	}
+
+	ret = X509_LOOKUP_load_file(lookup, filename, X509_FILETYPE_PEM);
+	if(ret != 1) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"X509_LOOKUP_load_file(%s) - %d", filename, ret);
+	    return(-1);
+	}
+    } else {
+        FILE *f;
+	X509 *cert;
+    
+	xmlSecAssert2(store->untrusted != NULL, -1);
+    
+	f = fopen(filename, "r");
+	if(f == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_IO_FAILED,
+			"fopen(\"%s\", \"r\"), errno=%d", filename, errno);
+	    return(-1);
+	}
+    
+	cert = PEM_read_X509(f, NULL, NULL, NULL);
+	fclose(f);
+
+	if(cert == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			"PEM_read_X509(filename=\"%s\")", filename);
+	    return(-1);
+	}    
+	
+	sk_X509_push(store->untrusted, cert); 	
+    }
+    return(0);
+}
+
+/**
+ * xmlSecOpenSSLX509StoreAddCertsDir:
+ * @store: the pointer to #xmlSecOpenSSLX509Store structure.
+ * @path: the path to the certs dir.
+ *
+ * Adds all certs in the @path to the list of trusted certs
+ * in @store.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLX509StoreAddCertsDir(xmlSecOpenSSLX509StorePtr store, const char *path) {
+    X509_LOOKUP *lookup = NULL;
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(store->xst != NULL, -1);
+    xmlSecAssert2(path != NULL, -1);
+    
+    lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_hash_dir());
+    if(lookup == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_add_lookup");
+	return(-1);
+    }    
+    X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
+    return(0);
+}
+
+static int
+xmlSecOpenSSLX509StoreVerifyCRL(xmlSecOpenSSLX509StorePtr store, X509_CRL *crl ) {
+    X509_STORE_CTX xsc; 
+    X509_OBJECT xobj;
+    EVP_PKEY *pkey;
+    int ret;  
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(store->xst != NULL, -1);
+    xmlSecAssert2(crl != NULL, -1);
+    
+    X509_STORE_CTX_init(&xsc, store->xst, NULL, NULL);
+    ret = X509_STORE_get_by_subject(&xsc, X509_LU_X509, 
+				    X509_CRL_get_issuer(crl), &xobj);
+    if(ret <= 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_STORE_get_by_subject - %d", ret);
+	return(-1);
+    }
+    pkey = X509_get_pubkey(xobj.data.x509);
+    X509_OBJECT_free_contents(&xobj);
+    if(pkey == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_get_pubkey");
+	return(-1);
+    }
+    ret = X509_CRL_verify(crl, pkey);
+    EVP_PKEY_free(pkey);    
+    if(ret != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "X509_CRL_verify - %d", ret);
+    }
+    X509_STORE_CTX_cleanup (&xsc);  
+    return((ret == 1) ? 1 : 0);
+}
+
+
+
+
+
+
+
+
+
+
 /**
  * X509 Data
  */
@@ -668,497 +1259,6 @@ xmlSecOpenSSLKeyDataX509AddCrl(xmlSecOpenSSLKeyDataX509Ptr x509Data, X509_CRL *c
 
 
 
-/***********************************************************************
- *
- * X509 Store
- *
- **********************************************************************/
-/**
- * xmlSecOpenSSLX509StoreCreate:
- *
- * Creates new x509 store.
- *
- * Returns the pointer to newly allocated #xmlSecOpenSSLX509Store structure.
- */
-xmlSecOpenSSLX509StorePtr	
-xmlSecOpenSSLX509StoreCreate(void) {
-    xmlSecOpenSSLX509StorePtr store;
-    
-    store = (xmlSecOpenSSLX509StorePtr)xmlMalloc(sizeof(xmlSecOpenSSLX509Store));
-    if(store == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecOpenSSLX509Store)=%d",
-		    sizeof(xmlSecOpenSSLX509Store));
-	return(NULL);
-    }
-    memset(store, 0, sizeof(xmlSecOpenSSLX509Store));
-
-    store->xst = X509_STORE_new();
-    if(store->xst == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_new");
-	xmlSecOpenSSLX509StoreDestroy(store);
-	return(NULL);
-    }
-    if(!X509_STORE_set_default_paths(store->xst)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_set_default_paths");
-	xmlSecOpenSSLX509StoreDestroy(store);
-	return(NULL);
-    }
-	
-    store->untrusted = sk_X509_new_null();
-    if(store->untrusted == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "sk_X509_new_null");
-	xmlSecOpenSSLX509StoreDestroy(store);
-	return(NULL);
-    }    
-
-    store->crls = sk_X509_CRL_new_null();
-    if(store->crls == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "sk_X509_CRL_new_null");
-	xmlSecOpenSSLX509StoreDestroy(store);
-	return(NULL);
-    }    
-    return(store);
-}
-
-/**
- * xmlSecOpenSSLX509StoreDestroy:
- * @store: the pointer to #xmlSecOpenSSLX509Store structure.
- *
- * Destroys the #xmlSecOpenSSLX509Store structure.
- */
-void
-xmlSecOpenSSLX509StoreDestroy(xmlSecOpenSSLX509StorePtr store) {
-    xmlSecAssert(store != NULL);
-
-    if(store->xst != NULL) {
-	X509_STORE_free(store->xst);
-    }
-    if(store->untrusted != NULL) {
-	sk_X509_pop_free(store->untrusted, X509_free);
-    }
-    if(store->crls != NULL) {
-	sk_X509_CRL_pop_free(store->crls, X509_CRL_free);
-    }
-
-    memset(store, 0, sizeof(xmlSecOpenSSLX509Store));
-    xmlFree(store);
-}
-
-xmlSecKeyPtr	
-xmlSecOpenSSLX509StoreGetKey(xmlSecOpenSSLX509StorePtr store, xmlSecKeysMngrCtxPtr keysMngrCtx,
-			xmlSecKeyDataPtr data) {
-    xmlSecAssert2(store != NULL, NULL);
-    xmlSecAssert2(data != NULL, NULL);
-    
-    /* todo */
-    
-    return(NULL);
-}
-
-static int
-xmlSecOpenSSLX509StoreVerify(xmlSecOpenSSLX509StorePtr store, xmlSecKeyDataPtr data) {
-    xmlSecOpenSSLKeyDataX509Ptr x509Data;
-    int ret = 0;
-    
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(data != NULL, -1);
-
-    if(!xmlSecKeyDataCheckId(data, xmlSecKeyDataX509)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_ID,
-		    "xmlSecKeyDataX509");
-	return(-1);
-    }
-    x509Data = (xmlSecOpenSSLKeyDataX509Ptr)data;
-
-    
-    /*
-     * verify all crls in the X509Data (if any) and remove
-     * all not verified
-     */
-    if(x509Data->crls != NULL) {
-	X509_CRL *crl;
-	int i;
-
-	for(i = 0; i < x509Data->crls->num;) { 
-	    crl = ((X509_CRL**)(x509Data->crls->data))[i];
-	    ret = xmlSecOpenSSLX509StoreVerifyCRL(store, crl);
-	    if(ret == 1) {
-		++i;
-	    } else if(ret == 0) {
-		sk_delete(x509Data->crls, i);
-		X509_CRL_free(crl); 
-	    } else {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    "xmlSecOpenSSLX509StoreVerifyCRL - %d", ret);
-		return(-1);
-	    }
-	}
-    }
-
-    if(x509Data->certs != NULL) {
-	X509 *cert;
-	int i;
-	STACK_OF(X509)* certs;
-	X509 *err_cert = NULL;
-        int err = 0, depth;
-
-	/** 
-         * dup certs and add untrusted certs to the stack
-	 */ 
-        certs = sk_X509_dup(x509Data->certs);
-	if(certs == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"sk_X509_dup");
-	    return(-1);
-        }
-	if(store->untrusted != NULL) {
-	    for(i = 0; i < store->untrusted->num; ++i) { 
-		sk_X509_push(certs, ((X509**)(store->untrusted->data))[i]);
-	    }
-	}
-	
-	/* remove all revoked certs */
-	for(i = 0; i < certs->num; ++i) { 
-	    cert = ((X509**)(certs->data))[i];
-	    if(x509Data->crls != NULL) {
-		ret = xmlSecOpenSSL509VerifyCertAgainstCrls(x509Data->crls, cert);
-		if(ret == 0) {
-		    sk_X509_delete(certs, i);
-		    continue;
-		} else if(ret != 1) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecOpenSSL509VerifyCertAgainstCrls - %d", ret);
-		    sk_X509_free(certs);
-		    return(-1);
-		}
-	    }	    	    
-	    if(store->crls != NULL) {
-		ret = xmlSecOpenSSL509VerifyCertAgainstCrls(store->crls, cert);
-		if(ret == 0) {
-		    sk_X509_delete(certs, i);
-		    continue;
-		} else if(ret != 1) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				XMLSEC_ERRORS_R_XMLSEC_FAILED,
-				"xmlSecOpenSSL509VerifyCertAgainstCrls - %d", ret);
-		    sk_X509_free(certs);
-		    return(-1);
-		}
-	    }
-	    ++i;
-	}	
-	
-	for(i = 0; i < certs->num; ++i) { 
-	    cert = ((X509**)(certs->data))[i];
-	    if(xmlSecOpenSSLX509FindNextChainCert(certs, cert) == NULL) {
-		X509_STORE_CTX xsc; 
-    
-		X509_STORE_CTX_init (&xsc, store->xst, cert, certs);
-#if 0 
-	TODO
-		if(store->x509_store_flags & X509_V_FLAG_USE_CHECK_TIME) {
-		    X509_STORE_CTX_set_time(&xsc, 0, 
-			x509Data->certsVerificationTime);
-		}
-		if((store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME)) != 0) {
-		    X509_STORE_CTX_set_flags(&xsc, 
-			store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME));
-		}
-#endif /* 0 */
-		ret = X509_verify_cert(&xsc); 
-		err_cert = X509_STORE_CTX_get_current_cert(&xsc);
-		err	 = X509_STORE_CTX_get_error(&xsc);
-		depth	 = X509_STORE_CTX_get_error_depth(&xsc);
-		X509_STORE_CTX_cleanup (&xsc);  
-
-		if(ret == 1) {
-		    x509Data->verified = cert;
-		    sk_X509_free(certs);
-		    return(1);
-		} else if(ret < 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    	    "X509_verify_cert - %d (%s)", err,
-			    X509_verify_cert_error_string(err));
-		    sk_X509_free(certs);
-		    return(-1);
-		}
-	    }
-	}
-
-	if((err != 0) && (err_cert != NULL)) {
-	    char buf[256];
-	    switch (err) {
-	    case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
-		X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-		        "error=%d (%s); issuer=\"%s\"", err,
-		        X509_verify_cert_error_string(err), buf);
-		break;
-	    case X509_V_ERR_CERT_NOT_YET_VALID:
-	    case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
-		break;
-	    case X509_V_ERR_CERT_HAS_EXPIRED:
-	    case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
-		break;
-	    default:			
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-			"error=%d (%s)", err,
-			X509_verify_cert_error_string(err));
-	    }		    
-	}
-	sk_X509_free(certs);
-    }
-    return(0);
-}
-
-/**
- * xmlSecOpenSSLX509StoreFind:
- * @store: the pointer to #xmlSecOpenSSLX509Store structure.
- * @subjectName: the subject name string.
- * @issuerName: the issuer name string.
- * @issuerSerial: the issuer serial.
- * @ski: the SKI string.
- * @data: the current X509 certs data (may be NULL). 
- *
- * Searches for matching certificate in the keys manager.
- *
- * Returns the pointer to certificate that matches given criteria or NULL 
- * if an error occurs or certificate not found.
- */
-xmlSecKeyPtr	
-xmlSecOpenSSLX509StoreFind(xmlSecOpenSSLX509StorePtr store, xmlSecKeysMngrCtxPtr keysMngrCtx,
-		 xmlSecKeyDataPtr data, xmlChar *subjectName, 
-		 xmlChar *issuerName,  xmlChar *issuerSerial, xmlChar *ski) {
-    xmlSecOpenSSLKeyDataX509Ptr x509Data = NULL;
-    X509 *cert = NULL;
-    int ret;
-
-    xmlSecAssert2(store != NULL, NULL);
-    xmlSecAssert2(store->untrusted != NULL, NULL);
-
-    cert = xmlSecOpenSSLX509Find(store->untrusted, subjectName, issuerName, issuerSerial, ski);
-    if(cert != NULL) {
-	x509Data = (xmlSecOpenSSLKeyDataX509Ptr)xmlSecKeyDataCreate(xmlSecKeyDataX509);
-	if(x509Data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataX509Create");
-	    return(NULL);
-	}
-	ret = xmlSecOpenSSLKeyDataX509AddCert(x509Data, cert = X509_dup(cert));
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataX509AddCert - %d", ret);
-	    if(cert != NULL) X509_free(cert);
-	    return(NULL);	
-	}
-    }
-    if(x509Data != NULL) {
-    	return(xmlSecOpenSSLX509StoreGetKey(store, keysMngrCtx, x509Data));
-    }
-    return(NULL);
-}
-
-/**
- * xmlSecOpenSSLX509StoreLoadPemCert:
- * @store: the pointer to #xmlSecOpenSSLX509Store structure.
- * @filename: the PEM file.
- * @trusted: the flag that indicates is the certificate in @filename
- *    trusted or not.
- * 
- * Reads cert from PEM @filename and adds to the list of trusted or known
- * untrusted certs in @store.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecOpenSSLX509StoreLoadPemCert(xmlSecOpenSSLX509StorePtr store, const char *filename, 
-			   int trusted) {
-    int ret;
-
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-    
-    if(trusted) {
-        X509_LOOKUP *lookup = NULL; 
-
-	lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_file());
-	if(lookup == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"X509_STORE_add_lookup");
-	    return(-1);
-	}
-
-	ret = X509_LOOKUP_load_file(lookup, filename, X509_FILETYPE_PEM);
-	if(ret != 1) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"X509_LOOKUP_load_file(%s) - %d", filename, ret);
-	    return(-1);
-	}
-    } else {
-        FILE *f;
-	X509 *cert;
-    
-	xmlSecAssert2(store->untrusted != NULL, -1);
-    
-	f = fopen(filename, "r");
-	if(f == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_IO_FAILED,
-			"fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	    return(-1);
-	}
-    
-	cert = PEM_read_X509(f, NULL, NULL, NULL);
-	fclose(f);
-
-	if(cert == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			"PEM_read_X509(filename=\"%s\")", filename);
-	    return(-1);
-	}    
-	
-	sk_X509_push(store->untrusted, cert); 	
-    }
-    return(0);
-}
-
-/**
- * xmlSecOpenSSLX509StoreAddCertsDir:
- * @store: the pointer to #xmlSecOpenSSLX509Store structure.
- * @path: the path to the certs dir.
- *
- * Adds all certs in the @path to the list of trusted certs
- * in @store.
- *
- * Returns 0 on success or a negative value otherwise.
- */
-int
-xmlSecOpenSSLX509StoreAddCertsDir(xmlSecOpenSSLX509StorePtr store, const char *path) {
-    X509_LOOKUP *lookup = NULL;
-
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(store->xst != NULL, -1);
-    xmlSecAssert2(path != NULL, -1);
-    
-    lookup = X509_STORE_add_lookup(store->xst, X509_LOOKUP_hash_dir());
-    if(lookup == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_add_lookup");
-	return(-1);
-    }    
-    X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
-    return(0);
-}
-
-static int
-xmlSecOpenSSLX509StoreVerifyCRL(xmlSecOpenSSLX509StorePtr store, X509_CRL *crl ) {
-    X509_STORE_CTX xsc; 
-    X509_OBJECT xobj;
-    EVP_PKEY *pkey;
-    int ret;  
-
-    xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(store->xst != NULL, -1);
-    xmlSecAssert2(crl != NULL, -1);
-    
-    X509_STORE_CTX_init(&xsc, store->xst, NULL, NULL);
-    ret = X509_STORE_get_by_subject(&xsc, X509_LU_X509, 
-				    X509_CRL_get_issuer(crl), &xobj);
-    if(ret <= 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_STORE_get_by_subject - %d", ret);
-	return(-1);
-    }
-    pkey = X509_get_pubkey(xobj.data.x509);
-    X509_OBJECT_free_contents(&xobj);
-    if(pkey == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_get_pubkey");
-	return(-1);
-    }
-    ret = X509_CRL_verify(crl, pkey);
-    EVP_PKEY_free(pkey);    
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "X509_CRL_verify - %d", ret);
-    }
-    X509_STORE_CTX_cleanup (&xsc);  
-    return((ret == 1) ? 1 : 0);
-}
-
-/**
- * xmlSecKeyReadPemCert:
- * @key: the pointer to the #xmlSecKeyValue structure.
- * @filename: the PEM cert file name.
- *
- * Reads the cert from a PEM file and assigns the cert
- * to the key.
- *
- * Returns 0 on success or a negative value otherwise.
- */ 
-int		
-xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
-    int ret;
-
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(filename != NULL, -1);
-
-    if(key->x509Data == NULL) {
-	key->x509Data = xmlSecKeyDataCreate(xmlSecKeyDataX509);
-	if(key->x509Data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecOpenSSLKeyDataX509Create");
-	    return(-1);
-	}
-    }    
-    
-    ret = xmlSecOpenSSLKeyDataX509ReadPemCert(key->x509Data, filename);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataX509ReadPemCert(%s) - %d", filename, ret);
-	return(-1);
-    }
-    
-    return(0);
-}
-
 /*****************************************************************************
  *
  * Low-level x509 functions
@@ -1589,93 +1689,6 @@ xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, const X509_NAME_ENTR
     return(OBJ_cmp((*a)->object, (*b)->object));
 }
 
-/**
- * xmlSecPKCS12ReadKey:
- * @filename: the pkcs12 file name.
- * @pwd: the password for the pkcs12 file.
- *
- * Reads the key from pkcs12 file @filename.
- *
- * Returns the pointer to newly allocated key or NULL if an error occurs.
- */ 
-xmlSecKeyPtr
-xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
-    xmlSecKeyPtr key = NULL;
-    FILE *f;
-    PKCS12 *p12;
-    EVP_PKEY *pKey = NULL;
-    X509 *cert = NULL;
-    STACK_OF(X509) *chain = NULL;
-    int ret;
-
-    xmlSecAssert2(filename != NULL, NULL);
-        
-    f = fopen(filename, "r");
-    if(f == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
-	return(NULL);
-    }
-    
-    p12 = d2i_PKCS12_fp(f, NULL);
-    if(p12 == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "d2i_PKCS12_fp(filename=%s)", filename);
-	fclose(f);    
-	return(NULL);
-    }
-    fclose(f);    
-
-    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PKCS12_verify_mac - %d", ret);
-        PKCS12_free(p12);
-	return(NULL);	
-    }    
-        
-    pKey = NULL;
-    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
-    if((ret < 0) || (pKey == NULL)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "PKCS12_parse - %d", ret);
-        PKCS12_free(p12);
-	return(NULL);	
-    }    
-    PKCS12_free(p12);
-    
-    /* todo: should we put the key cert into stack */
-    sk_X509_push(chain, cert);
-    
-    key = xmlSecOpenSSLEvpParseKey(pKey);
-    if(key == NULL) { 
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLEvpParseKey");
-	EVP_PKEY_free(pKey);
-	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
-	return(NULL);	    
-    }   
-    EVP_PKEY_free(pKey); 
-    /* todo: check tha key->value != NULL */
-    
-    key->origin |= xmlSecKeyOriginX509;
-    key->x509Data = xmlSecKeyDataCreate(xmlSecKeyDataX509);
-    if(key->x509Data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKeyDataX509Create");
-	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
-	xmlSecKeyDestroy(key);
-	return(NULL);
-    }
-    ((xmlSecOpenSSLKeyDataX509Ptr)(key->x509Data))->certs = chain;
-    return(key);
-}
 
 
 /**
@@ -1725,7 +1738,6 @@ xmlSecOpenSSLKeyDataX509ReadPemCert(xmlSecOpenSSLKeyDataX509Ptr x509Data, const 
 }
 
 
-#endif /* XMLSEC_NO_X509 */
 
 
 #if 0
@@ -1887,3 +1899,135 @@ xmlSecX509DebugXmlDump(X509 *cert, FILE *output) {
 }
 
 #endif /* 0 */
+#endif /* 0 */
+
+/* todo */
+
+/**
+ * xmlSecKeyReadPemCert:
+ * @key: the pointer to the #xmlSecKeyValue structure.
+ * @filename: the PEM cert file name.
+ *
+ * Reads the cert from a PEM file and assigns the cert
+ * to the key.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */ 
+int		
+xmlSecKeyReadPemCert(xmlSecKeyPtr key,  const char *filename) {
+    int ret;
+
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value != NULL, -1);
+    xmlSecAssert2(filename != NULL, -1);
+
+/* todo
+    if(key->x509Data == NULL) {
+	key->x509Data = xmlSecKeyDataCreate(xmlSecKeyDataX509);
+	if(key->x509Data == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecOpenSSLKeyDataX509Create");
+	    return(-1);
+	}
+    }    
+    
+    ret = xmlSecOpenSSLKeyDataX509ReadPemCert(key->x509Data, filename);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLKeyDataX509ReadPemCert(%s) - %d", filename, ret);
+	return(-1);
+    }
+*/    
+    return(0);
+}
+
+/**
+ * xmlSecPKCS12ReadKey:
+ * @filename: the pkcs12 file name.
+ * @pwd: the password for the pkcs12 file.
+ *
+ * Reads the key from pkcs12 file @filename.
+ *
+ * Returns the pointer to newly allocated key or NULL if an error occurs.
+ */ 
+xmlSecKeyPtr
+xmlSecPKCS12ReadKey(const char *filename, const char *pwd) {
+    xmlSecKeyPtr key = NULL;
+    FILE *f;
+    PKCS12 *p12;
+    EVP_PKEY *pKey = NULL;
+    X509 *cert = NULL;
+    STACK_OF(X509) *chain = NULL;
+    int ret;
+
+    xmlSecAssert2(filename != NULL, NULL);
+        
+    f = fopen(filename, "r");
+    if(f == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "fopen(\"%s\", \"r\"), errno=%d", filename, errno);
+	return(NULL);
+    }
+    
+    p12 = d2i_PKCS12_fp(f, NULL);
+    if(p12 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "d2i_PKCS12_fp(filename=%s)", filename);
+	fclose(f);    
+	return(NULL);
+    }
+    fclose(f);    
+
+    ret = PKCS12_verify_mac(p12, pwd, (pwd != NULL) ? strlen(pwd) : 0);
+    if(ret != 1) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PKCS12_verify_mac - %d", ret);
+        PKCS12_free(p12);
+	return(NULL);	
+    }    
+        
+    pKey = NULL;
+    ret = PKCS12_parse(p12, pwd, &pKey, &cert, &chain);
+    if((ret < 0) || (pKey == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "PKCS12_parse - %d", ret);
+        PKCS12_free(p12);
+	return(NULL);	
+    }    
+    PKCS12_free(p12);
+    
+    /* todo: should we put the key cert into stack */
+    sk_X509_push(chain, cert);
+    
+    key = xmlSecOpenSSLEvpParseKey(pKey);
+    if(key == NULL) { 
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpParseKey");
+	EVP_PKEY_free(pKey);
+	if(chain != NULL) sk_X509_pop_free(chain, X509_free); 
+	return(NULL);	    
+    }   
+    EVP_PKEY_free(pKey); 
+    /* todo: check tha key->value != NULL */
+    key->origin |= xmlSecKeyOriginX509;
+    /* todo: */
+    xmlSecAssert2(key->x509Data != NULL, NULL);
+    ((xmlSecOpenSSLX509DataPtr)(key->x509Data))->certs = chain;
+    return(key);
+}
+
+
+
+
+
+
+
+
+#endif /* XMLSEC_NO_X509 */

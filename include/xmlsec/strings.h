@@ -111,16 +111,16 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMacHmacRipeMd160[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSignRsaSha1[];
 
 /* encryption algorithm hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncHrefAes128Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncHrefAes192Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncHrefAes256Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncHrefDes3Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncHrefRsaPkcs1[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncHrefRsaOaep[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncAes128Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncAes192Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncAes256Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncDes3Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncRsaPkcs1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEncRsaOaep[];
 
 /* key wrap algorithm hrefs */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWHrefAes128Cbc[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWHrefAes192Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes128Cbc[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes192Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWAes256Cbc[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefKWDes3Cbc[];
 

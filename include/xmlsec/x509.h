@@ -70,6 +70,11 @@ typedef int 		(*xmlSecX509StoreFindMethod)		(xmlSecX509StorePtr store,
 typedef int	 	(*xmlSecX509StoreVerifyMethod)		(xmlSecX509StorePtr store, 
 								 xmlSecX509DataPtr data, 
 								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+typedef int		(*xmlSecX509StoreSetFolderMethod)	(xmlSecX509StorePtr store,
+								 const char* folder);
+typedef int		(*xmlSecX509StoreLoadPemFileMethod)	(xmlSecX509StorePtr store,
+								 const char* filename,
+								 xmlSecX509ObjectType type);
 
 
 struct _xmlSecX509StoreKlass {
@@ -77,6 +82,8 @@ struct _xmlSecX509StoreKlass {
     
     xmlSecX509StoreFindMethod		find;
     xmlSecX509StoreVerifyMethod		verify;
+    xmlSecX509StoreSetFolderMethod	setFolder;
+    xmlSecX509StoreLoadPemFileMethod	loadPemFile;
 };
 
 struct _xmlSecX509Store {
@@ -94,6 +101,11 @@ XMLSEC_EXPORT int	 	xmlSecX509StoreFind		(xmlSecX509StorePtr store,
 XMLSEC_EXPORT int	 	xmlSecX509StoreVerify		(xmlSecX509StorePtr store, 
 								 xmlSecX509DataPtr data, 
 								 xmlSecKeysMngrCtxPtr keysMngrCtx);
+XMLSEC_EXPORT int		xmlSecX509StoreSetFolder	(xmlSecX509StorePtr store,
+								 const char* folder);
+XMLSEC_EXPORT int		xmlSecX509StoreLoadPemFile	(xmlSecX509StorePtr store,
+								 const char* filename,
+								 xmlSecX509ObjectType type);
 
 
 /*********************************************************************

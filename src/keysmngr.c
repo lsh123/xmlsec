@@ -85,7 +85,6 @@ xmlSecKeysMngrGetKey(xmlSecKeysMngrPtr keysMngr, xmlSecKeysMngrCtxPtr keysMngrCt
 
     xmlSecAssert2(keysMngr != NULL, NULL);
     xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(keyInfoNode != NULL, NULL);
     xmlSecAssert2(keysMngrKlass != NULL, NULL);
     
     if(keysMngrKlass->getKey != NULL) {
@@ -233,7 +232,6 @@ xmlSecKeysMngrGetKeyImp(xmlSecKeysMngrPtr keysMngr, xmlSecKeysMngrCtxPtr keysMng
 
     xmlSecAssert2(keysMngr != NULL, NULL);
     xmlSecAssert2(keysMngrCtx != NULL, NULL);
-    xmlSecAssert2(keyInfoNode != NULL, NULL);
 
     if((key == NULL) && (keyInfoNode != NULL)) {
 	key = xmlSecKeyInfoNodeRead(keyInfoNode, keysMngrCtx);

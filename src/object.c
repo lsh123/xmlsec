@@ -19,6 +19,11 @@
 #include <xmlsec/object.h>
 #include <xmlsec/errors.h>
 
+/* debug only
+#define XMLSEC_KLASSES_DEBUG 	1
+#define XMLSEC_OBJECTS_DEBUG 	1
+*/
+
 /* objects constructors/destructors */
 static int		xmlSecObjNewRecursive			(xmlSecObjPtr newObj, 
 								 xmlSecObjKlassPtr klass);
@@ -61,6 +66,12 @@ xmlSecObjKlassPtr
 xmlSecObjKlassRegister(xmlSecPtr buf, size_t size, xmlSecObjKlassInfoPtr klassInfo, 
 			xmlSecObjKlassPtr parent) {
     xmlSecObjKlassPtr klass = (xmlSecObjKlassPtr)buf;
+
+#ifdef XMLSEC_KLASSES_DEBUG
+    fprintf(stdout, "xmlSecObjKlassRegister: klass=%s, parent=%s\n",
+		    (klassInfo != NULL) ? klassInfo->klassName : "NULL",
+		    ((parent != NULL) && (parent->klassInfo != NULL)) ?  parent->klassInfo->klassName : "NULL");
+#endif /* XMLSEC_KLASSES_DEBUG */
     
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(xmlSecObjKlassInfoIsValid(klassInfo), NULL);
@@ -130,6 +141,11 @@ xmlSecObjNew(xmlSecObjKlassPtr klass) {
     xmlSecObjKlassInfoPtr klassInfo = xmlSecObjKlassGetKlassInfo(klass);
     xmlSecObjPtr newObj;
     int ret;
+
+#ifdef XMLSEC_OBJECTS_DEBUG
+    fprintf(stdout, "xmlSecObjNew: klass=%s\n",
+		    (klassInfo != NULL) ? klassInfo->klassName : "NULL");
+#endif /* XMLSEC_OBJECTS_DEBUG */
     
     xmlSecAssert2(xmlSecObjKlassIsValid(klass), NULL);
     xmlSecAssert2(klassInfo != NULL, NULL);
@@ -165,6 +181,11 @@ xmlSecObjDuplicate(xmlSecObjPtr obj) {
     xmlSecObjKlassInfoPtr klassInfo = xmlSecObjGetKlassInfo(obj);
     xmlSecObjPtr newObj;
     int ret;
+
+#ifdef XMLSEC_OBJECTS_DEBUG
+    fprintf(stdout, "xmlSecObjDuplicate: klass=%s\n",
+		    (klassInfo != NULL) ?  klassInfo->klassName : "NULL");
+#endif /* XMLSEC_OBJECTS_DEBUG */
     
     xmlSecAssert2(xmlSecObjIsValid(obj), NULL);
     xmlSecAssert2(klass != NULL, NULL);
@@ -199,6 +220,11 @@ void
 xmlSecObjDelete(xmlSecObjPtr obj) {
     xmlSecObjKlassPtr klass = xmlSecObjGetKlass(obj);
     xmlSecObjKlassInfoPtr klassInfo = xmlSecObjGetKlassInfo(obj);
+
+#ifdef XMLSEC_OBJECTS_DEBUG
+    fprintf(stdout, "xmlSecObjDuplicate: klass=%s\n",
+		    (klassInfo != NULL) ?  klassInfo->klassName : "NULL");
+#endif /* XMLSEC_OBJECTS_DEBUG */
 
     xmlSecAssert(xmlSecObjIsValid(obj));
     xmlSecAssert(klass != NULL);

@@ -19,7 +19,7 @@ const xmlChar xmlSecNsDSig[] 	= "http://www.w3.org/2000/09/xmldsig#";
 const xmlChar xmlSecNsEnc[] 	= "http://www.w3.org/2001/04/xmlenc#";
 const xmlChar xmlSecNsXPath2[] 	= "http://www.w3.org/2002/06/xmldsig-filter2";
 const xmlChar xmlSecNsXPointer[]= "http://www.w3.org/2001/04/xmldsig-more/xptr";
-const xmlChar xmlSecNsExcC14[] 	= "http://www.w3.org/2001/10/xml-exc-c14n#";
+const xmlChar xmlSecNsExcC14N[]	= "http://www.w3.org/2001/10/xml-exc-c14n#";
 
 /* KeyInfo children names */
 const xmlChar xmlSecNameKeyName[]	= "KeyName";

@@ -17,56 +17,59 @@ extern "C" {
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/object.h>
+#include <xmlsec/serializable.h>
 
-typedef struct _xmlSecMapKlass			xmlSecMapKlass,
-						*xmlSecMapKlassPtr;
-typedef struct _xmlSecMap			xmlSecMap,
-						*xmlSecMapPtr;
-typedef struct _xmlSecMapItem			xmlSecMapItem,
-						*xmlSecMapItemPtr;
+typedef struct _xmlSecObjMapKlass			xmlSecObjMapKlass,
+						        *xmlSecObjMapKlassPtr;
+typedef struct _xmlSecObjMap				xmlSecObjMap,
+							*xmlSecObjMapPtr;
 
 /*********************************************************************
  *
  * Map
  *
  *********************************************************************/
-#define xmlSecMapKlassId 			xmlSecMapKlassGet()
-#define xmlSecMapKlassCast(klass) 		xmlSecObjKlassCastMacro((klass), xmlSecMapKlassId, xmlSecMapKlassPtr)
-#define xmlSecMapKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecMapKlassId)
-#define xmlSecMapCast(obj) 			xmlSecObjCastMacro((obj), xmlSecMapKlassId, xmlSecMapPtr)
-#define xmlSecMapCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecMapKlassId)
+#define xmlSecObjMapKlassId 				xmlSecObjMapKlassGet()
+#define xmlSecObjMapKlassCast(klass) 			xmlSecObjKlassCastMacro((klass), xmlSecObjMapKlassId, xmlSecObjMapKlassPtr)
+#define xmlSecObjMapKlassCheckCast(klass) 		xmlSecObjKlassCheckCastMacro((klass), xmlSecObjMapKlassId)
+#define xmlSecObjMapCast(obj) 				xmlSecObjCastMacro((obj), xmlSecObjMapKlassId, xmlSecObjMapPtr)
+#define xmlSecObjMapCheckCast(obj) 			xmlSecObjCheckCastMacro((obj), xmlSecObjMapKlassId)
 
-struct _xmlSecMapKlass {
+typedef struct _xmlSecObjMapItem			xmlSecObjMapItem,
+							*xmlSecObjMapItemPtr;
+
+struct _xmlSecObjMapKlass {
     xmlSecObjKlass			parent;
 };
 		
-struct _xmlSecMap {
+struct _xmlSecObjMap {
     xmlSecObj				parent;
     
     /* private data */
-    xmlSecMapItem*			data;
+    xmlSecObjMapItem*		data;
     size_t				size;
     size_t				maxSize;
 };
 
-#define xmlSecMapNew()			((xmlSecMapPtr)xmlSecObjNew(xmlSecMapKlassId))
-XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecMapKlassGet	(void);
-XMLSEC_EXPORT xmlSecObjPtr		xmlSecMapGet		(xmlSecMapPtr map,
+#define xmlSecObjMapNew()	((xmlSecObjMapPtr)xmlSecObjNew(xmlSecObjMapKlassId))
+XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecObjMapKlassGet(void);
+XMLSEC_EXPORT xmlSecObjPtr		xmlSecObjMapGet		(xmlSecObjMapPtr map,
 								 const xmlChar* name);
-XMLSEC_EXPORT int			xmlSecMapSet		(xmlSecMapPtr map,
+XMLSEC_EXPORT int			xmlSecObjMapSet		(xmlSecObjMapPtr map,
 								 const xmlChar* name,
 								 xmlSecObjPtr data);
-XMLSEC_EXPORT void			xmlSecMapRemove		(xmlSecMapPtr map,
+XMLSEC_EXPORT void			xmlSecObjMapRemove	(xmlSecObjMapPtr map,
 								 const xmlChar* name);
-XMLSEC_EXPORT void			xmlSecMapEmpty		(xmlSecMapPtr map);
-XMLSEC_EXPORT size_t			xmlSecMapGetSize	(xmlSecMapPtr map);
-XMLSEC_EXPORT xmlSecObjPtr		xmlSecMapGetData	(xmlSecMapPtr map,
+XMLSEC_EXPORT void			xmlSecObjMapEmpty	(xmlSecObjMapPtr map);
+XMLSEC_EXPORT size_t			xmlSecObjMapGetSize	(xmlSecObjMapPtr map);
+XMLSEC_EXPORT xmlSecObjPtr		xmlSecObjMapGetData	(xmlSecObjMapPtr map,
 								 size_t pos);
-XMLSEC_EXPORT const xmlChar*		xmlSecMapGetName	(xmlSecMapPtr map,
+XMLSEC_EXPORT const xmlChar*		xmlSecObjMapGetName	(xmlSecObjMapPtr map,
 								 size_t pos);
 
+
 #ifdef __cplusplus
-	}
+}
 #endif /* __cplusplus */
 
 #endif /* __XMLSEC_MAP_H__ */

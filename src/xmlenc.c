@@ -1489,14 +1489,9 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 	}
 	result->ctx->keysMngrCtx->keyId = xmlSecBinTransformIdGetKeyId(result->encryptionMethod);
 	
-	if(keyInfoNode != NULL) {
-	    result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
+	result->key = xmlSecKeysMngrGetKey(result->ctx->keysMngrCtx->keysMngr,
 					   result->ctx->keysMngrCtx,
 					   keyInfoNode);
-	} else {
-	    result->key = xmlSecKeysMngrFindKey(result->ctx->keysMngrCtx->keysMngr,
-					   result->ctx->keysMngrCtx);
-	}
     }    
     if(result->key == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

@@ -32,6 +32,7 @@
 
 
 
+
 /*********************************************************************
  *
  * X509 data storage
@@ -71,13 +72,10 @@ xmlSecX509StoreFind(xmlSecX509StorePtr store, xmlSecX509DataPtr data,
     xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
 
     xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(storeKlass != NULL, -1);
-	
-    if(storeKlass->find != NULL) {
-	return(storeKlass->find(store, data, keysMngrCtx, subjectName, issuerName, issuerSerial, ski));
-    }
+    xmlSecAssert2(storeKlass != NULL, -1);	
+    xmlSecAssert2(storeKlass->find != NULL, -1);
     
-    return(0);
+    return(storeKlass->find(store, data, keysMngrCtx, subjectName, issuerName, issuerSerial, ski));
 }
 
 int
@@ -86,15 +84,35 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr data, xmlSecKe
     xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
 
     xmlSecAssert2(store != NULL, -1);
-    xmlSecAssert2(storeKlass != NULL, -1);
-	
-    if(storeKlass->verify != NULL) {
-	return(storeKlass->verify(store, data, keysMngrCtx));
-    }
+    xmlSecAssert2(storeKlass != NULL, -1);	
+    xmlSecAssert2(storeKlass->verify != NULL, -1);
     
-    return(0);
+    return(storeKlass->verify(store, data, keysMngrCtx));
 }
 
+int
+xmlSecX509StoreSetFolder(xmlSecX509StorePtr store, const char* folder) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(store);
+    xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(storeKlass != NULL, -1);	
+    xmlSecAssert2(storeKlass->setFolder != NULL, -1);
+    
+    return(storeKlass->setFolder(store, folder));
+}
+
+int
+xmlSecX509StoreLoadPemFile(xmlSecX509StorePtr store, const char* filename, xmlSecX509ObjectType type) {
+    xmlSecObjKlassPtr klass = xmlSecObjGetKlass(store);
+    xmlSecX509StoreKlassPtr storeKlass = xmlSecX509StoreKlassCast(klass);
+
+    xmlSecAssert2(store != NULL, -1);
+    xmlSecAssert2(storeKlass != NULL, -1);	
+    xmlSecAssert2(storeKlass->loadPemFile != NULL, -1);
+    
+    return(storeKlass->loadPemFile(store, filename, type));
+}
 
 /*********************************************************************
  *
@@ -414,9 +432,9 @@ xmlSecX509DataReadXml(xmlSecSObjPtr sobj, xmlSecObjPtr ctx, xmlNodePtr node) {
     xmlSecAssert2(keysMngrCtx->keysMngr->x509Store != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
-    /* reset the current key */
-    xmlSecKeysMngrCtxSetCurKey(keysMngrCtx, NULL);
-    
+    /* todo: remove all objects from data */
+
+
     /* read all certs and crls into the data object */ 
     ret = 0;
     cur = xmlSecGetNextElementNode(node->children);

@@ -516,7 +516,10 @@ xmlSecKeyNameNodeRead(xmlNodePtr keyNameNode, xmlSecKeysMngrCtxPtr keysMngrCtx) 
     }
     /* TODO: decode key name if requested */    
     
-    return(xmlSecKeysMngrFindKey(keysMngrCtx->keysMngr, keysMngrCtx));
+    if(keysMngrCtx->keysMngr->keysStore != NULL) {
+	return(xmlSecKeysStoreFind(keysMngrCtx->keysMngr->keysStore, keysMngrCtx));
+    }
+    return(NULL);
 }
 
 /** 

@@ -18,14 +18,23 @@ extern "C" {
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/object.h>
 
+/* redefine this if your platform has a size of unsigned char != 1 */
+typedef unsigned char 		XMLSEC_BYTE;
+
 typedef struct _xmlSecSObjKlass				xmlSecSObjKlass,
 							*xmlSecSObjKlassPtr;
 typedef struct _xmlSecSObj				xmlSecSObj,
 							*xmlSecSObjPtr;
+
 typedef struct _xmlSecBufferKlass			xmlSecBufferKlass,
 							*xmlSecBufferKlassPtr;
 typedef struct _xmlSecBuffer				xmlSecBuffer,
 							*xmlSecBufferPtr;
+
+typedef struct _xmlSecBaseBufferKlass			xmlSecBaseBufferKlass,
+							*xmlSecBaseBufferKlassPtr;
+typedef struct _xmlSecBaseBuffer			xmlSecBaseBuffer,
+							*xmlSecBaseBufferPtr;
 
 /*********************************************************************
  *
@@ -125,6 +134,46 @@ XMLSEC_EXPORT int			xmlSecSObjWriteBinary	(xmlSecSObjPtr sobj,
 								 xmlSecObjPtr ctx,
 								 xmlSecBufferPtr);
     
+/*********************************************************************
+ *
+ * Binary BaseBuffer
+ *
+ *********************************************************************/
+#define xmlSecBaseBufferKlassId 		xmlSecBaseBufferKlassGet()
+#define xmlSecBaseBufferKlassCast(klass) 	xmlSecObjKlassCastMacro((klass), xmlSecBaseBufferKlassId, xmlSecBaseBufferKlassPtr)
+#define xmlSecBaseBufferKlassCheckCast(klass) 	xmlSecObjKlassCheckCastMacro((klass), xmlSecBaseBufferKlassId)
+#define xmlSecBaseBufferCast(obj) 		xmlSecObjCastMacro((obj), xmlSecBaseBufferKlassId, xmlSecBaseBufferPtr)
+#define xmlSecBaseBufferCheckCast(obj) 		xmlSecObjCheckCastMacro((obj), xmlSecBaseBufferKlassId)
+
+struct _xmlSecBaseBufferKlass {
+    xmlSecSObjKlass			parent;
+    
+    size_t				itemSize;
+};
+		
+struct _xmlSecBaseBuffer {
+    xmlSecSObj				parent;
+    
+    /* private data */
+    XMLSEC_BYTE*			data;
+    size_t				size;
+    size_t				maxSize;
+};
+
+XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecBaseBufferKlassGet(void);
+XMLSEC_EXPORT size_t			xmlSecBaseBufferGetSize	(xmlSecBaseBufferPtr buf);
+XMLSEC_EXPORT size_t			xmlSecBaseBufferGetMaxSize(xmlSecBaseBufferPtr buf);
+XMLSEC_EXPORT xmlSecPtr			xmlSecBaseBufferGetData	(xmlSecBaseBufferPtr buf,
+								 size_t pos);
+XMLSEC_EXPORT int			xmlSecBaseBufferInsert	(xmlSecBaseBufferPtr buf,
+								 size_t pos,
+								 size_t size);
+XMLSEC_EXPORT int			xmlSecBaseBufferRemove	(xmlSecBaseBufferPtr buf,
+								 size_t pos,
+								 size_t size);
+XMLSEC_EXPORT void			xmlSecBaseBufferEmpty	(xmlSecBaseBufferPtr buf);
+XMLSEC_EXPORT int			xmlSecBaseBufferAllocate(xmlSecBaseBufferPtr buf,
+								 size_t size);
 
 /*********************************************************************
  *
@@ -138,24 +187,17 @@ XMLSEC_EXPORT int			xmlSecSObjWriteBinary	(xmlSecSObjPtr sobj,
 #define xmlSecBufferCheckCast(obj) 	xmlSecObjCheckCastMacro((obj), xmlSecBufferKlassId)
 
 struct _xmlSecBufferKlass {
-    xmlSecSObjKlass			parent;
+    xmlSecBaseBufferKlass		parent;
 };
 		
 struct _xmlSecBuffer {
-    xmlSecSObj				parent;
-    
-    /* private data */
-    unsigned char*			data;
-    size_t				size;
-    size_t				maxSize;
+    xmlSecBaseBuffer			parent;
 };
 
 #define xmlSecBufferNew()		((xmlSecBufferPtr)xmlSecObjNew(xmlSecBufferKlassId))
 
 XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecBufferKlassGet	(void);
-XMLSEC_EXPORT unsigned char*		xmlSecBufferGetData	(xmlSecBufferPtr buf);
-XMLSEC_EXPORT size_t			xmlSecBufferGetSize	(xmlSecBufferPtr buf);
-XMLSEC_EXPORT size_t			xmlSecBufferGetMaxSize	(xmlSecBufferPtr buf);
+XMLSEC_EXPORT unsigned char*		xmlSecBufferGetBuffer	(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int			xmlSecBufferSet		(xmlSecBufferPtr buf,
 								 const unsigned char* data,
 								 size_t size);
@@ -172,14 +214,13 @@ XMLSEC_EXPORT int			xmlSecBufferInsert	(xmlSecBufferPtr buf,
 XMLSEC_EXPORT void			xmlSecBufferRemove	(xmlSecBufferPtr buf,
 								 size_t pos,
 								 size_t size);
-XMLSEC_EXPORT void			xmlSecBufferEmpty	(xmlSecBufferPtr buf);
-XMLSEC_EXPORT int			xmlSecBufferAllocate	(xmlSecBufferPtr buf,
-								 size_t size);
+
 /* base 64 */
 XMLSEC_EXPORT xmlChar*			xmlSecBufferBase64Encode(xmlSecBufferPtr buf,
 								 int columns);
 XMLSEC_EXPORT int			xmlSecBufferBase64Decode(xmlSecBufferPtr buf,
 								 const xmlChar* str);
+
 
 #ifdef __cplusplus
 	}

@@ -17,26 +17,26 @@
 #include <xmlsec/map.h>
 #include <xmlsec/errors.h>
 
-static void		xmlSecMapKlassInit		(xmlSecObjKlassPtr klass);
-static int		xmlSecMapConstructor		(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr obj);
-static int		xmlSecMapDuplicator		(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr dst, 
-							 xmlSecObjPtr src);
-static void		xmlSecMapDestructor		(xmlSecObjKlassPtr klass, 
-							 xmlSecObjPtr dst);
-static void		xmlSecMapDebugDump		(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static void		xmlSecMapDebugXmlDump		(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
-static int		xmlSecMapFindItem		(xmlSecMapPtr map,
-							const xmlChar* name);
-static int		xmlSecMapReallocate		(xmlSecMapPtr map,
-							size_t delta);
+static void		xmlSecObjMapKlassInit			(xmlSecObjKlassPtr klass);
+static int		xmlSecObjMapConstructor			(xmlSecObjKlassPtr klass, 
+							    	 xmlSecObjPtr obj);
+static int		xmlSecObjMapDuplicator			(xmlSecObjKlassPtr klass, 
+								 xmlSecObjPtr dst, 
+							         xmlSecObjPtr src);
+static void		xmlSecObjMapDestructor			(xmlSecObjKlassPtr klass, 
+								 xmlSecObjPtr dst);
+static void		xmlSecObjMapDebugDump			(xmlSecObjPtr obj,
+								 FILE* output,
+								 size_t level);
+static void		xmlSecObjMapDebugXmlDump		(xmlSecObjPtr obj,
+								 FILE* output,
+								 size_t level);
+static int		xmlSecObjMapFindItem			(xmlSecObjMapPtr map,
+								const xmlChar* name);
+static int		xmlSecObjMapReallocate			(xmlSecObjMapPtr map,
+								size_t delta);
 
-struct _xmlSecMapItem {
+struct _xmlSecObjMapItem {
     xmlChar* 			name;
     xmlSecObjPtr		data;
 };
@@ -47,23 +47,23 @@ struct _xmlSecMapItem {
  *
  *********************************************************************/
 xmlSecObjKlassPtr
-xmlSecMapKlassGet(void) {
+xmlSecObjMapKlassGet(void) {
     static xmlSecObjKlassPtr klass = NULL;
-    static xmlSecMapKlass kklass;
+    static xmlSecObjMapKlass kklass;
     
     if(klass == NULL) {
 	static xmlSecObjKlassInfo kklassInfo = {
 	    /* klass data */
-	    sizeof(xmlSecMapKlass),
-	    "xmlSecMap",
-	    xmlSecMapKlassInit, 	/* xmlSecObjKlassInitMethod */
-	    NULL,			/* xmlSecObjKlassFinalizeMethod */
+	    sizeof(xmlSecObjMapKlass),
+	    "xmlSecObjMap",
+	    xmlSecObjMapKlassInit,  /* xmlSecObjKlassInitMethod */
+	    NULL,			 /* xmlSecObjKlassFinalizeMethod */
 	    
 	    /* obj info */
-	    sizeof(xmlSecMap),
-	    xmlSecMapConstructor,	/* xmlSecObjKlassConstructorMethod */
-	    xmlSecMapDuplicator,	/* xmlSecObjKlassDuplicatorMethod */
-	    xmlSecMapDestructor,	/* xmlSecObjKlassDestructorMethod */
+	    sizeof(xmlSecObjMap),
+	    xmlSecObjMapConstructor,/* xmlSecObjKlassConstructorMethod */
+	    xmlSecObjMapDuplicator, /* xmlSecObjKlassDuplicatorMethod */
+	    xmlSecObjMapDestructor, /* xmlSecObjKlassDestructorMethod */
 	};
 	klass = xmlSecObjKlassRegister(&kklass, sizeof(kklass), 
 				       &kklassInfo, xmlSecObjKlassId); 
@@ -73,13 +73,13 @@ xmlSecMapKlassGet(void) {
 
 
 xmlSecObjPtr
-xmlSecMapGet(xmlSecMapPtr map, const xmlChar* name) {
+xmlSecObjMapGet(xmlSecObjMapPtr map, const xmlChar* name) {
     int i;
         
     xmlSecAssert2(map != NULL, NULL);
     xmlSecAssert2(name != NULL, NULL);
 
-    i = xmlSecMapFindItem(map, name);
+    i = xmlSecObjMapFindItem(map, name);
     if(i < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,	
@@ -92,14 +92,14 @@ xmlSecMapGet(xmlSecMapPtr map, const xmlChar* name) {
 }
 
 int
-xmlSecMapSet(xmlSecMapPtr map, const xmlChar* name, xmlSecObjPtr data) {
+xmlSecObjMapSet(xmlSecObjMapPtr map, const xmlChar* name, xmlSecObjPtr data) {
     int ret;
     
     xmlSecAssert2(map != NULL, -1);
     xmlSecAssert2(name != NULL, -1);
 
     /* check if we already have such name */
-    ret = xmlSecMapFindItem(map, name);
+    ret = xmlSecObjMapFindItem(map, name);
     if(ret >= 0) {
 	xmlSecAssert2(map->data != NULL, -1);
         if(map->data[ret].data != NULL) {
@@ -109,11 +109,11 @@ xmlSecMapSet(xmlSecMapPtr map, const xmlChar* name, xmlSecObjPtr data) {
 	return(0);
     }
     
-    ret = xmlSecMapReallocate(map, 1);
+    ret = xmlSecObjMapReallocate(map, 1);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,	
-		    "xmlSecMapReallocate(delta=%d)", 1);
+		    "xmlSecObjMapReallocate(delta=%d)", 1);
 	return(-1);			
     }
     xmlSecAssert2(map->data != NULL, -1);
@@ -126,13 +126,13 @@ xmlSecMapSet(xmlSecMapPtr map, const xmlChar* name, xmlSecObjPtr data) {
 }
 
 void
-xmlSecMapRemove(xmlSecMapPtr map, const xmlChar* name) {
+xmlSecObjMapRemove(xmlSecObjMapPtr map, const xmlChar* name) {
     int i;
     
     xmlSecAssert(map != NULL);
     xmlSecAssert(name != NULL);
     
-    i = xmlSecMapFindItem(map, name);
+    i = xmlSecObjMapFindItem(map, name);
     if(i < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,	
@@ -151,7 +151,7 @@ xmlSecMapRemove(xmlSecMapPtr map, const xmlChar* name) {
     
     if(i + 1 < (int)map->size) {
 	memmove(&(map->data[i]), &(map->data[i + 1]), 
-		sizeof(xmlSecMapItem) * (map->size - i - 1));
+		sizeof(xmlSecObjMapItem) * (map->size - i - 1));
     }
     map->data[map->size].name = NULL;
     map->data[map->size].data = NULL;
@@ -159,7 +159,7 @@ xmlSecMapRemove(xmlSecMapPtr map, const xmlChar* name) {
 }
 
 void
-xmlSecMapEmpty(xmlSecMapPtr map) {
+xmlSecObjMapEmpty(xmlSecObjMapPtr map) {
     size_t i;
     
     xmlSecAssert(map != NULL);
@@ -177,20 +177,20 @@ xmlSecMapEmpty(xmlSecMapPtr map) {
     }
     if(map->maxSize > 0) {
 	xmlSecAssert(map->data != NULL);
-	memset(map->data, 0, map->maxSize * sizeof(xmlSecMapItem));
+	memset(map->data, 0, map->maxSize * sizeof(xmlSecObjMapItem));
     }
     map->size = 0;
 }
 
 size_t
-xmlSecMapGetSize(xmlSecMapPtr map) {
+xmlSecObjMapGetSize(xmlSecObjMapPtr map) {
     xmlSecAssert2(map != NULL, 0);
     
     return(map->size);
 }
 
 xmlSecObjPtr
-xmlSecMapGetData(xmlSecMapPtr map, size_t pos) {
+xmlSecObjMapGetData(xmlSecObjMapPtr map, size_t pos) {
     xmlSecAssert2(map != NULL, NULL);
 
     if(pos < map->size) {
@@ -202,7 +202,7 @@ xmlSecMapGetData(xmlSecMapPtr map, size_t pos) {
 }
 
 const xmlChar*
-xmlSecMapGetName(xmlSecMapPtr map, size_t pos) {
+xmlSecObjMapGetName(xmlSecObjMapPtr map, size_t pos) {
     xmlSecAssert2(map != NULL, NULL);
 
     if(pos < map->size) {
@@ -214,15 +214,15 @@ xmlSecMapGetName(xmlSecMapPtr map, size_t pos) {
 }
 
 static void
-xmlSecMapKlassInit(xmlSecObjKlassPtr klass) {
-    klass->debugDump 		= xmlSecMapDebugDump;
-    klass->debugXmlDump 	= xmlSecMapDebugXmlDump;
+xmlSecObjMapKlassInit(xmlSecObjKlassPtr klass) {
+    klass->debugDump 		= xmlSecObjMapDebugDump;
+    klass->debugXmlDump 	= xmlSecObjMapDebugXmlDump;
 }
 
 static int
-xmlSecMapConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
+xmlSecObjMapConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
 			xmlSecObjPtr obj) {
-    xmlSecMapPtr map = xmlSecMapCast(obj);
+    xmlSecObjMapPtr map = xmlSecObjMapCast(obj);
 
     xmlSecAssert2(map != NULL, -1);
 
@@ -234,23 +234,23 @@ xmlSecMapConstructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
 }
 
 static int
-xmlSecMapDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
+xmlSecObjMapDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
 			xmlSecObjPtr dst, xmlSecObjPtr src) {
-    xmlSecMapPtr mapDst = xmlSecMapCast(dst);
-    xmlSecMapPtr mapSrc = xmlSecMapCast(src);
+    xmlSecObjMapPtr mapDst = xmlSecObjMapCast(dst);
+    xmlSecObjMapPtr mapSrc = xmlSecObjMapCast(src);
     size_t i;
     int ret;
         
     xmlSecAssert2(mapDst != NULL, -1);
     xmlSecAssert2(mapSrc != NULL, -1);
 
-    xmlSecMapEmpty(mapDst);
+    xmlSecObjMapEmpty(mapDst);
 
-    ret = xmlSecMapReallocate(mapDst, mapSrc->size);
+    ret = xmlSecObjMapReallocate(mapDst, mapSrc->size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_XMLSEC_FAILED,	
-		    "xmlSecMapReallocate(delta=%d)", mapSrc->size);
+		    "xmlSecObjMapReallocate(delta=%d)", mapSrc->size);
 	return(-1);			
     }
     xmlSecAssert2(mapDst->data != NULL, -1);
@@ -265,13 +265,13 @@ xmlSecMapDuplicator(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
 }
 
 static void
-xmlSecMapDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
+xmlSecObjMapDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED, 
 				    xmlSecObjPtr obj) {
-    xmlSecMapPtr map = xmlSecMapCast(obj);
+    xmlSecObjMapPtr map = xmlSecObjMapCast(obj);
 
     xmlSecAssert(map != NULL);
 
-    xmlSecMapEmpty(map);
+    xmlSecObjMapEmpty(map);
     if(map->data != NULL) {
 	xmlFree(map->data);
     }
@@ -281,8 +281,8 @@ xmlSecMapDestructor(xmlSecObjKlassPtr klass ATTRIBUTE_UNUSED,
 }
 
 static void
-xmlSecMapDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecMapPtr map = xmlSecMapCast(obj);
+xmlSecObjMapDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecObjMapPtr map = xmlSecObjMapCast(obj);
 
     xmlSecAssert(map != NULL);
     xmlSecAssert(output != NULL);
@@ -292,8 +292,8 @@ xmlSecMapDebugDump(xmlSecObjPtr obj, FILE* output, size_t level) {
 }
 
 static void
-xmlSecMapDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
-    xmlSecMapPtr map = xmlSecMapCast(obj);
+xmlSecObjMapDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
+    xmlSecObjMapPtr map = xmlSecObjMapCast(obj);
 	    
     xmlSecAssert(map != NULL);
     xmlSecAssert(output != NULL);
@@ -303,7 +303,7 @@ xmlSecMapDebugXmlDump(xmlSecObjPtr obj, FILE* output, size_t level) {
 }
 
 static int
-xmlSecMapFindItem(xmlSecMapPtr map, const xmlChar* name) {
+xmlSecObjMapFindItem(xmlSecObjMapPtr map, const xmlChar* name) {
     size_t i;
     
     xmlSecAssert2(map != NULL, -1);
@@ -321,8 +321,8 @@ xmlSecMapFindItem(xmlSecMapPtr map, const xmlChar* name) {
 }
 
 static int
-xmlSecMapReallocate(xmlSecMapPtr map, size_t delta) {
-    xmlSecMapItem* p;
+xmlSecObjMapReallocate(xmlSecObjMapPtr map, size_t delta) {
+    xmlSecObjMapItem* p;
     size_t size;
     
     xmlSecAssert2(map != NULL, -1);
@@ -332,7 +332,7 @@ xmlSecMapReallocate(xmlSecMapPtr map, size_t delta) {
     }
     
     size = 4 * (map->size + delta) / 3 + 1;
-    p = (xmlSecMapItem*)xmlRealloc(map->data, size * sizeof(xmlSecMapItem));
+    p = (xmlSecObjMapItem*)xmlRealloc(map->data, size * sizeof(xmlSecObjMapItem));
     if(p == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
     		    XMLSEC_ERRORS_R_MALLOC_FAILED,	

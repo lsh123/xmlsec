@@ -19,6 +19,7 @@ DISTCLEANFILES = \
 	stamp-h2 \
 	stamp-h3 \
 	stamp-h4 \
+	stamp-h5 \
 	$NULL
 
 EXTRA_DIST = \
@@ -44,26 +45,27 @@ EXTRA_CLEAN = \
 	examples \
 	$(NULL)
 
-if XMLSEC_APPS_NO_CRYPTO_DYNAMIC_LOADING
+ABS_BUILDDIR=$(shell pwd)
+if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 PRECHECK_COMMANDS = \
-	ABS_BUILDDIR=`pwd` && cd $(top_srcdir) \
+	ABS_BUILDDIR=$(ABS_BUILDDIR) && \
+	cd $(top_srcdir) \
 	$(NULL)
 CHECK_CRYPTO_LIST = \
 	"default" \
 	$(NULL)
 else
-CRYPTO_FOLDERS=$(patsubst %,$(top_builddir)/src/%/.libs:,$(XMLSEC_CRYPTO_LIST))
 PRECHECK_COMMANDS= \
-	ABS_BUILDDIR=`pwd` && cd $(top_srcdir) && \
-	export LD_LIBRARY_PATH="$(CRYPTO_FOLDERS)$$LD_LIBRARY_PATH" \
+	ABS_BUILDDIR=$(ABS_BUILDDIR) && \
+	for i in $(XMLSEC_CRYPTO_LIST) ; do \
+	    export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LD_LIBRARY_PATH" ; \
+	done && \
+	cd $(top_srcdir) \
 	$(NULL)	
 CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CRYPTO_LIST) \
 	$(NULL)
 endif
-
-xmlsec1.pc: xmlsec1-@XMLSEC_CRYPTO@.pc
-	@(rm -f xmlsec1.pc && $(LN_S) xmlsec1-@XMLSEC_CRYPTO@.pc xmlsec1.pc)
 
 docs: docs-man
 	@(cd docs && $(MAKE) docs)

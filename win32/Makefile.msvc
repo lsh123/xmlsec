@@ -250,6 +250,9 @@ CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)
 CFLAGS 			= $(CFLAGS) /D PACKAGE="$(XMLSEC_NAME)" 
 
+# TODO: XKMS is not really implemented yet
+CFLAGS 			= $(CFLAGS) /D "XMLSEC_NO_XKMS"
+
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
 CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Z7

@@ -98,21 +98,21 @@ per application<br><br><code>
     keysMngr = xmlSecSimpleKeysMngrCreate();   
       <br>
     if(keysMngr == NULL) {<br>
-      fprintf(stderr, &quot;Error: failed to create keys manager\n&quot;);<br>
+      fprintf(stderr, "Error: failed to create keys manager\n");<br>
       goto done;    <br>
     }<br><br>
     /** <br>
      * load key<br>
      */<br>
     if(xmlSecSimpleKeysMngrLoadPemKey(keysMngr, argv[1], NULL, NULL, 1) == NULL) {<br>
-      fprintf(stderr, &quot;Error: failed to load key from
-\&quot;%s\&quot;\n&quot;, argv[1]);<br>
+      fprintf(stderr, "Error: failed to load key from
+\"%s\"\n", argv[1]);<br>
       goto done;<br>
     }<br>
   <br>
     dsigCtx = xmlSecDSigCtxCreate(keysMngr);<br>
     if(dsigCtx == NULL) {<br>
-      fprintf(stderr,&quot;Error: failed to create dsig context\n&quot;);<br>
+      fprintf(stderr,"Error: failed to create dsig context\n");<br>
       goto done; <br>
     }</code><br>
 </p>
@@ -138,8 +138,8 @@ need   to  add default<br>
              */<br>
             doc = xmlParseFile(argv[2]);<br>
             if (doc == NULL) {<br>
-               fprintf(stderr, &quot;Error   
-    : unable to parse file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+               fprintf(stderr, "Error   
+    : unable to parse file \"%s\"\n", argv[2]);<br>
                goto done;<br>
             }<br>
             <br>
@@ -147,13 +147,13 @@ need   to  add default<br>
              * Check the document is of the right kind<br>
              */    <br>
             if(xmlDocGetRootElement(doc) == NULL) {<br>
-                fprintf(stderr,&quot;Error: 
-empty    document for file \&quot;%s\&quot;\n&quot;, argv[2]);<br>
+                fprintf(stderr,"Error: 
+empty    document for file \"%s\"\n", argv[2]);<br>
                 goto done;<br>
             }</code><br><br>
         In this example we set global flags to control how the document is
  loaded.    In the real life you would probably want to control the loading
- on &quot;per-document&quot;    basis. Check the libxml/c14n.h header file from LibXML
+ on "per-document"    basis. Check the libxml/c14n.h header file from LibXML
  distribution for  details.<br>
 </p>
 <h4>Step 3. Adding or changing data in the template.</h4>
@@ -164,11 +164,11 @@ add   one   more node with some text:<br><br>
              * Add Data to the document<br>
              */<br>
             if(xmlNewChild(xmlDocGetRootElement(doc), NULL,
- &quot;Something&quot;,          <br>
+ "Something",          <br>
                         
-     &quot;Some important data&quot;) == NULL)  {<br>
-                fprintf(stderr,&quot;Error: 
-failed    to add data\n&quot;);<br>
+     "Some important data") == NULL)  {<br>
+                fprintf(stderr,"Error: 
+failed    to add data\n");<br>
                 goto done;<br>
             }</code><br>
 </p>
@@ -181,7 +181,7 @@ failed    to add data\n&quot;);<br>
 	      */ <br>
 	     ret = xmlSecDSigGenerate(dsigCtx, NULL, NULL, xmlDocGetRootElement(doc), &amp;result);<br>
 	     if(ret &lt; 0) {<br>
-	        fprintf(stderr,&quot;Error: signature failed\n&quot;);<br>
+	        fprintf(stderr,"Error: signature failed\n");<br>
 	        goto done; <br>
 	     }     <br>
 	    </code>  <br>
@@ -196,8 +196,8 @@ Print the document to stdout:<br><br><code>
             xmlDocDumpMemoryEnc(doc, &amp;string, &amp;len,
  NULL);<br>
             if(string == NULL) {<br>
-              fprintf(stderr,&quot;Error: failed to dump document
-    to memory\n&quot;);<br>
+              fprintf(stderr,"Error: failed to dump document
+    to memory\n");<br>
               goto done;<br>
             }<br>
             fwrite(string, len, 1, stdout);<br>
@@ -242,23 +242,23 @@ Print the document to stdout:<br><br><code>
       </p>
 <h4>Appendix A. The template document.</h4>
 <blockquote>
-<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;<br>
+<code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+&lt;Envelope xmlns="urn:envelope"&gt;<br>
   &lt;Data&gt;<br>
     Hello, World!<br>
   &lt;/Data&gt;<br>
-  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+  &lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
     &lt;SignedInfo&gt;<br>
-      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;
+      &lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
 /&gt;<br>
-      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;
+      &lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"
 /&gt;<br>
-      &lt;Reference URI=&quot;&quot;&gt;<br>
+      &lt;Reference URI=""&gt;<br>
         &lt;Transforms&gt;<br>
-          &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;
+          &lt;Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"
 /&gt;<br>
         &lt;/Transforms&gt;<br>
-        &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;
+        &lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"
 /&gt;<br>
         &lt;DigestValue&gt;&lt;/DigestValue&gt;<br>
       &lt;/Reference&gt;<br>
@@ -272,20 +272,20 @@ Print the document to stdout:<br><br><code>
 </blockquote>
 <h4>Appendix B. The signed document.</h4>
 <blockquote>
-<code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>
-&lt;Envelope xmlns=&quot;urn:envelope&quot;&gt;<br>
+<code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
+&lt;Envelope xmlns="urn:envelope"&gt;<br>
   &lt;Data&gt;<br>
     Hello, World!<br>
   &lt;/Data&gt;<br>
-  &lt;Signature xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&gt;<br>
+  &lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
     &lt;SignedInfo&gt;<br>
-      &lt;CanonicalizationMethod Algorithm=&quot;http://www.w3.org/TR/2001/REC-xml-c14n-20010315&quot;/&gt;<br>
-      &lt;SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#dsa-sha1&quot;/&gt;<br>
-      &lt;Reference URI=&quot;&quot;&gt;<br>
+      &lt;CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/&gt;<br>
+      &lt;SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/&gt;<br>
+      &lt;Reference URI=""&gt;<br>
         &lt;Transforms&gt;<br>
-          &lt;Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&gt;<br>
+          &lt;Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/&gt;<br>
         &lt;/Transforms&gt;<br>
-        &lt;DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&gt;<br>
+        &lt;DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/&gt;<br>
         &lt;DigestValue&gt;lUsn3fJYExos8S49s/cc6e1TMrM=&lt;/DigestValue&gt;<br>
       &lt;/Reference&gt;<br>
     &lt;/SignedInfo&gt;<br>

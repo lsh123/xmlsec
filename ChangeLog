@@ -1,3 +1,22 @@
+Wed Sep 10 00:02:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* Makefile.am configure.in xmlsec-config.in xmlsec.pc.in: added
+	support for xmlsec-crypto DL mode in xmlsec.pc and xmlsec-config files
+
+	* examples/*: added support for xmlsec-crypto DL mode to examples
+
+	* include/xmlsec/app.h include/xmlsec/private.h 
+	include/xmlsec/version.h include/xmlsec/x509.h
+	src/app.c src/x509.c src/xkms.c: new API reference documentation
+
+	* docs/* man/* : included info about xmlsec-crypto DL mode in 
+	tutorial and re-build docs to include new api reference docs
+
+	* tests/testDSig.sh tests/testEnc.sh tests/testKeys.sh: added
+	additional information printout
+	
+	* win32/Makefile.msvc: excluded XKMS from windows builds
+
 Tue Sep  9 16:14:01 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* win32/Makefile.msvc win32/configure.js win32/mycfg.bat win32/mycfg_nss.bat:

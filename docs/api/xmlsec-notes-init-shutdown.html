@@ -75,8 +75,10 @@
 		functions);
 	    </p></li>
 <li><p>xmlsec-crypto library
-		(<font>xmlSecCryptoInit</font> 
-		and <font>xmlSecCryptoShutdown</font> 
+		(<a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY">xmlSecCryptoDLLoadLibrary</a> 
+		to load xmlsec-crypto library dynamicaly if needed, 
+		<a href="xmlsec-app.html#XMLSECCRYPTOINIT">xmlSecCryptoInit</a> 
+		and <a href="xmlsec-app.html#XMLSECCRYPTOSHUTDOWN">xmlSecCryptoShutdown</a> 
 		functions);
 	    </p></li>
 </ul>
@@ -87,7 +89,7 @@
 	by itself.
 	<p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN121"></a><p><b>Example 1. Initializing application.</b></p>
+<a name="AEN137"></a><p><b>Example 1. Initializing application.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* Init libxml and libxslt libraries */
     xmlInitParser();
     LIBXML_TEST_VERSION
@@ -99,26 +101,40 @@
         	
     /* Init xmlsec library */
     if(xmlSecInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
 
+    /* Load default crypto engine if we are supporting dynamic
+     * loading for xmlsec-crypto libraries. Use the crypto library
+     * name ("openssl", "nss", etc.) to load corresponding 
+     * xmlsec-crypto library.
+     */
+#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST "default") &lt; 0) {
+	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+			"that you have it installed and check shared libraries path\n"
+			"(LD_LIBRARY_PATH) envornment variable.\n");
+	return(-1);	
+    }
+#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
+
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) &lt; 0) {
-	fprintf(stderr, &quot;Error: crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: crypto initialization failed.\n");
 	return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() &lt; 0) {
-	fprintf(stderr, &quot;Error: xmlsec-crypto initialization failed.\n&quot;);
+	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
 	return(-1);
     }
 		</pre></td></tr></table>
 </div>
 	<p>	     </p>
 <div class="EXAMPLE">
-<a name="AEN125"></a><p><b>Example 2. Shutting down application.</b></p>
+<a name="AEN141"></a><p><b>Example 2. Shutting down application.</b></p>
 <table border="0" bgcolor="#D8F8D8" width="100%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">    /* Shutdown xmlsec-crypto library */
     xmlSecCryptoShutdown();
     

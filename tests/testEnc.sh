@@ -55,7 +55,7 @@ execEncTest() {
     rm -f $tmpfile
 
     echo "$xmlsec_app decrypt $xmlsec_params $2 $file.xml" >>  $logfile 
-    $VALGRIND $xmlsec_app decrypt xmlsec_params $2 $file.xml > $tmpfile 2>> $logfile
+    $VALGRIND $xmlsec_app decrypt $xmlsec_params $2 $file.xml > $tmpfile 2>> $logfile
     if [ $? = 0 ]; then
 	diff $file.data $tmpfile >> $logfile 2>> $logfile
 	printRes $?
@@ -87,9 +87,11 @@ execEncTest() {
     rm -f $tmpfile $tmpfile.2
 }
 
-echo "--- testEnc started ($timestamp)"
+echo "--- testEnc started for xmlsec-$crypto library ($timestamp)"
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" 
 echo "--- log file is $logfile"
-echo "--- testEnc started ($timestamp)" >> $logfile
+echo "--- testEnc started for xmlsec-$crypto library ($timestamp)" >> $logfile
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
 
 execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname" \

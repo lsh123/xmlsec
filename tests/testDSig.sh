@@ -73,9 +73,11 @@ execDSigTest() {
     fi
 }
 
-echo "--- testDSig started ($timestamp)" 
+echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" 
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "--- log file is $logfile"
-echo "--- testDSig started ($timestamp)" >> $logfile
+echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
 execDSigTest "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     " " \

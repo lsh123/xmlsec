@@ -88,6 +88,8 @@ int         <link linkend="xmlSecOpenSSLAppKeyCertLoadMemory">xmlSecOpenSSLAppKe
 int         <link linkend="xmlSecOpenSSLAppKeyCertLoadBIO">xmlSecOpenSSLAppKeyCertLoadBIO</link>  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="BIO-CAPS">BIO</link> *bio,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+void*       <link linkend="xmlSecOpenSSLAppGetDefaultPwdCallback">xmlSecOpenSSLAppGetDefaultPwdCallback</link>
+                                            (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -576,6 +578,15 @@ Reads the certificate from memory buffer and adds it to key.</para>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppGetDefaultPwdCallback">xmlSecOpenSSLAppGetDefaultPwdCallback ()</title>
+<programlisting>void*       xmlSecOpenSSLAppGetDefaultPwdCallback
+                                            (void);</programlisting>
+<para>
+Gets default password callback.</para>
+<para>
+
+</para></refsect2>
 
 </refsect1>
 

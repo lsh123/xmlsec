@@ -41,6 +41,8 @@ int         <link linkend="xmlSecNssAppKeysMngrCertLoad">xmlSecNssAppKeysMngrCer
 int         <link linkend="xmlSecNssAppKeyCertLoad">xmlSecNssAppKeyCertLoad</link>         (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const char *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+void*       <link linkend="xmlSecNssAppGetDefaultPwdCallback">xmlSecNssAppGetDefaultPwdCallback</link>
+                                            (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -271,6 +273,15 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key</
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssAppGetDefaultPwdCallback">xmlSecNssAppGetDefaultPwdCallback ()</title>
+<programlisting>void*       xmlSecNssAppGetDefaultPwdCallback
+                                            (void);</programlisting>
+<para>
+Gets default password callback.</para>
+<para>
+
+</para></refsect2>
 
 </refsect1>
 

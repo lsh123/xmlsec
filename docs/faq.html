@@ -1,5 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>XML Security Library: Documentation</title></head><body><table witdh="100%" valign="top"><tbody><tr valign="top">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>XML Security Library: Documentation</title>
+</head>
+<body><table witdh="100%" valign="top"><tr valign="top">
 <td valign="top" align="left" width="210">
 <img src="images/logo.gif" alt="XML Security Library" border="0"><p></p>
 <ul>
@@ -22,25 +26,22 @@
 <li><a href="related.html">Related</a></li>
 </ul>
 <table width="100%">
-<tbody><tr>
-<td width="15"><br>
-</td>
+<tr>
+<td width="15"></td>
 <td><a href="http://xmlsoft.org/"><img src="images/libxml2-logo.png" alt="LibXML2" border="0"></a></td>
 </tr>
 <tr>
-<td width="15"><br>
-</td>
+<td width="15"></td>
 <td><a href="http://xmlsoft.org/XSLT"><img src="images/libxslt-logo.png" alt="LibXSLT" border="0"></a></td>
 </tr>
 <tr>
-<td width="15"><br>
-</td>
+<td width="15"></td>
 <td><a href="http://www.openssl.org/"><img src="images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
 </tr>
-</tbody></table>
+</table>
 </td>
 <td valign="top"><table width="100%" valign="top">
-<tbody><tr><td valign="top" align="left" id="xmlsecContent">
+<tr><td valign="top" align="left" id="xmlsecContent">
 <div align="center">                                          
       <h1>Frequently Asked Questions</h1>
       </div>
@@ -61,63 +62,49 @@
       <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a>, 
       see the file Copyright in the distribution for the precise wording.
       </p>
-            <h4>1.2. Can I use xmlsec with proprietary application or library? Can I use xmlsec with a GNU GPL application or library?</h4>
-
-XML Security Library is released under the <a href="http://www.opensource.org/licenses/mit-license.html">MIT license</a>
-which
-allows you to link it with proprietary applications as well as with
-GPLed code. However, xmlsec library is based on other libraries and you
-should look at all the licenses to get the full picture. The table
-bellow summarizes my understanding of the situation for few most
-popular cases. You might want to
-talk with your lawyer to confirm that this information is correct or to
-get an advice if your license is not covered in this table.<br>
-            <br>
-
-
-            <table cellpadding="2" cellspacing="2" border="1" style="text-align: left; width: 85%; margin-left: auto; margin-right: auto;">
-
-  <tbody>
-    <tr>
-      <td style="vertical-align: top; font-weight: bold;">XML Security Library module<br>
-      </td>
+<h4>1.2. Can I use xmlsec with proprietary application or library? Can I use xmlsec with a GNU GPL application or library?</h4>
+<a href="http://www.opensource.org/licenses/mit-license.html">MIT license</a><br><br><table cellpadding="2" cellspacing="2" border="1" style="text-align: left; width: 85%; margin-left: auto; margin-right: auto;"><tbody>
+<tr>
+<td style="vertical-align: top; font-weight: bold;">XML Security Library module<br>
+</td>
       <td style="vertical-align: top; font-weight: bold;">Dependencies<br>
-      </td>
+</td>
       <td style="vertical-align: top; font-weight: bold;">Dependencies License<br>
-      </td>
+</td>
       <td style="vertical-align: top; font-weight: bold;">Using with proprietary
 applications/libraries<br>
-      </td>
-      <td style="vertical-align: top; font-weight: bold;">Using with MIT/BSD&nbsp; applications/libraries <br>
-                  </td>
+</td>
+      <td style="vertical-align: top; font-weight: bold;">Using with MIT/BSD  applications/libraries <br>
+</td>
 <td style="vertical-align: top; font-weight: bold;">Using with GPL
 applications/libraries<br>
-      </td>
+</td>
     </tr>
-    <tr>
-      <td style="vertical-align: top;">xmlsec-core<br>
-      </td>
-      <td style="vertical-align: top;"><a href="http://xmlsoft.org">LibXML2</a>/<a href="http://xmlsoft.org/XSLT">LibXSLT</a></td>
+<tr>
+<td style="vertical-align: top;">xmlsec-core<br>
+</td>
+      <td style="vertical-align: top;">
+<a href="http://xmlsoft.org">LibXML2</a>/<a href="http://xmlsoft.org/XSLT">LibXSLT</a>
+</td>
       <td style="vertical-align: top;"><a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a></td>
       <td style="vertical-align: top;">Yes.<br>
-      </td>
+</td>
       <td style="vertical-align: top;">Yes.<br>
-                  </td>
+</td>
 <td style="vertical-align: top;">Yes.<br>
-      </td>
+</td>
     </tr>
-    <tr>
-      <td style="vertical-align: top;">xmlsec-openssl (also requires
+<tr>
+<td style="vertical-align: top;">xmlsec-openssl (also requires
 xmlsec-core library)<br>
-      </td>
-      <td style="vertical-align: top;"><a href="http://www.openssl.org">OpenSSL<br>
-      </a></td>
+</td>
+      <td style="vertical-align: top;"><a href="http://www.openssl.org">OpenSSL<br></a></td>
       <td style="vertical-align: top;">OpenSSL License<br>
-      </td>
+</td>
       <td style="vertical-align: top;">Yes.<br>
-      </td>
+</td>
       <td style="vertical-align: top;">Yes.</td>
-<td style="vertical-align: top;">May be. <a href="http://www.openssl.org/support/faq.cgi#LEGAL2">OpenSSL FAQ</a>&nbsp;
+<td style="vertical-align: top;">May be. <a href="http://www.openssl.org/support/faq.cgi#LEGAL2">OpenSSL FAQ</a> 
 states that OpenSSL library is covered by a <a href="http://www.gnu.org/licenses/gpl-faq.html#WritingFSWithNFLibs">special
 GPL exception</a> thus it could be used in GPLed
 applications/libraries. However, some people think that this is not
@@ -125,41 +112,42 @@ true (<a href="http://lists.debian.org/debian-legal/2002/debian-legal-200210/msg
 and <a href="http://lists.debian.org/debian-legal/2002/debian-legal-200205/msg00127.html">two</a>).
       </td>
     </tr>
-    <tr>
-      <td style="vertical-align: top;">xmlsec-gnutls (also requires
+<tr>
+<td style="vertical-align: top;">xmlsec-gnutls (also requires
 xmlsec-core library) </td>
-      <td style="vertical-align: top;"><a href="http://www.gnu.org/software/gnutls/">GnuTLS</a><br>
-      </td>
-      <td style="vertical-align: top;"><a href="http://www.opensource.org/licenses/gpl-license.php">GPL</a><br>
-      </td>
-      <td style="vertical-align: top;">Yes, but only if the&nbsp; application is not distributed.<br>
-      </td>
+      <td style="vertical-align: top;">
+<a href="http://www.gnu.org/software/gnutls/">GnuTLS</a><br>
+</td>
+      <td style="vertical-align: top;">
+<a href="http://www.opensource.org/licenses/gpl-license.php">GPL</a><br>
+</td>
+      <td style="vertical-align: top;">Yes, but only if the  application is not distributed.<br>
+</td>
       <td style="vertical-align: top;">Yes.</td>
 <td style="vertical-align: top;">Yes.<br>
-      </td>
+</td>
     </tr>
-    <tr>
-      <td style="vertical-align: top;">xmlsec-nss (also requires
+<tr>
+<td style="vertical-align: top;">xmlsec-nss (also requires
 xmlsec-core library) </td>
-      <td style="vertical-align: top;"><a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a><br>
-      </td>
+      <td style="vertical-align: top;">
+<a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a><br>
+</td>
       <td style="vertical-align: top;">Dual licensing: <a href="http://www.opensource.org/licenses/mozilla1.0.php">Mozilla
 Public License</a> and <a href="http://www.opensource.org/licenses/gpl-license.php">GPL</a>
       </td>
       <td style="vertical-align: top;">Yes.<br>
-      </td>
+</td>
       <td style="vertical-align: top;">Yes.</td>
 <td style="vertical-align: top;">Probably yes, but at the time I
 am writing this there are some <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=217162">unresolved
 issues</a>.<br>
-      </td>
+</td>
     </tr>
-  </tbody>
-            </table>
-            <p>If you have questions about XML Security Library licensing then feel free to send these questions to the <a href="bugs.html">mailing list</a>.<br>
-            </p>
-            <h3>2. Installation.</h3>
-
+</tbody></table>
+<p>If you have questions about XML Security Library licensing then feel free to send these questions to the <a href="bugs.html">mailing list</a>.<br>
+</p>
+<h3>2. Installation.</h3>
 <h4>2.1. Where can I get xmlsec?</h4>
 <p>
       The original distribution comes from 
@@ -173,13 +161,7 @@ issues</a>.<br>
       On Unix just follow the "standard":
          </p>
 <blockquote>
-	 <code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br>
-	 <code>cd xmlsec-xxxx</code><br>
-	 <code>./configure --help</code><br>
-	 <code>./configure [possible options] </code><br>
-	 <code>make</code><br>
-	 <code>make check</code><br>
-	 <code>make install</code>
+	 <code>gunzip -c xmlsec-xxx.tar.gz | tar xvf -</code><br><code>cd xmlsec-xxxx</code><br><code>./configure --help</code><br><code>./configure [possible options] </code><br><code>make</code><br><code>make check</code><br><code>make install</code>
 	 </blockquote>
 <p>
       At that point you may have to rerun ldconfig or similar utility to update your 
@@ -337,16 +319,16 @@ issues</a>.<br>
 <blockquote><code>
 	  &lt;?xml version="1.0" encoding="UTF-8"&gt;<br>
 	  &lt;Root&gt;<br>
-	  &nbsp;&nbsp;&lt;Data Id="1234"&gt;<br>
-	  &nbsp;&nbsp;&nbsp;&nbsp;The data I want to sign<br>
-	  &nbsp;&nbsp;&lt;/Data&gt;<br>
-	  &nbsp;&nbsp;&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
-	  &nbsp;&nbsp;...<br>
-	  &nbsp;&nbsp;&nbsp;&nbsp;&lt;Reference URI="#1234"&gt;<br>
-	  &nbsp;&nbsp;&nbsp;&nbsp;...<br>
-	  &nbsp;&nbsp;&nbsp;&nbsp;&lt;/Reference&gt;<br>
-	  &nbsp;&nbsp;...<br>
-	  &nbsp;&nbsp;&lt;/Signature&gt;<br>
+	    &lt;Data Id="1234"&gt;<br>
+	      The data I want to sign<br>
+	    &lt;/Data&gt;<br>
+	    &lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#"&gt;<br>
+	    ...<br>
+	      &lt;Reference URI="#1234"&gt;<br>
+	      ...<br>
+	      &lt;/Reference&gt;<br>
+	    ...<br>
+	    &lt;/Signature&gt;<br>
 	  &lt;/Root&gt;<br></code></blockquote>
 <p>
       always results in an empty nodes set (and an empty string signed!) unless
@@ -355,7 +337,7 @@ issues</a>.<br>
         </p>
 <blockquote><code>
 	&lt;!DOCTYPE test [<br>
-	&nbsp;&lt;!ATTLIST Data Id ID #IMPLIED&gt;<br>
+	 &lt;!ATTLIST Data Id ID #IMPLIED&gt;<br>
 	]&gt;<br></code></blockquote>
 <p>
       The DTD might be directly included in the XML file or located in 
@@ -414,5 +396,6 @@ issues</a>.<br>
 <tr><td>
 <br><br><p><a href="bugs.html">Aleksey Sanin</a></p>
 </td></tr>
-</tbody></table></td>
-</tr></tbody></table></body></html>
+</table></td>
+</tr></table></body>
+</html>

@@ -2219,7 +2219,10 @@ xmlSecAppInit(void) {
 
 #if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST xmlsec_crypto) < 0) {
-	fprintf(stderr, "Error: unable to load xmlsec-%s library. Check shared libraries path or use \"--crypto\" option to specify different crypto engine.\n", xmlsec_crypto);
+	fprintf(stderr, "Error: unable to load xmlsec-%s library. Make sure that you have\n"
+			"this it installed, check shared libraries path (LD_LIBRARY_PATH)\n"
+			"envornment variable or use \"--crypto\" option to specify different\n"
+			"crypto engine.\n", xmlsec_crypto);
 	return(-1);	
     }
 #endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */

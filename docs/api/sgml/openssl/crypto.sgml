@@ -14,6 +14,8 @@
 
 
 
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoGetFunctions-openssl">xmlSecCryptoGetFunctions_openssl</link>
+                                            (void);
 int         <link linkend="xmlSecOpenSSLInit">xmlSecOpenSSLInit</link>               (void);
 int         <link linkend="xmlSecOpenSSLShutdown">xmlSecOpenSSLShutdown</link>           (void);
 int         <link linkend="xmlSecOpenSSLKeysMngrInit">xmlSecOpenSSLKeysMngrInit</link>       (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
@@ -134,6 +136,18 @@ void        <link linkend="xmlSecOpenSSLErrorsDefaultCallback">xmlSecOpenSSLErro
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecCryptoGetFunctions-openssl">xmlSecCryptoGetFunctions_openssl ()</title>
+<programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_openssl
+                                            (void);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecOpenSSLInit">xmlSecOpenSSLInit ()</title>
 <programlisting>int         xmlSecOpenSSLInit               (void);</programlisting>

@@ -27,7 +27,18 @@
 #include <xmlsec/x509.h>
 #include <xmlsec/errors.h>
 
-
+/**
+ * xmlSecX509DataGetNodeContent:
+ * @node:		the pointer to <dsig:X509Data/> node.
+ * @deleteChildren:	the flag that indicates whether to remove node children after reading.
+ * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> node processing context.
+ *
+ * Reads the contents of <dsig:X509Data/> node and returns it as
+ * a bits mask.
+ *
+ * Returns the bit mask representing the <dsig:X509Data/> node content
+ * or a negative value if an error occurs.
+ */
 int
 xmlSecX509DataGetNodeContent (xmlNodePtr node, int deleteChildren,
 			    xmlSecKeyInfoCtxPtr keyInfoCtx) {

@@ -63,7 +63,7 @@
 <p>On Windows there is no such simple and elegant solution.
 	Please check <tt class="FILENAME">README</tt> file in <tt class="FILENAME">win32</tt>
 	folder of the library package for latest instructions.
-	However, there are a couple general things, that you need to remember:
+	However, there are few general things, that you need to remember:
 	</p>
 <p></p>
 <ul>
@@ -77,13 +77,29 @@
 	     additional global defines:</i></span>
 	      </p>
 <div class="INFORMALEXAMPLE">
-<a name="AEN95"></a><p></p>
+<a name="AEN104"></a><p></p>
 <table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define LIBXML_STATIC
 #define LIBXSLT_STATIC
 #define XMLSEC_STATIC	    
 	     </pre></td></tr></table>
 <p></p>
 </div>
+	    </li>
+<li><p>	    If you do not want to dynamicaly load xmlsec-crypto library
+	    and prefer to select crypto engine at linking then you should
+	    link your application with xmlsec and at least one of 
+	    xmlsec-crypto libraries.
+	    </p></li>
+<li>
+<p>	    In order to enable dynamic loading for xmlsec-crypto library
+	    you should add additional global define:
+	      </p>
+<div class="INFORMALEXAMPLE">
+<a name="AEN110"></a><p></p>
+<table border="0" bgcolor="#D8F8D8" width="90%" cellpadding="6"><tr><td><pre class="PROGRAMLISTING">#define XMLSEC_CRYPTO_DYNAMIC_LOADING
+	     </pre></td></tr></table>
+<p></p>
+</div>	    
 	    </li>
 </ul>
 </div>

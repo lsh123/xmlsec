@@ -1,5 +1,7 @@
+    &xmlsec-app;
     &xmlsec-base64;
     &xmlsec-buffer;
+    &xmlsec-dl;
     &xmlsec-errors;
     &xmlsec-exports;
     &xmlsec-io;
@@ -11,6 +13,7 @@
     &xmlsec-membuf;
     &xmlsec-nodeset;
     &xmlsec-parser;
+    &xmlsec-private;
     &xmlsec-templates;
     &xmlsec-transforms;
     &xmlsec-version;

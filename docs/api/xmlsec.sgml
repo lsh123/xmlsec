@@ -14,8 +14,10 @@
 
 <!ENTITY xmlsec-index 			SYSTEM "xmlsec-index.sgml">
 
+<!ENTITY xmlsec-app 			SYSTEM "sgml/app.sgml">
 <!ENTITY xmlsec-base64 			SYSTEM "sgml/base64.sgml">
 <!ENTITY xmlsec-buffer 			SYSTEM "sgml/buffer.sgml">
+<!ENTITY xmlsec-dl 			SYSTEM "sgml/dl.sgml">
 <!ENTITY xmlsec-errors 			SYSTEM "sgml/errors.sgml">
 <!ENTITY xmlsec-io 			SYSTEM "sgml/io.sgml">
 <!ENTITY xmlsec-keyinfo 		SYSTEM "sgml/keyinfo.sgml">
@@ -33,20 +35,18 @@
 <!ENTITY xmlsec-xmlenc 			SYSTEM "sgml/xmlenc.sgml">
 <!ENTITY xmlsec-xmlsec 			SYSTEM "sgml/xmlsec.sgml">
 <!ENTITY xmlsec-xmltree 		SYSTEM "sgml/xmltree.sgml">
+<!ENTITY xmlsec-x509 			SYSTEM "sgml/x509.sgml">
 
 <!ENTITY xmlsec-openssl-app 		SYSTEM "sgml/openssl/app.sgml">
 <!ENTITY xmlsec-openssl-bn 		SYSTEM "sgml/openssl/bn.sgml">
 <!ENTITY xmlsec-openssl-crypto 		SYSTEM "sgml/openssl/crypto.sgml">
 <!ENTITY xmlsec-openssl-x509 		SYSTEM "sgml/openssl/x509.sgml">
-<!ENTITY xmlsec-openssl-symbols 	SYSTEM "sgml/openssl/symbols.sgml">
 
 <!ENTITY xmlsec-gnutls-app 		SYSTEM "sgml/gnutls/app.sgml">
 <!ENTITY xmlsec-gnutls-crypto 		SYSTEM "sgml/gnutls/crypto.sgml">
-<!ENTITY xmlsec-gnutls-symbols 		SYSTEM "sgml/gnutls/symbols.sgml">
 
 <!ENTITY xmlsec-nss-app 		SYSTEM "sgml/nss/app.sgml">
 <!ENTITY xmlsec-nss-crypto 		SYSTEM "sgml/nss/crypto.sgml">
-<!ENTITY xmlsec-nss-symbols		SYSTEM "sgml/nss/symbols.sgml">
 
 <!ENTITY xmlsec-example-sign1 		SYSTEM "examples/sign1.sgml">
 <!ENTITY xmlsec-example-sign2 		SYSTEM "examples/sign2.sgml">
@@ -193,8 +193,10 @@
     the public interfaces are documented here. This reference guide is
     build by extracting comments from the code sources. </para>
 
+    &xmlsec-app;
     &xmlsec-base64;
     &xmlsec-buffer;
+    &xmlsec-dl;
     &xmlsec-errors;
     &xmlsec-io;
     &xmlsec-keyinfo;
@@ -212,6 +214,7 @@
     &xmlsec-xmlenc;
     &xmlsec-xmlsec;
     &xmlsec-xmltree;
+    &xmlsec-x509;
     </chapter>
 
     <chapter id="xmlsec-openssl-ref">

@@ -13,7 +13,9 @@
 		functions);
 	    </para></listitem>
 	    <listitem><para>xmlsec-crypto library
-		(<link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link> 
+		(<link linkend="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</link> 
+		to load xmlsec-crypto library dynamicaly if needed, 
+		<link linkend="xmlSecCryptoInit">xmlSecCryptoInit</link> 
 		and <link linkend="xmlSecCryptoShutdown">xmlSecCryptoShutdown</link> 
 		functions);
 	    </para></listitem>
@@ -42,6 +44,20 @@
 	fprintf(stderr, "Error: xmlsec initialization failed.\n");
 	return(-1);
     }
+
+    /* Load default crypto engine if we are supporting dynamic
+     * loading for xmlsec-crypto libraries. Use the crypto library
+     * name ("openssl", "nss", etc.) to load corresponding 
+     * xmlsec-crypto library.
+     */
+#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
+    if(xmlSecCryptoDLLoadLibrary(BAD_CAST "default") < 0) {
+	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+			"that you have it installed and check shared libraries path\n"
+			"(LD_LIBRARY_PATH) envornment variable.\n");
+	return(-1);	
+    }
+#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {

@@ -33,8 +33,10 @@ printRes() {
     fi
 }
 
-echo "--- testKeys started ($timestamp) ---"
-echo "--- testKeys started ($timestamp) ---" >> $logfile
+echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---"
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+echo "--- testKeys started for xmlsec-$crypto library ($timestamp) ---" >> $logfile
+echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
 printf "    Creating new keys                                    "
 $xmlsec_app keys $xmlsec_params \

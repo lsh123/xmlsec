@@ -14,6 +14,14 @@ crypto
 
 </para>
 
+<!-- ##### FUNCTION xmlSecCryptoGetFunctions_nss ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecNssInit ##### -->
 <para>
 

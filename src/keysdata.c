@@ -195,7 +195,9 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
     int ret;
         
     xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(id->objSize > 0, NULL);
+    xmlSecAssert2(id->klassSize >= sizeof(xmlSecKeyDataKlass), NULL);
+    xmlSecAssert2(id->objSize >= sizeof(xmlSecKeyData), NULL);
+    xmlSecAssert2(id->name != NULL, NULL);
         
     /* Allocate a new xmlSecKeyData and fill the fields. */
     data = (xmlSecKeyDataPtr)xmlMalloc(id->objSize);
@@ -269,7 +271,6 @@ void
 xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataIsValid(data));    
     xmlSecAssert(data->id->objSize > 0);
-
     
     if(data->id->finalize != NULL) { 
 	(data->id->finalize)(data);

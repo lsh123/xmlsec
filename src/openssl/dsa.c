@@ -224,7 +224,7 @@ xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_DSA), -1);
     
-    /* destroy the old one */
+    /* finalize the old one */
     if(data->reserved0 != NULL) {
 	EVP_PKEY_free((EVP_PKEY*)(data->reserved0));
 	data->reserved0 = NULL;
@@ -286,7 +286,7 @@ xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
     
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     
-    /* destroy buffer */
+    /* finalize buffer */
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, NULL);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -660,10 +660,6 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * DSA-SHA1 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLDsaSha1Create		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLDsaSha1Destroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLDsaSha1Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLDsaSha1Finalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLDsaSha1SetKeyReq			(xmlSecTransformPtr transform, 
@@ -682,13 +678,17 @@ static int  	xmlSecOpenSSLDsaSha1Execute			(xmlSecTransformPtr transform,
 static const EVP_MD *xmlSecOpenSSLDsaEvp			(void);
 
 static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     xmlSecNameDsaSha1,
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
     xmlSecHrefDsaSha1, 			/* xmlChar *href; */
     
-    xmlSecOpenSSLDsaSha1Create,		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLDsaSha1Destroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLDsaSha1Initialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLDsaSha1Finalize,	/* xmlSecTransformFinalizeMethod finalize; */
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     xmlSecOpenSSLDsaSha1SetKeyReq,	/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLDsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
@@ -784,55 +784,6 @@ xmlSecOpenSSLDsaSha1Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
     
     return(xmlSecOpenSSLEvpSignatureExecute(transform, last, transformCtx));
 }
-
-/****************************************************************************/
-
-/**
- * xmlSecOpenSSLDsaSha1Create:
- */ 
-static xmlSecTransformPtr 
-xmlSecOpenSSLDsaSha1Create(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformDsaSha1Id, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLDsaSha1Initialize(transform);	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLDsaSha1Initialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-/**
- * xmlSecOpenSSLDsaSha1Destroy:
- */ 
-static void 	
-xmlSecOpenSSLDsaSha1Destroy(xmlSecTransformPtr transform) {
-
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha1Id));
-
-    xmlSecOpenSSLDsaSha1Finalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
 
 /****************************************************************************
  *

@@ -53,21 +53,26 @@ static int xmlSecInputCallbackInitialized = 0;
 
 
 
-static xmlSecTransformPtr xmlSecInputUriTransformCreate	(xmlSecTransformId id);
-static void		xmlSecInputUriTransformDestroy	(xmlSecTransformPtr transform);
-static int  		xmlSecInputUriTransformRead	(xmlSecTransformPtr transform, 
-							 unsigned char *buf, 
-							 size_t size);
+static int		xmlSecInputUriTransformInitialize	(xmlSecTransformPtr transform);
+static void		xmlSecInputUriTransformFinalize		(xmlSecTransformPtr transform);
+static int  		xmlSecInputUriTransformRead		(xmlSecTransformPtr transform, 
+								 unsigned char *buf, 
+								 size_t size);
 
 static const struct _xmlSecTransformKlass xmlSecInputUriTransformId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
+
     /* same as xmlSecTransformId */    
     BAD_CAST "input-uri",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
 
-    xmlSecInputUriTransformCreate, 	/* xmlSecTransformCreateMethod create; */
-    xmlSecInputUriTransformDestroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecInputUriTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecInputUriTransformFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -97,60 +102,27 @@ xmlSecTransformId xmlSecInputUri = (xmlSecTransformId)&xmlSecInputUriTransformId
 	NULL )
 
 /** 
- * xmlSecInputUriTransformCreate:
+ * xmlSecInputUriTransformInitialize:
  */
-static xmlSecTransformPtr 
-xmlSecInputUriTransformCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr ptr;
+static int
+xmlSecInputUriTransformInitialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecInputUri), -1);
 
-    xmlSecAssert2(id != NULL, NULL);
-
-    if(id != xmlSecInputUri) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecInputUri");
-	return(NULL);
-    }
-    
-    /*
-     * Allocate a new xmlSecTransform and fill the fields.
-     */
-    ptr = (xmlSecTransformPtr) xmlMalloc(sizeof(xmlSecTransform));
-    if(ptr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecTransform)=%d", 
-		    sizeof(xmlSecTransform));
-	return(NULL);
-    }
-    memset(ptr, 0, sizeof(xmlSecTransform));
-    
-    ptr->id = (xmlSecTransformId)id;
-    return((xmlSecTransformPtr)ptr);
+    transform->reserved0 = transform->reserved1 = NULL;
+    return(0);
 }
 
 /** 
- * xmlSecInputUriTransformDestroy:
+ * xmlSecInputUriTransformFinalilze:
  */
 static void
-xmlSecInputUriTransformDestroy(xmlSecTransformPtr transform) {
-    xmlSecTransformPtr t;
+xmlSecInputUriTransformFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecInputUri));
 
-    xmlSecAssert(transform != NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecInputUri)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecInputUri");
-	return;
+    if((transform->reserved0 != NULL) && (xmlSecInputUriTransformCloseClbk(transform) != NULL)) {
+	xmlSecInputUriTransformCloseClbk(transform)(transform->reserved0);
     }
-    
-    t = (xmlSecTransformPtr)transform;
-    if((t->reserved0 != NULL) && (xmlSecInputUriTransformCloseClbk(t) != NULL)) {
-	xmlSecInputUriTransformCloseClbk(t)(t->reserved0);
-    }
-    memset(t, 0, sizeof(xmlSecTransform));
-    xmlFree(t);
+    transform->reserved0 = transform->reserved1 = NULL;
 }
 
 /** 

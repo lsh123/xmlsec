@@ -195,7 +195,7 @@ xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_RSA), -1);
     
-    /* destroy the old one */
+    /* finalize the old one */
     if(data->reserved0 != NULL) {
 	EVP_PKEY_free((EVP_PKEY*)(data->reserved0));
 	data->reserved0 = NULL;
@@ -257,7 +257,7 @@ xmlSecOpenSSLKeyDataRsaFinalize(xmlSecKeyDataPtr data) {
     
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     
-    /* destroy buffer */
+    /* finalize buffer */
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, NULL);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -355,7 +355,7 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(data == NULL ) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataInitialize");
+		    "xmlSecKeyDataCreate");
 	RSA_free(rsa);
 	return(-1);
     }
@@ -539,10 +539,6 @@ xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * RSA-SHA1 signature transform
  *
  ***************************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLRsaSha1Create		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLRsaSha1Destroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLRsaSha1Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaSha1Finalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLRsaSha1SetKeyReq			(xmlSecTransformPtr transform, 
@@ -559,24 +555,28 @@ static int  	xmlSecOpenSSLRsaSha1Execute			(xmlSecTransformPtr transform,
 
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameRsaSha1,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
-    xmlSecHrefRsaSha1, 			/* xmlChar *href; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefRsaSha1, 				/* xmlChar *href; */
     
-    xmlSecOpenSSLRsaSha1Create,		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLRsaSha1Destroy,	/* xmlSecTransformDestroyMethod destroy; */
-    NULL,				/* xmlSecTransformReadNodeMethod read; */
-    xmlSecOpenSSLRsaSha1SetKeyReq,	/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLRsaSha1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLRsaSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
-    xmlSecOpenSSLRsaSha1Execute,	/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLRsaSha1Initialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLRsaSha1Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLRsaSha1SetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLRsaSha1SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLRsaSha1Verify,			/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLRsaSha1Execute,		/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -669,10 +669,6 @@ xmlSecOpenSSLRsaSha1Execute(xmlSecTransformPtr transform, int last, xmlSecTransf
  * reserved0->key (EVP_PKEY*)
  *
  ********************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLRsaPkcs1Create		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLRsaPkcs1Destroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLRsaPkcs1Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaPkcs1Finalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLRsaPkcs1SetKeyReq			(xmlSecTransformPtr transform, 
@@ -686,13 +682,17 @@ static int  	xmlSecOpenSSLRsaPkcs1Process			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameRsaPkcs1,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefRsaPkcs1, 			/* const xmlChar href; */
 
-    xmlSecOpenSSLRsaPkcs1Create, 		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLRsaPkcs1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLRsaPkcs1Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLRsaPkcs1Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLRsaPkcs1SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaPkcs1SetKey,		/* xmlSecTransformSetKeyMethod setKey; */
@@ -701,9 +701,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -913,10 +913,6 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
  * reserved0->key (EVP_PKEY*)
  *
  ********************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLRsaOaepCreate		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLRsaOaepDestroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLRsaOaepInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaOaepFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLRsaOaepReadNode			(xmlSecTransformPtr transform, 
@@ -932,13 +928,17 @@ static int  	xmlSecOpenSSLRsaOaepProcess			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameRsaOaep,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefRsaOaep, 				/* const xmlChar href; */
 
-    xmlSecOpenSSLRsaOaepCreate, 		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLRsaOaepDestroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLRsaOaepInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLRsaOaepFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecOpenSSLRsaOaepReadNode,		/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLRsaOaepSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLRsaOaepSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -947,9 +947,9 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -1336,135 +1336,6 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     
     return(0);
 }
-
-
-/****************************************************************************/
-
-/**
- * xmlSecOpenSSLRsaSha1Create:
- */ 
-static xmlSecTransformPtr 
-xmlSecOpenSSLRsaSha1Create(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformRsaSha1Id, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLRsaSha1Initialize(transform);	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLRsaSha1Initialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-/**
- * xmlSecOpenSSLRsaSha1Destroy:
- */ 
-static void 	
-xmlSecOpenSSLRsaSha1Destroy(xmlSecTransformPtr transform) {
-
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaSha1Id));
-
-    xmlSecOpenSSLRsaSha1Finalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
-
-static xmlSecTransformPtr 
-xmlSecOpenSSLRsaOaepCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformRsaOaepId, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLRsaOaepInitialize(transform);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLRsaOaepInitialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-static void 	
-xmlSecOpenSSLRsaOaepDestroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId));
-
-    xmlSecOpenSSLRsaOaepFinalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
-static xmlSecTransformPtr 
-xmlSecOpenSSLRsaPkcs1Create(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformRsaPkcs1Id, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLRsaPkcs1Initialize(transform);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLRsaPkcs1Initialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-static void 	
-xmlSecOpenSSLRsaPkcs1Destroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id));
-
-    xmlSecOpenSSLRsaPkcs1Finalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
 
 #endif /* XMLSEC_NO_RSA */
 

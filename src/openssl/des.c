@@ -84,24 +84,24 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesKlass = {
     xmlSecNs,					/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    xmlSecOpenSSLKeyDataDesInitialize,	/* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecOpenSSLKeyDataDesDuplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecOpenSSLKeyDataDesFinalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecOpenSSLKeyDataDesGenerate,	/* xmlSecKeyDataGenerateMethod generate; */
+    xmlSecOpenSSLKeyDataDesInitialize,		/* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataDesDuplicate,		/* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataDesFinalize,		/* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecOpenSSLKeyDataDesGenerate,		/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
-    xmlSecOpenSSLKeyDataDesGetType, 	/* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecOpenSSLKeyDataDesGetSize,	/* xmlSecKeyDataGetSizeMethod getSize; */
+    xmlSecOpenSSLKeyDataDesGetType, 		/* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataDesGetSize,		/* xmlSecKeyDataGetSizeMethod getSize; */
     NULL,					/* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
-    xmlSecOpenSSLKeyDataDesXmlRead,	/* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecOpenSSLKeyDataDesXmlWrite,	/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecOpenSSLKeyDataDesBinRead,	/* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecOpenSSLKeyDataDesBinWrite,	/* xmlSecKeyDataBinWriteMethod binWrite; */
+    xmlSecOpenSSLKeyDataDesXmlRead,		/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecOpenSSLKeyDataDesXmlWrite,		/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecOpenSSLKeyDataDesBinRead,		/* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecOpenSSLKeyDataDesBinWrite,		/* xmlSecKeyDataBinWriteMethod binWrite; */
 
     /* debug */
-    xmlSecOpenSSLKeyDataDesDebugDump,	/* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataDesDebugDump,		/* xmlSecKeyDataDebugDumpMethod debugDump; */
     xmlSecOpenSSLKeyDataDesDebugXmlDump, 	/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
 };
 
@@ -233,10 +233,6 @@ xmlSecOpenSSLKeyDataDesDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * Triple DES CBC cipher transform
  *
  ********************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLDes3CbcCreate		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLDes3CbcDestroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLDes3CbcInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLDes3CbcFinalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLDes3CbcSetKeyReq			(xmlSecTransformPtr transform, 
@@ -248,13 +244,17 @@ static int  	xmlSecOpenSSLDes3CbcExecute			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameDes3Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefDes3Cbc, 				/* const xmlChar href; */
 
-    xmlSecOpenSSLDes3CbcCreate, 		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLDes3CbcDestroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLDes3CbcInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLDes3CbcFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLDes3CbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLDes3CbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -263,9 +263,9 @@ static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -338,55 +338,12 @@ xmlSecOpenSSLDes3CbcExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     return(xmlSecOpenSSLEvpBlockCipherExecute(transform, last, transformCtx));
 }
 
-static xmlSecTransformPtr 
-xmlSecOpenSSLDes3CbcCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformDes3CbcId, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLDes3CbcInitialize(transform);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLDes3CbcInitialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-static void 	
-xmlSecOpenSSLDes3CbcDestroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDes3CbcId));
-
-    xmlSecOpenSSLDes3CbcFinalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
 /*********************************************************************
  *
  * Triple DES Key Wrap transform
  * reserved0->key (xmlSecBufferPtr)
  *
  ********************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLKWDes3Create		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLKWDes3Destroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLKWDes3Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLKWDes3Finalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLKWDes3SetKeyReq			(xmlSecTransformPtr transform, 
@@ -421,13 +378,17 @@ static int 	xmlSecOpenSSLKWDes3BufferReverse		(unsigned char *buf,
 								 size_t size);
 
 static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameKWDes3,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefKWDes3, 				/* const xmlChar href; */
 
-    xmlSecOpenSSLKWDes3Create, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLKWDes3Destroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLKWDes3Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWDes3Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLKWDes3SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWDes3SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -436,9 +397,9 @@ static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -913,53 +874,6 @@ xmlSecOpenSSLKWDes3BufferReverse(unsigned char *buf, size_t size) {
 	buf[size - i] = c;
     }
     return(0);
-}
-
-
-
-
-
-
-
-
-
-static xmlSecTransformPtr 
-xmlSecOpenSSLKWDes3Create(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformKWDes3Id, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLKWDes3Initialize(transform);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKWDes3Initialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-static void 	
-xmlSecOpenSSLKWDes3Destroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWDes3Id));
-
-    xmlSecOpenSSLKWDes3Finalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
 }
 
 #endif /* XMLSEC_NO_DES */

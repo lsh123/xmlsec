@@ -21,12 +21,6 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/evp.h>
 
-
-
-static xmlSecTransformPtr xmlSecOpenSSLSha1Create		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLSha1Destroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLSha1Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLSha1Finalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLSha1Verify				(xmlSecTransformPtr transform, 
@@ -39,25 +33,30 @@ static int  	xmlSecOpenSSLSha1Execute			(xmlSecTransformPtr transform,
 
 
 static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
-    /* same as xmlSecTransformId */    
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
+    /* data */
     xmlSecNameSha1,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDigestMethod,	/* xmlSecTransformUsage usage; */
-    xmlSecHrefSha1, 			/* xmlChar *href; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
+    xmlSecHrefSha1, 				/* xmlChar *href; */
     
-    xmlSecOpenSSLSha1Create,		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
-    NULL,				/* xmlSecTransformReadNodeMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLSha1Verify,		/* xmlSecTransformVerifyMethod verify; */
-    xmlSecOpenSSLSha1Execute,		/* xmlSecTransformExecuteMethod execute; */
+    /* methods */
+    xmlSecOpenSSLSha1Initialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLSha1Finalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLSha1Verify,			/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLSha1Execute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -96,53 +95,6 @@ xmlSecOpenSSLSha1Execute(xmlSecTransformPtr transform, int last, xmlSecTransform
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id), -1);
     
     return(xmlSecOpenSSLEvpDigestExecute(transform, last, transformCtx));
-}
-/****************************************************************************/
-
-/**
- * xmlSecOpenSSLSha1Create:
- */ 
-static xmlSecTransformPtr 
-xmlSecOpenSSLSha1Create(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    xmlSecAssert2(id == xmlSecOpenSSLTransformSha1Id, NULL);        
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLSha1Initialize(transform);	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLSha1Initialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-/**
- * xmlSecOpenSSLSha1Destroy:
- */ 
-static void 	
-xmlSecOpenSSLSha1Destroy(xmlSecTransformPtr transform) {
-
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id));
-
-    xmlSecOpenSSLSha1Finalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
 }
 
 #endif /* XMLSEC_NO_SHA1 */

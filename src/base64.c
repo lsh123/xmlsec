@@ -95,20 +95,25 @@ static int		xmlSecBase64CtxPop		(xmlSecBase64CtxPtr ctx,
  * Base64 Transform
  *
  **************************************************************/
-static xmlSecTransformPtr xmlSecBase64Create			(xmlSecTransformId id);
-static void		xmlSecBase64Destroy			(xmlSecTransformPtr transform);
-static int 		xmlSecBase64Execute			(xmlSecTransformPtr transform, 
-								 int last, 
-								 xmlSecTransformCtxPtr transformCtx);
+static int		xmlSecBase64Initialize		(xmlSecTransformPtr transform);
+static void		xmlSecBase64Finalize		(xmlSecTransformPtr transform);
+static int 		xmlSecBase64Execute		(xmlSecTransformPtr transform, 
+							 int last, 
+							 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecBase64EncodeId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+    
+    /* data */
     BAD_CAST "base64-encode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
 
-    xmlSecBase64Create, 		/* xmlSecTransformCreateMethod create; */
-    xmlSecBase64Destroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecBase64Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecBase64Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -128,13 +133,17 @@ static xmlSecTransformKlass xmlSecBase64EncodeId = {
 xmlSecTransformId xmlSecEncBase64Encode = (xmlSecTransformId)&xmlSecBase64EncodeId;
 
 static xmlSecTransformKlass xmlSecBase64DecodeId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     BAD_CAST "base64-decode",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,	/* xmlSecAlgorithmUsage usage; */
     BAD_CAST "http://www.w3.org/2000/09/xmldsig#base64",	/* const xmlChar href; */
 
-    xmlSecBase64Create, 		/* xmlSecTransformCreateMethod create; */
-    xmlSecBase64Destroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecBase64Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecBase64Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -153,6 +162,11 @@ static xmlSecTransformKlass xmlSecBase64DecodeId = {
 };
 xmlSecTransformId xmlSecEncBase64Decode = (xmlSecTransformId)&xmlSecBase64DecodeId;
 
+
+#define xmlSecBase64CheckId(transform) \
+	(xmlSecTransformCheckId((transform), xmlSecEncBase64Encode) || \
+	 xmlSecTransformCheckId((transform), xmlSecEncBase64Decode))
+	 
 #define xmlSecBase64GetCtx(transform) \
 	((xmlSecBase64CtxPtr) (transform)->reserved0)
 
@@ -172,63 +186,38 @@ xmlSecBase64EncodeSetLineSize(xmlSecTransformPtr transform, size_t lineSize) {
 }
 
 /**
- * xmlSecBase64Create:
+ * xmlSecBase64Initialize:
  */
-static xmlSecTransformPtr 
-xmlSecBase64Create(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int encode;
+static int
+xmlSecBase64Initialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecBase64CheckId(transform), -1);
     
-    xmlSecAssert2(id != NULL, NULL);
-    
-    if(id == xmlSecEncBase64Encode) {
-	encode = 1;
-    } else if(id == xmlSecEncBase64Decode) {
-	encode = 0;
-    } else {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncBase64Encode,xmlSecEncBase64Decode");
-	return(NULL);	
+    if(transform->id == xmlSecEncBase64Encode) {
+	transform->encode = 1;    
     }
-    
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-    		    XMLSEC_ERRORS_R_MALLOC_FAILED,	
-		    "%d",
-		    XMLSEC_BASE64_OUTPUT_BUFFER_SIZE + XMLSEC_BASE64_INPUT_BUFFER_SIZE);
-	return(NULL);
-    }
-    memset(transform, 0, sizeof(xmlSecTransform));
 
-    transform->id = id;
-    transform->encode = encode;    
-
-    transform->reserved0 = xmlSecBase64CtxCreate(encode, XMLSEC_BASE64_LINESIZE);    
+    transform->reserved0 = xmlSecBase64CtxCreate(transform->encode, XMLSEC_BASE64_LINESIZE);
     if(transform->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecBase64CtxCreate");
-	xmlSecTransformDestroy(transform, 1);	
-	return(NULL);
+	return(-1);
     }
     
-    return(transform);
+    return(0);
 }
 
 /**
- * xmlSecBase64Destroy:
+ * xmlSecBase64Finalize:
  */
 static void
-xmlSecBase64Destroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode));
+xmlSecBase64Finalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecBase64CheckId(transform));
     
     if(xmlSecBase64GetCtx(transform) != NULL) {
 	xmlSecBase64CtxDestroy(xmlSecBase64GetCtx(transform));
+	transform->reserved0 = NULL;
     }    
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
 }
 
 static int 
@@ -239,7 +228,7 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     unsigned char buf[3 * XMLSEC_TRANSFORM_BINARY_CHUNK];
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncBase64Encode) || xmlSecTransformCheckId(transform, xmlSecEncBase64Decode), -1);
+    xmlSecAssert2(xmlSecBase64CheckId(transform), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecBase64GetCtx(transform);

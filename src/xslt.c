@@ -53,8 +53,8 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/errors.h>
 
-static xmlSecTransformPtr xmlSecTransformXsltCreate	(xmlSecTransformId id);
-static void		xmlSecTransformXsltDestroy	(xmlSecTransformPtr transform);
+static int		xmlSecTransformXsltInitialize	(xmlSecTransformPtr transform);
+static void		xmlSecTransformXsltFinalize	(xmlSecTransformPtr transform);
 static int 		xmlSecTransformXsltReadNode	(xmlSecTransformPtr transform,
 							 xmlNodePtr transformNode);
 static int  		xmlSecTransformXsltRead		(xmlSecTransformPtr transform, 
@@ -68,14 +68,18 @@ static int		xmlSecTransformXsltExecute	(xmlSecBufferPtr buffer,
 							 xmlBufferPtr xslt);
 
 static const struct _xmlSecTransformKlass xmlSecTransformXsltId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     /* same as xmlSecTransformId */    
     BAD_CAST "xslt",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecAlgorithmUsage usage; */
     BAD_CAST "http://www.w3.org/TR/1999/REC-xslt-19991116", /* const xmlChar href; */
 
-    xmlSecTransformXsltCreate, 		/* xmlSecTransformCreateMethod create; */
-    xmlSecTransformXsltDestroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecTransformXsltInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXsltFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXsltReadNode,	/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -98,64 +102,31 @@ xmlSecTransformId xmlSecTransformXslt = (xmlSecTransformId)&xmlSecTransformXsltI
     ((xmlBufferPtr)((transform)->reserved1))
     
 /**
- * xmlSecTransformXsltCreate:
+ * xmlSecTransformXsltInitialize:
  */
-static xmlSecTransformPtr 
-xmlSecTransformXsltCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr ptr;
+static int 
+xmlSecTransformXsltInitialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXslt), -1);
     
-    xmlSecAssert2(id != NULL, NULL);    
-    if(id != xmlSecTransformXslt){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXslt");
-	return(NULL);
-    }
-
-    /*
-     * Allocate a new xmlSecTransform and fill the fields.
-     */
-    ptr = (xmlSecTransformPtr) xmlMalloc(sizeof(xmlSecTransform));
-    if(ptr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecTransform)=%d",
-		    sizeof(xmlSecTransform));
-	return(NULL);
-    }
-    memset(ptr, 0, sizeof(xmlSecTransform));
-    
-    ptr->id = (xmlSecTransformId)id;
-    return((xmlSecTransformPtr)ptr);    
+    transform->reserved0 = transform->reserved1 = NULL;
+    return(0);
 }
 
 /**
- * xmlSecTransformXsltDestroy:
+ * xmlSecTransformXsltFinalize:
  */
 static void
-xmlSecTransformXsltDestroy(xmlSecTransformPtr transform) {
-    xmlSecTransformPtr xsltTransform;
+xmlSecTransformXsltFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformXslt));
 
-    xmlSecAssert(transform != NULL);    
-            
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXslt)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXslt");
-	return;
+    if(transform->reserved0 != NULL) {
+	xmlSecBufferDestroy((xmlSecBufferPtr)(transform->reserved0)); 
     }    
-    xsltTransform = (xmlSecTransformPtr)transform;
-    
-    if(xsltTransform->reserved0 != NULL) {
-	xmlSecBufferDestroy((xmlSecBufferPtr)(xsltTransform->reserved0)); 
-    }    
-    if(xmlSecTransformXsltGetXsl(xsltTransform) != NULL) {
-	xmlBufferEmpty(xmlSecTransformXsltGetXsl(xsltTransform)); 
-	xmlBufferFree(xmlSecTransformXsltGetXsl(xsltTransform)); 
+    if(xmlSecTransformXsltGetXsl(transform) != NULL) {
+	xmlBufferEmpty(xmlSecTransformXsltGetXsl(transform)); 
+	xmlBufferFree(xmlSecTransformXsltGetXsl(transform)); 
     }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);    
+    transform->reserved0 = transform->reserved1 = NULL;
 }
 
 /**

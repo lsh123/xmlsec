@@ -208,9 +208,9 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
     xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    NULL,					/* xmlSecKeyDataCreateMethod create; */
+    NULL,					/* xmlSecKeyDataInitializeMethod initialize; */
     NULL,					/* xmlSecKeyDataDuplicateMethod duplicate; */
-    NULL,					/* xmlSecKeyDataDestroyMethod destroy; */
+    NULL,					/* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,					/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
@@ -352,9 +352,9 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
     xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    NULL,					/* xmlSecKeyDataCreateMethod create; */
+    NULL,					/* xmlSecKeyDataInitializeMethod initialize; */
     NULL,					/* xmlSecKeyDataDuplicateMethod duplicate; */
-    NULL,					/* xmlSecKeyDataDestroyMethod destroy; */
+    NULL,					/* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,					/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
@@ -505,9 +505,9 @@ static xmlSecKeyDataKlass xmlSecKeyDataRetrievalMethodKlass = {
     xmlSecDSigNs,				/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    NULL,					/* xmlSecKeyDataCreateMethod create; */
+    NULL,					/* xmlSecKeyDataInitializeMethod initialize; */
     NULL,					/* xmlSecKeyDataDuplicateMethod duplicate; */
-    NULL,					/* xmlSecKeyDataDestroyMethod destroy; */
+    NULL,					/* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,					/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */
@@ -788,9 +788,9 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
     xmlSecEncNs,				/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
-    NULL,					/* xmlSecKeyDataCreateMethod create; */
+    NULL,					/* xmlSecKeyDataInitializeMethod initialize; */
     NULL,					/* xmlSecKeyDataDuplicateMethod duplicate; */
-    NULL,					/* xmlSecKeyDataDestroyMethod destroy; */
+    NULL,					/* xmlSecKeyDataFinalizeMethod finalize; */
     NULL,					/* xmlSecKeyDataGenerateMethod generate; */
     
     /* get info */

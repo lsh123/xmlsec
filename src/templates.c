@@ -19,6 +19,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/strings.h>
+#include <xmlsec/base64.h>
 #include <xmlsec/templates.h>
 #include <xmlsec/errors.h>
 

@@ -276,23 +276,21 @@ typedef unsigned int					xmlSecTransformUsage;
 #define xmlSecTransformIdUnknown			NULL
 
 /**
- * xmlSecTransformCreateMethod:
- * @id: the transform id to create.
+ * xmlSecTransformInitializeMethod:
+ * @transform: the transform.
  *
  * The transform specific creation method.
  *
- * Returns pointer to the newly created transform or NULL if an 
- * error occurs.
  */
-typedef xmlSecTransformPtr (*xmlSecTransformCreateMethod) 	(xmlSecTransformId id);
+typedef int		(*xmlSecTransformInitializeMethod) 	(xmlSecTransformPtr transform);
 
 /**
- * xmlSecTransformDestroyMethod:
+ * xmlSecTransformFinalizeMethod:
  * @transform: the pointer to the #xmlSecTransform structure.
  *
  * The transform specific destroy method.
  */
-typedef void 		(*xmlSecTransformDestroyMethod)		(xmlSecTransformPtr transform);
+typedef void 		(*xmlSecTransformFinalizeMethod)	(xmlSecTransformPtr transform);
 
 /**
  * xmlSecTransformNodeReadMethod:
@@ -419,6 +417,9 @@ typedef int 		(*xmlSecTransformExecuteC14NMethod)	(xmlSecTransformPtr transform,
  * The transform id structure.
  */
 struct _xmlSecTransformKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
     /* general data */
     const xmlChar*			name;
     xmlSecTransformType			type;
@@ -426,8 +427,8 @@ struct _xmlSecTransformKlass {
     const xmlChar			*href;
 
     /* general methods */
-    xmlSecTransformCreateMethod		create;
-    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformInitializeMethod	initialize;
+    xmlSecTransformFinalizeMethod	finalize;
     xmlSecTransformNodeReadMethod	readNode;    
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;

@@ -24,25 +24,27 @@
 #include <xmlsec/errors.h>
 
 /* Enveloped transform */
-static xmlSecTransformPtr xmlSecTransformEnvelopedCreate(xmlSecTransformId id);
-static void		xmlSecTransformEnvelopedDestroy	(xmlSecTransformPtr transform);
-static int 		xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform,
+static int 	xmlSecTransformEnvelopedReadNode	(xmlSecTransformPtr transform,
 							 xmlNodePtr transformNode);
-static int 		xmlSecTransformEnvelopedExecute	(xmlSecTransformPtr transform,
+static int 	xmlSecTransformEnvelopedExecute		(xmlSecTransformPtr transform,
 							 xmlDocPtr ctxDoc,
 							 xmlDocPtr *doc,
 							 xmlSecNodeSetPtr *nodes);
 
 
 struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     /* same as xmlSecTransformId */ 
     BAD_CAST "enveloped",
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
     BAD_CAST "http://www.w3.org/2000/09/xmldsig#enveloped-signature", 
 					/* const xmlChar *href; */
-    xmlSecTransformEnvelopedCreate,	/* xmlSecTransformCreateMethod create; */
-    xmlSecTransformEnvelopedDestroy,	/* xmlSecTransformDestroyMethod destroy; */
+    NULL,				/* xmlSecTransformInitializeMethod initialize; */
+    NULL,				/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformEnvelopedReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -70,53 +72,6 @@ xmlSecTransformId xmlSecTransformEnveloped = (xmlSecTransformId)(&xmlSecTransfor
  *
  ****************************************************************************/
 /**
- * xmlSecTransformEnvelopedCreate:
- */
-static xmlSecTransformPtr 
-xmlSecTransformEnvelopedCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr xmlTransform; 
-    
-    xmlSecAssert2(id != NULL, NULL);
-    
-    if(id != xmlSecTransformEnveloped){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformEnveloped");
-	return(NULL);
-    }
-    
-    xmlTransform = (xmlSecTransformPtr)xmlMalloc(sizeof(struct _xmlSecTransform));
-    if(xmlTransform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(struct _xmlSecTransform)=%d",
-		    sizeof(struct _xmlSecTransform));
-	return(NULL);
-    }
-    memset(xmlTransform, 0,  sizeof(struct _xmlSecTransform));
-    xmlTransform->id = (xmlSecTransformId)xmlSecTransformEnveloped;    
-    return((xmlSecTransformPtr)xmlTransform);
-}
-
-/**
- * xmlSecTransformEnvelopedDestroy:
- */
-static void
-xmlSecTransformEnvelopedDestroy(xmlSecTransformPtr transform) {
-    
-    xmlSecAssert(transform != NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformEnveloped)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformEnveloped");
-	return;
-    }    
-    memset(transform, 0,  sizeof(struct _xmlSecTransform));  
-    xmlFree(transform);
-}
-
-/**
  * xmlSecTransformEnvelopedReadNode:
  */
 static int 
@@ -136,7 +91,6 @@ xmlSecTransformEnvelopedReadNode(xmlSecTransformPtr transform, xmlNodePtr transf
     xmlTransform->hereNode = transformNode;
     return(0);
 }
-
 
 /**
  * xmlSecTransformEnvelopedExecute:

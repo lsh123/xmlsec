@@ -82,17 +82,33 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
     int ret;
     
     xmlSecAssert2(id != NULL, NULL);
-    xmlSecAssert2(id->create != NULL, NULL);
-
-    transform = id->create(id);
+    xmlSecAssert2(id->klassSize >= sizeof(xmlSecTransformKlass), NULL);
+    xmlSecAssert2(id->objSize >= sizeof(xmlSecTransform), NULL);
+    xmlSecAssert2(id->name != NULL, NULL);
+        
+    /* Allocate a new xmlSecTransform and fill the fields. */
+    transform = (xmlSecTransformPtr)xmlMalloc(id->objSize);
     if(transform == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "id->create");
-	return(NULL);	
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", id->objSize); 
+	return(NULL);
     }
+    memset(transform, 0, id->objSize);    
+    transform->id = id;
     transform->dontDestroy = dontDestroy;
     
+    if(id->initialize != NULL) {
+	ret = (id->initialize)(transform);
+        if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"id->initialize");
+	    xmlSecTransformDestroy(transform, 1);
+	    return(NULL);
+	}
+    }
+
     ret = xmlSecBufferInitialize(&(transform->inBuf), 0);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -125,7 +141,7 @@ xmlSecTransformCreate(xmlSecTransformId id, int dontDestroy) {
 void
 xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
-    xmlSecAssert(transform->id->destroy != NULL);
+    xmlSecAssert(transform->id->objSize > 0);
     
     /* first need to remove ourselves from chain */
     if(transform->id->type == xmlSecTransformTypeBinary) {
@@ -147,7 +163,12 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform, int forceDestroy) {
 #endif /* XMLSEC_BUFFER_DEBUG */
     xmlSecBufferFinalize(&(transform->inBuf));
     xmlSecBufferFinalize(&(transform->outBuf));
-    transform->id->destroy(transform);
+
+    if(transform->id->finalize != NULL) { 
+	(transform->id->finalize)(transform);
+    }
+    memset(transform, 0, transform->id->objSize);
+    xmlFree(transform);
 }
 
 /** 

@@ -238,10 +238,6 @@ xmlSecOpenSSLKeyDataHmacDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 #define xmlSecOpenSSLHmacBytesSize(transform) \
     (((xmlSecOpenSSLHmacBitsSize(transform)) + 7) / 8)
 
-
-static xmlSecTransformPtr xmlSecOpenSSLHmacCreate		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLHmacDestroy			(xmlSecTransformPtr transform);
-
 static int	xmlSecOpenSSLHmacInitialize			(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLHmacFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLHmacReadNode			(xmlSecTransformPtr transform,
@@ -262,24 +258,28 @@ static int	xmlSecOpenSSLHmacExecute			(xmlSecTransformPtr transform,
  * HMAC SHA1
  */
 static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameHmacSha1,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
-    xmlSecHrefHmacSha1, 		/* xmlChar *href; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefHmacSha1, 			/* xmlChar *href; */
     
-    xmlSecOpenSSLHmacCreate,		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
-    xmlSecOpenSSLHmacReadNode,		/* xmlSecTransformReadNodeMethod read; */
-    xmlSecOpenSSLHmacSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLHmacSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLHmacVerify,		/* xmlSecTransformValidateMethod validate; */
-    xmlSecOpenSSLHmacExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacReadNode,			/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
     NULL,
 };
@@ -288,24 +288,28 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
  * HMAC RIPEMD160 
  */
 static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameHmacRipemd160,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
-    xmlSecHrefHmacRipemd160, 		/* xmlChar *href; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefHmacRipemd160, 			/* xmlChar *href; */
     
-    xmlSecOpenSSLHmacCreate,		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
-    xmlSecOpenSSLHmacReadNode,		/* xmlSecTransformReadNodeMethod read; */
-    xmlSecOpenSSLHmacSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLHmacSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLHmacVerify,		/* xmlSecTransformValidateMethod validate; */
-    xmlSecOpenSSLHmacExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacReadNode,			/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
     NULL,
 };
@@ -314,24 +318,28 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
  * HMAC MD5
  */
 static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameHmacMd5,
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageSignatureMethod,/* xmlSecTransformUsage usage; */
-    xmlSecHrefHmacMd5, 			/* xmlChar *href; */
-    
-    xmlSecOpenSSLHmacCreate,		/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLHmacDestroy,		/* xmlSecTransformDestroyMethod destroy; */
-    xmlSecOpenSSLHmacReadNode,		/* xmlSecTransformReadNodeMethod read; */
-    xmlSecOpenSSLHmacSetKeyReq,		/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLHmacSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLHmacVerify,		/* xmlSecTransformValidateMethod validate; */
-    xmlSecOpenSSLHmacExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecHrefHmacMd5, 				/* xmlChar *href; */
+	
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacReadNode,			/* xmlSecTransformReadNodeMethod read; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
     NULL,
 };
@@ -356,54 +364,11 @@ xmlSecOpenSSLTransformHmacMd5GetKlass(void) {
     return(&xmlSecOpenSSLHmacMd5Klass);
 }
 
-static xmlSecTransformPtr 
-xmlSecOpenSSLHmacCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLHmacInitialize(transform);	
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLHmacInitialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-/**
- * xmlSecOpenSSLHmacDestroy:
- */ 
-static void 	
-xmlSecOpenSSLHmacDestroy(xmlSecTransformPtr transform) {
-
-    xmlSecAssert(xmlSecOpenSSLHmacCheckId(transform));
-
-    xmlSecOpenSSLHmacFinalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
 static int 
 xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     const EVP_MD *digest = NULL;
     
     xmlSecAssert2(xmlSecOpenSSLHmacCheckId(transform), -1);
-    xmlSecAssert2(xmlSecOpenSSLHmacGetDigest(transform) == NULL, -1);
-    xmlSecAssert2(xmlSecOpenSSLHmacGetCtx(transform) == NULL, -1);
     
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha1Id)) {
 	digest = EVP_sha1();

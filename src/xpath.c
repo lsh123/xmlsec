@@ -59,8 +59,8 @@ static xmlSecNodeSetPtr	  xmlSecXPathDataExecute	(xmlSecXPathDataPtr data,
 							 xmlDocPtr doc,
 							 xmlNodePtr hereNode);
 
-static xmlSecTransformPtr xmlSecTransformXPathCreate	(xmlSecTransformId id);
-static void		xmlSecTransformXPathDestroy	(xmlSecTransformPtr transform);
+static int 		xmlSecTransformXPathInitialize	(xmlSecTransformPtr transform);
+static void		xmlSecTransformXPathFinalize	(xmlSecTransformPtr transform);
 
 static int 		xmlSecTransformXPathReadNode	(xmlSecTransformPtr transform,
 							 xmlNodePtr transformNode);
@@ -84,14 +84,18 @@ static int 		xmlSecTransformXPointerExecute	(xmlSecTransformPtr transform,
 							 xmlSecNodeSetPtr *nodes);
 
 struct _xmlSecTransformKlass xmlSecTransformXPathId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     /* same as xmlSecTransformId */ 
     BAD_CAST "xpath",
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
     xmlSecXPathNs, /* const xmlChar *href; */
 
-    xmlSecTransformXPathCreate,		/* xmlSecTransformCreateMethod create; */
-    xmlSecTransformXPathDestroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPathReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -112,14 +116,18 @@ struct _xmlSecTransformKlass xmlSecTransformXPathId = {
 xmlSecTransformId xmlSecTransformXPath = (xmlSecTransformId)(&xmlSecTransformXPathId);
 
 struct _xmlSecTransformKlass xmlSecTransformXPath2Id = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     /* same as xmlSecTransformId */ 
     BAD_CAST "xpath2",
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
     xmlSecXPath2Ns, /* const xmlChar *href; */
 
-    xmlSecTransformXPathCreate,		/* xmlSecTransformCreateMethod create; */
-    xmlSecTransformXPathDestroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPath2ReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -140,14 +148,18 @@ struct _xmlSecTransformKlass xmlSecTransformXPath2Id = {
 xmlSecTransformId xmlSecTransformXPath2 = (xmlSecTransformId)(&xmlSecTransformXPath2Id);
 
 struct _xmlSecTransformKlass xmlSecTransformXPointerId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     /* same as xmlSecTransformId */ 
     BAD_CAST "xpointer",
     xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
     xmlSecXPointerNs, /* const xmlChar *href; */
 
-    xmlSecTransformXPathCreate,		/* xmlSecTransformCreateMethod create; */
-    xmlSecTransformXPathDestroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
     xmlSecTransformXPointerReadNode,	/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -194,65 +206,36 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  *         Common XPath/XPointer transforms functions
  *
  **************************************************************************/
-/**
- * xmlSecTransformXPathCreate
- */
-static xmlSecTransformPtr 
-xmlSecTransformXPathCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr xmlTransform; 
+#define xmlSecTransformXPathCheckId(transform) \
+    (xmlSecTransformCheckId((transform), xmlSecTransformXPath) || \
+     xmlSecTransformCheckId((transform), xmlSecTransformXPath2) || \
+     xmlSecTransformCheckId((transform), xmlSecTransformXPointer))
 
-    xmlSecAssert2(id != NULL, NULL);
-        
-    if((id != xmlSecTransformXPath) && 
-       (id != xmlSecTransformXPath2) && 
-       (id != xmlSecTransformXPointer)) {
-       
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPath or xmlSecTransformXPath2 or xmlSecTransformXPointer");
-	return(NULL);
-    }
-    
-    xmlTransform = (xmlSecTransformPtr)xmlMalloc(sizeof(struct _xmlSecTransform));
-    if(xmlTransform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(struct _xmlSecTransform)=%d",
-		    sizeof(struct _xmlSecTransform));
-	return(NULL);
-    }
-    memset(xmlTransform, 0,  sizeof(struct _xmlSecTransform));
-    xmlTransform->id = (xmlSecTransformId)id;    
-    return((xmlSecTransformPtr)xmlTransform);
+#define xmlSecTransformXPathGetData(transform) \
+    ((xmlSecXPathDataPtr)((transform)->reserved2))
+     
+/**
+ * xmlSecTransformXPathInitialize
+ */
+static int
+xmlSecTransformXPathInitialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformXPathCheckId(transform), -1);
+
+    transform->reserved2 = NULL;
+    return(0);
 }
 
 /**
- * xmlSecTransformXPathDestroy:
+ * xmlSecTransformXPathFinalize:
  */
 static void
-xmlSecTransformXPathDestroy(xmlSecTransformPtr transform) {
-    xmlSecTransformPtr xmlTransform;
-    xmlSecXPathDataPtr data;
+xmlSecTransformXPathFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformXPathCheckId(transform));
     
-    xmlSecAssert(transform != NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecTransformXPath) && 
-       !xmlSecTransformCheckId(transform, xmlSecTransformXPath2) &&
-       !xmlSecTransformCheckId(transform, xmlSecTransformXPointer)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecTransformXPath or xmlSecTransformXPath2 or xmlSecTransformXPointer");
-	return;
-    }    
-    xmlTransform = (xmlSecTransformPtr)transform;
-    data = (xmlSecXPathDataPtr)xmlTransform->reserved2;
-    
-    if(data != NULL) {
-	xmlSecXPathDataDestroy(data);
+    if(xmlSecTransformXPathGetData(transform) != NULL) {
+	xmlSecXPathDataDestroy(xmlSecTransformXPathGetData(transform));
     }
-    memset(xmlTransform, 0,  sizeof(struct _xmlSecTransform));  
-    xmlFree(xmlTransform);
+    transform->reserved2 = NULL;
 }
 
 /***************************************************************************

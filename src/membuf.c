@@ -375,8 +375,8 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
 
 
 
-static xmlSecTransformPtr xmlSecMemBufTransformCreate	(xmlSecTransformId id);
-static void		xmlSecMemBufTransformDestroy	(xmlSecTransformPtr transform);
+static int		xmlSecMemBufTransformInitialize	(xmlSecTransformPtr transform);
+static void		xmlSecMemBufTransformFinalize	(xmlSecTransformPtr transform);
 static int  		xmlSecMemBufTransformRead	(xmlSecTransformPtr transform, 
 							 unsigned char *buf, 
 							 size_t size);
@@ -386,14 +386,18 @@ static int  		xmlSecMemBufTransformWrite	(xmlSecTransformPtr transform,
 static int  		xmlSecMemBufTransformFlush	(xmlSecTransformPtr transform);
 
 static const struct _xmlSecTransformKlass xmlSecMemBufTransformId = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
+    sizeof(xmlSecTransform),		/* size_t objSize */
+
     /* same as xmlSecTransformId */    
     BAD_CAST "membuf",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
 
-    xmlSecMemBufTransformCreate, 	/* xmlSecTransformCreateMethod create; */
-    xmlSecMemBufTransformDestroy,	/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecMemBufTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMemBufTransformFinalize,	/* xmlSecTransformFianlizeMethod finalize; */
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
@@ -426,14 +430,7 @@ xmlSecBufferPtr
 xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
     xmlSecBufferPtr ptr;
 
-    xmlSecAssert2(transform != NULL, NULL);
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecMemBuf");
-	return(NULL);
-    }
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMemBuf), NULL);
     
     ptr = (xmlSecBufferPtr)(transform->reserved0);
     if(removeBuffer) {
@@ -443,57 +440,27 @@ xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
 }
 
 /**
- * xmlSecMemBufTransformCreate:
+ * xmlSecMemBufTransformInitialize:
  */
-static xmlSecTransformPtr 
-xmlSecMemBufTransformCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr ptr;
+static int
+xmlSecMemBufTransformInitialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMemBuf), -1);
 
-    xmlSecAssert2(id != NULL, NULL);
-        
-    if(id != xmlSecMemBuf){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecMemBuf");
-	return(NULL);
-    }
-
-    /*
-     * Allocate a new xmlSecTransform and fill the fields.
-     */
-    ptr = (xmlSecTransformPtr) xmlMalloc(sizeof(xmlSecTransform));
-    if(ptr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecTransform)=%d", 
-		    sizeof(xmlSecTransform));
-	return(NULL);
-    }
-    memset(ptr, 0, sizeof(xmlSecTransform));
-    
-    ptr->id = (xmlSecTransformId)id;
-    return((xmlSecTransformPtr)ptr);    
+    transform->reserved0 = NULL;
+    return(0);    
 }
 
 /**
- * xmlSecMemBufTransformDestroy:
+ * xmlSecMemBufTransformFinalize:
  */
 static void
-xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(transform != NULL);
-                
-    if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecMemBuf");
-	return;
-    }
+xmlSecMemBufTransformFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecMemBuf));
     
     if(transform->reserved0 != NULL) {
 	xmlSecBufferDestroy((xmlSecBufferPtr)(transform->reserved0)); 
     }    
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);    
+    transform->reserved0 = NULL;
 }
 
 /**

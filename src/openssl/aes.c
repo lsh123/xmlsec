@@ -236,10 +236,6 @@ xmlSecOpenSSLKeyDataAesDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  * AES CBC cipher transforms
  *
  ********************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLAesCbcCreate		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLAesCbcDestroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLAesCbcInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLAesCbcFinalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLAesCbcSetKeyReq			(xmlSecTransformPtr transform, 
@@ -251,13 +247,17 @@ static int  	xmlSecOpenSSLAesCbcExecute			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameAes128Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefAes128Cbc,			/* const xmlChar href; */
 
-    xmlSecOpenSSLAesCbcCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLAesCbcDestroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLAesCbcInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLAesCbcFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLAesCbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLAesCbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -266,22 +266,26 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameAes192Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefAes192Cbc,			/* const xmlChar href; */
 
-    xmlSecOpenSSLAesCbcCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLAesCbcDestroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLAesCbcInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLAesCbcFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLAesCbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLAesCbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -290,22 +294,26 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameAes256Cbc,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefAes256Cbc,			/* const xmlChar href; */
 
-    xmlSecOpenSSLAesCbcCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLAesCbcDestroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLAesCbcInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLAesCbcFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLAesCbcSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLAesCbcSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -314,9 +322,9 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
@@ -413,52 +421,11 @@ xmlSecOpenSSLAesCbcExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     return(xmlSecOpenSSLEvpBlockCipherExecute(transform, last, transformCtx));
 }
 
-static xmlSecTransformPtr 
-xmlSecOpenSSLAesCbcCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLAesCbcInitialize(transform);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLAesCbcInitialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-static void 	
-xmlSecOpenSSLAesCbcDestroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecOpenSSLAesCbcCheckId(transform));
-
-    xmlSecOpenSSLAesCbcFinalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
-}
-
 /*********************************************************************
  *
  * AES KW transforms
  *
  ********************************************************************/
-static xmlSecTransformPtr xmlSecOpenSSLKWAesCreate		(xmlSecTransformId id);
-static void 	xmlSecOpenSSLKWAesDestroy			(xmlSecTransformPtr transform);
-
-
 static int 	xmlSecOpenSSLKWAesInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLKWAesFinalize			(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLKWAesSetKeyReq			(xmlSecTransformPtr transform, 
@@ -483,13 +450,17 @@ static int  	xmlSecOpenSSLKWAesDecode			(const unsigned char *key,
 								 size_t outSize);
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameKWAes128,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefKWAes128,				/* const xmlChar href; */
 
-    xmlSecOpenSSLKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -498,22 +469,26 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameKWAes192,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefKWAes192,				/* const xmlChar href; */
 
-    xmlSecOpenSSLKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -522,22 +497,26 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
+
     xmlSecNameKWAes256,
     xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
     xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
     xmlSecHrefKWAes256,				/* const xmlChar href; */
 
-    xmlSecOpenSSLKWAesCreate, 			/* xmlSecTransformCreateMethod create; */
-    xmlSecOpenSSLKWAesDestroy,			/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadMethod read; */
     xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
@@ -546,10 +525,10 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     
     /* binary data/methods */
     NULL,
-    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
-    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
-
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
+    
     NULL,
     NULL,
 };
@@ -584,7 +563,6 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecOpenSSLKWAesGetKey(transform) == NULL, -1);
     
     /* todo: put this after transform */
     transform->reserved0 = xmlMalloc(sizeof(xmlSecBuffer));    
@@ -977,46 +955,6 @@ xmlSecOpenSSLKWAesDecode(const unsigned char *key, size_t keySize,
 	
     memmove(out, out + XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE, inSize - XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE);
     return(inSize - XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE);
-}
-
-
-/*************************************************************************/
-
-static xmlSecTransformPtr 
-xmlSecOpenSSLKWAesCreate(xmlSecTransformId id) {
-    xmlSecTransformPtr transform;
-    int ret;
-        
-    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
-    if(transform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", sizeof(xmlSecTransform));
-	return(NULL);
-    }
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    transform->id = id;
-
-    ret = xmlSecOpenSSLKWAesInitialize(transform);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecOpenSSLKWAesInitialize");
-	xmlSecTransformDestroy(transform, 1);
-	return(NULL);
-    }
-    return(transform);
-}
-
-static void 	
-xmlSecOpenSSLKWAesDestroy(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecOpenSSLKWAesCheckId(transform));
-
-    xmlSecOpenSSLKWAesFinalize(transform);
-
-    memset(transform, 0, sizeof(xmlSecTransform));
-    xmlFree(transform);
 }
 
 #endif /* XMLSEC_NO_AES */

@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="XMLSEC-KEYSMNGR">keysmngr.h</H1
+NAME="XMLSEC-KEYSMNGR"
+></A
+>keysmngr.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN3156"
+NAME="AEN2760"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN3156"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN3159"><H2
+NAME="AEN2763"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,168 +146,207 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+#define     <A
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREID"
+>xmlSecSimpleKeysStoreId</A
+>
 <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
 > <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRCREATE"
->xmlSecSimpleKeysMngrCreate</A
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREGETKLASS"
+>xmlSecSimpleKeysStoreGetKlass</A
 >
                                             (void);
-void        <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRDESTROY"
->xmlSecSimpleKeysMngrDestroy</A
->     (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRFINDKEY"
->xmlSecSimpleKeysMngrFindKey</A
->    (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             void *context,
-                                             const <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *name,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> usage);
 int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRADDKEY"
->xmlSecSimpleKeysMngrAddKey</A
->      (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREADOPTKEY"
+>xmlSecSimpleKeysStoreAdoptKey</A
+>   (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
                                              <GTKDOCLINK
 HREF="XMLSECKEYPTR"
 >xmlSecKeyPtr</GTKDOCLINK
 > key);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRLOAD"
->xmlSecSimpleKeysMngrLoad</A
->        (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *uri,
-                                             int strict);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRSAVE"
->xmlSecSimpleKeysMngrSave</A
->        (const <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *filename,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type);
 <GTKDOCLINK
 HREF="XMLSECKEYPTR"
 >xmlSecKeyPtr</GTKDOCLINK
 > <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRLOADPEMKEY"
->xmlSecSimpleKeysMngrLoadPemKey</A
-> (<GTKDOCLINK
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTOREFINDKEY"
+>xmlSecSimpleKeysStoreFindKey</A
+>   (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *name,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);
+int         <A
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORELOAD"
+>xmlSecSimpleKeysStoreLoad</A
+>       (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const char *uri);
+int         <A
+HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSSTORESAVE"
+>xmlSecSimpleKeysStoreSave</A
+>       (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const char *filename,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATATYPE"
+>xmlSecKeyDataType</GTKDOCLINK
+> type);
+<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRCREATE"
+>xmlSecKeysMngrCreate</A
+>      (void);
+void        <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRDESTROY"
+>xmlSecKeysMngrDestroy</A
+>           (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr);
+int         <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEY"
+>xmlSecKeysMngrFindKey</A
+>           (<GTKDOCLINK
 HREF="XMLSECKEYSMNGRPTR"
 >xmlSecKeysMngrPtr</GTKDOCLINK
 > mngr,
-                                             const char *keyfile,
-                                             const char *keyPwd,
                                              <GTKDOCLINK
-HREF="PEM-PASSWORD-CB"
->pem_password_cb</GTKDOCLINK
-> *keyPwdCallback,
-                                             int privateKey);
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *name,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);
+int         <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRFINDKEYDATA"
+>xmlSecKeysMngrFindKeyData</A
+>       (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> storeId,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **params,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> paramsSize,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);
+int         <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTKEYSSTORE"
+>xmlSecKeysMngrAdoptKeysStore</A
+>    (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);
 <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRX509FIND"
->xmlSecSimpleKeysMngrX509Find</A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEYSSTORE"
+>xmlSecKeysMngrGetKeysStore</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr);
+int         <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRADOPTDATASTORE"
+>xmlSecKeysMngrAdoptDataStore</A
+>    (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);
+<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETDATASTORE"
+>xmlSecKeysMngrGetDataStore</A
 >
                                             (<GTKDOCLINK
 HREF="XMLSECKEYSMNGRPTR"
 >xmlSecKeysMngrPtr</GTKDOCLINK
 > mngr,
-                                             void *context,
                                              <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *subjectName,
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> id);
+<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> (<A
+HREF="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK"
+>*xmlSecGetKeyCallback</A
+>)        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> keyInfoNode,
                                              <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerName,
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);
+struct      <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGR"
+>xmlSecKeysMngr</A
+>;
+<GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-keysmngr.html#XMLSECKEYSMNGRGETKEY"
+>xmlSecKeysMngrGetKey</A
+>           (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> keyInfoNode,
                                              <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerSerial,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRX509VERIFY"
->xmlSecSimpleKeysMngrX509Verify</A
->  (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRLOADPEMCERT"
->xmlSecSimpleKeysMngrLoadPemCert</A
-> (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *filename,
-                                             int trusted);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRADDCERTSDIR"
->xmlSecSimpleKeysMngrAddCertsDir</A
-> (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *path);
-int         <A
-HREF="xmlsec-keysmngr.html#XMLSECSIMPLEKEYSMNGRLOADPKCS12"
->xmlSecSimpleKeysMngrLoadPkcs12</A
->  (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *name,
-                                             const char *filename,
-                                             const char *pwd);</PRE
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -311,7 +354,7 @@ HREF="XMLSECKEYSMNGRPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3202"
+NAME="AEN2820"
 ></A
 ><H2
 >Description</H2
@@ -321,20 +364,46 @@ NAME="AEN3202"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN3205"
+NAME="AEN2823"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3207"
+NAME="AEN2825"
 ></A
 ><H3
 ><A
-NAME="XMLSECSIMPLEKEYSMNGRCREATE"
+NAME="XMLSECSIMPLEKEYSSTOREID"
 ></A
->xmlSecSimpleKeysMngrCreate ()</H3
+>xmlSecSimpleKeysStoreId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2830"
+></A
+><H3
+><A
+NAME="XMLSECSIMPLEKEYSSTOREGETKLASS"
+></A
+>xmlSecSimpleKeysStoreGetKlass ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -345,21 +414,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> xmlSecSimpleKeysMngrCreate
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> xmlSecSimpleKeysStoreGetKlass
                                             (void);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Creates new simple keys manager.</P
-><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3214"><P
+NAME="AEN2836"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -385,11 +454,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->a pointer to newly allocated <A
-HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
->xmlSecKeysMngr</A
-> structure or
-NULL if an error occurs.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -400,13 +465,13 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3224"
+NAME="AEN2845"
 ></A
 ><H3
 ><A
-NAME="XMLSECSIMPLEKEYSMNGRDESTROY"
+NAME="XMLSECSIMPLEKEYSSTOREADOPTKEY"
 ></A
->xmlSecSimpleKeysMngrDestroy ()</H3
+>xmlSecSimpleKeysStoreAdoptKey ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -416,21 +481,25 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSecSimpleKeysMngrDestroy     (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr);</PRE
+>int         xmlSecSimpleKeysStoreAdoptKey   (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Destroys the simple keys manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3231"><P
+NAME="AEN2852"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -448,14 +517,49 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->mngr</I
+>store</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to a simple keys manager.</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -466,13 +570,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3240"
+NAME="AEN2869"
 ></A
 ><H3
 ><A
-NAME="XMLSECSIMPLEKEYSMNGRFINDKEY"
+NAME="XMLSECSIMPLEKEYSSTOREFINDKEY"
 ></A
->xmlSecSimpleKeysMngrFindKey ()</H3
+>xmlSecSimpleKeysStoreFindKey ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -485,43 +589,29 @@ CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
 HREF="XMLSECKEYPTR"
 >xmlSecKeyPtr</GTKDOCLINK
-> xmlSecSimpleKeysMngrFindKey    (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             void *context,
+> xmlSecSimpleKeysStoreFindKey   (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
                                              const <GTKDOCLINK
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
 > *name,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYID"
->xmlSecKeyId</A
-> id,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYUSAGE"
->xmlSecKeyUsage</A
-> usage);</PRE
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Searches the simple keys manager for specified key. This is an 
-implementation of the <A
-HREF="xmlsec-keys.html#XMLSECFINDKEYCALLBACK"
->xmlSecFindKeyCallback</A
-> for the simple keys
-manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3253"><P
+NAME="AEN2878"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -539,31 +629,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->mngr</I
+>store</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -580,7 +653,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the required key name (or NULL for "any").</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -590,14 +663,222 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->id</I
+>keyInfoCtx</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the required key Id (or NULL for "any").</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2899"
+></A
+><H3
+><A
+NAME="XMLSECSIMPLEKEYSSTORELOAD"
+></A
+>xmlSecSimpleKeysStoreLoad ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecSimpleKeysStoreLoad       (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const char *uri);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN2905"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>store</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>uri</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2922"
+></A
+><H3
+><A
+NAME="XMLSECSIMPLEKEYSSTORESAVE"
+></A
+>xmlSecSimpleKeysStoreSave ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecSimpleKeysStoreSave       (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store,
+                                             const char *filename,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATATYPE"
+>xmlSecKeyDataType</GTKDOCLINK
+> type);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN2929"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>store</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -614,7 +895,236 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the required key (may be "any").</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2950"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRCREATE"
+></A
+>xmlSecKeysMngrCreate ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> xmlSecKeysMngrCreate      (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN2956"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2965"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRDESTROY"
+></A
+>xmlSecKeysMngrDestroy ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        xmlSecKeysMngrDestroy           (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN2971"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN2980"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRFINDKEY"
+></A
+>xmlSecKeysMngrFindKey ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecKeysMngrFindKey           (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *name,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN2989"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -624,14 +1134,759 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->usage</I
+>key</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the required key usage.</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>keyInfoCtx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3014"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRFINDKEYDATA"
+></A
+>xmlSecKeysMngrFindKeyData ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecKeysMngrFindKeyData       (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> storeId,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key,
+                                             const <GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> **params,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> paramsSize,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3025"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>storeId</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>params</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>paramsSize</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>keyInfoCtx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3058"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRADOPTKEYSSTORE"
+></A
+>xmlSecKeysMngrAdoptKeysStore ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecKeysMngrAdoptKeysStore    (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3065"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>store</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3082"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRGETKEYSSTORE"
+></A
+>xmlSecKeysMngrGetKeysStore ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> xmlSecKeysMngrGetKeysStore
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3089"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3102"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRADOPTDATASTORE"
+></A
+>xmlSecKeysMngrAdoptDataStore ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecKeysMngrAdoptDataStore    (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3109"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>store</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3126"
+></A
+><H3
+><A
+NAME="XMLSECKEYSMNGRGETDATASTORE"
+></A
+>xmlSecKeysMngrGetDataStore ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> xmlSecKeysMngrGetDataStore
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> mngr,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> id);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3134"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>mngr</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN3151"
+></A
+><H3
+><A
+NAME="XMLSECGETKEYCALLBACK"
+></A
+>xmlSecGetKeyCallback ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> (*xmlSecGetKeyCallback)        (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> keyInfoNode,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Reads the &lt;dsig:KeyInfo&gt; node <TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+> and extracts the key.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN3161"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>keyInfoNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>keyInfoCtx</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -661,13 +1916,13 @@ an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3286"
+NAME="AEN3178"
 ></A
 ><H3
 ><A
-NAME="XMLSECSIMPLEKEYSMNGRADDKEY"
+NAME="XMLSECKEYSMNGR"
 ></A
->xmlSecSimpleKeysMngrAddKey ()</H3
+>struct xmlSecKeysMngr</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -677,30 +1932,38 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrAddKey      (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);</PRE
+>struct xmlSecKeysMngr {	
+    xmlSecKeyDataStorePtr		keysStore;
+    xmlSecPtrListPtr			storesList;
+
+
+
+    xmlSecGetKeyCallback		getKey;
+
+    xmlSecKeyOrigin 			allowedOrigins;
+    int 				maxRetrievalsLevel;
+    int					maxEncKeysLevel; 
+    /* x509 certs */    
+    int					failIfCertNotFound; 
+};</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Adds new key to the key manager</P
+>The keys manager structure.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3294"><P
+NAME="AEN3184"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
 WIDTH="100%"
-BGCOLOR="#FFD0D0"
+BGCOLOR="#FFF0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
@@ -708,57 +1971,133 @@ CLASS="CALSTABLE"
 ><TR
 ><TD
 WIDTH="20%"
-ALIGN="RIGHT"
+ALIGN="LEFT"
 VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
 ><I
->mngr</I
+>keysStore</I
 ></TT
->&nbsp;:</TD
+></TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to the simple keys manager.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
 WIDTH="20%"
-ALIGN="RIGHT"
+ALIGN="LEFT"
 VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
+><GTKDOCLINK
+HREF="XMLSECPTRLISTPTR"
+>xmlSecPtrListPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
 ><I
->key</I
+>storesList</I
 ></TT
->&nbsp;:</TD
+></TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to the <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
 WIDTH="20%"
-ALIGN="RIGHT"
+ALIGN="LEFT"
 VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
+><A
+HREF="xmlsec-keysmngr.html#XMLSECGETKEYCALLBACK"
+>xmlSecGetKeyCallback</A
+> <TT
+CLASS="STRUCTFIELD"
 ><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
+>getKey</I
+></TT
+></TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
+> the callback used to read &lt;dsig:KeyInfo&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-keys.html#XMLSECKEYORIGIN"
+>xmlSecKeyOrigin</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>allowedOrigins</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the allowed origins bits mask.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>maxRetrievalsLevel</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>maxEncKeysLevel</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>failIfCertNotFound</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the flag.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -769,262 +2108,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN3312"
+NAME="AEN3221"
 ></A
 ><H3
 ><A
-NAME="XMLSECSIMPLEKEYSMNGRLOAD"
+NAME="XMLSECKEYSMNGRGETKEY"
 ></A
->xmlSecSimpleKeysMngrLoad ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrLoad        (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *uri,
-                                             int strict);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the XML keys files into simple keys manager.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3319"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the simple keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->uri</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys file uri.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->strict</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag which determines whether we stop after first error or not.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3340"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRSAVE"
-></A
->xmlSecSimpleKeysMngrSave ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrSave        (const <GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *filename,
-                                             <A
-HREF="xmlsec-keys.html#XMLSECKEYTYPE"
->xmlSecKeyType</A
-> type);</PRE
-></TD
-></TR
-></TABLE
-><P
->Writes all the keys from the simple keys manager to 
-an XML file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3349"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the simple keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the destination filename.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->type</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys type (private/public).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3370"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRLOADPEMKEY"
-></A
->xmlSecSimpleKeysMngrLoadPemKey ()</H3
+>xmlSecKeysMngrGetKey ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1037,33 +2127,32 @@ CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
 HREF="XMLSECKEYPTR"
 >xmlSecKeyPtr</GTKDOCLINK
-> xmlSecSimpleKeysMngrLoadPemKey (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *keyfile,
-                                             const char *keyPwd,
+> xmlSecKeysMngrGetKey           (<GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> keyInfoNode,
                                              <GTKDOCLINK
-HREF="PEM-PASSWORD-CB"
->pem_password_cb</GTKDOCLINK
-> *keyPwdCallback,
-                                             int privateKey);</PRE
+HREF="XMLSECKEYINFOCTXPTR"
+>xmlSecKeyInfoCtxPtr</GTKDOCLINK
+> keyInfoCtx);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Reads the key from a PEM file <TT
+>Reads the &lt;dsig:KeyInfo&gt; node <TT
 CLASS="PARAMETER"
 ><I
->keyfile</I
+>keyInfoNode</I
 ></TT
->.</P
+> and extracts the key.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN3380"><P
+NAME="AEN3231"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1081,14 +2170,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->mngr</I
+>keyInfoNode</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to the simple keys manager.</TD
+> the pointer to &lt;dsig:KeyInfo&gt; node.</TD
 ></TR
 ><TR
 ><TD
@@ -1098,65 +2187,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->keyfile</I
+>keyInfoCtx</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the PEM key file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyPwd</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key file password.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->keyPwdCallback</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the "ask password" cllback.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->privateKey</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the private/public flag.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1174,744 +2212,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to a newly allocated <A
-HREF="xmlsec-keys.html#XMLSECKEY"
->xmlSecKey</A
-> structure or NULL
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3410"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRX509FIND"
-></A
->xmlSecSimpleKeysMngrX509Find ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecSimpleKeysMngrX509Find
-                                            (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             void *context,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *subjectName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerName,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *issuerSerial,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);</PRE
-></TD
-></TR
-></TABLE
-><P
->Searches for matching certificate in the keys manager. This is 
-the implementation of the <A
-HREF="xmlsec-keys.html#XMLSECX509FINDCALLBACK"
->xmlSecX509FindCallback</A
-> for the 
-simple keys manager.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3424"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->subjectName</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the subject name string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->issuerName</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the issuer name string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->issuerSerial</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the issuer serial.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ski</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the SKI string.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cert</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the current X509 certs data (may be NULL). </TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to certificate that matches given criteria or NULL 
-if an error occurs or certificate not found.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3461"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRX509VERIFY"
-></A
->xmlSecSimpleKeysMngrX509Verify ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrX509Verify  (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             void *context,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> cert);</PRE
-></TD
-></TR
-></TABLE
-><P
->Validates certificate. This is the implementation of the 
-<A
-HREF="xmlsec-keys.html#XMLSECX509VERIFYCALLBACK"
->xmlSecX509VerifyCallback</A
-> callback for the simple keys manager.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3470"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->context</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to application specific data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->cert</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the cert to verify.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->1 if the cert is trusted, 0 if it is not trusted
-and -1 if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3491"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRLOADPEMCERT"
-></A
->xmlSecSimpleKeysMngrLoadPemCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrLoadPemCert (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *filename,
-                                             int trusted);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads PEM certificate from the file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> and adds to the keys manager
-<TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3500"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the simple keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the PEM cert file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->trusted</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the trusted/not-trusted cert flag.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3521"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRADDCERTSDIR"
-></A
->xmlSecSimpleKeysMngrAddCertsDir ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrAddCertsDir (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *path);</PRE
-></TD
-></TR
-></TABLE
-><P
->Adds the certificates from the folder <TT
-CLASS="PARAMETER"
-><I
->path</I
-></TT
-> to the list of 
-trusted certificates.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3529"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the simple keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->path</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the certs dir path.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN3546"
-></A
-><H3
-><A
-NAME="XMLSECSIMPLEKEYSMNGRLOADPKCS12"
-></A
->xmlSecSimpleKeysMngrLoadPkcs12 ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecSimpleKeysMngrLoadPkcs12  (<GTKDOCLINK
-HREF="XMLSECKEYSMNGRPTR"
->xmlSecKeysMngrPtr</GTKDOCLINK
-> mngr,
-                                             const char *name,
-                                             const char *filename,
-                                             const char *pwd);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the key from pkcs12 file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> (along with all certs)
-and adds to the simple keys manager <TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN3555"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->mngr</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the simple keys manager.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->name</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the key name (may by NULL).</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pkcs12 file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pwd</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pkcs12 password.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
+>the pointer to key or NULL if the key is not found or 
+an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE

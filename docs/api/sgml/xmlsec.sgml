@@ -14,8 +14,10 @@
 
 
 
-void        <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
-void        <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
+#define     <link linkend="extern">extern</link>
+int         <link linkend="xmlSecInit">xmlSecInit</link>                      (void);
+int         <link linkend="xmlSecShutdown">xmlSecShutdown</link>                  (void);
+#define     <link linkend="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</link>
 </synopsis>
 </refsynopsisdiv>
 
@@ -33,19 +35,47 @@ void        <link linkend="xmlSecShutdown">xmlSecShutdown</link>                
 <refsect1>
 <title>Details</title>
 <refsect2>
+<title><anchor id="extern">extern</title>
+<programlisting>#define     extern</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecInit">xmlSecInit ()</title>
-<programlisting>void        xmlSecInit                      (void);</programlisting>
+<programlisting>int         xmlSecInit                      (void);</programlisting>
 <para>
 Initializes XML Security Library. The depended libraries
 (LibXML, LibXSLT and OpenSSL) must be initialized before.</para>
 <para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecShutdown">xmlSecShutdown ()</title>
-<programlisting>void        xmlSecShutdown                  (void);</programlisting>
+<programlisting>int         xmlSecShutdown                  (void);</programlisting>
 <para>
 Clean ups the XML Security Library.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</title>
+<programlisting>#define     ATTRIBUTE_UNUSED</programlisting>
+<para>
+Macro used to signal to GCC unused function parameters</para>
 <para>
 
 </para></refsect2>

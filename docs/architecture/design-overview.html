@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=windows-1251">
+  <title>XML Security Library - Design Overview</title>
+</head>
+<body>
+<h1 style="text-align: center;">XML Security Library 0.1.x<br>
+Design Overiview</h1>
+<div style="text-align: center;"><br>
+<span style="font-style: italic;">Aleksey Sanin &lt;<a
+ href="mailto:aleksey@aleksey.com">aleksey@aleksey.com</a>&gt;</span><br
+ style="font-style: italic;">
+<span style="font-style: italic;">March 3 2002</span><br>
+<span style="font-style: italic;"></span></div>
+<span style="font-style: italic;"><br>
+</span>
+<h2>0.  Design goals.</h2>
+The XML Security Library 0.0.X was designed with a goal to provide high
+performance implementation of the XML Digital Signature and XML
+Encryption specifications. It was limited to OpenSSL crypto engine but
+it quickly turns out that changing crypto engine for XML Security
+Library users is much harder than changing XML parser. There are many
+political and technical reasons why particular crypto engine could not
+be used in particular organization. The "OpenSSL and only OpenSSL"
+restriction was a serious limitation for the library and the major goal
+of the new XML Security Library 0.1.X series is to provide an easy way
+to use any crypto engine. Of course, performance is still a P0
+requirement.<br>
+<h2>1. Transforms.</h2>
+The key to the XML Security Library performance is the transforms
+engine. XML Digital Signature defines transform as a method of
+pre-processing binary or XML data before digest or signature
+calculation/verification. XML Security Library extends this definition
+and names "transform" any operation performed on the data: reading data
+from an URI, xml parsing, xml transformation, calculation digest,
+encrypting or decrypting, and so on. Not any transform could be used in
+any place and transform allowed usage is controled by "usage" flags.
+Each transform provides at least one of the following callbacks: "push
+binary data", "push xml data", "pop binary data" or "pop xml data":<br>
+<br>
+<br>
+<div style="text-align: center;"><img src="transform.png"
+ title="Transform" alt="Transform" style="width: 390px; height: 240px;"><br>
+</div>
+<br>
+<br>
+In order to simplify transforms development, additional "execute"
+callback was added. This callback updates internal transform buffers
+and is used by the "default" xml/binary push and pop callbacks. For
+example, most of the crypto transforms could be implemented by just
+implementing one "execute" callback. However, in some cases using
+push/pop callbacks is more efficient.<br>
+When necessary, XML Security Library constructs a transforms chain as
+specified in the template or document and processes data by "pushing" or
+"poping" thru the chain. For example, then binary data chunk is pushed
+thru a binary-to-binary transform, it processes this chunk and pushes
+the result to the next transform in the chain. The following transforms
+chain might be constructed during digest calculation:<br>
+<br>
+<br>
+<div style="text-align: center;"><img src="transforms-chain.png"
+ title="Tranforms chain" alt="Transforms chain"
+ style="width: 1050px; height: 180px;"><br>
+</div>
+<br>
+<br>
+The XML Security library transforms engine makes sure that output data
+type (binary or xml) of previsous transform matches the input data type
+of the next transform by inserting XML parser or default C14N when
+necessary.
+<h2>2. Keys and keys data.</h2>
+<br>
+TODO<br>
+<br>
+<h2>3. Keys manager and keys data stores.</h2>
+<br>
+TODO<br>
+<br>
+<h2>4. Data processing contexts.</h2>
+<br>
+TODO<br>
+<br>
+<h2>5. How to implement a new crypto engine support.</h2>
+<br>
+TODO<br>
+<br>
+<br>
+<span style="font-style: italic;"></span>
+</body>
+</html>

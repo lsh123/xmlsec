@@ -14,21 +14,6 @@ The keys helper functions.
 
 </para>
 
-<!-- ##### TYPEDEF xmlSecKeyId ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### ENUM xmlSecKeyType ##### -->
-<para>
-
-</para>
-
-@xmlSecKeyTypePublic: 
-@xmlSecKeyTypePrivate: 
-@xmlSecKeyTypeAny: 
-
 <!-- ##### ENUM xmlSecKeyUsage ##### -->
 <para>
 
@@ -39,6 +24,87 @@ The keys helper functions.
 @xmlSecKeyUsageVerify: 
 @xmlSecKeyUsageEncrypt: 
 @xmlSecKeyUsageDecrypt: 
+
+<!-- ##### STRUCT xmlSecKeyReq ##### -->
+<para>
+
+</para>
+
+@keyId: 
+@keyType: 
+@keyUsage: 
+@keyBitsSize: 
+
+<!-- ##### FUNCTION xmlSecKeyReqInitialize ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqFinalize ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqCopy ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqMatchKey ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqMatchKeyValue ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+@value: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyInifiteRetrivals ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyIsValid ##### -->
+<para>
+
+</para>
+
+@key: 
+
+
+<!-- ##### MACRO xmlSecKeyCheckId ##### -->
+<para>
+
+</para>
+
+@key: 
+@keyId: 
+
 
 <!-- ##### TYPEDEF xmlSecKeyOrigin ##### -->
 <para>
@@ -116,36 +182,37 @@ The keys helper functions.
 
 
 
-<!-- ##### MACRO xmlSecKeyIdUnknown ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### STRUCT xmlSecKey ##### -->
 <para>
 
 </para>
 
-@id: 
-@type: 
+@value: 
 @name: 
+@dataList: 
+@type: 
 @origin: 
-@x509Data: 
-@keyData: 
 
 <!-- ##### FUNCTION xmlSecKeyCreate ##### -->
 <para>
 
 </para>
 
+@Returns: 
+<!-- # Unused Parameters # -->
 @id: 
 @origin: 
-@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDestroy ##### -->
+<para>
+
+</para>
+
+@key: 
+
+
+<!-- ##### FUNCTION xmlSecKeyEmpty ##### -->
 <para>
 
 </para>
@@ -159,19 +226,95 @@ The keys helper functions.
 </para>
 
 @key: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @origin: 
+
+
+<!-- ##### FUNCTION xmlSecKeyCopy ##### -->
+<para>
+
+</para>
+
+@keyDst: 
+@keySrc: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecVerifyKey ##### -->
+<!-- ##### FUNCTION xmlSecKeyGetName ##### -->
+<para>
+
+</para>
+
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeySetName ##### -->
 <para>
 
 </para>
 
 @key: 
 @name: 
-@id: 
-@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyGetType ##### -->
+<para>
+
+</para>
+
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyGetValue ##### -->
+<para>
+
+</para>
+
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeySetValue ##### -->
+<para>
+
+</para>
+
+@key: 
+@value: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyGetData ##### -->
+<para>
+
+</para>
+
+@key: 
+@dataId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyEnsureData ##### -->
+<para>
+
+</para>
+
+@key: 
+@dataId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyAdoptData ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
 @Returns: 
 
 
@@ -184,97 +327,49 @@ The keys helper functions.
 @output: 
 
 
-<!-- ##### FUNCTION xmlSecKeyReadPemCert ##### -->
+<!-- ##### FUNCTION xmlSecKeyDebugXmlDump ##### -->
 <para>
 
 </para>
 
 @key: 
-@filename: 
-@Returns: 
+@output: 
 
 
-<!-- ##### STRUCT xmlSecKeysMngr ##### -->
+<!-- ##### FUNCTION xmlSecKeyGenerate ##### -->
 <para>
 
 </para>
 
-@getKey: 
-@allowedOrigins: 
-@maxRetrievalsLevel: 
-@maxEncKeysLevel: 
-@findKey: 
-@keysData: 
-@failIfCertNotFound: 
-@findX509: 
-@verifyX509: 
-@x509Data: 
-
-<!-- ##### USER_FUNCTION xmlSecGetKeyCallback ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@mngr: 
-@context: 
-@keyId: 
 @type: 
-@usage: 
-@Returns: 
-
-
-<!-- ##### USER_FUNCTION xmlSecFindKeyCallback ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@context: 
 @name: 
-@id: 
-@type: 
-@usage: 
+@sizeBits: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecX509FindCallback ##### -->
+<!-- ##### FUNCTION xmlSecKeyMatch ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@context: 
-@subjectName: 
-@issuerName: 
-@issuerSerial: 
-@ski: 
-@cert: 
+@key: 
+@name: 
+@keyReq: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION xmlSecX509VerifyCallback ##### -->
+<!-- ##### MACRO xmlSecKeyPtrListId ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@context: 
-@cert: 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeysMngrGetKey ##### -->
+<!-- ##### FUNCTION xmlSecKeyPtrListGetKlass ##### -->
 <para>
 
 </para>
 
-@keyInfoNode: 
-@mngr: 
-@context: 
-@keyId: 
-@keyType: 
-@keyUsage: 
 @Returns: 
 
 

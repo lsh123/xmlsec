@@ -538,7 +538,8 @@ struct _xmlSecTransformKlass {
     
     /* low level method */
     xmlSecTransformExecuteMethod	execute;
-    
+
+    /* obsolete */    
     xmlSecTransformExecuteXmlMethod	executeXml;
     xmlSecTransformExecuteC14NMethod	executeC14N;
 };

@@ -194,7 +194,7 @@
       them by using the compiler's <code>/D</code> switch in projects that 
       link statically.
 	    
-      <h3>3. Programming with XMLSec.</h3>
+      <h3>3. Developing with XMLSec.</h3>
       <h4>3.1. xmlSecDSigValidate() function returned 0. Does this mean
       that the signature is valid?</h4>
       <b>No!</b> Function xmlSecDSigValidate() returns 0 when there
@@ -271,10 +271,29 @@
       <code>--verification-time &lt;time&gt;</code> option (where
       <code>&lt;time&gt;</code> is the local system time in the 
       "<code>YYYY-MM-DD HH:MM:SS</code>" format).
+      
+      <h4>3.4. I really like the XMLSec library but it is based on OpenSSL
+      and I have to use another crypto library in my application. Can you write 
+      code to support my crypto library?</h4>
+      The XMLSec library has a very modular structure and there should be no
+      problem with using another crypto library. For example, XMLSec
+      already supports <a href="http://www.mozilla.org/projects/security/pki/nss/">NSS</a>
+      and <a href="http://www.gnu.org/software/gnutls/gnutls.html">GnuTLS</a>.
+      Check the latest release and/or the mailing list and you might find 
+      that your library is already supported or someone working on it.<br>
+      If you are not so lucky, then you can either write some code by yourself
+      or contact me in private email to discuss possible options.
+      
+      <h4>3.5. I really like the XMLSec library but it does not have 
+      cipher or transform that I need. Can you write code for me?</h4>
+      The XMLSec library has a very modular structure and there should be easy
+      to add any cipher or other transform. Again, you can either write some
+      code by yourself or try to talk to me in private email.
+
+
       <p>	  
       <p><a href="bugs.html">Aleksey Sanin</a></p>
       </td>
-
   </tr>
                        
   </tbody>      

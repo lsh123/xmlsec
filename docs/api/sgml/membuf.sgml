@@ -14,8 +14,11 @@
 
 
 
-extern      xmlSecTransformId <link linkend="xmlSecMemBuf">xmlSecMemBuf</link>;
-<link linkend="xmlBufferPtr">xmlBufferPtr</link> <link linkend="xmlSecMemBufTransformGetBuffer">xmlSecMemBufTransformGetBuffer</link> (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+#define     <link linkend="xmlSecTransformMemBufId">xmlSecTransformMemBufId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass</link>
+                                            (void);
+<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer</link>
+                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              int removeBuffer);
 </synopsis>
 </refsynopsisdiv>
@@ -34,17 +37,33 @@ extern      xmlSecTransformId <link linkend="xmlSecMemBuf">xmlSecMemBuf</link>;
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="xmlSecMemBuf">xmlSecMemBuf</title>
-<programlisting>extern xmlSecTransformId xmlSecMemBuf;
-</programlisting>
+<title><anchor id="xmlSecTransformMemBufId">xmlSecTransformMemBufId</title>
+<programlisting>#define     xmlSecTransformMemBufId</programlisting>
 <para>
-The memory buffer transform id.</para>
+The Memory Buffer transform id.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecMemBufTransformGetBuffer">xmlSecMemBufTransformGetBuffer ()</title>
-<programlisting><link linkend="xmlBufferPtr">xmlBufferPtr</link> xmlSecMemBufTransformGetBuffer (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+<title><anchor id="xmlSecTransformMemBufGetKlass">xmlSecTransformMemBufGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformMemBufGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformMemBufGetBuffer">xmlSecTransformMemBufGetBuffer ()</title>
+<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecTransformMemBufGetBuffer
+                                            (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
                                              int removeBuffer);</programlisting>
 <para>
 Gets the memory transform buffer.</para>
@@ -62,7 +81,7 @@ Gets the memory transform buffer.</para>
 <entry> the flag that indicates whether the buffer
 	will be removed from the transform.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the xmlBufferPtr. If <parameter>removeBuffer</parameter> is set to 1 then the buffer 
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the xmlSecBufferPtr. If <parameter>removeBuffer</parameter> is set to 1 then the buffer 
 is removed from transform and the caller is responsible for freeing it
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>

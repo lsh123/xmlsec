@@ -20,12 +20,15 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 </para>
 
 @keyInfoNode: 
+@key: 
+@keyInfoCtx: 
+@Returns: 
+<!-- # Unused Parameters # -->
 @keysMngr: 
 @context: 
 @keyId: 
 @keyType: 
 @keyUsage: 
-@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecKeyInfoNodeWrite ##### -->
@@ -34,72 +37,112 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 </para>
 
 @keyInfoNode: 
-@keysMngr: 
-@context: 
 @key: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyInfoAddKeyName ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyInfoAddKeyValue ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyInfoAddX509Data ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyInfoAddRetrievalMethod ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@uri: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecRetrievalMethodAddTransform ##### -->
-<para>
-
-</para>
-
-@retrMethod: 
-@transform: 
+@keyInfoCtx: 
 @Returns: 
 <!-- # Unused Parameters # -->
-@id: 
+@keysMngr: 
+@context: 
+@type: 
 
 
-<!-- ##### FUNCTION xmlSecKeyInfoAddEncryptedKey ##### -->
+<!-- ##### MACRO xmlSecKeyDataNameId ##### -->
 <para>
 
 </para>
 
-@keyInfoNode: 
-@id: 
-@type: 
-@recipient: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataNameGetKlass ##### -->
+<para>
+
+</para>
+
 @Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataValueId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataValueGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataRetrievalMethodId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataRetrievalMethodGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataEncryptedKeyId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataEncryptedKeyGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### STRUCT xmlSecKeyInfoCtx ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@context: 
+@keyReq: 
+@base64LineSize: 
+@retrievalsLevel: 
+@encKeysLevel: 
+@failIfCertNotFound: 
+@certsVerificationTime: 
+@certsVerificationDepth: 
+
+<!-- ##### MACRO xmlSecKeyInfoNodeCheckOrigin ##### -->
+<para>
+
+</para>
+
+@status: 
+@origin: 
+
+
+<!-- ##### MACRO xmlSecKeyInfoNodeCheckRetrievalsLevel ##### -->
+<para>
+
+</para>
+
+@status: 
+
+
+<!-- ##### MACRO xmlSecKeyInfoNodeCheckEncKeysLevel ##### -->
+<para>
+
+</para>
+
+@status: 
 
 

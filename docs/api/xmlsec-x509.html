@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="XMLSEC-X509">x509.h</H1
+NAME="XMLSEC-X509"
+></A
+>x509.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4368"
+NAME="AEN5354"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN4368"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4371"><H2
+NAME="AEN5357"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,156 +146,148 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+#define     <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509ID"
+>xmlSecOpenSSLKeyDataX509Id</A
+>
 <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
 > <A
-HREF="xmlsec-x509.html#XMLSECX509DATACREATE"
->xmlSecX509DataCreate</A
->      (void);
-void        <A
-HREF="xmlsec-x509.html#XMLSECX509DATADESTROY"
->xmlSecX509DataDestroy</A
->           (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509GETKLASS"
+>xmlSecOpenSSLKeyDataX509GetKlass</A
+>
+                                            (void);
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509GETKEYCERT"
+>xmlSecOpenSSLKeyDataX509GetKeyCert</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);
+int         <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"
+>xmlSecOpenSSLKeyDataX509AdoptKeyCert</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);
+int         <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCERT"
+>xmlSecOpenSSLKeyDataX509AdoptCert</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509GETCERT"
+>xmlSecOpenSSLKeyDataX509GetCert</A
+> (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);
 <GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 >      <A
-HREF="xmlsec-x509.html#XMLSECX509DATAGETCERTSNUMBER"
->xmlSecX509DataGetCertsNumber</A
->    (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"
+>xmlSecOpenSSLKeyDataX509GetCertsSize</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);
+int         <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509ADOPTCRL"
+>xmlSecOpenSSLKeyDataX509AdoptCrl</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+> *crl);
+<GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+>*   <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509GETCRL"
+>xmlSecOpenSSLKeyDataX509GetCrl</A
+>  (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);
 <GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 >      <A
-HREF="xmlsec-x509.html#XMLSECX509DATAGETCRLSNUMBER"
->xmlSecX509DataGetCrlsNumber</A
->     (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509DATAREADDERCERT"
->xmlSecX509DataReadDerCert</A
->       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             int base64);
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"
+>xmlSecOpenSSLKeyDataX509GetCrlsSize</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);
+#define     <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTID"
+>xmlSecOpenSSLKeyDataRawX509CertId</A
+>
 <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    <A
-HREF="xmlsec-x509.html#XMLSECX509DATAWRITEDERCERT"
->xmlSecX509DataWriteDerCert</A
->      (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             int pos);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509DATAREADDERCRL"
->xmlSecX509DataReadDerCrl</A
->        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             int base64);
-<GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    <A
-HREF="xmlsec-x509.html#XMLSECX509DATAWRITEDERCRL"
->xmlSecX509DataWriteDerCrl</A
->       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             int pos);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509DATAREADPEMCERT"
->xmlSecX509DataReadPemCert</A
->       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             const char *filename);
-<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
 > <A
-HREF="xmlsec-x509.html#XMLSECX509DATADUP"
->xmlSecX509DataDup</A
->         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
+HREF="xmlsec-x509.html#XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"
+>xmlSecOpenSSLKeyDataRawX509CertGetKlass</A
+>
+                                            (void);
+#define     <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLX509STOREID"
+>xmlSecOpenSSLX509StoreId</A
+>
 <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
 > <A
-HREF="xmlsec-x509.html#XMLSECX509DATACREATEKEY"
->xmlSecX509DataCreateKey</A
->        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-void        <A
-HREF="xmlsec-x509.html#XMLSECX509DATADEBUGDUMP"
->xmlSecX509DataDebugDump</A
->         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);
+HREF="xmlsec-x509.html#XMLSECOPENSSLX509STOREGETKLASS"
+>xmlSecOpenSSLX509StoreGetKlass</A
+>
+                                            (void);
 <GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509STORECREATE"
->xmlSecX509StoreCreate</A
->    (void);
-void        <A
-HREF="xmlsec-x509.html#XMLSECX509STOREDESTROY"
->xmlSecX509StoreDestroy</A
->          (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store);
-<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECX509STOREFIND"
->xmlSecX509StoreFind</A
->       (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLX509STOREFINDCERT"
+>xmlSecOpenSSLX509StoreFindCert</A
+>  (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > store,
                                              <GTKDOCLINK
 HREF="XMLCHAR"
@@ -309,46 +305,41 @@ HREF="XMLCHAR"
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
 > *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
+                                             <A
+HREF="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"
+>xmlSecKeyInfoCtx</A
+> *keyInfoCtx);
+<GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       <A
+HREF="xmlsec-x509.html#XMLSECOPENSSLX509STOREVERIFY"
+>xmlSecOpenSSLX509StoreVerify</A
+>    (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);
 int         <A
-HREF="xmlsec-x509.html#XMLSECX509STOREVERIFY"
->xmlSecX509StoreVerify</A
->           (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
+HREF="xmlsec-x509.html#XMLSECOPENSSLX509STOREADOPTCERT"
+>xmlSecOpenSSLX509StoreAdoptCert</A
+> (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > store,
                                              <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);
-int         <A
-HREF="xmlsec-x509.html#XMLSECX509STORELOADPEMCERT"
->xmlSecX509StoreLoadPemCert</A
->      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             const char *filename,
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert,
                                              int trusted);
 int         <A
-HREF="xmlsec-x509.html#XMLSECX509STOREADDCERTSDIR"
->xmlSecX509StoreAddCertsDir</A
->      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
+HREF="xmlsec-x509.html#XMLSECOPENSSLX509STOREADDCERTSPATH"
+>xmlSecOpenSSLX509StoreAddCertsPath</A
+>
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > store,
-                                             const char *path);
-<GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> <A
-HREF="xmlsec-x509.html#XMLSECPKCS12READKEY"
->xmlSecPKCS12ReadKey</A
->            (const char *filename,
-                                             const char *pwd);</PRE
+                                             const char *path);</PRE
 ></TD
 ></TR
 ></TABLE
@@ -356,7 +347,7 @@ HREF="xmlsec-x509.html#XMLSECPKCS12READKEY"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4430"
+NAME="AEN5411"
 ></A
 ><H2
 >Description</H2
@@ -366,20 +357,46 @@ NAME="AEN4430"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4433"
+NAME="AEN5414"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4435"
+NAME="AEN5416"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATACREATE"
+NAME="XMLSECOPENSSLKEYDATAX509ID"
 ></A
->xmlSecX509DataCreate ()</H3
+>xmlSecOpenSSLKeyDataX509Id</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecOpenSSLKeyDataX509Id</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5421"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETKLASS"
+></A
+>xmlSecOpenSSLKeyDataX509GetKlass ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -390,20 +407,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecX509DataCreate      (void);</PRE
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecOpenSSLKeyDataX509GetKlass
+                                            (void);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Creates new x509 data.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4442"><P
+NAME="AEN5427"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -429,11 +447,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to newly created <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure
-or NULL if an error occurs.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -444,82 +458,13 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4452"
+NAME="AEN5436"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATADESTROY"
+NAME="XMLSECOPENSSLKEYDATAX509GETKEYCERT"
 ></A
->xmlSecX509DataDestroy ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecX509DataDestroy           (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Destroys x509 data.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4459"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4469"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAGETCERTSNUMBER"
-></A
->xmlSecX509DataGetCertsNumber ()</H3
+>xmlSecOpenSSLKeyDataX509GetKeyCert ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -530,28 +475,24 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      xmlSecX509DataGetCertsNumber    (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLKeyDataX509GetKeyCert
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Gets the number of certs in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4478"><P
+NAME="AEN5443"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -569,17 +510,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x509Data</I
+>data</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -597,12 +535,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the number of certs in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -613,13 +546,13 @@ CLASS="PARAMETER"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4493"
+NAME="AEN5456"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATAGETCRLSNUMBER"
+NAME="XMLSECOPENSSLKEYDATAX509ADOPTKEYCERT"
 ></A
->xmlSecX509DataGetCrlsNumber ()</H3
+>xmlSecOpenSSLKeyDataX509AdoptKeyCert ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -629,135 +562,26 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
->      xmlSecX509DataGetCrlsNumber     (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
-></TD
-></TR
-></TABLE
-><P
->Gets the number of crls in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4502"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of crls in <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4517"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAREADDERCERT"
-></A
->xmlSecX509DataReadDerCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509DataReadDerCert       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
+>int         xmlSecOpenSSLKeyDataX509AdoptKeyCert
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size,
-                                             int base64);</PRE
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Reads certificates the from a DER binary data in <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4527"><P
+NAME="AEN5463"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -775,17 +599,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x509Data</I
+>data</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -795,53 +616,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->buf</I
+>cert</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->base64</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag that indicate whether the <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
-> is base64 encoded or not.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -859,7 +641,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -870,13 +652,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4554"
+NAME="AEN5480"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATAWRITEDERCERT"
+NAME="XMLSECOPENSSLKEYDATAX509ADOPTCERT"
 ></A
->xmlSecX509DataWriteDerCert ()</H3
+>xmlSecOpenSSLKeyDataX509AdoptCert ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -886,40 +668,26 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    xmlSecX509DataWriteDerCert      (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             int pos);</PRE
+>int         xmlSecOpenSSLKeyDataX509AdoptCert
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Writes <TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
-> certificate from <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> into allocated buffer
-in DER + base64 encode format. The caller is responsible for freeing
-the returned buffer using <GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4565"><P
+NAME="AEN5487"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -937,17 +705,122 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x509Data</I
+>data</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>cert</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5504"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETCERT"
+></A
+>xmlSecOpenSSLKeyDataX509GetCert ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLKeyDataX509GetCert (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> pos);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5512"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -964,7 +837,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the cert number.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -982,7 +855,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to allocated result buffer or NULL if an error occurs.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -993,13 +866,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4583"
+NAME="AEN5529"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATAREADDERCRL"
+NAME="XMLSECOPENSSLKEYDATAX509GETCERTSSIZE"
 ></A
->xmlSecX509DataReadDerCrl ()</H3
+>xmlSecOpenSSLKeyDataX509GetCertsSize ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1009,35 +882,222 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecX509DataReadDerCrl        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
+><GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>      xmlSecOpenSSLKeyDataX509GetCertsSize
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5536"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5549"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509ADOPTCRL"
+></A
+>xmlSecOpenSSLKeyDataX509AdoptCrl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecOpenSSLKeyDataX509AdoptCrl
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              <GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
-> *buf,
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+> *crl);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5556"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>crl</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5573"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATAX509GETCRL"
+></A
+>xmlSecOpenSSLKeyDataX509GetCrl ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="X509-CRL-CAPS"
+>X509_CRL</GTKDOCLINK
+>*   xmlSecOpenSSLKeyDataX509GetCrl  (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data,
                                              <GTKDOCLINK
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
-> size,
-                                             int base64);</PRE
+> pos);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Reads crls the from a DER binary data in <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4593"><P
+NAME="AEN5581"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1055,179 +1115,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x509Data</I
+>data</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the size of binary data.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->base64</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the flag that indicate whether the <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
-> is base64 encoded or not.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4620"
-></A
-><H3
-><A
-NAME="XMLSECX509DATAWRITEDERCRL"
-></A
->xmlSecX509DataWriteDerCrl ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLCHAR"
->xmlChar</GTKDOCLINK
->*    xmlSecX509DataWriteDerCrl       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             int pos);</PRE
-></TD
-></TR
-></TABLE
-><P
->Writes <TT
-CLASS="PARAMETER"
-><I
->pos</I
-></TT
-> crl from <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> into allocated buffer
-in DER + base64 encode format. The caller is responsible for freeing
-the returned buffer using <GTKDOCLINK
-HREF="XMLFREE"
->xmlFree</GTKDOCLINK
->() function.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4631"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1244,7 +1139,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the cert number.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1262,7 +1157,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to allocated result buffer or NULL if an error occurs.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1273,128 +1168,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4649"
+NAME="AEN5598"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATAREADPEMCERT"
+NAME="XMLSECOPENSSLKEYDATAX509GETCRLSSIZE"
 ></A
->xmlSecX509DataReadPemCert ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         xmlSecX509DataReadPemCert       (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             const char *filename);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads cert from PEM file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> into <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4658"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the PEM file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4676"
-></A
-><H3
-><A
-NAME="XMLSECX509DATADUP"
-></A
->xmlSecX509DataDup ()</H3
+>xmlSecOpenSSLKeyDataX509GetCrlsSize ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1405,28 +1185,24 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecX509DataDup         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+>      xmlSecOpenSSLKeyDataX509GetCrlsSize
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATAPTR"
+>xmlSecKeyDataPtr</GTKDOCLINK
+> data);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Duplicates the <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> structure.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4685"><P
+NAME="AEN5605"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1444,17 +1220,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x509Data</I
+>data</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1472,11 +1245,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to newly created <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure
-or NULL if an error occurs.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1487,13 +1256,39 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4700"
+NAME="AEN5618"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509DATACREATEKEY"
+NAME="XMLSECOPENSSLKEYDATARAWX509CERTID"
 ></A
->xmlSecX509DataCreateKey ()</H3
+>xmlSecOpenSSLKeyDataRawX509CertId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecOpenSSLKeyDataRawX509CertId</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5623"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLKEYDATARAWX509CERTGETKLASS"
+></A
+>xmlSecOpenSSLKeyDataRawX509CertGetKlass ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1504,218 +1299,21 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecX509DataCreateKey        (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
+HREF="XMLSECKEYDATAID"
+>xmlSecKeyDataId</GTKDOCLINK
+> xmlSecOpenSSLKeyDataRawX509CertGetKlass
+                                            (void);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Creates the key from  <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4709"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated key or NULL if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4723"
+NAME="AEN5629"
 ></A
-><H3
-><A
-NAME="XMLSECX509DATADEBUGDUMP"
-></A
->xmlSecX509DataDebugDump ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        xmlSecX509DataDebugDump         (<GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data,
-                                             <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> *output);</PRE
-></TD
-></TR
-></TABLE
 ><P
->Prints the information about <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> to <TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4733"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->output</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="FILE-CAPS"
->FILE</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4748"
-></A
-><H3
-><A
-NAME="XMLSECX509STORECREATE"
-></A
->xmlSecX509StoreCreate ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> xmlSecX509StoreCreate    (void);</PRE
-></TD
-></TR
-></TABLE
-><P
->Creates new x509 store.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4755"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1741,10 +1339,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to newly allocated <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1755,13 +1350,13 @@ HREF="XMLSECX509STORE"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4765"
+NAME="AEN5638"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509STOREDESTROY"
+NAME="XMLSECOPENSSLX509STOREID"
 ></A
->xmlSecX509StoreDestroy ()</H3
+>xmlSecOpenSSLX509StoreId</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1771,24 +1366,48 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSecX509StoreDestroy          (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store);</PRE
+>#define     xmlSecOpenSSLX509StoreId</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Destroys the <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5643"
+></A
+><H3
+><A
+NAME="XMLSECOPENSSLX509STOREGETKLASS"
+></A
+>xmlSecOpenSSLX509StoreGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECKEYDATASTOREID"
+>xmlSecKeyDataStoreId</GTKDOCLINK
+> xmlSecOpenSSLX509StoreGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4773"><P
+NAME="AEN5649"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1803,20 +1422,18 @@ CLASS="CALSTABLE"
 WIDTH="20%"
 ALIGN="RIGHT"
 VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
+><SPAN
+CLASS="emphasis"
 ><I
->store</I
-></TT
->&nbsp;:</TD
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1827,13 +1444,13 @@ HREF="XMLSECX509STORE"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4783"
+NAME="AEN5658"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509STOREFIND"
+NAME="XMLSECOPENSSLX509STOREFINDCERT"
 ></A
->xmlSecX509StoreFind ()</H3
+>xmlSecOpenSSLX509StoreFindCert ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -1844,11 +1461,11 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> xmlSecX509StoreFind       (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLX509StoreFindCert  (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > store,
                                              <GTKDOCLINK
 HREF="XMLCHAR"
@@ -1866,21 +1483,21 @@ HREF="XMLCHAR"
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
 > *ski,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
+                                             <A
+HREF="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"
+>xmlSecKeyInfoCtx</A
+> *keyInfoCtx);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Searches for matching certificate in the keys manager.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4796"><P
+NAME="AEN5670"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1905,10 +1522,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1925,7 +1539,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the subject name string.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1942,7 +1556,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the issuer name string.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1959,7 +1573,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the issuer serial.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1976,7 +1590,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the SKI string.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -1986,14 +1600,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->x509Data</I
+>keyInfoCtx</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the current X509 certs data (may be NULL). </TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2011,8 +1625,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to certificate that matches given criteria or NULL 
-if an error occurs or certificate not found.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2023,13 +1636,13 @@ if an error occurs or certificate not found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4830"
+NAME="AEN5703"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509STOREVERIFY"
+NAME="XMLSECOPENSSLX509STOREVERIFY"
 ></A
->xmlSecX509StoreVerify ()</H3
+>xmlSecOpenSSLX509StoreVerify ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2039,35 +1652,24 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecX509StoreVerify           (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
-> store,
-                                             <GTKDOCLINK
-HREF="XMLSECX509DATAPTR"
->xmlSecX509DataPtr</GTKDOCLINK
-> x509Data);</PRE
+><GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+>*       xmlSecOpenSSLX509StoreVerify    (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
+> store);</PRE
 ></TD
 ></TR
 ></TABLE
-><P
->Verifies the cert(s) from <TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
-> against <TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4840"><P
+NAME="AEN5710"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2092,30 +1694,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->x509Data</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509DATA"
->xmlSecX509Data</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2133,8 +1712,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->1 if verification succeeded, 0 if not and a negative
-value if a processing error occurs.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2145,13 +1723,13 @@ value if a processing error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4859"
+NAME="AEN5723"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509STORELOADPEMCERT"
+NAME="XMLSECOPENSSLX509STOREADOPTCERT"
 ></A
->xmlSecX509StoreLoadPemCert ()</H3
+>xmlSecOpenSSLX509StoreAdoptCert ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2161,34 +1739,26 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecX509StoreLoadPemCert      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
+>int         xmlSecOpenSSLX509StoreAdoptCert (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > store,
-                                             const char *filename,
+                                             <GTKDOCLINK
+HREF="X509-CAPS"
+>X509</GTKDOCLINK
+> *cert,
                                              int trusted);</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->Reads cert from PEM <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
-> and adds to the list of trusted or known
-untrusted certs in <TT
-CLASS="PARAMETER"
-><I
->store</I
-></TT
->.</P
-><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4868"><P
+NAME="AEN5730"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2213,10 +1783,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2226,14 +1793,14 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->filename</I
+>cert</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the PEM file.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2250,13 +1817,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the flag that indicates is the certificate in <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->
-   trusted or not.</TD
+>&nbsp;</TD
 ></TR
 ><TR
 ><TD
@@ -2274,7 +1835,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
+>&nbsp;</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2285,13 +1846,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4891"
+NAME="AEN5751"
 ></A
 ><H3
 ><A
-NAME="XMLSECX509STOREADDCERTSDIR"
+NAME="XMLSECOPENSSLX509STOREADDCERTSPATH"
 ></A
->xmlSecX509StoreAddCertsDir ()</H3
+>xmlSecOpenSSLX509StoreAddCertsPath ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -2301,9 +1862,10 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecX509StoreAddCertsDir      (<GTKDOCLINK
-HREF="XMLSECX509STOREPTR"
->xmlSecX509StorePtr</GTKDOCLINK
+>int         xmlSecOpenSSLX509StoreAddCertsPath
+                                            (<GTKDOCLINK
+HREF="XMLSECKEYDATASTOREPTR"
+>xmlSecKeyDataStorePtr</GTKDOCLINK
 > store,
                                              const char *path);</PRE
 ></TD
@@ -2327,7 +1889,9 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4900"><P
+NAME="AEN5760"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2352,10 +1916,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECX509STORE"
->xmlSecX509Store</GTKDOCLINK
-> structure.</TD
+> the pointer to OpenSSL x509 store.</TD
 ></TR
 ><TR
 ><TD
@@ -2391,113 +1952,6 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 >0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4918"
-></A
-><H3
-><A
-NAME="XMLSECPKCS12READKEY"
-></A
->xmlSecPKCS12ReadKey ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> xmlSecPKCS12ReadKey            (const char *filename,
-                                             const char *pwd);</PRE
-></TD
-></TR
-></TABLE
-><P
->Reads the key from pkcs12 file <TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN4926"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->filename</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pkcs12 file name.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->pwd</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the password for the pkcs12 file.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the pointer to newly allocated key or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE

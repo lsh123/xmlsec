@@ -14,7 +14,14 @@ The simple keys manager implementation.
 
 </para>
 
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrCreate ##### -->
+<!-- ##### MACRO xmlSecSimpleKeysStoreId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKlass ##### -->
 <para>
 
 </para>
@@ -22,132 +29,171 @@ The simple keys manager implementation.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrDestroy ##### -->
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreAdoptKey ##### -->
 <para>
 
 </para>
 
-@mngr: 
+@store: 
+@key: 
+@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrFindKey ##### -->
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreFindKey ##### -->
 <para>
 
 </para>
 
-@mngr: 
-@context: 
+@store: 
 @name: 
-@id: 
-@type: 
-@usage: 
+@keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@keyType: 
-@keyUsage: 
 
 
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrAddKey ##### -->
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreLoad ##### -->
+<para>
+
+</para>
+
+@store: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreSave ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrCreate ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrDestroy ##### -->
+<para>
+
+</para>
+
+@mngr: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrFindKey ##### -->
 <para>
 
 </para>
 
 @mngr: 
 @key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoad ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@uri: 
-@strict: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrSave ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPemKey ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@keyfile: 
-@keyPwd: 
-@keyPwdCallback: 
-@privateKey: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrX509Find ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@context: 
-@subjectName: 
-@issuerName: 
-@issuerSerial: 
-@ski: 
-@cert: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrX509Verify ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@context: 
-@cert: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPemCert ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@filename: 
-@trusted: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrAddCertsDir ##### -->
-<para>
-
-</para>
-
-@mngr: 
-@path: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSimpleKeysMngrLoadPkcs12 ##### -->
-<para>
-
-</para>
-
-@mngr: 
 @name: 
-@filename: 
-@pwd: 
+@keyInfoCtx: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrFindKeyData ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@storeId: 
+@key: 
+@params: 
+@paramsSize: 
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrAdoptKeysStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetKeysStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrAdoptDataStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetDataStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@id: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION xmlSecGetKeyCallback ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@keyInfoCtx: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@mngr: 
+@context: 
+@keyId: 
+@type: 
+@usage: 
+
+
+<!-- ##### STRUCT xmlSecKeysMngr ##### -->
+<para>
+
+</para>
+
+@keysStore: 
+@storesList: 
+@getKey: 
+@allowedOrigins: 
+@maxRetrievalsLevel: 
+@maxEncKeysLevel: 
+@failIfCertNotFound: 
+
+<!-- ##### FUNCTION xmlSecKeysMngrGetKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@keyInfoCtx: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@mngr: 
+@context: 
+@keyId: 
+@keyType: 
+@keyUsage: 
 
 

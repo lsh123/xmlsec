@@ -14,6 +14,14 @@ The XML tree helper functions.
 
 </para>
 
+<!-- ##### MACRO xmlSecNodeGetName ##### -->
+<para>
+
+</para>
+
+@node: 
+
+
 <!-- ##### FUNCTION xmlSecParseFile ##### -->
 <para>
 
@@ -45,6 +53,15 @@ The XML tree helper functions.
 @bufferSize: 
 @postfix: 
 @postfixSize: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGetNodeNsHref ##### -->
+<para>
+
+</para>
+
+@cur: 
 @Returns: 
 
 
@@ -175,7 +192,7 @@ The XML tree helper functions.
 @ids: 
 
 
-<!-- ##### MACRO xmlSecGetHex ##### -->
+<!-- ##### MACRO xmlSecIsHex ##### -->
 <para>
 
 </para>
@@ -183,7 +200,7 @@ The XML tree helper functions.
 @c: 
 
 
-<!-- ##### MACRO xmlSecIsHex ##### -->
+<!-- ##### MACRO xmlSecGetHex ##### -->
 <para>
 
 </para>

@@ -14,7 +14,14 @@ The X509 certificates functions.
 
 </para>
 
-<!-- ##### FUNCTION xmlSecX509DataCreate ##### -->
+<!-- ##### MACRO xmlSecOpenSSLKeyDataX509Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKlass ##### -->
 <para>
 
 </para>
@@ -22,114 +29,91 @@ The X509 certificates functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataDestroy ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetKeyCert ##### -->
 <para>
 
 </para>
 
-@x509Data: 
-
-
-<!-- ##### FUNCTION xmlSecX509DataGetCertsNumber ##### -->
-<para>
-
-</para>
-
-@x509Data: 
+@data: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataGetCrlsNumber ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptKeyCert ##### -->
 <para>
 
 </para>
 
-@x509Data: 
+@data: 
+@cert: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataReadDerCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCert ##### -->
 <para>
 
 </para>
 
-@x509Data: 
-@buf: 
-@size: 
-@base64: 
+@data: 
+@cert: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataWriteDerCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCert ##### -->
 <para>
 
 </para>
 
-@x509Data: 
+@data: 
 @pos: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataReadDerCrl ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCertsSize ##### -->
 <para>
 
 </para>
 
-@x509Data: 
-@buf: 
-@size: 
-@base64: 
+@data: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataWriteDerCrl ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509AdoptCrl ##### -->
 <para>
 
 </para>
 
-@x509Data: 
+@data: 
+@crl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCrl ##### -->
+<para>
+
+</para>
+
+@data: 
 @pos: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataReadPemCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataX509GetCrlsSize ##### -->
 <para>
 
 </para>
 
-@x509Data: 
-@filename: 
+@data: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataDup ##### -->
+<!-- ##### MACRO xmlSecOpenSSLKeyDataRawX509CertId ##### -->
 <para>
 
 </para>
 
-@x509Data: 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509DataCreateKey ##### -->
-<para>
-
-</para>
-
-@x509Data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecX509DataDebugDump ##### -->
-<para>
-
-</para>
-
-@x509Data: 
-@output: 
-
-
-<!-- ##### FUNCTION xmlSecX509StoreCreate ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLKeyDataRawX509CertGetKlass ##### -->
 <para>
 
 </para>
@@ -137,15 +121,22 @@ The X509 certificates functions.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509StoreDestroy ##### -->
+<!-- ##### MACRO xmlSecOpenSSLX509StoreId ##### -->
 <para>
 
 </para>
 
-@store: 
 
 
-<!-- ##### FUNCTION xmlSecX509StoreFind ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreFindCert ##### -->
 <para>
 
 </para>
@@ -155,50 +146,37 @@ The X509 certificates functions.
 @issuerName: 
 @issuerSerial: 
 @ski: 
-@x509Data: 
+@keyInfoCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@skit: 
 
 
-<!-- ##### FUNCTION xmlSecX509StoreVerify ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreVerify ##### -->
 <para>
 
 </para>
 
 @store: 
-@x509Data: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509StoreLoadPemCert ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAdoptCert ##### -->
 <para>
 
 </para>
 
 @store: 
-@filename: 
+@cert: 
 @trusted: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecX509StoreAddCertsDir ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsPath ##### -->
 <para>
 
 </para>
 
 @store: 
 @path: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecPKCS12ReadKey ##### -->
-<para>
-
-</para>
-
-@filename: 
-@pwd: 
 @Returns: 
 
 

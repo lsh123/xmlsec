@@ -14,48 +14,45 @@
 
 
 
-<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecSimpleKeysMngrCreate">xmlSecSimpleKeysMngrCreate</link>
+#define     <link linkend="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</link>
+<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> <link linkend="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass</link>
                                             (void);
-void        <link linkend="xmlSecSimpleKeysMngrDestroy">xmlSecSimpleKeysMngrDestroy</link>     (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysMngrFindKey">xmlSecSimpleKeysMngrFindKey</link>    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             void *context,
-                                             const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);
-int         <link linkend="xmlSecSimpleKeysMngrAddKey">xmlSecSimpleKeysMngrAddKey</link>      (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+int         <link linkend="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey</link>   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
-int         <link linkend="xmlSecSimpleKeysMngrLoad">xmlSecSimpleKeysMngrLoad</link>        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri,
-                                             int strict);
-int         <link linkend="xmlSecSimpleKeysMngrSave">xmlSecSimpleKeysMngrSave</link>        (const <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey</link>   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             const char *uri);
+int         <link linkend="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
                                              const char *filename,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecSimpleKeysMngrLoadPemKey">xmlSecSimpleKeysMngrLoadPemKey</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *keyfile,
-                                             const char *keyPwd,
-                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback,
-                                             int privateKey);
-<link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> <link linkend="xmlSecSimpleKeysMngrX509Find">xmlSecSimpleKeysMngrX509Find</link>
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link>      (void);
+void        <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
+int         <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeysMngrFindKeyData">xmlSecKeysMngrFindKeyData</link>       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> storeId,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> **params,
+                                             <link linkend="size-t">size_t</link> paramsSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore</link>
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);
+int         <link linkend="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore</link>    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore</link>
                                             (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             void *context,
-                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
-                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
-                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
-                                             <link linkend="xmlChar">xmlChar</link> *ski,
-                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);
-int         <link linkend="xmlSecSimpleKeysMngrX509Verify">xmlSecSimpleKeysMngrX509Verify</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             void *context,
-                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);
-int         <link linkend="xmlSecSimpleKeysMngrLoadPemCert">xmlSecSimpleKeysMngrLoadPemCert</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
-                                             int trusted);
-int         <link linkend="xmlSecSimpleKeysMngrAddCertsDir">xmlSecSimpleKeysMngrAddCertsDir</link> (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *path);
-int         <link linkend="xmlSecSimpleKeysMngrLoadPkcs12">xmlSecSimpleKeysMngrLoadPkcs12</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *name,
-                                             const char *filename,
-                                             const char *pwd);
+                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 </synopsis>
 </refsynopsisdiv>
 
@@ -73,11 +70,32 @@ int         <link linkend="xmlSecSimpleKeysMngrLoadPkcs12">xmlSecSimpleKeysMngrL
 <refsect1>
 <title>Details</title>
 <refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrCreate">xmlSecSimpleKeysMngrCreate ()</title>
-<programlisting><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> xmlSecSimpleKeysMngrCreate
+<title><anchor id="xmlSecSimpleKeysStoreId">xmlSecSimpleKeysStoreId</title>
+<programlisting>#define xmlSecSimpleKeysStoreId		xmlSecSimpleKeysStoreGetKlass()
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreGetKlass">xmlSecSimpleKeysStoreGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> xmlSecSimpleKeysStoreGetKlass
                                             (void);</programlisting>
 <para>
-Creates new simple keys manager.</para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreAdoptKey">xmlSecSimpleKeysStoreAdoptKey ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreAdoptKey   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -85,38 +103,22 @@ Creates new simple keys manager.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>a pointer to newly allocated <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link> structure or
-NULL if an error occurs.
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrDestroy">xmlSecSimpleKeysMngrDestroy ()</title>
-<programlisting>void        xmlSecSimpleKeysMngrDestroy     (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
-<para>
-Destroys the simple keys manager.</para>
-<para>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the pointer to a simple keys manager.
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrFindKey">xmlSecSimpleKeysMngrFindKey ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysMngrFindKey    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             void *context,
+<title><anchor id="xmlSecSimpleKeysStoreFindKey">xmlSecSimpleKeysStoreFindKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysStoreFindKey   (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
-                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> usage);</programlisting>
-<para>
-Searches the simple keys manager for specified key. This is an 
-implementation of the <link linkend="xmlSecFindKeyCallback">xmlSecFindKeyCallback</link> for the simple keys
-manager.</para>
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -124,84 +126,344 @@ manager.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the keys manager.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data.
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the required key name (or NULL for "any").
+<entry>
 </entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the required key Id (or NULL for "any").
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreLoad">xmlSecSimpleKeysStoreLoad ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreLoad       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             const char *uri);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSimpleKeysStoreSave">xmlSecSimpleKeysStoreSave ()</title>
+<programlisting>int         xmlSecSimpleKeysStoreSave       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             const char *filename,
+                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> the required key (may be "any").
+<entry>
 </entry></row>
-<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
-<entry> the required key usage.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate ()</title>
+<programlisting><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> xmlSecKeysMngrCreate      (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy ()</title>
+<programlisting>void        xmlSecKeysMngrDestroy           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey ()</title>
+<programlisting>int         xmlSecKeysMngrFindKey           (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrFindKeyData">xmlSecKeysMngrFindKeyData ()</title>
+<programlisting>int         xmlSecKeysMngrFindKeyData       (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> storeId,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> **params,
+                                             <link linkend="size-t">size_t</link> paramsSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>storeId</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore ()</title>
+<programlisting>int         xmlSecKeysMngrAdoptKeysStore    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrGetKeysStore">xmlSecKeysMngrGetKeysStore ()</title>
+<programlisting><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> xmlSecKeysMngrGetKeysStore
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrAdoptDataStore">xmlSecKeysMngrAdoptDataStore ()</title>
+<programlisting>int         xmlSecKeysMngrAdoptDataStore    (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore ()</title>
+<programlisting><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> xmlSecKeysMngrGetDataStore
+                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetKeyCallback">xmlSecGetKeyCallback ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
 an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrAddKey">xmlSecSimpleKeysMngrAddKey ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrAddKey      (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);</programlisting>
+<title><anchor id="xmlSecKeysMngr">struct xmlSecKeysMngr</title>
+<programlisting>struct xmlSecKeysMngr {	
+    xmlSecKeyDataStorePtr		keysStore;
+    xmlSecPtrListPtr			storesList;
+
+
+
+    xmlSecGetKeyCallback		getKey;
+
+    xmlSecKeyOrigin 			allowedOrigins;
+    int 				maxRetrievalsLevel;
+    int					maxEncKeysLevel; 
+    /* x509 certs */    
+    int					failIfCertNotFound; 
+};
+</programlisting>
 <para>
-Adds new key to the key manager</para>
+The keys manager structure.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
+</para><informaltable pgwide="1" frame="none" role="struct">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the pointer to the simple keys manager.
-</entry></row>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
+<row>
+<entry><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <structfield>keysStore</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <structfield>storesList</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link> <structfield>getKey</structfield></entry>
+<entry> the callback used to read &lt;dsig:KeyInfo&gt; node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> <structfield>allowedOrigins</structfield></entry>
+<entry> the allowed origins bits mask.
+</entry>
+</row>
+<row>
+<entry>int <structfield>maxRetrievalsLevel</structfield></entry>
+<entry> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.
+</entry>
+</row>
+<row>
+<entry>int <structfield>maxEncKeysLevel</structfield></entry>
+<entry> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.
+</entry>
+</row>
+<row>
+<entry>int <structfield>failIfCertNotFound</structfield></entry>
+<entry> the flag.
+</entry>
+</row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrLoad">xmlSecSimpleKeysMngrLoad ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrLoad        (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *uri,
-                                             int strict);</programlisting>
+<title><anchor id="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey ()</title>
+<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the XML keys files into simple keys manager.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the pointer to the simple keys manager.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> the keys file uri.
-</entry></row>
-<row><entry align="right"><parameter>strict</parameter>&nbsp;:</entry>
-<entry> the flag which determines whether we stop after first error or not.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrSave">xmlSecSimpleKeysMngrSave ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrSave        (const <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);</programlisting>
-<para>
-Writes all the keys from the simple keys manager to 
-an XML file <parameter>filename</parameter>.</para>
+Reads the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -209,206 +471,14 @@ an XML file <parameter>filename</parameter>.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the pointer to the simple keys manager.
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
 </entry></row>
-<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry> the destination filename.
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> 
 </entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> the keys type (private/public).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrLoadPemKey">xmlSecSimpleKeysMngrLoadPemKey ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecSimpleKeysMngrLoadPemKey (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *keyfile,
-                                             const char *keyPwd,
-                                             <link linkend="pem-password-cb">pem_password_cb</link> *keyPwdCallback,
-                                             int privateKey);</programlisting>
-<para>
-Reads the key from a PEM file <parameter>keyfile</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the pointer to the simple keys manager.
-</entry></row>
-<row><entry align="right"><parameter>keyfile</parameter>&nbsp;:</entry>
-<entry> the PEM key file name.
-</entry></row>
-<row><entry align="right"><parameter>keyPwd</parameter>&nbsp;:</entry>
-<entry> the key file password.
-</entry></row>
-<row><entry align="right"><parameter>keyPwdCallback</parameter>&nbsp;:</entry>
-<entry> the "ask password" cllback.
-</entry></row>
-<row><entry align="right"><parameter>privateKey</parameter>&nbsp;:</entry>
-<entry> the private/public flag.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to a newly allocated <link linkend="xmlSecKey">xmlSecKey</link> structure or NULL
-if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrX509Find">xmlSecSimpleKeysMngrX509Find ()</title>
-<programlisting><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> xmlSecSimpleKeysMngrX509Find
-                                            (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             void *context,
-                                             <link linkend="xmlChar">xmlChar</link> *subjectName,
-                                             <link linkend="xmlChar">xmlChar</link> *issuerName,
-                                             <link linkend="xmlChar">xmlChar</link> *issuerSerial,
-                                             <link linkend="xmlChar">xmlChar</link> *ski,
-                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
-<para>
-Searches for matching certificate in the keys manager. This is 
-the implementation of the <link linkend="xmlSecX509FindCallback">xmlSecX509FindCallback</link> for the 
-simple keys manager.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the keys manager.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer application specific data.
-</entry></row>
-<row><entry align="right"><parameter>subjectName</parameter>&nbsp;:</entry>
-<entry> the subject name string.
-</entry></row>
-<row><entry align="right"><parameter>issuerName</parameter>&nbsp;:</entry>
-<entry> the issuer name string.
-</entry></row>
-<row><entry align="right"><parameter>issuerSerial</parameter>&nbsp;:</entry>
-<entry> the issuer serial.
-</entry></row>
-<row><entry align="right"><parameter>ski</parameter>&nbsp;:</entry>
-<entry> the SKI string.
-</entry></row>
-<row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
-<entry> the current X509 certs data (may be NULL). 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to certificate that matches given criteria or NULL 
-if an error occurs or certificate not found.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrX509Verify">xmlSecSimpleKeysMngrX509Verify ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrX509Verify  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             void *context,
-                                             <link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> cert);</programlisting>
-<para>
-Validates certificate. This is the implementation of the 
-<link linkend="xmlSecX509VerifyCallback">xmlSecX509VerifyCallback</link> callback for the simple keys manager.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the keys manager.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data.
-</entry></row>
-<row><entry align="right"><parameter>cert</parameter>&nbsp;:</entry>
-<entry> the cert to verify.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the cert is trusted, 0 if it is not trusted
-and -1 if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrLoadPemCert">xmlSecSimpleKeysMngrLoadPemCert ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrLoadPemCert (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *filename,
-                                             int trusted);</programlisting>
-<para>
-Reads PEM certificate from the file <parameter>filename</parameter> and adds to the keys manager
-<parameter>mngr</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the simple keys manager.
-</entry></row>
-<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry> the PEM cert file name.
-</entry></row>
-<row><entry align="right"><parameter>trusted</parameter>&nbsp;:</entry>
-<entry> the trusted/not-trusted cert flag.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrAddCertsDir">xmlSecSimpleKeysMngrAddCertsDir ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrAddCertsDir (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *path);</programlisting>
-<para>
-Adds the certificates from the folder <parameter>path</parameter> to the list of 
-trusted certificates.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the simple keys manager.
-</entry></row>
-<row><entry align="right"><parameter>path</parameter>&nbsp;:</entry>
-<entry> the certs dir path.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecSimpleKeysMngrLoadPkcs12">xmlSecSimpleKeysMngrLoadPkcs12 ()</title>
-<programlisting>int         xmlSecSimpleKeysMngrLoadPkcs12  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
-                                             const char *name,
-                                             const char *filename,
-                                             const char *pwd);</programlisting>
-<para>
-Reads the key from pkcs12 file <parameter>filename</parameter> (along with all certs)
-and adds to the simple keys manager <parameter>mngr</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>mngr</parameter>&nbsp;:</entry>
-<entry> the simple keys manager.
-</entry></row>
-<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
-<entry> the key name (may by NULL).
-</entry></row>
-<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry> the pkcs12 file name.
-</entry></row>
-<row><entry align="right"><parameter>pwd</parameter>&nbsp;:</entry>
-<entry> the pkcs12 password.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to key or NULL if the key is not found or 
+an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

@@ -180,7 +180,7 @@ struct _xmlSecKey {
     xmlChar*				name;
     xmlSecPtrListPtr			dataList;
 
-
+    /* obsolete */
     xmlSecKeyDataType			type;
     xmlSecKeyOrigin			origin;
 };

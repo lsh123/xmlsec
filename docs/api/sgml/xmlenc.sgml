@@ -16,6 +16,7 @@ standard implementation.</refpurpose>
 
 
 struct      <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
+struct      <link linkend="xmlSecEncResult">xmlSecEncResult</link>;
 <link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link>          (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
 void        <link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx);
 int         <link linkend="xmlSecEncryptMemory">xmlSecEncryptMemory</link>             (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
@@ -42,7 +43,6 @@ int         <link linkend="xmlSecDecrypt">xmlSecDecrypt</link>                  
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
                                              <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> *result);
-struct      <link linkend="xmlSecEncResult">xmlSecEncResult</link>;
 <link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> <link linkend="xmlSecEncResultCreate">xmlSecEncResultCreate</link>    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
                                              void *context,
                                              int encrypt,
@@ -50,25 +50,8 @@ struct      <link linkend="xmlSecEncResult">xmlSecEncResult</link>;
 void        <link linkend="xmlSecEncResultDestroy">xmlSecEncResultDestroy</link>          (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result);
 void        <link linkend="xmlSecEncResultDebugDump">xmlSecEncResultDebugDump</link>        (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataCreate">xmlSecEncDataCreate</link>             (const <link linkend="xmlChar">xmlChar</link> *id,
-                                             const <link linkend="xmlChar">xmlChar</link> *type,
-                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
-                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
-void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncMethod">xmlSecEncDataAddEncMethod</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddKeyInfo">xmlSecEncDataAddKeyInfo</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncProperties">xmlSecEncDataAddEncProperties</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *id);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncProperty">xmlSecEncDataAddEncProperty</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *id,
-                                             const <link linkend="xmlChar">xmlChar</link> *target);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddCipherValue">xmlSecEncDataAddCipherValue</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddCipherReference">xmlSecEncDataAddCipherReference</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *uri);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecCipherReferenceAddTransform">xmlSecCipherReferenceAddTransform</link>
-                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
+void        <link linkend="xmlSecEncResultDebugXmlDump">xmlSecEncResultDebugXmlDump</link>     (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
 </synopsis>
 </refsynopsisdiv>
 
@@ -88,9 +71,10 @@ void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>    
 <refsect2>
 <title><anchor id="xmlSecEncCtx">struct xmlSecEncCtx</title>
 <programlisting>struct xmlSecEncCtx {
-    xmlSecKeysMngrPtr		keysMngr;
+    xmlSecKeyInfoCtx		keyInfoCtx;
     xmlSecTransformId		encryptionMethod;
     int				ignoreType;
+    time_t			certsVerificationTime;
 };
 </programlisting>
 <para>
@@ -103,8 +87,8 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row>
-<entry><link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> <structfield>keysMngr</structfield></entry>
-<entry> the pointer to keys manager <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>.
+<entry><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> <structfield>keyInfoCtx</structfield></entry>
+<entry>
 </entry>
 </row>
 <row>
@@ -116,6 +100,99 @@ XML Encrypiton context.</para>
 <entry>int <structfield>ignoreType</structfield></entry>
 <entry>	the flag to ignore Type attribute in the &lt;enc:EncryptedData&gt; 
 	node
+</entry>
+</row>
+<row>
+<entry><link linkend="time-t">time_t</link> <structfield>certsVerificationTime</structfield></entry>
+<entry>
+
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncResult">struct xmlSecEncResult</title>
+<programlisting>struct xmlSecEncResult {
+    xmlSecEncCtxPtr		ctx;
+    void			*context;
+    xmlNodePtr			self;
+    int				encrypt;
+    xmlChar			*id;
+    xmlChar			*type;
+    xmlChar			*mimeType;
+    xmlChar			*encoding;
+    xmlSecTransformId		encryptionMethod;
+    xmlSecKeyPtr		key;
+    xmlSecBufferPtr		buffer;
+    int				replaced;
+};
+</programlisting>
+<para>
+The XML Encrypiton results.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <structfield>ctx</structfield></entry>
+<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>context</structfield></entry>
+<entry> the pointer to application specific data.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>self</structfield></entry>
+<entry> the pointer to  &lt;enc:EncryptedData&gt; node.
+</entry>
+</row>
+<row>
+<entry>int <structfield>encrypt</structfield></entry>
+<entry> the encrypt/decrypt flag.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
+<entry> the Id attribute of the  &lt;enc:EncryptedData&gt; node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></entry>
+<entry> the Type attribute of the  &lt;enc:EncryptedData&gt; node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>mimeType</structfield></entry>
+<entry> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>encoding</structfield></entry>
+<entry> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>encryptionMethod</structfield></entry>
+<entry> the used encryption algorithm id.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>key</structfield></entry>
+<entry> the used encryption key.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <structfield>buffer</structfield></entry>
+<entry> the decrypted data.
+</entry>
+</row>
+<row>
+<entry>int <structfield>replaced</structfield></entry>
+<entry> if set then the decrypted data were put back into the original document.
 </entry>
 </row>
 </tbody></tgroup></informaltable></refsect2>
@@ -320,93 +397,6 @@ Decrypts data from the &lt;enc:EncryptionData&gt; node.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecEncResult">struct xmlSecEncResult</title>
-<programlisting>struct xmlSecEncResult {
-    xmlSecEncCtxPtr		ctx;
-    void			*context;
-    xmlNodePtr			self;
-    int				encrypt;
-    xmlChar			*id;
-    xmlChar			*type;
-    xmlChar			*mimeType;
-    xmlChar			*encoding;
-    xmlSecTransformId		encryptionMethod;
-    xmlSecKeyPtr		key;
-    xmlBufferPtr		buffer;
-    int				replaced;
-};
-</programlisting>
-<para>
-The XML Encrypiton results.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="struct">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row>
-<entry><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> <structfield>ctx</structfield></entry>
-<entry> the pointer to <link linkend="xmlSecEncCtx">xmlSecEncCtx</link> structure.
-</entry>
-</row>
-<row>
-<entry>void *<structfield>context</structfield></entry>
-<entry> the pointer to application specific data.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlNodePtr">xmlNodePtr</link> <structfield>self</structfield></entry>
-<entry> the pointer to  &lt;enc:EncryptedData&gt; node.
-</entry>
-</row>
-<row>
-<entry>int <structfield>encrypt</structfield></entry>
-<entry> the encrypt/decrypt flag.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></entry>
-<entry> the Id attribute of the  &lt;enc:EncryptedData&gt; node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></entry>
-<entry> the Type attribute of the  &lt;enc:EncryptedData&gt; node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>mimeType</structfield></entry>
-<entry> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlChar">xmlChar</link> *<structfield>encoding</structfield></entry>
-<entry> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecTransformId">xmlSecTransformId</link> <structfield>encryptionMethod</structfield></entry>
-<entry> the used encryption algorithm id.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <structfield>key</structfield></entry>
-<entry> the used encryption key.
-</entry>
-</row>
-<row>
-<entry><link linkend="xmlBufferPtr">xmlBufferPtr</link> <structfield>buffer</structfield></entry>
-<entry> the decrypted data.
-</entry>
-</row>
-<row>
-<entry>int <structfield>replaced</structfield></entry>
-<entry> if set then the decrypted data were put back into the original document.
-</entry>
-</row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecEncResultCreate">xmlSecEncResultCreate ()</title>
 <programlisting><link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> xmlSecEncResultCreate    (<link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> ctx,
                                              void *context,
@@ -475,13 +465,11 @@ Prints the <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure <par
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecEncDataCreate">xmlSecEncDataCreate ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataCreate             (const <link linkend="xmlChar">xmlChar</link> *id,
-                                             const <link linkend="xmlChar">xmlChar</link> *type,
-                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
-                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
+<title><anchor id="xmlSecEncResultDebugXmlDump">xmlSecEncResultDebugXmlDump ()</title>
+<programlisting>void        xmlSecEncResultDebugXmlDump     (<link linkend="xmlSecEncResultPtr">xmlSecEncResultPtr</link> result,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-Creates new &lt;enc:EncryptedData&gt; node for encryption template.</para>
+Prints the <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure <parameter>result</parameter> to file <parameter>output</parameter> in XML format.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -489,201 +477,11 @@ Creates new &lt;enc:EncryptedData&gt; node for encryption template.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the Id attribute (optional).
+<row><entry align="right"><parameter>result</parameter>&nbsp;:</entry>
+<entry> the pointer to <link linkend="xmlSecEncResult">xmlSecEncResult</link> structure.
 </entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> the Type attribute (optional)
-</entry></row>
-<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
-<entry> the MimeType attribute (optional)
-</entry></row>
-<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
-<entry> the Encoding attribute (optional)
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer newly created  &lt;enc:EncryptedData&gt; node or NULL 
-if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataDestroy">xmlSecEncDataDestroy ()</title>
-<programlisting>void        xmlSecEncDataDestroy            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
-<para>
-Destroys the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataAddEncMethod">xmlSecEncDataAddEncMethod ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncMethod       (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);</programlisting>
-<para>
-Adds &lt;enc:EncryptionMethod&gt; node with specified encryption 
-algorithm (<parameter>encMethodId</parameter>) to the  &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>encMethod</parameter>&nbsp;:</entry>
-<entry> the encryption method id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:EncryptionMethod&gt; node or 
-NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataAddKeyInfo">xmlSecEncDataAddKeyInfo ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddKeyInfo         (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
-<para>
-Adds &lt;dsig:KeyInfo&gt; to the  &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:KeyInfo&gt; node or 
-NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataAddEncProperties">xmlSecEncDataAddEncProperties ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncProperties   (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
-<para>
-Adds &lt;enc:EncryptionProperties&gt; node to the &lt;enc:EncryptedData&gt; 
-node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:EncryptionProperties&gt; node or 
-NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataAddEncProperty">xmlSecEncDataAddEncProperty ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncProperty     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *id,
-                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
-<para>
-Adds &lt;enc:EncryptionProperty&gt; node (and the parent 
-&lt;enc:EncryptionProperties&gt; node if required) to the 
-&lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
-<entry> the Target attribute (optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:EncryptionProperty&gt; node or 
-NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataAddCipherValue">xmlSecEncDataAddCipherValue ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddCipherValue     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
-<para>
-Adds &lt;enc:CipherValue&gt; to the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:CipherValue&gt; node or 
-NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncDataAddCipherReference">xmlSecEncDataAddCipherReference ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddCipherReference (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
-<para>
-Adds &lt;enc:CipherReference&gt; node with specified URI attribute <parameter>uri</parameter>
-to the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> the URI attribute (may be NULL).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:CipherReference&gt; node or 
-NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecCipherReferenceAddTransform">xmlSecCipherReferenceAddTransform ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecCipherReferenceAddTransform
-                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
-<para>
-Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node)
-with specified transform methods <parameter>transform</parameter> to the &lt;enc:CipherReference&gt;
-child node of the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;enc:EncryptedData&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the transform id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Transform&gt; node or 
-NULL if an error occurs.
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry> the pointer to destination FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

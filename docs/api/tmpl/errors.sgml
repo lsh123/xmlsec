@@ -17,20 +17,6 @@ function.
 
 </para>
 
-<!-- ##### MACRO XMLSEC_ERRORS_LIB ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO XMLSEC_ERRORS_FUNCTION ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO XMLSEC_ERRORS_R_MALLOC_FAILED ##### -->
 <para>
 
@@ -234,7 +220,49 @@ function.
 
 
 
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_ISSUER_FAILED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_NOT_YET_VALID ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_CERT_HAS_EXPIRED ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_STATUS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_DATA_NOT_MATCH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_UNEXPECTED_NODE ##### -->
 <para>
 
 </para>
@@ -255,6 +283,20 @@ function.
 
 
 
+<!-- ##### MACRO XMLSEC_ERRORS_R_NOT_IMPLEMENTED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_MAX_NUMBER ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### USER_FUNCTION xmlSecErrorsCallback ##### -->
 <para>
 
@@ -263,6 +305,8 @@ function.
 @file: 
 @line: 
 @func: 
+@errorObject: 
+@errorSubject: 
 @reason: 
 @msg: 
 
@@ -289,6 +333,38 @@ function.
 @callback: 
 
 
+<!-- ##### FUNCTION xmlSecErrorsDefaultCallback ##### -->
+<para>
+
+</para>
+
+@file: 
+@line: 
+@func: 
+@errorObject: 
+@errorSubject: 
+@reason: 
+@msg: 
+
+
+<!-- ##### FUNCTION xmlSecErrorsGetCode ##### -->
+<para>
+
+</para>
+
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecErrorsGetMsg ##### -->
+<para>
+
+</para>
+
+@pos: 
+@Returns: 
+
+
 <!-- ##### VARIABLE xmlSecPrintErrorMessages ##### -->
 <para>
 
@@ -302,6 +378,29 @@ function.
 
 
 
+<!-- ##### MACRO xmlSecErrorsSafeString ##### -->
+<para>
+
+</para>
+
+@str: 
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_NO_MESSAGE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecErrorGetEmptyMessage ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecError ##### -->
 <para>
 
@@ -310,6 +409,8 @@ function.
 @file: 
 @line: 
 @func: 
+@errorObject: 
+@errorSubject: 
 @reason: 
 @msg: 
 @Varargs: 

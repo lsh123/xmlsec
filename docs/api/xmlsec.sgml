@@ -1,15 +1,11 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
 <!ENTITY xmlsec-base64 SYSTEM "sgml/base64.sgml">
 <!ENTITY xmlsec-bn SYSTEM "sgml/bn.sgml">
-<!ENTITY xmlsec-buffered SYSTEM "sgml/buffered.sgml">
-<!ENTITY xmlsec-ciphers SYSTEM "sgml/ciphers.sgml">
 <!ENTITY xmlsec-debug SYSTEM "sgml/debug.sgml">
-<!ENTITY xmlsec-digests SYSTEM "sgml/digests.sgml">
 <!ENTITY xmlsec-io SYSTEM "sgml/io.sgml">
 <!ENTITY xmlsec-errors SYSTEM "sgml/errors.sgml">
 <!ENTITY xmlsec-keyinfo SYSTEM "sgml/keyinfo.sgml">
 <!ENTITY xmlsec-keys SYSTEM "sgml/keys.sgml">
-<!ENTITY xmlsec-keysInternal SYSTEM "sgml/keysInternal.sgml">
 <!ENTITY xmlsec-keysmngr SYSTEM "sgml/keysmngr.sgml">
 <!ENTITY xmlsec-membuf SYSTEM "sgml/membuf.sgml">
 <!ENTITY xmlsec-nodeset SYSTEM "sgml/nodeset.sgml">
@@ -102,11 +98,7 @@
     from the code sources. </para>
     &xmlsec-base64;
     &xmlsec-bn;
-    &xmlsec-buffered;
-    &xmlsec-ciphers;
-    &xmlsec-digests;
     &xmlsec-io;
-    &xmlsec-keysInternal;
     &xmlsec-membuf;
     &xmlsec-nodeset;
     &xmlsec-transformsInternal;

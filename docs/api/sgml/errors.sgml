@@ -14,8 +14,6 @@
 
 
 
-#define     <link linkend="XMLSEC-ERRORS-LIB-CAPS">XMLSEC_ERRORS_LIB</link>
-#define     <link linkend="XMLSEC-ERRORS-FUNCTION-CAPS">XMLSEC_ERRORS_FUNCTION</link>
 #define     <link linkend="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-XMLSEC-FAILED-CAPS">XMLSEC_ERRORS_R_XMLSEC_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CRYPTO-FAILED-CAPS">XMLSEC_ERRORS_R_CRYPTO_FAILED</link>
@@ -45,22 +43,46 @@
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</link>
 #define     <link linkend="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID-CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</link>
+#define     <link linkend="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED-CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</link>
+#define     <link linkend="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</link>
+#define     <link linkend="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</link>
 #define     <link linkend="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
 #define     <link linkend="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</link>
+#define     <link linkend="XMLSEC-ERRORS-MAX-NUMBER-CAPS">XMLSEC_ERRORS_MAX_NUMBER</link>
 void        (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)         (const char *file,
                                              int line,
                                              const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
                                              int reason,
                                              const char *msg);
 void        <link linkend="xmlSecErrorsInit">xmlSecErrorsInit</link>                (void);
 void        <link linkend="xmlSecErrorsShutdown">xmlSecErrorsShutdown</link>            (void);
 void        <link linkend="xmlSecErrorsSetCallback">xmlSecErrorsSetCallback</link>         (<link linkend="xmlSecErrorsCallback">xmlSecErrorsCallback</link> callback);
+void        <link linkend="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback</link>     (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);
+int         <link linkend="xmlSecErrorsGetCode">xmlSecErrorsGetCode</link>             (<link linkend="size-t">size_t</link> pos);
+const char* <link linkend="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg</link>              (<link linkend="size-t">size_t</link> pos);
 extern      int <link linkend="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</link>;
 #define     <link linkend="XMLSEC-ERRORS-HERE-CAPS">XMLSEC_ERRORS_HERE</link>
+#define     <link linkend="xmlSecErrorsSafeString">xmlSecErrorsSafeString</link>          (str)
+#define     <link linkend="XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</link>
+const char* <link linkend="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage</link>      (void);
 void        <link linkend="xmlSecError">xmlSecError</link>                     (const char *file,
                                              int line,
                                              const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
                                              int reason,
                                              const char *msg,
                                              ...);
@@ -85,24 +107,6 @@ function.
 
 <refsect1>
 <title>Details</title>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-LIB-CAPS">XMLSEC_ERRORS_LIB</title>
-<programlisting>#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
-</programlisting>
-<para>
-Macro. The XMLSec library id for OpenSSL errors reporting functions.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="XMLSEC-ERRORS-FUNCTION-CAPS">XMLSEC_ERRORS_FUNCTION</title>
-<programlisting>#define XMLSEC_ERRORS_FUNCTION			0
-</programlisting>
-<para>
-Macro. The XMLSec library functions OpenSSL errors reporting functions.</para>
-<para>
-
-</para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-MALLOC-FAILED-CAPS">XMLSEC_ERRORS_R_MALLOC_FAILED</title>
 <programlisting>#define XMLSEC_ERRORS_R_MALLOC_FAILED		 1 	
@@ -339,7 +343,7 @@ Max allowed retrievals level reached.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CERT-VERIFY-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_VERIFY_FAILED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 31
+<programlisting>#define XMLSEC_ERRORS_R_CERT_VERIFY_FAILED	 41
 </programlisting>
 <para>
 Certificate verification failed.</para>
@@ -348,7 +352,7 @@ Certificate verification failed.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-FOUND-CAPS">XMLSEC_ERRORS_R_CERT_NOT_FOUND</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 32
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_FOUND		 42
 </programlisting>
 <para>
 Requested certificate is not found.</para>
@@ -357,7 +361,7 @@ Requested certificate is not found.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-CERT-REVOKED-CAPS">XMLSEC_ERRORS_R_CERT_REVOKED</title>
-<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 33
+<programlisting>#define XMLSEC_ERRORS_R_CERT_REVOKED		 43
 </programlisting>
 <para>
 The certificate is revoked.</para>
@@ -365,11 +369,65 @@ The certificate is revoked.</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-ISSUER-FAILED-CAPS">XMLSEC_ERRORS_R_CERT_ISSUER_FAILED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_ISSUER_FAILED	 44
+</programlisting>
+<para>
+Failed to get certificate issuer.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-NOT-YET-VALID-CAPS">XMLSEC_ERRORS_R_CERT_NOT_YET_VALID</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_NOT_YET_VALID	 45
+</programlisting>
+<para>
+"Not valid before" verification failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-CERT-HAS-EXPIRED-CAPS">XMLSEC_ERRORS_R_CERT_HAS_EXPIRED</title>
+<programlisting>#define XMLSEC_ERRORS_R_CERT_HAS_EXPIRED	 46
+</programlisting>
+<para>
+"Not valid after" verification failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-DSIG-INVALID-REFERENCE-CAPS">XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE</title>
-<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 34
+<programlisting>#define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
 </programlisting>
 <para>
 The &lt;dsig:Reference&gt; validation failed.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_STATUS		 52
+</programlisting>
+<para>
+Invalid status.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</title>
+<programlisting>#define XMLSEC_ERRORS_R_DATA_NOT_MATCH		 53
+</programlisting>
+<para>
+The data do not match our expectation.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</title>
+<programlisting>#define XMLSEC_ERRORS_R_UNEXPECTED_NODE	 	 54
+</programlisting>
+<para>
+Unexpected node.</para>
 <para>
 
 </para></refsect2>
@@ -394,10 +452,28 @@ enable it.</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</title>
+<programlisting>#define XMLSEC_ERRORS_R_NOT_IMPLEMENTED		 102
+</programlisting>
+<para>
+Feature is not implemented.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-MAX-NUMBER-CAPS">XMLSEC_ERRORS_MAX_NUMBER</title>
+<programlisting>#define XMLSEC_ERRORS_MAX_NUMBER		256
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecErrorsCallback">xmlSecErrorsCallback ()</title>
 <programlisting>void        (*xmlSecErrorsCallback)         (const char *file,
                                              int line,
                                              const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
                                              int reason,
                                              const char *msg);</programlisting>
 <para>
@@ -417,6 +493,12 @@ The errors reporting callback function typedef.</para>
 </entry></row>
 <row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
 <entry> the error origin function (__FUNCTIION__).
+</entry></row>
+<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
 <entry> the error code.
@@ -461,6 +543,84 @@ every time an error occurs.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecErrorsDefaultCallback">xmlSecErrorsDefaultCallback ()</title>
+<programlisting>void        xmlSecErrorsDefaultCallback     (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);</programlisting>
+<para>
+</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsGetCode">xmlSecErrorsGetCode ()</title>
+<programlisting>int         xmlSecErrorsGetCode             (<link linkend="size-t">size_t</link> pos);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorsGetMsg">xmlSecErrorsGetMsg ()</title>
+<programlisting>const char* xmlSecErrorsGetMsg              (<link linkend="size-t">size_t</link> pos);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecPrintErrorMessages">xmlSecPrintErrorMessages</title>
 <programlisting>extern int xmlSecPrintErrorMessages;
 </programlisting>
@@ -482,10 +642,50 @@ for the <link linkend="xmlSecError">xmlSecError</link>() function.</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="xmlSecErrorsSafeString">xmlSecErrorsSafeString()</title>
+<programlisting>#define     xmlSecErrorsSafeString(str)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>str</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-NO-MESSAGE-CAPS">XMLSEC_ERRORS_NO_MESSAGE</title>
+<programlisting>#define XMLSEC_ERRORS_NO_MESSAGE 		xmlSecErrorGetEmptyMessage()
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecErrorGetEmptyMessage">xmlSecErrorGetEmptyMessage ()</title>
+<programlisting>const char* xmlSecErrorGetEmptyMessage      (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecError">xmlSecError ()</title>
 <programlisting>void        xmlSecError                     (const char *file,
                                              int line,
                                              const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
                                              int reason,
                                              const char *msg,
                                              ...);</programlisting>
@@ -506,6 +706,12 @@ Reports an error.</para>
 </entry></row>
 <row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
 <entry> the error origin function (__FUNCTIION__).
+</entry></row>
+<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
 <row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
 <entry> the error code.

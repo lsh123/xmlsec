@@ -14,6 +14,7 @@
 
 
 
+#define     <link linkend="xmlSecNodeGetName">xmlSecNodeGetName</link>               (node)
 <link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseFile">xmlSecParseFile</link>                 (const char *filename);
 <link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>               (unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size,
@@ -24,6 +25,7 @@
                                              <link linkend="size-t">size_t</link> bufferSize,
                                              unsigned char *postfix,
                                              <link linkend="size-t">size_t</link> postfixSize);
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link>          (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur);
 int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>             (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              const <link linkend="xmlChar">xmlChar</link> *ns);
@@ -56,8 +58,8 @@ int         <link linkend="xmlSecReplaceNodeBuffer">xmlSecReplaceNodeBuffer</lin
 void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    (<link linkend="xmlDocPtr">xmlDocPtr</link> doc,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> **ids);
-#define     <link linkend="xmlSecGetHex">xmlSecGetHex</link>                    (c)
 #define     <link linkend="xmlSecIsHex">xmlSecIsHex</link>                     (c)
+#define     <link linkend="xmlSecGetHex">xmlSecGetHex</link>                    (c)
 </synopsis>
 </refsynopsisdiv>
 
@@ -74,6 +76,22 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecNodeGetName">xmlSecNodeGetName()</title>
+<programlisting>#define     xmlSecNodeGetName(node)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecParseFile">xmlSecParseFile ()</title>
 <programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseFile                 (const char *filename);</programlisting>
@@ -156,6 +174,24 @@ Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter
 <entry> the size of the third part of the input.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref ()</title>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecGetNodeNsHref          (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>cur</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -460,22 +496,6 @@ from the <parameter>ids</parameter> list to the <parameter>doc</parameter> docum
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGetHex">xmlSecGetHex()</title>
-<programlisting>#define     xmlSecGetHex(c)</programlisting>
-<para>
-Macro. Returns the hex value of the <parameter>c</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
-<entry> the character,
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
 <title><anchor id="xmlSecIsHex">xmlSecIsHex()</title>
 <programlisting>#define     xmlSecIsHex(c)</programlisting>
 <para>
@@ -489,6 +509,22 @@ Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.</pa
 <tbody>
 <row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
 <entry> the character.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGetHex">xmlSecGetHex()</title>
+<programlisting>#define     xmlSecGetHex(c)</programlisting>
+<para>
+Macro. Returns the hex value of the <parameter>c</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>c</parameter>&nbsp;:</entry>
+<entry> the character,
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

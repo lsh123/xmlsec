@@ -28,37 +28,21 @@ The IO transforms.
 
 
 
-<!-- ##### VARIABLE xmlSecInputUri ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### FUNCTION xmlSecInputUriTransformOpen ##### -->
-<para>
-
-</para>
-
-@transform: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecCleanupInputCallbacks ##### -->
+<!-- ##### FUNCTION xmlSecIOCleanupCallbacks ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecRegisterDefaultInputCallbacks ##### -->
+<!-- ##### FUNCTION xmlSecIORegisterDefaultCallbacks ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecRegisterInputCallbacks ##### -->
+<!-- ##### FUNCTION xmlSecIORegisterCallbacks ##### -->
 <para>
 
 </para>

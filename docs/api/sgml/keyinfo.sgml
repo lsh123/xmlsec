@@ -14,30 +14,26 @@
 
 
 
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyInfoNodeRead">xmlSecKeyInfoNodeRead</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr,
-                                             void *context,
-                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);
-int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr,
-                                             void *context,
+int         <link linkend="xmlSecKeyInfoNodeRead">xmlSecKeyInfoNodeRead</link>           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddKeyName">xmlSecKeyInfoAddKeyName</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddKeyValue">xmlSecKeyInfoAddKeyValue</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddX509Data">xmlSecKeyInfoAddX509Data</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddRetrievalMethod">xmlSecKeyInfoAddRetrievalMethod</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *uri,
-                                             const <link linkend="xmlChar">xmlChar</link> *type);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecRetrievalMethodAddTransform">xmlSecRetrievalMethodAddTransform</link>
-                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> retrMethod,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddEncryptedKey">xmlSecKeyInfoAddEncryptedKey</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *id,
-                                             const <link linkend="xmlChar">xmlChar</link> *type,
-                                             const <link linkend="xmlChar">xmlChar</link> *recipient);
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+#define     <link linkend="xmlSecKeyDataNameId">xmlSecKeyDataNameId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass</link>   (void);
+#define     <link linkend="xmlSecKeyDataValueId">xmlSecKeyDataValueId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass</link>  (void);
+#define     <link linkend="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass</link>
+                                            (void);
+struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
+#define     <link linkend="xmlSecKeyInfoNodeCheckOrigin">xmlSecKeyInfoNodeCheckOrigin</link>    (status, origin)
+#define     <link linkend="xmlSecKeyInfoNodeCheckRetrievalsLevel">xmlSecKeyInfoNodeCheckRetrievalsLevel</link>(status)
+#define     <link linkend="xmlSecKeyInfoNodeCheckEncKeysLevel">xmlSecKeyInfoNodeCheckEncKeysLevel</link>(status)
 </synopsis>
 </refsynopsisdiv>
 
@@ -56,12 +52,9 @@ int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecKeyInfoNodeRead">xmlSecKeyInfoNodeRead ()</title>
-<programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyInfoNodeRead          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr,
-                                             void *context,
-                                             <link linkend="xmlSecKeyId">xmlSecKeyId</link> keyId,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> keyType,
-                                             <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link> keyUsage);</programlisting>
+<programlisting>int         xmlSecKeyInfoNodeRead           (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Parses the &lt;dsig:KeyInfo&gt; element and extracts the key (with required 
 id, type and usage).</para>
@@ -75,33 +68,20 @@ id, type and usage).</para>
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
 <entry> the pointer to &lt;dsig:KeyInfo&gt; node.
 </entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link> struvture.
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the pointer to <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> structure.
 </entry></row>
-<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
-<entry> the required key id or NULL.
-</entry></row>
-<row><entry align="right"><parameter>keyType</parameter>&nbsp;:</entry>
-<entry> the required key type (may be "any").
-</entry></row>
-<row><entry align="right"><parameter>keyUsage</parameter>&nbsp;:</entry>
-<entry> the desired key usage. 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to extracted key or NULL if an error occurs or
-required key is not found.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or -1 if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite ()</title>
 <programlisting>int         xmlSecKeyInfoNodeWrite          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr,
-                                             void *context,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
-                                             <link linkend="xmlSecKeyType">xmlSecKeyType</link> type);</programlisting>
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
 Writes the key into the &lt;dsig:KeyInfo&gt; template <parameter>keyInfoNode</parameter>.</para>
 <para>
@@ -114,27 +94,27 @@ Writes the key into the &lt;dsig:KeyInfo&gt; template <parameter>keyInfoNode</pa
 <row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
 <entry> the pointer to &lt;dsig:KeyInfo&gt; node.
 </entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry> the pointer to <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link> struvture.
-</entry></row>
-<row><entry align="right"><parameter>context</parameter>&nbsp;:</entry>
-<entry> the pointer to application specific data that will be 
-    passed to all callback functions.
-</entry></row>
 <row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to the <link linkend="xmlSecKey">xmlSecKey</link> structure.
+<entry> the key.
 </entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> the key type (public/private).
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the pointer to <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> structure.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or -1 if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyInfoAddKeyName">xmlSecKeyInfoAddKeyName ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddKeyName         (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);</programlisting>
+<title><anchor id="xmlSecKeyDataNameId">xmlSecKeyDataNameId</title>
+<programlisting>#define xmlSecKeyDataNameId	xmlSecKeyDataNameGetKlass()
+</programlisting>
 <para>
-Adds &lt;dsig:KeyName&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+The &lt;dsig:KeyName&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataNameGetKlass   (void);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -142,18 +122,23 @@ Adds &lt;dsig:KeyName&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyIn
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:KeyName&gt; node or
-NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyInfoAddKeyValue">xmlSecKeyInfoAddKeyValue ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddKeyValue        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);</programlisting>
+<title><anchor id="xmlSecKeyDataValueId">xmlSecKeyDataValueId</title>
+<programlisting>#define xmlSecKeyDataValueId	xmlSecKeyDataValueGetKlass()
+</programlisting>
 <para>
-Adds &lt;dsig:KeyValue&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+The &lt;dsig:KeyValue&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -161,18 +146,24 @@ Adds &lt;dsig:KeyValue&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyI
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:KeyValue&gt; node or
-NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyInfoAddX509Data">xmlSecKeyInfoAddX509Data ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddX509Data        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);</programlisting>
+<title><anchor id="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</title>
+<programlisting>#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
+</programlisting>
 <para>
-Adds &lt;dsig:X509Data&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+The &lt;dsig:RetrievalMethod&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
+                                            (void);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -180,20 +171,24 @@ Adds &lt;dsig:X509Data&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyI
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:X509Data&gt; node or
-NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyInfoAddRetrievalMethod">xmlSecKeyInfoAddRetrievalMethod ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddRetrievalMethod (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *uri,
-                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<title><anchor id="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</title>
+<programlisting>#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
+</programlisting>
 <para>
-Adds &lt;dsig:RetrievalMethod&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+The &lt;enc:EncryptedKey&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass
+                                            (void);</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -201,27 +196,37 @@ Adds &lt;dsig:RetrievalMethod&gt; node to the &lt;dsig:KeyInfo&gt; node <paramet
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
-</entry></row>
-<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry> the URI attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> the Type attribute(optional).
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:RetrievalMethod&gt; node or
-NULL if an error occurs.
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecRetrievalMethodAddTransform">xmlSecRetrievalMethodAddTransform ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecRetrievalMethodAddTransform
-                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> retrMethod,
-                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
+<title><anchor id="xmlSecKeyInfoCtx">struct xmlSecKeyInfoCtx</title>
+<programlisting>struct xmlSecKeyInfoCtx {
+    xmlSecKeysMngrPtr			keysMngr;
+    void				*context;
+    
+    xmlSecKeyReq			keyReq;
+
+    int					base64LineSize;
+    int 				retrievalsLevel;
+    int					encKeysLevel;                
+
+    /* x509 certificate */
+    int					failIfCertNotFound;
+    time_t				certsVerificationTime;
+    int					certsVerificationDepth;
+};
+</programlisting>
 <para>
-Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node
-if required) to the &lt;dsig:RetrievalMethod&gt; node <parameter>retrMethod</parameter>.</para>
+</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoNodeCheckOrigin">xmlSecKeyInfoNodeCheckOrigin()</title>
+<programlisting>#define     xmlSecKeyInfoNodeCheckOrigin(status, origin)</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -229,25 +234,18 @@ if required) to the &lt;dsig:RetrievalMethod&gt; node <parameter>retrMethod</par
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>retrMethod</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:RetrievalMethod&gt; node.
+<row><entry align="right"><parameter>status</parameter>&nbsp;:</entry>
+<entry>
 </entry></row>
-<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry> the transform id.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:dsig:Transforms&gt; node or
-NULL if an error occurs.
+<row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
+<entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyInfoAddEncryptedKey">xmlSecKeyInfoAddEncryptedKey ()</title>
-<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddEncryptedKey    (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
-                                             const <link linkend="xmlChar">xmlChar</link> *id,
-                                             const <link linkend="xmlChar">xmlChar</link> *type,
-                                             const <link linkend="xmlChar">xmlChar</link> *recipient);</programlisting>
-<para>
-Adds &lt;enc:EncryptedKey&gt; node with given attributes to 
-the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+<title><anchor id="xmlSecKeyInfoNodeCheckRetrievalsLevel">xmlSecKeyInfoNodeCheckRetrievalsLevel()</title>
+<programlisting>#define     xmlSecKeyInfoNodeCheckRetrievalsLevel(status)</programlisting>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -255,20 +253,26 @@ the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
-<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+<row><entry align="right"><parameter>status</parameter>&nbsp;:</entry>
+<entry>
+
+
 </entry></row>
-<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
-<entry> the Id attribute (optional).
-</entry></row>
-<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
-<entry> the Type attribute (optional). 
-</entry></row>
-<row><entry align="right"><parameter>recipient</parameter>&nbsp;:</entry>
-<entry> the Recipient attribute (optional). 
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;enc:EncryptedKey&gt; node or
-NULL if an error occurs.
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoNodeCheckEncKeysLevel">xmlSecKeyInfoNodeCheckEncKeysLevel()</title>
+<programlisting>#define     xmlSecKeyInfoNodeCheckEncKeysLevel(status)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>status</parameter>&nbsp;:</entry>
+<entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

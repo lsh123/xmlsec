@@ -101,18 +101,18 @@ typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
  * The keys manager structure.
  */
 struct _xmlSecKeysMngr {	
-    xmlSecKeyDataStorePtr		keysStore;
-    xmlSecPtrListPtr			storesList;
+    xmlSecKeyDataStorePtr	keysStore;	/* the keys storage */
+    xmlSecPtrListPtr		storesList;	/* list of other key data storages */
 
 
 
-    xmlSecGetKeyCallback		getKey;
+    xmlSecGetKeyCallback	getKey;		/* the callback used to read <dsig:KeyInfo> node. */
 
-    xmlSecKeyOrigin 			allowedOrigins;
-    int 				maxRetrievalsLevel;
-    int					maxEncKeysLevel; 
+    xmlSecKeyOrigin 		allowedOrigins;
+    int 			maxRetrievalsLevel;
+    int				maxEncKeysLevel; 
     /* x509 certs */    
-    int					failIfCertNotFound; 
+    int				failIfCertNotFound; 
 };
 
 

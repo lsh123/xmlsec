@@ -19,12 +19,55 @@ standard implementation.
 
 </para>
 
-@keysMngr: 
 @processManifests: 
 @storeSignatures: 
 @storeReferences: 
 @storeManifests: 
 @fakeSignatures: 
+@keyInfoCtx: 
+
+<!-- ##### STRUCT xmlSecDSigResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@self: 
+@sign: 
+@result: 
+@signMethod: 
+@key: 
+@firstSignRef: 
+@lastSignRef: 
+@firstManifestRef: 
+@lastManifestRef: 
+@buffer: 
+
+<!-- ##### ENUM xmlSecReferenceType ##### -->
+<para>
+
+</para>
+
+@xmlSecSignedInfoReference: 
+@xmlSecManifestReference: 
+
+<!-- ##### STRUCT xmlSecReferenceResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@self: 
+@refType: 
+@result: 
+@next: 
+@prev: 
+@uri: 
+@id: 
+@type: 
+@digestMethod: 
+@buffer: 
 
 <!-- ##### FUNCTION xmlSecDSigCtxCreate ##### -->
 <para>
@@ -69,49 +112,6 @@ standard implementation.
 @Returns: 
 
 
-<!-- ##### STRUCT xmlSecDSigResult ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@self: 
-@sign: 
-@result: 
-@signMethod: 
-@key: 
-@firstSignRef: 
-@lastSignRef: 
-@firstManifestRef: 
-@lastManifestRef: 
-@buffer: 
-
-<!-- ##### STRUCT xmlSecReferenceResult ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@self: 
-@refType: 
-@result: 
-@next: 
-@prev: 
-@uri: 
-@id: 
-@type: 
-@digestMethod: 
-@buffer: 
-
-<!-- ##### ENUM xmlSecReferenceType ##### -->
-<para>
-
-</para>
-
-@xmlSecSignedInfoReference: 
-@xmlSecManifestReference: 
-
 <!-- ##### FUNCTION xmlSecDSigResultCreate ##### -->
 <para>
 
@@ -141,141 +141,12 @@ standard implementation.
 @output: 
 
 
-<!-- ##### FUNCTION xmlSecSignatureCreate ##### -->
+<!-- ##### FUNCTION xmlSecDSigResultDebugXmlDump ##### -->
 <para>
 
 </para>
 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSignatureDestroy ##### -->
-<para>
-
-</para>
-
-@signNode: 
-
-
-<!-- ##### FUNCTION xmlSecSignatureAddSignedInfo ##### -->
-<para>
-
-</para>
-
-@signNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSignatureAddKeyInfo ##### -->
-<para>
-
-</para>
-
-@signNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSignatureAddObject ##### -->
-<para>
-
-</para>
-
-@signNode: 
-@id: 
-@mimeType: 
-@encoding: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecSignedInfoAddC14NMethod ##### -->
-<para>
-
-</para>
-
-@signedInfoNode: 
-@c14nMethod: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@encMethod: 
-
-
-<!-- ##### FUNCTION xmlSecSignedInfoAddSignMethod ##### -->
-<para>
-
-</para>
-
-@signedInfoNode: 
-@signMethod: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@encMethod: 
-
-
-<!-- ##### FUNCTION xmlSecSignedInfoAddReference ##### -->
-<para>
-
-</para>
-
-@signedInfoNode: 
-@id: 
-@uri: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
-<para>
-
-</para>
-
-@refNode: 
-@digestMethod: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecReferenceAddTransform ##### -->
-<para>
-
-</para>
-
-@refNode: 
-@transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecObjectAddSignProperties ##### -->
-<para>
-
-</para>
-
-@objectNode: 
-@id: 
-@target: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecObjectAddManifest ##### -->
-<para>
-
-</para>
-
-@objectNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecManifestAddReference ##### -->
-<para>
-
-</para>
-
-@manifestNode: 
-@id: 
-@uri: 
-@type: 
-@Returns: 
+@result: 
+@output: 
 
 

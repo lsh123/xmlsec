@@ -20,9 +20,28 @@ standard implementation.
 
 </para>
 
-@keysMngr: 
+@keyInfoCtx: 
 @encryptionMethod: 
 @ignoreType: 
+@certsVerificationTime: 
+
+<!-- ##### STRUCT xmlSecEncResult ##### -->
+<para>
+
+</para>
+
+@ctx: 
+@context: 
+@self: 
+@encrypt: 
+@id: 
+@type: 
+@mimeType: 
+@encoding: 
+@encryptionMethod: 
+@key: 
+@buffer: 
+@replaced: 
 
 <!-- ##### FUNCTION xmlSecEncCtxCreate ##### -->
 <para>
@@ -99,24 +118,6 @@ standard implementation.
 @encDataNode: 
 
 
-<!-- ##### STRUCT xmlSecEncResult ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@context: 
-@self: 
-@encrypt: 
-@id: 
-@type: 
-@mimeType: 
-@encoding: 
-@encryptionMethod: 
-@key: 
-@buffer: 
-@replaced: 
-
 <!-- ##### FUNCTION xmlSecEncResultCreate ##### -->
 <para>
 
@@ -146,92 +147,12 @@ standard implementation.
 @output: 
 
 
-<!-- ##### FUNCTION xmlSecEncDataCreate ##### -->
+<!-- ##### FUNCTION xmlSecEncResultDebugXmlDump ##### -->
 <para>
 
 </para>
 
-@id: 
-@type: 
-@mimeType: 
-@encoding: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataDestroy ##### -->
-<para>
-
-</para>
-
-@encNode: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddEncMethod ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@encMethod: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddKeyInfo ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddEncProperties ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@id: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddEncProperty ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@id: 
-@target: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddCipherValue ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddCipherReference ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@uri: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecCipherReferenceAddTransform ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@transform: 
-@Returns: 
+@result: 
+@output: 
 
 

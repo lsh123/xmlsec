@@ -14,13 +14,22 @@ The memory buffer transform.
 
 </para>
 
-<!-- ##### VARIABLE xmlSecMemBuf ##### -->
+<!-- ##### MACRO xmlSecTransformMemBufId ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION xmlSecMemBufTransformGetBuffer ##### -->
+
+<!-- ##### FUNCTION xmlSecTransformMemBufGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformMemBufGetBuffer ##### -->
 <para>
 
 </para>

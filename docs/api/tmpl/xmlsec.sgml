@@ -14,14 +14,30 @@ The library initialization/cleanup functions.
 
 </para>
 
-<!-- ##### FUNCTION xmlSecInit ##### -->
+<!-- ##### MACRO extern ##### -->
 <para>
 
 </para>
 
 
 
+<!-- ##### FUNCTION xmlSecInit ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecShutdown ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO ATTRIBUTE_UNUSED ##### -->
 <para>
 
 </para>

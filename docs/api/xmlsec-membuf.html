@@ -13,8 +13,8 @@ REL="UP"
 TITLE="XML Security Library Internal Functions Reference"
 HREF="xmlsec-ref-int.html"><LINK
 REL="PREVIOUS"
-TITLE="keysInternal.h"
-HREF="xmlsec-keysinternal.html"><LINK
+TITLE="io.h"
+HREF="xmlsec-io.html"><LINK
 REL="NEXT"
 TITLE="nodeset.h"
 HREF="xmlsec-nodeset.html"></HEAD
@@ -49,7 +49,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="xmlsec-keysinternal.html"
+HREF="xmlsec-io.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -117,11 +117,13 @@ SIZE="3"
 ></DIV
 ><H1
 ><A
-NAME="XMLSEC-MEMBUF">membuf.h</H1
+NAME="XMLSEC-MEMBUF"
+></A
+>membuf.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6891"
+NAME="AEN6154"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +131,9 @@ NAME="AEN6891"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6894"><H2
+NAME="AEN6157"
+></A
+><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,17 +146,26 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
-extern      xmlSecTransformId <A
-HREF="xmlsec-membuf.html#XMLSECMEMBUF"
->xmlSecMemBuf</A
->;
-<GTKDOCLINK
-HREF="XMLBUFFERPTR"
->xmlBufferPtr</GTKDOCLINK
+#define     <A
+HREF="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID"
+>xmlSecTransformMemBufId</A
+>
+<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
 > <A
-HREF="xmlsec-membuf.html#XMLSECMEMBUFTRANSFORMGETBUFFER"
->xmlSecMemBufTransformGetBuffer</A
-> (<GTKDOCLINK
+HREF="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS"
+>xmlSecTransformMemBufGetKlass</A
+>
+                                            (void);
+<GTKDOCLINK
+HREF="XMLSECBUFFERPTR"
+>xmlSecBufferPtr</GTKDOCLINK
+> <A
+HREF="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER"
+>xmlSecTransformMemBufGetBuffer</A
+>
+                                            (<GTKDOCLINK
 HREF="XMLSECTRANSFORMPTR"
 >xmlSecTransformPtr</GTKDOCLINK
 > transform,
@@ -164,7 +177,7 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6901"
+NAME="AEN6166"
 ></A
 ><H2
 >Description</H2
@@ -174,20 +187,20 @@ NAME="AEN6901"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6904"
+NAME="AEN6169"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6906"
+NAME="AEN6171"
 ></A
 ><H3
 ><A
-NAME="XMLSECMEMBUF"
+NAME="XMLSECTRANSFORMMEMBUFID"
 ></A
->xmlSecMemBuf</H3
+>xmlSecTransformMemBufId</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -197,25 +210,93 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->extern xmlSecTransformId xmlSecMemBuf;</PRE
+>#define     xmlSecTransformMemBufId</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->The memory buffer transform id.</P
+>The Memory Buffer transform id.</P
 ><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6912"
+NAME="AEN6177"
 ></A
 ><H3
 ><A
-NAME="XMLSECMEMBUFTRANSFORMGETBUFFER"
+NAME="XMLSECTRANSFORMMEMBUFGETKLASS"
 ></A
->xmlSecMemBufTransformGetBuffer ()</H3
+>xmlSecTransformMemBufGetKlass ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> xmlSecTransformMemBufGetKlass
+                                            (void);</PRE
+></TD
+></TR
+></TABLE
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN6183"
+></A
+><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6192"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMMEMBUFGETBUFFER"
+></A
+>xmlSecTransformMemBufGetBuffer ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -226,9 +307,10 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 ><GTKDOCLINK
-HREF="XMLBUFFERPTR"
->xmlBufferPtr</GTKDOCLINK
-> xmlSecMemBufTransformGetBuffer (<GTKDOCLINK
+HREF="XMLSECBUFFERPTR"
+>xmlSecBufferPtr</GTKDOCLINK
+> xmlSecTransformMemBufGetBuffer
+                                            (<GTKDOCLINK
 HREF="XMLSECTRANSFORMPTR"
 >xmlSecTransformPtr</GTKDOCLINK
 > transform,
@@ -243,7 +325,9 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6920"><P
+NAME="AEN6200"
+></A
+><P
 ></P
 ><TABLE
 BORDER="0"
@@ -304,7 +388,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the xmlBufferPtr. If <TT
+>the xmlSecBufferPtr. If <TT
 CLASS="PARAMETER"
 ><I
 >removeBuffer</I
@@ -334,7 +418,7 @@ WIDTH="25%"
 BGCOLOR="#C00000"
 ALIGN="left"
 ><A
-HREF="xmlsec-keysinternal.html"
+HREF="xmlsec-io.html"
 ><FONT
 COLOR="#FFFFFF"
 SIZE="3"
@@ -406,7 +490,7 @@ ALIGN="left"
 COLOR="#FFFFFF"
 SIZE="3"
 ><B
->keysInternal.h</B
+>io.h</B
 ></FONT
 ></TD
 ><TD

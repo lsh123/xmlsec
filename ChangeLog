@@ -1,3 +1,9 @@
+2004-08-25  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html 
+	docs/news.html include/xmlsec/version.h: preparing
+	new release
+
 2004-06-21 Aleksey Sanin <aleksey@aleksey.com>
 
 	* include/xmlsec/app.h include/xmlsec/gnutls/app.h 
@@ -16,8 +22,8 @@
 2004-06-16 Aleksey Sanin <aleksey@aleksey.com>
 
 	* Fixed xmlSecTmplNodeWriteNsList() function
-	
-Wed Jun  9 16:35:01 CEST 2004 Igor Zlatkovic <igor@zlatkovic.com>
+
+2004-06-09 Igor Zlatkovic <igor@zlatkovic.com>
 
 	* win32/configure.js win32/Makefile.* minor changes for the new
 	  layout of the Windows binary package

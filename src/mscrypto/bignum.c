@@ -192,7 +192,7 @@ xmlSecMSCryptoConvertNumber(const xmlChar *in, int inBase, int outBase) {
     xmlChar ch;
     long k, n;
     
-    xmlSecAssert2(dec != NULL, NULL);
+    xmlSecAssert2(in != NULL, NULL);
     xmlSecAssert2(inBase > 0, NULL);
     xmlSecAssert2(outBase > 0, NULL);
     xmlSecAssert2(outBase < sizeof(xmlSecMSCryptoRevLookupTable), NULL);
@@ -238,7 +238,7 @@ xmlSecMSCryptoConvertNumber(const xmlChar *in, int inBase, int outBase) {
 	ch = in[--i];
 
 	/* todo: check that it is in the lookup table range */
-	n = xmlSecMSCryptoHexLookupTable(ch);
+	n = xmlSecMSCryptoHexLookupTable[ch];
 	if((n < 0) || (n >= inBase)) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -252,13 +252,13 @@ xmlSecMSCryptoConvertNumber(const xmlChar *in, int inBase, int outBase) {
 	while((k >= outBase) && (j > 0)) {
 	    n = k % outBase;
 	    k = k / outBase;
-	    out[--j] = xmlSecMSCryptoRevLookupTable(n); /* n < outBase */
+	    out[--j] = xmlSecMSCryptoRevLookupTable[n]; /* n < outBase */
 	}
     }
     
     /* do not forget the last digit */
     if(k != 0) {
-	xmlSecAssert2(k < outBase);
+	xmlSecAssert2(k < outBase, NULL);
 	if(j == 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -268,7 +268,7 @@ xmlSecMSCryptoConvertNumber(const xmlChar *in, int inBase, int outBase) {
 	    xmlFree(out);
 	    return(NULL);
 	}
-	out[--j] = xmlSecMSCryptoRevLookupTable(k);
+	out[--j] = xmlSecMSCryptoRevLookupTable[k];
     }
     
     /* finally move everything to the beggining of the string */
@@ -291,8 +291,8 @@ xmlSecMSCryptoHexToDec(const xmlChar *hex) {
 
 int
 xmlSecMSCryptoWordbaseSwap(xmlChar *s) {
-    xmlChar tmp;
     size_t len, i, j;
+    xmlChar ch;
 
     xmlSecAssert2(s != NULL, -1);
     

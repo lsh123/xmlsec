@@ -1993,7 +1993,7 @@ xmlSecMSCryptoASN1IntegerWrite(PCRYPT_INTEGER_BLOB num) {
      * This code is purely based upon trial and error :( WK
      */
     ret = xmlSecMSCryptoWordbaseSwap(hexres);
-    if(res < 0) {
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecMSCryptoWordbaseSwap",

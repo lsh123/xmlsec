@@ -502,8 +502,11 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 	     * convert from lsb, instead of a byte based swap... 
 	     * This code is purely based upon trial and error :( WK
 	     */
-	    thexserial = xmlSecMSCryptoWordbaseSwap(thexserial);
-	    if (NULL == thexserial) continue;
+	    ret = xmlSecMSCryptoWordbaseSwap(thexserial);
+	    if (ret < 0) {
+		xmlFree(thexserial);
+		continue;
+	    }
 	    tserial = xmlSecMSCryptoHexToDec(thexserial);
 	    xmlFree(thexserial);
 	    if (NULL == tserial) continue;

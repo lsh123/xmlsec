@@ -5,6 +5,7 @@ SUBDIRS = include src apps tests
 bin_SCRIPTS = xmlsec-config
 
 EXTRA_DIST = \
+	globals.h \
 	docs \
 	NEWS \
 	ChangeLog \

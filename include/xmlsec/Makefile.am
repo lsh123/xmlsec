@@ -14,6 +14,7 @@ errors.h \
 io.h \
 keyinfo.h \
 keys.h \
+keyvalue.h \
 keysInternal.h \
 keysmngr.h \
 membuf.h \

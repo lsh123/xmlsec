@@ -25,6 +25,7 @@ io.c \
 keyinfo.c \
 keys.c \
 keysmngr.c \
+keyvalue.c \
 membuf.c \
 nodeset.c \
 transforms.c \

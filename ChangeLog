@@ -1,3 +1,9 @@
+Wed Oct  9 23:09:46 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* apps/xmlsec.c include/xmlsec/x509.h src/keysmngr.c
+	src/x509.c: added support for certificate verification parameter
+	when OpenSSL 0.9.7 is used
+
 Wed Oct  9 20:58:58 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/keyinfo.h include/xmlsec/keys.h 

@@ -45,6 +45,7 @@ struct _xmlSecX509Data {
 };
 
 struct _xmlSecX509Store {
+    unsigned long	x509_store_flags;
     X509_STORE		*xst;
     STACK_OF(X509)	*untrusted;
     STACK_OF(X509_CRL)	*crls;

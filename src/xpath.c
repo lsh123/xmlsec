@@ -886,7 +886,7 @@ xmlSecXPathDataReadNode	(xmlSecXPathDataPtr data, const xmlNodePtr node) {
 			xmlStrlen(expr) + xmlStrlen(xpathPattern) + 1);
     	    return(-1);
         }
-        sprintf((char*)data->expr, (char*) xpathPattern, expr);	
+        sprintf((char*)data->expr, (char*)xpathPattern, expr);	
         xmlFree(expr);
 	break;
     case xmlSecXPathTypeXPath2:

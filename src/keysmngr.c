@@ -714,11 +714,7 @@ xmlSecSimpleKeysMngrSetCertsFlags(xmlSecKeysMngrPtr mngr, unsigned long flags) {
     xmlSecAssert(mngr != NULL);
     xmlSecAssert(mngr->x509Data != NULL);
 
-#ifndef XMLSEC_OPENSSL096
-    if(((xmlSecX509StorePtr)mngr->x509Data)->xst) {
-	X509_STORE_set_flags(((xmlSecX509StorePtr)mngr->x509Data)->xst, flags);
-    }	
-#endif  /* XMLSEC_OPENSSL096 */
+    ((xmlSecX509StorePtr)mngr->x509Data)->x509_store_flags = flags;
 }
 
 

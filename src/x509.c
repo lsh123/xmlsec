@@ -1031,11 +1031,14 @@ xmlSecX509StoreVerify(xmlSecX509StorePtr store, xmlSecX509DataPtr x509Data) {
 		X509_STORE_CTX xsc; 
     
 		X509_STORE_CTX_init (&xsc, store->xst, cert, certs);
-#ifndef XMLSEC_OPENSSL096
-		if(store->xst->flags & X509_V_FLAG_USE_CHECK_TIME) {
-		    X509_STORE_CTX_set_time(&xsc, 0, x509Data->certsVerificationTime);
+		if(store->x509_store_flags & X509_V_FLAG_USE_CHECK_TIME) {
+		    X509_STORE_CTX_set_time(&xsc, 0, 
+			x509Data->certsVerificationTime);
 		}
-#endif /* XMLSEC_OPENSSL096 */
+		if((store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME)) != 0) {
+		    X509_STORE_CTX_set_flags(&xsc, 
+			store->x509_store_flags & (~X509_V_FLAG_USE_CHECK_TIME));
+		}
 		ret = X509_verify_cert(&xsc); 
 		X509_STORE_CTX_cleanup (&xsc);  
 

@@ -514,7 +514,6 @@ int main(int argc, char **argv) {
 	    ret = readPEMCertificate(argv[++pos], 1);
 	} else if((strcmp(argv[pos], "--untrusted") == 0) && (pos + 1 < argc)) {	
 	    ret = readPEMCertificate(argv[++pos], 0);
-#ifndef XMLSEC_OPENSSL096
 #ifndef XMLSEC_NO_STRPTIME
 	} else if((strcmp(argv[pos], "--verificaiton-time") == 0) && (pos + 1 < argc)) {
 	    time_t t = 0;
@@ -538,7 +537,6 @@ int main(int argc, char **argv) {
     		ret = -1;
 	    }
 #endif /* XMLSEC_NO_STRPTIME */
-#endif /* XMLSEC_OPENSSL096 */
 	} else 
 
 	/**

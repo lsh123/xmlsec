@@ -542,7 +542,7 @@ uninstall :
 BDVERSION = $(XMLSEC_VERSION_MAJOR).$(XMLSEC_VERSION_MINOR).$(XMLSEC_VERSION_SUBMINOR)
 BDPREFIX = $(XMLSEC_BASENAME)-$(BDVERSION).win32
 bindist : all
-	$(MAKE) /nologo PREFIX=$(BDPREFIX) BINPREFIX=$(BDPREFIX)\util install
+	$(MAKE) /nologo PREFIX=$(BDPREFIX) SOPREFIX=$(BDPREFIX)\bin install
 	cscript //NoLogo configure.js genreadme $(XMLSEC_BASENAME) $(BDVERSION) $(BDPREFIX)\readme.txt
 
 # Makes the compiler output directory.

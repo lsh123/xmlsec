@@ -458,6 +458,107 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
     return(0);
 }
 
+
+/** 
+ * xmlSecMSCryptoX509StoreAdoptKeyStore: 
+ * @store:              the pointer to X509 key data store klass.
+ * @keyStore:           the pointer to keys store.
+ *
+ * Adds @keyStore to the list of key stores.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int	
+xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
+    xmlSecMSCryptoX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
+    xmlSecAssert2( keyStore != NULL, -1);
+
+    ctx = xmlSecMSCryptoX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
+
+	if(!CertAddStoreToCollection ( ctx->trusted , keyStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2)) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "CertAddStoreToCollection",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	}
+
+    return(0);
+}
+
+/** 
+ * xmlSecMSCryptoX509StoreAdoptTrustedStore: 
+ * @store:              the pointer to X509 key data store klass.
+ * @trustedStore:       the pointer to certs store.
+ *
+ * Adds @trustedStore to the list of trusted certs stores.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE trustedStore) {
+    xmlSecMSCryptoX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
+    xmlSecAssert2( trustedStore != NULL, -1);
+
+    ctx = xmlSecMSCryptoX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->trusted != NULL, -1);
+
+	if( !CertAddStoreToCollection ( ctx->trusted , trustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 3 ) ) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "CertAddStoreToCollection",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	}
+
+    return(0);
+}
+
+/** 
+ * xmlSecMSCryptoX509StoreAdoptTrustedStore: 
+ * @store:              the pointer to X509 key data store klass.
+ * @untrustedStore:     the pointer to certs store.
+ *
+ * Adds @trustedStore to the list of un-trusted certs stores.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE untrustedStore) {
+    xmlSecMSCryptoX509StoreCtxPtr ctx;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
+    xmlSecAssert2( untrustedStore != NULL, -1);
+
+    ctx = xmlSecMSCryptoX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->untrusted != NULL, -1);
+
+	if( !CertAddStoreToCollection ( ctx->untrusted , untrustedStore , CERT_PHYSICAL_STORE_ADD_ENABLE_FLAG , 2 ) ) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "CertAddStoreToCollection",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	}
+
+	return(0);
+}
+
+
 static int
 xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;

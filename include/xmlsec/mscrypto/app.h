@@ -37,6 +37,15 @@ XMLSEC_CRYPTO_EXPORT int 	xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr
 									 const char* filename,
 									 xmlSecKeyDataType type);
 #ifndef XMLSEC_NO_X509
+XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(xmlSecKeysMngrPtr mngr,
+                                     HCERTSTORE keyStore);
+
+XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, 
+                                     HCERTSTORE trustedStore);
+
+XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr,
+                                    HCERTSTORE untrustedStore);
+
 XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeysMngrCertLoad	(xmlSecKeysMngrPtr mngr, 
 									 const char *filename, 
 									 xmlSecKeyDataFormat format, 
@@ -51,6 +60,7 @@ XMLSEC_CRYPTO_EXPORT int	xmlSecMSCryptoAppKeyCertLoadMemory	(xmlSecKeyPtr key,
 									 const xmlSecByte* data,
 									 xmlSecSize dataSize, 
 									 xmlSecKeyDataFormat format);*/
+
 #endif /* XMLSEC_NO_X509 */
 
 

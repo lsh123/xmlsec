@@ -77,6 +77,21 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptCert 	(xmlSecKeyDataStoreP
 										 PCCERT_CONTEXT cert,
 										 xmlSecKeyDataType type);
 
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptKeyStore (
+										xmlSecKeyDataStorePtr store,
+										HCERTSTORE keyStore
+								) ;
+
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptTrustedStore (
+										xmlSecKeyDataStorePtr store,
+										HCERTSTORE trustedStore
+								) ;
+
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptUntrustedStore (
+										xmlSecKeyDataStorePtr store,
+										HCERTSTORE untrustedStore
+								) ;
+
 
 #endif /* XMLSEC_NO_X509 */
 

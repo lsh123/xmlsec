@@ -909,6 +909,123 @@ xmlSecMSCryptoAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
     return(0);
 }
 
+/** 
+ * xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore: 
+ * @mngr: 		        the keys manager.
+ * @keyStore:           the pointer to keys store.
+ *
+ * Adds @keyStore to the list of key stores in the keys manager @mngr.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(xmlSecKeysMngrPtr mngr, HCERTSTORE keyStore)
+{
+	xmlSecKeyDataStorePtr x509Store ;
+
+	xmlSecAssert2( mngr != NULL, -1 ) ;
+	xmlSecAssert2( keyStore != NULL, -1 ) ;
+
+    x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId) ;
+	if( x509Store == NULL ) {
+		xmlSecError( XMLSEC_ERRORS_HERE ,
+			NULL ,
+			"xmlSecKeysMngrGetDataStore" ,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE ) ;
+		return(-1) ;
+	}
+
+	if( xmlSecMSCryptoX509StoreAdoptKeyStore( x509Store, keyStore ) < 0 ) {
+		xmlSecError( XMLSEC_ERRORS_HERE ,
+			xmlSecErrorsSafeString( xmlSecKeyDataStoreGetName( x509Store ) ) ,
+			"xmlSecMSCryptoX509StoreAdoptKeyStore" ,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE ) ;
+		return(-1) ;
+	}
+
+	return (0) ;
+}
+
+/** 
+ * xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore: 
+ * @mngr: 		        the keys manager.
+ * @trustedStore:       the pointer to certs store.
+ *
+ * Adds @trustedStore to the list of trusted cert stores in the keys manager @mngr.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr, HCERTSTORE trustedStore)
+{
+	xmlSecKeyDataStorePtr x509Store ;
+
+	xmlSecAssert2( mngr != NULL, -1 ) ;
+	xmlSecAssert2( trustedStore != NULL, -1 ) ;
+
+    x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId ) ;
+	if( x509Store == NULL ) {
+		xmlSecError( XMLSEC_ERRORS_HERE ,
+			NULL ,
+			"xmlSecKeysMngrGetDataStore" ,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE ) ;
+		return(-1) ;
+	}
+
+	if( xmlSecMSCryptoX509StoreAdoptTrustedStore( x509Store, trustedStore ) < 0 ) {
+		xmlSecError( XMLSEC_ERRORS_HERE ,
+			xmlSecErrorsSafeString( xmlSecKeyDataStoreGetName( x509Store ) ) ,
+			"xmlSecMSCryptoX509StoreAdoptKeyStore" ,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE ) ;
+		return(-1) ;
+	}
+
+	return(0);
+}
+
+/** 
+ * xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore: 
+ * @mngr: 		        the keys manager.
+ * @untrustedStore:     the pointer to certs store.
+ *
+ * Adds @trustedStore to the list of un-trusted cert stores in the keys manager @mngr.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr, HCERTSTORE untrustedStore)
+{
+	xmlSecKeyDataStorePtr x509Store ;
+
+	xmlSecAssert2( mngr != NULL, -1 ) ;
+	xmlSecAssert2( untrustedStore != NULL, -1 ) ;
+
+    x509Store = xmlSecKeysMngrGetDataStore( mngr, xmlSecMSCryptoX509StoreId);
+	if( x509Store == NULL ) {
+		xmlSecError( XMLSEC_ERRORS_HERE ,
+			NULL ,
+			"xmlSecKeysMngrGetDataStore" ,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE ) ;
+		return(-1);
+	}
+
+	if( xmlSecMSCryptoX509StoreAdoptUntrustedStore( x509Store, untrustedStore ) < 0) {
+		xmlSecError( XMLSEC_ERRORS_HERE ,
+			xmlSecErrorsSafeString( xmlSecKeyDataStoreGetName( x509Store ) ) ,
+			"xmlSecMSCryptoX509StoreAdoptKeyStore" ,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED ,
+			XMLSEC_ERRORS_NO_MESSAGE ) ;
+		return(-1);
+	}
+
+	return(0) ;
+}
+
 #endif /* XMLSEC_NO_X509 */
 
 /**
@@ -954,12 +1071,12 @@ xmlSecMSCryptoAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
     ret = xmlSecMSCryptoKeysMngrInit(mngr);    
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecMSCryptoKeysMngrInit",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1); 
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecMSCryptoKeysMngrInit",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1); 
     }
     
     mngr->getKey = xmlSecKeysMngrGetKey;
@@ -1088,6 +1205,7 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
     
     return(0);
 }
+
 
 /**
  * xmlSecMSCryptoAppGetDefaultPwdCallback:

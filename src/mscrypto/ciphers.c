@@ -1247,8 +1247,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     }
     rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterial + 3);
 
-    /** 
-     * Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP. 
+    /* Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP. 
      * Base provider simple-key BLOBs are always encrypted with a key exchange public key. The pbData 
      * member of the SIMPLEBLOB is a sequence of bytes in the following format:
      * 

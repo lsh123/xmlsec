@@ -298,6 +298,14 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
+/**
+ * xmlSecCryptoDLInit:
+ * 
+ * Initializes dynamic loading engine. This is an internal function
+ * and should not be called by application directly.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecCryptoDLInit(void) {
     int ret;
@@ -326,6 +334,15 @@ xmlSecCryptoDLInit(void) {
     return(0);
 }
 
+
+/**
+ * xmlSecCryptoDLShutdown:
+ * 
+ * Shutdowns dynamic loading engine. This is an internal function
+ * and should not be called by application directly.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecCryptoDLShutdown(void) {
     int ret;

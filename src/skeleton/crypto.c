@@ -24,6 +24,13 @@
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecSkeletonFunctions = NULL;
 
+/**
+ * xmlSecCryptoGetFunctions_skeleton:
+ *
+ * Gets the pointer to xmlsec-skeleton functions table.
+ *
+ * Returns the xmlsec-skeleton functions table or NULL if an error occurs.
+ */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_skeleton(void) {
     static xmlSecCryptoDLFunctions functions;

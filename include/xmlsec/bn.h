@@ -22,6 +22,14 @@ extern "C" {
 typedef xmlSecBuffer						xmlSecBn,
 								*xmlSecBnPtr;
 
+/**
+ * xmlSecBnFormat:
+ * @xmlSecBnBase64:		the base64 decoded binary blob.
+ * @xmlSecBnHex:		the hex number.
+ * @xmlSecBnDec:		the decimal number.
+ *
+ * The big numbers formats.
+ */
 typedef enum {
     xmlSecBnBase64,
     xmlSecBnHex,
@@ -54,12 +62,12 @@ XMLSEC_EXPORT int		xmlSecBnFromDecString		(xmlSecBnPtr bn,
 XMLSEC_EXPORT xmlChar*		xmlSecBnToDecString		(xmlSecBnPtr bn);
 
 XMLSEC_EXPORT int		xmlSecBnMul			(xmlSecBnPtr bn,
-								 unsigned long n);
+								 int multiplier);
 XMLSEC_EXPORT int		xmlSecBnDiv			(xmlSecBnPtr bn,
-								 unsigned long n,
-								 unsigned long* mod);
-XMLSEC_EXPORT int		xmlSecBnAdd			(xmlSecBnPtr bn,
-								 unsigned long n);
+								 int divider,
+								 int* mod);
+XMLSEC_EXPORT int		xmlSecBnAdd			(xmlSecBnPtr bn, 
+								 int delta); 
 XMLSEC_EXPORT int		xmlSecBnReverse			(xmlSecBnPtr bn);
 XMLSEC_EXPORT int		xmlSecBnCompare			(xmlSecBnPtr bn,
 								 const xmlSecByte* data,
@@ -82,6 +90,7 @@ XMLSEC_EXPORT int 		xmlSecBnBlobSetNodeValue	(const xmlSecByte* data,
 								 xmlSecBnFormat format,
 								 int reverse,
 								 int addLineBreaks);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

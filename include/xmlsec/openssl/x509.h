@@ -22,6 +22,20 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 /**
+ * XMLSEC_STACK_OF_X509:
+ *
+ * Macro. To make docbook happy.
+ */
+#define XMLSEC_STACK_OF_X509		STACK_OF(X509)
+
+/**
+ * XMLSEC_STACK_OF_X509_CRL:
+ *
+ * Macro. To make docbook happy.
+ */
+#define XMLSEC_STACK_OF_X509_CRL	STACK_OF(X509_CRL)
+
+/**
  * xmlSecOpenSSLKeyDataX509Id:
  * 
  * The OpenSSL X509 data klass.
@@ -73,8 +87,8 @@ XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreFindCert	(xmlSecKeyDataStoreP
 									 xmlChar *ski,
 									 xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreVerify	(xmlSecKeyDataStorePtr store,
-									 STACK_OF(X509)* certs,
-									 STACK_OF(X509_CRL)* crls,
+									 XMLSEC_STACK_OF_X509* certs,
+									 XMLSEC_STACK_OF_X509_CRL* crls,
 									 xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAdoptCert	(xmlSecKeyDataStorePtr store,
 									 X509* cert,

@@ -403,8 +403,12 @@ xmlSecMSCryptoKeyDataGetType(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecMSCryptoCertDup:
+ * @pCert: 		the pointer to cert.
+ * 
+ * Duplicates the @pCert.
  *
- * Returns pointer to newly created PCCERT_CONTEXT object or NULL if an error occurs.
+ * Returns pointer to newly created PCCERT_CONTEXT object or 
+ * NULL if an error occurs.
  */
 PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
     PCCERT_CONTEXT ret;
@@ -427,6 +431,10 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
 
 /**
  * xmlSecMSCryptoCertAdopt:
+ * @pCert: 		the pointer to cert.
+ * @type:		the expected key type.
+ *
+ * Creates key data value from the cert.
  *
  * Returns pointer to newly created xmlsec key or NULL if an error occurs.
  */

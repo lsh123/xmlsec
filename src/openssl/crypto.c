@@ -29,6 +29,13 @@ static int 		xmlSecOpenSSLErrorsInit			(void);
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
 
+/**
+ * xmlSecCryptoGetFunctions_openssl:
+ *
+ * Gets the pointer to xmlsec-openssl functions table.
+ *
+ * Returns the xmlsec-openssl functions table or NULL if an error occurs.
+ */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_openssl(void) {
     static xmlSecCryptoDLFunctions functions;

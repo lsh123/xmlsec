@@ -36,32 +36,26 @@ extern "C" {
  *
  ****************************************************************************/
 /**
- * xmlSecCryptoAppInitMethod:
- * @config:		the path to crypto library configuration.
+ * xmlSecCryptoInitMethod:
  *
- * General crypto engine initialization method. This function is used
- * by XMLSec command line utility and called before 
- * @xmlSecInit function.
+ * xmlsec-crypto libraryinitialization method. 
  *
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int 			(*xmlSecCryptoInitMethod)		(void);
 /**
- * xmlSecCryptoAppShutdownMethod:
+ * xmlSecCryptoShutdownMethod:
  * 
- * General crypto engine shutdown method. This function is used
- * by XMLSec command line utility and called after 
- * @xmlSecShutdown function.
+ * xmlsec-crypto library shutdown method. 
  *
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int 			(*xmlSecCryptoShutdownMethod)		(void);
 /**
- * xmlSecCryptoAppDefaultKeysMngrInitMethod:
+ * xmlSecCryptoKeysMngrInitMethod:
  * @mngr: 		the pointer to keys manager.
  *
- * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
- * and a default crypto key data stores.
+ * Initializes @mngr with xmlsec-crypto library specific data.
  *
  * Returns 0 on success or a negative value otherwise.
  */ 
@@ -368,10 +362,14 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @cryptoAppDefaultKeysMngrAdoptKey:	the default keys manager adopt key method.
  * @cryptoAppDefaultKeysMngrLoad:	the default keys manager load method.
  * @cryptoAppDefaultKeysMngrSave:	the default keys manager save method.
- * @cryptoAppKeysMngrCertLoad:		the default keys manager cert load method.
+ * @cryptoAppKeysMngrCertLoad:		the default keys manager file cert load method.
+ * @cryptoAppKeysMngrCertLoadMemory:	the default keys manager memory cert load method.
  * @cryptoAppKeyLoad:		the key file load method.
+ * @cryptoAppKeyLoadMemory:	the meory key load method.
  * @cryptoAppPkcs12Load:	the pkcs12 file load method.
+ * @cryptoAppPkcs12LoadMemory:	the memory pkcs12 load method.
  * @cryptoAppKeyCertLoad:	the cert file load method.
+ * @cryptoAppKeyCertLoadMemory:	the memory cert load method.
  * @cryptoAppDefaultPwdCallback:the default password callback.
  * 
  * The list of crypto engine functions, key data and transform classes.

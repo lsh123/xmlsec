@@ -172,7 +172,7 @@ int
 xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     xmlSecSize i, len;
     xmlSecByte ch;
-    int n;
+    int nn;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
@@ -209,8 +209,8 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 	}
 
 	xmlSecAssert2(ch <= sizeof(xmlSecBnLookupTable), -1);
-	n = xmlSecBnLookupTable[ch];
-	if((n < 0) || ((xmlSecSize)n > base)) {
+	nn = xmlSecBnLookupTable[ch];
+	if((nn < 0) || ((xmlSecSize)nn > base)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			NULL,
@@ -230,7 +230,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 	    return (-1);
 	}
 
-	ret = xmlSecBnAdd(bn, n);
+	ret = xmlSecBnAdd(bn, nn);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -258,7 +258,7 @@ xmlChar*
 xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     xmlChar* res;
     xmlSecSize i, len;
-    unsigned long n;
+    int nn;
     xmlChar ch;
 
     xmlSecAssert2(bn != NULL, NULL);
@@ -283,7 +283,7 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     memset(res, 0, len + 1);
 
     for(i = 0; (xmlSecBufferGetSize(bn) > 0) && (i < len); i++) {
-	if(xmlSecBnDiv(bn, base, &n) < 0) {
+	if(xmlSecBnDiv(bn, base, &nn) < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecBnDiv",
@@ -292,8 +292,8 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 	    xmlFree(res);
     	    return (NULL);
 	}
-	xmlSecAssert2(n < sizeof(xmlSecBnRevLookupTable), NULL);
-	res[i] = xmlSecBnRevLookupTable[n];
+	xmlSecAssert2(nn < sizeof(xmlSecBnRevLookupTable), NULL);
+	res[i] = xmlSecBnRevLookupTable[nn];
     }
     xmlSecAssert2(i < len, NULL);
 
@@ -369,28 +369,29 @@ xmlSecBnToDecString(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnMul:
- * @bn:		the pointer to BN.
- * @n:		the integer to multiply @bn by.
+ * @bn:			the pointer to BN.
+ * @multiplier:		the multiplier.
  *
- * Multiplies @bn with @n.
+ * Multiplies @bn with @multiplier.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBnMul(xmlSecBnPtr bn, unsigned long n) {
+xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     xmlSecByte* data;
-    unsigned long over;
+    int over;
     xmlSecSize i;
     xmlSecByte ch;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
+    xmlSecAssert2(multiplier > 0, -1);
 
     data = xmlSecBufferGetData(bn);
     for(over = 0, i = xmlSecBufferGetSize(bn); i > 0;) {
 	xmlSecAssert2(data != NULL, -1);
 
-	over	= over + n * data[--i];
+	over	= over + multiplier * data[--i];
 	data[i]	= over % 256;
 	over	= over / 256;
     }
@@ -416,21 +417,22 @@ xmlSecBnMul(xmlSecBnPtr bn, unsigned long n) {
 /**
  * xmlSecBnDiv:
  * @bn:		the pointer to BN.
- * @n:		the integer to divide @bn by.
+ * @divider:	the divider
  * @mod:	the pointer for modulus result.
  *
- * Divides @bn by @n and places modulus into @mod.
+ * Divides @bn by @divider and places modulus into @mod.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBnDiv(xmlSecBnPtr bn, unsigned long n, unsigned long* mod) {
-    unsigned long over;
+xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
+    int over;
     xmlSecSize i, size;
     xmlSecByte* data;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
+    xmlSecAssert2(divider > 0, -1);
     xmlSecAssert2(mod != NULL, -1);
 
     data = xmlSecBufferGetData(bn);
@@ -439,8 +441,8 @@ xmlSecBnDiv(xmlSecBnPtr bn, unsigned long n, unsigned long* mod) {
 	xmlSecAssert2(data != NULL, -1);
 
 	over	= over * 256 + data[i];
-	data[i]	= over / n;
-	over	= over % n;
+	data[i]	= over / divider;
+	over	= over % divider;
     }
     (*mod) = over;
     
@@ -469,24 +471,25 @@ xmlSecBnDiv(xmlSecBnPtr bn, unsigned long n, unsigned long* mod) {
 /**
  * xmlSecBnAdd:
  * @bn:		the pointer to BN.
- * @n:		the integer to add to @bn.
+ * @delta:	the delta.
  *
- * Adds @n to @bn.
+ * Adds @delta to @bn.
  *
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecBnAdd(xmlSecBnPtr bn, unsigned long n) {
-    unsigned long over;
+xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
+    int over;
     xmlSecByte* data;
     xmlSecSize i;
     xmlSecByte ch;
     int ret;
 
     xmlSecAssert2(bn != NULL, -1);
+    xmlSecAssert2(nn > 0, -1);
 
     data = xmlSecBufferGetData(bn);
-    for(over = n, i = xmlSecBufferGetSize(bn); i > 0;) {
+    for(over = nn, i = xmlSecBufferGetSize(bn); i > 0;) {
 	xmlSecAssert2(data != NULL, -1);
 	
 	over   += data[--i];
@@ -513,7 +516,7 @@ xmlSecBnAdd(xmlSecBnPtr bn, unsigned long n) {
 }
 
 /**
- * xmlSecBnAdd:
+ * xmlSecBnReverse:
  * @bn:		the pointer to BN.
  *
  * Reverses bytes order in @bn.
@@ -740,14 +743,12 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 }
 
 /**
- * xmlSecBnGetNodeValue:
- * @bn:		the pointer to BN.
- * @cur:	the poitner to an XML node.
- * @format:	the BN format.
- * @reverse:	the flag that indicates whether to reverse the buffer before writing.
- * @addLineBreaks:  if the flag is equal to 1 then 
- *		linebreaks will be added before and after
- *		new buffer content.
+ * xmlSecBnSetNodeValue:
+ * @bn:			the pointer to BN.
+ * @cur:		the poitner to an XML node.
+ * @format:		the BN format.
+ * @reverse:		the flag that indicates whether to reverse the buffer before writing.
+ * @addLineBreaks:  	the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
  *
  * Converts the @bn and sets it to node content.
  *

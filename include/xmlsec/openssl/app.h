@@ -64,7 +64,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppKeyLoad		(const char *filename, 
 									 xmlSecKeyDataFormat format,
 									 const char *pwd,
-									 void* wdCallback,
+									 void* pwdCallback,
 									 void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr	xmlSecOpenSSLAppKeyLoadMemory	(const xmlSecByte* data,
 									 xmlSecSize dataSize, 

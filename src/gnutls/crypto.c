@@ -25,6 +25,13 @@
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
 
+/**
+ * xmlSecCryptoGetFunctions_gnutls:
+ *
+ * Gets the pointer to xmlsec-gnutls functions table.
+ *
+ * Returns the xmlsec-gnutls functions table or NULL if an error occurs.
+ */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gnutls(void) {
     static xmlSecCryptoDLFunctions functions;

@@ -155,9 +155,9 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformKWAes192GetKlass	(void);
 #define xmlSecTransformKWAes256Id		xmlSecTransformKWAes256GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformKWAes256GetKlass	(void);	
 /**
- * xmlSecKeyDataDesId:
+ * xmlSecTransformDes3CbcId:
  * 
- * The DES key klass.
+ * The Triple DES encryption transform klass.
  */
 #define xmlSecTransformDes3CbcId		xmlSecTransformDes3CbcGetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformDes3CbcGetKlass	(void);	
@@ -169,9 +169,9 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformDes3CbcGetKlass	(void);
 #define xmlSecTransformKWDes3Id			xmlSecTransformKWDes3GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformKWDes3GetKlass	(void);
 /**
- * xmlSecKeyDataDsaId:
+ * xmlSecTransformDsaSha1Id:
  * 
- * The DSA key klass.
+ * The DSA-SHA1 signature transform klass.
  */
 #define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformDsaSha1GetKlass	(void);	

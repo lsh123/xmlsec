@@ -164,8 +164,8 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
  * Returns pointer to the first verified certificate from @certs.
  */ 
 X509* 	
-xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, STACK_OF(X509)* certs,
-			     STACK_OF(X509_CRL)* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
+xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs,
+			     XMLSEC_STACK_OF_X509_CRL* crls, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     STACK_OF(X509)* certs2 = NULL;
     STACK_OF(X509_CRLS)* crls2 = NULL;

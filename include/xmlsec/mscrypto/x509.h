@@ -28,21 +28,20 @@ extern "C" {
 	xmlSecMSCryptoKeyDataX509GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataX509GetKlass(void);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetKeyCert(xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, 
-									      PCCERT_CONTEXT pCertContext);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetKeyCert	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataX509AdoptKeyCert	(xmlSecKeyDataPtr data, 
+									        PCCERT_CONTEXT cert);
+XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCert	(xmlSecKeyDataPtr data,
+										 PCCERT_CONTEXT cert);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetCert    	(xmlSecKeyDataPtr data,
+									         xmlSecSize pos);
+XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCertsSize	(xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data,
-									   PCCERT_CONTEXT pCertContext);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetCert    (xmlSecKeyDataPtr data,
-									     xmlSecSize pos);
-XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data);
-
-XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data,
-									 PCCRL_CONTEXT crl);
-XMLSEC_CRYPTO_EXPORT PCCRL_CONTEXT	xmlSecMSCryptoKeyDataX509GetCrl	(xmlSecKeyDataPtr data,
-									 xmlSecSize pos);
-XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCrl	(xmlSecKeyDataPtr data,
+										 PCCRL_CONTEXT crl);
+XMLSEC_CRYPTO_EXPORT PCCRL_CONTEXT	xmlSecMSCryptoKeyDataX509GetCrl		(xmlSecKeyDataPtr data,
+										 xmlSecSize pos);
+XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCrlsSize	(xmlSecKeyDataPtr data);
 
 
 /**
@@ -75,8 +74,8 @@ XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoX509StoreVerify		(xmlSecKeyDa
 									 	 HCERTSTORE certs,
 									 	 xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptCert 	(xmlSecKeyDataStorePtr store,
-																			  PCCERT_CONTEXT pCertContext,
-																			  xmlSecKeyDataType type);
+										 PCCERT_CONTEXT cert,
+										 xmlSecKeyDataType type);
 
 
 #endif /* XMLSEC_NO_X509 */

@@ -19,9 +19,12 @@
 #include <xmlsec/object.h>
 #include <xmlsec/errors.h>
 
+/* klasses hierarchy */
 static	void 		xmlSecObjKlassRegisterRecursive		(xmlSecPtr buf, 
 								 size_t size, 
 								 xmlSecObjKlassPtr klass);
+
+/* objects constructors/destructors */
 static int		xmlSecObjNewRecursive			(xmlSecObjPtr newObj, 
 								 xmlSecObjKlassPtr klass);
 static int		xmlSecObjDuplicateRecursive		(xmlSecObjPtr newObj,
@@ -30,7 +33,7 @@ static int		xmlSecObjDuplicateRecursive		(xmlSecObjPtr newObj,
 static void		xmlSecObjDeleteRecursive		(xmlSecObjPtr obj, 
 								 xmlSecObjKlassPtr klass);
 
-
+/* base object implementation */
 static void		xmlSecObjKlassInitImp			(xmlSecObjKlassPtr klass);
 static void		xmlSecObjDebugDumpImp			(xmlSecObjPtr obj, 
 								 FILE* output, 
@@ -67,7 +70,10 @@ xmlSecObjKlassRegister(xmlSecPtr buf, size_t size, xmlSecObjKlassInfoPtr klassIn
     xmlSecAssert2(buf != NULL, NULL);
     xmlSecAssert2(xmlSecObjKlassInfoIsValid(klassInfo), NULL);
     xmlSecAssert2(klassInfo->klassSize == size, NULL);
-    
+
+    /* clean buffer */
+    memset(buf, 0, size);
+        
     /* init all parents */
     if(parent != NULL) {
 	xmlSecAssert2(xmlSecObjKlassIsValid(parent), NULL);

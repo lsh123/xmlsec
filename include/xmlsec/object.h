@@ -34,7 +34,7 @@ typedef struct _xmlSecObj				xmlSecObj,
  ********************************************************************/
 /* macros used for creating klass/object specific ones */	
 #define xmlSecObjKlassCastMacro(klass, dstKlass, dstKlassName) \
-	((dstKlassName)xmlSecObjKlassCheckCastFunc((klass), (dstKlass)))
+	((dstKlassName)xmlSecObjKlassCheckCastFunc((xmlSecObjKlassPtr)(klass), (dstKlass)))
 #define xmlSecObjKlassCheckCastMacro(klass, dstKlass) \
 	(xmlSecObjKlassCastMacro((klass), (dstKlass), xmlSecPtr) != (xmlSecPtr)NULL)
 #define xmlSecObjCastMacro(obj, dstKlass, dstObjName) \
@@ -58,22 +58,22 @@ XMLSEC_EXPORT xmlSecObjKlassPtr 	xmlSecObjKlassRegister	   (xmlSecPtr buf,
 								    xmlSecObjKlassPtr parent);
 XMLSEC_EXPORT const char*		xmlSecObjKlassGetKlassName (xmlSecObjKlassPtr klass);
 XMLSEC_EXPORT xmlSecObjKlassPtr		xmlSecObjKlassCheckCastFunc(xmlSecObjKlassPtr klass,
-								    xmlSecObjKlassPtr dst);
+    								    xmlSecObjKlassPtr dst);
 
 /*********************************************************************
  *
  * Klass Info
  *
  *********************************************************************/
-typedef void	(*xmlSecObjKlassInitMethod)		(xmlSecObjKlassPtr klass);
-typedef void	(*xmlSecObjKlassFinalizeMethod)		(xmlSecObjKlassPtr klass);
-typedef int	(*xmlSecObjKlassConstructorMethod)	(xmlSecObjKlassPtr klass,
-							 xmlSecObjPtr obj);
-typedef int	(*xmlSecObjKlassDuplicatorMethod)	(xmlSecObjKlassPtr klass,
-							 xmlSecObjPtr dst, 
-							 xmlSecObjPtr src);
-typedef void	(*xmlSecObjKlassDestructorMethod)	(xmlSecObjKlassPtr klass,
-							 xmlSecObjPtr dst);
+typedef void		(*xmlSecObjKlassInitMethod)		(xmlSecObjKlassPtr klass);
+typedef void		(*xmlSecObjKlassFinalizeMethod)		(xmlSecObjKlassPtr klass);
+typedef int		(*xmlSecObjKlassConstructorMethod)	(xmlSecObjKlassPtr klass,
+								 xmlSecObjPtr obj);
+typedef int		(*xmlSecObjKlassDuplicatorMethod)	(xmlSecObjKlassPtr klass,
+						    	         xmlSecObjPtr dst, 
+								 xmlSecObjPtr src);
+typedef void		(*xmlSecObjKlassDestructorMethod)	(xmlSecObjKlassPtr klass,
+						    		 xmlSecObjPtr dst);
 
 struct _xmlSecObjKlassInfo {
     /* klass data */
@@ -101,7 +101,7 @@ XMLSEC_EXPORT void			xmlSecObjDelete		(xmlSecObjPtr obj);
 
 /*********************************************************************
  *
- * Base Klass 
+ * Base Object
  *
  *********************************************************************/
 #define xmlSecObjKlassId 		xmlSecObjKlassGet()
@@ -110,9 +110,9 @@ XMLSEC_EXPORT void			xmlSecObjDelete		(xmlSecObjPtr obj);
 #define xmlSecObjCast(obj) 		xmlSecObjCastMacro((obj), xmlSecObjKlassId, xmlSecObjPtr)
 #define xmlSecObjCheckCast(obj) 	xmlSecObjCheckCastMacro((obj), xmlSecObjKlassId)
 	
-typedef void 	(*xmlSecObjDebugDumpMethod)		(xmlSecObjPtr obj,
-							 FILE* output,
-							 size_t level);
+typedef void 		(*xmlSecObjDebugDumpMethod)		(xmlSecObjPtr obj,
+								 FILE* output,
+								 size_t level);
 struct _xmlSecObjKlass {
     xmlSecObjKlassInfoPtr		klassInfo;
     xmlSecObjKlassPtr			klassParent;
@@ -134,7 +134,7 @@ XMLSEC_EXPORT void			xmlSecObjDebugXmlDump	(xmlSecObjPtr obj,
 								 size_t level);
 XMLSEC_EXPORT void			xmlSecObjDebugIndent	(FILE* output,
 								 size_t level);
-	
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

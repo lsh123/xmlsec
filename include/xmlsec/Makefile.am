@@ -20,6 +20,7 @@ keysmngr.h \
 membuf.h \
 nodeset.h \
 object.h \
+serializable.h \
 transforms.h \
 transformsInternal.h \
 version.h \

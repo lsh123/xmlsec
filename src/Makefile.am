@@ -28,7 +28,8 @@ keysmngr.c \
 keyvalue.c \
 membuf.c \
 nodeset.c \
-object.h \
+object.c \
+serializable.c \
 transforms.c \
 x509.c \
 xmldsig.c \

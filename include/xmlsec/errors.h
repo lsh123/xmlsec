@@ -56,6 +56,12 @@ extern "C" {
  */
 #define XMLSEC_ERRORS_R_IO_FAILED		 6
 /**
+ * XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED:
+ *
+ * An XMLSec object failed.
+ */
+#define XMLSEC_ERRORS_R_XMLSEC_OBJECT_FAILED	 7
+/**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM:
  * 
  * Invlaid transform.

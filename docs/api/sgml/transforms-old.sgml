@@ -1,0 +1,273 @@
+<refentry id="xmlsec-transforms-old">
+<refmeta>
+<refentrytitle>transforms-old</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>transforms-old</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+extern      xmlSecTransformId 		<link linkend="xmlSecC14NInclusive">xmlSecC14NInclusive</link>;
+extern      xmlSecTransformId 		<link linkend="xmlSecC14NInclusiveWithComments">xmlSecC14NInclusiveWithComments</link>;
+extern      xmlSecTransformId 		<link linkend="xmlSecC14NExclusive">xmlSecC14NExclusive</link>;
+extern      xmlSecTransformId 		<link linkend="xmlSecC14NExclusiveWithComments">xmlSecC14NExclusiveWithComments</link>;
+int         <link linkend="xmlSecC14NExclAddInclNamespaces">xmlSecC14NExclAddInclNamespaces</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *prefixList);
+extern      xmlSecTransformId 		<link linkend="xmlSecTransformEnveloped">xmlSecTransformEnveloped</link>;
+enum        <link linkend="xmlSecXPath2TransformType">xmlSecXPath2TransformType</link>;
+extern      xmlSecTransformId 		<link linkend="xmlSecTransformXPath">xmlSecTransformXPath</link>;
+extern      xmlSecTransformId 		<link linkend="xmlSecTransformXPath2">xmlSecTransformXPath2</link>;
+extern      xmlSecTransformId 		<link linkend="xmlSecTransformXPointer">xmlSecTransformXPointer</link>;
+int         <link linkend="xmlSecTransformXPathAdd">xmlSecTransformXPathAdd</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **namespaces);
+int         <link linkend="xmlSecTransformXPath2Add">xmlSecTransformXPath2Add</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             <link linkend="xmlSecXPath2TransformType">xmlSecXPath2TransformType</link> type,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **namespaces);
+int         <link linkend="xmlSecTransformXPointerAdd">xmlSecTransformXPointerAdd</link>      (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **namespaces);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecC14NInclusive">xmlSecC14NInclusive</title>
+<programlisting>extern xmlSecTransformId 		xmlSecC14NInclusive;
+</programlisting>
+<para>
+The regular (inclusive) C14N without comments transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecC14NInclusiveWithComments">xmlSecC14NInclusiveWithComments</title>
+<programlisting>extern xmlSecTransformId 		xmlSecC14NInclusiveWithComments;
+</programlisting>
+<para>
+The regular (inclusive) C14N with comments transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecC14NExclusive">xmlSecC14NExclusive</title>
+<programlisting>extern xmlSecTransformId 		xmlSecC14NExclusive;
+</programlisting>
+<para>
+The exclusive C14N without comments transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecC14NExclusiveWithComments">xmlSecC14NExclusiveWithComments</title>
+<programlisting>extern xmlSecTransformId 		xmlSecC14NExclusiveWithComments;
+</programlisting>
+<para>
+The exclusive C14N with comments transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecC14NExclAddInclNamespaces">xmlSecC14NExclAddInclNamespaces ()</title>
+<programlisting>int         xmlSecC14NExclAddInclNamespaces (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *prefixList);</programlisting>
+<para>
+Adds "inclusive" namespaces to the ExcC14N transform node <parameter>transformNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Transform&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>prefixList</parameter>&nbsp;:</entry>
+<entry> the white space delimited  list of namespace prefixes, 
+	where "<link linkend="default">default</link>" indicates the default namespace
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 if success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformEnveloped">xmlSecTransformEnveloped</title>
+<programlisting>extern xmlSecTransformId 		xmlSecTransformEnveloped;
+</programlisting>
+<para>
+The "enveloped" transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXPath2TransformType">enum xmlSecXPath2TransformType</title>
+<programlisting>typedef enum {
+    xmlSecXPathTransformIntersect = 0,
+    xmlSecXPathTransformSubtract,
+    xmlSecXPathTransformUnion
+} xmlSecXPath2TransformType;
+</programlisting>
+<para>
+The XPath2 transform types.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecXPathTransformIntersect</literal></entry>
+<entry> intersect.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecXPathTransformSubtract</literal></entry>
+<entry> subtract.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecXPathTransformUnion</literal></entry>
+<entry>  union.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformXPath">xmlSecTransformXPath</title>
+<programlisting>extern xmlSecTransformId 		xmlSecTransformXPath;
+</programlisting>
+<para>
+The XPath transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformXPath2">xmlSecTransformXPath2</title>
+<programlisting>extern xmlSecTransformId 		xmlSecTransformXPath2;
+</programlisting>
+<para>
+The XPath2 transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformXPointer">xmlSecTransformXPointer</title>
+<programlisting>extern xmlSecTransformId 		xmlSecTransformXPointer;
+</programlisting>
+<para>
+The XPointer transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformXPathAdd">xmlSecTransformXPathAdd ()</title>
+<programlisting>int         xmlSecTransformXPathAdd         (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **namespaces);</programlisting>
+<para>
+Writes XPath transform infromation to the &lt;dsig:Transform&gt; node 
+<parameter>transformNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<entry> the pointer to the &lt;dsig:Transform&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>expression</parameter>&nbsp;:</entry>
+<entry> the XPath expression.
+</entry></row>
+<row><entry align="right"><parameter>namespaces</parameter>&nbsp;:</entry>
+<entry> NULL terminated list of namespace prefix/href pairs.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformXPath2Add">xmlSecTransformXPath2Add ()</title>
+<programlisting>int         xmlSecTransformXPath2Add        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             <link linkend="xmlSecXPath2TransformType">xmlSecXPath2TransformType</link> type,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **namespaces);</programlisting>
+<para>
+Writes XPath2 transform infromation to the &lt;dsig:Transform&gt; node 
+<parameter>transformNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<entry> the pointer to the &lt;dsig:Transform&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> XPath2 transform type ("union", "intersect" or "subtract").
+</entry></row>
+<row><entry align="right"><parameter>expression</parameter>&nbsp;:</entry>
+<entry> the XPath expression.
+</entry></row>
+<row><entry align="right"><parameter>namespaces</parameter>&nbsp;:</entry>
+<entry> NULL terminated list of namespace prefix/href pairs.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformXPointerAdd">xmlSecTransformXPointerAdd ()</title>
+<programlisting>int         xmlSecTransformXPointerAdd      (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *expression,
+                                             const <link linkend="xmlChar">xmlChar</link> **namespaces);</programlisting>
+<para>
+Writes XPoniter transform infromation to the &lt;dsig:Transform&gt; node 
+<parameter>transformNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<entry> the pointer to the &lt;dsig:Transform&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>expression</parameter>&nbsp;:</entry>
+<entry> the XPath expression.
+</entry></row>
+<row><entry align="right"><parameter>namespaces</parameter>&nbsp;:</entry>
+<entry> NULL terminated list of namespace prefix/href pairs.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 for success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,443 @@
+<refentry id="xmlsec-buffer">
+<refmeta>
+<refentrytitle>buffer</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>buffer</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+struct      <link linkend="xmlSecBuffer">xmlSecBuffer</link>;
+<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecBufferCreate">xmlSecBufferCreate</link>          (<link linkend="size-t">size_t</link> size);
+void        <link linkend="xmlSecBufferDestroy">xmlSecBufferDestroy</link>             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
+int         <link linkend="xmlSecBufferInitialize">xmlSecBufferInitialize</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);
+void        <link linkend="xmlSecBufferFinalize">xmlSecBufferFinalize</link>            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
+unsigned char* <link linkend="xmlSecBufferGetData">xmlSecBufferGetData</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
+int         <link linkend="xmlSecBufferSetData">xmlSecBufferSetData</link>             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             unsigned char *data,
+                                             <link linkend="size-t">size_t</link> size);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecBufferGetSize">xmlSecBufferGetSize</link>             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
+int         <link linkend="xmlSecBufferSetSize">xmlSecBufferSetSize</link>             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecBufferGetMaxSize">xmlSecBufferGetMaxSize</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
+int         <link linkend="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);
+void        <link linkend="xmlSecBufferEmpty">xmlSecBufferEmpty</link>               (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
+int         <link linkend="xmlSecBufferAppend">xmlSecBufferAppend</link>              (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             unsigned char *data,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecBufferPrepend">xmlSecBufferPrepend</link>             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             unsigned char *data,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecBufferRemoveHead">xmlSecBufferRemoveHead</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecBufferRemoveTail">xmlSecBufferRemoveTail</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecBufferBase64NodeContentRead">xmlSecBufferBase64NodeContentRead</link>
+                                            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);
+int         <link linkend="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase64NodeContentWrite</link>
+                                            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             int columns);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecBuffer">struct xmlSecBuffer</title>
+<programlisting>struct xmlSecBuffer {
+    unsigned char* 	 data;
+    size_t 		 size;
+    size_t		 maxSize;
+    enum xmlSecAllocMode allocMode;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferCreate">xmlSecBufferCreate ()</title>
+<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecBufferCreate          (<link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferDestroy">xmlSecBufferDestroy ()</title>
+<programlisting>void        xmlSecBufferDestroy             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferInitialize">xmlSecBufferInitialize ()</title>
+<programlisting>int         xmlSecBufferInitialize          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferFinalize">xmlSecBufferFinalize ()</title>
+<programlisting>void        xmlSecBufferFinalize            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferGetData">xmlSecBufferGetData ()</title>
+<programlisting>unsigned char* xmlSecBufferGetData          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferSetData">xmlSecBufferSetData ()</title>
+<programlisting>int         xmlSecBufferSetData             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             unsigned char *data,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferGetSize">xmlSecBufferGetSize ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecBufferGetSize             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferSetSize">xmlSecBufferSetSize ()</title>
+<programlisting>int         xmlSecBufferSetSize             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferGetMaxSize">xmlSecBufferGetMaxSize ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecBufferGetMaxSize          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize ()</title>
+<programlisting>int         xmlSecBufferSetMaxSize          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferEmpty">xmlSecBufferEmpty ()</title>
+<programlisting>void        xmlSecBufferEmpty               (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferAppend">xmlSecBufferAppend ()</title>
+<programlisting>int         xmlSecBufferAppend              (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             unsigned char *data,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferPrepend">xmlSecBufferPrepend ()</title>
+<programlisting>int         xmlSecBufferPrepend             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             unsigned char *data,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferRemoveHead">xmlSecBufferRemoveHead ()</title>
+<programlisting>int         xmlSecBufferRemoveHead          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferRemoveTail">xmlSecBufferRemoveTail ()</title>
+<programlisting>int         xmlSecBufferRemoveTail          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferBase64NodeContentRead">xmlSecBufferBase64NodeContentRead ()</title>
+<programlisting>int         xmlSecBufferBase64NodeContentRead
+                                            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase64NodeContentWrite ()</title>
+<programlisting>int         xmlSecBufferBase64NodeContentWrite
+                                            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             int columns);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,1930 @@
+<refentry id="xmlsec-keysdata">
+<refmeta>
+<refentrytitle>keysdata</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>keysdata</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+typedef     <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>;
+typedef     <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>;
+typedef     <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link>;
+#define     <link linkend="xmlSecKeyDataUsageUnknown">xmlSecKeyDataUsageUnknown</link>
+#define     <link linkend="xmlSecKeyDataUsageKeyInfoNodeRead">xmlSecKeyDataUsageKeyInfoNodeRead</link>
+#define     <link linkend="xmlSecKeyDataUsageKeyInfoNodeWrite">xmlSecKeyDataUsageKeyInfoNodeWrite</link>
+#define     <link linkend="xmlSecKeyDataUsageKeyValueNodeRead">xmlSecKeyDataUsageKeyValueNodeRead</link>
+#define     <link linkend="xmlSecKeyDataUsageKeyValueNodeWrite">xmlSecKeyDataUsageKeyValueNodeWrite</link>
+#define     <link linkend="xmlSecKeyDataUsageRetrievalMethodNodeXml">xmlSecKeyDataUsageRetrievalMethodNodeXml</link>
+#define     <link linkend="xmlSecKeyDataUsageRetrievalMethodNodeBin">xmlSecKeyDataUsageRetrievalMethodNodeBin</link>
+#define     <link linkend="xmlSecKeyDataUsageAny">xmlSecKeyDataUsageAny</link>
+#define     <link linkend="xmlSecKeyDataUsageKeyInfoNode">xmlSecKeyDataUsageKeyInfoNode</link>
+#define     <link linkend="xmlSecKeyDataUsageKeyValueNode">xmlSecKeyDataUsageKeyValueNode</link>
+#define     <link linkend="xmlSecKeyDataUsageRetrievalMethodNode">xmlSecKeyDataUsageRetrievalMethodNode</link>
+typedef     <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>;
+#define     <link linkend="xmlSecKeyDataTypeUnknown">xmlSecKeyDataTypeUnknown</link>
+#define     <link linkend="xmlSecKeyDataTypeNone">xmlSecKeyDataTypeNone</link>
+#define     <link linkend="xmlSecKeyDataTypePublic">xmlSecKeyDataTypePublic</link>
+#define     <link linkend="xmlSecKeyDataTypePrivate">xmlSecKeyDataTypePrivate</link>
+#define     <link linkend="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</link>
+#define     <link linkend="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</link>
+int         <link linkend="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit</link>            (void);
+int         <link linkend="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault</link> (void);
+int         <link linkend="xmlSecKeyDataIdsRegister">xmlSecKeyDataIdsRegister</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
+void        <link linkend="xmlSecKeyDataIdsClear">xmlSecKeyDataIdsClear</link>           (void);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataIdsGetSize">xmlSecKeyDataIdsGetSize</link>         (void);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsGetId">xmlSecKeyDataIdsGetId</link>       (<link linkend="size-t">size_t</link> pos);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsFindByNode">xmlSecKeyDataIdsFindByNode</link>  (const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsFindByHref">xmlSecKeyDataIdsFindByHref</link>  (const <link linkend="xmlChar">xmlChar</link> *href,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdsFindByName">xmlSecKeyDataIdsFindByName</link>  (const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
+struct      <link linkend="xmlSecKeyData">xmlSecKeyData</link>;
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataCreate">xmlSecKeyDataCreate</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+void        <link linkend="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy</link>            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate</link>           (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="size-t">size_t</link> sizeBits);
+<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyDataGetType">xmlSecKeyDataGetType</link>      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataGetSize">xmlSecKeyDataGetSize</link>            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyDataGetIdentifier">xmlSecKeyDataGetIdentifier</link>   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+void        <link linkend="xmlSecKeyDataDebugDump">xmlSecKeyDataDebugDump</link>          (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecKeyDataDebugXmlDump">xmlSecKeyDataDebugXmlDump</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+int         <link linkend="xmlSecKeyDataXmlRead">xmlSecKeyDataXmlRead</link>            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> dataNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyDataXmlWrite">xmlSecKeyDataXmlWrite</link>           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> dataNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyDataBinRead">xmlSecKeyDataBinRead</link>            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyDataBinWrite">xmlSecKeyDataBinWrite</link>           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+#define     <link linkend="xmlSecKeyDataGetName">xmlSecKeyDataGetName</link>            (data)
+#define     <link linkend="xmlSecKeyDataIsValid">xmlSecKeyDataIsValid</link>            (data)
+#define     <link linkend="xmlSecKeyDataCheckId">xmlSecKeyDataCheckId</link>            (data, dataId)
+#define     <link linkend="xmlSecKeyDataCheckUsage">xmlSecKeyDataCheckUsage</link>         (data, usg)
+#define     <link linkend="xmlSecKeyDataCheckSize">xmlSecKeyDataCheckSize</link>          (data, size)
+#define     <link linkend="xmlSecKeyDataIdUnknown">xmlSecKeyDataIdUnknown</link>
+int         (<link linkend="xmlSecKeyDataInitMethod">*xmlSecKeyDataInitMethod</link>)      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         (<link linkend="xmlSecKeyDataDuplicateMethod">*xmlSecKeyDataDuplicateMethod</link>) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);
+void        (<link linkend="xmlSecKeyDataFinalizeMethod">*xmlSecKeyDataFinalizeMethod</link>)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         (<link linkend="xmlSecKeyDataXmlReadMethod">*xmlSecKeyDataXmlReadMethod</link>)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         (<link linkend="xmlSecKeyDataXmlWriteMethod">*xmlSecKeyDataXmlWriteMethod</link>)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         (<link linkend="xmlSecKeyDataBinReadMethod">*xmlSecKeyDataBinReadMethod</link>)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         (<link linkend="xmlSecKeyDataBinWriteMethod">*xmlSecKeyDataBinWriteMethod</link>)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         (<link linkend="xmlSecKeyDataGenerateMethod">*xmlSecKeyDataGenerateMethod</link>)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="size-t">size_t</link> sizeBits);
+<link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> (<link linkend="xmlSecKeyDataGetTypeMethod">*xmlSecKeyDataGetTypeMethod</link>)
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+<link linkend="size-t">size_t</link>      (<link linkend="xmlSecKeyDataGetSizeMethod">*xmlSecKeyDataGetSizeMethod</link>)   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+const <link linkend="xmlChar">xmlChar</link>* (<link linkend="xmlSecKeyDataGetIdentifierMethod">*xmlSecKeyDataGetIdentifierMethod</link>)
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+void        (<link linkend="xmlSecKeyDataDebugDumpMethod">*xmlSecKeyDataDebugDumpMethod</link>) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+struct      <link linkend="xmlSecKeyDataKlass">xmlSecKeyDataKlass</link>;
+#define     <link linkend="xmlSecKeyDataKlassGetName">xmlSecKeyDataKlassGetName</link>       (klass)
+#define     <link linkend="xmlSecKeyDataPtrListId">xmlSecKeyDataPtrListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataPtrListGetKlass">xmlSecKeyDataPtrListGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</link>
+int         <link linkend="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecKeyDataBinaryValueDuplicate">xmlSecKeyDataBinaryValueDuplicate</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);
+void        <link linkend="xmlSecKeyDataBinaryValueFinalize">xmlSecKeyDataBinaryValueFinalize</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecKeyDataBinaryValueXmlRead">xmlSecKeyDataBinaryValueXmlRead</link> (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyDataBinaryValueXmlWrite">xmlSecKeyDataBinaryValueXmlWrite</link>
+                                            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyDataBinaryValueBinRead">xmlSecKeyDataBinaryValueBinRead</link> (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyDataBinaryValueBinWrite">xmlSecKeyDataBinaryValueBinWrite</link>
+                                            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+void        <link linkend="xmlSecKeyDataBinaryValueDebugDump">xmlSecKeyDataBinaryValueDebugDump</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecKeyDataBinaryValueDebugXmlDump">xmlSecKeyDataBinaryValueDebugXmlDump</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+<link linkend="size-t">size_t</link>      <link linkend="xmlSecKeyDataBinaryValueGetSize">xmlSecKeyDataBinaryValueGetSize</link> (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecKeyDataBinaryValueGetBuffer">xmlSecKeyDataBinaryValueGetBuffer</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecKeyDataBinaryValueSetBuffer">xmlSecKeyDataBinaryValueSetBuffer</link>
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+struct      <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link>;
+<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate</link>
+                                            (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);
+void        <link linkend="xmlSecKeyDataStoreDestroy">xmlSecKeyDataStoreDestroy</link>       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+int         <link linkend="xmlSecKeyDataStoreFind">xmlSecKeyDataStoreFind</link>          (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> **params,
+                                             <link linkend="size-t">size_t</link> paramsSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+#define     <link linkend="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName</link>       (store)
+#define     <link linkend="xmlSecKeyDataStoreIsValid">xmlSecKeyDataStoreIsValid</link>       (store)
+#define     <link linkend="xmlSecKeyDataStoreCheckId">xmlSecKeyDataStoreCheckId</link>       (store, storeId)
+#define     <link linkend="xmlSecKeyDataStoreIdUnknown">xmlSecKeyDataStoreIdUnknown</link>
+int         (<link linkend="xmlSecKeyDataStoreInitializeMethod">*xmlSecKeyDataStoreInitializeMethod</link>)
+                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+void        (<link linkend="xmlSecKeyDataStoreFinalizeMethod">*xmlSecKeyDataStoreFinalizeMethod</link>)
+                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
+int         (<link linkend="xmlSecKeyDataStoreFindMethod">*xmlSecKeyDataStoreFindMethod</link>) (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> **params,
+                                             <link linkend="size-t">size_t</link> paramsSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</link>;
+#define     <link linkend="xmlSecKeyDataStoreKlassGetName">xmlSecKeyDataStoreKlassGetName</link>  (klass)
+#define     <link linkend="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataStorePtrListGetKlass">xmlSecKeyDataStorePtrListGetKlass</link>
+                                            (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecKeyDataId">xmlSecKeyDataId</title>
+<programlisting>typedef const struct _xmlSecKeyDataKlass 	xmlSecKeyDataKlass, *xmlSecKeyDataId; 
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</title>
+<programlisting>typedef const struct _xmlSecKeyDataStoreKlass 	xmlSecKeyDataStoreKlass, *xmlSecKeyDataStoreId; 
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsage">xmlSecKeyDataUsage</title>
+<programlisting>typedef unsigned int				xmlSecKeyDataUsage;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageUnknown">xmlSecKeyDataUsageUnknown</title>
+<programlisting>#define xmlSecKeyDataUsageUnknown			0x00000
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageKeyInfoNodeRead">xmlSecKeyDataUsageKeyInfoNodeRead</title>
+<programlisting>#define xmlSecKeyDataUsageKeyInfoNodeRead		0x00001
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageKeyInfoNodeWrite">xmlSecKeyDataUsageKeyInfoNodeWrite</title>
+<programlisting>#define xmlSecKeyDataUsageKeyInfoNodeWrite		0x00002
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageKeyValueNodeRead">xmlSecKeyDataUsageKeyValueNodeRead</title>
+<programlisting>#define xmlSecKeyDataUsageKeyValueNodeRead		0x00004
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageKeyValueNodeWrite">xmlSecKeyDataUsageKeyValueNodeWrite</title>
+<programlisting>#define xmlSecKeyDataUsageKeyValueNodeWrite		0x00008
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageRetrievalMethodNodeXml">xmlSecKeyDataUsageRetrievalMethodNodeXml</title>
+<programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeXml	0x00010
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageRetrievalMethodNodeBin">xmlSecKeyDataUsageRetrievalMethodNodeBin</title>
+<programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeBin	0x00020
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageAny">xmlSecKeyDataUsageAny</title>
+<programlisting>#define xmlSecKeyDataUsageAny				0xFFFFF
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageKeyInfoNode">xmlSecKeyDataUsageKeyInfoNode</title>
+<programlisting>#define     xmlSecKeyDataUsageKeyInfoNode</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageKeyValueNode">xmlSecKeyDataUsageKeyValueNode</title>
+<programlisting>#define     xmlSecKeyDataUsageKeyValueNode</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataUsageRetrievalMethodNode">xmlSecKeyDataUsageRetrievalMethodNode</title>
+<programlisting>#define     xmlSecKeyDataUsageRetrievalMethodNode</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataType">xmlSecKeyDataType</title>
+<programlisting>typedef unsigned int				xmlSecKeyDataType;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypeUnknown">xmlSecKeyDataTypeUnknown</title>
+<programlisting>#define xmlSecKeyDataTypeUnknown			0x0000
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypeNone">xmlSecKeyDataTypeNone</title>
+<programlisting>#define xmlSecKeyDataTypeNone				xmlSecKeyDataTypeUnknown
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypePublic">xmlSecKeyDataTypePublic</title>
+<programlisting>#define xmlSecKeyDataTypePublic				0x0001
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypePrivate">xmlSecKeyDataTypePrivate</title>
+<programlisting>#define xmlSecKeyDataTypePrivate			0x0002
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</title>
+<programlisting>#define xmlSecKeyDataTypeSymmetric			0x0004
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</title>
+<programlisting>#define xmlSecKeyDataTypeAny				0xFFFF
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit ()</title>
+<programlisting>int         xmlSecKeyDataIdsInit            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault ()</title>
+<programlisting>int         xmlSecKeyDataIdsRegisterDefault (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsRegister">xmlSecKeyDataIdsRegister ()</title>
+<programlisting>int         xmlSecKeyDataIdsRegister        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsClear">xmlSecKeyDataIdsClear ()</title>
+<programlisting>void        xmlSecKeyDataIdsClear           (void);</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsGetSize">xmlSecKeyDataIdsGetSize ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataIdsGetSize         (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsGetId">xmlSecKeyDataIdsGetId ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsGetId       (<link linkend="size-t">size_t</link> pos);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>pos</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsFindByNode">xmlSecKeyDataIdsFindByNode ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsFindByNode  (const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nodeName</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>nodeNs</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsFindByHref">xmlSecKeyDataIdsFindByHref ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsFindByHref  (const <link linkend="xmlChar">xmlChar</link> *href,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>href</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsFindByName">xmlSecKeyDataIdsFindByName ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdsFindByName  (const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyData">struct xmlSecKeyData</title>
+<programlisting>struct xmlSecKeyData {
+    xmlSecKeyDataId			id;
+    void				*reserved0;
+    void				*reserved1;
+    void				*reserved2;
+    void				*reserved3;
+};
+</programlisting>
+<para>
+The data.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <structfield>id</structfield></entry>
+<entry> the data id (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>).
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved2</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved3</structfield></entry>
+<entry>
+
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataCreate">xmlSecKeyDataCreate ()</title>
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyDataCreate        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);</programlisting>
+<para>
+Creates new data of the specified type <parameter>id</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the data id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate ()</title>
+<programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyDataDuplicate     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Creates a duplicate of the given <parameter>data</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the pointer to the <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDestroy">xmlSecKeyDataDestroy ()</title>
+<programlisting>void        xmlSecKeyDataDestroy            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+Destroys the data and frees all allocated memory.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the pointer to the <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGenerate">xmlSecKeyDataGenerate ()</title>
+<programlisting>int         xmlSecKeyDataGenerate           (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="size-t">size_t</link> sizeBits);</programlisting>
+<para>
+KeyData specific destroy method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
+<entry> the key data specific size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetType">xmlSecKeyDataGetType ()</title>
+<programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> xmlSecKeyDataGetType      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetSize">xmlSecKeyDataGetSize ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataGetSize            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetIdentifier">xmlSecKeyDataGetIdentifier ()</title>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* xmlSecKeyDataGetIdentifier   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDebugDump">xmlSecKeyDataDebugDump ()</title>
+<programlisting>void        xmlSecKeyDataDebugDump          (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints key data debug info.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry> the FILE to print debug info (should be open for writing).
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDebugXmlDump">xmlSecKeyDataDebugXmlDump ()</title>
+<programlisting>void        xmlSecKeyDataDebugXmlDump       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints key data debug info in XML format.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry> the FILE to print debug info (should be open for writing).
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataXmlRead">xmlSecKeyDataXmlRead ()</title>
+<programlisting>int         xmlSecKeyDataXmlRead            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> dataNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Reads the data from XML node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the data id.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>dataNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the keys mngr.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataXmlWrite">xmlSecKeyDataXmlWrite ()</title>
+<programlisting>int         xmlSecKeyDataXmlWrite           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> dataNode,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Reads the data from XML node.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the data id.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>dataNode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the keys mngr.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinRead">xmlSecKeyDataBinRead ()</title>
+<programlisting>int         xmlSecKeyDataBinRead            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+Reads the data from binary buffer <parameter>buf</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the data id.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the input buffer.
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry> the buffer size.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the &lt;dsig:KeyInfo&gt; node processing context
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinWrite">xmlSecKeyDataBinWrite ()</title>
+<programlisting>int         xmlSecKeyDataBinWrite           (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetName">xmlSecKeyDataGetName()</title>
+<programlisting>#define     xmlSecKeyDataGetName(data)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIsValid">xmlSecKeyDataIsValid()</title>
+<programlisting>#define     xmlSecKeyDataIsValid(data)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>data</parameter> is not NULL and <parameter>data</parameter>-&gt;id is not NULL
+or 0 otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the pointer to data.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataCheckId">xmlSecKeyDataCheckId()</title>
+<programlisting>#define     xmlSecKeyDataCheckId(data, dataId)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</parameter>'s id is equal to <parameter>dataId</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the pointer to data.
+</entry></row>
+<row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
+<entry> the data Id.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataCheckUsage">xmlSecKeyDataCheckUsage()</title>
+<programlisting>#define     xmlSecKeyDataCheckUsage(data, usg)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>data</parameter> is valid and could be used for <parameter>usg</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the pointer to data.
+</entry></row>
+<row><entry align="right"><parameter>usg</parameter>&nbsp;:</entry>
+<entry> the data usage.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataCheckSize">xmlSecKeyDataCheckSize()</title>
+<programlisting>#define     xmlSecKeyDataCheckSize(data, size)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</parameter>'s object has at least <parameter>size</parameter> bytes.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the pointer to data.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the expected size.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdUnknown">xmlSecKeyDataIdUnknown</title>
+<programlisting>#define xmlSecKeyDataIdUnknown 			NULL
+</programlisting>
+<para>
+The "unknown" id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataInitMethod">xmlSecKeyDataInitMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataInitMethod)      (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+KeyData specific creation method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDuplicateMethod">xmlSecKeyDataDuplicateMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataDuplicateMethod) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);</programlisting>
+<para>
+KeyData specific duplication method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKeyData">xmlSecKeyData</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataFinalizeMethod">xmlSecKeyDataFinalizeMethod ()</title>
+<programlisting>void        (*xmlSecKeyDataFinalizeMethod)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+KeyData specific destroy method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataXmlReadMethod">xmlSecKeyDataXmlReadMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataXmlReadMethod)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+KeyData specific reading from XML node method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the data id.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry> the pointer to data's value XML node.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the &lt;dsig:KeyInfo&gt; node reading context
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataXmlWriteMethod">xmlSecKeyDataXmlWriteMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataXmlWriteMethod)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinReadMethod">xmlSecKeyDataBinReadMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataBinReadMethod)   (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+KeyData specific reading from binary buffer method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the data id.
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the key.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the input buffer.
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry> the buffer size.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the &lt;dsig:KeyInfo&gt; node reading context
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinWriteMethod">xmlSecKeyDataBinWriteMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataBinWriteMethod)  (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGenerateMethod">xmlSecKeyDataGenerateMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataGenerateMethod)  (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="size-t">size_t</link> sizeBits);</programlisting>
+<para>
+KeyData specific new key generation method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><parameter>sizeBits</parameter>&nbsp;:</entry>
+<entry> the key data specific size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetTypeMethod">xmlSecKeyDataGetTypeMethod ()</title>
+<programlisting><link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> (*xmlSecKeyDataGetTypeMethod)
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+KeyData specific method to get the key type.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the key type.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetSizeMethod">xmlSecKeyDataGetSizeMethod ()</title>
+<programlisting><link linkend="size-t">size_t</link>      (*xmlSecKeyDataGetSizeMethod)   (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+KeyData specific method to get the key size.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the key size in bits.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataGetIdentifierMethod">xmlSecKeyDataGetIdentifierMethod ()</title>
+<programlisting>const <link linkend="xmlChar">xmlChar</link>* (*xmlSecKeyDataGetIdentifierMethod)
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+KeyData specific method to get the data identifier string (for example,
+X509 data identifier is the subject of the verified cert).</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the identifier string or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataDebugDumpMethod">xmlSecKeyDataDebugDumpMethod ()</title>
+<programlisting>void        (*xmlSecKeyDataDebugDumpMethod) (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+KeyData specific method for printing debug info.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry> the data.
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry> the FILE to print debug info (should be open for writing).
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataKlass">struct xmlSecKeyDataKlass</title>
+<programlisting>struct xmlSecKeyDataKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
+    /* data */
+    const xmlChar*			name;    
+    xmlSecKeyDataUsage			usage;
+    const xmlChar*			href;
+    const xmlChar*			dataNodeName;
+    const xmlChar*			dataNodeNs;
+    
+    /* constructors/destructor */
+    xmlSecKeyDataInitMethod		initialize;
+    xmlSecKeyDataDuplicateMethod	duplicate;
+    xmlSecKeyDataFinalizeMethod		finalize;
+    xmlSecKeyDataGenerateMethod		generate;
+    
+    /* get info */
+    xmlSecKeyDataGetTypeMethod		getType;
+    xmlSecKeyDataGetSizeMethod		getSize;
+    xmlSecKeyDataGetIdentifierMethod	getIdentifier;
+
+    /* read/write */
+    xmlSecKeyDataXmlReadMethod		xmlRead;
+    xmlSecKeyDataXmlWriteMethod		xmlWrite;
+    xmlSecKeyDataBinReadMethod		binRead;
+    xmlSecKeyDataBinWriteMethod		binWrite;
+
+    /* debug */
+    xmlSecKeyDataDebugDumpMethod	debugDump;
+    xmlSecKeyDataDebugDumpMethod	debugXmlDump;
+};
+</programlisting>
+<para>
+The data id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataKlassGetName">xmlSecKeyDataKlassGetName()</title>
+<programlisting>#define     xmlSecKeyDataKlassGetName(klass)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataPtrListId">xmlSecKeyDataPtrListId</title>
+<programlisting>#define xmlSecKeyDataPtrListId	xmlSecKeyDataPtrListGetKlass()
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataPtrListGetKlass">xmlSecKeyDataPtrListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyDataPtrListGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</title>
+<programlisting>#define     xmlSecKeyDataBinarySize</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueInitialize
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueDuplicate">xmlSecKeyDataBinaryValueDuplicate ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueDuplicate
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> dst,
+                                             <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> src);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueFinalize">xmlSecKeyDataBinaryValueFinalize ()</title>
+<programlisting>void        xmlSecKeyDataBinaryValueFinalize
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueXmlRead">xmlSecKeyDataBinaryValueXmlRead ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueXmlRead (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueXmlWrite">xmlSecKeyDataBinaryValueXmlWrite ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueXmlWrite
+                                            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             <link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueBinRead">xmlSecKeyDataBinaryValueBinRead ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueBinRead (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueBinWrite">xmlSecKeyDataBinaryValueBinWrite ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueBinWrite
+                                            (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             unsigned char **buf,
+                                             <link linkend="size-t">size_t</link> *bufSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueDebugDump">xmlSecKeyDataBinaryValueDebugDump ()</title>
+<programlisting>void        xmlSecKeyDataBinaryValueDebugDump
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueDebugXmlDump">xmlSecKeyDataBinaryValueDebugXmlDump ()</title>
+<programlisting>void        xmlSecKeyDataBinaryValueDebugXmlDump
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueGetSize">xmlSecKeyDataBinaryValueGetSize ()</title>
+<programlisting><link linkend="size-t">size_t</link>      xmlSecKeyDataBinaryValueGetSize (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueGetBuffer">xmlSecKeyDataBinaryValueGetBuffer ()</title>
+<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecKeyDataBinaryValueGetBuffer
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataBinaryValueSetBuffer">xmlSecKeyDataBinaryValueSetBuffer ()</title>
+<programlisting>int         xmlSecKeyDataBinaryValueSetBuffer
+                                            (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStore">struct xmlSecKeyDataStore</title>
+<programlisting>struct xmlSecKeyDataStore {
+    xmlSecKeyDataStoreId		id;
+    void*				reserved0;
+    void*				reserved1;
+    void*				reserved2;
+    void*				reserved4;
+};
+</programlisting>
+<para>
+The store.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> <structfield>id</structfield></entry>
+<entry> the store id (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>).
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved0</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved1</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved2</structfield></entry>
+<entry>
+</entry>
+</row>
+<row>
+<entry>void *<structfield>reserved4</structfield></entry>
+<entry>
+
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreCreate">xmlSecKeyDataStoreCreate ()</title>
+<programlisting><link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> xmlSecKeyDataStoreCreate
+                                            (<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);</programlisting>
+<para>
+Creates new store of the specified type <parameter>id</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the store id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly allocated <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreDestroy">xmlSecKeyDataStoreDestroy ()</title>
+<programlisting>void        xmlSecKeyDataStoreDestroy       (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<para>
+Destroys the store and frees all allocated memory.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> the pointer to the <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link> structure.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreFind">xmlSecKeyDataStoreFind ()</title>
+<programlisting>int         xmlSecKeyDataStoreFind          (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> **params,
+                                             <link linkend="size-t">size_t</link> paramsSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName()</title>
+<programlisting>#define     xmlSecKeyDataStoreGetName(store)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreIsValid">xmlSecKeyDataStoreIsValid()</title>
+<programlisting>#define     xmlSecKeyDataStoreIsValid(store)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>store</parameter> is not NULL and <parameter>store</parameter>-&gt;id is not NULL
+or 0 otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> the pointer to store.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreCheckId">xmlSecKeyDataStoreCheckId()</title>
+<programlisting>#define     xmlSecKeyDataStoreCheckId(store, storeId)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</parameter>'s id is equal to <parameter>storeId</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> the pointer to store.
+</entry></row>
+<row><entry align="right"><parameter>storeId</parameter>&nbsp;:</entry>
+<entry> the store Id.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreIdUnknown">xmlSecKeyDataStoreIdUnknown</title>
+<programlisting>#define xmlSecKeyDataStoreIdUnknown 			NULL
+</programlisting>
+<para>
+The "unknown" id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreInitializeMethod">xmlSecKeyDataStoreInitializeMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataStoreInitializeMethod)
+                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<para>
+KeyDataStore specific creation method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStore</link> structure
+or NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreFinalizeMethod">xmlSecKeyDataStoreFinalizeMethod ()</title>
+<programlisting>void        (*xmlSecKeyDataStoreFinalizeMethod)
+                                            (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);</programlisting>
+<para>
+KeyDataStore specific destroy method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreFindMethod">xmlSecKeyDataStoreFindMethod ()</title>
+<programlisting>int         (*xmlSecKeyDataStoreFindMethod) (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
+                                             const <link linkend="xmlChar">xmlChar</link> **params,
+                                             <link linkend="size-t">size_t</link> paramsSize,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+KeyDataStore specific find method.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the destination key.
+</entry></row>
+<row><entry align="right"><parameter>params</parameter>&nbsp;:</entry>
+<entry> the params strings array.
+</entry></row>
+<row><entry align="right"><parameter>paramsSize</parameter>&nbsp;:</entry>
+<entry> the params strings array <parameter>params</parameter>.
+</entry></row>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry> the pointer to key info context.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreKlass">struct xmlSecKeyDataStoreKlass</title>
+<programlisting>struct xmlSecKeyDataStoreKlass {
+    size_t				klassSize;
+    size_t				objSize;
+
+    /* data */
+    const xmlChar*			name;    
+        
+    /* constructors/destructor */
+    xmlSecKeyDataStoreInitializeMethod	initialize;
+    xmlSecKeyDataStoreFinalizeMethod	finalize;
+    xmlSecKeyDataStoreFindMethod	find;
+};
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreKlassGetName">xmlSecKeyDataStoreKlassGetName()</title>
+<programlisting>#define     xmlSecKeyDataStoreKlassGetName(klass)</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</title>
+<programlisting>#define xmlSecKeyDataStorePtrListId	xmlSecKeyDataStorePtrListGetKlass()
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStorePtrListGetKlass">xmlSecKeyDataStorePtrListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyDataStorePtrListGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,648 @@
+<refentry id="xmlsec-todo">
+<refmeta>
+<refentrytitle>todo</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>todo</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+#define     <link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link> (void);
+int         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>          (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);
+#define     <link linkend="xmlSecNssTransformKWAes128Id">xmlSecNssTransformKWAes128Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWAes128GetKlass">xmlSecNssTransformKWAes128GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformKWAes192Id">xmlSecNssTransformKWAes192Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWAes192GetKlass">xmlSecNssTransformKWAes192GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformKWAes256Id">xmlSecNssTransformKWAes256Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWAes256GetKlass">xmlSecNssTransformKWAes256GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformKWDes3Id">xmlSecNssTransformKWDes3Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformKWDes3GetKlass">xmlSecNssTransformKWDes3GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssKeyDataDsaId">xmlSecNssKeyDataDsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataDsaGetKlass">xmlSecNssKeyDataDsaGetKlass</link> (void);
+int         <link linkend="xmlSecNssKeyDataDsaAdoptDsa">xmlSecNssKeyDataDsaAdoptDsa</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="DSA-CAPS">DSA</link> *dsa);
+<link linkend="DSA-CAPS">DSA</link>*        <link linkend="xmlSecNssKeyDataDsaGetDsa">xmlSecNssKeyDataDsaGetDsa</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecNssKeyDataDsaAdoptEvp">xmlSecNssKeyDataDsaAdoptEvp</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);
+<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecNssKeyDataDsaGetEvp">xmlSecNssKeyDataDsaGetEvp</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+#define     <link linkend="xmlSecNssTransformDsaSha1Id">xmlSecNssTransformDsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformDsaSha1GetKlass">xmlSecNssTransformDsaSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformRipemd160Id">xmlSecNssTransformRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRipemd160GetKlass">xmlSecNssTransformRipemd160GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssKeyDataRsaId">xmlSecNssKeyDataRsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataRsaGetKlass">xmlSecNssKeyDataRsaGetKlass</link> (void);
+int         <link linkend="xmlSecNssKeyDataRsaAdoptRsa">xmlSecNssKeyDataRsaAdoptRsa</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="RSA-CAPS">RSA</link> *rsa);
+<link linkend="RSA-CAPS">RSA</link>*        <link linkend="xmlSecNssKeyDataRsaGetRsa">xmlSecNssKeyDataRsaGetRsa</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+int         <link linkend="xmlSecNssKeyDataRsaAdoptEvp">xmlSecNssKeyDataRsaAdoptEvp</link>     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);
+<link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   <link linkend="xmlSecNssKeyDataRsaGetEvp">xmlSecNssKeyDataRsaGetEvp</link>       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
+#define     <link linkend="xmlSecNssTransformRsaSha1Id">xmlSecNssTransformRsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaSha1GetKlass">xmlSecNssTransformRsaSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformRsaOaepId">xmlSecNssTransformRsaOaepId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaOaepGetKlass">xmlSecNssTransformRsaOaepGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="XMLSEC-NSS-ERRORS-LIB-CAPS">XMLSEC_NSS_ERRORS_LIB</link>
+#define     <link linkend="XMLSEC-NSS-ERRORS-FUNCTION-CAPS">XMLSEC_NSS_ERRORS_FUNCTION</link>
+void        <link linkend="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback</link>  (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</title>
+<programlisting>#define     xmlSecNssKeyDataAesId</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataAesGetKlass (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet ()</title>
+<programlisting>int         xmlSecNssKeyDataAesSet          (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> bufSize);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>bufSize</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes128Id">xmlSecNssTransformKWAes128Id</title>
+<programlisting>#define     xmlSecNssTransformKWAes128Id</programlisting>
+<para>
+The AES 128 key wrap transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes128GetKlass">xmlSecNssTransformKWAes128GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes128GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes192Id">xmlSecNssTransformKWAes192Id</title>
+<programlisting>#define     xmlSecNssTransformKWAes192Id</programlisting>
+<para>
+The AES 192 key wrap transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes192GetKlass">xmlSecNssTransformKWAes192GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes192GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes256Id">xmlSecNssTransformKWAes256Id</title>
+<programlisting>#define     xmlSecNssTransformKWAes256Id</programlisting>
+<para>
+The AES 256 key wrap transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWAes256GetKlass">xmlSecNssTransformKWAes256GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWAes256GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWDes3Id">xmlSecNssTransformKWDes3Id</title>
+<programlisting>#define     xmlSecNssTransformKWDes3Id</programlisting>
+<para>
+The DES3 CBC cipher transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformKWDes3GetKlass">xmlSecNssTransformKWDes3GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformKWDes3GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaId">xmlSecNssKeyDataDsaId</title>
+<programlisting>#define     xmlSecNssKeyDataDsaId</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaGetKlass">xmlSecNssKeyDataDsaGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataDsaGetKlass (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaAdoptDsa">xmlSecNssKeyDataDsaAdoptDsa ()</title>
+<programlisting>int         xmlSecNssKeyDataDsaAdoptDsa     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="DSA-CAPS">DSA</link> *dsa);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>dsa</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaGetDsa">xmlSecNssKeyDataDsaGetDsa ()</title>
+<programlisting><link linkend="DSA-CAPS">DSA</link>*        xmlSecNssKeyDataDsaGetDsa       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaAdoptEvp">xmlSecNssKeyDataDsaAdoptEvp ()</title>
+<programlisting>int         xmlSecNssKeyDataDsaAdoptEvp     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataDsaGetEvp">xmlSecNssKeyDataDsaGetEvp ()</title>
+<programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecNssKeyDataDsaGetEvp       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformDsaSha1Id">xmlSecNssTransformDsaSha1Id</title>
+<programlisting>#define     xmlSecNssTransformDsaSha1Id</programlisting>
+<para>
+The DSA SHA1 signature transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformDsaSha1GetKlass">xmlSecNssTransformDsaSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformDsaSha1GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRipemd160Id">xmlSecNssTransformRipemd160Id</title>
+<programlisting>#define     xmlSecNssTransformRipemd160Id</programlisting>
+<para>
+The RIPEMD160 digest transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRipemd160GetKlass">xmlSecNssTransformRipemd160GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRipemd160GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaId">xmlSecNssKeyDataRsaId</title>
+<programlisting>#define     xmlSecNssKeyDataRsaId</programlisting>
+<para>
+The RSA key id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaGetKlass">xmlSecNssKeyDataRsaGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecNssKeyDataRsaGetKlass (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaAdoptRsa">xmlSecNssKeyDataRsaAdoptRsa ()</title>
+<programlisting>int         xmlSecNssKeyDataRsaAdoptRsa     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="RSA-CAPS">RSA</link> *rsa);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>rsa</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaGetRsa">xmlSecNssKeyDataRsaGetRsa ()</title>
+<programlisting><link linkend="RSA-CAPS">RSA</link>*        xmlSecNssKeyDataRsaGetRsa       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaAdoptEvp">xmlSecNssKeyDataRsaAdoptEvp ()</title>
+<programlisting>int         xmlSecNssKeyDataRsaAdoptEvp     (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data,
+                                             <link linkend="EVP-PKEY-CAPS">EVP_PKEY</link> *key);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssKeyDataRsaGetEvp">xmlSecNssKeyDataRsaGetEvp ()</title>
+<programlisting><link linkend="EVP-PKEY-CAPS">EVP_PKEY</link>*   xmlSecNssKeyDataRsaGetEvp       (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaSha1Id">xmlSecNssTransformRsaSha1Id</title>
+<programlisting>#define     xmlSecNssTransformRsaSha1Id</programlisting>
+<para>
+The RSA-SHA1 signature transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaSha1GetKlass">xmlSecNssTransformRsaSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaSha1GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</title>
+<programlisting>#define     xmlSecNssTransformRsaPkcs1Id</programlisting>
+<para>
+The RSA PKCS1 key transport transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaPkcs1GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaOaepId">xmlSecNssTransformRsaOaepId</title>
+<programlisting>#define     xmlSecNssTransformRsaOaepId</programlisting>
+<para>
+The RSA PKCS1 key transport transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaOaepGetKlass">xmlSecNssTransformRsaOaepGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaOaepGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</title>
+<programlisting>#define     xmlSecNssTransformSha1Id</programlisting>
+<para>
+The SHA1 digest transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformSha1GetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-NSS-ERRORS-LIB-CAPS">XMLSEC_NSS_ERRORS_LIB</title>
+<programlisting>#define XMLSEC_NSS_ERRORS_LIB			(ERR_LIB_USER + 57)
+</programlisting>
+<para>
+Macro. The XMLSec library id for Nss errors reporting functions.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-NSS-ERRORS-FUNCTION-CAPS">XMLSEC_NSS_ERRORS_FUNCTION</title>
+<programlisting>#define XMLSEC_NSS_ERRORS_FUNCTION			0
+</programlisting>
+<para>
+Macro. The XMLSec library functions Nss errors reporting functions.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssErrorsDefaultCallback">xmlSecNssErrorsDefaultCallback ()</title>
+<programlisting>void        xmlSecNssErrorsDefaultCallback  (const char *file,
+                                             int line,
+                                             const char *func,
+                                             const char *errorObject,
+                                             const char *errorSubject,
+                                             int reason,
+                                             const char *msg);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>file</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>line</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>func</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>errorObject</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>errorSubject</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>reason</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>msg</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,859 @@
+<refentry id="xmlsec-templates">
+<refmeta>
+<refentrytitle>templates</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>XMLSEC Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>templates</refname><refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv><title>Synopsis</title>
+<synopsis>
+
+
+
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureCreate">xmlSecSignatureCreate</link>           (const <link linkend="xmlChar">xmlChar</link> *id);
+void        <link linkend="xmlSecSignatureDestroy">xmlSecSignatureDestroy</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureAddSignedInfo">xmlSecSignatureAddSignedInfo</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureAddKeyInfo">xmlSecSignatureAddKeyInfo</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignatureAddObject">xmlSecSignatureAddObject</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignedInfoAddC14NMethod">xmlSecSignedInfoAddC14NMethod</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignedInfoAddSignMethod">xmlSecSignedInfoAddSignMethod</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecSignedInfoAddReference">xmlSecSignedInfoAddReference</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecReferenceAddDigestMethod">xmlSecReferenceAddDigestMethod</link>  (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecReferenceAddTransform">xmlSecReferenceAddTransform</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecObjectAddSignProperties">xmlSecObjectAddSignProperties</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecObjectAddManifest">xmlSecObjectAddManifest</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecManifestAddReference">xmlSecManifestAddReference</link>      (<link linkend="xmlNodePtr">xmlNodePtr</link> manifestNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataCreate">xmlSecEncDataCreate</link>             (const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);
+void        <link linkend="xmlSecEncDataDestroy">xmlSecEncDataDestroy</link>            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncMethod">xmlSecEncDataAddEncMethod</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddKeyInfo">xmlSecEncDataAddKeyInfo</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncProperties">xmlSecEncDataAddEncProperties</link>   (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddEncProperty">xmlSecEncDataAddEncProperty</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddCipherValue">xmlSecEncDataAddCipherValue</link>     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecEncDataAddCipherReference">xmlSecEncDataAddCipherReference</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecCipherReferenceAddTransform">xmlSecCipherReferenceAddTransform</link>
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddKeyName">xmlSecKeyInfoAddKeyName</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddKeyValue">xmlSecKeyInfoAddKeyValue</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddX509Data">xmlSecKeyInfoAddX509Data</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddRetrievalMethod">xmlSecKeyInfoAddRetrievalMethod</link> (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecRetrievalMethodAddTransform">xmlSecRetrievalMethodAddTransform</link>
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> retrMethod,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);
+<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecKeyInfoAddEncryptedKey">xmlSecKeyInfoAddEncryptedKey</link>    (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *recipient);
+int         <link linkend="xmlSecHmacAddOutputLength">xmlSecHmacAddOutputLength</link>       (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             <link linkend="size-t">size_t</link> bitsLen);
+int         <link linkend="xmlSecEncRsaOaepAddParam">xmlSecEncRsaOaepAddParam</link>        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);
+int         <link linkend="xmlSecXsltAddStylesheet">xmlSecXsltAddStylesheet</link>         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *xslt);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+<refsect1>
+<title>Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1>
+<title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecSignatureCreate">xmlSecSignatureCreate ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureCreate           (const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Creates new &lt;dsig:Signature&gt; node with the mandatory &lt;dsig:SignatureValue&gt; 
+child. The application is responsible for inserting the returned node
+in the XML document.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Signature&gt; node or NULL if an 
+error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureDestroy">xmlSecSignatureDestroy ()</title>
+<programlisting>void        xmlSecSignatureDestroy          (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode);</programlisting>
+<para>
+Destroys standalone &lt;dsig:Signature&gt; node. You MUST not call this function 
+if the &lt;dsig:Signature&gt; node was inserted in the XML document.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Signature&gt; node.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureAddSignedInfo">xmlSecSignatureAddSignedInfo ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureAddSignedInfo    (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;dsig:SignedInfo&gt; node to the &lt;dsig:Signature&gt; node <parameter>signNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;dsig:Signature&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:SignedInfo&gt; node or NULL if 
+an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureAddKeyInfo">xmlSecSignatureAddKeyInfo ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureAddKeyInfo       (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;dsig:KeyInfo&gt; node to the &lt;dsig:Signature&gt; node <parameter>signNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;dsig:Signature&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:KeyInfo&gt; node or NULL if an 
+error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignatureAddObject">xmlSecSignatureAddObject ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignatureAddObject        (<link linkend="xmlNodePtr">xmlNodePtr</link> signNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
+<para>
+Adds &lt;dsig:Object&gt; node to the &lt;dsig:Signature&gt; node <parameter>signNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Signature&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
+<entry> the object mime type (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
+<entry> the object encoding (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Object&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignedInfoAddC14NMethod">xmlSecSignedInfoAddC14NMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignedInfoAddC14NMethod   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> c14nMethod);</programlisting>
+<para>
+Adds &lt;dsig:CanonicalizationMethod&gt; node with specified C14N algorithm
+<parameter>c14nMethod</parameter> to the &lt;dsig:SignedInfo&gt; node <parameter>signedInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signedInfoNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;dsig:SignedInfo&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>c14nMethod</parameter>&nbsp;:</entry>
+<entry> the c14n method id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:CanonicalizationMethod&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignedInfoAddSignMethod">xmlSecSignedInfoAddSignMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignedInfoAddSignMethod   (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> signMethod);</programlisting>
+<para>
+Adds &lt;dsig:SignatureMethod&gt; node with given signature algorithm
+<parameter>signMethod</parameter> to the &lt;dsig:SignedInfo&gt; node <parameter>signedInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signedInfoNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;dsig:SignedInfo&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>signMethod</parameter>&nbsp;:</entry>
+<entry> the result method id.     
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:SignatureMethod&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecSignedInfoAddReference">xmlSecSignedInfoAddReference ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecSignedInfoAddReference    (<link linkend="xmlNodePtr">xmlNodePtr</link> signedInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<para>
+Adds &lt;dsig:Reference&gt; node with given URI (<parameter>uri</parameter>), Id (<parameter>id</parameter>) and 
+Type (<parameter>type</parameter>) attributes and the required child node &lt;dsig:DigestValue&gt; 
+to the &lt;dsig:SignedInfo&gt; node <parameter>signedInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>signedInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:SignedInfo&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the reference node uri (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the reference node type (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Reference&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReferenceAddDigestMethod">xmlSecReferenceAddDigestMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecReferenceAddDigestMethod  (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> digestMethod);</programlisting>
+<para>
+Adds &lt;dsig:DigestMethod&gt; node with given digest algorithm 
+(<parameter>digestMethod</parameter>) to the &lt;dsig:Reference&gt; node <parameter>refNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>refNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Reference&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>digestMethod</parameter>&nbsp;:</entry>
+<entry> the digest method id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:DigestMethod&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecReferenceAddTransform">xmlSecReferenceAddTransform ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecReferenceAddTransform     (<link linkend="xmlNodePtr">xmlNodePtr</link> refNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
+<para>
+Adds &lt;dsig:Transform&gt; node to the &lt;dsig:Reference&gt; node <parameter>refNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>refNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Reference&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the transform method id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Transform&gt; node or NULL if an 
+error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecObjectAddSignProperties">xmlSecObjectAddSignProperties ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecObjectAddSignProperties   (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
+<para>
+Adds &lt;dsig:SignatureProperties&gt; node to the &lt;dsig:Object&gt; node <parameter>objectNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>objectNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;dsig:Object&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
+<entry> the Target  (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:SignatureProperties&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecObjectAddManifest">xmlSecObjectAddManifest ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecObjectAddManifest         (<link linkend="xmlNodePtr">xmlNodePtr</link> objectNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;dsig:Manifest&gt; node to the &lt;dsig:Object&gt; node <parameter>objectNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>objectNode</parameter>&nbsp;:</entry>
+<entry> the  pointer to &lt;dsig:Object&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Manifest&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecManifestAddReference">xmlSecManifestAddReference ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecManifestAddReference      (<link linkend="xmlNodePtr">xmlNodePtr</link> manifestNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<para>
+Adds &lt;dsig:Reference&gt; node with specified URI (<parameter>uri</parameter>), Id (<parameter>id</parameter>) and 
+Type (<parameter>type</parameter>) attributes and the required child node &lt;dsig:DigestValue&gt; 
+to the &lt;dsig:Manifest&gt; node <parameter>manifestNode</parameter>:.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>manifestNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Manifest&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the node id (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the reference node uri (may be NULL).
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the reference node type (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Reference&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataCreate">xmlSecEncDataCreate ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataCreate             (const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *mimeType,
+                                             const <link linkend="xmlChar">xmlChar</link> *encoding);</programlisting>
+<para>
+Creates new &lt;enc:EncryptedData&gt; node for encryption template.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the Id attribute (optional).
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the Type attribute (optional)
+</entry></row>
+<row><entry align="right"><parameter>mimeType</parameter>&nbsp;:</entry>
+<entry> the MimeType attribute (optional)
+</entry></row>
+<row><entry align="right"><parameter>encoding</parameter>&nbsp;:</entry>
+<entry> the Encoding attribute (optional)
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer newly created  &lt;enc:EncryptedData&gt; node or NULL 
+if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataDestroy">xmlSecEncDataDestroy ()</title>
+<programlisting>void        xmlSecEncDataDestroy            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+Destroys the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddEncMethod">xmlSecEncDataAddEncMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncMethod       (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> encMethod);</programlisting>
+<para>
+Adds &lt;enc:EncryptionMethod&gt; node with specified encryption 
+algorithm (<parameter>encMethodId</parameter>) to the  &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>encMethod</parameter>&nbsp;:</entry>
+<entry> the encryption method id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:EncryptionMethod&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddKeyInfo">xmlSecEncDataAddKeyInfo ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddKeyInfo         (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+Adds &lt;dsig:KeyInfo&gt; to the  &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:KeyInfo&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddEncProperties">xmlSecEncDataAddEncProperties ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncProperties   (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id);</programlisting>
+<para>
+Adds &lt;enc:EncryptionProperties&gt; node to the &lt;enc:EncryptedData&gt; 
+node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the Id attribute (optional).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:EncryptionProperties&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddEncProperty">xmlSecEncDataAddEncProperty ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddEncProperty     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *target);</programlisting>
+<para>
+Adds &lt;enc:EncryptionProperty&gt; node (and the parent 
+&lt;enc:EncryptionProperties&gt; node if required) to the 
+&lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the Id attribute (optional).
+</entry></row>
+<row><entry align="right"><parameter>target</parameter>&nbsp;:</entry>
+<entry> the Target attribute (optional).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:EncryptionProperty&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddCipherValue">xmlSecEncDataAddCipherValue ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddCipherValue     (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode);</programlisting>
+<para>
+Adds &lt;enc:CipherValue&gt; to the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:CipherValue&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncDataAddCipherReference">xmlSecEncDataAddCipherReference ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecEncDataAddCipherReference (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
+<para>
+Adds &lt;enc:CipherReference&gt; node with specified URI attribute <parameter>uri</parameter>
+to the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the URI attribute (may be NULL).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;enc:CipherReference&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecCipherReferenceAddTransform">xmlSecCipherReferenceAddTransform ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecCipherReferenceAddTransform
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> encNode,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
+<para>
+Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node)
+with specified transform methods <parameter>transform</parameter> to the &lt;enc:CipherReference&gt;
+child node of the &lt;enc:EncryptedData&gt; node <parameter>encNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;enc:EncryptedData&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the transform id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to newly created &lt;dsig:Transform&gt; node or 
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoAddKeyName">xmlSecKeyInfoAddKeyName ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddKeyName         (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);</programlisting>
+<para>
+Adds &lt;dsig:KeyName&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:KeyName&gt; node or
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoAddKeyValue">xmlSecKeyInfoAddKeyValue ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddKeyValue        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);</programlisting>
+<para>
+Adds &lt;dsig:KeyValue&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:KeyValue&gt; node or
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoAddX509Data">xmlSecKeyInfoAddX509Data ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddX509Data        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode);</programlisting>
+<para>
+Adds &lt;dsig:X509Data&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:X509Data&gt; node or
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoAddRetrievalMethod">xmlSecKeyInfoAddRetrievalMethod ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddRetrievalMethod (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri,
+                                             const <link linkend="xmlChar">xmlChar</link> *type);</programlisting>
+<para>
+Adds &lt;dsig:RetrievalMethod&gt; node to the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the URI attribute (optional).
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the Type attribute(optional).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:RetrievalMethod&gt; node or
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecRetrievalMethodAddTransform">xmlSecRetrievalMethodAddTransform ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecRetrievalMethodAddTransform
+                                            (<link linkend="xmlNodePtr">xmlNodePtr</link> retrMethod,
+                                             <link linkend="xmlSecTransformId">xmlSecTransformId</link> transform);</programlisting>
+<para>
+Adds &lt;dsig:Transform&gt; node (and the parent &lt;dsig:Transforms&gt; node
+if required) to the &lt;dsig:RetrievalMethod&gt; node <parameter>retrMethod</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>retrMethod</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:RetrievalMethod&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the transform id.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;dsig:dsig:Transforms&gt; node or
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoAddEncryptedKey">xmlSecKeyInfoAddEncryptedKey ()</title>
+<programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecKeyInfoAddEncryptedKey    (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
+                                             const <link linkend="xmlChar">xmlChar</link> *id,
+                                             const <link linkend="xmlChar">xmlChar</link> *type,
+                                             const <link linkend="xmlChar">xmlChar</link> *recipient);</programlisting>
+<para>
+Adds &lt;enc:EncryptedKey&gt; node with given attributes to 
+the &lt;dsig:KeyInfo&gt; node <parameter>keyInfoNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:KeyInfo&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry> the Id attribute (optional).
+</entry></row>
+<row><entry align="right"><parameter>type</parameter>&nbsp;:</entry>
+<entry> the Type attribute (optional). 
+</entry></row>
+<row><entry align="right"><parameter>recipient</parameter>&nbsp;:</entry>
+<entry> the Recipient attribute (optional). 
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the pointer to the newly created &lt;enc:EncryptedKey&gt; node or
+NULL if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecHmacAddOutputLength">xmlSecHmacAddOutputLength ()</title>
+<programlisting>int         xmlSecHmacAddOutputLength       (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             <link linkend="size-t">size_t</link> bitsLen);</programlisting>
+<para>
+Creates &lt;dsig:HMACOutputLength&gt;child for the HMAC transform 
+node <parameter>transformNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Transform&gt; node
+</entry></row>
+<row><entry align="right"><parameter>bitsLen</parameter>&nbsp;:</entry>
+<entry> the required length in bits
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success and a negatie value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncRsaOaepAddParam">xmlSecEncRsaOaepAddParam ()</title>
+<programlisting>int         xmlSecEncRsaOaepAddParam        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,
+                                             unsigned char *buf,
+                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+Creates &lt;enc:OAEPParam&gt; child node in the <parameter>transformNode</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transformNode</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Transform&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
+<entry> the OAEP param buffer.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the OAEP param buffer size.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecXsltAddStylesheet">xmlSecXsltAddStylesheet ()</title>
+<programlisting>int         xmlSecXsltAddStylesheet         (<link linkend="xmlNodePtr">xmlNodePtr</link> node,
+                                             const <link linkend="xmlChar">xmlChar</link> *xslt);</programlisting>
+<para>
+Writes the XSLT transform expression to the <parameter>node</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry> the pointer to &lt;dsig:Transform&gt; node.
+</entry></row>
+<row><entry align="right"><parameter>xslt</parameter>&nbsp;:</entry>
+<entry> the XSLT transform exspression.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

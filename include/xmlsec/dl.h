@@ -18,10 +18,8 @@ typedef struct _xmlSecCryptoDLFunctions 	xmlSecCryptoDLFunctions,
 						*xmlSecCryptoDLFunctionsPtr;
 
 XMLSEC_EXPORT int 				xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
-										(xmlSecCryptoDLFunctionsPtr functions);
-
-
-
+									    (xmlSecCryptoDLFunctionsPtr functions);
+										
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 #include <libxml/tree.h>
@@ -46,11 +44,11 @@ XMLSEC_EXPORT int				xmlSecCryptoDLUnloadLibrary	(const xmlChar* crypto);
 XMLSEC_EXPORT int 				xmlSecCryptoDLSetFunctions	(xmlSecCryptoDLFunctionsPtr functions);
 XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr 	xmlSecCryptoDLGetFunctions	(void);
 					
+#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-
-#endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
 #endif /* __XMLSEC_APP_H__ */
 

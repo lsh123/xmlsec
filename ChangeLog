@@ -1,3 +1,12 @@
+Mon 30 Dec 2002 09:52:58 AM PST Aleksey Sanin <aleksey@aleksey.com
+	* configure.in docs/examples/dsig1/Makefile docs/examples/dsig2/Makefile
+	docs/examples/dsig3/Makefile docs/examples/dsig4/Makefile 
+	docs/examples/dsig5/Makefile docs/examples/enc1/Makefile
+	docs/examples/enc2/Makefile src/Makefile.am: fixed bug #102196 -- 
+	Sun CC does ot have -WAll and -ansi options
+	* include/xmlsec/errors.h: fixed bug #102194 -- Sun CC does not have
+	__FUNCTION__ macro
+
 Sat Dec 21 22:47:33 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c: added "--node-xpath" option for specifing

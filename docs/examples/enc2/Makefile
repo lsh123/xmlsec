@@ -8,7 +8,7 @@ CC	 	 = gcc
 LD	 	 = gcc
 
 
-CFLAGS		+= -g -Wall $(shell xmlsec-config --cflags)
+CFLAGS		+= -g $(shell xmlsec-config --cflags)
 LIBS 		+= -static $(shell xmlsec-config --libs) 
 
 $(PROGRAM):  $(PROGRAM).c

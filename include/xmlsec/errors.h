@@ -347,6 +347,9 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 #define __FUNCTION__  ""
 #endif /* _MSC_VER */
 
+#if defined(__SUNPRO_C) && (__SUNPRO_C <= 0x530)
+#define __FUNCTION__  ""
+#endif /* __SUNPRO_C */
 
 #ifdef __cplusplus
 }

@@ -25,54 +25,69 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
-
-typedef struct _xmlSecEncCtx xmlSecEncCtx, *xmlSecEncCtxPtr; 
-typedef struct _xmlSecEncResult xmlSecEncResult, *xmlSecEncResultPtr; 
-
 /**
  * xmlSecEncTypeElement:
- *
+ * 
  * The element node is encrypted.
  */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeElement[]; /* "http://www.w3.org/2001/04/xmlenc#Element"; */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeElement[];
+
 /**
  * xmlSecEncTypeContent:
  *
  * The element node content is encrypted.
  */
-XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeContent[]; /* "http://www.w3.org/2001/04/xmlenc#Content"; */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecEncTypeContent[]; 
+
+typedef struct _xmlSecEncCtx xmlSecEncCtx, *xmlSecEncCtxPtr; 
+typedef struct _xmlSecEncResult xmlSecEncResult, *xmlSecEncResultPtr; 
+
 
 /** 
- * struct _xmlSecEncCtx:
+ * xmlSecEncCtx:
+ * @keysMngr: the pointer to keys manager #xmlSecKeysMngr.
+ * @encryptionMethod: the default encryption algorithm id.
+ * @ignoreType:	the flag to ignore Type attribute in the <enc:EncryptedData> 
+ * 	node
  *
  * XML Encrypiton context.
  */
 struct _xmlSecEncCtx {
-    xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
-    xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
-    int				ignoreType;	/* the flag to ignore Type attribute 
-						 in the <enc:EncryptedData> node */
+    xmlSecKeysMngrPtr		keysMngr;
+    xmlSecTransformId		encryptionMethod;
+    int				ignoreType;
 };
 
 /**
- * struct _xmlSecEncResult:
+ * xmlSecEncResult:
+ * @ctx: the pointer to #xmlSecEncCtx structure.
+ * @context: the pointer to application specific data.
+ * @self: the pointer to  <enc:EncryptedData> node.
+ * @encrypt: the encrypt/decrypt flag.
+ * @id: the Id attribute of the  <enc:EncryptedData> node.
+ * @type: the Type attribute of the  <enc:EncryptedData> node.
+ * @mimeType: the MimeType attribute of the  <enc:EncryptedData> node.
+ * @encoding: the Encoding attribute of the  <enc:EncryptedData> node.
+ * @encryptionMethod: the used encryption algorithm id.
+ * @key: the used encryption key.
+ * @buffer: the decrypted data.
+ * @replaced: if set then the decrypted data were put back into the original document.
  *
  * The XML Encrypiton results.
  */
 struct _xmlSecEncResult {
-    xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
-    void			*context;	/* the pointer to application specific data */
-    xmlNodePtr			self;		/* the pointer to  <enc:EncryptedData> node */
-    int				encrypt;	/* the encrypt/decrypt flag */
-    xmlChar			*id;		/* the Id attribute of the  <enc:EncryptedData> node */
-    xmlChar			*type;		/* the Type attribute of the  <enc:EncryptedData> node */
-    xmlChar			*mimeType;	/* the MimeType attribute of the  <enc:EncryptedData> node */
-    xmlChar			*encoding;    	/* the Encoding attribute of the  <enc:EncryptedData> node */
-    xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
-    xmlSecKeyPtr		key;            /* the used encryption key */
-    xmlBufferPtr		buffer;		/* the decrypted data */
-    int				replaced;	/* if set then the decrypted data were put back 
-						   into the original document */
+    xmlSecEncCtxPtr		ctx;
+    void			*context;
+    xmlNodePtr			self;
+    int				encrypt;
+    xmlChar			*id;
+    xmlChar			*type;
+    xmlChar			*mimeType;
+    xmlChar			*encoding;
+    xmlSecTransformId		encryptionMethod;
+    xmlSecKeyPtr		key;
+    xmlBufferPtr		buffer;
+    int				replaced;
 };
 
 /**

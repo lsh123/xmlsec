@@ -24,8 +24,8 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-typedef struct _xmlSecX509Data 		*xmlSecX509DataPtr;
-typedef struct _xmlSecX509Store		*xmlSecX509StorePtr;
+typedef struct _xmlSecX509Data xmlSecX509Data, *xmlSecX509DataPtr;
+typedef struct _xmlSecX509Store xmlSecX509Store, *xmlSecX509StorePtr;
 
 XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509DataCreate		(void);
 XMLSEC_EXPORT void		xmlSecX509DataDestroy		(xmlSecX509DataPtr x509Data);
@@ -57,7 +57,7 @@ XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecX509StoreFind		(xmlSecX509StorePtr store,
 								 xmlChar *subjectName, 
 								 xmlChar *issuerName, 
 								 xmlChar *issuerSerial,
-								 xmlChar *skit,
+								 xmlChar *ski,
 								 xmlSecX509DataPtr x509Data);
 XMLSEC_EXPORT int		xmlSecX509StoreVerify		(xmlSecX509StorePtr store,
 								 xmlSecX509DataPtr x509Data);
@@ -71,9 +71,8 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecPKCS12ReadKey		(const char *filename,
 
 
 #else /*  XMLSEC_NO_X509 */
-
-typedef void* 	xmlSecX509DataPtr;
-typedef void* 	xmlSecX509StorePtr;
+typedef void* 	xmlSecX509Data, *xmlSecX509DataPtr;
+typedef void* 	xmlSecX509Store, *xmlSecX509StorePtr;
 
 #endif /* XMLSEC_NO_X509 */
 

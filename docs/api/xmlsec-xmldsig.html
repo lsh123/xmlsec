@@ -494,31 +494,159 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecDSigCtx {
-xmlSecKeysMngrPtr		keysMngr; /* the keys manager */
-int				processManifests;/* if 0 then Manifests are
-						  * not processed */
-int				storeSignatures; /* store the signed content 
-						  * just (SignedInfo element)
-						  * before applying signature */						  
-int				storeReferences; /* store the result of processing
-						  * Reference node in SignedInfo
-						  *just before digesting */
-int				storeManifests;	 /* store the result of processing
-						  * Reference node in Manifest
-						  * just before digesting 
-						  * (ignored if processManifest is 0) */
-int				fakeSignatures;  /* for performance testing only! */
+    xmlSecKeysMngrPtr		keysMngr;
+    int				processManifests;
+    int				storeSignatures;
+    int				storeReferences;
+    int				storeManifests;	
+    int				fakeSignatures;
 };</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>XML DSig context.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN167"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>keysMngr</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the keys manager <A
+HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
+>xmlSecKeysMngr</A
+>.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>processManifests</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> if 0 then &lt;dsig:Manifests&gt; nodes are not processed.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>storeSignatures</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> store the signed content just (&lt;dsig:SignedInfo&gt; element)
+before applying signature.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>storeReferences</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> store the result of processing &lt;dsig:Reference&gt; nodes in 
+     &lt;dsig:SignedInfo&gt; nodes just before digesting.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>storeManifests</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> store the result of processing &lt;dsig:Reference&gt; nodes in 
+&lt;dsig:Manifest&gt; nodes just before digesting (ignored if <TT
+CLASS="PARAMETER"
+><I
+>processManifest</I
+></TT
+> is 0).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>fakeSignatures</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> for performance testing only.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN166"
+NAME="AEN199"
 ></A
 ><H3
 ><A
@@ -554,7 +682,7 @@ HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN175"><P
+NAME="AEN208"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -579,9 +707,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECKEYSMNGR"
->xmlSecKeysMngr</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
+>xmlSecKeysMngr</A
 > structure</TD
 ></TR
 ><TR
@@ -615,7 +743,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN190"
+NAME="AEN223"
 ></A
 ><H3
 ><A
@@ -653,7 +781,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN199"><P
+NAME="AEN232"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -692,7 +820,7 @@ HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN209"
+NAME="AEN242"
 ></A
 ><H3
 ><A
@@ -749,7 +877,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN222"><P
+NAME="AEN255"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -884,7 +1012,7 @@ HREF="xmlsec-xmldsig.html#XMLSECDSIGRESULT"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN254"
+NAME="AEN287"
 ></A
 ><H3
 ><A
@@ -932,7 +1060,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN265"><P
+NAME="AEN298"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1059,7 +1187,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN295"
+NAME="AEN328"
 ></A
 ><H3
 ><A
@@ -1076,40 +1204,312 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecDSigResult {
-xmlSecDSigCtxPtr		ctx;		/* the DSig context */
-void			*context;	/* the pointer to application specific data */
-xmlNodePtr			self;		/* the pointer to &lt;dsig:Signature&gt; node */
-int				sign;		/* the sign/verify flag */
-xmlSecTransformStatus	result;		/* the signature verification/generation status */
-xmlSecTransformId		signMethod;	/* the signature algorithm */
-xmlSecKeyPtr		key;		/* the pointer to signature key */
-xmlSecReferenceResultPtr	firstSignRef;	/* the pointer to the first 
-						   &lt;dsig:SignedInfo&gt; reference result */
-xmlSecReferenceResultPtr	lastSignRef;	/* the pointer to the last 
-						   &lt;dsig:SignedInfo&gt; reference result */
-xmlSecReferenceResultPtr	firstManifestRef; /* the pointer to the first 
-						   &lt;dsig:Manifest&gt; reference result
-						   (valid only if the #processManifests flag
-						   in #xmlSecDSigCtx structure is set) */						   
-xmlSecReferenceResultPtr	lastManifestRef;  /* the pointer to the last 
-						   &lt;dsig:Manifest&gt; reference result
-						   (valid only if the #processManifests flag
-						   in #xmlSecDSigCtx structure is set) */
-xmlBufferPtr		buffer;		  /* the pointer to the signed content -
-						   the cannonicalization of &lt;dsig:SignedInfo&gt; node
-						   (valid only if the #storeSignatures flag
-						   in #xmlSecDSigCtx structure is set) */						   						
+    xmlSecDSigCtxPtr		ctx;
+    void			*context;
+    xmlNodePtr			self;
+    int				sign;
+    xmlSecTransformStatus	result;
+    xmlSecTransformId		signMethod;
+    xmlSecKeyPtr		key;
+    xmlSecReferenceResultPtr	firstSignRef;
+    xmlSecReferenceResultPtr	lastSignRef;
+    xmlSecReferenceResultPtr	firstManifestRef;
+    xmlSecReferenceResultPtr	lastManifestRef; 
+    xmlBufferPtr		buffer;
 };</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>XML DSig Result.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN334"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>ctx</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the DSig context <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
+>xmlSecDSigCtx</A
+>.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>context</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to application specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>self</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:Signature&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>sign</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the sign/verify flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>result</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the signature verification/generation status.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>signMethod</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the signature algorithm .</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>key</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to signature key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECREFERENCERESULTPTR"
+>xmlSecReferenceResultPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>firstSignRef</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the first &lt;dsig:SignedInfo&gt; reference result.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECREFERENCERESULTPTR"
+>xmlSecReferenceResultPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>lastSignRef</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the last  &lt;dsig:SignedInfo&gt; reference result.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECREFERENCERESULTPTR"
+>xmlSecReferenceResultPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>firstManifestRef</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the first &lt;dsig:Manifest&gt; reference result
+   (valid only if the <GTKDOCLINK
+HREF="PROCESSMANIFESTS"
+>processManifests</GTKDOCLINK
+> flag in <TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+> is set to 1).  </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECREFERENCERESULTPTR"
+>xmlSecReferenceResultPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>lastManifestRef</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the last  &lt;dsig:Manifest&gt; reference result
+   (valid only if the <GTKDOCLINK
+HREF="PROCESSMANIFESTS"
+>processManifests</GTKDOCLINK
+> flag in <TT
+CLASS="PARAMETER"
+><I
+>ctx</I
+></TT
+> is set to 1).  </TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>buffer</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the signed content - the cannonicalization of 
+   &lt;dsig:SignedInfo&gt; node  (valid only if the <GTKDOCLINK
+HREF="STORESIGNATURES"
+>storeSignatures</GTKDOCLINK
+> flag 
+   in <GTKDOCLINK
+HREF="CTX"
+>ctx</GTKDOCLINK
+> structure is set to 1).</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN300"
+NAME="AEN404"
 ></A
 ><H3
 ><A
@@ -1126,30 +1526,278 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecReferenceResult {
-xmlSecDSigCtxPtr		ctx;		/* the pointer to DSig context */
-xmlNodePtr			self;		/* the pointer to &lt;dsig:Refernece&gt; node */
-xmlSecReferenceType		refType;	/* the &lt;dsig:Reference&gt; node location */
-xmlSecTransformStatus	result;		/* the verification/generation result */
-xmlSecReferenceResultPtr	next;		/* the next reference result */
-xmlSecReferenceResultPtr	prev;		/* the prev reference result */
-xmlChar			*uri;		/* the &lt;dsig:Reference&gt; node URI attribute */
-xmlChar			*id;		/* the &lt;dsig:Reference&gt; node Id attribute */
-xmlChar			*type;		/* the &lt;dsig:Reference&gt; node Type attribute */
-xmlSecTransformId		digestMethod;	/* the used digest algorithm id */
-xmlBufferPtr		buffer;		/* the pointer to digested content		    
-						(valid only if the #storeReferences or
-						#storeManifests flags in #xmlSecDSigCtx */
+    xmlSecDSigCtxPtr		ctx;
+    xmlNodePtr			self;
+    xmlSecReferenceType		refType;
+    xmlSecTransformStatus	result;
+    xmlSecReferenceResultPtr	next;
+    xmlSecReferenceResultPtr	prev;
+    xmlChar			*uri;
+    xmlChar			*id;
+    xmlChar			*type;
+    xmlSecTransformId		digestMethod;
+    xmlBufferPtr		buffer;
 }; </PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The result of &lt;dsig:Reference&gt; processing.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN410"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECDSIGCTXPTR"
+>xmlSecDSigCtxPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>ctx</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to DSig context.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>self</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to &lt;dsig:Refernece&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-xmldsig.html#XMLSECREFERENCETYPE"
+>xmlSecReferenceType</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>refType</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the &lt;dsig:Reference&gt; node location.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>result</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the verification/generation result.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECREFERENCERESULTPTR"
+>xmlSecReferenceResultPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the next reference result.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECREFERENCERESULTPTR"
+>xmlSecReferenceResultPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the prev reference result.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>uri</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the &lt;dsig:Reference&gt; node URI attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the &lt;dsig:Reference&gt; node Id attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the &lt;dsig:Reference&gt; node Type attribute.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>digestMethod</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the used digest algorithm id.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>buffer</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to digested content (valid only if 
+	the <GTKDOCLINK
+HREF="STOREREFERENCES"
+>storeReferences</GTKDOCLINK
+> or <GTKDOCLINK
+HREF="STOREMANIFESTS"
+>storeManifests</GTKDOCLINK
+> flags in <A
+HREF="xmlsec-xmldsig.html#XMLSECDSIGCTX"
+>xmlSecDSigCtx</A
+>.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN305"
+NAME="AEN473"
 ></A
 ><H3
 ><A
@@ -1166,19 +1814,70 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum  {
-xmlSecSignedInfoReference,			/* &lt;dsig:SignedInfo&gt; node reference */
-xmlSecManifestReference			/* &lt;dsig:Manifest&gt; node reference */
+    xmlSecSignedInfoReference,
+    xmlSecManifestReference
 } xmlSecReferenceType;</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The possible &lt;dsig:Reference&gt; node locations: 
+in the &lt;dsig:SignedInfo&gt; node or in the &lt;dsig:Manifest&gt; node.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN479"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecSignedInfoReference</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> reference in &lt;dsig:SignedInfo&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecManifestReference</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> reference &lt;dsig:Manifest&gt; node.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN310"
+NAME="AEN492"
 ></A
 ><H3
 ><A
@@ -1220,7 +1919,7 @@ HREF="xmlsec-xmldsig.html#XMLSECDSIGRESULT"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN320"><P
+NAME="AEN502"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1333,7 +2032,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN347"
+NAME="AEN529"
 ></A
 ><H3
 ><A
@@ -1371,7 +2070,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN356"><P
+NAME="AEN538"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1410,7 +2109,7 @@ HREF="xmlsec-xmldsig.html#XMLSECDSIGRESULT"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN366"
+NAME="AEN548"
 ></A
 ><H3
 ><A
@@ -1457,7 +2156,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN377"><P
+NAME="AEN559"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1513,7 +2212,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN391"
+NAME="AEN573"
 ></A
 ><H3
 ><A
@@ -1548,7 +2247,7 @@ in the XML document.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN399"><P
+NAME="AEN581"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1603,7 +2302,7 @@ error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN412"
+NAME="AEN594"
 ></A
 ><H3
 ><A
@@ -1634,7 +2333,7 @@ if the &lt;dsig:Signature&gt; node was inserted in the XML document.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN419"><P
+NAME="AEN601"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1670,7 +2369,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN428"
+NAME="AEN610"
 ></A
 ><H3
 ><A
@@ -1712,7 +2411,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN438"><P
+NAME="AEN620"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1784,7 +2483,7 @@ an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN455"
+NAME="AEN637"
 ></A
 ><H3
 ><A
@@ -1826,7 +2525,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN465"><P
+NAME="AEN647"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1898,7 +2597,7 @@ error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN482"
+NAME="AEN664"
 ></A
 ><H3
 ><A
@@ -1948,7 +2647,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN494"><P
+NAME="AEN676"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2054,7 +2753,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN519"
+NAME="AEN701"
 ></A
 ><H3
 ><A
@@ -2102,7 +2801,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN530"><P
+NAME="AEN712"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2174,7 +2873,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN547"
+NAME="AEN729"
 ></A
 ><H3
 ><A
@@ -2222,7 +2921,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN558"><P
+NAME="AEN740"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2294,7 +2993,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN575"
+NAME="AEN757"
 ></A
 ><H3
 ><A
@@ -2361,7 +3060,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN590"><P
+NAME="AEN772"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2467,7 +3166,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN615"
+NAME="AEN797"
 ></A
 ><H3
 ><A
@@ -2515,7 +3214,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN626"><P
+NAME="AEN808"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2587,7 +3286,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN643"
+NAME="AEN825"
 ></A
 ><H3
 ><A
@@ -2629,7 +3328,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN653"><P
+NAME="AEN835"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2701,7 +3400,7 @@ error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN670"
+NAME="AEN852"
 ></A
 ><H3
 ><A
@@ -2747,7 +3446,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN681"><P
+NAME="AEN863"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2836,7 +3535,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN702"
+NAME="AEN884"
 ></A
 ><H3
 ><A
@@ -2878,7 +3577,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN712"><P
+NAME="AEN894"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2950,7 +3649,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN729"
+NAME="AEN911"
 ></A
 ><H3
 ><A
@@ -3017,7 +3716,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN744"><P
+NAME="AEN926"><P
 ></P
 ><TABLE
 BORDER="0"

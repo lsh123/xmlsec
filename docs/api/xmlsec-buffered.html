@@ -121,7 +121,7 @@ NAME="XMLSEC-BUFFERED">buffered.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN4844"
+NAME="AEN5331"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN4844"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN4847"><H2
+NAME="AEN5334"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,6 +142,10 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+struct      <A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORM"
+>xmlSecBufferedTransform</A
+>;
 typedef     <A
 HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMID"
 >xmlSecBufferedTransformId</A
@@ -157,10 +161,6 @@ HREF="XMLSECBUFFEREDTRANSFORMPTR"
 HREF="XMLBUFFERPTR"
 >xmlBufferPtr</GTKDOCLINK
 > buffer);
-struct      <A
-HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMIDSTRUCT"
->xmlSecBufferedTransformIdStruct</A
->;
 int         <A
 HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMREAD"
 >xmlSecBufferedTransformRead</A
@@ -217,7 +217,7 @@ HREF="XMLBUFFERPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4868"
+NAME="AEN5355"
 ></A
 ><H2
 >Description</H2
@@ -227,14 +227,246 @@ NAME="AEN4868"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN4871"
+NAME="AEN5358"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4873"
+NAME="AEN5360"
+></A
+><H3
+><A
+NAME="XMLSECBUFFEREDTRANSFORM"
+></A
+>struct xmlSecBufferedTransform</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecBufferedTransform {	
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecBufferedTransformId		id;    
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+    
+    /* xmlSecBinTransform specific */
+    int					encode;
+    xmlSecBinTransformPtr		next;
+    xmlSecBinTransformPtr		prev;   
+    void				*binData;
+    
+    /* xmlSecBufferedTransform specific */
+    xmlBufferPtr			buffer;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The buffered transform.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5366"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-buffered.html#XMLSECBUFFEREDTRANSFORMID"
+>xmlSecBufferedTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id (pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
+>xmlSecBinTransformId</A
+>).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>status</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>encode</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> encode/decode (encrypt/decrypt) flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> next binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> previous binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>binData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to binary transform speific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>buffer</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the internal buffer.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN5413"
 ></A
 ><H3
 ><A
@@ -255,12 +487,14 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The buffered transform id.</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4878"
+NAME="AEN5419"
 ></A
 ><H3
 ><A
@@ -288,11 +522,13 @@ HREF="XMLBUFFERPTR"
 ></TR
 ></TABLE
 ><P
+>Processes the data in the buffer.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4885"><P
+NAME="AEN5427"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -317,7 +553,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to buffered transform.</TD
 ></TR
 ><TR
 ><TD
@@ -334,7 +570,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to input/output buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -352,7 +588,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 in success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -363,56 +599,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4902"
-></A
-><H3
-><A
-NAME="XMLSECBUFFEREDTRANSFORMIDSTRUCT"
-></A
->struct xmlSecBufferedTransformIdStruct</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecBufferedTransformIdStruct {
-/* same as xmlSecTransformId */    
-xmlSecTransformType			type;
-xmlSecTransformUsage		usage;
-const xmlChar			*href;
-
-xmlSecTransformCreateMethod		create;
-xmlSecTransformDestroyMethod	destroy;
-xmlSecTransformReadNodeMethod	read;
-
-/* xmlSecBinTransform data/methods */
-xmlSecKeyId				keyId;
-xmlSecKeyType			encryption;
-xmlSecKeyType			decryption;
-xmlSecBinTransformSubType		binSubType;
-
-xmlSecBinTransformAddKeyMethod	addBinKey;
-xmlSecBinTransformReadMethod	readBin;
-xmlSecBinTransformWriteMethod	writeBin;
-xmlSecBinTransformFlushMethod	flushBin;    
-
-/* xmlSecBufferedTransform data/methods */
-xmlSecBufferedProcessMethod		bufferedProcess;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN4907"
+NAME="AEN5444"
 ></A
 ><H3
 ><A
@@ -448,7 +635,7 @@ to the caller.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4915"><P
+NAME="AEN5452"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -537,7 +724,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4936"
+NAME="AEN5473"
 ></A
 ><H3
 ><A
@@ -572,7 +759,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4944"><P
+NAME="AEN5481"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -660,7 +847,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4965"
+NAME="AEN5502"
 ></A
 ><H3
 ><A
@@ -690,7 +877,7 @@ HREF="XMLSECBINTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4972"><P
+NAME="AEN5509"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -744,7 +931,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN4985"
+NAME="AEN5522"
 ></A
 ><H3
 ><A
@@ -774,7 +961,7 @@ HREF="XMLSECBUFFEREDTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN4992"><P
+NAME="AEN5529"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -810,7 +997,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5001"
+NAME="AEN5538"
 ></A
 ><H3
 ><A
@@ -844,7 +1031,7 @@ HREF="XMLBUFFERPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5009"><P
+NAME="AEN5546"><P
 ></P
 ><TABLE
 BORDER="0"

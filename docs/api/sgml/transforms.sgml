@@ -105,18 +105,42 @@ void        <link linkend="xmlSecBase64EncodeSetLineSize">xmlSecBase64EncodeSetL
 <refsect2>
 <title><anchor id="xmlSecTransformStatus">enum xmlSecTransformStatus</title>
 <programlisting>typedef enum  {
-xmlSecTransformStatusNone = 0,	/* the status unknown */
-xmlSecTransformStatusOk,		/* success */
-xmlSecTransformStatusFail		/* an error occur */
+    xmlSecTransformStatusNone = 0,
+    xmlSecTransformStatusOk,
+    xmlSecTransformStatusFail
 } xmlSecTransformStatus;
 </programlisting>
 <para>
+The transform execution result.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecTransformStatusNone</literal></entry>
+<entry> the status unknown.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecTransformStatusOk</literal></entry>
+<entry> success.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecTransformStatusFail</literal></entry>
+<entry> an error occur.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformId">xmlSecTransformId</title>
 <programlisting>typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTransformId;
 </programlisting>
+<para>
+The transform id structure.</para>
 <para>
 
 </para></refsect2>
@@ -483,14 +507,36 @@ Writes XPath transform infromation to the &lt;dsig:Transform&gt; node
 <refsect2>
 <title><anchor id="xmlSecXPath2TransformType">enum xmlSecXPath2TransformType</title>
 <programlisting>typedef enum {
-xmlSecXPathTransformIntersect = 0,		/* intersect */
-xmlSecXPathTransformSubtract,		/* subtract */
-xmlSecXPathTransformUnion			/* union */
+    xmlSecXPathTransformIntersect = 0,
+    xmlSecXPathTransformSubtract,
+    xmlSecXPathTransformUnion
 } xmlSecXPath2TransformType;
 </programlisting>
 <para>
+The XPath2 transform types.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecXPathTransformIntersect</literal></entry>
+<entry> intersect.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecXPathTransformSubtract</literal></entry>
+<entry> subtract.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecXPathTransformUnion</literal></entry>
+<entry>  union.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecTransformXPath2Add">xmlSecTransformXPath2Add ()</title>
 <programlisting>int         xmlSecTransformXPath2Add        (<link linkend="xmlNodePtr">xmlNodePtr</link> transformNode,

@@ -32,15 +32,6 @@ The BASE64 encode/decode functions.
 @ctx: 
 
 
-<!-- ##### FUNCTION xmlSecBase64CtxInit ##### -->
-<para>
-
-</para>
-
-@ctx: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecBase64CtxUpdate ##### -->
 <para>
 

@@ -22,12 +22,42 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 
-typedef struct _xmlSecBufferedTransform 		*xmlSecBufferedTransformPtr; 
 typedef const struct _xmlSecBufferedTransformIdStruct	*xmlSecBufferedTransformId;
+typedef struct _xmlSecBufferedTransform  		xmlSecBufferedTransform,
+							*xmlSecBufferedTransformPtr; 
 
+/** 
+ * xmlSecBufferedProcessMethod:
+ * @transform: the pointer to buffered transform.
+ * @buffer: the pointer to input/output buffer.
+ *
+ * Processes the data in the buffer.
+ *
+ * Returns 0 in success or a negative value otherwise.
+ */
 typedef int (*xmlSecBufferedProcessMethod)	(xmlSecBufferedTransformPtr transform,
 						 xmlBufferPtr buffer);
 
+/**
+ * xmlSecBufferedTransformId:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
+ * @keyId: the transform's key id.
+ * @encryption: the key type (public/private) for encryption.
+ * @decryption: the key type (public/private) for encryption.
+ * @binSubType: the transform's binary sub type.
+ * @addBinKey:  add key method.
+ * @readBin: read binary data method.
+ * @writeBin: write binary data method.
+ * @flushBin: flush binary data method.
+ * @bufferedProcess: the buffered process method.
+ *
+ * The buffered transform id.
+ */
 struct _xmlSecBufferedTransformIdStruct {
     /* same as xmlSecTransformId */    
     xmlSecTransformType			type;
@@ -53,7 +83,21 @@ struct _xmlSecBufferedTransformIdStruct {
     xmlSecBufferedProcessMethod		bufferedProcess;
 };
 
-typedef struct _xmlSecBufferedTransform {	
+/**
+ * xmlSecBufferedTransform:
+ * @id: the transform id (pointer to #xmlSecBinTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
+ * @encode: encode/decode (encrypt/decrypt) flag.
+ * @next: next binary transform in the chain.
+ * @prev: previous binary transform in the chain.
+ * @binData: the pointer to binary transform speific data.
+ * @buffer: the internal buffer.
+ *
+ * The buffered transform.
+ */
+struct _xmlSecBufferedTransform {	
     /* same as for xmlSecTransform but id type changed */
     xmlSecBufferedTransformId		id;    
     xmlSecTransformStatus		status;
@@ -68,7 +112,7 @@ typedef struct _xmlSecBufferedTransform {
     
     /* xmlSecBufferedTransform specific */
     xmlBufferPtr			buffer;
-} xmlSecBufferedTransform;
+};
 
 /**
  * BinTransform methods to be used in the Id structure

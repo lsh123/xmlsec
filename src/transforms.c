@@ -305,7 +305,7 @@ xmlSecTransformNodeWrite(xmlNodePtr transformNode, xmlSecTransformId id) {
  *
  **************************************************************************/ 
 /**
- * xmlSecTransformInfoByHref:
+ * xmlSecTransformFind:
  * @href: the transform href.
  *
  * Searches the list of known transforms for transform with given href
@@ -448,7 +448,7 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  *
  *********************************************************************/ 
 /**
- * xmlSecTransformAddKey:
+ * xmlSecBinTransformAddKey:
  * @transform: the pointer to #xmlSecTransform structure.
  * @key: the pointer to #xmlSecKey structure. 
  *
@@ -458,7 +458,7 @@ xmlSecTransformRead(xmlSecTransformPtr transform, xmlNodePtr transformNode) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+xmlSecBinTransformAddKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBinTransformId id;
 
     xmlSecAssert2(transform != NULL, -1);

@@ -121,7 +121,7 @@ NAME="XMLSEC-NODESET">nodeset.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6283"
+NAME="AEN6983"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN6283"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6286"><H2
+NAME="AEN6986"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -292,7 +292,7 @@ HREF="FILE-CAPS"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6327"
+NAME="AEN7027"
 ></A
 ><H2
 >Description</H2
@@ -302,14 +302,14 @@ NAME="AEN6327"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6330"
+NAME="AEN7030"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6332"
+NAME="AEN7032"
 ></A
 ><H3
 ><A
@@ -326,33 +326,152 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-xmlSecNodeSetNormal = 0,		/* nodes set = nodes in the list */
-xmlSecNodeSetInvert,		/* nodes set = all document nodes 
-					   minus nodes in the list */
-xmlSecNodeSetTree,			/* nodes set = nodes in the list and 
-					   all their subtress */
-xmlSecNodeSetTreeWithoutComments,   /* nodes set = nodes in the list and 
-all their subtress but no comment 
-					   nodes */
-xmlSecNodeSetTreeInvert,		/* nodes set = all document nodes 
-					   minus nodes in the list and all 
-					   their subtress */
-xmlSecNodeSetTreeWithoutCommentsInvert, /* nodes set = all document nodes 
-					    minus (nodes in the list and all 
-					    their subtress plus all comment nodes) */
-xmlSecNodeSetList			/* nodes set = all nodes in the 
-					    chidren list of nodes sets */
+    xmlSecNodeSetNormal = 0,
+    xmlSecNodeSetInvert,
+    xmlSecNodeSetTree,
+    xmlSecNodeSetTreeWithoutComments, 
+    xmlSecNodeSetTreeInvert,
+    xmlSecNodeSetTreeWithoutCommentsInvert,
+    xmlSecNodeSetList
 } xmlSecNodeSetType;</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The simple nodes sets types.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7038"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetNormal</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> nodes set = nodes in the list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetInvert</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>  nodes set = all document nodes minus nodes in the list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTree</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> nodes set = nodes in the list and all their subtress.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTreeWithoutComments</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> nodes set = nodes in the list and 
+all their subtress but no comment nodes.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTreeInvert</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> nodes set = all document nodes minus nodes in the 
+	list and all their subtress.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetTreeWithoutCommentsInvert</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> nodes set = all document nodes 
+	minus (nodes in the list and all their subtress plus all comment nodes).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetList</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> nodes set = all nodes in the chidren list of nodes sets.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6337"
+NAME="AEN7071"
 ></A
 ><H3
 ><A
@@ -369,20 +488,85 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >typedef enum {
-xmlSecNodeSetIntersection = 0,	/* intersection */
-xmlSecNodeSetSubtraction,		/* subtraction */
-xmlSecNodeSetUnion			/* union */
+    xmlSecNodeSetIntersection = 0,
+    xmlSecNodeSetSubtraction,
+    xmlSecNodeSetUnion
 } xmlSecNodeSetOp;</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The simple nodes sets operations.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7077"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetIntersection</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> intersection.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetSubtraction</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> subtraction.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecNodeSetUnion</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> union.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6342"
+NAME="AEN7094"
 ></A
 ><H3
 ><A
@@ -399,25 +583,187 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecNodeSet {
-xmlNodeSetPtr	nodes;		/* nodes list */
-xmlDocPtr		doc;		/* the parent XML document */
-xmlSecNodeSetType	type;		/* nodes set type */
-xmlSecNodeSetOp	op;		/* the operation type */    
-xmlSecNodeSetPtr	next;		/* next nodes set */
-xmlSecNodeSetPtr	prev;		/* previous nodes set */
-xmlSecNodeSetPtr	children;	/* the children list (valid only 
-					   if type equal to xmlSecNodeSetList */
+    xmlNodeSetPtr	nodes;
+    xmlDocPtr		doc;
+    xmlSecNodeSetType	type;
+    xmlSecNodeSetOp	op;
+    xmlSecNodeSetPtr	next;
+    xmlSecNodeSetPtr	prev;
+    xmlSecNodeSetPtr	children;
 };</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The enchanced nodes set.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7100"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLNODESETPTR"
+>xmlNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>nodes</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the nodes list.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>doc</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the parent XML document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
+>xmlSecNodeSetType</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the nodes set type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-nodeset.html#XMLSECNODESETOP"
+>xmlSecNodeSetOp</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>op</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the operation type.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the next nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the previous nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>children</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the children list (valid only if type equal to <GTKDOCLINK
+HREF="XMLSECNODESETLIST"
+>xmlSecNodeSetList</GTKDOCLINK
+>).</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6347"
+NAME="AEN7141"
 ></A
 ><H3
 ><A
@@ -456,7 +802,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6356"><P
+NAME="AEN7150"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -570,7 +916,7 @@ an walk procedure should be interrupted.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6383"
+NAME="AEN7177"
 ></A
 ><H3
 ><A
@@ -611,7 +957,7 @@ HREF="xmlsec-nodeset.html#XMLSECNODESETTYPE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6393"><P
+NAME="AEN7187"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -703,7 +1049,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6415"
+NAME="AEN7209"
 ></A
 ><H3
 ><A
@@ -733,7 +1079,7 @@ HREF="XMLSECNODESETPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6422"><P
+NAME="AEN7216"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -772,7 +1118,7 @@ HREF="xmlsec-nodeset.html#XMLSECNODESET"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6432"
+NAME="AEN7226"
 ></A
 ><H3
 ><A
@@ -815,7 +1161,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6442"><P
+NAME="AEN7236"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -922,7 +1268,7 @@ and a negative value if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6467"
+NAME="AEN7261"
 ></A
 ><H3
 ><A
@@ -978,7 +1324,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6480"><P
+NAME="AEN7274"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1067,7 +1413,7 @@ occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6501"
+NAME="AEN7295"
 ></A
 ><H3
 ><A
@@ -1123,7 +1469,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6514"><P
+NAME="AEN7308"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1212,7 +1558,7 @@ occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6535"
+NAME="AEN7329"
 ></A
 ><H3
 ><A
@@ -1330,7 +1676,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6558"><P
+NAME="AEN7352"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1439,7 +1785,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6584"
+NAME="AEN7378"
 ></A
 ><H3
 ><A
@@ -1491,7 +1837,7 @@ is interrupted.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6595"><P
+NAME="AEN7389"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1587,7 +1933,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6618"
+NAME="AEN7412"
 ></A
 ><H3
 ><A
@@ -1631,7 +1977,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6628"><P
+NAME="AEN7422"><P
 ></P
 ><TABLE
 BORDER="0"

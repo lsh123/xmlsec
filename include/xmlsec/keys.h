@@ -22,7 +22,7 @@ extern "C" {
  *
  * The key id (key type information).
  */
-typedef const struct _xmlSecKeyIdStruct	xmlSecKeyIdStruct, *xmlSecKeyId; 
+typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
 typedef struct _xmlSecKey 		xmlSecKey, *xmlSecKeyPtr; 
 typedef struct _xmlSecKeysMngr  	xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
 
@@ -34,27 +34,35 @@ typedef struct _xmlSecKeysMngr  	xmlSecKeysMngr, *xmlSecKeysMngrPtr;
 XMLSEC_EXPORT_VAR xmlSecKeyId xmlSecAllKeyIds[];
 
 /**
- * enum xmlSecKeyType:
+ * xmlSecKeyType:
+ * @xmlSecKeyTypePublic: the public key.
+ * @xmlSecKeyTypePrivate: the private key.
+ * @xmlSecKeyTypeAny: any key.
  *
  * The key type (public/private).
  */
 typedef enum  {
-    xmlSecKeyTypePublic = 0, 	/* the public key */
-    xmlSecKeyTypePrivate,	/* the private key */
-    xmlSecKeyTypeAny 		/* any key */
+    xmlSecKeyTypePublic = 0,
+    xmlSecKeyTypePrivate,
+    xmlSecKeyTypeAny
 } xmlSecKeyType;
 
 /**
- * enum xmlSecKeyUsage:
+ * xmlSecKeyUsage:
+ * @xmlSecKeyUsageAny: the key can be used in any way.
+ * @xmlSecKeyUsageSign: the key for signing.
+ * @xmlSecKeyUsageVerify: the key for signature verification.
+ * @xmlSecKeyUsageEncrypt: the encryption key.
+ * @xmlSecKeyUsageDecrypt: the decryption key.
  *
  * The key usage.
  */
 typedef enum  {
-    xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
-    xmlSecKeyUsageSign,		/* the key for signing */
-    xmlSecKeyUsageVerify,	/* the key for signature verification */
-    xmlSecKeyUsageEncrypt,	/* the encryption key */
-    xmlSecKeyUsageDecrypt	/* the decryption key */
+    xmlSecKeyUsageAny = 0,
+    xmlSecKeyUsageSign,
+    xmlSecKeyUsageVerify,
+    xmlSecKeyUsageEncrypt,
+    xmlSecKeyUsageDecrypt
 } xmlSecKeyUsage;
 
 /** 
@@ -146,18 +154,23 @@ typedef long				xmlSecKeyOrigin;
 
 
 /**
- * struct _xmlSecKey:
+ * xmlSecKey:
+ * @id: the key id (#xmlSecKeyId).
+ * @type: the key type (private/public).
+ * @name: the key name (may be NULL).
+ * @origin: the key origin.
+ * @x509Data: the pointer to X509 cert data (if key was extracted from a cert).
+ * @keyData: key specific data.
  *
  * The key.
  */
 struct _xmlSecKey {
-    xmlSecKeyId				id;	/* the key id (key algorithm info) */
-    xmlSecKeyType			type;	/* the key type (private/public) */
-    xmlChar				*name;	/* the key name (may be NULL) */
-    xmlSecKeyOrigin			origin;	/* the key origin */
-    xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
-						   (if key was extracted from a cert) */
-    void				*keyData; /* key specific data */
+    xmlSecKeyId				id;
+    xmlSecKeyType			type;
+    xmlChar				*name;
+    xmlSecKeyOrigin			origin;
+    xmlSecX509DataPtr			x509Data;
+    void				*keyData;
 };
 
 
@@ -260,27 +273,35 @@ typedef int		(*xmlSecX509VerifyCallback)	(xmlSecKeysMngrPtr mngr,
 							 void *context,
     							 xmlSecX509DataPtr cert);  
 /**
- * struct _xmlSecKeysMngr:
+ * xmlSecKeysMngr:
+ * @getKey: the callback used to read <dsig:KeyInfo> node.
+ * @allowedOrigins: the allowed origins bits mask.
+ * @maxRetrievalsLevel: the max allowed <dsig:RetrievalMethod> level to prevent DOS attack.
+ * @maxEncKeysLevel: the max allowed <enc:EncryptedKey> level to prevent DOS attack.
+ * @findKey: the callback used to serach for key in the keys manager.
+ * @keysData: the keys manager data.
+ * @failIfCertNotFound: the flag.
+ * @findX509: the callback used to search for a cert.
+ * @verifyX509: the callback used to verify a cert.
+ * @x509Data: the X509 certificates manager specific data.
  *
  * The keys manager structure.
  */
 struct _xmlSecKeysMngr {
-    xmlSecGetKeyCallback		getKey;		/* the callback used to read <dsig:KeyInfo> node */
-    xmlSecKeyOrigin 			allowedOrigins;	/* the allowed origins bits mask */
-    int 				maxRetrievalsLevel; /* the max allowed <dsig:RetrievalMethod> 
-							    level to prevent DOS attack */
-    int					maxEncKeysLevel;    /* the max allowed <enc:EncryptedKey> 
-							    level to prevent DOS attack */
+    xmlSecGetKeyCallback		getKey;
+    xmlSecKeyOrigin 			allowedOrigins;
+    int 				maxRetrievalsLevel;
+    int					maxEncKeysLevel; 
+
     /* low level keys */             
-    xmlSecFindKeyCallback		findKey;	/* the callback used to serach for key in 
-							   the keys manager */
-    void 				*keysData;	/* the keys manager data */
+    xmlSecFindKeyCallback		findKey;
+    void 				*keysData;
 
     /* x509 certs */
-    int					failIfCertNotFound; /* the flag */
-    xmlSecX509FindCallback		findX509;	/* the callback used to search for a cert */
-    xmlSecX509VerifyCallback		verifyX509;   	/* the callback used to verify a cert */
-    void				*x509Data;     	/* the X509 certificates manager specific data */
+    int					failIfCertNotFound; 
+    xmlSecX509FindCallback		findX509;
+    xmlSecX509VerifyCallback		verifyX509;
+    void				*x509Data;
 };
 
 

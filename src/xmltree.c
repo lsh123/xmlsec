@@ -32,7 +32,7 @@ typedef struct _xmlSecExtMemoryParserCtx {
     size_t 			postfixSize;
 } xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
 
-/* 
+/** 
  * xmlSecParseFile:
  * @filename: the filename.
  *
@@ -112,7 +112,7 @@ xmlSecExtMemoryParserRead(void * context, char * buffer, int len) {
     return(0);
 }
 
-/* 
+/**
  * xmlSecParseMemoryExt:
  * @prefix: the first part of the input.
  * @prefixSize: the size of the first part of the input.
@@ -163,7 +163,7 @@ xmlSecParseMemoryExt(const unsigned char *prefix, size_t prefixSize,
 }
 
 
-/* 
+/**
  * xmlSecParseMemory:
  * @buffer: the input buffer.
  * @size: the input buffer size.
@@ -263,7 +263,7 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
 }
 
 /**
- * xmlSecFind:
+ * xmlSecFindNode:
  * @parent: the pointer to XML node.
  * @name: the name.
  * @ns: the namespace href (may be NULL).

@@ -121,7 +121,7 @@ NAME="XMLSEC-DIGESTS">digests.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN5305"
+NAME="AEN5914"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN5305"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN5308"><H2
+NAME="AEN5917"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,6 +142,10 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+struct      <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
+>xmlSecDigestTransform</A
+>;
 typedef     <A
 HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID"
 >xmlSecDigestTransformId</A
@@ -182,10 +186,6 @@ HREF="XMLSECDIGESTTRANSFORMPTR"
 HREF="SIZE-T"
 >size_t</GTKDOCLINK
 > size);
-struct      <A
-HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMIDSTRUCT"
->xmlSecDigestTransformIdStruct</A
->;
 int         <A
 HREF="xmlsec-digests.html#XMLSECDIGESTSIGNNODE"
 >xmlSecDigestSignNode</A
@@ -291,7 +291,7 @@ HREF="XMLSECBINTRANSFORMPTR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5347"
+NAME="AEN5956"
 ></A
 ><H2
 >Description</H2
@@ -301,14 +301,301 @@ NAME="AEN5347"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN5350"
+NAME="AEN5959"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5352"
+NAME="AEN5961"
+></A
+><H3
+><A
+NAME="XMLSECDIGESTTRANSFORM"
+></A
+>struct xmlSecDigestTransform</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecDigestTransform {	
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecDigestTransformId		id;    
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+    
+    /* xmlSecBinTransform specific */
+    int					encode;
+    xmlSecDigestTransformPtr		next;
+    xmlSecDigestTransformPtr		prev;   
+    void				*binData;
+    
+    /* xmlSecDigestTransform specific */
+    int					pushModeEnabled;
+    unsigned char			*digest;
+    size_t				digestSize;
+    void 				*digestData;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The digests transform.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN5967"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORMID"
+>xmlSecDigestTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id (pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
+>xmlSecBinTransformId</A
+>).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>status</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>encode</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> encode/decode (encrypt/decrypt) flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> next binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECDIGESTTRANSFORMPTR"
+>xmlSecDigestTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> previous binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>binData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to binary transform speific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>pushModeEnabled</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> if 1 then the data are sent to next transform, otherwise
+	 we are keeping data for sign or verify call.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>unsigned char *<TT
+CLASS="STRUCTFIELD"
+><I
+>digest</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the internal digest buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>digestSize</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the internal digest buffer size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>digestData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to digest transform specific data.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN6026"
 ></A
 ><H3
 ><A
@@ -329,12 +616,17 @@ CLASS="PROGRAMLISTING"
 ></TR
 ></TABLE
 ><P
+>The digest transform id (<TT
+CLASS="LITERAL"
+>xmlSecTransformTypeBinary</TT
+> type).</P
+><P
 ></P
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5357"
+NAME="AEN6033"
 ></A
 ><H3
 ><A
@@ -363,11 +655,13 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
+>Updates digest with new chunk of data.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5364"><P
+NAME="AEN6041"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -392,7 +686,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to digests transform <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
+>xmlSecDigestTransform</A
+>.</TD
 ></TR
 ><TR
 ><TD
@@ -409,7 +706,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input data.</TD
 ></TR
 ><TR
 ><TD
@@ -426,7 +723,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input data size.</TD
 ></TR
 ><TR
 ><TD
@@ -444,7 +741,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -455,7 +752,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5385"
+NAME="AEN6063"
 ></A
 ><H3
 ><A
@@ -484,11 +781,27 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
+>Finalizes digest and returns result in allocated buffer (<TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>).
+The caller is responsible for freeing returned buffer with <GTKDOCLINK
+HREF="XMLFREE"
+>xmlFree</GTKDOCLINK
+>() function.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5392"><P
+NAME="AEN6074"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -513,7 +826,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to digests transform <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
+>xmlSecDigestTransform</A
+>.</TD
 ></TR
 ><TR
 ><TD
@@ -530,7 +846,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to pointer to the output data.</TD
 ></TR
 ><TR
 ><TD
@@ -547,7 +863,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to outut data size.</TD
 ></TR
 ><TR
 ><TD
@@ -565,7 +881,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -576,7 +892,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5413"
+NAME="AEN6096"
 ></A
 ><H3
 ><A
@@ -605,11 +921,20 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
+>Verifies digest with new chunk of data. The actual verification
+status is set in <GTKDOCLINK
+HREF="STATUS"
+>status</GTKDOCLINK
+> member of <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
+>xmlSecDigestTransform</A
+> structure.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5420"><P
+NAME="AEN6106"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -634,7 +959,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to digests transform <A
+HREF="xmlsec-digests.html#XMLSECDIGESTTRANSFORM"
+>xmlSecDigestTransform</A
+>.</TD
 ></TR
 ><TR
 ><TD
@@ -651,7 +979,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input data.</TD
 ></TR
 ><TR
 ><TD
@@ -668,7 +996,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input data size.</TD
 ></TR
 ><TR
 ><TD
@@ -686,7 +1014,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>1 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -697,58 +1025,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5441"
-></A
-><H3
-><A
-NAME="XMLSECDIGESTTRANSFORMIDSTRUCT"
-></A
->struct xmlSecDigestTransformIdStruct</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecDigestTransformIdStruct {
-/* same as xmlSecTransformId */    
-xmlSecTransformType			type;
-xmlSecTransformUsage		usage;
-const xmlChar			*href;
-
-xmlSecTransformCreateMethod		create;
-xmlSecTransformDestroyMethod	destroy;
-xmlSecTransformReadNodeMethod	read;
-
-/* xmlSecBinTransform data/methods */
-xmlSecKeyId				keyId;
-xmlSecKeyType			encryption;
-xmlSecKeyType			decryption;
-xmlSecBinTransformSubType		binSubType;
-
-xmlSecBinTransformAddKeyMethod	addBinKey;
-xmlSecBinTransformReadMethod	readBin;
-xmlSecBinTransformWriteMethod	writeBin;
-xmlSecBinTransformFlushMethod	flushBin;    
-
-/* xmlSecDigestTransform data/methods */
-xmlSecDigestUpdateMethod		digestUpdate;
-xmlSecDigestSignMethod		digestSign;
-xmlSecDigestVerifyMethod		digestVerify;
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN5446"
+NAME="AEN6128"
 ></A
 ><H3
 ><A
@@ -784,7 +1061,7 @@ puts in the given node.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5454"><P
+NAME="AEN6136"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -873,7 +1150,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5475"
+NAME="AEN6157"
 ></A
 ><H3
 ><A
@@ -908,7 +1185,7 @@ verifies that it does match with the content of the node.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5483"><P
+NAME="AEN6165"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -979,7 +1256,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5500"
+NAME="AEN6182"
 ></A
 ><H3
 ><A
@@ -1013,7 +1290,7 @@ finalized and send to next transform when
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5507"><P
+NAME="AEN6189"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1066,7 +1343,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5520"
+NAME="AEN6202"
 ></A
 ><H3
 ><A
@@ -1102,7 +1379,7 @@ xmlSecDigestTransformId::digestUpdate method).</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5528"><P
+NAME="AEN6210"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1190,7 +1467,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5549"
+NAME="AEN6231"
 ></A
 ><H3
 ><A
@@ -1230,7 +1507,7 @@ HREF="XMLFREE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5558"><P
+NAME="AEN6240"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1318,7 +1595,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5579"
+NAME="AEN6261"
 ></A
 ><H3
 ><A
@@ -1354,7 +1631,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5587"><P
+NAME="AEN6269"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1442,7 +1719,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5608"
+NAME="AEN6290"
 ></A
 ><H3
 ><A
@@ -1479,7 +1756,7 @@ otherwise we return 0</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5616"><P
+NAME="AEN6298"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1568,7 +1845,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5637"
+NAME="AEN6319"
 ></A
 ><H3
 ><A
@@ -1603,7 +1880,7 @@ HREF="SIZE-T"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5645"><P
+NAME="AEN6327"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1691,7 +1968,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN5666"
+NAME="AEN6348"
 ></A
 ><H3
 ><A
@@ -1723,7 +2000,7 @@ it just calls flush for next transform</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN5673"><P
+NAME="AEN6355"><P
 ></P
 ><TABLE
 BORDER="0"

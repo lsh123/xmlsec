@@ -63,6 +63,11 @@ extern "C" {
  */
 #define xmlSecUsageEncryptionMethod		16
 
+/** 
+ * xmlSecTransformUsage:
+ *
+ * The transform usage bits mask.
+ */
 typedef unsigned long 				xmlSecTransformUsage;
 
 /**
@@ -73,52 +78,58 @@ typedef struct _xmlSecTransformState		xmlSecTransformState,
 
 typedef struct _xmlSecBinTransform 		xmlSecBinTransform, 
 						*xmlSecBinTransformPtr; 
-typedef struct xmlSecBinTransformIdStruct	xmlSecBinTransformIdStruct;
 typedef const struct _xmlSecBinTransformIdStruct *xmlSecBinTransformId;
 
 typedef struct _xmlSecXmlTransform 		xmlSecXmlTransform, 
 						*xmlSecXmlTransformPtr; 
-typedef struct _xmlSecXmlTransformIdStruct 	xmlSecXmlTransformIdStruct;
 typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;
 
 
 typedef struct _xmlSecC14NTransform		xmlSecC14NTransform, 
 						*xmlSecC14NTransformPtr; 
-typedef struct _xmlSecC14NTransformIdStruct 	xmlSecC14NTransformIdStruct;
 typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;
 
 
 /**
- * enum xmlSecTransformType:
+ * xmlSecTransformType:
+ * @xmlSecTransformTypeBinary: input - binary; output - binary.
+ * @xmlSecTransformTypeXml: input - XML; output - XML.
+ * @xmlSecTransformTypeC14N: input - XML; output - binary.
  *
- * The transform input/output.
+ * The transform input/output types.
  */
 typedef enum  {
-    xmlSecTransformTypeBinary,	/* input: binary; output: binary */
-    xmlSecTransformTypeXml,	/* input: XML; output: XML */
-    xmlSecTransformTypeC14N	/* input: XML; output: binary */
+    xmlSecTransformTypeBinary,
+    xmlSecTransformTypeXml,
+    xmlSecTransformTypeC14N
 } xmlSecTransformType;
 
 /**
- * enum xmlSecBinTransformSubType:
+ * xmlSecBinTransformSubType:
+ * @xmlSecBinTransformSubTypeNone: unknown.
+ * @xmlSecBinTransformSubTypeDigest: digest.
+ * @xmlSecBinTransformSubTypeCipher: cipher.
+ * @xmlSecBinTransformSubTypeBuffered: buffered transform.
  *
  * Binary transform sub-types.
  */
-typedef enum  {
-    xmlSecBinTransformSubTypeNone = 0,	/* unknown */
-    xmlSecBinTransformSubTypeDigest,	/* digest */
-    xmlSecBinTransformSubTypeCipher, 	/* cipher */
-    xmlSecBinTransformSubTypeBuffered	/* buffered transform */
+typedef enum {
+    xmlSecBinTransformSubTypeNone = 0,
+    xmlSecBinTransformSubTypeDigest,
+    xmlSecBinTransformSubTypeCipher,
+    xmlSecBinTransformSubTypeBuffered
 } xmlSecBinTransformSubType;
 
 /**
- * enum xmlSecTransformResult:
+ * xmlSecTransformResult:
+ * @xmlSecTransformResultBinary: binary data.
+ * @xmlSecTransformResultXml: XML document plus nodes set.
  *
  * The transform result types.
  */
-typedef enum  {
-    xmlSecTransformResultBinary,	/* binary data */
-    xmlSecTransformResultXml		/* XML document plus nodes set */
+typedef enum {
+    xmlSecTransformResultBinary,
+    xmlSecTransformResultXml
 } xmlSecTransformResult;
 
 
@@ -128,27 +139,36 @@ typedef enum  {
  *
  **************************************************************************/
 /**
- * struct xmlSecTransformState: 
+ * xmlSecTransformState: 
+ * @initDoc: the pointer to the original xml document.
+ * @initNodeSet: the original nodes set.
+ * @initUri: the original uri.
+ * @curDoc: the pointer to the current doc.
+ * @curNodeSet:	the pointer to the current nodes set.
+ * @curBuf: the pointer to the current binary data.
+ * @curFirstBinTransform: the pointer to the first pending binary transform.
+ * @curLastBinTransform: the pointer to the last pending binary transform.
+ * @curC14NTransform: the current pending c14n transform.
  * 
  * The current transforms state.
  */
 struct _xmlSecTransformState {
     /* initial state */
-    xmlDocPtr				initDoc;	/* the pointer to the original xml document */
-    xmlSecNodeSetPtr			initNodeSet;	/* the original nodes set */
-    char				*initUri;	/* the original uri */
+    xmlDocPtr				initDoc;
+    xmlSecNodeSetPtr			initNodeSet;
+    char				*initUri;
 
     /* current state: xml */    
-    xmlDocPtr				curDoc;		/* the pointer to the current doc */
-    xmlSecNodeSetPtr			curNodeSet;	/* the pointer to the current nodes set */
+    xmlDocPtr				curDoc;	
+    xmlSecNodeSetPtr			curNodeSet;
     
     /* current state: binary */
-    xmlBufferPtr			curBuf;		/* the pointer to the current binary data */
-    xmlSecTransformPtr			curFirstBinTransform; /* the pointer to the first pending binary transform */
-    xmlSecTransformPtr			curLastBinTransform;  /* the pointer to the last pending binary transform */
+    xmlBufferPtr			curBuf;	
+    xmlSecTransformPtr			curFirstBinTransform; 
+    xmlSecTransformPtr			curLastBinTransform; 
 
     /*  optimization: special case for c14n transforms */
-    xmlSecTransformPtr			curC14NTransform; /* the current pending c14n transform */
+    xmlSecTransformPtr			curC14NTransform; 
 };
 
 xmlSecTransformStatePtr	xmlSecTransformStateCreate	(xmlDocPtr doc,
@@ -196,32 +216,42 @@ typedef void 	(*xmlSecTransformDestroyMethod)		  (xmlSecTransformPtr transform);
 typedef int 	(*xmlSecTransformReadNodeMethod)	  (xmlSecTransformPtr transform,
 							   xmlNodePtr transformNode);
 /**
- * struct xmlSecTransformIdStruct:
+ * xmlSecTransformId:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
  * 
  * The transform id structure.
  */
 struct _xmlSecTransformIdStruct {
     /* data */
-    xmlSecTransformType			type;	/* the type */
-    xmlSecTransformUsage		usage;	/* the usage */
-    const xmlChar			*href;  /* the algorithm href */
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
 
     /* methods */
-    xmlSecTransformCreateMethod		create;	/* creation method */
-    xmlSecTransformDestroyMethod	destroy;/* destroy method */
-    xmlSecTransformReadNodeMethod	read;	/* xml node read method */
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
 };
 
 /**
- * struct xmlSecTransform:
+ * xmlSecTransform:
+ * @id: the transform id (pointer to #xmlSecTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
  *
  * The transform structure.
  */
 struct _xmlSecTransform {
-    xmlSecTransformId 			id;    	/* the transform id (#xmlSecTransformIdStruct) */
-    xmlSecTransformStatus		status; /* the transform status (ok/fail/unknown) */
-    int					dontDestroy; /* the don't automatically destroy flag */
-    void				*data;	/* the pointer to transform specific data */
+    xmlSecTransformId 			id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
 };
 
 /**
@@ -327,38 +357,60 @@ typedef int  	(*xmlSecBinTransformWriteMethod)	(xmlSecBinTransformPtr transform,
 typedef int  	(*xmlSecBinTransformFlushMethod)	(xmlSecBinTransformPtr transform);
 
 /**
- * struct xmlSecBinTransformIdStruct:
+ * xmlSecBinTransformId:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
+ * @keyId: the transform's key id.
+ * @encryption: the key type (public/private) for encryption.
+ * @decryption: the key type (public/private) for encryption.
+ * @binSubType: the transform's binary sub type.
+ * @addBinKey:  add key method.
+ * @readBin: read binary data method.
+ * @writeBin: write binary data method.
+ * @flushBin: flush binary data method.
  * 
  * The binary transform id (%xmlSecTransformTypeBinary type).
  */ 
 struct _xmlSecBinTransformIdStruct {
     /* same as xmlSecTransformId */    
     /* data */
-    xmlSecTransformType			type;	/* the type */
-    xmlSecTransformUsage		usage;	/* the usage */
-    const xmlChar			*href;  /* the algorithm href */
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
 
     /* methods */
-    xmlSecTransformCreateMethod		create;	/* creation method */
-    xmlSecTransformDestroyMethod	destroy;/* destroy method */
-    xmlSecTransformReadNodeMethod	read;	/* xml node read method */
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
 
     /* xmlSecBinTransform data/methods */
     /* data */
-    xmlSecKeyId				keyId;	/* the transform's key id */
-    xmlSecKeyType			encryption; /* the key type (public/private) for encryption */
-    xmlSecKeyType			decryption; /* the key type (public/private) for encryption */
-    xmlSecBinTransformSubType		binSubType; /* the transform's binary sub type */
+    xmlSecKeyId				keyId;
+    xmlSecKeyType			encryption;
+    xmlSecKeyType			decryption;
+    xmlSecBinTransformSubType		binSubType;
     
     /* methods */        
-    xmlSecBinTransformAddKeyMethod	addBinKey;  /* add key method */
-    xmlSecBinTransformReadMethod	readBin;    /* read binary data method */ 
-    xmlSecBinTransformWriteMethod	writeBin;   /* write binary data method */
-    xmlSecBinTransformFlushMethod	flushBin;   /* flush binary data method */
+    xmlSecBinTransformAddKeyMethod	addBinKey; 
+    xmlSecBinTransformReadMethod	readBin; 
+    xmlSecBinTransformWriteMethod	writeBin;
+    xmlSecBinTransformFlushMethod	flushBin;
 };
 
 /**
- * struct xmlSecBinTransform:
+ * xmlSecBinTransform:
+ * @id: the transform id (pointer to #xmlSecBinTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
+ * @encode: encode/decode (encrypt/decrypt) flag.
+ * @next: next binary transform in the chain.
+ * @prev: previous binary transform in the chain.
+ * @binData: the pointer to binary transform speific data.
  *
  * Binary transforms are very similar to BIO from OpenSSL.
  * However,there is one big difference. In OpenSSL BIO writing 
@@ -367,16 +419,16 @@ struct _xmlSecBinTransformIdStruct {
  */ 
 struct _xmlSecBinTransform {	
     /* same as for xmlSecTransform but id type changed */
-    xmlSecBinTransformId 		id;    	/* the transform id (#xmlSecTransformIdStruct) */
-    xmlSecTransformStatus		status; /* the transform status (ok/fail/unknown) */
-    int					dontDestroy; /* the don't automatically destroy flag */
-    void				*data;	/* the pointer to transform specific data */
+    xmlSecBinTransformId 		id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
 
     /* xmlSecBinTransform specific */
-    int					encode;	/* encode/decode (encrypt/decrypt) flag */
-    xmlSecBinTransformPtr		next;	/* next binary transform in the chain */
-    xmlSecBinTransformPtr		prev;   /* previous binary transform in the chain */
-    void				*binData;/* the pointer to binary transform speific data */
+    int					encode;
+    xmlSecBinTransformPtr		next;
+    xmlSecBinTransformPtr		prev;
+    void				*binData;
 };
 
 /**
@@ -440,7 +492,7 @@ struct _xmlSecBinTransform {
 	  ((xmlSecBinTransformId)(id))->decryption : \
 	  xmlSecKeyTypeAny)
 
-int  			xmlSecTransformAddKey		(xmlSecTransformPtr transform, 
+int  			xmlSecBinTransformAddKey	(xmlSecTransformPtr transform, 
 							 xmlSecKeyPtr key);
 int			xmlSecBinTransformRead		(xmlSecTransformPtr transform,
 							 unsigned char *buf,
@@ -480,53 +532,62 @@ typedef int 	(*xmlSecXmlTransformExecuteMethod)	(xmlSecXmlTransformPtr transform
 							 xmlDocPtr *doc,
 							 xmlSecNodeSetPtr *nodes);
 /** 
- * struct _xmlSecXmlTransformIdStruct:
+ * xmlSecXmlTransformId:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
+ * @executeXml: the execute method.
  * 
  * The xml transform id (%xmlSecTransformTypeXml type).
  */ 
 struct _xmlSecXmlTransformIdStruct {
     /* same as xmlSecTransformId */    
     /* data */
-    xmlSecTransformType			type;	/* the type */
-    xmlSecTransformUsage		usage;	/* the usage */
-    const xmlChar			*href;  /* the algorithm href */
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
 
     /* methods */
-    xmlSecTransformCreateMethod		create;	/* creation method */
-    xmlSecTransformDestroyMethod	destroy;/* destroy method */
-    xmlSecTransformReadNodeMethod	read;	/* xml node read method */
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
 
     
     /* xmlTransform info */
     /* method */
-    xmlSecXmlTransformExecuteMethod	executeXml; /* the execute method */
+    xmlSecXmlTransformExecuteMethod	executeXml;
 };
 
 /**
- * struct xmlSecXmlTransform:
+ * xmlSecXmlTransform:
+ * @id: the transform id (pointer to #xmlSecXmlTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
+ * @here: the pointer to transform's <dsig:Transform> node.
+ * @xmlData: the pointer to xml transform  specific data.
  *
  * The XML transform structure.
  */
 struct _xmlSecXmlTransform {
     /* same as for xmlSecTransform but id type changed */
-    xmlSecXmlTransformId 		id;    	/* the transform id */
-    xmlSecTransformStatus		status; /* the transform status (ok/fail/unknown) */
-    int					dontDestroy; /* the don't automatically destroy flag */
-    void				*data;	/* the pointer to transform specific data */
+    xmlSecXmlTransformId 		id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
 
     /* xmlSecXmlTransform specific */
-    xmlNodePtr				here;	 /* the pointer to transform's 
-						  <dsig:Transform> node */
-    void				*xmlData;/* the pointer to xml transform 
-						  specific data */
+    xmlNodePtr				here;
+    void				*xmlData;
 };
 
 int 			xmlSecXmlTransformExecute	(xmlSecTransformPtr transform,
 							 xmlDocPtr ctxDoc,
 							 xmlDocPtr *doc,
 							 xmlSecNodeSetPtr *nodes);
-void			xmlSecXmlTransformSetHere	(xmlSecTransformPtr transform,
-							 xmlNodePtr here);
 
 /*************************************************************************
  *
@@ -549,40 +610,52 @@ typedef int 	(*xmlSecC14NTransformExecuteMethod)	(xmlSecC14NTransformPtr transfo
 							 xmlSecNodeSetPtr nodes,
 							 xmlOutputBufferPtr buffer);
 /**
- * struct xmlSecC14NTransformIdStruct:
+ * xmlSecC14NTransformId:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
+ * @executeC14N: the execute method.
  *
  * The C14N transform id structure (%xmlSecTransformTypeC14N type).
  */
 struct _xmlSecC14NTransformIdStruct {
     /* same as xmlSecTransformId */    
     /* data */
-    xmlSecTransformType			type;	/* the type */
-    xmlSecTransformUsage		usage;	/* the usage */
-    const xmlChar			*href;  /* the algorithm href */
+    xmlSecTransformType			type;
+    xmlSecTransformUsage		usage;
+    const xmlChar			*href;
 
     /* methods */
-    xmlSecTransformCreateMethod		create;	/* creation method */
-    xmlSecTransformDestroyMethod	destroy;/* destroy method */
-    xmlSecTransformReadNodeMethod	read;	/* xml node read method */
+    xmlSecTransformCreateMethod		create;
+    xmlSecTransformDestroyMethod	destroy;
+    xmlSecTransformReadNodeMethod	read;
 
     /* xmlC14nTransform specific */
-    xmlSecC14NTransformExecuteMethod	executeC14N; /* the execute method */
+    xmlSecC14NTransformExecuteMethod	executeC14N;
 };
 
 /**
- * struct xmlSecC14NTransform:
+ * xmlSecC14NTransform:
+ * @id: the transform id (pointer to #xmlSecC14NTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
+ * @c14nData: the pointer to transform specific data.
  *
  * The C14N transform structure.
  */ 
 struct _xmlSecC14NTransform {
     /* same as for xmlSecTransform but id type changed */
-    xmlSecC14NTransformId 		id;    	/* the transform id */
-    xmlSecTransformStatus		status; /* the transform status (ok/fail/unknown) */
-    int					dontDestroy; /* the don't automatically destroy flag */
-    void				*data;	/* the pointer to transform specific data */
+    xmlSecC14NTransformId 		id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
     
     /* xmlSecC14NTransform specific */ 
-    void				*c14nData; /* the pointer to transform specific data */
+    void				*c14nData;
 };
 
 int 			xmlSecC14NTransformExecute	(xmlSecTransformPtr transform,

@@ -62,54 +62,153 @@ void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>
 <refsect2>
 <title><anchor id="xmlSecNodeSetType">enum xmlSecNodeSetType</title>
 <programlisting>typedef enum {
-xmlSecNodeSetNormal = 0,		/* nodes set = nodes in the list */
-xmlSecNodeSetInvert,		/* nodes set = all document nodes 
-					   minus nodes in the list */
-xmlSecNodeSetTree,			/* nodes set = nodes in the list and 
-					   all their subtress */
-xmlSecNodeSetTreeWithoutComments,   /* nodes set = nodes in the list and 
-all their subtress but no comment 
-					   nodes */
-xmlSecNodeSetTreeInvert,		/* nodes set = all document nodes 
-					   minus nodes in the list and all 
-					   their subtress */
-xmlSecNodeSetTreeWithoutCommentsInvert, /* nodes set = all document nodes 
-					    minus (nodes in the list and all 
-					    their subtress plus all comment nodes) */
-xmlSecNodeSetList			/* nodes set = all nodes in the 
-					    chidren list of nodes sets */
+    xmlSecNodeSetNormal = 0,
+    xmlSecNodeSetInvert,
+    xmlSecNodeSetTree,
+    xmlSecNodeSetTreeWithoutComments, 
+    xmlSecNodeSetTreeInvert,
+    xmlSecNodeSetTreeWithoutCommentsInvert,
+    xmlSecNodeSetList
 } xmlSecNodeSetType;
 </programlisting>
 <para>
+The simple nodes sets types.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecNodeSetNormal</literal></entry>
+<entry> nodes set = nodes in the list.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetInvert</literal></entry>
+<entry>  nodes set = all document nodes minus nodes in the list.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetTree</literal></entry>
+<entry> nodes set = nodes in the list and all their subtress.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetTreeWithoutComments</literal></entry>
+<entry> nodes set = nodes in the list and 
+all their subtress but no comment nodes.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetTreeInvert</literal></entry>
+<entry> nodes set = all document nodes minus nodes in the 
+	list and all their subtress.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetTreeWithoutCommentsInvert</literal></entry>
+<entry> nodes set = all document nodes 
+	minus (nodes in the list and all their subtress plus all comment nodes).
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetList</literal></entry>
+<entry> nodes set = all nodes in the chidren list of nodes sets.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetOp">enum xmlSecNodeSetOp</title>
 <programlisting>typedef enum {
-xmlSecNodeSetIntersection = 0,	/* intersection */
-xmlSecNodeSetSubtraction,		/* subtraction */
-xmlSecNodeSetUnion			/* union */
+    xmlSecNodeSetIntersection = 0,
+    xmlSecNodeSetSubtraction,
+    xmlSecNodeSetUnion
 } xmlSecNodeSetOp;
 </programlisting>
 <para>
+The simple nodes sets operations.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecNodeSetIntersection</literal></entry>
+<entry> intersection.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetSubtraction</literal></entry>
+<entry> subtraction.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecNodeSetUnion</literal></entry>
+<entry> union.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSet">struct xmlSecNodeSet</title>
 <programlisting>struct xmlSecNodeSet {
-xmlNodeSetPtr	nodes;		/* nodes list */
-xmlDocPtr		doc;		/* the parent XML document */
-xmlSecNodeSetType	type;		/* nodes set type */
-xmlSecNodeSetOp	op;		/* the operation type */    
-xmlSecNodeSetPtr	next;		/* next nodes set */
-xmlSecNodeSetPtr	prev;		/* previous nodes set */
-xmlSecNodeSetPtr	children;	/* the children list (valid only 
-					   if type equal to xmlSecNodeSetList */
+    xmlNodeSetPtr	nodes;
+    xmlDocPtr		doc;
+    xmlSecNodeSetType	type;
+    xmlSecNodeSetOp	op;
+    xmlSecNodeSetPtr	next;
+    xmlSecNodeSetPtr	prev;
+    xmlSecNodeSetPtr	children;
 };
 </programlisting>
 <para>
+The enchanced nodes set.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> <structfield>nodes</structfield></entry>
+<entry> the nodes list.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlDocPtr">xmlDocPtr</link> <structfield>doc</structfield></entry>
+<entry> the parent XML document.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> <structfield>type</structfield></entry>
+<entry> the nodes set type.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link> <structfield>op</structfield></entry>
+<entry> the operation type.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>next</structfield></entry>
+<entry> the next nodes set.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>prev</structfield></entry>
+<entry> the previous nodes set.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> <structfield>children</structfield></entry>
+<entry> the children list (valid only if type equal to <link linkend="xmlSecNodeSetList">xmlSecNodeSetList</link>).
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback ()</title>
 <programlisting>int         (*xmlSecNodeSetWalkCallback)    (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,

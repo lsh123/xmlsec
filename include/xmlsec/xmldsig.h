@@ -29,88 +29,106 @@ typedef struct _xmlSecDSigResult xmlSecDSigResult, *xmlSecDSigResultPtr;
 typedef struct _xmlSecReferenceResult xmlSecReferenceResult, *xmlSecReferenceResultPtr;
 
 /**
- * struct _xmlSecDSigCtx:
+ * xmlSecDSigCtx:
+ * @keysMngr: the keys manager #xmlSecKeysMngr.
+ * @processManifests: if 0 then <dsig:Manifests> nodes are not processed.
+ * @storeSignatures: store the signed content just (<dsig:SignedInfo> element)
+ *	before applying signature.
+ * @storeReferences: store the result of processing <dsig:Reference> nodes in 
+ *      <dsig:SignedInfo> nodes just before digesting.
+ * @storeManifests: store the result of processing <dsig:Reference> nodes in 
+ *	<dsig:Manifest> nodes just before digesting (ignored if @processManifest is 0).
+ * @fakeSignatures: for performance testing only.
  *
  * XML DSig context. 
  */
 struct _xmlSecDSigCtx {
-    xmlSecKeysMngrPtr		keysMngr; /* the keys manager */
-    int				processManifests;/* if 0 then Manifests are
-						  * not processed */
-    int				storeSignatures; /* store the signed content 
-						  * just (SignedInfo element)
-						  * before applying signature */						  
-    int				storeReferences; /* store the result of processing
-						  * Reference node in SignedInfo
-						  *just before digesting */
-    int				storeManifests;	 /* store the result of processing
-						  * Reference node in Manifest
-						  * just before digesting 
-						  * (ignored if processManifest is 0) */
-    int				fakeSignatures;  /* for performance testing only! */
+    xmlSecKeysMngrPtr		keysMngr;
+    int				processManifests;
+    int				storeSignatures;
+    int				storeReferences;
+    int				storeManifests;	
+    int				fakeSignatures;
 };
 
 /**
- * struct _xmlSecDSigResult:
+ * xmlSecDSigResult:
+ * @ctx: the DSig context #xmlSecDSigCtx.
+ * @context: the pointer to application specific data.
+ * @self: the pointer to <dsig:Signature> node.
+ * @sign: the sign/verify flag.
+ * @result: the signature verification/generation status.
+ * @signMethod: the signature algorithm .
+ * @key: the pointer to signature key.
+ * @firstSignRef: the pointer to the first <dsig:SignedInfo> reference result.
+ * @lastSignRef: the pointer to the last  <dsig:SignedInfo> reference result.
+ * @firstManifestRef: the pointer to the first <dsig:Manifest> reference result
+ *    (valid only if the #processManifests flag in @ctx is set to 1).  
+ * @lastManifestRef: the pointer to the last  <dsig:Manifest> reference result
+ *    (valid only if the #processManifests flag in @ctx is set to 1).  
+ * @buffer: the pointer to the signed content - the cannonicalization of 
+ *    <dsig:SignedInfo> node  (valid only if the #storeSignatures flag 
+ *    in #ctx structure is set to 1).
  *
  * XML DSig Result.
  */
 struct _xmlSecDSigResult {
-    xmlSecDSigCtxPtr		ctx;		/* the DSig context */
-    void			*context;	/* the pointer to application specific data */
-    xmlNodePtr			self;		/* the pointer to <dsig:Signature> node */
-    int				sign;		/* the sign/verify flag */
-    xmlSecTransformStatus	result;		/* the signature verification/generation status */
-    xmlSecTransformId		signMethod;	/* the signature algorithm */
-    xmlSecKeyPtr		key;		/* the pointer to signature key */
-    xmlSecReferenceResultPtr	firstSignRef;	/* the pointer to the first 
-						   <dsig:SignedInfo> reference result */
-    xmlSecReferenceResultPtr	lastSignRef;	/* the pointer to the last 
-						   <dsig:SignedInfo> reference result */
-    xmlSecReferenceResultPtr	firstManifestRef; /* the pointer to the first 
-						   <dsig:Manifest> reference result
-						   (valid only if the #processManifests flag
-						   in #xmlSecDSigCtx structure is set) */						   
-    xmlSecReferenceResultPtr	lastManifestRef;  /* the pointer to the last 
-						   <dsig:Manifest> reference result
-						   (valid only if the #processManifests flag
-						   in #xmlSecDSigCtx structure is set) */
-    xmlBufferPtr		buffer;		  /* the pointer to the signed content -
-						   the cannonicalization of <dsig:SignedInfo> node
-						   (valid only if the #storeSignatures flag
-						   in #xmlSecDSigCtx structure is set) */						   						
+    xmlSecDSigCtxPtr		ctx;
+    void			*context;
+    xmlNodePtr			self;
+    int				sign;
+    xmlSecTransformStatus	result;
+    xmlSecTransformId		signMethod;
+    xmlSecKeyPtr		key;
+    xmlSecReferenceResultPtr	firstSignRef;
+    xmlSecReferenceResultPtr	lastSignRef;
+    xmlSecReferenceResultPtr	firstManifestRef;
+    xmlSecReferenceResultPtr	lastManifestRef; 
+    xmlBufferPtr		buffer;
 };
 
 /**
- * enum xmlSecReferenceType:
+ * xmlSecReferenceType:
+ * @xmlSecSignedInfoReference: reference in <dsig:SignedInfo> node.
+ * @xmlSecManifestReference: reference <dsig:Manifest> node.
  * 
  * The possible <dsig:Reference> node locations: 
  * in the <dsig:SignedInfo> node or in the <dsig:Manifest> node.
  */
 typedef enum  {
-    xmlSecSignedInfoReference,			/* <dsig:SignedInfo> node reference */
-    xmlSecManifestReference			/* <dsig:Manifest> node reference */
+    xmlSecSignedInfoReference,
+    xmlSecManifestReference
 } xmlSecReferenceType;
 
 /**
- * struct _xmlSecReferenceResult:
+ * xmlSecReferenceResult:
+ * @ctx: the pointer to DSig context.
+ * @self: the pointer to <dsig:Refernece> node.
+ * @refType: the <dsig:Reference> node location.
+ * @result: the verification/generation result.
+ * @next: the next reference result.
+ * @prev: the prev reference result.
+ * @uri: the <dsig:Reference> node URI attribute.
+ * @id: the <dsig:Reference> node Id attribute.
+ * @type: the <dsig:Reference> node Type attribute.
+ * @digestMethod: the used digest algorithm id.
+ * @buffer: the pointer to digested content (valid only if 
+ * 	the #storeReferences or #storeManifests flags in #xmlSecDSigCtx.
  *
  * The result of <dsig:Reference> processing.
  */
 struct _xmlSecReferenceResult {
-    xmlSecDSigCtxPtr		ctx;		/* the pointer to DSig context */
-    xmlNodePtr			self;		/* the pointer to <dsig:Refernece> node */
-    xmlSecReferenceType		refType;	/* the <dsig:Reference> node location */
-    xmlSecTransformStatus	result;		/* the verification/generation result */
-    xmlSecReferenceResultPtr	next;		/* the next reference result */
-    xmlSecReferenceResultPtr	prev;		/* the prev reference result */
-    xmlChar			*uri;		/* the <dsig:Reference> node URI attribute */
-    xmlChar			*id;		/* the <dsig:Reference> node Id attribute */
-    xmlChar			*type;		/* the <dsig:Reference> node Type attribute */
-    xmlSecTransformId		digestMethod;	/* the used digest algorithm id */
-    xmlBufferPtr		buffer;		/* the pointer to digested content		    
-						(valid only if the #storeReferences or
-						#storeManifests flags in #xmlSecDSigCtx */
+    xmlSecDSigCtxPtr		ctx;
+    xmlNodePtr			self;
+    xmlSecReferenceType		refType;
+    xmlSecTransformStatus	result;
+    xmlSecReferenceResultPtr	next;
+    xmlSecReferenceResultPtr	prev;
+    xmlChar			*uri;
+    xmlChar			*id;
+    xmlChar			*type;
+    xmlSecTransformId		digestMethod;
+    xmlBufferPtr		buffer;
 }; 
 
 

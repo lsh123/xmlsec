@@ -2,7 +2,6 @@
 <FILE>base64</FILE>
 xmlSecBase64CtxCreate
 xmlSecBase64CtxDestroy
-xmlSecBase64CtxInit
 xmlSecBase64CtxUpdate
 xmlSecBase64CtxFinal
 xmlSecBase64Encode
@@ -19,9 +18,9 @@ xmlSecNodeSetBNValue
 
 <SECTION>
 <FILE>buffered</FILE>
+xmlSecBufferedTransform
 xmlSecBufferedTransformId
 xmlSecBufferedProcessMethod
-xmlSecBufferedTransformIdStruct
 xmlSecBufferedTransformRead
 xmlSecBufferedTransformWrite
 xmlSecBufferedTransformFlush
@@ -31,10 +30,10 @@ xmlSecBufferedProcess
 
 <SECTION>
 <FILE>ciphers</FILE>
+xmlSecCipherTransform
 xmlSecCipherTransformId
 xmlSecCipherUpdateMethod
 xmlSecCipherFinalMethod
-xmlSecCipherTransformIdStruct
 xmlSecCipherTransformRead
 xmlSecCipherTransformWrite
 xmlSecCipherTransformFlush
@@ -54,11 +53,11 @@ xmlSecTimerGet
 
 <SECTION>
 <FILE>digests</FILE>
+xmlSecDigestTransform
 xmlSecDigestTransformId
 xmlSecDigestUpdateMethod
 xmlSecDigestSignMethod
 xmlSecDigestVerifyMethod
-xmlSecDigestTransformIdStruct
 xmlSecDigestSignNode
 xmlSecDigestVerifyNode
 xmlSecDigestSetPushMode
@@ -117,6 +116,8 @@ xmlSecKeyDuplicate
 xmlSecVerifyKey
 xmlSecKeyDebugDump
 xmlSecKeyReadPemCert
+
+xmlSecKeysMngr
 xmlSecGetKeyCallback
 xmlSecFindKeyCallback
 xmlSecX509FindCallback
@@ -134,7 +135,6 @@ xmlSecKeyReadXmlMethod
 xmlSecKeyWriteXmlMethod
 xmlSecKeyReadBinaryMethod
 xmlSecKeyWriteBinaryMethod
-xmlSecKeyIdStruct
 xmlSecKeysInit
 xmlSecKeyIsValid
 xmlSecKeyCheckId
@@ -229,32 +229,20 @@ xmlSecBase64EncodeSetLineSize
 
 <SECTION>
 <FILE>transformsInternal</FILE>
+xmlSecTransformType
+
+xmlSecTransformUsage
 xmlSecUsageAny
 xmlSecUsageDSigC14N
 xmlSecUsageDSigTransform
 xmlSecUsageDSigDigest
 xmlSecUsageDSigSignature
 xmlSecUsageEncryptionMethod
-xmlSecTransformUsage
-xmlSecTransformType
-xmlSecBinTransformSubType
+
+
 xmlSecTransformResult
-xmlSecTransformCreateMethod
-xmlSecTransformDestroyMethod
-xmlSecTransformReadNodeMethod
-xmlSecTransformIdStruct
-xmlSecBinTransformAddKeyMethod
-xmlSecBinTransformReadMethod
-xmlSecBinTransformWriteMethod
-xmlSecBinTransformFlushMethod
-xmlSecBinTransformId
-xmlSecBinTransformIdStruct
-xmlSecXmlTransformExecuteMethod
-xmlSecXmlTransformId
-xmlSecXmlTransformIdStruct
-xmlSecC14NTransformExecuteMethod
-xmlSecC14NTransformId
-xmlSecC14NTransformIdStruct
+
+xmlSecTransform
 xmlSecTransformsInit
 xmlSecTransformsNodeRead
 xmlSecTransformFind
@@ -266,12 +254,19 @@ xmlSecTransformCheckId
 xmlSecTransformCreate
 xmlSecTransformDestroy
 xmlSecTransformRead
+xmlSecTransformCreateMethod
+xmlSecTransformDestroyMethod
+xmlSecTransformReadNodeMethod
+
+xmlSecBinTransformId
+xmlSecBinTransform
+xmlSecBinTransformSubType
 xmlSecBinTransformIdCheckKeyId
 xmlSecBinTransformIdGetKeyId
 xmlSecBinTransformCheckSubType
 xmlSecBinTransformIdGetEncKeyType
 xmlSecBinTransformIdGetDecKeyType
-xmlSecTransformAddKey
+xmlSecBinTransformAddKey
 xmlSecBinTransformRead
 xmlSecBinTransformWrite
 xmlSecBinTransformFlush
@@ -280,9 +275,22 @@ xmlSecBinTransformAddBefore
 xmlSecBinTransformRemove
 xmlSecBinTransformDestroyAll
 xmlSecBinTransformSetEncrypt
+xmlSecBinTransformAddKeyMethod
+xmlSecBinTransformReadMethod
+xmlSecBinTransformWriteMethod
+xmlSecBinTransformFlushMethod
+
+xmlSecXmlTransformId
+xmlSecXmlTransform
+xmlSecXmlTransformExecuteMethod
 xmlSecXmlTransformExecute
-xmlSecXmlTransformSetHere
+
+xmlSecC14NTransformId
+xmlSecC14NTransform
+xmlSecC14NTransformExecuteMethod
 xmlSecC14NTransformExecute
+
+xmlSecTransformState
 xmlSecTransformStateCreate
 xmlSecTransformStateDestroy
 xmlSecTransformStateUpdate
@@ -319,8 +327,6 @@ xmlSecX509StoreVerify
 xmlSecX509StoreLoadPemCert
 xmlSecX509StoreAddCertsDir
 xmlSecPKCS12ReadKey
-xmlSecX509DataPtr
-xmlSecX509StorePtr
 </SECTION>
 
 <SECTION>
@@ -370,8 +376,6 @@ xmlSecEncResultCreate
 xmlSecEncResultDestroy
 xmlSecEncResultDebugDump
 
-xmlSecEncTypeElement
-xmlSecEncTypeContent
 xmlSecEncDataCreate
 xmlSecEncDataDestroy
 xmlSecEncDataAddEncMethod
@@ -406,6 +410,8 @@ xmlSecReplaceNode
 xmlSecReplaceContent
 xmlSecReplaceNodeBuffer
 xmlSecAddIDs
+xmlSecGetHex
+xmlSecIsHex
 </SECTION>
 
 <SECTION>

@@ -1288,7 +1288,7 @@ xmlSecEncResultCreate(xmlSecEncCtxPtr ctx, void *context, int encrypt, xmlNodePt
 }
 
 /**
- * xmlSecEncResultDestoy:
+ * xmlSecEncResultDestroy:
  * @result: the pointer to #xmlSecEncResult structure.
  *
  * Destroys #xmlSecEncResult structure @result.
@@ -1452,11 +1452,11 @@ xmlSecEncryptedDataNodeRead(xmlNodePtr encNode, xmlSecEncStatePtr state, xmlSecE
 		    " ");
 	return(-1);
     }
-    ret = xmlSecTransformAddKey(encryptionMethod, result->key);
+    ret = xmlSecBinTransformAddKey(encryptionMethod, result->key);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformAddKey - %d", ret);
+		    "xmlSecBinTransformAddKey - %d", ret);
 	return(-1);
     }
     if(result->encrypt && (keyInfoNode != NULL)) {

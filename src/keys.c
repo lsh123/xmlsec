@@ -28,7 +28,7 @@
 xmlSecKeyId xmlSecAllKeyIds[100];
 
 /**
- * xmlSecKeyInit:
+ * xmlSecKeysInit:
  * 
  * Initializes the key ids list (called from xmlSecInit() function). 
  * This function should not be called directly by applications.

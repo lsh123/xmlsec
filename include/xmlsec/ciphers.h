@@ -22,14 +22,57 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
 
-typedef struct _xmlSecCipherTransform 			*xmlSecCipherTransformPtr; 
+typedef struct _xmlSecCipherTransform 	xmlSecCipherTransform, *xmlSecCipherTransformPtr; 
 typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
 
+/**
+ * xmlSecCipherUpdateMethod:
+ * @transform: the pointer to cipher transform.
+ * @buffer: the pointer to data.
+ * @size: the data size.
+ *
+ * Encrypts/decrypts new chunk of data.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 typedef int (*xmlSecCipherUpdateMethod)		(xmlSecCipherTransformPtr transform,
 						 const unsigned char *buffer,
 						 size_t size);
+/**
+ * xmlSecCipherFinalMethod:
+ * @transform: the pointer to cipher transform.
+ *
+ * Finalizes encryption/decryption.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 typedef int (*xmlSecCipherFinalMethod)		(xmlSecCipherTransformPtr transform);
 
+/**
+ * xmlSecCipherTransformId:
+ * @type: the type.
+ * @usage: the usage.
+ * @href: the algorithm href.
+ * @create: creation method.
+ * @destroy: destroy method.
+ * @read: xml node read method.
+ * @keyId: the transform's key id.
+ * @encryption: the key type (public/private) for encryption.
+ * @decryption: the key type (public/private) for encryption.
+ * @binSubType: the transform's binary sub type.
+ * @addBinKey:  add key method.
+ * @readBin: read binary data method.
+ * @writeBin: write binary data method.
+ * @flushBin: flush binary data method.
+ * @cipherUpdate: the update method.
+ * @cipherFinal: the final method.
+ * @keySize: the required keys size.
+ * @ivSize: the required IV size.
+ * @bufInSize: the minimal input buffer size.
+ * @bufOutSize: the minimal output buffer size.
+ *
+ * The cipher (encrypt/decrypt) transform id.
+ */
 struct _xmlSecCipherTransformIdStruct {
     /* same as xmlSecTransformId */    
     xmlSecTransformType			type;
@@ -60,7 +103,26 @@ struct _xmlSecCipherTransformIdStruct {
     size_t				bufOutSize;
 };
 
-typedef struct _xmlSecCipherTransform {	
+/**
+ * xmlSecCipherTransform:
+ * @id: the transform id (pointer to #xmlSecBinTransformId).
+ * @status: the transform status (ok/fail/unknown).
+ * @dontDestroy: the don't automatically destroy flag.
+ * @data: the pointer to transform specific data.
+ * @encode: encode/decode (encrypt/decrypt) flag.
+ * @next: next binary transform in the chain.
+ * @prev: previous binary transform in the chain.
+ * @binData: the pointer to binary transform speific data.
+ * @bufIn: the pointer to input buffer.
+ * @bufOut: the pointer to output buffer.
+ * @cipherCtx: the EVP chiper context.
+ * @iv: the pointer to IV.
+ * @ivPos:the position in IV (what was written out).
+ * @cipherData: the chipher specific data.
+ *
+ * The cipher (encrypt/decrypt) transform.
+ */
+struct _xmlSecCipherTransform {	
     /* same as for xmlSecTransform but id type changed */
     xmlSecCipherTransformId		id;    
     xmlSecTransformStatus		status;
@@ -80,7 +142,7 @@ typedef struct _xmlSecCipherTransform {
     unsigned char			*iv;
     size_t				ivPos;
     void				*cipherData;
-} xmlSecCipherTransform;
+};
 
 /**
  * BinTransform methods to be used in the Id structure

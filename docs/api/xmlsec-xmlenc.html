@@ -121,7 +121,7 @@ NAME="XMLSEC-XMLENC">xmlenc.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN774"
+NAME="AEN956"
 ></A
 ><H2
 >Name</H2
@@ -134,7 +134,7 @@ standard implementation.</DIV
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN778"><H2
+NAME="AEN960"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -427,7 +427,7 @@ HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN854"
+NAME="AEN1036"
 ></A
 ><H2
 >Description</H2
@@ -437,14 +437,14 @@ NAME="AEN854"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN857"
+NAME="AEN1039"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN859"
+NAME="AEN1041"
 ></A
 ><H3
 ><A
@@ -461,21 +461,101 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecEncCtx {
-xmlSecKeysMngrPtr		keysMngr;	/* the pointer to keys manager */
-xmlSecTransformId		encryptionMethod; /* the default encryption algorithm id */
-int				ignoreType;	/* the flag to ignore Type attribute 
-						 in the &lt;enc:EncryptedData&gt; node */
+    xmlSecKeysMngrPtr		keysMngr;
+    xmlSecTransformId		encryptionMethod;
+    int				ignoreType;
 };</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>XML Encrypiton context.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN1047"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECKEYSMNGRPTR"
+>xmlSecKeysMngrPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>keysMngr</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to keys manager <A
+HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
+>xmlSecKeysMngr</A
+>.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>encryptionMethod</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the default encryption algorithm id.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>ignoreType</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>	the flag to ignore Type attribute in the &lt;enc:EncryptedData&gt; 
+	node</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN864"
+NAME="AEN1067"
 ></A
 ><H3
 ><A
@@ -508,7 +588,7 @@ HREF="XMLSECKEYSMNGRPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN872"><P
+NAME="AEN1075"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -533,9 +613,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECKEYSMNGR"
->xmlSecKeysMngr</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-keys.html#XMLSECKEYSMNGR"
+>xmlSecKeysMngr</A
 > structure.</TD
 ></TR
 ><TR
@@ -568,7 +648,7 @@ HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN887"
+NAME="AEN1090"
 ></A
 ><H3
 ><A
@@ -601,7 +681,7 @@ HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN895"><P
+NAME="AEN1098"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -640,7 +720,7 @@ HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN905"
+NAME="AEN1108"
 ></A
 ><H3
 ><A
@@ -700,7 +780,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN918"><P
+NAME="AEN1121"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -866,7 +946,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN957"
+NAME="AEN1160"
 ></A
 ><H3
 ><A
@@ -922,7 +1002,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN969"><P
+NAME="AEN1172"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1066,7 +1146,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1003"
+NAME="AEN1206"
 ></A
 ><H3
 ><A
@@ -1125,7 +1205,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1016"><P
+NAME="AEN1219"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1269,7 +1349,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1050"
+NAME="AEN1253"
 ></A
 ><H3
 ><A
@@ -1312,7 +1392,7 @@ HREF="XMLSECENCRESULTPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1060"><P
+NAME="AEN1263"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1439,7 +1519,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1090"
+NAME="AEN1293"
 ></A
 ><H3
 ><A
@@ -1456,30 +1536,283 @@ CELLPADDING="6"
 ><PRE
 CLASS="PROGRAMLISTING"
 >struct xmlSecEncResult {
-xmlSecEncCtxPtr		ctx;		/* the pointer to #xmlSecEncCtx structure */
-void			*context;	/* the pointer to application specific data */
-xmlNodePtr			self;		/* the pointer to  &lt;enc:EncryptedData&gt; node */
-int				encrypt;	/* the encrypt/decrypt flag */
-xmlChar			*id;		/* the Id attribute of the  &lt;enc:EncryptedData&gt; node */
-xmlChar			*type;		/* the Type attribute of the  &lt;enc:EncryptedData&gt; node */
-xmlChar			*mimeType;	/* the MimeType attribute of the  &lt;enc:EncryptedData&gt; node */
-xmlChar			*encoding;    	/* the Encoding attribute of the  &lt;enc:EncryptedData&gt; node */
-xmlSecTransformId		encryptionMethod; /* the used encryption algorithm id */
-xmlSecKeyPtr		key;            /* the used encryption key */
-xmlBufferPtr		buffer;		/* the decrypted data */
-int				replaced;	/* if set then the decrypted data were put back 
-						   into the original document */
+    xmlSecEncCtxPtr		ctx;
+    void			*context;
+    xmlNodePtr			self;
+    int				encrypt;
+    xmlChar			*id;
+    xmlChar			*type;
+    xmlChar			*mimeType;
+    xmlChar			*encoding;
+    xmlSecTransformId		encryptionMethod;
+    xmlSecKeyPtr		key;
+    xmlBufferPtr		buffer;
+    int				replaced;
 };</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The XML Encrypiton results.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN1299"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECENCCTXPTR"
+>xmlSecEncCtxPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>ctx</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCCTX"
+>xmlSecEncCtx</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>context</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to application specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>self</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to  &lt;enc:EncryptedData&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>encrypt</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the encrypt/decrypt flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the Id attribute of the  &lt;enc:EncryptedData&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the Type attribute of the  &lt;enc:EncryptedData&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>mimeType</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the MimeType attribute of the  &lt;enc:EncryptedData&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLCHAR"
+>xmlChar</GTKDOCLINK
+> *<TT
+CLASS="STRUCTFIELD"
+><I
+>encoding</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the Encoding attribute of the  &lt;enc:EncryptedData&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>encryptionMethod</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the used encryption algorithm id.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>key</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the used encryption key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>buffer</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the decrypted data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>replaced</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> if set then the decrypted data were put back into the original document.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1095"
+NAME="AEN1362"
 ></A
 ><H3
 ><A
@@ -1521,7 +1854,7 @@ HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1105"><P
+NAME="AEN1372"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1634,7 +1967,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1132"
+NAME="AEN1399"
 ></A
 ><H3
 ><A
@@ -1658,11 +1991,21 @@ HREF="XMLSECENCRESULTPTR"
 ></TR
 ></TABLE
 ><P
+>Destroys <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
+> structure <TT
+CLASS="PARAMETER"
+><I
+>result</I
+></TT
+>.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1138"><P
+NAME="AEN1408"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1687,7 +2030,10 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to <A
+HREF="xmlsec-xmlenc.html#XMLSECENCRESULT"
+>xmlSecEncResult</A
+> structure.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1698,7 +2044,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1147"
+NAME="AEN1418"
 ></A
 ><H3
 ><A
@@ -1745,7 +2091,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1158"><P
+NAME="AEN1429"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1801,7 +2147,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1172"
+NAME="AEN1443"
 ></A
 ><H3
 ><A
@@ -1846,7 +2192,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1183"><P
+NAME="AEN1454"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1952,7 +2298,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1208"
+NAME="AEN1479"
 ></A
 ><H3
 ><A
@@ -1987,7 +2333,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1216"><P
+NAME="AEN1487"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2023,7 +2369,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1225"
+NAME="AEN1496"
 ></A
 ><H3
 ><A
@@ -2071,7 +2417,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1236"><P
+NAME="AEN1507"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2143,7 +2489,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1253"
+NAME="AEN1524"
 ></A
 ><H3
 ><A
@@ -2181,7 +2527,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1262"><P
+NAME="AEN1533"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2236,7 +2582,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1275"
+NAME="AEN1546"
 ></A
 ><H3
 ><A
@@ -2279,7 +2625,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1285"><P
+NAME="AEN1556"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2351,7 +2697,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1302"
+NAME="AEN1573"
 ></A
 ><H3
 ><A
@@ -2399,7 +2745,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1313"><P
+NAME="AEN1584"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2488,7 +2834,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1334"
+NAME="AEN1605"
 ></A
 ><H3
 ><A
@@ -2526,7 +2872,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1343"><P
+NAME="AEN1614"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2581,7 +2927,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1356"
+NAME="AEN1627"
 ></A
 ><H3
 ><A
@@ -2629,7 +2975,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1367"><P
+NAME="AEN1638"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2701,7 +3047,7 @@ NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN1384"
+NAME="AEN1655"
 ></A
 ><H3
 ><A
@@ -2751,7 +3097,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN1395"><P
+NAME="AEN1666"><P
 ></P
 ><TABLE
 BORDER="0"

@@ -55,8 +55,7 @@ XMLSEC_EXPORT xmlSecKeyPtr xmlSecSimpleKeysMngrLoadPemKey(xmlSecKeysMngrPtr mngr
  * X509 certificates management
  */
 #ifndef XMLSEC_NO_X509						 
-XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find	
-							(xmlSecKeysMngrPtr mngr,
+XMLSEC_EXPORT xmlSecX509DataPtr	xmlSecSimpleKeysMngrX509Find (xmlSecKeysMngrPtr mngr,
 							 void *context,
 							 xmlChar *subjectName,
 							 xmlChar *issuerName,

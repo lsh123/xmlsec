@@ -14,12 +14,12 @@
 
 
 
+struct      <link linkend="xmlSecCipherTransform">xmlSecCipherTransform</link>;
 typedef     <link linkend="xmlSecCipherTransformId">xmlSecCipherTransformId</link>;
 int         (<link linkend="xmlSecCipherUpdateMethod">*xmlSecCipherUpdateMethod</link>)     (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform,
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);
 int         (<link linkend="xmlSecCipherFinalMethod">*xmlSecCipherFinalMethod</link>)      (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform);
-struct      <link linkend="xmlSecCipherTransformIdStruct">xmlSecCipherTransformIdStruct</link>;
 int         <link linkend="xmlSecCipherTransformRead">xmlSecCipherTransformRead</link>       (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,
                                              unsigned char *buf,
                                              <link linkend="size-t">size_t</link> size);
@@ -52,9 +52,115 @@ int         <link linkend="xmlSecCipherFinal">xmlSecCipherFinal</link>          
 <refsect1>
 <title>Details</title>
 <refsect2>
+<title><anchor id="xmlSecCipherTransform">struct xmlSecCipherTransform</title>
+<programlisting>struct xmlSecCipherTransform {	
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecCipherTransformId		id;    
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+    
+    /* xmlSecBinTransform specific */
+    int					encode;
+    xmlSecCipherTransformPtr		next;
+    xmlSecCipherTransformPtr		prev;   
+    void				*binData;
+    
+    /* xmlSecCipherTransform specific */
+    unsigned char			*bufIn;
+    unsigned char			*bufOut;
+    EVP_CIPHER_CTX 			cipherCtx;
+    unsigned char			*iv;
+    size_t				ivPos;
+    void				*cipherData;
+};
+</programlisting>
+<para>
+The cipher (encrypt/decrypt) transform.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecCipherTransformId">xmlSecCipherTransformId</link> <structfield>id</structfield></entry>
+<entry> the transform id (pointer to <link linkend="xmlSecBinTransformId">xmlSecBinTransformId</link>).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link> <structfield>status</structfield></entry>
+<entry> the transform status (ok/fail/unknown).
+</entry>
+</row>
+<row>
+<entry>int <structfield>dontDestroy</structfield></entry>
+<entry> the don't automatically destroy flag.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>data</structfield></entry>
+<entry> the pointer to transform specific data.
+</entry>
+</row>
+<row>
+<entry>int <structfield>encode</structfield></entry>
+<entry> encode/decode (encrypt/decrypt) flag.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> <structfield>next</structfield></entry>
+<entry> next binary transform in the chain.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> <structfield>prev</structfield></entry>
+<entry> previous binary transform in the chain.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>binData</structfield></entry>
+<entry> the pointer to binary transform speific data.
+</entry>
+</row>
+<row>
+<entry>unsigned char *<structfield>bufIn</structfield></entry>
+<entry> the pointer to input buffer.
+</entry>
+</row>
+<row>
+<entry>unsigned char *<structfield>bufOut</structfield></entry>
+<entry> the pointer to output buffer.
+</entry>
+</row>
+<row>
+<entry><link linkend="EVP-CIPHER-CTX-CAPS">EVP_CIPHER_CTX</link> <structfield>cipherCtx</structfield></entry>
+<entry> the EVP chiper context.
+</entry>
+</row>
+<row>
+<entry>unsigned char *<structfield>iv</structfield></entry>
+<entry> the pointer to IV.
+</entry>
+</row>
+<row>
+<entry><link linkend="size-t">size_t</link> <structfield>ivPos</structfield></entry>
+<entry>the position in IV (what was written out).
+</entry>
+</row>
+<row>
+<entry>void *<structfield>cipherData</structfield></entry>
+<entry> the chipher specific data.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecCipherTransformId">xmlSecCipherTransformId</title>
 <programlisting>typedef const struct _xmlSecCipherTransformIdStruct	*xmlSecCipherTransformId;
 </programlisting>
+<para>
+The cipher (encrypt/decrypt) transform id.</para>
 <para>
 
 </para></refsect2>
@@ -64,6 +170,8 @@ int         <link linkend="xmlSecCipherFinal">xmlSecCipherFinal</link>          
                                              unsigned char *buffer,
                                              <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
+Encrypts/decrypts new chunk of data.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -71,23 +179,23 @@ int         <link linkend="xmlSecCipherFinal">xmlSecCipherFinal</link>          
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to cipher transform.
 </entry></row>
 <row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to data.
 </entry></row>
 <row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry>
+<entry> the data size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCipherFinalMethod">xmlSecCipherFinalMethod ()</title>
 <programlisting>int         (*xmlSecCipherFinalMethod)      (<link linkend="xmlSecCipherTransformPtr">xmlSecCipherTransformPtr</link> transform);</programlisting>
 <para>
+Finalizes encryption/decryption.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -95,48 +203,11 @@ int         <link linkend="xmlSecCipherFinal">xmlSecCipherFinal</link>          
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
-<entry>
+<entry> the pointer to cipher transform.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecCipherTransformIdStruct">struct xmlSecCipherTransformIdStruct</title>
-<programlisting>struct xmlSecCipherTransformIdStruct {
-/* same as xmlSecTransformId */    
-xmlSecTransformType			type;
-xmlSecTransformUsage		usage;
-const xmlChar			*href;
-
-xmlSecTransformCreateMethod		create;
-xmlSecTransformDestroyMethod	destroy;
-xmlSecTransformReadNodeMethod	read;
-
-/* xmlSecBinTransform data/methods */
-xmlSecKeyId				keyId;
-xmlSecKeyType			encryption;
-xmlSecKeyType			decryption;
-xmlSecBinTransformSubType		binSubType;
-
-xmlSecBinTransformAddKeyMethod	addBinKey;
-xmlSecBinTransformReadMethod	readBin;
-xmlSecBinTransformWriteMethod	writeBin;
-xmlSecBinTransformFlushMethod	flushBin;    
-
-/* xmlSecCipherTransform data/methods */
-xmlSecCipherUpdateMethod		cipherUpdate;
-xmlSecCipherFinalMethod		cipherFinal;
-size_t				keySize;
-size_t				ivSize;
-size_t				bufInSize;
-size_t				bufOutSize;
-};
-</programlisting>
-<para>
-
-</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecCipherTransformRead">xmlSecCipherTransformRead ()</title>
 <programlisting>int         xmlSecCipherTransformRead       (<link linkend="xmlSecBinTransformPtr">xmlSecBinTransformPtr</link> transform,

@@ -91,21 +91,6 @@ The internal keys functions.
 @Returns: 
 
 
-<!-- ##### STRUCT xmlSecKeyIdStruct ##### -->
-<para>
-
-</para>
-
-@keyValueNodeName: 
-@keyValueNodeNs: 
-@create: 
-@destroy: 
-@duplicate: 
-@read: 
-@write: 
-@readBin: 
-@writeBin: 
-
 <!-- ##### FUNCTION xmlSecKeysInit ##### -->
 <para>
 

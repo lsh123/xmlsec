@@ -194,6 +194,22 @@ The keys helper functions.
 @Returns: 
 
 
+<!-- ##### STRUCT xmlSecKeysMngr ##### -->
+<para>
+
+</para>
+
+@getKey: 
+@allowedOrigins: 
+@maxRetrievalsLevel: 
+@maxEncKeysLevel: 
+@findKey: 
+@keysData: 
+@failIfCertNotFound: 
+@findX509: 
+@verifyX509: 
+@x509Data: 
+
 <!-- ##### USER_FUNCTION xmlSecGetKeyCallback ##### -->
 <para>
 

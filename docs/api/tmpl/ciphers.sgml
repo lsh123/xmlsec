@@ -14,6 +14,26 @@ The ciphers transform.
 
 </para>
 
+<!-- ##### STRUCT xmlSecCipherTransform ##### -->
+<para>
+
+</para>
+
+@id: 
+@status: 
+@dontDestroy: 
+@data: 
+@encode: 
+@next: 
+@prev: 
+@binData: 
+@bufIn: 
+@bufOut: 
+@cipherCtx: 
+@iv: 
+@ivPos: 
+@cipherData: 
+
 <!-- ##### TYPEDEF xmlSecCipherTransformId ##### -->
 <para>
 
@@ -39,32 +59,6 @@ The ciphers transform.
 @transform: 
 @Returns: 
 
-
-<!-- ##### STRUCT xmlSecCipherTransformIdStruct ##### -->
-<para>
-
-</para>
-
-@type: 
-@usage: 
-@href: 
-@create: 
-@destroy: 
-@read: 
-@keyId: 
-@encryption: 
-@decryption: 
-@binSubType: 
-@addBinKey: 
-@readBin: 
-@writeBin: 
-@flushBin: 
-@cipherUpdate: 
-@cipherFinal: 
-@keySize: 
-@ivSize: 
-@bufInSize: 
-@bufOutSize: 
 
 <!-- ##### FUNCTION xmlSecCipherTransformRead ##### -->
 <para>

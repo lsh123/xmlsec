@@ -521,21 +521,7 @@ Reports an error.</para>
 <title><anchor id="xmlSecAssert">xmlSecAssert()</title>
 <programlisting>#define     xmlSecAssert( p )</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecAssert2">xmlSecAssert2()</title>
-<programlisting>#define     xmlSecAssert2( p, ret )</programlisting>
+Macro. Verifies that <parameter>p</parameter> is true and calls <link linkend="return">return</link>() otherwise.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -544,12 +530,26 @@ Reports an error.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
-<entry>
+<entry> the expression.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecAssert2">xmlSecAssert2()</title>
+<programlisting>#define     xmlSecAssert2( p, ret )</programlisting>
+<para>
+Macro. Verifies that <parameter>p</parameter> is true and calls return(<parameter>ret</parameter>) otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>p</parameter>&nbsp;:</entry>
+<entry> the expression.
 </entry></row>
 <row><entry align="right"><parameter>ret</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry> the return value.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

@@ -31,7 +31,6 @@ typedef struct _xmlSecBase64Ctx xmlSecBase64Ctx, *xmlSecBase64CtxPtr;
 XMLSEC_EXPORT xmlSecBase64CtxPtr xmlSecBase64CtxCreate	(int encode,
 							int columns);
 XMLSEC_EXPORT void		xmlSecBase64CtxDestroy	(xmlSecBase64CtxPtr ctx);
-XMLSEC_EXPORT int 		xmlSecBase64CtxInit	(xmlSecBase64CtxPtr ctx);
 XMLSEC_EXPORT int 		xmlSecBase64CtxUpdate	(xmlSecBase64CtxPtr ctx,
 							 const unsigned char *in, 
 						         size_t inLen, 

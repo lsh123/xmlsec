@@ -43,6 +43,7 @@ void        <link linkend="xmlSecKeyDebugDump">xmlSecKeyDebugDump</link>        
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 int         <link linkend="xmlSecKeyReadPemCert">xmlSecKeyReadPemCert</link>            (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const char *filename);
+struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)        (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> mngr,
                                              void *context,
@@ -89,7 +90,7 @@ int         (<link linkend="xmlSecX509VerifyCallback">*xmlSecX509VerifyCallback<
 <title>Details</title>
 <refsect2>
 <title><anchor id="xmlSecKeyId">xmlSecKeyId</title>
-<programlisting>typedef const struct _xmlSecKeyIdStruct	xmlSecKeyIdStruct, *xmlSecKeyId; 
+<programlisting>typedef const struct _xmlSecKeyIdStruct	*xmlSecKeyId; 
 </programlisting>
 <para>
 The key id (key type information).</para>
@@ -99,27 +100,81 @@ The key id (key type information).</para>
 <refsect2>
 <title><anchor id="xmlSecKeyType">enum xmlSecKeyType</title>
 <programlisting>typedef enum  {
-xmlSecKeyTypePublic = 0, 	/* the public key */
-xmlSecKeyTypePrivate,	/* the private key */
-xmlSecKeyTypeAny 		/* any key */
+    xmlSecKeyTypePublic = 0,
+    xmlSecKeyTypePrivate,
+    xmlSecKeyTypeAny
 } xmlSecKeyType;
 </programlisting>
 <para>
+The key type (public/private).</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecKeyTypePublic</literal></entry>
+<entry> the public key.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyTypePrivate</literal></entry>
+<entry> the private key.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyTypeAny</literal></entry>
+<entry> any key.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyUsage">enum xmlSecKeyUsage</title>
 <programlisting>typedef enum  {
-xmlSecKeyUsageAny = 0,	/* the key can be used in any way */
-xmlSecKeyUsageSign,		/* the key for signing */
-xmlSecKeyUsageVerify,	/* the key for signature verification */
-xmlSecKeyUsageEncrypt,	/* the encryption key */
-xmlSecKeyUsageDecrypt	/* the decryption key */
+    xmlSecKeyUsageAny = 0,
+    xmlSecKeyUsageSign,
+    xmlSecKeyUsageVerify,
+    xmlSecKeyUsageEncrypt,
+    xmlSecKeyUsageDecrypt
 } xmlSecKeyUsage;
 </programlisting>
 <para>
+The key usage.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecKeyUsageAny</literal></entry>
+<entry> the key can be used in any way.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyUsageSign</literal></entry>
+<entry> the key for signing.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyUsageVerify</literal></entry>
+<entry> the key for signature verification.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyUsageEncrypt</literal></entry>
+<entry> the encryption key.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyUsageDecrypt</literal></entry>
+<entry> the decryption key.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyOrigin">xmlSecKeyOrigin</title>
 <programlisting>typedef long				xmlSecKeyOrigin;
@@ -235,18 +290,54 @@ The "unknown" id.</para>
 <refsect2>
 <title><anchor id="xmlSecKey">struct xmlSecKey</title>
 <programlisting>struct xmlSecKey {
-xmlSecKeyId				id;	/* the key id (key algorithm info) */
-xmlSecKeyType			type;	/* the key type (private/public) */
-xmlChar				*name;	/* the key name (may be NULL) */
-xmlSecKeyOrigin			origin;	/* the key origin */
-xmlSecX509DataPtr			x509Data; /* the pointer to X509 cert data
-						   (if key was extracted from a cert) */
-void				*keyData; /* key specific data */
+    xmlSecKeyId				id;
+    xmlSecKeyType			type;
+    xmlChar				*name;
+    xmlSecKeyOrigin			origin;
+    xmlSecX509DataPtr			x509Data;
+    void				*keyData;
 };
 </programlisting>
 <para>
+The key.</para>
+<para>
 
-</para></refsect2>
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecKeyId">xmlSecKeyId</link> <structfield>id</structfield></entry>
+<entry> the key id (<link linkend="xmlSecKeyId">xmlSecKeyId</link>).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyType">xmlSecKeyType</link> <structfield>type</structfield></entry>
+<entry> the key type (private/public).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlChar">xmlChar</link> *<structfield>name</structfield></entry>
+<entry> the key name (may be NULL).
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> <structfield>origin</structfield></entry>
+<entry> the key origin.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecX509DataPtr">xmlSecX509DataPtr</link> <structfield>x509Data</structfield></entry>
+<entry> the pointer to X509 cert data (if key was extracted from a cert).
+</entry>
+</row>
+<row>
+<entry>void *<structfield>keyData</structfield></entry>
+<entry> key specific data.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyCreate">xmlSecKeyCreate ()</title>
 <programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyCreate                (<link linkend="xmlSecKeyId">xmlSecKeyId</link> id,
@@ -383,6 +474,85 @@ to the key.</para>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeysMngr">struct xmlSecKeysMngr</title>
+<programlisting>struct xmlSecKeysMngr {
+    xmlSecGetKeyCallback		getKey;
+    xmlSecKeyOrigin 			allowedOrigins;
+    int 				maxRetrievalsLevel;
+    int					maxEncKeysLevel; 
+
+    /* low level keys */             
+    xmlSecFindKeyCallback		findKey;
+    void 				*keysData;
+
+    /* x509 certs */
+    int					failIfCertNotFound; 
+    xmlSecX509FindCallback		findX509;
+    xmlSecX509VerifyCallback		verifyX509;
+    void				*x509Data;
+};
+</programlisting>
+<para>
+The keys manager structure.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="struct">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link> <structfield>getKey</structfield></entry>
+<entry> the callback used to read &lt;dsig:KeyInfo&gt; node.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecKeyOrigin">xmlSecKeyOrigin</link> <structfield>allowedOrigins</structfield></entry>
+<entry> the allowed origins bits mask.
+</entry>
+</row>
+<row>
+<entry>int <structfield>maxRetrievalsLevel</structfield></entry>
+<entry> the max allowed &lt;dsig:RetrievalMethod&gt; level to prevent DOS attack.
+</entry>
+</row>
+<row>
+<entry>int <structfield>maxEncKeysLevel</structfield></entry>
+<entry> the max allowed &lt;enc:EncryptedKey&gt; level to prevent DOS attack.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecFindKeyCallback">xmlSecFindKeyCallback</link> <structfield>findKey</structfield></entry>
+<entry> the callback used to serach for key in the keys manager.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>keysData</structfield></entry>
+<entry> the keys manager data.
+</entry>
+</row>
+<row>
+<entry>int <structfield>failIfCertNotFound</structfield></entry>
+<entry> the flag.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecX509FindCallback">xmlSecX509FindCallback</link> <structfield>findX509</structfield></entry>
+<entry> the callback used to search for a cert.
+</entry>
+</row>
+<row>
+<entry><link linkend="xmlSecX509VerifyCallback">xmlSecX509VerifyCallback</link> <structfield>verifyX509</structfield></entry>
+<entry> the callback used to verify a cert.
+</entry>
+</row>
+<row>
+<entry>void *<structfield>x509Data</structfield></entry>
+<entry> the X509 certificates manager specific data.
+</entry>
+</row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetKeyCallback">xmlSecGetKeyCallback ()</title>

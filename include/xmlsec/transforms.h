@@ -36,14 +36,17 @@ typedef const struct _xmlSecTransformIdStruct xmlSecTransformIdStruct, *xmlSecTr
 #define xmlSecTransformUnknown			NULL
 
 /**
- * enum xmlSecTransformStatus:
+ * xmlSecTransformStatus:
+ * @xmlSecTransformStatusNone: the status unknown.
+ * @xmlSecTransformStatusOk: success.
+ * @xmlSecTransformStatusFail: an error occur.
  *
  * The transform execution result.
  */
 typedef enum  {
-    xmlSecTransformStatusNone = 0,	/* the status unknown */
-    xmlSecTransformStatusOk,		/* success */
-    xmlSecTransformStatusFail		/* an error occur */
+    xmlSecTransformStatusNone = 0,
+    xmlSecTransformStatusOk,
+    xmlSecTransformStatusFail
 } xmlSecTransformStatus;
 
 
@@ -342,14 +345,17 @@ XMLSEC_EXPORT_VAR xmlSecTransformId 		xmlSecDigestSha1;
  *
  *******************************************************************/
 /** 
- * enum xmlSecXPath2TransformType:
+ * xmlSecXPath2TransformType:
+ * @xmlSecXPathTransformIntersect: intersect.
+ * @xmlSecXPathTransformSubtract: subtract.
+ * @xmlSecXPathTransformUnion:  union.
  *
- * The XPath2 transform types: "union", "intersect", "subtract".
+ * The XPath2 transform types.
  */
 typedef enum {
-    xmlSecXPathTransformIntersect = 0,		/* intersect */
-    xmlSecXPathTransformSubtract,		/* subtract */
-    xmlSecXPathTransformUnion			/* union */
+    xmlSecXPathTransformIntersect = 0,
+    xmlSecXPathTransformSubtract,
+    xmlSecXPathTransformUnion
 } xmlSecXPath2TransformType;
  
 /**

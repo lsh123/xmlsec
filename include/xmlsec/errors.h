@@ -287,8 +287,16 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 						 
 						
 
-/**
+/**********************************************************************
+ *
  * Assertions
+ *
+ **********************************************************************/
+/**
+ * xmlSecAssert:
+ * @p: the expression.
+ *
+ * Macro. Verifies that @p is true and calls return() otherwise.
  */
 #define xmlSecAssert( p ) \
 	if(!( p ) ) { \
@@ -298,6 +306,13 @@ XMLSEC_EXPORT void xmlSecError			(const char* file, int line,
 	    return; \
 	} 
 
+/**
+ * xmlSecAssert2:
+ * @p: the expression.
+ * @ret: the return value.
+ *
+ * Macro. Verifies that @p is true and calls return(@ret) otherwise.
+ */
 #define xmlSecAssert2( p, ret ) \
 	if(!( p ) ) { \
 	    xmlSecError(XMLSEC_ERRORS_HERE, \

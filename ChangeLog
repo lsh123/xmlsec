@@ -1,3 +1,8 @@
+Thu 15 Aug 2002 08:45:26 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* docs/api/* src/* include/xmlsec/*: finished writing
+	documentation for 370+ internal and external symbols
+
 Thu 15 Aug 2002 08:14:50 AM PDT Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* tests/keys/README: applied patch from <xafilac@gmx.de>

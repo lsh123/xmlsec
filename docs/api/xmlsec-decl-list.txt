@@ -2,7 +2,6 @@
 <FILE>base64</FILE>
 xmlSecBase64CtxCreate
 xmlSecBase64CtxDestroy
-xmlSecBase64CtxInit
 xmlSecBase64CtxUpdate
 xmlSecBase64CtxFinal
 xmlSecBase64Encode
@@ -22,6 +21,7 @@ xmlSecNodeSetBNValue
 xmlSecBufferedTransformId
 xmlSecBufferedProcessMethod
 xmlSecBufferedTransformIdStruct
+xmlSecBufferedTransform
 xmlSecBufferedTransformRead
 xmlSecBufferedTransformWrite
 xmlSecBufferedTransformFlush
@@ -35,6 +35,7 @@ xmlSecCipherTransformId
 xmlSecCipherUpdateMethod
 xmlSecCipherFinalMethod
 xmlSecCipherTransformIdStruct
+xmlSecCipherTransform
 xmlSecCipherTransformRead
 xmlSecCipherTransformWrite
 xmlSecCipherTransformFlush
@@ -59,6 +60,7 @@ xmlSecDigestUpdateMethod
 xmlSecDigestSignMethod
 xmlSecDigestVerifyMethod
 xmlSecDigestTransformIdStruct
+xmlSecDigestTransform
 xmlSecDigestSignNode
 xmlSecDigestVerifyNode
 xmlSecDigestSetPushMode
@@ -233,9 +235,7 @@ xmlSecUsageDSigSignature
 xmlSecUsageEncryptionMethod
 xmlSecTransformUsage
 xmlSecBinTransformId
-xmlSecXmlTransformIdStruct
 xmlSecXmlTransformId
-xmlSecC14NTransformIdStruct
 xmlSecC14NTransformId
 xmlSecTransformType
 xmlSecBinTransformSubType
@@ -272,7 +272,7 @@ xmlSecBinTransformIdGetKeyId
 xmlSecBinTransformCheckSubType
 xmlSecBinTransformIdGetEncKeyType
 xmlSecBinTransformIdGetDecKeyType
-xmlSecTransformAddKey
+xmlSecBinTransformAddKey
 xmlSecBinTransformRead
 xmlSecBinTransformWrite
 xmlSecBinTransformFlush
@@ -282,10 +282,11 @@ xmlSecBinTransformRemove
 xmlSecBinTransformDestroyAll
 xmlSecBinTransformSetEncrypt
 xmlSecXmlTransformExecuteMethod
+xmlSecXmlTransformIdStruct
 xmlSecXmlTransform
 xmlSecXmlTransformExecute
-xmlSecXmlTransformSetHere
 xmlSecC14NTransformExecuteMethod
+xmlSecC14NTransformIdStruct
 xmlSecC14NTransform
 xmlSecC14NTransformExecute
 </SECTION>
@@ -411,22 +412,6 @@ xmlSecXPathHereFunction
 </SECTION>
 
 <SECTION>
-<FILE>nodeset</FILE>
-xmlSecNodeSetType
-xmlSecNodeSetOp
-xmlSecNodeSet
-xmlSecNodeSetWalkCallback
-xmlSecNodeSetCreate
-xmlSecNodeSetDestroy
-xmlSecNodeSetContains
-xmlSecNodeSetAdd
-xmlSecNodeSetAddList
-xmlSecNodeSetGetChildren
-xmlSecNodeSetWalk
-xmlSecNodeSetDebugDump
-</SECTION>
-
-<SECTION>
 <FILE>errors</FILE>
 XMLSEC_ERRORS_LIB
 XMLSEC_ERRORS_FUNCTION
@@ -471,5 +456,21 @@ XMLSEC_ERRORS_HERE
 xmlSecError
 xmlSecAssert
 xmlSecAssert2
+</SECTION>
+
+<SECTION>
+<FILE>nodeset</FILE>
+xmlSecNodeSetType
+xmlSecNodeSetOp
+xmlSecNodeSet
+xmlSecNodeSetWalkCallback
+xmlSecNodeSetCreate
+xmlSecNodeSetDestroy
+xmlSecNodeSetContains
+xmlSecNodeSetAdd
+xmlSecNodeSetAddList
+xmlSecNodeSetGetChildren
+xmlSecNodeSetWalk
+xmlSecNodeSetDebugDump
 </SECTION>
 

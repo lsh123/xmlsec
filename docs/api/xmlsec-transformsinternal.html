@@ -121,7 +121,7 @@ NAME="XMLSEC-TRANSFORMSINTERNAL">transformsInternal.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN6647"
+NAME="AEN7441"
 ></A
 ><H2
 >Name</H2
@@ -129,7 +129,7 @@ NAME="AEN6647"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN6650"><H2
+NAME="AEN7444"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -142,6 +142,14 @@ CELLPADDING="6"
 CLASS="SYNOPSIS"
 >&#13;
 
+enum        <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMTYPE"
+>xmlSecTransformType</A
+>;
+typedef     <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMUSAGE"
+>xmlSecTransformUsage</A
+>;
 #define     <A
 HREF="xmlsec-transformsinternal.html#XMLSECUSAGEANY"
 >xmlSecUsageAny</A
@@ -166,164 +174,13 @@ HREF="xmlsec-transformsinternal.html#XMLSECUSAGEDSIGSIGNATURE"
 HREF="xmlsec-transformsinternal.html#XMLSECUSAGEENCRYPTIONMETHOD"
 >xmlSecUsageEncryptionMethod</A
 >
-typedef     <A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMUSAGE"
->xmlSecTransformUsage</A
->;
-enum        <A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMTYPE"
->xmlSecTransformType</A
->;
-enum        <A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMSUBTYPE"
->xmlSecBinTransformSubType</A
->;
 enum        <A
 HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMRESULT"
 >xmlSecTransformResult</A
 >;
-<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> (<A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMCREATEMETHOD"
->*xmlSecTransformCreateMethod</A
->)
-                                            (<A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> id);
-void        (<A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMDESTROYMETHOD"
->*xmlSecTransformDestroyMethod</A
->) (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform);
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMREADNODEMETHOD"
->*xmlSecTransformReadNodeMethod</A
->)
-                                            (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> transformNode);
 struct      <A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMIDSTRUCT"
->xmlSecTransformIdStruct</A
->;
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMADDKEYMETHOD"
->*xmlSecBinTransformAddKeyMethod</A
->)
-                                            (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMREADMETHOD"
->*xmlSecBinTransformReadMethod</A
->) (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
-                                             unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMWRITEMETHOD"
->*xmlSecBinTransformWriteMethod</A
->)
-                                            (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
-                                             unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMFLUSHMETHOD"
->*xmlSecBinTransformFlushMethod</A
->)
-                                            (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform);
-typedef     <A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
->xmlSecBinTransformId</A
->;
-struct      <A
-HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMIDSTRUCT"
->xmlSecBinTransformIdStruct</A
->;
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMEXECUTEMETHOD"
->*xmlSecXmlTransformExecuteMethod</A
->)
-                                            (<GTKDOCLINK
-HREF="XMLSECXMLTRANSFORMPTR"
->xmlSecXmlTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> ctxDoc,
-                                             <GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> *doc,
-                                             <GTKDOCLINK
-HREF="XMLSECNODESETPTR"
->xmlSecNodeSetPtr</GTKDOCLINK
-> *nodes);
-typedef     <A
-HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMID"
->xmlSecXmlTransformId</A
->;
-struct      <A
-HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMIDSTRUCT"
->xmlSecXmlTransformIdStruct</A
->;
-int         (<A
-HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMEXECUTEMETHOD"
->*xmlSecC14NTransformExecuteMethod</A
->)
-                                            (<GTKDOCLINK
-HREF="XMLSECC14NTRANSFORMPTR"
->xmlSecC14NTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> doc,
-                                             <GTKDOCLINK
-HREF="XMLSECNODESETPTR"
->xmlSecNodeSetPtr</GTKDOCLINK
-> nodes,
-                                             <GTKDOCLINK
-HREF="XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</GTKDOCLINK
-> buffer);
-typedef     <A
-HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMID"
->xmlSecC14NTransformId</A
->;
-struct      <A
-HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMIDSTRUCT"
->xmlSecC14NTransformIdStruct</A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 >;
 void        <A
 HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMSINIT"
@@ -422,6 +279,48 @@ HREF="XMLSECTRANSFORMPTR"
 HREF="XMLNODEPTR"
 >xmlNodePtr</GTKDOCLINK
 > transformNode);
+<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> (<A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMCREATEMETHOD"
+>*xmlSecTransformCreateMethod</A
+>)
+                                            (<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> id);
+void        (<A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMDESTROYMETHOD"
+>*xmlSecTransformDestroyMethod</A
+>) (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform);
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMREADNODEMETHOD"
+>*xmlSecTransformReadNodeMethod</A
+>)
+                                            (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode);
+typedef     <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
+>xmlSecBinTransformId</A
+>;
+struct      <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORM"
+>xmlSecBinTransform</A
+>;
+enum        <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMSUBTYPE"
+>xmlSecBinTransformSubType</A
+>;
 #define     <A
 HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMIDCHECKKEYID"
 >xmlSecBinTransformIdCheckKeyId</A
@@ -443,9 +342,9 @@ HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMIDGETDECKEYTYPE"
 >xmlSecBinTransformIdGetDecKeyType</A
 >(id)
 int         <A
-HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMADDKEY"
->xmlSecTransformAddKey</A
->           (<GTKDOCLINK
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMADDKEY"
+>xmlSecBinTransformAddKey</A
+>        (<GTKDOCLINK
 HREF="XMLSECTRANSFORMPTR"
 >xmlSecTransformPtr</GTKDOCLINK
 > transform,
@@ -536,6 +435,79 @@ HREF="XMLSECTRANSFORMPTR"
 >xmlSecTransformPtr</GTKDOCLINK
 > transform,
                                              int encrypt);
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMADDKEYMETHOD"
+>*xmlSecBinTransformAddKeyMethod</A
+>)
+                                            (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key);
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMREADMETHOD"
+>*xmlSecBinTransformReadMethod</A
+>) (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMWRITEMETHOD"
+>*xmlSecBinTransformWriteMethod</A
+>)
+                                            (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMFLUSHMETHOD"
+>*xmlSecBinTransformFlushMethod</A
+>)
+                                            (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform);
+typedef     <A
+HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMID"
+>xmlSecXmlTransformId</A
+>;
+struct      <A
+HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORM"
+>xmlSecXmlTransform</A
+>;
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMEXECUTEMETHOD"
+>*xmlSecXmlTransformExecuteMethod</A
+>)
+                                            (<GTKDOCLINK
+HREF="XMLSECXMLTRANSFORMPTR"
+>xmlSecXmlTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> ctxDoc,
+                                             <GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> *doc,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> *nodes);
 int         <A
 HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMEXECUTE"
 >xmlSecXmlTransformExecute</A
@@ -555,17 +527,34 @@ HREF="XMLDOCPTR"
 HREF="XMLSECNODESETPTR"
 >xmlSecNodeSetPtr</GTKDOCLINK
 > *nodes);
-void        <A
-HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMSETHERE"
->xmlSecXmlTransformSetHere</A
->       (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
+typedef     <A
+HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMID"
+>xmlSecC14NTransformId</A
+>;
+struct      <A
+HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORM"
+>xmlSecC14NTransform</A
+>;
+int         (<A
+HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMEXECUTEMETHOD"
+>*xmlSecC14NTransformExecuteMethod</A
+>)
+                                            (<GTKDOCLINK
+HREF="XMLSECC14NTRANSFORMPTR"
+>xmlSecC14NTransformPtr</GTKDOCLINK
 > transform,
                                              <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> here);
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nodes,
+                                             <GTKDOCLINK
+HREF="XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</GTKDOCLINK
+> buffer);
 int         <A
 HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMEXECUTE"
 >xmlSecC14NTransformExecute</A
@@ -585,6 +574,10 @@ HREF="XMLSECNODESETPTR"
 HREF="XMLOUTPUTBUFFERPTR"
 >xmlOutputBufferPtr</GTKDOCLINK
 > buffer);
+struct      <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMSTATE"
+>xmlSecTransformState</A
+>;
 <GTKDOCLINK
 HREF="XMLSECTRANSFORMSTATEPTR"
 >xmlSecTransformStatePtr</GTKDOCLINK
@@ -637,24 +630,147 @@ HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMRESULT"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6780"
+NAME="AEN7572"
 ></A
 ><H2
 >Description</H2
 ><P
-></P
+>The internal transform's functions.</P
 ></DIV
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN6783"
+NAME="AEN7575"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6785"
+NAME="AEN7577"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMTYPE"
+></A
+>enum xmlSecTransformType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum  {
+    xmlSecTransformTypeBinary,
+    xmlSecTransformTypeXml,
+    xmlSecTransformTypeC14N
+} xmlSecTransformType;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform input/output types.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7583"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformTypeBinary</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> input - binary; output - binary.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformTypeXml</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> input - XML; output - XML.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformTypeC14N</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> input - XML; output - binary.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7600"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMUSAGE"
+></A
+>xmlSecTransformUsage</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef unsigned long 				xmlSecTransformUsage;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform usage bits mask.</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7606"
 ></A
 ><H3
 ><A
@@ -682,7 +798,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6791"
+NAME="AEN7612"
 ></A
 ><H3
 ><A
@@ -710,7 +826,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6797"
+NAME="AEN7618"
 ></A
 ><H3
 ><A
@@ -738,7 +854,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6803"
+NAME="AEN7624"
 ></A
 ><H3
 ><A
@@ -766,7 +882,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6809"
+NAME="AEN7630"
 ></A
 ><H3
 ><A
@@ -794,7 +910,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6815"
+NAME="AEN7636"
 ></A
 ><H3
 ><A
@@ -822,94 +938,7 @@ CLASS="PROGRAMLISTING"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6821"
-></A
-><H3
-><A
-NAME="XMLSECTRANSFORMUSAGE"
-></A
->xmlSecTransformUsage</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef unsigned long 				xmlSecTransformUsage;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6826"
-></A
-><H3
-><A
-NAME="XMLSECTRANSFORMTYPE"
-></A
->enum xmlSecTransformType</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum  {
-xmlSecTransformTypeBinary,	/* input: binary; output: binary */
-xmlSecTransformTypeXml,	/* input: XML; output: XML */
-xmlSecTransformTypeC14N	/* input: XML; output: binary */
-} xmlSecTransformType;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6831"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMSUBTYPE"
-></A
->enum xmlSecBinTransformSubType</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef enum  {
-xmlSecBinTransformSubTypeNone = 0,	/* unknown */
-xmlSecBinTransformSubTypeDigest,	/* digest */
-xmlSecBinTransformSubTypeCipher, 	/* cipher */
-xmlSecBinTransformSubTypeBuffered	/* buffered transform */
-} xmlSecBinTransformSubType;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6836"
+NAME="AEN7642"
 ></A
 ><H3
 ><A
@@ -925,26 +954,76 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->typedef enum  {
-xmlSecTransformResultBinary,	/* binary data */
-xmlSecTransformResultXml		/* XML document plus nodes set */
+>typedef enum {
+    xmlSecTransformResultBinary,
+    xmlSecTransformResultXml
 } xmlSecTransformResult;</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
+>The transform result types.</P
+><P
 ></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7648"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformResultBinary</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> binary data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecTransformResultXml</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> XML document plus nodes set.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
 ></DIV
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6841"
+NAME="AEN7661"
 ></A
 ><H3
 ><A
-NAME="XMLSECTRANSFORMCREATEMETHOD"
+NAME="XMLSECTRANSFORM"
 ></A
->xmlSecTransformCreateMethod ()</H3
+>struct xmlSecTransform</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -954,30 +1033,28 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
-><GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> (*xmlSecTransformCreateMethod)
-                                            (<A
-HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
->xmlSecTransformId</A
-> id);</PRE
+>struct xmlSecTransform {
+    xmlSecTransformId 			id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+};</PRE
 ></TD
 ></TR
 ></TABLE
 ><P
->The transform specific creation method.</P
+>The transform structure.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN6849"><P
+NAME="AEN7667"><P
 ></P
 ><TABLE
 BORDER="0"
 WIDTH="100%"
-BGCOLOR="#FFD0D0"
+BGCOLOR="#FFF0D0"
 CELLSPACING="0"
 CELLPADDING="4"
 CLASS="CALSTABLE"
@@ -985,38 +1062,79 @@ CLASS="CALSTABLE"
 ><TR
 ><TD
 WIDTH="20%"
-ALIGN="RIGHT"
+ALIGN="LEFT"
 VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
 ><I
 >id</I
 ></TT
->&nbsp;:</TD
+></TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the transform id to create.</TD
+> the transform id (pointer to <A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+>).</TD
 ></TR
 ><TR
 ><TD
 WIDTH="20%"
-ALIGN="RIGHT"
+ALIGN="LEFT"
 VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
 ><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
+>status</I
+></TT
+></TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->pointer to the newly created transform or NULL if an 
-error occurs.</TD
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1027,1202 +1145,7 @@ error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN6862"
-></A
-><H3
-><A
-NAME="XMLSECTRANSFORMDESTROYMETHOD"
-></A
->xmlSecTransformDestroyMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->void        (*xmlSecTransformDestroyMethod) (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->The transform specific destroy method.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6869"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
-> structure.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6879"
-></A
-><H3
-><A
-NAME="XMLSECTRANSFORMREADNODEMETHOD"
-></A
->xmlSecTransformReadNodeMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecTransformReadNodeMethod)
-                                            (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> transformNode);</PRE
-></TD
-></TR
-></TABLE
-><P
->The transfomr specific method to read the transform data from 
-the <TT
-CLASS="PARAMETER"
-><I
->transformNode</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6888"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transformNode</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the &lt;dsig:Transform&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6906"
-></A
-><H3
-><A
-NAME="XMLSECTRANSFORMIDSTRUCT"
-></A
->struct xmlSecTransformIdStruct</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecTransformIdStruct {
-/* data */
-xmlSecTransformType			type;	/* the type */
-xmlSecTransformUsage		usage;	/* the usage */
-const xmlChar			*href;  /* the algorithm href */
-
-/* methods */
-xmlSecTransformCreateMethod		create;	/* creation method */
-xmlSecTransformDestroyMethod	destroy;/* destroy method */
-xmlSecTransformReadNodeMethod	read;	/* xml node read method */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6911"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMADDKEYMETHOD"
-></A
->xmlSecBinTransformAddKeyMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecBinTransformAddKeyMethod)
-                                            (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLSECKEYPTR"
->xmlSecKeyPtr</GTKDOCLINK
-> key);</PRE
-></TD
-></TR
-></TABLE
-><P
->The transform specific method to set key for use.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6919"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to binary transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->key</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to key.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6936"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMREADMETHOD"
-></A
->xmlSecBinTransformReadMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecBinTransformReadMethod) (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
-                                             unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->The transform specific method to read next chunk of binary data into <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6945"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the output buffer size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->the number of bytes in the buffer or negative value
-if an error occurs.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6967"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMWRITEMETHOD"
-></A
->xmlSecBinTransformWriteMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecBinTransformWriteMethod)
-                                            (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform,
-                                             unsigned char *buf,
-                                             <GTKDOCLINK
-HREF="SIZE-T"
->size_t</GTKDOCLINK
-> size);</PRE
-></TD
-></TR
-></TABLE
-><P
->The transform specific method to write next chunk of binary data from <TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN6976"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buf</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->size</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the input data size.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN6998"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMFLUSHMETHOD"
-></A
->xmlSecBinTransformFlushMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecBinTransformFlushMethod)
-                                            (<GTKDOCLINK
-HREF="XMLSECBINTRANSFORMPTR"
->xmlSecBinTransformPtr</GTKDOCLINK
-> transform);</PRE
-></TD
-></TR
-></TABLE
-><P
->The transform specific method to finalize writing.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7005"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
-> structure.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 if success or negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7019"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMID"
-></A
->xmlSecBinTransformId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecBinTransformIdStruct *xmlSecBinTransformId;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7024"
-></A
-><H3
-><A
-NAME="XMLSECBINTRANSFORMIDSTRUCT"
-></A
->struct xmlSecBinTransformIdStruct</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecBinTransformIdStruct {
-/* same as xmlSecTransformId */    
-/* data */
-xmlSecTransformType			type;	/* the type */
-xmlSecTransformUsage		usage;	/* the usage */
-const xmlChar			*href;  /* the algorithm href */
-
-/* methods */
-xmlSecTransformCreateMethod		create;	/* creation method */
-xmlSecTransformDestroyMethod	destroy;/* destroy method */
-xmlSecTransformReadNodeMethod	read;	/* xml node read method */
-
-/* xmlSecBinTransform data/methods */
-/* data */
-xmlSecKeyId				keyId;	/* the transform's key id */
-xmlSecKeyType			encryption; /* the key type (public/private) for encryption */
-xmlSecKeyType			decryption; /* the key type (public/private) for encryption */
-xmlSecBinTransformSubType		binSubType; /* the transform's binary sub type */
-
-/* methods */        
-xmlSecBinTransformAddKeyMethod	addBinKey;  /* add key method */
-xmlSecBinTransformReadMethod	readBin;    /* read binary data method */ 
-xmlSecBinTransformWriteMethod	writeBin;   /* write binary data method */
-xmlSecBinTransformFlushMethod	flushBin;   /* flush binary data method */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7029"
-></A
-><H3
-><A
-NAME="XMLSECXMLTRANSFORMEXECUTEMETHOD"
-></A
->xmlSecXmlTransformExecuteMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecXmlTransformExecuteMethod)
-                                            (<GTKDOCLINK
-HREF="XMLSECXMLTRANSFORMPTR"
->xmlSecXmlTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> ctxDoc,
-                                             <GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> *doc,
-                                             <GTKDOCLINK
-HREF="XMLSECNODESETPTR"
->xmlSecNodeSetPtr</GTKDOCLINK
-> *nodes);</PRE
-></TD
-></TR
-></TABLE
-><P
->Transform specific execute method. Returns result nodes set in <TT
-CLASS="PARAMETER"
-><I
->nodes</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7040"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to XML transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->ctxDoc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the document containing the transform's 
-	&lt;dsig:Transform&gt; node.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the pointer to current document.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->nodes</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to the pointer to current and result nodes set.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7065"
-></A
-><H3
-><A
-NAME="XMLSECXMLTRANSFORMID"
-></A
->xmlSecXmlTransformId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7070"
-></A
-><H3
-><A
-NAME="XMLSECXMLTRANSFORMIDSTRUCT"
-></A
->struct xmlSecXmlTransformIdStruct</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecXmlTransformIdStruct {
-/* same as xmlSecTransformId */    
-/* data */
-xmlSecTransformType			type;	/* the type */
-xmlSecTransformUsage		usage;	/* the usage */
-const xmlChar			*href;  /* the algorithm href */
-
-/* methods */
-xmlSecTransformCreateMethod		create;	/* creation method */
-xmlSecTransformDestroyMethod	destroy;/* destroy method */
-xmlSecTransformReadNodeMethod	read;	/* xml node read method */
-
-
-/* xmlTransform info */
-/* method */
-xmlSecXmlTransformExecuteMethod	executeXml; /* the execute method */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7075"
-></A
-><H3
-><A
-NAME="XMLSECC14NTRANSFORMEXECUTEMETHOD"
-></A
->xmlSecC14NTransformExecuteMethod ()</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->int         (*xmlSecC14NTransformExecuteMethod)
-                                            (<GTKDOCLINK
-HREF="XMLSECC14NTRANSFORMPTR"
->xmlSecC14NTransformPtr</GTKDOCLINK
-> transform,
-                                             <GTKDOCLINK
-HREF="XMLDOCPTR"
->xmlDocPtr</GTKDOCLINK
-> doc,
-                                             <GTKDOCLINK
-HREF="XMLSECNODESETPTR"
->xmlSecNodeSetPtr</GTKDOCLINK
-> nodes,
-                                             <GTKDOCLINK
-HREF="XMLOUTPUTBUFFERPTR"
->xmlOutputBufferPtr</GTKDOCLINK
-> buffer);</PRE
-></TD
-></TR
-></TABLE
-><P
->Transform specific execute method. returns result in the <TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->.</P
-><P
-></P
-><DIV
-CLASS="INFORMALTABLE"
-><A
-NAME="AEN7086"><P
-></P
-><TABLE
-BORDER="0"
-WIDTH="100%"
-BGCOLOR="#FFD0D0"
-CELLSPACING="0"
-CELLPADDING="4"
-CLASS="CALSTABLE"
-><TBODY
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to C14N transform.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->doc</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to current document.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->nodes</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the pointer to current nodes set.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><TT
-CLASS="PARAMETER"
-><I
->buffer</I
-></TT
->&nbsp;:</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
-> the result buffer.</TD
-></TR
-><TR
-><TD
-WIDTH="20%"
-ALIGN="RIGHT"
-VALIGN="TOP"
-><SPAN
-CLASS="emphasis"
-><I
-CLASS="EMPHASIS"
->Returns</I
-></SPAN
-> :</TD
-><TD
-WIDTH="80%"
-ALIGN="LEFT"
-VALIGN="TOP"
->0 on success or a negative value otherwise.</TD
-></TR
-></TBODY
-></TABLE
-><P
-></P
-></DIV
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7111"
-></A
-><H3
-><A
-NAME="XMLSECC14NTRANSFORMID"
-></A
->xmlSecC14NTransformId</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7116"
-></A
-><H3
-><A
-NAME="XMLSECC14NTRANSFORMIDSTRUCT"
-></A
->struct xmlSecC14NTransformIdStruct</H3
-><TABLE
-BORDER="0"
-BGCOLOR="#D6E8FF"
-WIDTH="100%"
-CELLPADDING="6"
-><TR
-><TD
-><PRE
-CLASS="PROGRAMLISTING"
->struct xmlSecC14NTransformIdStruct {
-/* same as xmlSecTransformId */    
-/* data */
-xmlSecTransformType			type;	/* the type */
-xmlSecTransformUsage		usage;	/* the usage */
-const xmlChar			*href;  /* the algorithm href */
-
-/* methods */
-xmlSecTransformCreateMethod		create;	/* creation method */
-xmlSecTransformDestroyMethod	destroy;/* destroy method */
-xmlSecTransformReadNodeMethod	read;	/* xml node read method */
-
-/* xmlC14nTransform specific */
-xmlSecC14NTransformExecuteMethod	executeC14N; /* the execute method */
-};</PRE
-></TD
-></TR
-></TABLE
-><P
-></P
-></DIV
-><HR><DIV
-CLASS="REFSECT2"
-><A
-NAME="AEN7121"
+NAME="AEN7691"
 ></A
 ><H3
 ><A
@@ -2254,7 +1177,7 @@ The applications should not call this function directly.</P
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7128"
+NAME="AEN7698"
 ></A
 ><H3
 ><A
@@ -2293,7 +1216,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7137"><P
+NAME="AEN7707"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2364,7 +1287,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7154"
+NAME="AEN7724"
 ></A
 ><H3
 ><A
@@ -2391,11 +1314,13 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Searches the list of known transforms for transform with given href</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7161"><P
+NAME="AEN7732"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2420,7 +1345,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the transform href.</TD
 ></TR
 ><TR
 ><TD
@@ -2438,7 +1363,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the id of the found transform or NULL if an error occurs 
+or transform is not found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -2449,7 +1375,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7174"
+NAME="AEN7745"
 ></A
 ><H3
 ><A
@@ -2496,7 +1422,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7184"><P
+NAME="AEN7755"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2573,9 +1499,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to newly allocated <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+>the pointer to newly allocated <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure
 or NULL if an error occurs.</TD
 ></TR
@@ -2588,7 +1514,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7206"
+NAME="AEN7777"
 ></A
 ><H3
 ><A
@@ -2622,7 +1548,7 @@ HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7214"><P
+NAME="AEN7785"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2693,7 +1619,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7231"
+NAME="AEN7802"
 ></A
 ><H3
 ><A
@@ -2725,7 +1651,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7238"><P
+NAME="AEN7809"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2761,7 +1687,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7247"
+NAME="AEN7818"
 ></A
 ><H3
 ><A
@@ -2799,7 +1725,7 @@ or 0 otherwise.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7255"><P
+NAME="AEN7826"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2852,7 +1778,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7268"
+NAME="AEN7839"
 ></A
 ><H3
 ><A
@@ -2890,7 +1816,7 @@ or 0 otherwise.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7276"><P
+NAME="AEN7847"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2943,7 +1869,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7289"
+NAME="AEN7860"
 ></A
 ><H3
 ><A
@@ -2981,7 +1907,7 @@ HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMUSAGE"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7298"><P
+NAME="AEN7869"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3059,9 +1985,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->the pointer to newly created <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+>the pointer to newly created <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure
 or NULL if an error occurs.</TD
 ></TR
@@ -3074,7 +2000,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7320"
+NAME="AEN7891"
 ></A
 ><H3
 ><A
@@ -3105,7 +2031,7 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7327"><P
+NAME="AEN7898"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3130,9 +2056,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -3162,7 +2088,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7341"
+NAME="AEN7912"
 ></A
 ><H3
 ><A
@@ -3202,7 +2128,7 @@ transform specific function.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7350"><P
+NAME="AEN7921"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3227,9 +2153,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -3276,7 +2202,634 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7368"
+NAME="AEN7939"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMCREATEMETHOD"
+></A
+>xmlSecTransformCreateMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> (*xmlSecTransformCreateMethod)
+                                            (<A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMID"
+>xmlSecTransformId</A
+> id);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform specific creation method.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7947"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>id</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id to create.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>pointer to the newly created transform or NULL if an 
+error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7960"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMDESTROYMETHOD"
+></A
+>xmlSecTransformDestroyMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void        (*xmlSecTransformDestroyMethod) (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform specific destroy method.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7967"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
+> structure.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN7977"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMREADNODEMETHOD"
+></A
+>xmlSecTransformReadNodeMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecTransformReadNodeMethod)
+                                            (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> transformNode);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transfomr specific method to read the transform data from 
+the <TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN7986"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transformNode</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8004"
+></A
+><H3
+><A
+NAME="XMLSECBINTRANSFORMID"
+></A
+>xmlSecBinTransformId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef const struct _xmlSecBinTransformIdStruct *xmlSecBinTransformId;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The binary transform id (<TT
+CLASS="LITERAL"
+>xmlSecTransformTypeBinary</TT
+> type).</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8011"
+></A
+><H3
+><A
+NAME="XMLSECBINTRANSFORM"
+></A
+>struct xmlSecBinTransform</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecBinTransform {	
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecBinTransformId 		id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+
+    /* xmlSecBinTransform specific */
+    int					encode;
+    xmlSecBinTransformPtr		next;
+    xmlSecBinTransformPtr		prev;
+    void				*binData;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>Binary transforms are very similar to BIO from OpenSSL.
+However,there is one big difference. In OpenSSL BIO writing 
+operation *always* encrypts data and read operation *always*
+decrypts data. We do not want to have this restriction.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8017"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
+>xmlSecBinTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id (pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECBINTRANSFORMID"
+>xmlSecBinTransformId</A
+>).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>status</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>encode</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> encode/decode (encrypt/decrypt) flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>next</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> next binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>prev</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> previous binary transform in the chain.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>binData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to binary transform speific data.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8059"
+></A
+><H3
+><A
+NAME="XMLSECBINTRANSFORMSUBTYPE"
+></A
+>enum xmlSecBinTransformSubType</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef enum {
+    xmlSecBinTransformSubTypeNone = 0,
+    xmlSecBinTransformSubTypeDigest,
+    xmlSecBinTransformSubTypeCipher,
+    xmlSecBinTransformSubTypeBuffered
+} xmlSecBinTransformSubType;</PRE
+></TD
+></TR
+></TABLE
+><P
+>Binary transform sub-types.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8065"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#F0F0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecBinTransformSubTypeNone</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> unknown.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecBinTransformSubTypeDigest</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> digest.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecBinTransformSubTypeCipher</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> cipher.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><TT
+CLASS="LITERAL"
+>xmlSecBinTransformSubTypeBuffered</TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> buffered transform.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8086"
 ></A
 ><H3
 ><A
@@ -3317,7 +2870,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7377"><P
+NAME="AEN8095"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3370,7 +2923,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7390"
+NAME="AEN8108"
 ></A
 ><H3
 ><A
@@ -3398,7 +2951,7 @@ occurs.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7396"><P
+NAME="AEN8114"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3434,7 +2987,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7405"
+NAME="AEN8123"
 ></A
 ><H3
 ><A
@@ -3476,7 +3029,7 @@ or 0 otherwise.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7414"><P
+NAME="AEN8132"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3529,7 +3082,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7427"
+NAME="AEN8145"
 ></A
 ><H3
 ><A
@@ -3557,7 +3110,7 @@ an error occurs.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7433"><P
+NAME="AEN8151"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3593,7 +3146,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7442"
+NAME="AEN8160"
 ></A
 ><H3
 ><A
@@ -3621,7 +3174,7 @@ an error occurs.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7448"><P
+NAME="AEN8166"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3657,13 +3210,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7457"
+NAME="AEN8175"
 ></A
 ><H3
 ><A
-NAME="XMLSECTRANSFORMADDKEY"
+NAME="XMLSECBINTRANSFORMADDKEY"
 ></A
->xmlSecTransformAddKey ()</H3
+>xmlSecBinTransformAddKey ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -3673,7 +3226,7 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecTransformAddKey           (<GTKDOCLINK
+>int         xmlSecBinTransformAddKey        (<GTKDOCLINK
 HREF="XMLSECTRANSFORMPTR"
 >xmlSecTransformPtr</GTKDOCLINK
 > transform,
@@ -3695,7 +3248,7 @@ HREF="ADDBINKEY"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7466"><P
+NAME="AEN8184"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3720,9 +3273,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -3772,7 +3325,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7485"
+NAME="AEN8203"
 ></A
 ><H3
 ><A
@@ -3811,7 +3364,7 @@ HREF="READBIN"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7494"><P
+NAME="AEN8212"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3836,9 +3389,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -3903,7 +3456,7 @@ if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7516"
+NAME="AEN8234"
 ></A
 ><H3
 ><A
@@ -3942,7 +3495,7 @@ HREF="WRITEBIN"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7525"><P
+NAME="AEN8243"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -3967,9 +3520,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -4033,7 +3586,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7547"
+NAME="AEN8265"
 ></A
 ><H3
 ><A
@@ -4066,7 +3619,7 @@ HREF="FLUSHBIN"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7555"><P
+NAME="AEN8273"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4091,9 +3644,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -4123,7 +3676,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7569"
+NAME="AEN8287"
 ></A
 ><H3
 ><A
@@ -4171,7 +3724,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7580"><P
+NAME="AEN8298"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4242,7 +3795,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7597"
+NAME="AEN8315"
 ></A
 ><H3
 ><A
@@ -4290,7 +3843,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7608"><P
+NAME="AEN8326"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4361,7 +3914,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7625"
+NAME="AEN8343"
 ></A
 ><H3
 ><A
@@ -4397,7 +3950,7 @@ bin transform id destructor.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7633"><P
+NAME="AEN8351"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4422,9 +3975,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ></TBODY
@@ -4436,7 +3989,7 @@ HREF="XMLSECTRANSFORM"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7643"
+NAME="AEN8361"
 ></A
 ><H3
 ><A
@@ -4466,7 +4019,7 @@ HREF="XMLSECTRANSFORMPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7650"><P
+NAME="AEN8368"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4491,9 +4044,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ></TBODY
@@ -4505,7 +4058,7 @@ HREF="XMLSECTRANSFORM"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7660"
+NAME="AEN8378"
 ></A
 ><H3
 ><A
@@ -4541,7 +4094,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7668"><P
+NAME="AEN8386"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4566,9 +4119,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -4597,13 +4150,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7682"
+NAME="AEN8400"
 ></A
 ><H3
 ><A
-NAME="XMLSECXMLTRANSFORMEXECUTE"
+NAME="XMLSECBINTRANSFORMADDKEYMETHOD"
 ></A
->xmlSecXmlTransformExecute ()</H3
+>xmlSecBinTransformAddKeyMethod ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4613,9 +4166,669 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecXmlTransformExecute       (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
+>int         (*xmlSecBinTransformAddKeyMethod)
+                                            (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLSECKEYPTR"
+>xmlSecKeyPtr</GTKDOCLINK
+> key);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform specific method to set key for use.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8408"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to binary transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>key</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to key.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8425"
+></A
+><H3
+><A
+NAME="XMLSECBINTRANSFORMREADMETHOD"
+></A
+>xmlSecBinTransformReadMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecBinTransformReadMethod) (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform specific method to read next chunk of binary data into <TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8434"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the output buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the output buffer size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the number of bytes in the buffer or negative value
+if an error occurs.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8456"
+></A
+><H3
+><A
+NAME="XMLSECBINTRANSFORMWRITEMETHOD"
+></A
+>xmlSecBinTransformWriteMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecBinTransformWriteMethod)
+                                            (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform,
+                                             unsigned char *buf,
+                                             <GTKDOCLINK
+HREF="SIZE-T"
+>size_t</GTKDOCLINK
+> size);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform specific method to write next chunk of binary data from <TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8465"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buf</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input data buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>size</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the input data size.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8487"
+></A
+><H3
+><A
+NAME="XMLSECBINTRANSFORMFLUSHMETHOD"
+></A
+>xmlSecBinTransformFlushMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecBinTransformFlushMethod)
+                                            (<GTKDOCLINK
+HREF="XMLSECBINTRANSFORMPTR"
+>xmlSecBinTransformPtr</GTKDOCLINK
+> transform);</PRE
+></TD
+></TR
+></TABLE
+><P
+>The transform specific method to finalize writing.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8494"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
+> structure.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 if success or negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8508"
+></A
+><H3
+><A
+NAME="XMLSECXMLTRANSFORMID"
+></A
+>xmlSecXmlTransformId</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>typedef const struct _xmlSecXmlTransformIdStruct *xmlSecXmlTransformId;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The xml transform id (<TT
+CLASS="LITERAL"
+>xmlSecTransformTypeXml</TT
+> type).</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8515"
+></A
+><H3
+><A
+NAME="XMLSECXMLTRANSFORM"
+></A
+>struct xmlSecXmlTransform</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecXmlTransform {
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecXmlTransformId 		id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+
+    /* xmlSecXmlTransform specific */
+    xmlNodePtr				here;
+    void				*xmlData;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The XML transform structure.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8521"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMID"
+>xmlSecXmlTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id (pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECXMLTRANSFORMID"
+>xmlSecXmlTransformId</A
+>).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>status</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLNODEPTR"
+>xmlNodePtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>here</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform's &lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>xmlData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to xml transform  specific data.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8554"
+></A
+><H3
+><A
+NAME="XMLSECXMLTRANSFORMEXECUTEMETHOD"
+></A
+>xmlSecXmlTransformExecuteMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecXmlTransformExecuteMethod)
+                                            (<GTKDOCLINK
+HREF="XMLSECXMLTRANSFORMPTR"
+>xmlSecXmlTransformPtr</GTKDOCLINK
 > transform,
                                              <GTKDOCLINK
 HREF="XMLDOCPTR"
@@ -4633,27 +4846,18 @@ HREF="XMLSECNODESETPTR"
 ></TR
 ></TABLE
 ><P
->Executes the XML <TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
-> and returns result nodes set in <TT
+>Transform specific execute method. Returns result nodes set in <TT
 CLASS="PARAMETER"
 ><I
 >nodes</I
 ></TT
->
-(wrapper for transform specific <GTKDOCLINK
-HREF="EXECUTEXML"
->executeXml</GTKDOCLINK
->() method).</P
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7695"><P
+NAME="AEN8565"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4759,13 +4963,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7720"
+NAME="AEN8590"
 ></A
 ><H3
 ><A
-NAME="XMLSECXMLTRANSFORMSETHERE"
+NAME="XMLSECXMLTRANSFORMEXECUTE"
 ></A
->xmlSecXmlTransformSetHere ()</H3
+>xmlSecXmlTransformExecute ()</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4775,23 +4979,47 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void        xmlSecXmlTransformSetHere       (<GTKDOCLINK
+>int         xmlSecXmlTransformExecute       (<GTKDOCLINK
 HREF="XMLSECTRANSFORMPTR"
 >xmlSecTransformPtr</GTKDOCLINK
 > transform,
                                              <GTKDOCLINK
-HREF="XMLNODEPTR"
->xmlNodePtr</GTKDOCLINK
-> here);</PRE
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> ctxDoc,
+                                             <GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> *doc,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> *nodes);</PRE
 ></TD
 ></TR
 ></TABLE
+><P
+>Executes the XML <TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+> and returns result nodes set in <TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>
+(wrapper for transform specific <GTKDOCLINK
+HREF="EXECUTEXML"
+>executeXml</GTKDOCLINK
+>() method).</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7727"><P
+NAME="AEN8603"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -4816,7 +5044,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to XML transform.</TD
 ></TR
 ><TR
 ><TD
@@ -4826,14 +5054,67 @@ VALIGN="TOP"
 ><TT
 CLASS="PARAMETER"
 ><I
->here</I
+>ctxDoc</I
 ></TT
 >&nbsp;:</TD
 ><TD
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to the document containing the transform's 
+	&lt;dsig:Transform&gt; node.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the pointer to current document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the pointer to current and result nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -4844,13 +5125,13 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7740"
+NAME="AEN8628"
 ></A
 ><H3
 ><A
-NAME="XMLSECC14NTRANSFORMEXECUTE"
+NAME="XMLSECC14NTRANSFORMID"
 ></A
->xmlSecC14NTransformExecute ()</H3
+>xmlSecC14NTransformId</H3
 ><TABLE
 BORDER="0"
 BGCOLOR="#D6E8FF"
@@ -4860,9 +5141,190 @@ CELLPADDING="6"
 ><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->int         xmlSecC14NTransformExecute      (<GTKDOCLINK
-HREF="XMLSECTRANSFORMPTR"
->xmlSecTransformPtr</GTKDOCLINK
+>typedef const struct _xmlSecC14NTransformIdStruct *xmlSecC14NTransformId;</PRE
+></TD
+></TR
+></TABLE
+><P
+>The C14N transform id structure (<TT
+CLASS="LITERAL"
+>xmlSecTransformTypeC14N</TT
+> type).</P
+><P
+></P
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8635"
+></A
+><H3
+><A
+NAME="XMLSECC14NTRANSFORM"
+></A
+>struct xmlSecC14NTransform</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecC14NTransform {
+    /* same as for xmlSecTransform but id type changed */
+    xmlSecC14NTransformId 		id; 
+    xmlSecTransformStatus		status;
+    int					dontDestroy;
+    void				*data;
+    
+    /* xmlSecC14NTransform specific */ 
+    void				*c14nData;
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The C14N transform structure.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8641"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMID"
+>xmlSecC14NTransformId</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>id</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform id (pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECC14NTRANSFORMID"
+>xmlSecC14NTransformId</A
+>).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><A
+HREF="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS"
+>xmlSecTransformStatus</A
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>status</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the transform status (ok/fail/unknown).</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>int <TT
+CLASS="STRUCTFIELD"
+><I
+>dontDestroy</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the don't automatically destroy flag.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>void *<TT
+CLASS="STRUCTFIELD"
+><I
+>c14nData</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to transform specific data.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8669"
+></A
+><H3
+><A
+NAME="XMLSECC14NTRANSFORMEXECUTEMETHOD"
+></A
+>xmlSecC14NTransformExecuteMethod ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         (*xmlSecC14NTransformExecuteMethod)
+                                            (<GTKDOCLINK
+HREF="XMLSECC14NTRANSFORMPTR"
+>xmlSecC14NTransformPtr</GTKDOCLINK
 > transform,
                                              <GTKDOCLINK
 HREF="XMLDOCPTR"
@@ -4880,37 +5342,18 @@ HREF="XMLOUTPUTBUFFERPTR"
 ></TR
 ></TABLE
 ><P
->Executes the C14N <TT
-CLASS="PARAMETER"
-><I
->transform</I
-></TT
-> and returns result in the <TT
+>Transform specific execute method. returns result in the <TT
 CLASS="PARAMETER"
 ><I
 >buffer</I
 ></TT
->
-(wrapper for transform specific <GTKDOCLINK
-HREF="EXECUTEC14N"
->executeC14n</GTKDOCLINK
->() method). If the 
-<TT
-CLASS="PARAMETER"
-><I
->trnaform</I
-></TT
-> is NULL then the default <A
-HREF="xmlsec-transforms.html#XMLSECC14NINCLUSIVE"
->xmlSecC14NInclusive</A
-> 
-transform is executed.</P
+>.</P
 ><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7755"><P
+NAME="AEN8680"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -5015,7 +5458,418 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7780"
+NAME="AEN8705"
+></A
+><H3
+><A
+NAME="XMLSECC14NTRANSFORMEXECUTE"
+></A
+>xmlSecC14NTransformExecute ()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int         xmlSecC14NTransformExecute      (<GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> transform,
+                                             <GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> doc,
+                                             <GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> nodes,
+                                             <GTKDOCLINK
+HREF="XMLOUTPUTBUFFERPTR"
+>xmlOutputBufferPtr</GTKDOCLINK
+> buffer);</PRE
+></TD
+></TR
+></TABLE
+><P
+>Executes the C14N <TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+> and returns result in the <TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>
+(wrapper for transform specific <GTKDOCLINK
+HREF="EXECUTEC14N"
+>executeC14n</GTKDOCLINK
+>() method). If the 
+<TT
+CLASS="PARAMETER"
+><I
+>trnaform</I
+></TT
+> is NULL then the default <A
+HREF="xmlsec-transforms.html#XMLSECC14NINCLUSIVE"
+>xmlSecC14NInclusive</A
+> 
+transform is executed.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8720"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>transform</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to C14N transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>doc</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to current document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nodes</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to current nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the result buffer.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+></SPAN
+> :</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>0 on success or a negative value otherwise.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8745"
+></A
+><H3
+><A
+NAME="XMLSECTRANSFORMSTATE"
+></A
+>struct xmlSecTransformState</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>struct xmlSecTransformState {
+    /* initial state */
+    xmlDocPtr				initDoc;
+    xmlSecNodeSetPtr			initNodeSet;
+    char				*initUri;
+
+    /* current state: xml */    
+    xmlDocPtr				curDoc;	
+    xmlSecNodeSetPtr			curNodeSet;
+    
+    /* current state: binary */
+    xmlBufferPtr			curBuf;	
+    xmlSecTransformPtr			curFirstBinTransform; 
+    xmlSecTransformPtr			curLastBinTransform; 
+
+    /*  optimization: special case for c14n transforms */
+    xmlSecTransformPtr			curC14NTransform; 
+};</PRE
+></TD
+></TR
+></TABLE
+><P
+>The current transforms state.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN8751"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFF0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>initDoc</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the original xml document.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>initNodeSet</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the original nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>char *<TT
+CLASS="STRUCTFIELD"
+><I
+>initUri</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the original uri.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLDOCPTR"
+>xmlDocPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>curDoc</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the current doc.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECNODESETPTR"
+>xmlSecNodeSetPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>curNodeSet</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>	the pointer to the current nodes set.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLBUFFERPTR"
+>xmlBufferPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>curBuf</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the current binary data.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>curFirstBinTransform</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the first pending binary transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>curLastBinTransform</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the pointer to the last pending binary transform.</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="LEFT"
+VALIGN="TOP"
+><GTKDOCLINK
+HREF="XMLSECTRANSFORMPTR"
+>xmlSecTransformPtr</GTKDOCLINK
+> <TT
+CLASS="STRUCTFIELD"
+><I
+>curC14NTransform</I
+></TT
+></TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the current pending c14n transform.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN8800"
 ></A
 ><H3
 ><A
@@ -5054,7 +5908,7 @@ HREF="XMLSECNODESETPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7789"><P
+NAME="AEN8809"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -5131,9 +5985,9 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->pointer to newly allocated <GTKDOCLINK
-HREF="XMLSECTRANSFORMSTATE"
->xmlSecTransformState</GTKDOCLINK
+>pointer to newly allocated <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMSTATE"
+>xmlSecTransformState</A
 > structure
 or NULL if an error occurs.</TD
 ></TR
@@ -5146,7 +6000,7 @@ or NULL if an error occurs.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7811"
+NAME="AEN8831"
 ></A
 ><H3
 ><A
@@ -5176,7 +6030,7 @@ HREF="XMLSECTRANSFORMSTATEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7818"><P
+NAME="AEN8838"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -5201,9 +6055,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORMSTATE"
->xmlSecTransformState</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMSTATE"
+>xmlSecTransformState</A
 > structure.</TD
 ></TR
 ></TBODY
@@ -5215,7 +6069,7 @@ HREF="XMLSECTRANSFORMSTATE"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7828"
+NAME="AEN8848"
 ></A
 ><H3
 ><A
@@ -5260,7 +6114,7 @@ applied immidiatelly.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7838"><P
+NAME="AEN8858"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -5285,9 +6139,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORMSTATE"
->xmlSecTransformState</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMSTATE"
+>xmlSecTransformState</A
 > structure.</TD
 ></TR
 ><TR
@@ -5305,9 +6159,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORM"
->xmlSecTransform</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORM"
+>xmlSecTransform</A
 > structure.</TD
 ></TR
 ><TR
@@ -5337,7 +6191,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7857"
+NAME="AEN8877"
 ></A
 ><H3
 ><A
@@ -5382,7 +6236,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7867"><P
+NAME="AEN8887"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -5407,9 +6261,9 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
-> the pointer to <GTKDOCLINK
-HREF="XMLSECTRANSFORMSTATE"
->xmlSecTransformState</GTKDOCLINK
+> the pointer to <A
+HREF="xmlsec-transformsinternal.html#XMLSECTRANSFORMSTATE"
+>xmlSecTransformState</A
 > structure.</TD
 ></TR
 ><TR

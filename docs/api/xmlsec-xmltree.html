@@ -109,7 +109,7 @@ NAME="XMLSEC-XMLTREE">xmltree.h</H1
 ><DIV
 CLASS="REFNAMEDIV"
 ><A
-NAME="AEN7890"
+NAME="AEN8910"
 ></A
 ><H2
 >Name</H2
@@ -117,7 +117,7 @@ NAME="AEN7890"
 ><DIV
 CLASS="REFSYNOPSISDIV"
 ><A
-NAME="AEN7893"><H2
+NAME="AEN8913"><H2
 >Synopsis</H2
 ><TABLE
 BORDER="0"
@@ -351,7 +351,15 @@ HREF="XMLNODEPTR"
                                              const <GTKDOCLINK
 HREF="XMLCHAR"
 >xmlChar</GTKDOCLINK
-> **ids);</PRE
+> **ids);
+#define     <A
+HREF="xmlsec-xmltree.html#XMLSECGETHEX"
+>xmlSecGetHex</A
+>                    (c)
+#define     <A
+HREF="xmlsec-xmltree.html#XMLSECISHEX"
+>xmlSecIsHex</A
+>                     (c)</PRE
 ></TD
 ></TR
 ></TABLE
@@ -359,7 +367,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7956"
+NAME="AEN8978"
 ></A
 ><H2
 >Description</H2
@@ -369,14 +377,14 @@ NAME="AEN7956"
 ><DIV
 CLASS="REFSECT1"
 ><A
-NAME="AEN7959"
+NAME="AEN8981"
 ></A
 ><H2
 >Details</H2
 ><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7961"
+NAME="AEN8983"
 ></A
 ><H3
 ><A
@@ -400,11 +408,22 @@ HREF="XMLDOCPTR"
 ></TR
 ></TABLE
 ><P
+>Loads XML Doc from file <TT
+CLASS="PARAMETER"
+><I
+>filename</I
+></TT
+>. We need a special version because of 
+c14n issue. The code is copied from <GTKDOCLINK
+HREF="XMLSAXPARSEFILEWITHDATA"
+>xmlSAXParseFileWithData</GTKDOCLINK
+>() function.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7967"><P
+NAME="AEN8992"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -429,7 +448,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the filename.</TD
 ></TR
 ><TR
 ><TD
@@ -447,7 +466,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>pointer to the loaded XML document or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -458,7 +477,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN7980"
+NAME="AEN9005"
 ></A
 ><H3
 ><A
@@ -487,11 +506,17 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
+>Loads XML Doc from memory. We need a special version because of 
+c14n issue. The code is copied from <GTKDOCLINK
+HREF="XMLSAXPARSEMEMORY"
+>xmlSAXParseMemory</GTKDOCLINK
+>() function.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN7987"><P
+NAME="AEN9014"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -516,7 +541,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input buffer.</TD
 ></TR
 ><TR
 ><TD
@@ -533,7 +558,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the input buffer size.</TD
 ></TR
 ><TR
 ><TD
@@ -550,7 +575,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the flag.</TD
 ></TR
 ><TR
 ><TD
@@ -568,7 +593,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>pointer to the loaded XML document or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -579,7 +604,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8008"
+NAME="AEN9035"
 ></A
 ><H3
 ><A
@@ -617,11 +642,28 @@ HREF="SIZE-T"
 ></TR
 ></TABLE
 ><P
+>Loads XML Doc from 3 chunks of memory: <TT
+CLASS="PARAMETER"
+><I
+>prefix</I
+></TT
+>, <TT
+CLASS="PARAMETER"
+><I
+>buffer</I
+></TT
+> and <TT
+CLASS="PARAMETER"
+><I
+>postfix</I
+></TT
+>. '</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8017"><P
+NAME="AEN9048"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -646,7 +688,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the first part of the input.</TD
 ></TR
 ><TR
 ><TD
@@ -663,7 +705,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the size of the first part of the input.</TD
 ></TR
 ><TR
 ><TD
@@ -680,7 +722,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the second part of the input.</TD
 ></TR
 ><TR
 ><TD
@@ -697,7 +739,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the size of the second part of the input.</TD
 ></TR
 ><TR
 ><TD
@@ -714,7 +756,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the third part of the input.</TD
 ></TR
 ><TR
 ><TD
@@ -731,7 +773,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the size of the third part of the input.</TD
 ></TR
 ><TR
 ><TD
@@ -749,7 +791,7 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>pointer to the loaded XML document or NULL if an error occurs.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -760,7 +802,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8050"
+NAME="AEN9081"
 ></A
 ><H3
 ><A
@@ -798,7 +840,7 @@ HREF="XMLCHAR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8059"><P
+NAME="AEN9090"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -886,7 +928,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8080"
+NAME="AEN9111"
 ></A
 ><H3
 ><A
@@ -919,7 +961,7 @@ HREF="XMLNODEPTR"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8088"><P
+NAME="AEN9119"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -973,7 +1015,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8101"
+NAME="AEN9132"
 ></A
 ><H3
 ><A
@@ -1020,7 +1062,7 @@ namespace href.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8112"><P
+NAME="AEN9143"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1109,7 +1151,7 @@ node is not found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8133"
+NAME="AEN9164"
 ></A
 ><H3
 ><A
@@ -1156,7 +1198,7 @@ and namespace href.</P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8144"><P
+NAME="AEN9175"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1245,7 +1287,7 @@ node is not found.</TD
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8165"
+NAME="AEN9196"
 ></A
 ><H3
 ><A
@@ -1280,11 +1322,19 @@ HREF="XMLCHAR"
 ></TR
 ></TABLE
 ><P
+>Searches all children of the <TT
+CLASS="PARAMETER"
+><I
+>parent</I
+></TT
+> node having given name and 
+namespace href.</P
+><P
 ></P
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8174"><P
+NAME="AEN9207"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1309,7 +1359,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the pointer to XML node.</TD
 ></TR
 ><TR
 ><TD
@@ -1326,7 +1376,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the name.</TD
 ></TR
 ><TR
 ><TD
@@ -1343,7 +1393,7 @@ CLASS="PARAMETER"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+> the namespace href (may be NULL).</TD
 ></TR
 ><TR
 ><TD
@@ -1361,7 +1411,8 @@ CLASS="EMPHASIS"
 WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
->&nbsp;</TD
+>the pointer to the found node or NULL if an error occurs or 
+node is not found.</TD
 ></TR
 ></TBODY
 ></TABLE
@@ -1372,7 +1423,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8195"
+NAME="AEN9228"
 ></A
 ><H3
 ><A
@@ -1428,7 +1479,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8208"><P
+NAME="AEN9241"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1516,7 +1567,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8229"
+NAME="AEN9262"
 ></A
 ><H3
 ><A
@@ -1572,7 +1623,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8242"><P
+NAME="AEN9275"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1660,7 +1711,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8263"
+NAME="AEN9296"
 ></A
 ><H3
 ><A
@@ -1716,7 +1767,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8276"><P
+NAME="AEN9309"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1804,7 +1855,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8297"
+NAME="AEN9330"
 ></A
 ><H3
 ><A
@@ -1848,7 +1899,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8307"><P
+NAME="AEN9340"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -1919,7 +1970,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8324"
+NAME="AEN9357"
 ></A
 ><H3
 ><A
@@ -1963,7 +2014,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8334"><P
+NAME="AEN9367"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2034,7 +2085,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8351"
+NAME="AEN9384"
 ></A
 ><H3
 ><A
@@ -2079,7 +2130,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8361"><P
+NAME="AEN9394"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2167,7 +2218,7 @@ VALIGN="TOP"
 ><HR><DIV
 CLASS="REFSECT2"
 ><A
-NAME="AEN8382"
+NAME="AEN9415"
 ></A
 ><H3
 ><A
@@ -2221,7 +2272,7 @@ CLASS="PARAMETER"
 ><DIV
 CLASS="INFORMALTABLE"
 ><A
-NAME="AEN8394"><P
+NAME="AEN9427"><P
 ></P
 ><TABLE
 BORDER="0"
@@ -2281,6 +2332,142 @@ WIDTH="80%"
 ALIGN="LEFT"
 VALIGN="TOP"
 > the pointer to a NULL terminated list of ID attributes.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9444"
+></A
+><H3
+><A
+NAME="XMLSECGETHEX"
+></A
+>xmlSecGetHex()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecGetHex(c)</PRE
+></TD
+></TR
+></TABLE
+><P
+>Macro. Returns the hex value of the <TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9451"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the character,</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+><A
+NAME="AEN9460"
+></A
+><H3
+><A
+NAME="XMLSECISHEX"
+></A
+>xmlSecIsHex()</H3
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define     xmlSecIsHex(c)</PRE
+></TD
+></TR
+></TABLE
+><P
+>Macro. Returns 1 if <TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+> is a hex digit or 0 other wise.</P
+><P
+></P
+><DIV
+CLASS="INFORMALTABLE"
+><A
+NAME="AEN9467"><P
+></P
+><TABLE
+BORDER="0"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE"
+><TBODY
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>c</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+> the character.</TD
 ></TR
 ></TBODY
 ></TABLE

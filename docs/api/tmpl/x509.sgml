@@ -154,9 +154,11 @@ The X509 certificates functions.
 @subjectName: 
 @issuerName: 
 @issuerSerial: 
-@skit: 
+@ski: 
 @x509Data: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@skit: 
 
 
 <!-- ##### FUNCTION xmlSecX509StoreVerify ##### -->
@@ -198,17 +200,5 @@ The X509 certificates functions.
 @filename: 
 @pwd: 
 @Returns: 
-
-
-<!-- ##### TYPEDEF xmlSecX509DataPtr ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### TYPEDEF xmlSecX509StorePtr ##### -->
-<para>
-
-</para>
 
 

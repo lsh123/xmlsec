@@ -1387,11 +1387,11 @@ xmlSecSignedInfoRead(xmlNodePtr signedInfoNode,  int sign,
 		    " ");
 	goto done;
     }
-    ret = xmlSecTransformAddKey(signMethod, result->key);
+    ret = xmlSecBinTransformAddKey(signMethod, result->key);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformAddKey - %d", ret);
+		    "xmlSecBinTransformAddKey - %d", ret);
 	goto done;
     }
     if(sign && (keyInfoNode != NULL)) {

@@ -1,3 +1,8 @@
+Mon Mar 10 07:59:55 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c: fixed Reference URI evaluation for
+	the "xmlns()xpointer()" construction
+
 Mon Feb 24 10:04:36 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/xmltree.c src/xslt.c: fixed bug in xmlSecTransformXsltAdd

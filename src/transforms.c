@@ -1152,7 +1152,7 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 	    }
 	    
 	    /* evaluate expression but skip '#' */
-	    if(strncmp(xptr, "#xpointer(", 10) == 0) {
+	    if((strncmp(xptr, "#xpointer(", 10) == 0) || (strncmp(xptr, "#xmlns(", 7) == 0)) {
 		type = xmlSecNodeSetTree;
 		res = xmlXPtrEval(BAD_CAST (xptr + 1), ctxt);
 	    } else {

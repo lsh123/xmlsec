@@ -58,6 +58,7 @@ libxmlsec1_la_SOURCES = \
 libxmlsec1_la_LIBADD = \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
+	$(XMLSEC_DL_LIBS) \
 	$(NULL)
         
 libxmlsec1_la_LDFLAGS = \

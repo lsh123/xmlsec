@@ -1549,12 +1549,14 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	return(-1);
     }
 
+#ifndef XMLSEC_NO_X509
     if(xmlSecAppCmdLineParamIsSet(&verificationTimeParam)) {
 	keyInfoCtx->certsVerificationTime = xmlSecAppCmdLineParamGetTime(&verificationTimeParam, 0);
     }
     if(xmlSecAppCmdLineParamIsSet(&depthParam)) {
 	keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
     }
+#endif /* XMLSEC_NO_X509 */
 
     /* read enabled key data list */
     for(value = enabledKeyDataParam.value; value != NULL; value = value->next) {

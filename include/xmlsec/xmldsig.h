@@ -13,11 +13,15 @@
 #ifndef __XMLSEC_XMLDSIG_H__
 #define __XMLSEC_XMLDSIG_H__    
 
+#ifndef XMLSEC_NO_XMLDSIG
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
+
 #include <libxml/tree.h>
 #include <libxml/parser.h> 
+
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/list.h>
@@ -252,6 +256,8 @@ XMLSEC_EXPORT xmlSecPtrListId	xmlSecDSigReferenceCtxListGetKlass(void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif /* XMLSEC_NO_XMLDSIG */
 
 #endif /* __XMLSEC_XMLDSIG_H__ */
 

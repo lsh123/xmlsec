@@ -7,6 +7,7 @@ $(NULL)
 INCLUDES = \
 -I$(top_srcdir) \
 -I$(top_srcdir)/include \
+$(XMLSEC_DEFINES) \
 $(XMLSEC_NSS_DEFINES) \
 $(NSS_CFLAGS) \
 $(LIBXSLT_CFLAGS) \

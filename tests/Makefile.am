@@ -29,28 +29,16 @@ check: check-km check-dsig check-enc
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
 check-km: $(XMLSEC_APP)
-if XMLSEC_WITH_SKM_TEST
 	@$(top_srcdir)/tests/testKeys.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
-else
-	@echo "Simple Keys Manager support disabled"
-endif 	
 
 check-dsig: $(XMLSEC_APP)
-if XMLSEC_WITH_XMLDSIG_TEST	
 	@$(top_srcdir)/tests/testDSig.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
-else
-	@echo "XML DSig support disabled"
-endif	
 
 check-enc: $(XMLSEC_APP)
-if XMLSEC_WITH_XMLENC_TEST
 	@$(top_srcdir)/tests/testEnc.sh $(top_srcdir)/tests $(XMLSEC_APP) 
 	@echo
-else
-	@echo "XML Enc support disabled"
-endif
 
 memcheck-res: 
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

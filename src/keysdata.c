@@ -116,6 +116,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
         return(-1);	
     }
 
+#ifndef XMLSEC_NO_XMLENC
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataEncryptedKeyId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -124,6 +125,8 @@ xmlSecKeyDataIdsRegisterDefault(void) {
 		    "xmlSecKeyDataEncryptedKeyId");
         return(-1);	
     }
+#endif /* XMLSEC_NO_XMLENC */
+    
     return(0);
 }
 

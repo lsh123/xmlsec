@@ -5,6 +5,7 @@ bin_PROGRAMS = xmlsec
 INCLUDES = \
     -DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\" \
     -I$(top_srcdir)/include \
+    $(XMLSEC_DEFINES) \
     $(XMLSEC_CRYPTO_CFLAGS) \
     $(LIBXSLT_CFLAGS) \
     $(LIBXML_CFLAGS) \

@@ -5,6 +5,7 @@ SUBDIRS = $(XMLSEC_CRYPTO_LIST)
 INCLUDES = \
 -I$(top_srcdir) \
 -I$(top_srcdir)/include \
+$(XMLSEC_DEFINES) \
 $(LIBXSLT_CFLAGS) \
 $(LIBXML_CFLAGS) \
 $(NULL)

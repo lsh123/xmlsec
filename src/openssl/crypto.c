@@ -28,6 +28,7 @@
 static int 		xmlSecOpenSSLErrorsInit			(void);
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecOpenSSLFunctions = NULL;
+static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 
 /**
  * xmlSecCryptoGetFunctions_openssl:
@@ -208,7 +209,7 @@ xmlSecOpenSSLInit (void)  {
  */
 int 
 xmlSecOpenSSLShutdown(void) {
-    /* nothing to do */
+    xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
     return(0);
 }
 
@@ -350,4 +351,47 @@ xmlSecOpenSSLErrorsInit(void) {
     
     return(0);
 }
+
+/**
+ * xmlSecOpenSSLSetDefaultTrustedCertsFolder:
+ * 
+ * Sets the default trusted certs folder.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
+    if(gXmlSecOpenSSLTrustedCertsFolder != NULL) {
+	xmlFree(gXmlSecOpenSSLTrustedCertsFolder);
+	gXmlSecOpenSSLTrustedCertsFolder = NULL;
+    }
+
+    if(path != NULL) {
+	gXmlSecOpenSSLTrustedCertsFolder = xmlStrdup(BAD_CAST path);
+	if(gXmlSecOpenSSLTrustedCertsFolder == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlStrdup",
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }
+    
+    return(0);
+}
+
+/**
+ * xmlSecOpenSSLGetDefaultTrustedCertsFolder:
+ * 
+ * Gets the default trusted certs folder.
+ *
+ * Returns the default trusted cert folder.
+ */
+const xmlChar*	
+xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
+    return(gXmlSecOpenSSLTrustedCertsFolder);
+}
+
+
 

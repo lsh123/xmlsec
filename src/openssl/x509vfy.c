@@ -455,6 +455,8 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 
 static int
 xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
+    const xmlChar* path;
+    
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
 
@@ -472,6 +474,7 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+    
     if(!X509_STORE_set_default_paths(ctx->xst)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -479,6 +482,22 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
+    }
+    
+    path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
+    if(path != NULL) {
+	X509_LOOKUP *lookup = NULL;
+	
+	lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
+        if(lookup == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "X509_STORE_add_lookup",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}    
+	X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
     }
     ctx->xst->depth = 9; /* the default cert verification path in openssl */	
 	

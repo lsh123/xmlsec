@@ -24,7 +24,9 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
-#define XMLDSIGVERIFY_TRUSTED_CERTS_FOLDER  "/var/www/cgi-bin/keys-certs"
+#define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER	"/etc/httpd/conf/ssl.crt"
+#define XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER 		"/var/www/cgi-bin/keys-certs"
+
 
 int load_keys(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_keys);
 int load_trusted_certs(xmlSecKeysMngrPtr mngr, const char* path, int report_loaded_certs);
@@ -78,7 +80,7 @@ main(int argc, char **argv) {
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
-    if(xmlSecCryptoAppInit(NULL) < 0) {
+    if(xmlSecCryptoAppInit(XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER) < 0) {
 	fprintf(stdout, "Error: crypto initialization failed.\n");
 	return(-1);
     }
@@ -100,12 +102,12 @@ main(int argc, char **argv) {
 	return(-1);
     }    
 
-    if(load_keys(mngr, XMLDSIGVERIFY_TRUSTED_CERTS_FOLDER, 0) < 0) {
+    if(load_keys(mngr, XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER, 0) < 0) {
 	xmlSecKeysMngrDestroy(mngr);
 	return(-1);
     }
     
-    if(load_trusted_certs(mngr, XMLDSIGVERIFY_TRUSTED_CERTS_FOLDER, 0) < 0) {
+    if(load_trusted_certs(mngr, XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER, 0) < 0) {
 	xmlSecKeysMngrDestroy(mngr);
 	return(-1);
     }

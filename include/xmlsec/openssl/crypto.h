@@ -32,6 +32,10 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLShutdown		(void);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeysMngrInit	(xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLGenerateRandom	(xmlSecBufferPtr buffer,
 									 xmlSecSize size);
+
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path);
+XMLSEC_CRYPTO_EXPORT const xmlChar*	xmlSecOpenSSLGetDefaultTrustedCertsFolder(void);
+
 /********************************************************************
  *
  * AES transforms

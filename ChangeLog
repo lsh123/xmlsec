@@ -1,3 +1,10 @@
+Sat Sep 27 18:31:20 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/openssl/crypto.h src/openssl/app.c
+	src/openssl/crypto.c src/openssl/x509vfy.c: added "default trusted certs"
+	folder and make it an input parameter to xmlSecOpenSSLAppInit method.
+	* examples/xmldsigverify.c: make use of this change
+
 Sat 27 Sep 2003 05:23:41 PM PDT  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* examples/ docs/tests/ docs/ : created new xmldsigverify script

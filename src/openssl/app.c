@@ -40,7 +40,7 @@ static int		xmlSecOpenSSLDefaultPasswordCallback	(char *buf, int bufsiz, int ver
 
 /**
  * xmlSecOpenSSLAppInit:
- * @config:		the path to crypto library configuration (unused).
+ * @config:		the path to certs.
  *
  * General crypto engine initialization. This function is used
  * by XMLSec command line utility and called before 
@@ -49,13 +49,23 @@ static int		xmlSecOpenSSLDefaultPasswordCallback	(char *buf, int bufsiz, int ver
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLAppInit(const char* config ATTRIBUTE_UNUSED) {
+xmlSecOpenSSLAppInit(const char* config) {
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
+
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecOpenSSLAppLoadRANDFile",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    
+    if((config != NULL) && (xmlSecOpenSSLSetDefaultTrustedCertsFolder(config) < 0)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecOpenSSLSetDefaultTrustedCertsFolder",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
@@ -1496,6 +1506,4 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
     
     return(-1);
 }
-
-
 

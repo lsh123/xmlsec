@@ -64,40 +64,85 @@
 #define XMLSEC_BUFFER_DEBUG 1
 */
 
-/**********************************************************************
+/**************************************************************************
  *
- * Hi-level functions
+ * Global xmlSecTransformIds list functions
  *
- *********************************************************************/
-static xmlSecTransformId xmlSecAllTransformIds[100];
+ *************************************************************************/
+static xmlSecPtrList xmlSecAllTransformIds;
 
-/**
- * xmlSecTransformsInit:
- *
- * Trnasforms engine initialization (called from xmlSecInit() function).
- * The applications should not call this function directly.
- *
- * Returns 0 on success or a negative value otherwise.
- */
+xmlSecPtrListPtr
+xmlSecTransformIdsGet(void) {
+    return(&xmlSecAllTransformIds);
+}
+
 int 
-xmlSecTransformsInit(void) {
-    memset(xmlSecAllTransformIds, 0, sizeof(xmlSecAllTransformIds));
-    xmlSecAllTransformIds[0] = xmlSecTransformIdUnknown;
+xmlSecTransformIdsInit(void) {
+    int ret;
     
-    if(xmlSecTransformsRegister(xmlSecTransformBase64Id) < 0) {
+    ret = xmlSecPtrListInitialize(xmlSecTransformIdsGet(), xmlSecTransformIdListId);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecPtrListPtrInitialize",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecTransformIdListId");
+        return(-1);
+    }
+    
+    ret = xmlSecTransformIdsRegisterDefault();
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformIdsRegisterDefault",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    
+    return(0);
+}
+
+void
+xmlSecTransformIdsShutdown(void) {
+    xmlSecPtrListFinalize(xmlSecTransformIdsGet());
+}
+
+int 
+xmlSecTransformIdsRegister(xmlSecTransformId id) {
+    int ret;
+        
+    xmlSecAssert2(id != xmlSecTransformIdUnknown, -1);
+    
+    ret = xmlSecPtrListAdd(xmlSecTransformIdsGet(), (xmlSecPtr)id);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecPtrListAdd",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    
+    return(0);    
+}
+
+int 
+xmlSecTransformIdsRegisterDefault(void) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformBase64Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformBase64Id)));
 	return(-1);
     }
 
-    if(xmlSecTransformsRegister(xmlSecTransformEnvelopedId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformEnvelopedId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformEnvelopedId)));
@@ -105,67 +150,67 @@ xmlSecTransformsInit(void) {
     }
 
     /* c14n methods */
-    if(xmlSecTransformsRegister(xmlSecTransformInclC14NId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformInclC14NId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NId)));
 	return(-1);
     }
-    if(xmlSecTransformsRegister(xmlSecTransformInclC14NWithCommentsId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformInclC14NWithCommentsId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NWithCommentsId)));
 	return(-1);
     }
-    if(xmlSecTransformsRegister(xmlSecTransformExclC14NId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformExclC14NId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformExclC14NId)));
 	return(-1);
     }
-    if(xmlSecTransformsRegister(xmlSecTransformExclC14NWithCommentsId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformExclC14NWithCommentsId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformExclC14NWithCommentsId)));
 	return(-1);
     }
 
-    if(xmlSecTransformsRegister(xmlSecTransformXPathId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPathId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPathId)));
 	return(-1);
     }
 
-    if(xmlSecTransformsRegister(xmlSecTransformXPath2Id) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPath2Id) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPath2Id)));
 	return(-1);
     }
 
-    if(xmlSecTransformsRegister(xmlSecTransformXPointerId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformXPointerId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
@@ -173,10 +218,10 @@ xmlSecTransformsInit(void) {
     }
 
 #ifndef XMLSEC_NO_XSLT
-    if(xmlSecTransformsRegister(xmlSecTransformXsltId) < 0) {
+    if(xmlSecTransformIdsRegister(xmlSecTransformXsltId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsRegister",	    
+		    "xmlSecTransformIdsRegister",	    
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "name=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXsltId)));
@@ -187,68 +232,23 @@ xmlSecTransformsInit(void) {
     return(0);
 }
 
-/**
- * xmlSecTransformsRegister:
- * @transformId: the transform id to register.
+/**************************************************************************
  *
- * Adds the @transformId to the internal table of known transforms.
+ * utils
  *
- * Returns 0 on success or a negative value if an error occurs.
- */
-int
-xmlSecTransformsRegister(xmlSecTransformId keyId) {
-    unsigned int i;
-    
-    xmlSecAssert2(keyId != NULL, -1);
-    
-    for(i = 0; i < sizeof(xmlSecAllTransformIds) / sizeof(xmlSecAllTransformIds[0]) - 1; ++i) {
-	if(xmlSecAllTransformIds[i] == xmlSecTransformIdUnknown) {
-	    xmlSecAllTransformIds[i++] = keyId;
-	    xmlSecAllTransformIds[i++] = xmlSecTransformIdUnknown;
-	    
-	    return(0);
-	}
-    }
-    
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		NULL,
-		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		"no more key slots available; increase xmlSecAllTransformIds table size");
-    return(-1);
-}
+ *************************************************************************/
+int 
+xmlSecUriTypeCheck(xmlSecUriType type, const xmlChar* uri) {
+    xmlSecUriType uriType = 0;
 
-/**
- * xmlSecTransformsFind:
- * @href: the transform href.
- *
- * Searches the list of known transforms for transform with given href
- *
- * Returns the id of the found transform or NULL if an error occurs 
- * or transform is not found.
- */ 
-xmlSecTransformId
-xmlSecTransformsFind(const xmlChar* href, xmlSecTransformUsage usage) {
-    xmlSecTransformId *ptr;
-
-    xmlSecAssert2(href != NULL, NULL);
-    
-    ptr = xmlSecAllTransformIds;
-    while((*ptr) != xmlSecTransformIdUnknown) {
-	if(((usage & (*ptr)->usage) != 0) && xmlStrEqual((*ptr)->href, href)) {
-	    return(*ptr);
-	}
-	++ptr;
-    }
-    
-    /* not found */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		NULL,
-		XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		"href=%s", 
-		xmlSecErrorsSafeString(href));
-    return(xmlSecTransformIdUnknown);
+    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
+	uriType = xmlSecUriTypeLocalEmpty;
+    } else if(uri[0] == '#') {
+	uriType = xmlSecUriTypeLocalXPointer;
+    } else {
+	uriType = xmlSecUriTypeRemote;
+    }    
+    return(((uriType & type) != 0) ? 1 : 0);
 }
 
 /**************************************************************************
@@ -1127,11 +1127,12 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 	return(NULL);		
     }
     
-    id = xmlSecTransformsFind(href, usage);    
+    /* TODO: check with allowed transforms list */
+    id = xmlSecTransformIdListFindByHref(xmlSecTransformIdsGet(), href, usage);    
     if(id == xmlSecTransformIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsFind",
+		    "xmlSecTransformIdsListFindByHref",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "href=\"%s\"", 
 		    xmlSecErrorsSafeString(href));
@@ -1283,7 +1284,7 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(keyReq != NULL, -1);
         
-    keyReq->keyId 	= xmlSecKeyDataIdUnknown;
+    keyReq->keyId   = xmlSecKeyDataIdUnknown;
     keyReq->keyType = xmlSecKeyDataTypeUnknown;
     keyReq->keyUsage= xmlSecKeyUsageAny;
     
@@ -1883,6 +1884,87 @@ int xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr*
     }
     
     return(0);
+}
+
+/***********************************************************************
+ *
+ * Transform Ids list
+ *
+ * TODO: debug dump
+ **********************************************************************/
+static xmlSecPtrListKlass xmlSecTransformIdListKlass = {
+    BAD_CAST "transform-ids-list",
+    NULL, 							/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    NULL,							/* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,							/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,							/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId 
+xmlSecTransformIdListGetKlass(void) {
+    return(&xmlSecTransformIdListKlass);
+}
+
+int 
+xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) {
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecTransformIdListId), 0);
+    xmlSecAssert2(transformId != NULL, 0);
+    
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	if((xmlSecTransformId)xmlSecPtrListGetItem(list, i) == transformId) {
+	    return(1);
+	}
+    }
+    return(0);
+}
+
+xmlSecTransformId	
+xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
+			    xmlSecTransformUsage usage) {
+    xmlSecTransformId transformId;
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecTransformIdListId), xmlSecTransformIdUnknown);
+    xmlSecAssert2(href != NULL, xmlSecTransformIdUnknown);
+    
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	transformId = (xmlSecTransformId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert2(transformId != xmlSecTransformIdUnknown, xmlSecTransformIdUnknown);
+
+	if(((usage & transformId->usage) != 0) && (transformId->href != NULL) && 
+	   xmlStrEqual(href, transformId->href)) {
+	   
+	   return(transformId);	   
+	}
+    }
+    return(xmlSecTransformIdUnknown);
+}
+
+xmlSecTransformId	
+xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name, 
+			    xmlSecTransformUsage usage) {
+    xmlSecTransformId transformId;
+    size_t i, size;
+    
+    xmlSecAssert2(xmlSecPtrListCheckId(list, xmlSecTransformIdListId), xmlSecTransformIdUnknown);
+    xmlSecAssert2(name != NULL, xmlSecTransformIdUnknown);
+
+    size = xmlSecPtrListGetSize(list);
+    for(i = 0; i < size; ++i) {
+	transformId = (xmlSecTransformId)xmlSecPtrListGetItem(list, i);
+	xmlSecAssert2(transformId != xmlSecTransformIdUnknown, xmlSecTransformIdUnknown);
+
+	if(((usage & transformId->usage) != 0) && (transformId->name != NULL) &&
+	   xmlStrEqual(name, BAD_CAST transformId->name)) {
+	   
+	   return(transformId);	   
+	}
+    }
+    return(xmlSecTransformIdUnknown);
 }
 
 /************************************************************************

@@ -53,6 +53,7 @@ struct _xmlSecEncCtx {
     xmlEncCtxMode		mode;
     xmlSecKeyInfoCtx		keyInfoReadCtx;
     xmlSecKeyInfoCtx		keyInfoWriteCtx;
+    xmlSecUriType		allowedCipherReferenceUris;
     xmlSecTransformCtx		encTransformCtx;
     xmlSecTransformPtr		encMethod;
     xmlSecKeyPtr		encKey;
@@ -84,27 +85,27 @@ struct _xmlSecEncCtx {
 };
 
 XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate		(xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void 		xmlSecEncCtxDestroy		(xmlSecEncCtxPtr ctx);
-XMLSEC_EXPORT int		xmlSecEncCtxInitialize		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT void 		xmlSecEncCtxDestroy		(xmlSecEncCtxPtr encCtx);
+XMLSEC_EXPORT int		xmlSecEncCtxInitialize		(xmlSecEncCtxPtr encCtx,
 								 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_EXPORT void		xmlSecEncCtxFinalize		(xmlSecEncCtxPtr ctx);
-XMLSEC_EXPORT int		xmlSecEncCtxBinaryEncrypt	(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT void		xmlSecEncCtxFinalize		(xmlSecEncCtxPtr encCtx);
+XMLSEC_EXPORT int		xmlSecEncCtxBinaryEncrypt	(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
 								 const unsigned char* data,
 								 size_t dataSize);
-XMLSEC_EXPORT int		xmlSecEncCtxXmlEncrypt		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecEncCtxXmlEncrypt		(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
 								 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecEncCtxUriEncrypt		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecEncCtxUriEncrypt		(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
 								 const xmlChar *uri);
-XMLSEC_EXPORT int		xmlSecEncCtxDecrypt		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT int		xmlSecEncCtxDecrypt		(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr node);
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecEncCtxDecryptToBuffer	(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecEncCtxDecryptToBuffer	(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr node		);
-XMLSEC_EXPORT void		xmlSecEncCtxDebugDump		(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT void		xmlSecEncCtxDebugDump		(xmlSecEncCtxPtr encCtx,
 								 FILE* output);
-XMLSEC_EXPORT void		xmlSecEncCtxDebugXmlDump	(xmlSecEncCtxPtr ctx,
+XMLSEC_EXPORT void		xmlSecEncCtxDebugXmlDump	(xmlSecEncCtxPtr encCtx,
 								 FILE* output);
 
 #ifdef __cplusplus

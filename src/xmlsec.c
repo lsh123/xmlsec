@@ -32,6 +32,7 @@
 int
 xmlSecInit(void) {
     xmlSecErrorsInit();
+    xmlSecIOInit();
     
     if(xmlSecKeyDataIdsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -42,15 +43,14 @@ xmlSecInit(void) {
 	return(-1);
     }
     
-    if(xmlSecTransformsInit() < 0) {
+    if(xmlSecTransformIdsInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformsInit",
+		    "xmlSecTransformIdsInit",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlSecIOInit();
     
     return(0);
 }
@@ -64,10 +64,10 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
-    xmlSecIOShutdown();
+    xmlSecTransformIdsShutdown();
     xmlSecKeyDataIdsShutdown();
-    xmlSecErrorsShutdown();
-    
+    xmlSecIOShutdown();
+    xmlSecErrorsShutdown();    
     return(0);
 }
 

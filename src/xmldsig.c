@@ -37,11 +37,11 @@
  *************************************************************************/
 xmlSecDSigCtxPtr	
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
-    xmlSecDSigCtxPtr ctx;
+    xmlSecDSigCtxPtr dsigCtx;
     int ret;
     
-    ctx = (xmlSecDSigCtxPtr) xmlMalloc(sizeof(xmlSecDSigCtx));
-    if(ctx == NULL) {
+    dsigCtx = (xmlSecDSigCtxPtr) xmlMalloc(sizeof(xmlSecDSigCtx));
+    if(dsigCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlMalloc",
@@ -51,37 +51,37 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
 	return(NULL);
     }
     
-    ret = xmlSecDSigCtxInitialize(ctx, keysMngr);
+    ret = xmlSecDSigCtxInitialize(dsigCtx, keysMngr);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecDSigCtxInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecDSigCtxDestroy(ctx);
+	xmlSecDSigCtxDestroy(dsigCtx);
 	return(NULL);   
     }
-    return(ctx);    
+    return(dsigCtx);    
 }
 
 void  
-xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
+    xmlSecAssert(dsigCtx != NULL);
     
-    xmlSecDSigCtxFinalize(ctx);
-    xmlFree(ctx);
+    xmlSecDSigCtxFinalize(dsigCtx);
+    xmlFree(dsigCtx);
 }
 
 int 
-xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
+xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     int ret;
     
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(dsigCtx != NULL, -1);
     
-    memset(ctx, 0, sizeof(xmlSecDSigCtx));
+    memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 
     /* initialize key info */
-    ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoReadCtx), keysMngr);
+    ret = xmlSecKeyInfoCtxInitialize(&(dsigCtx->keyInfoReadCtx), keysMngr);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -90,9 +90,9 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);   
     }
-    ctx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
+    dsigCtx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
     
-    ret = xmlSecKeyInfoCtxInitialize(&(ctx->keyInfoWriteCtx), keysMngr);
+    ret = xmlSecKeyInfoCtxInitialize(&(dsigCtx->keyInfoWriteCtx), keysMngr);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -101,12 +101,12 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);   
     }
-    ctx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
+    dsigCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
     /* it's not wise to write private key :) */
-    ctx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
+    dsigCtx->keyInfoWriteCtx.keyReq.keyType = xmlSecKeyDataTypePublic;
 
-    /* initializes transforms ctx */
-    ret = xmlSecTransformCtxInitialize(&(ctx->signTransformCtx));
+    /* initializes transforms dsigCtx */
+    ret = xmlSecTransformCtxInitialize(&(dsigCtx->signTransformCtx));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -116,45 +116,45 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
 	return(-1);   
     }
 
-    xmlSecPtrListInitialize(&(ctx->references), xmlSecDSigReferenceCtxListId);
-    xmlSecPtrListInitialize(&(ctx->manifests), xmlSecDSigReferenceCtxListId);
+    xmlSecPtrListInitialize(&(dsigCtx->references), xmlSecDSigReferenceCtxListId);
+    xmlSecPtrListInitialize(&(dsigCtx->manifests), xmlSecDSigReferenceCtxListId);
 
     /* TODO: set other values */	    
     return(0);
 }
 
 void 
-xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
+    xmlSecAssert(dsigCtx != NULL);
 
-    xmlSecTransformCtxFinalize(&(ctx->signTransformCtx));
-    xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoReadCtx));
-    xmlSecKeyInfoCtxFinalize(&(ctx->keyInfoWriteCtx));
-    xmlSecPtrListFinalize(&(ctx->references));
-    xmlSecPtrListFinalize(&(ctx->manifests));
+    xmlSecTransformCtxFinalize(&(dsigCtx->signTransformCtx));
+    xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoReadCtx));
+    xmlSecKeyInfoCtxFinalize(&(dsigCtx->keyInfoWriteCtx));
+    xmlSecPtrListFinalize(&(dsigCtx->references));
+    xmlSecPtrListFinalize(&(dsigCtx->manifests));
 
-    if((ctx->dontDestroyC14NMethod != 0) && (ctx->c14nMethod != NULL)) {
-	xmlSecTransformDestroy(ctx->c14nMethod, 1);
+    if((dsigCtx->dontDestroyC14NMethod != 0) && (dsigCtx->c14nMethod != NULL)) {
+	xmlSecTransformDestroy(dsigCtx->c14nMethod, 1);
     }    
-    if((ctx->dontDestroySignMethod != 0) && (ctx->signMethod != NULL)) {
-	xmlSecTransformDestroy(ctx->signMethod, 1);
+    if((dsigCtx->dontDestroySignMethod != 0) && (dsigCtx->signMethod != NULL)) {
+	xmlSecTransformDestroy(dsigCtx->signMethod, 1);
     }    
-    if(ctx->signKey != NULL) {
-	xmlSecKeyDestroy(ctx->signKey);
+    if(dsigCtx->signKey != NULL) {
+	xmlSecKeyDestroy(dsigCtx->signKey);
     }
-    if(ctx->id != NULL) {
-	xmlFree(ctx->id);
+    if(dsigCtx->id != NULL) {
+	xmlFree(dsigCtx->id);
     }	
     /* TODO: cleanup all */
-    memset(ctx, 0, sizeof(xmlSecDSigCtx));
+    memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 }
 
 int 
-xmlSecDSigCtxSign(xmlSecDSigCtxPtr ctx, xmlNodePtr tmpl) {
+xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     int ret;
     
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->result == NULL, -1);
+    xmlSecAssert2(dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
 
     /* TODO */
@@ -162,25 +162,25 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr ctx, xmlNodePtr tmpl) {
 }
 
 int 
-xmlSecDSigCtxVerify(xmlSecDSigCtxPtr ctx, xmlNodePtr node) {
+xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     int ret;
     
-    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     
     return(0);
 }
 
 void 
-xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr ctx, FILE* output) {
-    xmlSecAssert(ctx != NULL);
+xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
+    xmlSecAssert(dsigCtx != NULL);
 
-    if(ctx->sign) {    
+    if(dsigCtx->sign) {    
 	fprintf(output, "= SIGNATURE CONTEXT\n");
     } else {
 	fprintf(output, "= VERIFICATION CONTEXT\n");
     }
-    switch(ctx->status) {
+    switch(dsigCtx->status) {
 	case xmlDSigStatusUnknown:
 	    fprintf(output, "== Status: unknown\n");
 	    break;
@@ -194,28 +194,28 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr ctx, FILE* output) {
 	    fprintf(output, "== Status: failed\n");
 	    break;
     }
-    if(ctx->id != NULL) {
-	fprintf(output, "== Id: \"%s\"\n", ctx->id);
+    if(dsigCtx->id != NULL) {
+	fprintf(output, "== Id: \"%s\"\n", dsigCtx->id);
     }
     
     fprintf(output, "== Key Info Read Ctx:\n");
-    xmlSecKeyInfoCtxDebugDump(&(ctx->keyInfoReadCtx), output);
+    xmlSecKeyInfoCtxDebugDump(&(dsigCtx->keyInfoReadCtx), output);
     fprintf(output, "== Key Info Write Ctx:\n");
-    xmlSecKeyInfoCtxDebugDump(&(ctx->keyInfoWriteCtx), output);
+    xmlSecKeyInfoCtxDebugDump(&(dsigCtx->keyInfoWriteCtx), output);
 
-    xmlSecTransformCtxDebugDump(&(ctx->signTransformCtx), output);
+    xmlSecTransformCtxDebugDump(&(dsigCtx->signTransformCtx), output);
     
-    if((ctx->result != NULL) && 
-       (xmlSecBufferGetData(ctx->result) != NULL)) {
+    if((dsigCtx->result != NULL) && 
+       (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
 	fprintf(output, "== Result - start buffer:\n");
-	fwrite(xmlSecBufferGetData(ctx->result), 
-	       xmlSecBufferGetSize(ctx->result), 1,
+	fwrite(xmlSecBufferGetData(dsigCtx->result), 
+	       xmlSecBufferGetSize(dsigCtx->result), 1,
 	       output);
 	fprintf(output, "\n== Result - end buffer\n");
     } else {
 	fprintf(output, "== Result: %d bytes\n",
-		xmlSecBufferGetSize(ctx->result));
+		xmlSecBufferGetSize(dsigCtx->result));
     }
     
     /* todo: preSignMemBufMethod */
@@ -224,15 +224,15 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr ctx, FILE* output) {
 }
 
 void 
-xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr ctx, FILE* output) {
-    xmlSecAssert(ctx != NULL);
+xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
+    xmlSecAssert(dsigCtx != NULL);
 
-    if(ctx->sign) {    
+    if(dsigCtx->sign) {    
 	fprintf(output, "<SignatureContext \n");
     } else {
 	fprintf(output, "<VerificationContext \n");
     }
-    switch(ctx->status) {
+    switch(dsigCtx->status) {
 	case xmlDSigStatusUnknown:
 	    fprintf(output, "status=\"unknown\" >\n");
 	    break;
@@ -247,38 +247,38 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr ctx, FILE* output) {
 	    break;
     }
 
-    if(ctx->id != NULL) {
-	fprintf(output, "<Id>%s</Id>\n", ctx->id);
+    if(dsigCtx->id != NULL) {
+	fprintf(output, "<Id>%s</Id>\n", dsigCtx->id);
     }
 
     fprintf(output, "<KeyInfoReadCtx>\n");
-    xmlSecKeyInfoCtxDebugXmlDump(&(ctx->keyInfoReadCtx), output);
+    xmlSecKeyInfoCtxDebugXmlDump(&(dsigCtx->keyInfoReadCtx), output);
     fprintf(output, "</KeyInfoReadCtx>\n");
 
     fprintf(output, "<KeyInfoWriteCtx>\n");
-    xmlSecKeyInfoCtxDebugXmlDump(&(ctx->keyInfoWriteCtx), output);
+    xmlSecKeyInfoCtxDebugXmlDump(&(dsigCtx->keyInfoWriteCtx), output);
     fprintf(output, "</KeyInfoWriteCtx>\n");
 
-    xmlSecTransformCtxDebugXmlDump(&(ctx->signTransformCtx), output);
+    xmlSecTransformCtxDebugXmlDump(&(dsigCtx->signTransformCtx), output);
 
-    if((ctx->result != NULL) && 
-       (xmlSecBufferGetData(ctx->result) != NULL)) {
+    if((dsigCtx->result != NULL) && 
+       (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
 	fprintf(output, "<Result>");
-	fwrite(xmlSecBufferGetData(ctx->result), 
-	       xmlSecBufferGetSize(ctx->result), 1,
+	fwrite(xmlSecBufferGetData(dsigCtx->result), 
+	       xmlSecBufferGetSize(dsigCtx->result), 1,
 	       output);
 	fprintf(output, "</Result>\n");
     } else {
 	fprintf(output, "<Result size=\"%d\" />\n",
-	       xmlSecBufferGetSize(ctx->result));
+	       xmlSecBufferGetSize(dsigCtx->result));
     }
 
     /* todo: preSignMemBufMethod */
     /* todo: references and manifests */
     /* todo: sign key */
 
-    if(ctx->sign) {    
+    if(dsigCtx->sign) {    
 	fprintf(output, "</SignatureContext>\n");
     } else {
 	fprintf(output, "</VerificationContext>\n");
@@ -292,13 +292,13 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr ctx, FILE* output) {
  *************************************************************************/
 xmlSecDSigReferenceCtxPtr	
 xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin origin) {
-    xmlSecDSigReferenceCtxPtr ctx;
+    xmlSecDSigReferenceCtxPtr dsigRefCtx;
     int ret;
     
     xmlSecAssert2(dsigCtx != NULL, NULL);
     
-    ctx = (xmlSecDSigReferenceCtxPtr) xmlMalloc(sizeof(xmlSecDSigReferenceCtx));
-    if(ctx == NULL) {
+    dsigRefCtx = (xmlSecDSigReferenceCtxPtr) xmlMalloc(sizeof(xmlSecDSigReferenceCtx));
+    if(dsigRefCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlMalloc",
@@ -308,42 +308,42 @@ xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin
 	return(NULL);
     }
     
-    ret = xmlSecDSigReferenceCtxInitialize(ctx, dsigCtx, origin);
+    ret = xmlSecDSigReferenceCtxInitialize(dsigRefCtx, dsigCtx, origin);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    "xmlSecDSigReferenceCtxInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecDSigReferenceCtxDestroy(ctx);
+	xmlSecDSigReferenceCtxDestroy(dsigRefCtx);
 	return(NULL);   
     }
-    return(ctx);    
+    return(dsigRefCtx);    
 }
 
 void  
-xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
+    xmlSecAssert(dsigRefCtx != NULL);
     
-    xmlSecDSigReferenceCtxFinalize(ctx);
-    xmlFree(ctx);
+    xmlSecDSigReferenceCtxFinalize(dsigRefCtx);
+    xmlFree(dsigRefCtx);
 }
 
 int 
-xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr ctx, xmlSecDSigCtxPtr dsigCtx,
+xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSigCtxPtr dsigCtx,
 				xmlSecDSigReferenceOrigin origin) {
     int ret;
     
-    xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigRefCtx != NULL, -1);
     
-    memset(ctx, 0, sizeof(xmlSecDSigReferenceCtx));
+    memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
     
-    ctx->dsigCtx = dsigCtx;
-    ctx->origin = origin;
+    dsigRefCtx->dsigCtx = dsigCtx;
+    dsigRefCtx->origin = origin;
     
-    /* initializes transforms ctx */
-    ret = xmlSecTransformCtxInitialize(&(ctx->digestTransformCtx));
+    /* initializes transforms dsigRefCtx */
+    ret = xmlSecTransformCtxInitialize(&(dsigRefCtx->digestTransformCtx));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -358,37 +358,37 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr ctx, xmlSecDSigCtxPtr
 }
 
 void 
-xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr ctx) {
-    xmlSecAssert(ctx != NULL);
+xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
+    xmlSecAssert(dsigRefCtx != NULL);
 
-    xmlSecTransformCtxFinalize(&(ctx->digestTransformCtx));
+    xmlSecTransformCtxFinalize(&(dsigRefCtx->digestTransformCtx));
 
-    if(ctx->c14nMethod != NULL) {
-	xmlSecTransformDestroy(ctx->c14nMethod, 1);
+    if(dsigRefCtx->c14nMethod != NULL) {
+	xmlSecTransformDestroy(dsigRefCtx->c14nMethod, 1);
     }    
-    if(ctx->digestMethod != NULL) {
-	xmlSecTransformDestroy(ctx->digestMethod, 1);
+    if(dsigRefCtx->digestMethod != NULL) {
+	xmlSecTransformDestroy(dsigRefCtx->digestMethod, 1);
     }    
-    if(ctx->id != NULL) {
-	xmlFree(ctx->id);
+    if(dsigRefCtx->id != NULL) {
+	xmlFree(dsigRefCtx->id);
     }	
-    if(ctx->uri != NULL) {
-	xmlFree(ctx->uri);
+    if(dsigRefCtx->uri != NULL) {
+	xmlFree(dsigRefCtx->uri);
     }	
-    if(ctx->type != NULL) {
-	xmlFree(ctx->type);
+    if(dsigRefCtx->type != NULL) {
+	xmlFree(dsigRefCtx->type);
     }	
     /* TODO: cleanup all */
-    memset(ctx, 0, sizeof(xmlSecDSigReferenceCtx));
+    memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
 }
 
 int 
-xmlSecDSigReferenceCtxCalculate(xmlSecDSigReferenceCtxPtr ctx, xmlNodePtr tmpl) {
+xmlSecDSigReferenceCtxCalculate(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr tmpl) {
     int ret;
     
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert(ctx->dsigCtx != NULL);
-    xmlSecAssert2(ctx->result == NULL, -1);
+    xmlSecAssert2(dsigRefCtx != NULL, -1);
+    xmlSecAssert2(dsigRefCtx->dsigCtx != NULL, -1);
+    xmlSecAssert2(dsigRefCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
 
     /* TODO */
@@ -396,27 +396,27 @@ xmlSecDSigReferenceCtxCalculate(xmlSecDSigReferenceCtxPtr ctx, xmlNodePtr tmpl) 
 }
 
 int 
-xmlSecDSigReferenceCtxVerify(xmlSecDSigReferenceCtxPtr ctx, xmlNodePtr node) {
+xmlSecDSigReferenceCtxVerify(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr node) {
     int ret;
     
-    xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert(ctx->dsigCtx != NULL);
+    xmlSecAssert2(dsigRefCtx != NULL, -1);
+    xmlSecAssert2(dsigRefCtx->dsigCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     
     return(0);
 }
 
 void 
-xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr ctx, FILE* output) {
-    xmlSecAssert(ctx != NULL);
-    xmlSecAssert(ctx->dsigCtx != NULL);
+xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
+    xmlSecAssert(dsigRefCtx != NULL);
+    xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
 
-    if(ctx->dsigCtx->sign) {    
+    if(dsigRefCtx->dsigCtx->sign) {    
 	fprintf(output, "= REFERENCE CALCULATION CONTEXT\n");
     } else {
 	fprintf(output, "= REFERENCE VERIFICATION CONTEXT\n");
     }
-    switch(ctx->status) {
+    switch(dsigRefCtx->status) {
 	case xmlDSigStatusUnknown:
 	    fprintf(output, "== Status: unknown\n");
 	    break;
@@ -430,48 +430,48 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr ctx, FILE* output) {
 	    fprintf(output, "== Status: failed\n");
 	    break;
     }
-    if(ctx->id != NULL) {
-	fprintf(output, "== Id: \"%s\"\n", ctx->id);
+    if(dsigRefCtx->id != NULL) {
+	fprintf(output, "== Id: \"%s\"\n", dsigRefCtx->id);
     }
-    if(ctx->uri != NULL) {
-	fprintf(output, "== URI: \"%s\"\n", ctx->uri);
+    if(dsigRefCtx->uri != NULL) {
+	fprintf(output, "== URI: \"%s\"\n", dsigRefCtx->uri);
     }
-    if(ctx->type != NULL) {
-	fprintf(output, "== Type: \"%s\"\n", ctx->type);
+    if(dsigRefCtx->type != NULL) {
+	fprintf(output, "== Type: \"%s\"\n", dsigRefCtx->type);
     }
 
     /* todo: digestMethod */
     /* todo: c14nMethod */
 
-    xmlSecTransformCtxDebugDump(&(ctx->digestTransformCtx), output);
+    xmlSecTransformCtxDebugDump(&(dsigRefCtx->digestTransformCtx), output);
 
     /* todo: preSignMemBufMethod */
     
-    if((ctx->result != NULL) && 
-       (xmlSecBufferGetData(ctx->result) != NULL)) {
+    if((dsigRefCtx->result != NULL) && 
+       (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
 	fprintf(output, "== Result - start buffer:\n");
-	fwrite(xmlSecBufferGetData(ctx->result), 
-	       xmlSecBufferGetSize(ctx->result), 1,
+	fwrite(xmlSecBufferGetData(dsigRefCtx->result), 
+	       xmlSecBufferGetSize(dsigRefCtx->result), 1,
 	       output);
 	fprintf(output, "\n== Result - end buffer\n");
     } else {
 	fprintf(output, "== Result: %d bytes\n",
-		xmlSecBufferGetSize(ctx->result));
+		xmlSecBufferGetSize(dsigRefCtx->result));
     }
 }
 
 void 
-xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr ctx, FILE* output) {
-    xmlSecAssert(ctx != NULL);
-    xmlSecAssert(ctx->dsigCtx != NULL);
+xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
+    xmlSecAssert(dsigRefCtx != NULL);
+    xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
 
-    if(ctx->dsigCtx->sign) {    
+    if(dsigRefCtx->dsigCtx->sign) {    
 	fprintf(output, "<ReferenceCalculationContext \n");
     } else {
 	fprintf(output, "<ReferenceVerificationContext \n");
     }
-    switch(ctx->status) {
+    switch(dsigRefCtx->status) {
 	case xmlDSigStatusUnknown:
 	    fprintf(output, "status=\"unknown\" >\n");
 	    break;
@@ -486,35 +486,35 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr ctx, FILE* output) 
 	    break;
     }
 
-    if(ctx->id != NULL) {
-	fprintf(output, "<Id>%s</Id>\n", ctx->id);
+    if(dsigRefCtx->id != NULL) {
+	fprintf(output, "<Id>%s</Id>\n", dsigRefCtx->id);
     }
-    if(ctx->uri != NULL) {
-	fprintf(output, "<URI>%s</URI>\n", ctx->uri);
+    if(dsigRefCtx->uri != NULL) {
+	fprintf(output, "<URI>%s</URI>\n", dsigRefCtx->uri);
     }
-    if(ctx->type != NULL) {
-	fprintf(output, "<Type>%s</Type>\n", ctx->type);
+    if(dsigRefCtx->type != NULL) {
+	fprintf(output, "<Type>%s</Type>\n", dsigRefCtx->type);
     }
 
     /* todo: digestMethod */
     /* todo: c14nMethod */
-    xmlSecTransformCtxDebugXmlDump(&(ctx->digestTransformCtx), output);
+    xmlSecTransformCtxDebugXmlDump(&(dsigRefCtx->digestTransformCtx), output);
 
-    if((ctx->result != NULL) && 
-       (xmlSecBufferGetData(ctx->result) != NULL)) {
+    if((dsigRefCtx->result != NULL) && 
+       (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
 	fprintf(output, "<Result>");
-	fwrite(xmlSecBufferGetData(ctx->result), 
-	       xmlSecBufferGetSize(ctx->result), 1,
+	fwrite(xmlSecBufferGetData(dsigRefCtx->result), 
+	       xmlSecBufferGetSize(dsigRefCtx->result), 1,
 	       output);
 	fprintf(output, "</Result>\n");
     } else {
 	fprintf(output, "<Result size=\"%d\" />\n",
-	       xmlSecBufferGetSize(ctx->result));
+	       xmlSecBufferGetSize(dsigRefCtx->result));
     }
 
     /* todo: preSignMemBufMethod */
-    if(ctx->dsigCtx->sign) {    
+    if(dsigRefCtx->dsigCtx->sign) {    
 	fprintf(output, "</ReferenceCalculationContext>\n");
     } else {
 	fprintf(output, "</ReferenceVerificationContext>\n");

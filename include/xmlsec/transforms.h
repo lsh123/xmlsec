@@ -20,9 +20,9 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
+#include <xmlsec/list.h>
 #include <xmlsec/nodeset.h>
-#include <xmlsec/keyinfo.h>
-
+#include <xmlsec/keys.h>
 
 #define XMLSEC_TRANSFORM_BINARY_CHUNK			64
 
@@ -36,12 +36,14 @@ typedef unsigned int					xmlSecTransformUsage;
  * Hi-level functions
  *
  *********************************************************************/
-int 			xmlSecTransformsInit		(void);
-XMLSEC_EXPORT int	xmlSecTransformsRegister	(xmlSecTransformId keyId);
-xmlSecTransformId	xmlSecTransformsFind		(const xmlChar *href,
-							 xmlSecTransformUsage usage);
+XMLSEC_EXPORT xmlSecPtrListPtr	xmlSecTransformIdsGet		(void);
+XMLSEC_EXPORT int 		xmlSecTransformIdsInit		(void);
+XMLSEC_EXPORT void 		xmlSecTransformIdsShutdown	(void);
+XMLSEC_EXPORT int 		xmlSecTransformIdsRegisterDefault(void);
+XMLSEC_EXPORT int		xmlSecTransformIdsRegister	(xmlSecTransformId keyId);
 
-/************************************************************************** *
+/************************************************************************** 
+ *
  * xmlSecTransformStatus
  *
  *************************************************************************/
@@ -72,6 +74,14 @@ typedef enum  {
     xmlSecTransformModePop
 } xmlSecTransformMode;
 
+typedef unsigned int		xmlSecUriType;
+#define xmlSecUriTypeNone		0x0000
+#define xmlSecUriTypeLocalEmpty		0x0001
+#define xmlSecUriTypeLocalXPointer	0x0002		
+#define xmlSecUriTypeRemote		0x0004
+#define xmlSecUriTypeAny		0xFFFF
+XMLSEC_EXPORT int 			xmlSecUriTypeCheck		(xmlSecUriType type,
+									 const xmlChar* uri);
 /**************************************************************************
  *
  * xmlSecTransformDataType
@@ -136,6 +146,7 @@ typedef unsigned char			xmlSecTransformDataType;
  * The transform context.
  */
 struct _xmlSecTransformCtx {
+    xmlSecUriType		allowedUris;
     xmlSecTransformStatus	status;
     xmlChar*			uri;
     xmlChar*			xpointerExpr;
@@ -509,6 +520,21 @@ struct _xmlSecTransformKlass {
 #define xmlSecTransformKlassGetName(klass) \
 	(((klass)) ? ((klass)->name) : NULL)
 
+/***********************************************************************
+ *
+ * Transform Ids list
+ *
+ **********************************************************************/
+#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId	xmlSecTransformIdListGetKlass	(void);
+XMLSEC_EXPORT int		xmlSecTransformIdListFind	(xmlSecPtrListPtr list,
+								 xmlSecTransformId transformId);
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformIdListFindByHref	(xmlSecPtrListPtr list,
+								 const xmlChar* href,
+								 xmlSecTransformUsage usage);
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformIdListFindByName	(xmlSecPtrListPtr list,
+								 const xmlChar* name,
+								 xmlSecTransformUsage usage);
 /******************************************************************** 
  *
  * Base64 Transform

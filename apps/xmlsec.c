@@ -283,6 +283,17 @@ static xmlSecAppCmdLineParam allowedKeyDataParam = {
     NULL
 };
 
+static xmlSecAppCmdLineParam allowedRetrievalMethodUrisParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--allowed-retrieval-method-uris",
+    NULL,
+    "--allowed-retrieval-uris [empty-local|local|all]"
+    "\n\trestricts possible URI attribute values for the <dsig:RetrievalMethod> element",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 /****************************************************************
  *
  * Common params
@@ -464,6 +475,17 @@ static xmlSecAppCmdLineParam storeAllParam = {
  *
  ***************************************************************/
 #ifndef XMLSEC_NO_XMLENC
+static xmlSecAppCmdLineParam allowedCipherRefUrisParam = { 
+    xmlSecAppCmdLineTopicEncCommon,
+    "--allowed-cipher-reference-uris",
+    NULL,
+    "--allowed-cipher-reference-uris [empty-local|local|all]"
+    "\n\trestricts possible URI attribute values for the <enc:CipherReference> element",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
 static xmlSecAppCmdLineParam binaryDataParam = { 
     xmlSecAppCmdLineTopicEncEncrypt,
     "--binary-data",
@@ -565,6 +587,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_XMLENC
     &binaryDataParam,
     &xmlDataParam,
+    &allowedCipherRefUrisParam,
 #endif /* XMLSEC_NO_XMLENC */
              
     /* common dsig and enc parameters */
@@ -579,6 +602,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     
     /* Keys Manager params */
     &allowedKeyDataParam,
+    &allowedRetrievalMethodUrisParam,
     &genKeyParam,
     &keysFileParam,
     &privkeyParam,
@@ -652,18 +676,18 @@ static int			xmlSecAppPrepareKeyInfoReadCtx	(xmlSecKeyInfoCtxPtr ctx);
 #ifndef XMLSEC_NO_XMLDSIG
 static int			xmlSecAppSignFile		(const char* filename);
 static int			xmlSecAppVerifyFile		(const char* filename);
-static xmlSecDSigCtxPtr		xmlSecAppCreateDSigCtx		(void);
+static int			xmlSecAppPrepareDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 static void			xmlSecAppPrintDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
 static int			xmlSecAppEncryptFile		(const char* filename);
 static int			xmlSecAppDecryptFile		(const char* filename);
-static xmlSecEncCtxPtr		xmlSecAppCreateEncCtx		(void);
+static int			xmlSecAppPrepareEncCtx		(xmlSecEncCtxPtr encCtx);
 static void			xmlSecAppPrintEncCtx		(xmlSecEncCtxPtr encCtx);
 #endif /* XMLSEC_NO_XMLENC */
 
-
+static xmlSecUriType		xmlSecAppGetUriType		(const char* string);
 static FILE* 			xmlSecAppOpenFile		(const char* filename);
 static void			xmlSecAppCloseFile		(FILE* file);
 static int			xmlSecAppWriteResult		(xmlDocPtr doc,
@@ -823,12 +847,21 @@ fail:
 static int 
 xmlSecAppSignFile(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
+    xmlSecDSigCtx dsigCtx;
     clock_t start_time;
     int res = -1;
     
     if(filename == NULL) {
 	return(-1);
+    }
+    
+    if(xmlSecDSigCtxInitialize(&dsigCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: dsig context initialization failed\n");
+	goto done;
+    }
+    if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
+	fprintf(stderr, "Error: dsig context preparation failed\n");
+	goto done;
     }
     
     /* parse template and select start node */
@@ -838,16 +871,9 @@ xmlSecAppSignFile(const char* filename) {
 	goto done;
     }
 
-    dsigCtx = xmlSecAppCreateDSigCtx();
-    if(dsigCtx == NULL) {
-	fprintf(stderr, "Error: failed create signature context\n");
-	goto done;
-    }
-    
     /* sign */
     start_time = clock();
-    /* TODO: session key */
-    if(xmlSecDSigCtxSign(dsigCtx, data->startNode) < 0) {
+    if(xmlSecDSigCtxSign(&dsigCtx, data->startNode) < 0) {
         fprintf(stderr,"Error: signature failed \n");
 	goto done;
     }
@@ -868,13 +894,11 @@ xmlSecAppSignFile(const char* filename) {
 
     res = 0;
 done:
-    if(dsigCtx != NULL) {
-	/* print debug info if requested */
-	if(repeats <= 1) {
-    	    xmlSecAppPrintDSigCtx(dsigCtx);
-	}
-        xmlSecDSigCtxDestroy(dsigCtx);
+    /* print debug info if requested */
+    if(repeats <= 1) {
+    	xmlSecAppPrintDSigCtx(&dsigCtx);
     }
+    xmlSecDSigCtxFinalize(&dsigCtx);
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
     }
@@ -884,12 +908,21 @@ done:
 static int 
 xmlSecAppVerifyFile(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
+    xmlSecDSigCtx dsigCtx;
     clock_t start_time;
     int res = -1;
     
     if(filename == NULL) {
 	return(-1);
+    }
+
+    if(xmlSecDSigCtxInitialize(&dsigCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: dsig context initialization failed\n");
+	goto done;
+    }
+    if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
+	fprintf(stderr, "Error: dsig context preparation failed\n");
+	goto done;
     }
     
     /* parse template and select start node */
@@ -899,16 +932,9 @@ xmlSecAppVerifyFile(const char* filename) {
 	goto done;
     }
 
-    dsigCtx = xmlSecAppCreateDSigCtx();
-    if(dsigCtx == NULL) {
-	fprintf(stderr, "Error: failed create signature context\n");
-	goto done;
-    }
-    
     /* sign */
     start_time = clock();
-    /* TODO: session key */
-    if(xmlSecDSigCtxVerify(dsigCtx, data->startNode) < 0) {
+    if(xmlSecDSigCtxVerify(&dsigCtx, data->startNode) < 0) {
         fprintf(stderr,"Error: signature failed \n");
 	goto done;
     }
@@ -923,7 +949,7 @@ xmlSecAppVerifyFile(const char* filename) {
 		    xmlSecAppCmdLineParamGetString(&outputParam));
 	    goto done;
 	}
-	switch(dsigCtx->status) {
+	switch(dsigCtx.status) {
 	    case xmlDSigStatusSucceeded:
 		fprintf(f, "OK\n");
 		break;
@@ -940,34 +966,28 @@ xmlSecAppVerifyFile(const char* filename) {
 
     res = 0;
 done:
-    if(dsigCtx != NULL) {
-	/* print debug info if requested */
-	if(repeats <= 1) {
-    	    xmlSecAppPrintDSigCtx(dsigCtx);
-	}
-        xmlSecDSigCtxDestroy(dsigCtx);
+    /* print debug info if requested */
+    if(repeats <= 1) {
+    	xmlSecAppPrintDSigCtx(&dsigCtx);
     }
+    xmlSecDSigCtxFinalize(&dsigCtx);
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
     }
     return(res);
 }
 
-static xmlSecDSigCtxPtr	
-xmlSecAppCreateDSigCtx(void) {
-    xmlSecDSigCtxPtr dsigCtx;
-    
-    dsigCtx = xmlSecDSigCtxCreate(gKeysMngr);
+static int
+xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     if(dsigCtx == NULL) {
-	fprintf(stderr, "Error: failed to create dsig context\n");
-	return(NULL);
+	fprintf(stderr, "Error: dsig context is null\n");
+	return(-1);
     }
 
     /* set key info params */
     if(xmlSecAppPrepareKeyInfoReadCtx(&(dsigCtx->keyInfoReadCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
-	xmlSecDSigCtxDestroy(dsigCtx);
-	return(NULL);
+	return(-1);
     }
 
     if(xmlSecAppCmdLineParamGetString(&sessionKeyParam) != NULL) {
@@ -976,8 +996,7 @@ xmlSecAppCreateDSigCtx(void) {
 	if(dsigCtx->signKey == NULL) {
 	    fprintf(stderr, "Error: failed to generate a session key \"%s\"\n",
 		    xmlSecAppCmdLineParamGetString(&sessionKeyParam));
-	    xmlSecDSigCtxDestroy(dsigCtx);
-	    return(NULL);
+	    return(-1);
 	}
     }
 
@@ -1007,7 +1026,7 @@ xmlSecAppCreateDSigCtx(void) {
 	print_debug = 1;
     }
     
-    return(dsigCtx);
+    return(0);
 }
 
 static void
@@ -1050,7 +1069,7 @@ xmlSecAppPrintDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
 static int 
 xmlSecAppEncryptFile(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlSecEncCtxPtr encCtx = NULL;
+    xmlSecEncCtx encCtx;
     xmlDocPtr doc = NULL;
     xmlNodePtr startTmplNode;
     clock_t start_time;
@@ -1058,6 +1077,15 @@ xmlSecAppEncryptFile(const char* filename) {
 
     if(filename == NULL) {
 	return(-1);
+    }
+
+    if(xmlSecEncCtxInitialize(&encCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: enc context initialization failed\n");
+	goto done;
+    }
+    if(xmlSecAppPrepareEncCtx(&encCtx) < 0) {
+	fprintf(stderr, "Error: enc context preparation failed\n");
+	goto done;
     }
 
     /* parse doc and find template node */
@@ -1074,16 +1102,10 @@ xmlSecAppEncryptFile(const char* filename) {
 	goto done;
     }
 
-    encCtx = xmlSecAppCreateEncCtx();
-    if(encCtx == NULL) {
-	fprintf(stderr, "Error: failed create decryption context\n");
-	goto done;
-    }
-
     if(xmlSecAppCmdLineParamGetString(&binaryDataParam) != NULL) {
 	/* encrypt */
 	start_time = clock();            
-	if(xmlSecEncCtxUriEncrypt(encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryDataParam)) < 0) {
+	if(xmlSecEncCtxUriEncrypt(&encCtx, startTmplNode, BAD_CAST xmlSecAppCmdLineParamGetString(&binaryDataParam)) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt file \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&binaryDataParam));
 	    goto done;
@@ -1100,7 +1122,7 @@ xmlSecAppEncryptFile(const char* filename) {
 
 	/* encrypt */
 	start_time = clock();            
-	if(xmlSecEncCtxXmlEncrypt(encCtx, startTmplNode, data->startNode) < 0) {
+	if(xmlSecEncCtxXmlEncrypt(&encCtx, startTmplNode, data->startNode) < 0) {
 	    fprintf(stderr, "Error: failed to encrypt xml file \"%s\"\n", 
 		    xmlSecAppCmdLineParamGetString(&xmlDataParam));
 	    goto done;
@@ -1113,12 +1135,12 @@ xmlSecAppEncryptFile(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	if(encCtx->resultReplaced) {
+	if(encCtx.resultReplaced) {
 	    if(xmlSecAppWriteResult((data != NULL) ? data->doc : doc, NULL) < 0) {
 		goto done;
 	    }
 	} else {
-	    if(xmlSecAppWriteResult(NULL, encCtx->result) < 0) {
+	    if(xmlSecAppWriteResult(NULL, encCtx.result) < 0) {
 		goto done;
 	    }
 	}	
@@ -1126,13 +1148,12 @@ xmlSecAppEncryptFile(const char* filename) {
     res = 0;    
 
 done:
-    if(encCtx != NULL) {
-	/* print debug info if requested */
-	if(repeats <= 1) {
-    	    xmlSecAppPrintEncCtx(encCtx);
-	}
-        xmlSecEncCtxDestroy(encCtx);
+    /* print debug info if requested */
+    if(repeats <= 1) {
+    	xmlSecAppPrintEncCtx(&encCtx);
     }
+    xmlSecEncCtxFinalize(&encCtx);
+
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
     }
@@ -1145,12 +1166,21 @@ done:
 static int 
 xmlSecAppDecryptFile(const char* filename) {
     xmlSecAppXmlDataPtr data = NULL;
-    xmlSecEncCtxPtr encCtx = NULL;
+    xmlSecEncCtx encCtx;
     clock_t start_time;
     int res = -1;
 
     if(filename == NULL) {
 	return(-1);
+    }
+
+    if(xmlSecEncCtxInitialize(&encCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: enc context initialization failed\n");
+	goto done;
+    }
+    if(xmlSecAppPrepareEncCtx(&encCtx) < 0) {
+	fprintf(stderr, "Error: enc context preparation failed\n");
+	goto done;
     }
 
     /* parse template and select start node */
@@ -1160,15 +1190,8 @@ xmlSecAppDecryptFile(const char* filename) {
 	goto done;
     }
 
-    /* decrypt */
-    encCtx = xmlSecAppCreateEncCtx();
-    if(encCtx == NULL) {
-	fprintf(stderr, "Error: failed create decryption context\n");
-	goto done;
-    }
-    
-    start_time = clock();            
-    if(xmlSecEncCtxDecrypt(encCtx, data->startNode) < 0) {
+    start_time = clock();  
+    if(xmlSecEncCtxDecrypt(&encCtx, data->startNode) < 0) {
 	fprintf(stderr, "Error: failed to decrypt file\n");
 	goto done;
     }
@@ -1176,12 +1199,12 @@ xmlSecAppDecryptFile(const char* filename) {
     
     /* print out result only once per execution */
     if(repeats <= 1) {
-	if(encCtx->resultReplaced) {
+	if(encCtx.resultReplaced) {
 	    if(xmlSecAppWriteResult(data->doc, NULL) < 0) {
 		goto done;
 	    }
 	} else {
-	    if(xmlSecAppWriteResult(NULL, encCtx->result) < 0) {
+	    if(xmlSecAppWriteResult(NULL, encCtx.result) < 0) {
 		goto done;
 	    }
 	}	
@@ -1189,34 +1212,29 @@ xmlSecAppDecryptFile(const char* filename) {
     res = 0;    
 
 done:
-    if(encCtx != NULL) {
-	/* print debug info if requested */
-	if(repeats <= 1) { 
-    	    xmlSecAppPrintEncCtx(encCtx);
-	}
-        xmlSecEncCtxDestroy(encCtx);
+    /* print debug info if requested */
+    if(repeats <= 1) { 
+        xmlSecAppPrintEncCtx(&encCtx);
     }
+    xmlSecEncCtxFinalize(&encCtx);
+
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
     }
     return(res);
 }
 
-static xmlSecEncCtxPtr	
-xmlSecAppCreateEncCtx(void) {
-    xmlSecEncCtxPtr encCtx;
-    
-    encCtx = xmlSecEncCtxCreate(gKeysMngr);
+static int
+xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {    
     if(encCtx == NULL) {
-	fprintf(stderr, "Error: failed to create enc context\n");
-	return(NULL);
+	fprintf(stderr, "Error: enc context is null\n");
+	return(-1);
     }
 
     /* set key info params */
     if(xmlSecAppPrepareKeyInfoReadCtx(&(encCtx->keyInfoReadCtx)) < 0) {
 	fprintf(stderr, "Error: failed to prepare key info context\n");
-	xmlSecEncCtxDestroy(encCtx);
-	return(NULL);
+	return(-1);
     }
 
     if(xmlSecAppCmdLineParamGetString(&sessionKeyParam) != NULL) {
@@ -1225,12 +1243,20 @@ xmlSecAppCreateEncCtx(void) {
 	if(encCtx->encKey == NULL) {
 	    fprintf(stderr, "Error: failed to generate a session key \"%s\"\n",
 		    xmlSecAppCmdLineParamGetString(&sessionKeyParam));
-	    xmlSecEncCtxDestroy(encCtx);
-	    return(NULL);
+	    return(-1);
 	}
     }
-    
-    return(encCtx);
+
+    if(xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam) != NULL) {
+	encCtx->allowedCipherReferenceUris = xmlSecAppGetUriType(
+		    xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam));
+	if(encCtx->allowedCipherReferenceUris == xmlSecUriTypeNone) {
+	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam));
+	    return(-1);
+	}
+    }
+    return(0);
 }
 
 static void 
@@ -1302,6 +1328,17 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 		    return(-1);
 		}
 	    }
+	}
+    }
+
+    /* read allowed RetrievalMethod uris */
+    if(xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam) != NULL) {
+	keyInfoCtx->allowedRetrievalMethodUris = xmlSecAppGetUriType(
+		    xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam));
+	if(keyInfoCtx->allowedRetrievalMethodUris == xmlSecUriTypeNone) {
+	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam));
+	    return(-1);
 	}
     }
 
@@ -1798,6 +1835,19 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
     }
     fprintf(stdout, "%s\n", bugs);
     fprintf(stdout, "%s\n", copyright);
+}
+
+static xmlSecUriType 
+xmlSecAppGetUriType(const char* string) {
+    if((string == NULL) || (strcmp(string, "all") == 0)) {
+	return(xmlSecUriTypeAny);
+    } else if(strcmp(string, "empty-local") == 0) {
+	return(xmlSecUriTypeLocalEmpty);
+    } else if(strcmp(string, "local") == 0) {
+	return(xmlSecUriTypeLocalEmpty | xmlSecUriTypeLocalXPointer);
+    }
+    fprintf(stderr, "Error: invalid uri type: \"%s\"\n", string);
+    return(xmlSecUriTypeNone);
 }
 
 static FILE* 

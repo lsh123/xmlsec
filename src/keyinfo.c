@@ -253,12 +253,12 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
-    keyInfoCtx->keysMngr 		= keysMngr;
-    keyInfoCtx->stopWhenKeyFound	= 1;
-    keyInfoCtx->maxRetrievalMethodLevel	= 1;
-    keyInfoCtx->allowedRetrievalMethodUris= xmlSecUriTypeAny;
-    keyInfoCtx->maxEncryptedKeyLevel 	= 1;
-    keyInfoCtx->certsVerificationDepth 	= 9;
+    keyInfoCtx->keysMngr 			= keysMngr;
+    keyInfoCtx->stopWhenKeyFound		= 1;
+    keyInfoCtx->maxRetrievalMethodLevel		= 1;
+    keyInfoCtx->allowedRetrievalMethodUris 	= xmlSecUriTypeAny;
+    keyInfoCtx->maxEncryptedKeyLevel 		= 1;
+    keyInfoCtx->certsVerificationDepth 		= 9;
     
     return(0);
 }
@@ -935,7 +935,6 @@ xmlSecKeyDataRetrievalMethodGetKlass(void) {
 static int 
 xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataId dataId = xmlSecKeyDataIdUnknown;
-    xmlSecUriType uriType = 0;
     xmlChar *retrType = NULL;
     xmlChar *uri = NULL;
     xmlNodePtr cur;
@@ -964,14 +963,7 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 
     /* check the allowed uri */
     uri = xmlGetProp(node, xmlSecAttrURI);
-    if((uri == NULL) || (xmlStrlen(uri) == 0)) {
-	uriType = xmlSecUriTypeLocalEmpty;
-    } else if(uri[0] == '#') {
-	uriType = xmlSecUriTypeLocalXPointer;
-    } else {
-	uriType = xmlSecUriTypeRemote;
-    }    
-    if((uriType & keyInfoCtx->allowedRetrievalMethodUris) == 0) {
+    if(xmlSecUriTypeCheck(keyInfoCtx->allowedRetrievalMethodUris, uri) != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
 		    NULL,

@@ -97,6 +97,9 @@ execEncTest "aleksey-xmlenc-01/enc-aes192cbc-keyname" \
     "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-aes192cbc-keyname.data" \
     "--keys-file $keysfile"
 
+execEncTest "aleksey-xmlenc-01/enc-aes192cbc-keyname-ref" \
+    "--keys-file $topfolder/keys/keys.xml"
+
 execEncTest "aleksey-xmlenc-01/enc-aes256cbc-keyname" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-aes256cbc-keyname.data" \
@@ -194,7 +197,7 @@ execEncTest "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
-    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml" \
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-retrieval-method-uris local" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml-data $topfolder/01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
 
@@ -287,8 +290,14 @@ execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
 
 echo "--------- Negative Testing: Following tests MUST FAIL ----------"
 echo "--- detailed log is written to  $logfile" 
+execEncTest "aleksey-xmlenc-01/enc-aes192cbc-keyname-ref" \
+    "--keys-file $topfolder/keys/keys.xml --allowed-cipher-reference-uris empty-local" 
+
 execEncTest "01-phaos-xmlenc-3/bad-alg-enc-element-aes128-kw-3des" \
     "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml"
+
+execEncTest "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
+    "--keys-file $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-retrieval-method-uris empty-local"
 
     
 rm -rf $tmpfile

@@ -22,6 +22,7 @@ extern "C" {
 #include <xmlsec/list.h>
 #include <xmlsec/keysdata.h>
 #include <xmlsec/keys.h>
+#include <xmlsec/transforms.h>
 
 /**
  * Hi level functions
@@ -32,13 +33,6 @@ XMLSEC_EXPORT int	 	xmlSecKeyInfoNodeRead		(xmlNodePtr keyInfoNode,
 XMLSEC_EXPORT int 		xmlSecKeyInfoNodeWrite		(xmlNodePtr keyInfoNode,
 								 xmlSecKeyPtr key,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-
-typedef unsigned int		xmlSecUriType;
-#define xmlSecUriTypeNone		0x0000
-#define xmlSecUriTypeLocalEmpty		0x0001
-#define xmlSecUriTypeLocalXPointer	0x0002		
-#define xmlSecUriTypeRemote		0x0004
-#define xmlSecUriTypeAny		0xFFFF
 
 typedef enum {
     xmlSecKeyInfoModeRead = 0,

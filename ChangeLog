@@ -1,3 +1,8 @@
+Mon Apr 28 21:13:03 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* docs/download.html docs/index.html docs/news.html: preparing
+	1.0.1 release.
+
 Sun Apr 27 18:05:23 2003  Igor Zlatkovic  <igor@zlatkovic.com>
 
 	* win32/Makefile.msvc: defined _REENTRANT to enable compilation
@@ -13,7 +18,7 @@ Tue Apr 22 13:51:33 2003  Igor Zlatkovic  <igor@zlatkovic.com>
 
 	* win32/configure.js: updated the email address in the generated
 	  readme.txt file.
-	
+
 Sun 20 Apr 2003 03:12:02 PM PDT Aleksey Sanin <aleksey@aleksey.com>
 	
 	* docs/*: updated docs with new xmlSecByte and xmlSecSize types

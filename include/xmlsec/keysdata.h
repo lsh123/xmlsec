@@ -276,12 +276,12 @@ XMLSEC_EXPORT int		xmlSecKeyDataXmlWrite		(xmlSecKeyDataId id,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinRead		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 const unsigned char* buf,
+								 const xmlSecByte* buf,
 								 xmlSecSize bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 unsigned char** buf,
+								 xmlSecByte** buf,
 								 xmlSecSize* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -428,7 +428,7 @@ typedef int			(*xmlSecKeyDataXmlWriteMethod)	(xmlSecKeyDataId id,
  */
 typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 const unsigned char* buf,
+								 const xmlSecByte* buf,
 								 xmlSecSize bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 /** 
@@ -445,7 +445,7 @@ typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
  */
 typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 unsigned char** buf,
+								 xmlSecByte** buf,
 								 xmlSecSize* bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -650,12 +650,12 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueXmlWrite	(xmlSecKeyDataId id,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinRead		(xmlSecKeyDataId id,
 									 xmlSecKeyPtr key,
-									 const unsigned char* buf,
+									 const xmlSecByte* buf,
 									 xmlSecSize bufSize,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueBinWrite	(xmlSecKeyDataId id,
 									 xmlSecKeyPtr key,
-									 unsigned char** buf,
+									 xmlSecByte** buf,
 									 xmlSecSize* bufSize,
 									 xmlSecKeyInfoCtxPtr keyInfoCtx);
 XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugDump	(xmlSecKeyDataPtr data,
@@ -666,7 +666,7 @@ XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugXmlDump	(xmlSecKeyDataPtr data,
 XMLSEC_EXPORT xmlSecSize	xmlSecKeyDataBinaryValueGetSize		(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT xmlSecBufferPtr	xmlSecKeyDataBinaryValueGetBuffer	(xmlSecKeyDataPtr data);
 XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueSetBuffer	(xmlSecKeyDataPtr data,
-									 const unsigned char* buf,
+									 const xmlSecByte* buf,
 									 xmlSecSize bufSize);
 
 /**************************************************************************

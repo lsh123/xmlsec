@@ -166,7 +166,7 @@ XMLSEC_EXPORT int 			xmlSecTransformUriTypeCheck	(xmlSecTransformUriType type,
  * 
  * Transform data type bit mask.
  */ 
-typedef unsigned char				xmlSecTransformDataType;
+typedef xmlSecByte				xmlSecTransformDataType;
 
 /**
  * xmlSecTransformDataTypeUnknown:
@@ -346,7 +346,7 @@ XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead	(xmlSecTransformCtxPtr ctx,
 XMLSEC_EXPORT int			xmlSecTransformCtxPrepare	(xmlSecTransformCtxPtr ctx,
 									 xmlSecTransformDataType inputDataType);
 XMLSEC_EXPORT int			xmlSecTransformCtxBinaryExecute	(xmlSecTransformCtxPtr ctx, 
-									 const unsigned char* data, 
+									 const xmlSecByte* data, 
 									 xmlSecSize dataSize);
 XMLSEC_EXPORT int 			xmlSecTransformCtxUriExecute	(xmlSecTransformCtxPtr ctx, 
 									 const xmlChar* uri);
@@ -417,7 +417,7 @@ XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform,
 XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
 								 xmlSecKeyReqPtr keyReq);
 XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int  			xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, 
@@ -427,12 +427,12 @@ XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformGetDataType(xmlSecTransform
 								 xmlSecTransformMode mode,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPushBin	(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPopBin	(xmlSecTransformPtr transform, 
-								 unsigned char* data,
+								 xmlSecByte* data,
 								 xmlSecSize maxDataSize,
 								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -528,12 +528,12 @@ XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTr
 								 xmlSecTransformMode mode,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
-								 unsigned char* data,
+								 xmlSecByte* data,
 								 xmlSecSize maxDataSize,
 								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -660,7 +660,7 @@ typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform,
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 /**
@@ -678,7 +678,7 @@ typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform,
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 int final,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -697,7 +697,7 @@ typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform,
  * Returns 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
-								 unsigned char* data,
+								 xmlSecByte* data,
 								 xmlSecSize maxDataSize,
 								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);

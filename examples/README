@@ -4,9 +4,7 @@ This folder contains XML Security Library examples.
 -------------------------
 
     README			This file.
-    autogen.sh			Run it first!
-    configure.in		Examples consiguration
-    Makefile.am			Makefile for building all the examples
+    Makefile			*nix makefile.
     Makefile.w32		Win32 makefile.
     rsakey.pem			Private PEM key file
     rsapub.pem			Public PEM key file

@@ -1,3 +1,11 @@
+Sun 20 Apr 2003 02:57:06 PM PDT Aleksey Sanin <aleksey@aleksey.com>
+
+	* src/* include/* apps/*: replaced 'unsigned char' with xmlSecByte
+	typedefed to 'unsigned int' to make happy OpenBSD on sparc64 
+
+	* examples/*: replaced configure.in with simple Makefile to 
+	prevent problems on different platforms
+
 Sun 20 Apr 2003 02:37:41 PM PDT Aleksey Sanin <aleksey@aleksey.com>
 	
 	* src/* include/* apps/*: replaced size_t with xmlSecSize
@@ -6,12 +14,12 @@ Sun 20 Apr 2003 02:37:41 PM PDT Aleksey Sanin <aleksey@aleksey.com>
 Sat Apr 19 01:08:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/kw_des.c src/openssl/signatures.c: 
-	include openssl/sha.h to help OpenBSD port
+	included openssl/sha.h to help OpenBSD port
 
 Wed 26 Mar 2003 01:43:24 AM PST Aleksey Sanin  <aleksey@aleksey.com>
 
 	* docs: 0.1.1 release
-	
+
 Wed Mar 19 22:56:49 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in include/xmlsec/version.h 

@@ -23,7 +23,7 @@ extern "C" {
 
 /***********************************************************************
  *
- * Basic types
+ * Basic types to make ports to exotic platforms easier
  *
  ***********************************************************************/
 /**
@@ -39,6 +39,13 @@ typedef void*					xmlSecPtr;
  * Size of something.
  */
 typedef unsigned int				xmlSecSize;
+
+/**
+ * xmlSecByte:
+ *
+ * One byte.
+ */
+typedef unsigned char				xmlSecByte;
 
 
 /***********************************************************************

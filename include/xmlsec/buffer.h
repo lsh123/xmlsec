@@ -52,7 +52,7 @@ typedef enum {
  * Binary data buffer.
  */
 struct _xmlSecBuffer {
-    unsigned char* 	data;
+    xmlSecByte* 	data;
     xmlSecSize 		size;
     xmlSecSize		maxSize;
     xmlSecAllocMode 	allocMode;
@@ -66,9 +66,9 @@ XMLSEC_EXPORT void		xmlSecBufferDestroy		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferInitialize		(xmlSecBufferPtr buf,
 								 xmlSecSize size);
 XMLSEC_EXPORT void		xmlSecBufferFinalize		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT unsigned char*	xmlSecBufferGetData		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT xmlSecByte*	xmlSecBufferGetData		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferSetData		(xmlSecBufferPtr buf,
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize size);
 XMLSEC_EXPORT xmlSecSize	xmlSecBufferGetSize		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferSetSize		(xmlSecBufferPtr buf,
@@ -78,10 +78,10 @@ XMLSEC_EXPORT int		xmlSecBufferSetMaxSize		(xmlSecBufferPtr buf,
 								 xmlSecSize size);
 XMLSEC_EXPORT void		xmlSecBufferEmpty		(xmlSecBufferPtr buf);
 XMLSEC_EXPORT int		xmlSecBufferAppend		(xmlSecBufferPtr buf,
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize size);
 XMLSEC_EXPORT int		xmlSecBufferPrepend		(xmlSecBufferPtr buf,
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize size);
 XMLSEC_EXPORT int		xmlSecBufferRemoveHead		(xmlSecBufferPtr buf,
 								 xmlSecSize size);

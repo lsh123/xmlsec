@@ -129,7 +129,7 @@ XMLSEC_EXPORT int		xmlSecEncCtxCopyUserPref	(xmlSecEncCtxPtr dst,
 XMLSEC_EXPORT void		xmlSecEncCtxReset		(xmlSecEncCtxPtr encCtx);
 XMLSEC_EXPORT int		xmlSecEncCtxBinaryEncrypt	(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize);
 XMLSEC_EXPORT int		xmlSecEncCtxXmlEncrypt		(xmlSecEncCtxPtr encCtx,
 								 xmlNodePtr tmpl,

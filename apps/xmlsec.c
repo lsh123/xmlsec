@@ -1479,7 +1479,7 @@ xmlSecAppEncryptTmpl(void) {
     /* encrypt */
     start_time = clock();            
     if(xmlSecEncCtxBinaryEncrypt(&encCtx, xmlDocGetRootElement(doc), 
-				(const unsigned char*)data, strlen(data)) < 0) {
+				(const xmlSecByte*)data, strlen(data)) < 0) {
 	fprintf(stderr, "Error: failed to encrypt data\n");
 	goto done;	
     }

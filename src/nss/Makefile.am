@@ -32,7 +32,7 @@ libxmlsec1_nss_la_SOURCES =\
 	x509.c \
 	x509vfy.c \
 	keysstore.c \
-	kt_rsa.c \
+	keytrans.c \
 	kw_des.c \
 	kw_aes.c \
 	$(NULL)

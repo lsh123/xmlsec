@@ -1,4 +1,10 @@
 2005-03-06  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/nss/crypto.h src/nss/Makefile.am src/nss/crypto.c 
+	src/nss/keytrans.c src/nss/kt_rsa.c: better rsa pkcs transform
+	using nss wrap/unwrap code (based on the OO.org patch)
+
+2005-03-06  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* include/xmlsec/nss/crypto.h src/nss/app.c 
 	src/nss/crypto.c src/nss/x509.c: fixed nss initialization
@@ -1406,4 +1412,3 @@ Tue 26 Mar 2002 06:30:10 PM PST Aleksey Sanin <aleksey@aleksey.com>
 	  adter the first change because both are based on Transforms)
         *: Added XSLT support (based on libxslt from Daniel Veillard)
     
-     

@@ -266,14 +266,19 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
         xmlSecNssTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
 
+
+/* RSA OAEP is not supported by NSS yet */
+#ifdef TODO
 /**
  * xmlSecNssTransformRsaOaepId:
  * 
  * The RSA OAEP key transport transform klass.
  */
+
 #define xmlSecNssTransformRsaOaepId \
         xmlSecNssTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
+#endif // TODO
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -4,7 +4,7 @@ libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 Name: xmlsec
-Version: 0.0.10
+Version: 0.0.11
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= 2.4.24 libxslt >= 1.0.20 
 Libs: -L${libdir} -lxmlsec -L/home/aleksey/lib -lxslt -lxml2 -lz -lm -L/home/aleksey/lib -lxml2 -lz -lm  -lcrypto 

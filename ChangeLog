@@ -1,3 +1,11 @@
+Mon Dec  2 23:38:34 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* config.h.in configure.in include/xmlsec/version.h
+	docs/news.html docs/download.html docs/index.html
+	xmlsec.pc xmlsec.spec: new 0.0.11 release updates
+	* scripts/build_release.sh scripts/push_release.sh
+	scripts/test_release.sh: checking in build scripts I am using
+
 Thu Nov 28 11:57:17 2002  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* apps/xmlsec.c: print detailed help report only when

@@ -38,6 +38,7 @@
 #include <xmlsec/errors.h>
 
 #include "crypto.h"
+#include "cmdline.h"
 
 static const char copyright[] =
     "Written by Aleksey Sanin <aleksey@aleksey.com>.\n"
@@ -50,6 +51,167 @@ static const char bugs[] =
 
 static const char usage[] = 
     "Usage: xmlsec %s [<options>] <file> [<file> [ ... ]]\n";
+
+
+#define xmlSecAppCmdLineTopicGeneral		0x0001
+#define xmlSecAppCmdLineTopicDSigCommon		0x0002
+#define xmlSecAppCmdLineTopicDSigSign		0x0004
+#define xmlSecAppCmdLineTopicDSigVerify		0x0008
+#define xmlSecAppCmdLineTopicEncCommon		0x0010
+#define xmlSecAppCmdLineTopicEncEncrypt		0x0011
+#define xmlSecAppCmdLineTopicEncDecrypt		0x0012
+#define xmlSecAppCmdLineTopicKeysMngr		0x0014
+#define xmlSecAppCmdLineTopicX509Certs		0x0018
+
+/****************************************************************
+ *
+ * General configuration params
+ *
+ ***************************************************************/
+static xmlSecAppCmdLineParam cryptoConfigParam = { 
+    xmlSecAppCmdLineTopicGeneral,
+    "--crypt-config",
+    NULL,
+    "--crypto-config       path to crypto engine configuration",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};    
+
+static xmlSecAppCmdLineParam outputFileParam = { 
+    xmlSecAppCmdLineTopicGeneral,
+    "--output",
+    "-o",
+    "--output <filename>   write result document to file <filename>",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
+static xmlSecAppCmdLineParam repeatParam = { 
+    xmlSecAppCmdLineTopicGeneral,
+    "--repeat",
+    "-r",
+    "--repeat <number>     repeat the operation <number> times",
+    xmlSecAppCmdLineParamTypeNumber,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};    
+
+
+static xmlSecAppCmdLineParam disableErrorMsgsParam = { 
+    xmlSecAppCmdLineTopicGeneral,
+    "--disable-error-msgs",
+    NULL,
+    "--disable-error-msgs  do not print xmlsec error messages",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};    
+
+static xmlSecAppCmdLineParam printCryptoErrorMsgsParam = { 
+    xmlSecAppCmdLineTopicGeneral,
+    "--print-crypto-error-msgs",
+    NULL,
+    "--print-crypto-error-msgs\n"
+    "                      print openssl errors stack at the end\n",
+    xmlSecAppCmdLineParamTypeFlag,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};    
+
+/****************************************************************
+ *
+ * Keys Manager params
+ *
+ ***************************************************************/
+static xmlSecAppCmdLineParam genKeyParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--gen",
+    "-g",
+    "--gen[:<name>] <keyKlass>-<keySize>\n"
+    "                      generate new <keyKlass> key of <keySize> bits size,\n"
+    "                      set the key name to <name> and add the result to keys manager\n"
+    "                      (for example, \"--gen-rsa-1024 mykey\" generates a new 1024 bits\n"
+    "                      RSA key and sets it's name to \"mykey\")",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam keysFileParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--keys",
+    "-k",
+    "--keys <file>         load keys from XML file",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam privateKeyFileParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--privkey",
+    NULL,
+    "--privkey[:<name>] <file>[,<cafile>[,<cafile>[...]]]\n"
+    "                      load private key from PEM file and certificates\n"
+    "                      that verify this key",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+static xmlSecAppCmdLineParam publicKeyFileParam = { 
+    xmlSecAppCmdLineTopicKeysMngr,
+    "--pubkey[:<name>] <file>\n",
+    NULL,
+    "                      load public key from PEM file",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};
+
+#if TODO    
+#ifndef XMLSEC_NO_X509
+    "  --pkcs12[:<name>] <file>\n"
+    "                        load private key from pkcs12 file\n"
+#endif /* XMLSEC_NO_X509 */    
+#ifndef XMLSEC_NO_HMAC    
+    "  --hmackey[:<name>] <file>\n"
+    "                        load hmac key from binary file\n"
+#endif  /* XMLSEC_NO_HMAC */    
+    "  --allowed <list>      specify the set of the allowed key origins\n"
+    "                        for signature verification or decryption;\n"
+    "                        <list> is a comma separated collection of\n"
+    "                        the following values:\n"
+    "                          \"keymanager\", \"keyname\", \"keyvalue\",\n"
+    "                          \"retrieval-doc\", \"retrieval-remote\",\n"
+    "                          \"enc-key\", \"x509\", \"pgp\"\n"
+    "                        by default, all key origins are allowed\n"
+    "  --pwd <password>      the password to use for reading keys and certs\n"
+#endif /* TODO */
+
+static xmlSecAppCmdLineParamPtr parameters[] = {
+    /* General configuration params */
+    &cryptoConfigParam,
+    &outputFileParam,
+    &repeatParam,
+    &disableErrorMsgsParam,
+    &printCryptoErrorMsgsParam,
+    
+    /* Keys Manager params */
+    &genKeyParam,
+    &keysFileParam,
+    &privateKeyFileParam,
+    &publicKeyFileParam,
+    
+    /* MUST be the last one */
+    NULL
+};
+
+
+
+
 
 static const char helpCommands[] =     
     "XMLSec commands are:\n"
@@ -77,11 +239,6 @@ static const char helpKeys[] =
     "Keys XML file manipulation. The result keys set is written to the file.\n"
     "\n"
     "Keys generation options:\n"
-    "  --gen-<keyKlass>-<keySize> <name>\n"
-    "                        generate new <keyKlass> key of <keySize> bits size,\n"
-    "                        set the key name to <name> and add the result to keys manager\n"
-    "                        (for example, \"--gen-rsa-1024 mykey\" generates a new 1024 bits\n"
-    "                         RSA key and sets it's name to \"mykey\")\n"
     "\n";
 
 static const char helpKeySelect[] = 
@@ -99,7 +256,6 @@ static const char helpSign[] =
     "\n"
 #ifndef XMLSEC_NO_XMLDSIG    
     "Signature options:\n"
-    "  --output <filename>   write signed document to file <filename>\n"
     "  --ignore-manifests    do not process <Manifest> elements\n"
     "  --fake-signatures     disable actual signature calc for perf tests\n"
 #else  /* XMLSEC_NO_XMLDSIG */
@@ -166,29 +322,6 @@ static const char helpNodeSelection[] =
     
 static const char helpKeysMngmt[] = 
     "Keys management options:\n"
-    "  --keys <file>         load keys from XML file\n"
-    "  --privkey[:<name>] <file>[,<cafile>[,<cafile>[...]]]\n"
-    "                        load private key from PEM file and certificates\n"
-    "                        that verify this key\n"
-    "  --pubkey[:<name>] <file>\n"
-    "                        load public key from PEM file\n"
-#ifndef XMLSEC_NO_X509
-    "  --pkcs12[:<name>] <file>\n"
-    "                        load private key from pkcs12 file\n"
-#endif /* XMLSEC_NO_X509 */    
-#ifndef XMLSEC_NO_HMAC    
-    "  --hmackey[:<name>] <file>\n"
-    "                        load hmac key from binary file\n"
-#endif  /* XMLSEC_NO_HMAC */    
-    "  --allowed <list>      specify the set of the allowed key origins\n"
-    "                        for signature verification or decryption;\n"
-    "                        <list> is a comma separated collection of\n"
-    "                        the following values:\n"
-    "                          \"keymanager\", \"keyname\", \"keyvalue\",\n"
-    "                          \"retrieval-doc\", \"retrieval-remote\",\n"
-    "                          \"enc-key\", \"x509\", \"pgp\"\n"
-    "                        by default, all key origins are allowed\n"
-    "  --pwd <password>      the password to use for reading keys and certs\n"
     "\n";
     
 static const char helpX509[] =
@@ -207,14 +340,6 @@ static const char helpX509[] =
     
 static const char helpMisc[] = 
     "Misc. options:\n"
-#ifdef XMLSEC_CRYPTO_NSS
-    "  --nss-config       path to crypto engine configuration\n"
-#endif /* XMLSEC_CRYPTO_NSS */    
-    "  --repeat <number>     repeat the operation <number> times\n"
-    "  --disable-error-msgs  do not print xmlsec error messages\n"
-#ifdef XMLSEC_CRYPTO_OPENSSL
-    "  --print-openssl-errors print openssl errors stack at the end\n"
-#endif /* XMLSEC_CRYPTO_OPENSSL */    
     "\n";
 
 typedef enum _xmlsecCommand {
@@ -323,6 +448,7 @@ xmlDtdPtr idsDtd = NULL;
 char* crypto_config = NULL;
 
 int main(int argc, char **argv) {
+    xmlSecAppCmdLineParamTopic cmdLineTopics = 0;
     int res = 1;
     xmlsecCommand command = xmlsecCommandNone;
     xmlDocPtr doc = NULL;
@@ -345,38 +471,59 @@ int main(int argc, char **argv) {
 	return(0);
     } else if(strcmp(argv[1], "keys") == 0) {
 	command = xmlsecCommandKeys;
+	templateRequired = 1;
+	cmdLineTopics = xmlSecAppCmdLineTopicGeneral | 
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
 #ifndef XMLSEC_NO_XMLDSIG
     } else if(strcmp(argv[1], "sign") == 0) {
 	command = xmlsecCommandSign;
 	templateRequired = 1;
+	cmdLineTopics = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicDSigCommon |
+			xmlSecAppCmdLineTopicDSigSign |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
     } else if(strcmp(argv[1], "verify") == 0) {
 	command = xmlsecCommandVerify;
 	templateRequired = 1;
+	cmdLineTopics = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicDSigCommon |
+			xmlSecAppCmdLineTopicDSigVerify |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
     } else if(strcmp(argv[1], "encrypt") == 0) {
 	command = xmlsecCommandEncrypt;
 	templateRequired = 1;
+	cmdLineTopics = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicEncCommon |
+			xmlSecAppCmdLineTopicEncEncrypt |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
     } else if(strcmp(argv[1], "decrypt") == 0) {
 	command = xmlsecCommandDecrypt;
 	templateRequired = 1;
+	cmdLineTopics = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicEncCommon |
+			xmlSecAppCmdLineTopicEncDecrypt |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
 #endif /* XMLSEC_NO_XMLENC */
-    } else if(strcmp(argv[1], "keys") == 0) {
-	command = xmlsecCommandKeys;
     } else {
 	fprintf(stdout, "Error: unknown command \"%s\"\n", argv[1]);
 	printUsage(NULL);
 	return(0);
     }
 
-#ifdef XMLSEC_CRYPTO_NSS
-    for(pos = 2; pos < argc && argv[pos][0] == '-'; ++pos) {
-        if((strcmp(argv[pos], "--nss-config") == 0) && (pos + 1 < argc)) {
-	    crypto_config = argv[++pos];
-	    break;
-	}
-    }    
-#endif /* XMLSEC_CRYPTO_NSS */    
+    ret = xmlSecAppCmdLineParamsListParse(parameters, cmdLineTopics, argv, argc, 2);
+    if(ret < 0) {
+	fprintf(stdout, "Error: invalid parameters\n");
+	printUsage(NULL);
+	return(0);
+    }
+    pos = ret;
 
     if(xmlSecAppInit(&gXmlSecAppCtx) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -450,7 +597,7 @@ int main(int argc, char **argv) {
 	++pos;
     }
     if(templateRequired != 0) {
-	fprintf(stderr, "Error: no templates specified\n");
+	fprintf(stderr, "Error: files are not specified\n");
  	goto done;	    	    
     }
     

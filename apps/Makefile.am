@@ -19,6 +19,7 @@ DEPS = \
 xmlsec_SOURCES = \
     xmlsec.c \
     crypto.c crypto.h \
+    cmdline.c cmdline.h \
     $(NULL)
 
 if XMLSEC_DYNAMIC_LINKING

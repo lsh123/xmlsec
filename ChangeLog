@@ -1,3 +1,7 @@
+Mon 29 Sep 2003 07:07:07 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/mscrypto: 2nd code review pass
+
 Sat Sep 27 18:31:20 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/openssl/crypto.h src/openssl/app.c

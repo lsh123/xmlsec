@@ -116,6 +116,9 @@ static void xmlSecMSCryptoDigestFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCryptoDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
+    if(ctx->mscHash != 0) {
+        CryptDestroyHash(ctx->mscHash);
+    }
     CryptReleaseContext(ctx->provider, 0);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoDigestCtx));

@@ -24,7 +24,8 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/crypto.h>
 
-#define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER	"/etc/httpd/conf/ssl.crt"
+/* #define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER	"/etc/httpd/conf/ssl.crt" */
+#define XMLDSIGVERIFY_DEFAULT_TRUSTED_CERTS_FOLDER	"/var/www/cgi-bin/keys-certs.def"
 #define XMLDSIGVERIFY_KEY_AND_CERTS_FOLDER 		"/var/www/cgi-bin/keys-certs"
 
 

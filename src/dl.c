@@ -298,6 +298,28 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
+static xmlsec_lt_ptr xmlSecCryptoDLMalloc(size_t size) {
+    xmlsec_lt_ptr res;
+
+    res = (xmlsec_lt_ptr)xmlMalloc(size);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    NULL,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "size=%d", size);
+        return(NULL);
+    }
+    memset(res, 0, size);
+    return(res);
+}
+
+static void xmlSecCryptoDLFree(xmlsec_lt_ptr ptr) {
+    if(ptr != NULL) {
+	xmlFree(ptr);
+    }
+}
+
 /**
  * xmlSecCryptoDLInit:
  * 
@@ -330,7 +352,10 @@ xmlSecCryptoDLInit(void) {
         return(-1);
     }
     /* TODO: LTDL_SET_PRELOADED_SYMBOLS(); */
-
+    
+    /* use xmlMalloc/xmlFree */
+    xmlsec_lt_dlmalloc	= xmlSecCryptoDLMalloc;
+    xmlsec_lt_dlfree	= xmlSecCryptoDLFree;
     return(0);
 }
 

@@ -72,8 +72,8 @@ static int  	xmlSecOpenSSLRsaPkcs1Process			(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLRsaPkcs1Size,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLRsaPkcs1Size,			/* xmlSecSize objSize */
 
     xmlSecNameRsaPkcs1,				/* const xmlChar* name; */
     xmlSecHrefRsaPkcs1, 			/* const xmlChar* href; */
@@ -251,8 +251,8 @@ static int
 xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     xmlSecBufferPtr in, out;
-    size_t inSize, outSize;
-    size_t keySize;
+    xmlSecSize inSize, outSize;
+    xmlSecSize keySize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
@@ -397,8 +397,8 @@ static int  	xmlSecOpenSSLRsaOaepProcess			(xmlSecTransformPtr transform,
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLRsaOaepSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLRsaOaepSize,			/* xmlSecSize objSize */
 
     xmlSecNameRsaOaep,				/* const xmlChar* name; */
     xmlSecHrefRsaOaep, 				/* const xmlChar* href; */
@@ -659,10 +659,10 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 static int  
 xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
-    size_t paramsSize;
+    xmlSecSize paramsSize;
     xmlSecBufferPtr in, out;
-    size_t inSize, outSize;
-    size_t keySize;
+    xmlSecSize inSize, outSize;
+    xmlSecSize keySize;
     int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);

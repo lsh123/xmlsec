@@ -130,7 +130,7 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
+xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {	
     int ret;
     
     xmlSecAssert2(buffer != NULL, -1);
@@ -195,7 +195,7 @@ xmlSecOpenSSLErrorsInit(void) {
 	{ XMLSEC_OPENSSL_ERRORS_LIB,			"xmlsec lib"},
         { 0,						NULL}
     };
-    size_t pos;
+    xmlSecSize pos;
 
     /* initialize reasons array */
     memset(xmlSecOpenSSLStrReasons, 0, sizeof(xmlSecOpenSSLStrReasons));

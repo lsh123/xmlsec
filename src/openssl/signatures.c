@@ -63,7 +63,7 @@ static int	xmlSecOpenSSLEvpSignatureSetKey			(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLEvpSignatureVerify			(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLEvpSignatureExecute		(xmlSecTransformPtr transform, 
 								 int last,
@@ -221,7 +221,7 @@ xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPt
 
 static int
 xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, size_t dataSize,
+			const unsigned char* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
     int ret;
@@ -262,7 +262,7 @@ static int
 xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
     xmlSecBufferPtr in, out;
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     int ret;
     
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
@@ -430,8 +430,8 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
 static xmlSecTransformKlass xmlSecOpenSSLDsaSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpSignatureSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpSignatureSize,		/* xmlSecSize objSize */
 
     xmlSecNameDsaSha1,				/* const xmlChar* name; */
     xmlSecHrefDsaSha1, 				/* const xmlChar* href; */
@@ -629,8 +629,8 @@ static const EVP_MD *xmlSecOpenSSLDsaEvp(void)
  ***************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLRsaSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpSignatureSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpSignatureSize,		/* xmlSecSize objSize */
 
     xmlSecNameRsaSha1,				/* const xmlChar* name; */
     xmlSecHrefRsaSha1, 				/* const xmlChar* href; */

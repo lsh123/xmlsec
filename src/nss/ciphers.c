@@ -40,9 +40,9 @@ struct _xmlSecNssEvpBlockCipherCtx {
     int			keyInitialized;
     int			ctxInitialized;
     unsigned char	key[XMLSEC_NSS_MAX_KEY_SIZE];
-    size_t		keySize;
+    xmlSecSize		keySize;
     unsigned char	iv[XMLSEC_NSS_MAX_IV_SIZE];
-    size_t		ivSize;
+    xmlSecSize		ivSize;
 };
 static int 	xmlSecNssEvpBlockCipherCtxInit		(xmlSecNssEvpBlockCipherCtxPtr ctx,
 							 xmlSecBufferPtr in,
@@ -87,7 +87,7 @@ xmlSecNssEvpBlockCipherCtxInit(xmlSecNssEvpBlockCipherCtxPtr ctx,
 
     ivLen = PK11_GetIVLength(ctx->cipher);
     xmlSecAssert2(ivLen > 0, -1);
-    xmlSecAssert2((size_t)ivLen <= sizeof(ctx->iv), -1);
+    xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
     
     if(encrypt) {
         /* generate random iv */
@@ -115,7 +115,7 @@ xmlSecNssEvpBlockCipherCtxInit(xmlSecNssEvpBlockCipherCtxPtr ctx,
     } else {
 	/* if we don't have enough data, exit and hope that 
 	 * we'll have iv next time */
-	if(xmlSecBufferGetSize(in) < (size_t)ivLen) {
+	if(xmlSecBufferGetSize(in) < (xmlSecSize)ivLen) {
 	    return(0);
 	}
 	
@@ -195,7 +195,7 @@ xmlSecNssEvpBlockCipherCtxUpdate(xmlSecNssEvpBlockCipherCtxPtr ctx,
 				  int encrypt,
 				  const xmlChar* cipherName,
 				  xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, inBlocks, outSize;
+    xmlSecSize inSize, inBlocks, outSize;
     int blockLen;
     int outLen = 0;
     unsigned char* outBuf;
@@ -216,18 +216,18 @@ xmlSecNssEvpBlockCipherCtxUpdate(xmlSecNssEvpBlockCipherCtxPtr ctx,
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
     
-    if(inSize < (size_t)blockLen) {
+    if(inSize < (xmlSecSize)blockLen) {
 	return(0);
     }
 
     if(encrypt) {
-        inBlocks = inSize / ((size_t)blockLen);
+        inBlocks = inSize / ((xmlSecSize)blockLen);
     } else {
 	/* we want to have the last block in the input buffer 
 	 * for padding check */
-        inBlocks = (inSize - 1) / ((size_t)blockLen);
+        inBlocks = (inSize - 1) / ((xmlSecSize)blockLen);
     }
-    inSize = inBlocks * ((size_t)blockLen);
+    inSize = inBlocks * ((xmlSecSize)blockLen);
 
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
@@ -251,7 +251,7 @@ xmlSecNssEvpBlockCipherCtxUpdate(xmlSecNssEvpBlockCipherCtxPtr ctx,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlSecAssert2((size_t)outLen == inSize, -1);
+    xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
     
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
@@ -284,7 +284,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 				 int encrypt,
 				 const xmlChar* cipherName,
 				 xmlSecTransformCtxPtr transformCtx) {
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     int blockLen, outLen = 0;
     unsigned char* inBuf;
     unsigned char* outBuf;
@@ -306,7 +306,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (size_t)blockLen, -1);        
+        xmlSecAssert2(inSize < (xmlSecSize)blockLen, -1);        
     
 	/* create padding */
         ret = xmlSecBufferSetMaxSize(in, blockLen);
@@ -321,7 +321,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 	inBuf = xmlSecBufferGetData(in);
 
         /* generate random padding */
-	if((size_t)blockLen > (inSize + 1)) {
+	if((xmlSecSize)blockLen > (inSize + 1)) {
 	    rv = PK11_GenerateRandom(inBuf + inSize, blockLen - inSize - 1);
 	    if(rv != SECSuccess) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -335,7 +335,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 	inBuf[blockLen - 1] = blockLen - inSize;
 	inSize = blockLen;
     } else {
-	if(inSize != (size_t)blockLen) {
+	if(inSize != (xmlSecSize)blockLen) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(cipherName),
 			NULL,
@@ -367,7 +367,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlSecAssert2((size_t)outLen == inSize, -1);
+    xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
     
     if(encrypt == 0) {
 	/* check padding */
@@ -682,8 +682,8 @@ xmlSecNssEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  ********************************************************************/
 static xmlSecTransformKlass xmlSecNssAes128CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecNssEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes128Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes128Cbc,			/* const xmlChar* href; */
@@ -721,8 +721,8 @@ xmlSecNssTransformAes128CbcGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecNssAes192CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecNssEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes192Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes192Cbc,			/* const xmlChar* href; */
@@ -760,8 +760,8 @@ xmlSecNssTransformAes192CbcGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecNssEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes256Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes256Cbc,			/* const xmlChar* href; */
@@ -802,8 +802,8 @@ xmlSecNssTransformAes256CbcGetKlass(void) {
 #ifndef XMLSEC_NO_DES
 static xmlSecTransformKlass xmlSecNssDes3CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecNssEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecNssEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameDes3Cbc,				/* const xmlChar* name; */
     xmlSecHrefDes3Cbc, 				/* const xmlChar* href; */

@@ -35,7 +35,7 @@ struct _xmlSecNssDigestCtx {
     SECOidData*		digest;
     PK11Context*	digestCtx;
     unsigned char 	dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
-    size_t		dgstSize;	/* dgst size in bytes */
+    xmlSecSize		dgstSize;	/* dgst size in bytes */
 };	    
 
 /******************************************************************************
@@ -54,7 +54,7 @@ static int 	xmlSecNssDigestInitialize		(xmlSecTransformPtr transform);
 static void 	xmlSecNssDigestFinalize			(xmlSecTransformPtr transform);
 static int	xmlSecNssDigestVerify			(xmlSecTransformPtr transform, 
 							 const unsigned char* data, 
-							 size_t dataSize,
+							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int 	xmlSecNssDigestExecute			(xmlSecTransformPtr transform, 
 							 int last, 
@@ -141,7 +141,7 @@ xmlSecNssDigestFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecNssDigestVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, size_t dataSize,
+			const unsigned char* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssDigestCtxPtr ctx;
     
@@ -214,7 +214,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     }
     
     if(transform->status == xmlSecTransformStatusWorking) {
-	size_t inSize;
+	xmlSecSize inSize;
 
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
@@ -286,8 +286,8 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecNssSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecNssDigestSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecNssDigestSize,			/* xmlSecSize objSize */
 
     /* data */
     xmlSecNameSha1,				/* const xmlChar* name; */

@@ -30,7 +30,7 @@ struct _xmlSecOpenSSLDigestCtx {
     const EVP_MD*	digest;
     EVP_MD_CTX		digestCtx;
     unsigned char 	dgst[EVP_MAX_MD_SIZE];
-    size_t		dgstSize;	/* dgst size in bytes */
+    xmlSecSize		dgstSize;	/* dgst size in bytes */
 };	    
 
 /******************************************************************************
@@ -50,7 +50,7 @@ static int	xmlSecOpenSSLEvpDigestInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLEvpDigestFinalize		(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLEvpDigestVerify		(xmlSecTransformPtr transform, 
 							 const unsigned char* data,
-							 size_t dataSize,
+							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform, 
 							 int last,
@@ -134,7 +134,7 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, size_t dataSize,
+			const unsigned char* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLDigestCtxPtr ctx;
     
@@ -213,7 +213,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     }
     
     if(transform->status == xmlSecTransformStatusWorking) {
-	size_t inSize;
+	xmlSecSize inSize;
 	
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
@@ -242,7 +242,7 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 	    }
 	}
 	if(last) {
-	    xmlSecAssert2((size_t)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
+	    xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
 	        
 #ifndef XMLSEC_OPENSSL_096
 	    ret = EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
@@ -297,8 +297,8 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpDigestSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpDigestSize,			/* xmlSecSize objSize */
 
     xmlSecNameRipemd160,			/* const xmlChar* name; */
     xmlSecHrefRipemd160, 			/* const xmlChar* href; */
@@ -344,8 +344,8 @@ xmlSecOpenSSLTransformRipemd160GetKlass(void) {
  *****************************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpDigestSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpDigestSize,			/* xmlSecSize objSize */
 
     xmlSecNameSha1,				/* const xmlChar* name; */
     xmlSecHrefSha1, 				/* const xmlChar* href; */

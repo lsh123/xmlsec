@@ -44,7 +44,7 @@ struct _xmlSecOpenSSLHmacCtx {
     HMAC_CTX		hmacCtx;
     int			ctxInitialized;
     unsigned char 	dgst[EVP_MAX_MD_SIZE];
-    size_t		dgstSize;	/* dgst size in bits */
+    xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 
 /**************************************************************************
@@ -70,7 +70,7 @@ static int  	xmlSecOpenSSLHmacSetKey				(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLHmacVerify				(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
-								 size_t dataSize,
+								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLHmacExecute			(xmlSecTransformPtr transform, 
 								 int last,
@@ -230,7 +230,7 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, size_t dataSize,
+			const unsigned char* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     static unsigned char last_byte_masks[] = 	
 		{ 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
@@ -313,7 +313,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     }
     
     if(transform->status == xmlSecTransformStatusWorking) {
-	size_t inSize;
+	xmlSecSize inSize;
 	
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
@@ -331,7 +331,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 	}
     	
 	if(last) {
-	    size_t dgstSize;
+	    xmlSecSize dgstSize;
 	    
 	    HMAC_Final(&(ctx->hmacCtx), ctx->dgst, &dgstSize);
 	    xmlSecAssert2(dgstSize > 0, -1);
@@ -385,8 +385,8 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
  */
 static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLHmacSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
 
     xmlSecNameHmacSha1,				/* const xmlChar* name; */
     xmlSecHrefHmacSha1, 			/* const xmlChar* href; */
@@ -427,8 +427,8 @@ xmlSecOpenSSLTransformHmacSha1GetKlass(void) {
  */
 static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLHmacSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
 
     xmlSecNameHmacRipemd160,			/* const xmlChar* name; */
     xmlSecHrefHmacRipemd160, 			/* const xmlChar* href; */
@@ -469,8 +469,8 @@ xmlSecOpenSSLTransformHmacRipemd160GetKlass(void) {
  */
 static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLHmacSize,			/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
 
     xmlSecNameHmacMd5,				/* const xmlChar* name; */
     xmlSecHrefHmacMd5, 				/* const xmlChar* href; */

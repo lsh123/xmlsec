@@ -92,7 +92,7 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
+xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {	
     SECStatus rv;
     int ret;
     

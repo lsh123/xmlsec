@@ -44,19 +44,19 @@ static int	xmlSecNssSymKeyDataXmlWrite		(xmlSecKeyDataId id,
 static int	xmlSecNssSymKeyDataBinRead		(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
 							 const unsigned char* buf,
-							 size_t bufSize,
+							 xmlSecSize bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecNssSymKeyDataBinWrite		(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
 							 unsigned char** buf,
-							 size_t* bufSize,
+							 xmlSecSize* bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecNssSymKeyDataGenerate		(xmlSecKeyDataPtr data,
-							 size_t sizeBits,
+							 xmlSecSize sizeBits,
 							 xmlSecKeyDataType type);
 
 static xmlSecKeyDataType xmlSecNssSymKeyDataGetType	(xmlSecKeyDataPtr data);
-static size_t	xmlSecNssSymKeyDataGetSize		(xmlSecKeyDataPtr data);
+static xmlSecSize	xmlSecNssSymKeyDataGetSize		(xmlSecKeyDataPtr data);
 static void	xmlSecNssSymKeyDataDebugDump	(xmlSecKeyDataPtr data,
 							 FILE* output);
 static void	xmlSecNssSymKeyDataDebugXmlDump	(xmlSecKeyDataPtr data,
@@ -108,7 +108,7 @@ xmlSecNssSymKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecNssSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    const unsigned char* buf, size_t bufSize,
+				    const unsigned char* buf, xmlSecSize bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecNssSymKeyDataKlassCheck(id), -1);
     
@@ -117,7 +117,7 @@ xmlSecNssSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecNssSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    unsigned char** buf, size_t* bufSize,
+				    unsigned char** buf, xmlSecSize* bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecNssSymKeyDataKlassCheck(id), -1);
     
@@ -125,7 +125,7 @@ xmlSecNssSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 }
 
 static int
-xmlSecNssSymKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+xmlSecNssSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(data), -1);
@@ -149,7 +149,7 @@ xmlSecNssSymKeyDataGetType(xmlSecKeyDataPtr data) {
     return((xmlSecBufferGetSize(buffer) > 0) ? xmlSecKeyDataTypeSymmetric : xmlSecKeyDataTypeUnknown);
 }
 
-static size_t 
+static xmlSecSize 
 xmlSecNssSymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(data), 0);
     
@@ -260,7 +260,7 @@ xmlSecNssKeyDataAesGetKlass(void) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNssKeyDataAesSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
+xmlSecNssKeyDataAesSet(xmlSecKeyDataPtr data, const unsigned char* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataAesId), -1);
@@ -341,7 +341,7 @@ xmlSecNssKeyDataDesGetKlass(void) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNssKeyDataDesSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
+xmlSecNssKeyDataDesSet(xmlSecKeyDataPtr data, const unsigned char* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDesId), -1);
@@ -423,7 +423,7 @@ xmlSecNssKeyDataHmacGetKlass(void) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNssKeyDataHmacSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
+xmlSecNssKeyDataHmacSet(xmlSecKeyDataPtr data, const unsigned char* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataHmacId), -1);

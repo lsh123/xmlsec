@@ -77,7 +77,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 
     ivLen = EVP_CIPHER_iv_length(ctx->cipher);
     xmlSecAssert2(ivLen > 0, -1);
-    xmlSecAssert2((size_t)ivLen <= sizeof(ctx->iv), -1);
+    xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
     
     if(encrypt) {
         /* generate random iv */
@@ -105,7 +105,7 @@ xmlSecOpenSSLEvpBlockCipherCtxInit(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
     } else {
 	/* if we don't have enough data, exit and hope that 
 	 * we'll have iv next time */
-	if(xmlSecBufferGetSize(in) < (size_t)ivLen) {
+	if(xmlSecBufferGetSize(in) < (xmlSecSize)ivLen) {
 	    return(0);
 	}
 	
@@ -156,7 +156,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 				  const xmlChar* cipherName,
 				  xmlSecTransformCtxPtr transformCtx) {
     int blockLen, fixLength = 0, outLen = 0;
-    size_t inSize, outSize;
+    xmlSecSize inSize, outSize;
     unsigned char* outBuf;
     int ret;
     
@@ -278,7 +278,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 				 const xmlChar* cipherName,
 				 xmlSecTransformCtxPtr transformCtx) {
     int blockLen, outLen = 0, outLen2 = 0;
-    size_t outSize;
+    xmlSecSize outSize;
     unsigned char* outBuf;
     int ret;
     
@@ -553,7 +553,7 @@ xmlSecOpenSSLEvpBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReq
     cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
     xmlSecAssert2(cipherKeyLen > 0, -1);
 
-    keyReq->keyBitsSize = (size_t)(8 * cipherKeyLen);
+    keyReq->keyBitsSize = (xmlSecSize)(8 * cipherKeyLen);
     return(0);
 }
 
@@ -577,12 +577,12 @@ xmlSecOpenSSLEvpBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key
     
     cipherKeyLen = EVP_CIPHER_key_length(ctx->cipher);
     xmlSecAssert2(cipherKeyLen > 0, -1);
-    xmlSecAssert2((size_t)cipherKeyLen <= sizeof(ctx->key), -1);
+    xmlSecAssert2((xmlSecSize)cipherKeyLen <= sizeof(ctx->key), -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
 
-    if(xmlSecBufferGetSize(buffer) < (size_t)cipherKeyLen) {
+    if(xmlSecBufferGetSize(buffer) < (xmlSecSize)cipherKeyLen) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -701,8 +701,8 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
  ********************************************************************/
 static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes128Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes128Cbc,			/* const xmlChar* href; */
@@ -740,8 +740,8 @@ xmlSecOpenSSLTransformAes128CbcGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes192Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes192Cbc,			/* const xmlChar* href; */
@@ -779,8 +779,8 @@ xmlSecOpenSSLTransformAes192CbcGetKlass(void) {
 
 static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameAes256Cbc,			/* const xmlChar* name; */
     xmlSecHrefAes256Cbc,			/* const xmlChar* href; */
@@ -822,8 +822,8 @@ xmlSecOpenSSLTransformAes256CbcGetKlass(void) {
 #ifndef XMLSEC_NO_DES
 static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecOpenSSLEvpBlockCipherSize,		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpBlockCipherSize,		/* xmlSecSize objSize */
 
     xmlSecNameDes3Cbc,				/* const xmlChar* name; */
     xmlSecHrefDes3Cbc, 				/* const xmlChar* href; */

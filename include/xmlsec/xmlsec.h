@@ -17,20 +17,36 @@ extern "C" {
 
 #include <xmlsec/version.h>
 
-#ifndef XMLSEC_EXPORT
-#if defined(_MSC_VER)
-#if defined(IN_XMLSEC)
-#define XMLSEC_EXPORT __declspec(dllexport) extern
-#define XMLSEC_EXPORT_VAR extern
-#else /* defined(IN_XMLSEC) */
-#define XMLSEC_EXPORT extern
-#define XMLSEC_EXPORT_VAR __declspec(dllimport) extern
-#endif /* defined(IN_XMLSEC) */
-#else /* defined(_MSC_VER) */
-#define XMLSEC_EXPORT 
-#define XMLSEC_EXPORT_VAR extern
-#endif /* defined(_MSC_VER) */
-#endif /* defined(_MSC_VER) */
+#if !defined XMLSEC_EXPORT
+   /* Now, the export orgy begins. The following we must do for the 
+      Windows platform with MSVC compiler. */
+#  if defined _MSC_VER
+     /* if we compile libxmlsec itself: */
+#    if defined(IN_XMLSEC)
+#      if !defined(XMLSEC_STATIC)
+#        define XMLSEC_EXPORT __declspec(dllexport) 
+#        define XMLSEC_EXPORT_VAR __declspec(dllexport) extern
+#      else
+#        define XMLSEC_EXPORT extern
+#        define XMLSEC_EXPORT_VAR extern
+#      endif
+     /* if a client program includes this file: */
+#    else
+#      if !defined(XMLSEC_STATIC)
+#        define XMLSEC_EXPORT __declspec(dllimport) 
+#        define XMLSEC_EXPORT_VAR __declspec(dllimport) extern
+#      else
+#        define XMLSEC_EXPORT 
+#        define XMLSEC_EXPORT_VAR extern
+#      endif
+#    endif
+   /* This holds on all other platforms/compilers, which are easier to
+      handle in regard to this. */
+#  else
+#    define XMLSEC_EXPORT
+#    define XMLSEC_EXPORT_VAR extern
+#  endif
+#endif
 
 /**
  * xmlSecNs:

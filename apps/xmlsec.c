@@ -506,6 +506,25 @@ static xmlSecAppCmdLineParam printXmlDebugParam = {
     NULL
 };    
 
+static xmlSecAppCmdLineParam idAttrParam = { 
+    xmlSecAppCmdLineTopicDSigCommon | 
+    xmlSecAppCmdLineTopicEncCommon | 
+    xmlSecAppCmdLineTopicXkmsCommon,
+    "--id-attr",
+    NULL,   
+    "--id-attr[:<attr-name>] [<node-namespace-uri>:]<node-name>"
+    "\n\tadds attributes <attr-name> (default value \"id\") from all nodes"
+    "\n\twith<node-name> and namespace <node-namespace-uri> to the list of"
+    "\n\tknown ID attributes; this is a hack and if you can use DTD or schema"
+    "\n\tto declare ID attributes instead (see \"--dtd-file\" option),"
+    "\n\tI don't know what else might be broken in your application when"
+    "\n\tyou use this hack",
+    xmlSecAppCmdLineParamTypeString,
+    xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
+    NULL
+};    
+
+
 /****************************************************************
  *
  * Common dsig params
@@ -546,6 +565,7 @@ static xmlSecAppCmdLineParam storeSignaturesParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
+
 static xmlSecAppCmdLineParam enabledRefUrisParam = { 
     xmlSecAppCmdLineTopicDSigCommon,
     "--enabled-reference-uris",
@@ -555,6 +575,20 @@ static xmlSecAppCmdLineParam enabledRefUrisParam = {
     "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI"
     "\n\tattribute values for the <dsig:Reference> element",
     xmlSecAppCmdLineParamTypeStringList,
+    xmlSecAppCmdLineParamFlagNone,
+    NULL
+};
+
+static xmlSecAppCmdLineParam enableVisa3DHackParam = { 
+    xmlSecAppCmdLineTopicDSigCommon,
+    "--enable-visa3d-hack",
+    NULL,
+    "--enable-visa3d-hack"
+    "\n\tenables Visa3D protocol specific hack for URI attributes processing"
+    "\n\twhen we are trying not to use XPath/XPointer engine; this is a hack"
+    "\n\tand I don't know what else might be broken in your application when"
+    "\n\tyou use it (also check \"--id-attr\" option because you might need it)",
+    xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
@@ -728,6 +762,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &storeReferencesParam,
     &storeSignaturesParam,
     &enabledRefUrisParam,
+    &enableVisa3DHackParam,
 #endif /* XMLSEC_NO_XMLDSIG */
 
     /* enc params */
@@ -746,6 +781,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &nodeIdParam,
     &nodeNameParam,
     &nodeXPathParam,
+    &idAttrParam,
     
     /* Keys Manager params */
     &enabledKeyDataParam,
@@ -823,7 +859,7 @@ struct _xmlSecAppXmlData {
 static xmlSecAppXmlDataPtr	xmlSecAppXmlDataCreate		(const char* filename,
 								 const xmlChar* defStartNodeName,
 								 const xmlChar* defStartNodeNs);
-static void			xmlSecAppXmlDataDestroy		(xmlSecAppXmlDataPtr data);					
+static void			xmlSecAppXmlDataDestroy		(xmlSecAppXmlDataPtr data);
 
 
 static xmlSecAppCommand 	xmlSecAppParseCommand		(const char* cmd, 
@@ -872,6 +908,10 @@ static FILE* 			xmlSecAppOpenFile		(const char* filename);
 static void			xmlSecAppCloseFile		(FILE* file);
 static int			xmlSecAppWriteResult		(xmlDocPtr doc,
 								 xmlSecBufferPtr buffer);
+static int 			xmlSecAppAddIDAttr		(xmlNodePtr cur,
+								 const xmlChar* attr,
+								 const xmlChar* node,
+								 const xmlChar* nsHref);								 
 
 xmlSecKeysMngrPtr gKeysMngr = NULL;
 int repeats = 1;
@@ -1097,16 +1137,17 @@ xmlSecAppSignFile(const char* filename) {
     if(filename == NULL) {
 	return(-1);
     }
-    
+
     if(xmlSecDSigCtxInitialize(&dsigCtx, gKeysMngr) < 0) {
 	fprintf(stderr, "Error: dsig context initialization failed\n");
 	return(-1);
     }
+
     if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
 	fprintf(stderr, "Error: dsig context preparation failed\n");
 	goto done;
     }
-    
+
     /* parse template and select start node */
     data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
     if(data == NULL) {
@@ -1114,6 +1155,7 @@ xmlSecAppSignFile(const char* filename) {
 	goto done;
     }
 
+    
     /* sign */
     start_time = clock();
     if(xmlSecDSigCtxSign(&dsigCtx, data->startNode) < 0) {
@@ -1171,7 +1213,7 @@ xmlSecAppVerifyFile(const char* filename) {
     /* parse template and select start node */
     data = xmlSecAppXmlDataCreate(filename, xmlSecNodeSignature, xmlSecDSigNs);
     if(data == NULL) {
-	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+	fprintf(stderr, "Error: failed to load document \"%s\"\n", filename);
 	goto done;
     }
 
@@ -1405,6 +1447,9 @@ xmlSecAppPrepareDSigCtx(xmlSecDSigCtxPtr dsigCtx) {
     if(xmlSecAppCmdLineParamIsSet(&storeSignaturesParam)) {
 	dsigCtx->flags |= XMLSEC_DSIG_FLAGS_STORE_SIGNATURE; 
 	print_debug = 1;
+    }
+    if(xmlSecAppCmdLineParamIsSet(&enableVisa3DHackParam)) {
+	dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK; 
     }
     
     if(xmlSecAppCmdLineParamGetStringList(&enabledRefUrisParam) != NULL) {
@@ -1820,7 +1865,7 @@ xmlSecAppXkissServerValidate(const char* filename) {
     /* parse template and select start node */
     data = xmlSecAppXmlDataCreate(filename, xmlSecNodeValidateRequest, xmlSecXkmsNs);
     if(data == NULL) {
-	fprintf(stderr, "Error: failed to load template \"%s\"\n", filename);
+	fprintf(stderr, "Error: failed to load document \"%s\"\n", filename);
 	goto done;
     }
 
@@ -2325,6 +2370,7 @@ xmlSecAppShutdown(void) {
 
 static xmlSecAppXmlDataPtr 
 xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, const xmlChar* defStartNodeNs) {
+    xmlSecAppCmdLineValuePtr value;
     xmlSecAppXmlDataPtr data;
     xmlNodePtr cur = NULL;
         
@@ -2367,6 +2413,51 @@ xmlSecAppXmlDataCreate(const char* filename, const xmlChar* defStartNodeName, co
 	xmlValidateDtd(&ctx, data->doc, data->dtd);
     }
     
+    /* set ID attributes from command line */
+    for(value = idAttrParam.value; value != NULL; value = value->next) {
+	if(value->strValue == NULL) {
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    idAttrParam.fullName);
+	    xmlSecAppXmlDataDestroy(data);
+	    return(NULL);
+	} else {
+	    xmlChar* attrName = (value->paramNameValue != NULL) ? BAD_CAST value->paramNameValue : BAD_CAST "id";
+	    xmlChar* nodeName;
+	    xmlChar* nsHref;
+	    xmlChar* buf;
+	    
+	    buf = xmlStrdup(BAD_CAST value->strValue);
+	    if(buf == NULL) {
+		fprintf(stderr, "Error: failed to duplicate string \"%s\"\n", value->strValue);
+	        xmlSecAppXmlDataDestroy(data);
+		return(NULL);    
+	    }
+    	    nodeName = (xmlChar*)strrchr((char*)buf, ':');
+	    if(nodeName != NULL) {
+		(*(nodeName++)) = '\0';
+		nsHref = buf;
+	    } else {
+		nodeName = buf;
+		nsHref = NULL;
+	    }
+
+    	    /* process children first because it does not matter much but does simplify code */
+	    cur = xmlSecGetNextElementNode(data->doc->children);
+	    while(cur != NULL) {
+		if(xmlSecAppAddIDAttr(cur, attrName, nodeName, nsHref) < 0) {
+		    fprintf(stderr, "Error: failed to add ID attribute \"%s\" for node \"%s\"\n", attrName, value->strValue);
+		    xmlFree(buf);
+	    	    xmlSecAppXmlDataDestroy(data);
+		    return(NULL);    
+		}
+		cur = xmlSecGetNextElementNode(cur->next);
+	    }
+
+	    xmlFree(buf);
+	}
+    }
+
+
     /* now find the start node */
     if(xmlSecAppCmdLineParamGetString(&nodeIdParam) != NULL) {
 	xmlAttrPtr attr;
@@ -2760,4 +2851,64 @@ xmlSecAppWriteResult(xmlDocPtr doc, xmlSecBufferPtr buffer) {
     xmlSecAppCloseFile(f);
     return(0);
 }
+
+static int  
+xmlSecAppAddIDAttr(xmlNodePtr node, const xmlChar* attrName, const xmlChar* nodeName, const xmlChar* nsHref) {
+    xmlAttrPtr attr, tmpAttr;
+    xmlNodePtr cur;
+    xmlChar* id;
+    
+    if((node == NULL) || (attrName == NULL) || (nodeName == NULL)) {
+	return(-1);
+    }
+    
+    /* process children first because it does not matter much but does simplify code */
+    cur = xmlSecGetNextElementNode(node->children);
+    while(cur != NULL) {
+	if(xmlSecAppAddIDAttr(cur, attrName, nodeName, nsHref) < 0) {
+	    return(-1);
+	}
+	cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
+    /* node name must match */
+    if(!xmlStrEqual(node->name, nodeName)) {
+	return(0);
+    }
+	
+    /* if nsHref is set then it also should match */    
+    if((nsHref != NULL) && (node->ns != NULL) && (!xmlStrEqual(nsHref, node->ns->href))) {
+	return(0);
+    }
+    
+    /* the attribute with name equal to attrName should exist */
+    for(attr = node->properties; attr != NULL; attr = attr->next) {
+	if(xmlStrEqual(attr->name, attrName)) {
+	    break;
+	}
+    }
+    if(attr == NULL) {
+	return(0);
+    }
+    
+    /* and this attr should have a value */
+    id = xmlNodeListGetString(node->doc, attr->children, 1);
+    if(id == NULL) {
+	return(0);
+    }
+    
+    /* check that we don't have same ID already */
+    tmpAttr = xmlGetID(node->doc, id);
+    if(tmpAttr == NULL) {
+	xmlAddID(NULL, node->doc, id, attr);
+    } else if(tmpAttr != attr) {
+	fprintf(stderr, "Error: duplicate ID attribute \"%s\"\n", id);	
+	xmlFree(id);
+	return(-1);
+    }
+    xmlFree(id);
+    return(0);
+}
+
+
 

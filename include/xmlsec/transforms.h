@@ -270,6 +270,15 @@ typedef unsigned int				xmlSecTransformUsage;
 typedef int  		(*xmlSecTransformCtxPreExecuteCallback)		(xmlSecTransformCtxPtr transformCtx); 
 
 /**
+ * XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK:
+ *
+ * If this flag is set then URI ID references are resolved directly
+ * without using XPointers. This allows one to sign/verify Visa3D
+ * documents that don't follow XML, XPointer and XML DSig specifications. 
+ */
+#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK		0x00000001
+
+/**
  * xmlSecTransformCtx:
  * @userData: 		the pointer to user data (xmlsec and xmlsec-crypto never 
  *			touch this).
@@ -359,7 +368,7 @@ XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump 	(xmlSecTransformCtxPtr ctx,
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump	(xmlSecTransformCtxPtr ctx,
 									 FILE* output);
 	
-/*******************************************		*******************************
+/**************************************************************************
  *
  * xmlSecTransform
  *
@@ -954,7 +963,19 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXsltGetKlass		(void);
 	xmlSecTransformRemoveXmlTagsC14NGetKlass()
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformRemoveXmlTagsC14NGetKlass(void);
 
-
+/**
+ * xmlSecTransformVisa3DHackId:
+ *
+ * Selects node subtree by given node id string. The only reason why we need this 
+ * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
+ * something like "#12345" in the URI attribute. Since we couldn't evaluate such 
+ * expressions thru XPath/XPointer engine, we need to have this hack here.
+ */
+#define xmlSecTransformVisa3DHackId \
+	xmlSecTransformVisa3DHackGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformVisa3DHackGetKlass	(void);
+XMLSEC_EXPORT int		xmlSecTransformVisa3DHackSetID		(xmlSecTransformPtr transform,
+									 const xmlChar* id);
 
 #ifdef __cplusplus
 }

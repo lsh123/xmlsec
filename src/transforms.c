@@ -786,10 +786,10 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  */
 int
 xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodePtr hereNode) {
-    xmlSecTransformPtr transform;
     xmlSecNodeSetType nodeSetType = xmlSecNodeSetTree;
     const xmlChar* xptr;
     xmlChar* buf = NULL;
+    int useVisa3DHack = 0;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
@@ -862,23 +862,15 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	return(-1);
     }
 
-    /* we need to create XPonter transform to execute expr */
-    xmlSecAssert2(xptr != NULL, -1);
-    transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXPointerId);
-    if(!xmlSecTransformIsValid(transform)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformCtxCreateAndPrepend", 
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
-	return(-1);
-    }
-    
     /* do we have barename or full xpointer? */
+    xmlSecAssert2(xptr != NULL, -1);
     if((xmlStrncmp(xptr, BAD_CAST "#xpointer(", 10) == 0) || (xmlStrncmp(xptr, BAD_CAST "#xmlns(", 7) == 0)) {
 	++xptr;
 	nodeSetType = xmlSecNodeSetTree;
+    } else if((ctx->flags & XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK) != 0) {
+	++xptr;
+	nodeSetType = xmlSecNodeSetTreeWithoutComments;
+	useVisa3DHack = 1;
     } else {
 	static const char tmpl[] = "xpointer(id(\'%s\'))";
 	xmlSecSize size;
@@ -899,20 +891,67 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	xptr = buf;
 	nodeSetType = xmlSecNodeSetTreeWithoutComments;
     }
-    
-    /* finally initialize our xpointer transform */
-    ret = xmlSecTransformXPointerSetExpr(transform, xptr, nodeSetType, hereNode);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformXPointerSetExpr",  
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "name=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
-	if(buf != NULL) {
-	    xmlFree(buf);
+
+    if(useVisa3DHack == 0) {    
+	xmlSecTransformPtr transform;
+        
+	/* we need to create XPonter transform to execute expr */
+	transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXPointerId);
+	if(!xmlSecTransformIsValid(transform)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecTransformCtxCreateAndPrepend", 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXPointerId)));
+	    return(-1);
 	}
-	return(-1);
+    
+        ret = xmlSecTransformXPointerSetExpr(transform, xptr, nodeSetType, hereNode);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecTransformXPointerSetExpr",  
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"name=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	    if(buf != NULL) {
+		xmlFree(buf);
+	    }
+	    return(-1);
+	}
+    } else {
+	/* Visa3D protocol doesn't follow XML/XPointer/XMLDSig specs
+	 * and allows something like "#12345" in the URI attribute.
+	 * Since we couldn't evaluate such expressions thru XPath/XPointer
+	 * engine, we need to have this hack here
+	 */
+	xmlSecTransformPtr transform;
+        
+	transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformVisa3DHackId);
+	if(!xmlSecTransformIsValid(transform)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecTransformCtxCreateAndPrepend", 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformVisa3DHackId)));
+	    return(-1);
+	}
+    
+        ret = xmlSecTransformVisa3DHackSetID(transform, xptr);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+			"xmlSecTransformVisa3DHackSetID",  
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"name=%s",
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)));
+	    if(buf != NULL) {
+		xmlFree(buf);
+	    }
+	    return(-1);
+	}
     }
     if(buf != NULL) {
 	xmlFree(buf);

@@ -57,12 +57,15 @@
       these specs by myself.
       </p>
 <h3>1. License(s).</h3>
+<a name="section_1_1"/>
 <h4>1.1. Licensing Terms for xmlsec.</h4>
 <p>
       XML Security Library is released under the 
       <a href="http://www.opensource.org/licenses/mit-license.html">MIT License</a>, 
       see the file Copyright in the distribution for the precise wording.
       </p>
+
+<a name="section_1_2"/>
 <h4>1.2. Can I use xmlsec with proprietary application or library? Can I use xmlsec with a GNU GPL application or library?</h4>
 <a href="http://www.opensource.org/licenses/mit-license.html">MIT license</a><br><br><table cellpadding="2" cellspacing="2" border="1" style="text-align: left; width: 85%; margin-left: auto; margin-right: auto;"><tbody>
 <tr>
@@ -179,6 +182,7 @@ xmlsec-core library) </td>
 <p>If you have questions about XML Security Library licensing then feel free to send these questions to the <a href="bugs.html">mailing list</a>.<br>
 </p>
 <h3>2. Installation.</h3>
+<a name="section_2_1"/>
 <h4>2.1. Where can I get xmlsec?</h4>
 <p>
       The original distribution comes from 
@@ -187,6 +191,8 @@ xmlsec-core library) </td>
       <a href="ftp://rpmfind.net/pub/libxml/xmlsec">rpmfind.net miror</a>.
 
       </p>
+
+<a name="section_2_2"/>
 <h4>2.2. How to compile xmlsec?</h4>
 <p>
       On Unix just follow the "standard":
@@ -201,6 +207,8 @@ xmlsec-core library) </td>
       readme file in <code>xmlsec-xxxx/win32</code> folder.
 
       </p>
+
+<a name="section_2_3"/>
 <h4>2.3. What other libraries are needed to compile/install xmlsec?</h4>
 <p>
       The XML Security Library requires:
@@ -225,6 +233,8 @@ xmlsec-core library) </td>
 	Mozilla cryptographic library.
 	</li>
     </ul>
+
+<a name="section_2_4"/>
 <h4>2.4. Why does make check fail for some tests?</h4>
 <p>
       First of all, some tests <b>must</b> fail! Please read the 
@@ -237,8 +247,9 @@ xmlsec-core library) </td>
       or in the xmlsec tests. Please submit the 
       <a href="http://www.aleksey.com/xmlsec/bugs.html">bug report</a>
       and I'll try to fix it.
-
       </p>
+
+<a name="section_2_5"/>
 <h4>2.5. I get the xmlsec sources from CVS and there is no 
       configure script. Where can I get it?</h4>
 <p>
@@ -249,14 +260,18 @@ xmlsec-core library) </td>
 <blockquote>   
     	<code>./autogen.sh --prefix=/usr</code>
         </blockquote>
-<h4>2.5. I do not need all these features supported by xmlsec.
+
+<a name="section_2_6"/>
+<h4>2.6. I do not need all these features supported by xmlsec.
       Can I disable some of them?</h4>
 <p>
       Yes, you can. Please run <code>./configure --help</code>
       for the list of possible configuration options.
 
       </p>
-<h4>2.6. I am compiling XMLSec library on Windows and 
+
+<a name="section_2_7"/>
+<h4>2.7. I am compiling XMLSec library on Windows and 
       it does not compile (crashes right after the launch). 
       Can you help me?</h4>
 <p>
@@ -327,6 +342,8 @@ xmlsec-core library) </td>
 	    
       </p>
 <h3>3. Developing with XMLSec.</h3>
+
+<a name="section_3_1"/>
 <h4>3.1. xmlSecDSigCtxValidate() function returned 0. Does this mean
       that the signature is valid?</h4>
 <b>No!</b><p> Function xmlSecDSigCtxValidate() returns 0 when there
@@ -337,6 +354,8 @@ xmlsec-core library) </td>
       of the <code>xmlSecDSigCtx</code> structure is equal
       to <code>xmlSecDSigStatusSucceeded</code>.
       </p>
+
+<a name="section_3_2"/>
 <h4>3.2. I am trying to sign an XML document and I have a warning
       about "empty nodes set". Should I worry about this?</h4>
 <p>
@@ -373,7 +392,11 @@ xmlsec-core library) </td>
 <p>
       The DTD might be directly included in the XML file or located in 
       a standalone file. In the second case, you might load the DTD
-      in xmlsec command line utility with "--dtd-file" option.
+      in xmlsec command line utility with "--dtd-file" option. Also
+      xmlsec command line utility has "--id-attr" option that directly
+      registers given attribute in the document's ID attributes table. 
+      However, this is a hack for <a href="#section_3_3">Visa 3D protocol</a>
+      and you should use DTD in all other cases.
 </p>
 <p>
       If you are using XML Security Library in your application (not the xmlsec
@@ -383,7 +406,47 @@ xmlsec-core library) </td>
       make you signature non-interoperable with other XMLDSig implementations.
 
       </p>
-<h4>3.3. I have a document signed with a certificate that is now expired.
+
+<a name="section_3_3"/>
+<h4>3.3. I am trying to sign/validate a document but xmlXPtrEval function
+    can't evaluate "xpointer(id('XXXXXXX'))" expression. What's wrong?</h4>
+<p>
+First of all, read <a href="#section_3_2">section 3.2</a> about ID attributes.
+If you have tried to declare required ID attribute in DTD and
+you still have problems then I would guess that you are playing with 
+Visa 3D protocol. This protocol tries to reference to an "id" attribute
+defined as CDATA instead of ID in the DTD (it is impossible in XML as 
+described in <a href="#section_3_2">section 3.2</a>). Even worse, the value
+of this Visa 3D "id" attribute may start from number or contain "+" or "/" 
+and this breakes <a href="http://www.w3.org/TR/REC-xml#sec-attribute-types">XML
+specification<a/> again. Based on this, I have to say that Visa 3D protocol 
+does not use XML or XMLDSig specifications. And if you can then you should
+probably let Visa guys know about this problem (thought it was already done
+several times). 
+</p>
+
+<p>
+The only good solution for this problem is changing Visa 3D protocol. However,
+it might take time. As a short term solution you can use a special "Visa 3D
+hack" in xmlsec. Please note, that nobody (including me) knows what else
+might be broken in your application if you decide to use this hack. You are on
+your own here because this hack makes your application to work with non-XML
+and non-XMLDSig but some "Visa 3D" files. 
+</p>
+
+<p>
+In order to process "Visa 3D" documents, you need to do two things:
+<ul>
+    <li>Register ID attributes manually (<code>xmlAddID</code> function or
+    <code>--id-attr</code> option for xmlsec command line utility).</li>
+    <li>Enable Visa 3D hack in XML DSig context (<code>dsigCtx->flags |= XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</code>
+    or <code>--enable-visa3d-hack</code> option for xmlsec command line utility).</li>
+</ul>
+This is a <b>hack</b>. <b>You are warned!</b>
+</p>
+
+<a name="section_3_4"/>
+<h4>3.4. I have a document signed with a certificate that is now expired.
       Can I verify this signature?</h4>
 <p>
       Yes, you can. However, you need to be carefull. Most likely you
@@ -403,7 +466,9 @@ xmlsec-core library) </td>
       "<code>YYYY-MM-DD HH:MM:SS</code>" format).
       
       </p>
-<h4>3.4. I really like the XMLSec library but it is based on OpenSSL
+
+<a name="section_3_5"/>
+<h4>3.5. I really like the XMLSec library but it is based on OpenSSL
       and I have to use another crypto library in my application. Can you write 
       code to support my crypto library?</h4>
 <p>
@@ -416,7 +481,9 @@ xmlsec-core library) </td>
       If you are not so lucky, then you can either write some code by yourself
       or contact me in private email to discuss possible options.      
 </p>
-<h4>3.5. I really like the XMLSec library but it does not have 
+
+<a name="section_3_6"/>
+<h4>3.6. I really like the XMLSec library but it does not have 
       cipher or transform that I need. Can you write code for me?</h4>
 <p>
       The XMLSec library has a very modular structure and there should be easy

@@ -971,3 +971,178 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     return(0);
 }
 
+
+/******************************************************************************
+ *
+ * Visa3DHack transform
+ * 
+ *****************************************************************************/
+#define xmlSecVisa3DHackTransformSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlChar*))
+#define xmlSecVisa3DHackTransformGetIDPtr(transform) \
+    ((xmlSecTransformCheckSize((transform), xmlSecVisa3DHackTransformSize)) ? \
+	(xmlChar**)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlChar**)NULL)
+#define xmlSecTransformVisa3DHackCheckId(transform) \
+    (xmlSecTransformCheckId((transform), xmlSecTransformVisa3DHackId))
+
+static int 		xmlSecTransformVisa3DHackInitialize	(xmlSecTransformPtr transform);
+static void		xmlSecTransformVisa3DHackFinalize	(xmlSecTransformPtr transform);
+static int 		xmlSecTransformVisa3DHackExecute	(xmlSecTransformPtr transform,
+								 int last, 
+								 xmlSecTransformCtxPtr transformCtx);
+
+static xmlSecTransformKlass xmlSecTransformVisa3DHackKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecVisa3DHackTransformSize,		/* xmlSecSize objSize */
+
+    BAD_CAST "Visa3DHackTransform",		/* const xmlChar* name; */
+    NULL,					/* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+
+    xmlSecTransformVisa3DHackInitialize,	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformVisa3DHackFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,					/* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformVisa3DHackExecute,		/* xmlSecTransformExecuteMethod execute; */
+
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/**
+ * xmlSecTransformVisa3DHackGetKlass:
+ * 
+ * The Visa3DHack transform klass. The only reason why we need this 
+ * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
+ * something like "#12345" in the URI attribute. Since we couldn't evaluate such 
+ * expressions thru XPath/XPointer engine, we need to have this hack here.
+ *
+ * Returns Visa3DHack transform klass.
+ */
+xmlSecTransformId 
+xmlSecTransformVisa3DHackGetKlass(void) {
+    return(&xmlSecTransformVisa3DHackKlass);
+}
+
+/**
+ * xmlSecTransformVisa3DHackSetID:
+ * @transform:		the pointer to Visa3DHack transform.
+ * @id:			the ID value.
+ *
+ * Sets the ID value for an Visa3DHack @transform.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecTransformVisa3DHackSetID(xmlSecTransformPtr transform, const xmlChar* id) {
+    xmlChar** idPtr;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformVisa3DHackId), -1);
+    xmlSecAssert2(id != NULL, -1);
+
+    idPtr = xmlSecVisa3DHackTransformGetIDPtr(transform);
+    xmlSecAssert2(idPtr != NULL, -1);
+    xmlSecAssert2((*idPtr) == NULL, -1);
+
+    (*idPtr) = xmlStrdup(id);
+    if((*idPtr) == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlStrdup",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    return(0);
+}
+
+static int
+xmlSecTransformVisa3DHackInitialize(xmlSecTransformPtr transform) {	
+    xmlSecAssert2(xmlSecTransformVisa3DHackCheckId(transform), -1);
+
+    return(0);
+}
+
+static void
+xmlSecTransformVisa3DHackFinalize(xmlSecTransformPtr transform) {
+    xmlChar** idPtr;
+
+    xmlSecAssert(xmlSecTransformVisa3DHackCheckId(transform));
+
+    idPtr = xmlSecVisa3DHackTransformGetIDPtr(transform);
+    xmlSecAssert(idPtr != NULL);
+    
+    if((*idPtr) != NULL) {
+	xmlFree((*idPtr));
+    }
+    (*idPtr) = NULL;
+}
+
+static int
+xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
+			    xmlSecTransformCtxPtr transformCtx) {
+    xmlChar** idPtr;
+    xmlDocPtr doc;
+    xmlAttrPtr attr;
+    xmlNodeSetPtr nodeSet;
+    
+    xmlSecAssert2(xmlSecTransformVisa3DHackCheckId(transform), -1);
+    xmlSecAssert2(transform->outNodes == NULL, -1);
+    xmlSecAssert2(last != 0, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    idPtr = xmlSecVisa3DHackTransformGetIDPtr(transform);
+    xmlSecAssert2(idPtr != NULL, -1);
+    xmlSecAssert2((*idPtr) != NULL, -1);
+
+    doc = (transform->inNodes != NULL) ? transform->inNodes->doc : transform->hereNode->doc;
+    xmlSecAssert2(doc != NULL, -1);
+
+    attr = xmlGetID(doc, (*idPtr));
+    if((attr == NULL) || (attr->parent == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlGetID",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "id=\"%s\"",
+		    xmlSecErrorsSafeString((*idPtr)));
+	return(-1);
+    }    
+
+    nodeSet = xmlXPathNodeSetCreate(attr->parent);
+    if(nodeSet == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlXPathNodeSetCreate",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "id=\"%s\"",
+		    xmlSecErrorsSafeString((*idPtr)));
+	return(-1);
+    }    
+
+    transform->outNodes = xmlSecNodeSetCreate(doc, nodeSet, xmlSecNodeSetTreeWithoutComments);
+    if(transform->outNodes == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecNodeSetCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlXPathFreeNodeSet(nodeSet);
+	return(-1);
+    }    
+    return(0);
+}
+
+
+

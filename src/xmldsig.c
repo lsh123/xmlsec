@@ -1342,6 +1342,10 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     }    
     dsigRefCtx->transformCtx.preExecCallback = dsigCtx->referencePreExecuteCallback;
     dsigRefCtx->transformCtx.enabledUris = dsigCtx->enabledReferenceUris;
+
+    if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK) != 0) {
+	dsigRefCtx->transformCtx.flags |= XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK;
+    }
     return(0);
 }
 

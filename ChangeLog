@@ -1,3 +1,10 @@
+Sun Oct  5 01:05:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* include/xmlsec/transforms.h include/xmlsec/xmldsig.h 
+	src/transforms.c src/xmldsig.c src/xpath.c apps/xmlsec.c 
+	docs/faq.html: implemented Visa 3D hack to process some 
+	URI attributes without XPath/XInclude engines	
+
 Thu Oct  2 10:28:59 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/dl.c src/openssl/app.c src/openssl/x509vfy.c: fixing

@@ -199,12 +199,22 @@ execDSigTest "merlin-exc-c14n-one/exc-signature" \
 execDSigTest "merlin-c14n-three/signature" \
     ""
     
-
 execDSigTest "merlin-xpath-filter2-three/sign-xfdl" \
     ""
 
 execDSigTest "merlin-xpath-filter2-three/sign-spec" \
     ""
+
+# test dynamic signature
+echo "Dynamic signature template"
+printf "    Create new signature                                 "
+echo "$xmlsec_app sign-tmpl --hmackey $topfolder/keys/hmackey.bin --output $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app sign-tmpl $EXTRA_PARAMS --hmackey $topfolder/keys/hmackey.bin --output $tmpfile >> $logfile 2>> $logfile
+printRes
+printf "    Verify new signature                                 "
+echo "$xmlsec_app verify --hmackey $topfolder/keys/hmackey.bin $tmpfile" >> $logfile
+$VALGRIND $xmlsec_app verify $EXTRA_PARAMS --hmackey $topfolder/keys/hmackey.bin $tmpfile >> $logfile 2>> $logfile
+printRes
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"
 execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \

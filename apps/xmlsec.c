@@ -34,6 +34,7 @@
 #include <xmlsec/xmldsig.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/parser.h>
+#include <xmlsec/templates.h>
 #include <xmlsec/errors.h>
 
 #include "crypto.h"
@@ -61,6 +62,7 @@ static const char helpCommands2[] =
 #ifndef XMLSEC_NO_XMLDSIG
     "  --sign      "	"\tsign data and output XML document\n"
     "  --verify    "	"\tverify signed document\n"
+    "  --sign-tmpl "	"\tcreate and sign dynamicaly generated signature template\n"
 #endif /* XMLSEC_NO_XMLDSIG */
 #ifndef XMLSEC_NO_XMLENC
     "  --encrypt   "	"\tencrypt data and output XML document\n"
@@ -83,6 +85,11 @@ static const char helpSign[] =
 static const char helpVerify[] =     
     "Usage: xmlsec verify [<options>] <file>\n"
     "Verifies XML Digital Signature in the <file>\n";
+
+static const char helpSignTmpl[] =     
+    "Usage: xmlsec sign-tmpl [<options>]\n"
+    "Creates a simple dynamic template and calculates XML Digital Signature\n"
+    "(for testing only).\n";
 
 static const char helpEncrypt[] =     
     "Usage: xmlsec encrypt [<options>] <file>\n"
@@ -635,6 +642,7 @@ typedef enum {
     xmlSecAppCommandKeys,
     xmlSecAppCommandSign,
     xmlSecAppCommandVerify,
+    xmlSecAppCommandSignTmpl,
     xmlSecAppCommandEncrypt,
     xmlSecAppCommandDecrypt
 } xmlSecAppCommand;
@@ -667,6 +675,7 @@ static int			xmlSecAppPrepareKeyInfoReadCtx	(xmlSecKeyInfoCtxPtr ctx);
 #ifndef XMLSEC_NO_XMLDSIG
 static int			xmlSecAppSignFile		(const char* filename);
 static int			xmlSecAppVerifyFile		(const char* filename);
+static int			xmlSecAppSignTmpl		(void);
 static int			xmlSecAppPrepareDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 static void			xmlSecAppPrintDSigCtx		(xmlSecDSigCtxPtr dsigCtx);
 #endif /* XMLSEC_NO_XMLDSIG */
@@ -734,10 +743,20 @@ int main(int argc, const char **argv) {
     }
     
     /* we need to have some files at the end */
-    if(pos >= argc) {
-	fprintf(stderr, "Error: <file> parameter is requried for this command\n");
-	xmlSecAppPrintUsage();
-	goto fail;
+    switch(command) {
+	case xmlSecAppCommandKeys:
+	case xmlSecAppCommandSign:
+	case xmlSecAppCommandVerify:
+	case xmlSecAppCommandEncrypt:
+	case xmlSecAppCommandDecrypt:
+	    if(pos >= argc) {
+		fprintf(stderr, "Error: <file> parameter is requried for this command\n");
+		xmlSecAppPrintUsage();
+		goto fail;
+	    }
+	    break;
+	default:
+	    break;
     }
     
     /* now init the xmlsec and all other libs */
@@ -763,49 +782,62 @@ int main(int argc, const char **argv) {
 
     /* execute requested number of times */
     for(; repeats > 0; --repeats) {
-	for(i = pos; i < argc; ++i) {
-	    /* process file */
-	    switch(command) {
-	    case xmlSecAppCommandKeys:
-    	        if(xmlSecAppCryptoSimpleKeysMngrSave(gKeysMngr, argv[i], xmlSecKeyDataTypeAny) < 0) {
+	switch(command) {
+	case xmlSecAppCommandKeys:
+	    for(i = pos; i < argc; ++i) {
+    	    	if(xmlSecAppCryptoSimpleKeysMngrSave(gKeysMngr, argv[i], xmlSecKeyDataTypeAny) < 0) {
 		    fprintf(stderr, "Error: failed to save keys to file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
-		break;
+	    }
+	    break;
 #ifndef XMLSEC_NO_XMLDSIG
-	    case xmlSecAppCommandSign:
+	case xmlSecAppCommandSign:
+	    for(i = pos; i < argc; ++i) {
     	        if(xmlSecAppSignFile(argv[i]) < 0) {
 		    fprintf(stderr, "Error: failed to sign file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
-		break;
-	    case xmlSecAppCommandVerify:
+	    }
+	    break;
+	case xmlSecAppCommandVerify:
+	    for(i = pos; i < argc; ++i) {
     	        if(xmlSecAppVerifyFile(argv[i]) < 0) {
 		    fprintf(stderr, "Error: failed to verify file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
-		break;
+	    }
+	    break;
+	case xmlSecAppCommandSignTmpl:
+	    if(xmlSecAppSignTmpl() < 0) {
+		fprintf(stderr, "Error: failed to create and sign template\n");
+		goto fail;
+	    }
+	    break;
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
-	    case xmlSecAppCommandEncrypt:
+	case xmlSecAppCommandEncrypt:
+	    for(i = pos; i < argc; ++i) {
     	        if(xmlSecAppEncryptFile(argv[i]) < 0) {
 		    fprintf(stderr, "Error: failed to encrypt file with template \"%s\"\n", argv[i]);
 		    goto fail;
 		}
-		break;
-	    case xmlSecAppCommandDecrypt:
+	    }
+	    break;
+	case xmlSecAppCommandDecrypt:
+	    for(i = pos; i < argc; ++i) {
     	        if(xmlSecAppDecryptFile(argv[i]) < 0) {
 		    fprintf(stderr, "Error: failed to decrypt file \"%s\"\n", argv[i]);
 		    goto fail;
 		}
-		break;
-#endif /* XMLSEC_NO_XMLENC */
-	    default:
-		fprintf(stderr, "Error: invalid command %d\n", command);
-		xmlSecAppPrintUsage();
-		goto fail;
 	    }
+	    break;
+#endif /* XMLSEC_NO_XMLENC */
+	default:
+	    fprintf(stderr, "Error: invalid command %d\n", command);
+	    xmlSecAppPrintUsage();
+	    goto fail;
 	}
     }
 
@@ -993,6 +1025,100 @@ done:
     xmlSecDSigCtxFinalize(&dsigCtx);
     if(data != NULL) {
 	xmlSecAppXmlDataDestroy(data);
+    }
+    return(res);
+}
+
+static int 
+xmlSecAppSignTmpl(void) {
+    xmlDocPtr doc = NULL;
+    xmlNodePtr cur;
+    xmlSecDSigCtx dsigCtx;
+    clock_t start_time;
+    int res = -1;
+        
+    if(xmlSecDSigCtxInitialize(&dsigCtx, gKeysMngr) < 0) {
+	fprintf(stderr, "Error: dsig context initialization failed\n");
+	return(-1);
+    }
+    if(xmlSecAppPrepareDSigCtx(&dsigCtx) < 0) {
+	fprintf(stderr, "Error: dsig context preparation failed\n");
+	goto done;
+    }
+    
+    /* prepare template */
+    doc = xmlNewDoc(BAD_CAST "1.0");
+    if(doc == NULL) {
+	fprintf(stderr, "Error: failed to create doc\n");
+	goto done;
+    }
+    
+    cur = xmlSecTmplSignatureCreate(doc, xmlSecTransformInclC14NId,
+				    xmlSecTransformHmacSha1Id, NULL);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to create Signature node\n");
+	goto done;
+    }
+    xmlDocSetRootElement(doc, cur);
+    
+    cur = xmlSecTmplSignatureAddReference(xmlDocGetRootElement(doc), 
+				    xmlSecTransformSha1Id, 
+				    BAD_CAST "ref1", NULL, NULL);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to add Reference node\n");
+	goto done;
+    }
+    
+    cur = xmlSecTmplReferenceAddTransform(cur, xmlSecTransformXPath2Id);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to add XPath transform\n");
+	goto done;
+    }
+    
+    if(xmlSecTmplTransformAddXPath2(cur, BAD_CAST "intersect", 
+				    BAD_CAST "//*[@Id='object1']", NULL) < 0) {
+	fprintf(stderr, "Error: failed to set XPath expression\n");
+	goto done;    
+    }
+    
+    cur = xmlSecTmplSignatureAddObject(xmlDocGetRootElement(doc), 
+				    BAD_CAST "object1", NULL, NULL);
+    if(cur == NULL) {
+	fprintf(stderr, "Error: failed to add Object node\n");
+	goto done;
+    }
+    xmlNodeSetContent(cur, BAD_CAST "This is signed data");
+    
+    /* sign */
+    start_time = clock();
+    if(xmlSecDSigCtxSign(&dsigCtx, xmlDocGetRootElement(doc)) < 0) {
+        fprintf(stderr,"Error: signature failed \n");
+	goto done;
+    }
+    total_time += clock() - start_time;    
+
+    if(repeats <= 1) { 
+	FILE* f;
+        
+	f = xmlSecAppOpenFile(xmlSecAppCmdLineParamGetString(&outputParam));
+	if(f == NULL) {
+	    fprintf(stderr,"Error: failed to open output file \"%s\"\n",
+		    xmlSecAppCmdLineParamGetString(&outputParam));
+	    goto done;
+	}
+	xmlDocDump(f, doc);
+	xmlSecAppCloseFile(f);
+    }
+
+    res = 0;
+done:
+    /* print debug info if requested */
+    if(repeats <= 1) {
+    	xmlSecAppPrintDSigCtx(&dsigCtx);
+    }
+    xmlSecDSigCtxFinalize(&dsigCtx);
+    if(doc != NULL) {
+	xmlFreeDoc(doc);
     }
     return(res);
 }
@@ -1811,6 +1937,15 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 			xmlSecAppCmdLineTopicX509Certs;
 	return(xmlSecAppCommandVerify);
     } else 
+    if((strcmp(cmd, "sign-tmpl") == 0) || (strcmp(cmd, "--sign-tmpl") == 0)) {
+	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+			xmlSecAppCmdLineTopicDSigCommon |
+			xmlSecAppCmdLineTopicDSigSign |
+			xmlSecAppCmdLineTopicKeysMngr |
+			xmlSecAppCmdLineTopicX509Certs;
+	return(xmlSecAppCommandSignTmpl);
+    } else 
+    
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
@@ -1857,6 +1992,9 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandVerify:
 	fprintf(stdout, "%s\n", helpVerify);
+        break;
+    case xmlSecAppCommandSignTmpl:
+	fprintf(stdout, "%s\n", helpSignTmpl);
         break;
     case xmlSecAppCommandEncrypt:
 	fprintf(stdout, "%s\n", helpEncrypt);

@@ -48,6 +48,7 @@ const xmlChar xmlSecNodeSignatureProperties[]	= "SignatureProperties";
 const xmlChar xmlSecNodeEncryptedData[]		= "EncryptedData";
 const xmlChar xmlSecNodeEncryptionMethod[]	= "EncryptionMethod";
 const xmlChar xmlSecNodeEncryptionProperties[]	= "EncryptionProperties";
+const xmlChar xmlSecNodeEncryptionProperty[]	= "EncryptionProperty";
 const xmlChar xmlSecNodeCipherData[]		= "CipherData";
 const xmlChar xmlSecNodeCipherValue[]		= "CipherValue";
 const xmlChar xmlSecNodeCipherReference[]	= "CipherReference";

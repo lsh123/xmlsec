@@ -79,6 +79,9 @@ static int			xmlSecManifestRead		(xmlNodePtr manifestNode,
 								 xmlSecDSigResultPtr result);
 
 
+static const xmlChar*		xmlSecDSigIds[] = { "Id", NULL };
+
+
 /**
  * Creating DSig template
  */
@@ -848,6 +851,9 @@ xmlSecDSigValidate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	return(-1);	    
     }
     
+    /* add ids for Signature nodes */
+    xmlSecAddIDs(signNode->doc, signNode, xmlSecDSigIds);
+    
     res = xmlSecDSigResultCreate(ctx, context, signNode, 0);
     if(res == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -911,6 +917,10 @@ xmlSecDSigGenerate(xmlSecDSigCtxPtr ctx, void *context, xmlSecKeyPtr key,
 #endif
 	return(-1);	    
     }
+
+    /* add ids for Signature nodes */
+    xmlSecAddIDs(signNode->doc, signNode, xmlSecDSigIds);
+
     
     res = xmlSecDSigResultCreate(ctx, context, signNode, 1);
     if(res == NULL) {

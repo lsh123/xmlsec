@@ -42,8 +42,6 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecFindParent	(const xmlNodePtr cur,
 XMLSEC_EXPORT xmlNodePtr	xmlSecFindNode		(const xmlNodePtr parent,
 							 const xmlChar *name,
 							 const xmlChar *ns);
-XMLSEC_EXPORT xmlNodePtr	xmlSecFindNodeById	(const xmlNodePtr parent,
-							 const xmlChar *id);
 XMLSEC_EXPORT xmlNodePtr	xmlSecAddChild		(xmlNodePtr parent, 
 							 const xmlChar *name,
 							 const xmlChar *ns);
@@ -63,14 +61,9 @@ XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 							 size_t size);
 
 
-
-
-/* 
- * hack for specifying ID attributes names for xml documents
- * w/o schemas or DTD 
- */
-XMLSEC_EXPORT int		xmlSecAddIdAttributeName(const xmlChar *id);
-XMLSEC_EXPORT void		xmlSecClearIdAttributeNames(void);
+XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
+							 xmlNodePtr cur,
+							 const xmlChar** ids);
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,12 @@
+Wed Aug  7 01:08:13 2002  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/transforms.c src/xmldsig.c src/xmlenc.c: full
+	xpointers support in Reference URIs is added
+	* include/xmlsec/xmltree.h src/xmltree.c src/xmlsec.c 
+	apps/xmlsec.c : removed the IDs hack
+	* docs/xmldsig-interop.html: added full XPointers support
+	* tests/*: added ID attribute declaration when necessary
+
 Tue Aug  6 09:51:54 2002  Aleksey Sanin  <aleksey@aleksey.com>
 	* docs/api: updated docs with new stuff
 	* man/xmlsec-config.1: fixed minor problems in help file

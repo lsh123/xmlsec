@@ -35,6 +35,8 @@
 const xmlChar xmlSecEncTypeElement[] = "http://www.w3.org/2001/04/xmlenc#Element";
 const xmlChar xmlSecEncTypeContent[] = "http://www.w3.org/2001/04/xmlenc#Content";
 
+static const xmlChar*		xmlSecEncIds[] = { "Id", NULL };
+
 typedef struct _xmlSecEncState {
     xmlSecEncCtxPtr		ctx;
     xmlSecBinTransformPtr 	first;
@@ -703,7 +705,9 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	res->key = xmlSecKeyDuplicate(key, key->origin);    
     }
     
-
+    /* add ids for Encrypted nodes */
+    xmlSecAddIDs(encNode->doc, encNode, xmlSecEncIds);
+    
     /**
      * create state
      */    
@@ -802,6 +806,9 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     if(key != NULL) {
 	res->key = xmlSecKeyDuplicate(key, key->origin);    
     }
+
+    /* add ids for Encrypted nodes */
+    xmlSecAddIDs(encNode->doc, encNode, xmlSecEncIds);
 
     /**
      * create state
@@ -930,6 +937,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     if(key != NULL) {
 	res->key = xmlSecKeyDuplicate(key, key->origin);    
     }
+
+    /* add ids for Encrypted nodes */
+    xmlSecAddIDs(encNode->doc, encNode, xmlSecEncIds);
 
     /**
      * create state
@@ -1108,6 +1118,9 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     if(key != NULL) {
 	res->key = xmlSecKeyDuplicate(key, key->origin);    
     }
+
+    /* add ids for Encrypted nodes */
+    xmlSecAddIDs(encNode->doc, encNode, xmlSecEncIds);
 
     state = xmlSecEncStateCreate(ctx, encNode, 0, res);
     if(state == NULL) {

@@ -32,71 +32,6 @@ typedef struct _xmlSecExtMemoryParserCtx {
 } xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
 
 /* 
- * hack for specifying ID attributes names for xml documents
- * w/o schemas or DTD 
- */
-static const xmlChar* id_attributes[100] = { 0 };
-
-/**
- * xmlSecAddIdAttributeName:
- * @id:
- *
- * Adds ID attribute to the list of known ID attributes
- * (hack for specifying ID attributes names for xml documents
- * w/o schemas or DTD). 
- *
- * Returns 0 for success or -1 for errors.
- */
-int
-xmlSecAddIdAttributeName(const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddIdAttributeName";
-    size_t i;
-
-    if(id == NULL){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: id is null\n", 
-	    func);	
-#endif
-	return(-1);	
-    }
-
-    for(i = 0; i < sizeof(id_attributes) / sizeof(id_attributes[0]) - 1; ++i) {
-	if(id_attributes[i] == NULL) {
-	    id_attributes[i] = xmlStrdup(id);
-	    id_attributes[i + 1] = NULL;
-	    return(0);
-	} else if(xmlStrEqual(id_attributes[i], id)) {
-	    /* already present */
-	    return(0);
-	}
-    }
-    xmlGenericError(xmlGenericErrorContext, 
-	    "%s: too many ID attributes specified, change the size in xmltree.c and recompile the library",
-	    func);
-    return(-1);    
-}
-
-/**
- * xmlSecClearIdAttributeNames:
- *
- *
- */
-void
-xmlSecClearIdAttributeNames(void) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecClearIdAttributeNames";
-    size_t i;
-
-    for(i = 0; i < sizeof(id_attributes) / sizeof(id_attributes[0]) - 1; ++i) {
-	if(id_attributes[i] == NULL) {
-	    break;
-	}	
-	xmlFree((void*)id_attributes[i]);	
-    }
-    memset(id_attributes, 0, sizeof(id_attributes));
-}
-
-/* 
  * xmlSecParseFile:
  * @filename:
  *
@@ -378,64 +313,6 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
 }
 
 
-/** 
- * xmlSecFindNodeById:
- * @parent:
- * @id:
- *
- * Lookups the node with attribute "Id" equal to given one in the given 
- * node subtree 
- */
-xmlNodePtr
-xmlSecFindNodeById(const xmlNodePtr parent, const xmlChar *id) {
-    static const char func[] ATTRIBUTE_UNUSED = "xmlSecFindNodeById";
-    xmlAttrPtr attr;
-    xmlNodePtr cur;
-    
-    if((parent == NULL) || (id == NULL)){
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: the node or id is null\n", 
-	    func);	
-#endif
-	return(NULL);	
-    }
-    
-    attr = xmlGetID(parent->doc, id);
-    if(attr != NULL) {
-	return(attr->parent);
-    } else if(id_attributes[0] != NULL) {
-	/* this is hack for Ids w/o dtd or schemas */
-    	cur = parent;
-	while(cur != NULL) {
-    	    if(cur->type == XML_ELEMENT_NODE) {	    
-		const xmlChar** p;
-		xmlChar* str;
-		xmlNodePtr ret;
-	
-		for(p = id_attributes; (*p != NULL); ++p){
-		    str = xmlGetProp(cur, *p);
-		    if(str != NULL) {
-			if(xmlStrEqual(id, str)) {
-			    xmlFree(str);
-			    return(cur);
-			}
-			xmlFree(str);
-		    }
-		}
-
-		if(cur->children != NULL) {
-	    	    ret = xmlSecFindNodeById(cur->children, id);
-		    if(ret != NULL) {
-	    		return(ret);	    
-		    }
-		}
-	    }
-	    cur = cur->next;
-	}
-    }
-    return(NULL);
-}
 
 
 /** 
@@ -848,5 +725,59 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const unsigned char *buffer, size_t siz
     xmlFreeNode(node);  
     xmlFreeDoc(doc);
     return(0);
+}
+
+void	
+xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
+    static const char func[] ATTRIBUTE_UNUSED = "xmlSecAddIDs";
+    xmlNodePtr children = NULL;
+    
+    if((doc == NULL) || (ids == NULL)){
+#ifdef XMLSEC_DEBUG
+        xmlGenericError(xmlGenericErrorContext,
+	    "%s: doc or ids list is null\n", 
+	    func);	
+#endif
+	return;	    
+    }
+    
+    if((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
+	xmlAttrPtr attr;
+	xmlAttrPtr tmp;
+	int i;
+	xmlChar* name;
+	
+	for(attr = cur->properties; attr != NULL; attr = attr->next) {
+	    for(i = 0; ids[i] != NULL; ++i) {
+		if(xmlStrEqual(attr->name, ids[i])) {
+		    name = xmlNodeListGetString(doc, attr->children, 1);
+		    if(name != NULL) {
+			tmp = xmlGetID(doc, name);
+			if(tmp == NULL) {
+			    xmlAddID(NULL, doc, name, attr);
+			} else if(tmp != attr) {
+#ifdef XMLSEC_DEBUG
+		    	    xmlGenericError(xmlGenericErrorContext,
+				"%s: id \"%s\" already defined\n", 
+				func, name);	
+#endif
+			}
+			xmlFree(name);
+		    }		    
+		}
+	    }
+	}
+	
+	children = cur->children;
+    } else if(cur == NULL) {
+	children = doc->children;
+    }
+    
+    while(children != NULL) {
+	if(children->type == XML_ELEMENT_NODE) {
+	    xmlSecAddIDs(doc, children, ids);
+	}
+	children = children->next;
+    }
 }
 

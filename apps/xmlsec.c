@@ -1308,7 +1308,10 @@ int encrypt(xmlDocPtr tmpl) {
 	 * What do we want to replace?
 	 */    
 	if(nodeId != NULL) {
-	    cur = xmlSecFindNodeById(xmlDocGetRootElement(doc), BAD_CAST nodeId);
+	    xmlAttrPtr attr;
+	    
+	    attr = xmlGetID(doc, BAD_CAST nodeId);
+	    cur = (attr != NULL) ? attr->parent : NULL;
 	} else if(nodeName != NULL) {
 	    cur = xmlSecFindNode(xmlDocGetRootElement(doc), BAD_CAST nodeName, BAD_CAST nodeNs);
 	} else {

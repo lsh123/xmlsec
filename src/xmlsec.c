@@ -29,12 +29,6 @@ const xmlChar xmlSecXPath2Ns[] = "http://www.w3.org/2002/06/xmldsig-filter2";
 
 void
 xmlSecInit(void) {
-    /* 
-     * (hack for specifying ID attributes names for xml documents               
-     * w/o schemas or DTD
-     */    
-    xmlSecAddIdAttributeName(BAD_CAST "Id");
-
     xmlSecTransformsInit();
     xmlSecKeysInit();
     xmlSecIOInit();
@@ -43,7 +37,5 @@ xmlSecInit(void) {
 void
 xmlSecShutdown(void) {
     xmlSecIOShutdown();
-
-    xmlSecClearIdAttributeNames();
 }
 

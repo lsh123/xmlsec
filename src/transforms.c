@@ -15,6 +15,7 @@
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
+#include <libxml/xpointer.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -1059,16 +1060,11 @@ xmlSecTransformStateFinal(xmlSecTransformStatePtr state, xmlSecTransformResult t
  * (and its applications) modify this node-set to include the element plus 
  * all descendents including namespaces and attributes -- but not comments.
  *
- * TODO: add full xpointer support
  */
 static int 
 xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
     static const char func[] ATTRIBUTE_UNUSED = "xmlSecTransformStateParseUri";
-    int len;
-    char *ptr;
-    char *id;
-    xmlNodePtr cur;
-    int withComments;
+    const char* xptr;
     
     if(state == NULL) {
 #ifdef XMLSEC_DEBUG
@@ -1080,22 +1076,15 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
     }
     
     if(uri == NULL) {
-	state->curDoc = state->initDoc;
+	state->curDoc 	  = state->initDoc;
 	state->curNodeSet = state->initNodeSet;
-	return(0);
-    } 
-    
-    len = strlen(uri);
-    if(len == 0) {
-	/* 
-	 * create node set w/o comments: 
-	 * TODO: optimize! 
-	 */
-	state->curDoc = state->initDoc;
+    } else if(strcmp(uri, "") == 0) {
+	/* all nodes set but comments */
+	state->curDoc 	  = state->initDoc;
 	state->curNodeSet = xmlSecNodeSetGetChildren(state->initDoc, 
 				xmlDocGetRootElement(state->initDoc), 
 				0, 0);
-	if((state->curNodeSet == NULL) || (state->curNodeSet->nodes == NULL)){
+	if(state->curNodeSet == NULL){
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
 		"%s: failed to create node set\n",
@@ -1103,90 +1092,107 @@ xmlSecTransformStateParseUri(xmlSecTransformStatePtr state, const char *uri) {
 #endif
 	    return(-1);
 	}
-	return(0);
-    }
-
-    
-    state->initUri = (char*)xmlMalloc(sizeof(char) * (len + 1));
-    if(state->initUri == NULL) {
-#ifdef XMLSEC_DEBUG
-        xmlGenericError(xmlGenericErrorContext,
-	    "%s: uri malloc failed (%d bytes)\n",
-	    func, len + 1);	
-#endif
-	return(-1);
-    }
-    strcpy(state->initUri, uri);
-        
-    ptr = strchr(state->initUri, '#');
-    if(ptr == NULL) {
-	/* this is a simple uri, leave it alone for now */
-	return(0);
-    }
-    
-    /* this is a uri with '#' */
-    *(ptr++) = '\0';
-    
-    /* if the uri is not empty, need to load document */
-    if(strlen(state->initUri) > 0) {
-	state->curDoc = xmlSecParseFile(state->initUri); 
-	if(state->curDoc == NULL) {
+    } else if((xptr = strchr(uri, '#')) == NULL) {
+        state->initUri = (char*)xmlStrdup(BAD_CAST uri);
+	if(state->initUri == NULL) {
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
-		"%s: failed to load uri=\"%s\"\n",
-		func, state->initUri);	
+		"%s: failed to duplicate uri \"%s\"\n",
+		func, uri);	
 #endif
-	    return(-1);	    
+	    return(-1);
 	}
+	/* simple URI -- do not load document for now */
     } else {
-	state->curDoc = state->initDoc; 
-    }
-    
-    /* 
-     * the document loaded successfully, now let's try 
-     * to understand what do we have 
-     */
-    if(strcmp(ptr, "xpointer(/)") == 0) {
-	return(0);
-    }
-    
-    if(strncmp(ptr, "xpointer(id('", 13) == 0) { 
-	id = ptr + 13;
-	ptr = strchr(id, '\'');
-	if((ptr == NULL) || (strcmp(ptr, "\'))") != 0)) {
+    	state->initUri = (char*)xmlStrndup(BAD_CAST uri, xptr - uri);
+	if(state->initUri == NULL) {
 #ifdef XMLSEC_DEBUG
     	    xmlGenericError(xmlGenericErrorContext,
-		"%s: bad xpointer(id(\'<id>\')) format\n",
-		func);	
+		"%s: failed to duplicate uri \"%s\"\n",
+		func, uri);	
 #endif
-	    return(-1);	    	    
+	    return(-1);
 	}
-	(*ptr) = '\0';
-	withComments = 1;
-    } else {
-	id = ptr;
-	withComments = 0;
-    }
-    
-    cur = xmlSecFindNodeById(state->curDoc->children, BAD_CAST id);
-    if(cur == NULL) {
+	
+        /* if the uri is not empty, need to load document */
+	if(strlen(state->initUri) > 0) {
+	    state->curDoc = xmlSecParseFile(state->initUri); 
+	    if(state->curDoc == NULL) {
 #ifdef XMLSEC_DEBUG
-    	xmlGenericError(xmlGenericErrorContext,
-	    "%s: unable to find node in the document\n",
-	    func);	
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: failed to load uri=\"%s\"\n",
+		    func, state->initUri);	
 #endif
-	    return(-1);	    	    
-    }
-    
+		return(-1);	    
+	    }
+	} else {
+	    state->curDoc = state->initDoc; 
+	}
 
-    state->curNodeSet = xmlSecNodeSetGetChildren(state->curDoc, cur, withComments, 0);
-    if((state->curNodeSet == NULL)|| (state->curNodeSet->nodes == NULL)) {
+	/* 
+	 * now evaluate xptr if it is present and does not 
+	 * equal to everything
+	 */
+	if((xptr != NULL) && (strcmp(xptr, "#xpointer(/)") != 0)) {   
+            xmlXPathContextPtr ctxt;
+	    xmlXPathObjectPtr res;
+	    xmlSecNodeSetType type;
+
+	    ctxt = xmlXPtrNewContext(state->curDoc, 
+				    xmlDocGetRootElement(state->curDoc), 
+				    NULL);
+	    if(ctxt == NULL) {
 #ifdef XMLSEC_DEBUG
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s: failed to create node set for node\n",
-	    func);
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: failed to create xpointer context\n",
+		    func);	
 #endif
-	return(-1);
+		return(-1);	    
+	    }
+	    
+	    /* evaluate expression but skip '#' */
+	    res = xmlXPtrEval(BAD_CAST (xptr + 1), ctxt);
+	    if(res == NULL) {
+#ifdef XMLSEC_DEBUG
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: failed to evaluate xpointer\n",
+		    func);	
+#endif
+		xmlXPathFreeContext(ctxt);
+		return(-1);	    
+	    }
+
+	    if((res->nodesetval == NULL) || (res->nodesetval->nodeNr == 0)) {
+#ifdef XMLSEC_DEBUG
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: the evaluated xpointer \"%s\" nodes set is empty (probably it's an error!)\n",
+		    func, xptr);	
+#endif
+	    }
+
+	    if(strncmp(xptr, "#xpointer(", 10) == 0) {
+		type = xmlSecNodeSetTree;
+	    } else {
+		type = xmlSecNodeSetTreeWithoutComments;
+	    }
+	    state->curNodeSet = xmlSecNodeSetCreate(state->curDoc, 
+					    res->nodesetval,
+					    type);
+	    if(state->curNodeSet == NULL){
+#ifdef XMLSEC_DEBUG
+    		xmlGenericError(xmlGenericErrorContext,
+		    "%s: failed to create node set\n",
+		    func);	
+#endif
+		xmlXPathFreeObject(res);
+		xmlXPathFreeContext(ctxt);
+		return(-1);
+	    }
+	    res->nodesetval = NULL;
+	    
+	    xmlXPathFreeObject(res);
+	    xmlXPathFreeContext(ctxt);
+	}
     }
 
     return(0);

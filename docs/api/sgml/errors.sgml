@@ -449,7 +449,7 @@ Max allowed retrievals level reached.</para>
 </programlisting>
 <para>
 The retrieved key data type does not match the one specified 
-in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.</para>
+in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> node.</para>
 <para>
 
 </para></refsect2>

@@ -735,13 +735,15 @@ The list of crypto engine functions, key data and transform classes.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecStrPrintf">xmlSecStrPrintf</title>
-<indexterm><primary>xmlSecStrPrintf</primary></indexterm><programlisting>#define     xmlSecStrPrintf</programlisting>
+<indexterm><primary>xmlSecStrPrintf</primary></indexterm><programlisting>#define xmlSecStrPrintf 	xmlStrPrintf
+</programlisting>
 <para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecStrVPrintf">xmlSecStrVPrintf</title>
-<indexterm><primary>xmlSecStrVPrintf</primary></indexterm><programlisting>#define     xmlSecStrVPrintf</programlisting>
+<indexterm><primary>xmlSecStrVPrintf</primary></indexterm><programlisting>#define xmlSecStrVPrintf 	xmlStrVPrintf
+</programlisting>
 <para>
 
 </para></refsect2>

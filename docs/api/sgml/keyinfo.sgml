@@ -36,7 +36,7 @@ enum        <link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link>;
 #define     <link linkend="XMLSEC-KEYINFO-FLAGS-STOP-ON-EMPTY-NODE-CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_EMPTY_NODE</link>
 #define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-SKIP-STRICT-CHECKS-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS</link>
 struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
-<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
+<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link>  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
 <link linkend="void">void</link>        <link linkend="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy</link>         (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 <link linkend="int">int</link>         <link linkend="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize</link>      (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
@@ -85,19 +85,19 @@ struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
+Parses the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element <parameter>keyInfoNode</parameter>, extracts the key data
 and stores into <parameter>key</parameter>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to result key object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or -1 if an error occurs.
 </simpara></listitem></varlistentry>
@@ -108,18 +108,18 @@ and stores into <parameter>key</parameter>.</para>
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element template <parameter>keyInfoNode</parameter>.</para>
+Writes the <parameter>key</parameter> into the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element template <parameter>keyInfoNode</parameter>.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to key object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or -1 if an error occurs.
 </simpara></listitem></varlistentry>
@@ -138,12 +138,12 @@ The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).</par
 </para><variablelist role="enum">
 <varlistentry>
 <term><literal>xmlSecKeyInfoModeRead</literal></term>
-<listitem><simpara> read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element.
+<listitem><simpara> read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><literal>xmlSecKeyInfoModeWrite</literal></term>
-<listitem><simpara> write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element.
+<listitem><simpara> write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -152,7 +152,7 @@ The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).</par
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND		0x00000001
 </programlisting>
 <para>
-If flag is set then we will continue reading <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> 
+If flag is set then we will continue reading <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
 element even when key is already found.</para>
 <para>
 
@@ -162,7 +162,7 @@ element even when key is already found.</para>
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD		0x00000002
 </programlisting>
 <para>
-If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> 
+If flag is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -173,7 +173,7 @@ child is found.</para>
 </programlisting>
 <para>
 If flags is set then we abort if an unknown key name 
-(content of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName ">&lt;dsig:KeyName /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element) is found.</para>
+(content of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName ">&lt;dsig:KeyName /&gt;</ulink> element) is found.</para>
 <para>
 
 </para></refsect2>
@@ -182,7 +182,7 @@ If flags is set then we abort if an unknown key name
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD	0x00000008
 </programlisting>
 <para>
-If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> 
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -193,7 +193,7 @@ child is found.</para>
 </programlisting>
 <para>
 If flag is set then we abort if an unknown href attribute
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element is found.</para>
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element is found.</para>
 <para>
 
 </para></refsect2>
@@ -202,7 +202,7 @@ of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink U
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF	0x00000020
 </programlisting>
 <para>
-If flag is set then we abort if an href attribute <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> 
+If flag is set then we abort if an href attribute <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> 
 element does not match the real key data type.</para>
 <para>
 
@@ -212,7 +212,7 @@ element does not match the real key data type.</para>
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD	0x00000100
 </programlisting>
 <para>
-If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> 
+If flags is set then we abort if an unknown <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink> 
 child is found.</para>
 <para>
 
@@ -222,7 +222,7 @@ child is found.</para>
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS		0x00000200
 </programlisting>
 <para>
-If flag is set then we'll load certificates from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink>
+If flag is set then we'll load certificates from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink>
 element without verification.</para>
 <para>
 
@@ -233,8 +233,8 @@ element without verification.</para>
 </programlisting>
 <para>
 If flag is set then we'll stop when we could not resolve reference
-to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial ">&lt;dsig:X509IssuerSerial /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI ">&lt;dsig:X509SKI /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> or 
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName ">&lt;dsig:X509SubjectName /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> elements.</para>
+to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial ">&lt;dsig:X509IssuerSerial /&gt;</ulink>, <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SKI ">&lt;dsig:X509SKI /&gt;</ulink> or 
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName ">&lt;dsig:X509SubjectName /&gt;</ulink> elements.</para>
 <para>
 
 </para></refsect2>
@@ -243,7 +243,7 @@ to certificate from <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Issue
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT	0x00000800
 </programlisting>
 <para>
-If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element
+If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data ">&lt;dsig:X509Data /&gt;</ulink> element
 processing does not return a verified certificate.</para>
 <para>
 
@@ -253,7 +253,7 @@ processing does not return a verified certificate.</para>
 <indexterm><primary>XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</primary></indexterm><programlisting>#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
 </programlisting>
 <para>
-If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element
+If the flag is set then we'll stop when <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
 processing fails.</para>
 <para>
 
@@ -319,7 +319,7 @@ If the flag is set then we'll skip strict checking of certs and CRLs</para>
 };
 </programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> reading or writing context.</para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> reading or writing context.</para>
 <para>
 
 </para><variablelist role="struct">
@@ -346,7 +346,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="htt
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link> <structfield>mode</structfield></term>
-<listitem><simpara> 		do we read or write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element.
+<listitem><simpara> 		do we read or write <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> element.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -362,27 +362,27 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="htt
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>retrievalMethodCtx</structfield></term>
-<listitem><simpara> the transforms context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink>
+<listitem><simpara> the transforms context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink>
 			element processing.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link> <structfield>maxRetrievalMethodLevel</structfield></term>
 <listitem><simpara> the max recursion level when processing
-		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element; default level is 1 
+		<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element; default level is 1 
 		(see also <parameter>curRetrievalMethodLevel</parameter>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> <structfield>encCtx</structfield></term>
-<listitem><simpara>		the encryption context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey ">&lt;dsig:EncryptedKey /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element
+<listitem><simpara>		the encryption context for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-EncryptedKey ">&lt;dsig:EncryptedKey /&gt;</ulink> element
 		processing.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link> <structfield>maxEncryptedKeyLevel</structfield></term>
 <listitem><simpara> the max recursion level when processing 
-		<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element; default level is 1 
+		<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element; default level is 1 
 		(see <parameter>curEncryptedKeyLevel</parameter>).
 </simpara></listitem>
 </varlistentry>
@@ -407,13 +407,13 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="htt
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link> <structfield>curRetrievalMethodLevel</structfield></term>
-<listitem><simpara> the current <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod "><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element 
+<listitem><simpara> the current <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> element 
 		processing level (see <parameter>maxRetrievalMethodLevel</parameter>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link> <structfield>curEncryptedKeyLevel</structfield></term>
-<listitem><simpara> the current <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey "><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element
+<listitem><simpara> the current <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey ">&lt;enc:EncryptedKey /&gt;</ulink> element
 		processing level (see <parameter>maxEncryptedKeyLevel</parameter>).
 </simpara></listitem>
 </varlistentry>
@@ -435,9 +435,9 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo "><ulink URL="htt
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate ()</title>
-<indexterm><primary>xmlSecKeyInfoCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> xmlSecKeyInfoCtxCreate  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<indexterm><primary>xmlSecKeyInfoCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> xmlSecKeyInfoCtxCreate  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Allocates and initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+Allocates and initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 Caller is responsible for freeing it by calling <link linkend="xmlSecKeyInfoCtxDestroy"><type>xmlSecKeyInfoCtxDestroy</type></link> 
 function.</para>
 <para>
@@ -458,7 +458,7 @@ Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xm
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -466,13 +466,13 @@ Destroys <parameter>keyInfoCtx</parameter> object created with <link linkend="xm
 <indexterm><primary>xmlSecKeyInfoCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoCtxInitialize      (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context. Caller is 
+Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context. Caller is 
 responsible for cleaning it up by <link linkend="xmlSecKeyInfoCtxFinalize"><type>xmlSecKeyInfoCtxFinalize</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
 <listitem><simpara> 		the pointer to keys manager (may be NULL).
@@ -490,7 +490,7 @@ function.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -502,7 +502,7 @@ Resets the <parameter>keyInfoCtx</parameter> state. User settings are not change
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -527,13 +527,13 @@ Copies user preferences from <parameter>src</parameter> context to <parameter>ds
 <title><anchor id="xmlSecKeyInfoCtxCreateEncCtx">xmlSecKeyInfoCtxCreateEncCtx ()</title>
 <indexterm><primary>xmlSecKeyInfoCtxCreateEncCtx</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecKeyInfoCtxCreateEncCtx    (<link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Creates encryption context form processing <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element.</para>
+Creates encryption context form processing <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> child
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success and a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -548,7 +548,7 @@ Prints user settings and current context state to <parameter>output</parameter>.
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>		the output file pointer.
@@ -564,7 +564,7 @@ Prints user settings and current context state in XML format to <parameter>outpu
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>		the output file pointer.
@@ -583,7 +583,7 @@ The &lt;dsig:KeyName&gt; processing class.</para>
 <title><anchor id="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass ()</title>
 <indexterm><primary>xmlSecKeyDataNameGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataNameGetKlass   (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyName"><type>sec-KeyName</type></link>):
 </para>
 <para>
@@ -597,7 +597,7 @@ a distinguished name (DN), an email address, etc.)</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing key data klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -613,7 +613,7 @@ The &lt;dsig:KeyValue&gt; processing class.</para>
 <title><anchor id="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass ()</title>
 <indexterm><primary>xmlSecKeyDataValueGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-KeyValue"><type>sec-KeyValue</type></link>):
 </para>
 <para>
@@ -622,7 +622,7 @@ validating the signature.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing key data klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -639,7 +639,7 @@ The &lt;dsig:RetrievalMethod&gt; processing class.</para>
 <indexterm><primary>xmlSecKeyDataRetrievalMethodGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
                                             (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-RetrievalMethod"><type>sec-RetrievalMethod</type></link>):
 A RetrievalMethod element within KeyInfo is used to convey a reference to 
 KeyInfo information that is stored at another location. For example, 
@@ -655,7 +655,7 @@ Reference's URI and The Reference Processing Model.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing key data klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod">&lt;dsig:RetrievalMethod/&gt;</ulink> element processing key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -672,7 +672,7 @@ The &lt;enc:EncryptedKey&gt; processing class.</para>
 <indexterm><primary>xmlSecKeyDataEncryptedKeyGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass
                                             (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element key data klass 
+The <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element key data klass 
 (http://www.w3.org/TR/xmlenc-core/<link linkend="sec-EncryptedKey"><type>sec-EncryptedKey</type></link>):
 </para>
 <para>
@@ -686,7 +686,7 @@ without any additional processing.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey"><ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing key data klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

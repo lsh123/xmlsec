@@ -22,7 +22,7 @@ enum        <link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>;
 #define     <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link>
 #define     <link linkend="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK-CAPS">XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</link>
 struct      <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
-<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
+<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
 <link linkend="void">void</link>        <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
 <link linkend="int">int</link>         <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>         (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
@@ -121,7 +121,7 @@ XML Digital signature processing status.</para>
 <indexterm><primary>XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS			0x00000001
 </programlisting>
 <para>
-If this flag is set then <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests">&lt;dsig:Manifests/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> nodes will not be processed.</para>
+If this flag is set then <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests">&lt;dsig:Manifests/&gt;</ulink> nodes will not be processed.</para>
 <para>
 
 </para></refsect2>
@@ -130,8 +130,8 @@ If this flag is set then <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Mani
 <indexterm><primary>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES		0x00000002
 </programlisting>
 <para>
-If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
+If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> child
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
 <para>
 
 </para></refsect2>
@@ -140,8 +140,8 @@ of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http:
 <indexterm><primary>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES		0x00000004
 </programlisting>
 <para>
-If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
+If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> child
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
 <para>
 
 </para></refsect2>
@@ -150,7 +150,7 @@ of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http
 <indexterm><primary>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE			0x00000008
 </programlisting>
 <para>
-If this flag is set then pre-signature buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink>
+If this flag is set then pre-signature buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink>
 element processing will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
 <para>
 
@@ -235,22 +235,22 @@ XML DSig processing context.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link> <structfield>transformCtx</structfield></term>
-<listitem><simpara>		the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node processing context.
+<listitem><simpara>		the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node processing context.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link> <structfield>enabledReferenceUris</structfield></term>
-<listitem><simpara>	the URI types allowed for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara>	the URI types allowed for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> <structfield>enabledReferenceTransforms</structfield></term>
-<listitem><simpara>	the list of transforms allowed in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara>	the list of transforms allowed in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link> <structfield>referencePreExecuteCallback</structfield></term>
-<listitem><simpara>the callback for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node processing.
+<listitem><simpara>the callback for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node processing.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -287,7 +287,7 @@ XML DSig processing context.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link> <structfield>status</structfield></term>
-<listitem><simpara>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire">&lt;dsig:Signatuire/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> procesisng status.
+<listitem><simpara>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire">&lt;dsig:Signatuire/&gt;</ulink> procesisng status.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -308,22 +308,22 @@ XML DSig processing context.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link> <structfield>signValueNode</structfield></term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></term>
-<listitem><simpara>				the pointer to Id attribute of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara>				the pointer to Id attribute of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>signedInfoReferences</structfield></term>
-<listitem><simpara>	the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.		
+<listitem><simpara>	the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node.		
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>manifestReferences</structfield></term>
-<listitem><simpara>		the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> nodes.
+<listitem><simpara>		the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> nodes.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -339,9 +339,9 @@ XML DSig processing context.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate ()</title>
-<indexterm><primary>xmlSecDSigCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<indexterm><primary>xmlSecDSigCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
 The caller is responsible for destroying returend object by calling 
 <link linkend="xmlSecDSigCtxDestroy"><type>xmlSecDSigCtxDestroy</type></link> function.</para>
 <para>
@@ -363,7 +363,7 @@ Destroy context object created with <link linkend="xmlSecDSigCtxCreate"><type>xm
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -371,14 +371,14 @@ Destroy context object created with <link linkend="xmlSecDSigCtxCreate"><type>xm
 <indexterm><primary>xmlSecDSigCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecDSigCtxInitialize         (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
 The caller is responsible for cleaing up returend object by calling 
 <link linkend="xmlSecDSigCtxFinalize"><type>xmlSecDSigCtxFinalize</type></link> function.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&nbsp;:</term>
 <listitem><simpara> 		the pointer to keys manager.
@@ -395,7 +395,7 @@ Cleans up <parameter>dsigCtx</parameter> object initialized with <link linkend="
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -408,10 +408,10 @@ Signs the data as described in <parameter>tmpl</parameter> node.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tmpl</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node with signature template.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node with signature template.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -427,10 +427,10 @@ in <link linkend="status"><type>status</type></link> member of the <parameter>ds
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer with <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara>		the pointer with <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success (check <link linkend="status"><type>status</type></link> member of <parameter>dsigCtx</parameter> to get 
 signature verification result) or a negative value if an error occurs.
@@ -442,12 +442,12 @@ signature verification result) or a negative value if an error occurs.
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
-Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> elements processing.</para>
+Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> elements processing.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
 <listitem><simpara>	the transform klass.
@@ -461,12 +461,12 @@ Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
 <para>
-Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing.</para>
+Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element processing.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformId</parameter>&nbsp;:</term>
 <listitem><simpara>	the transform klass.
@@ -479,14 +479,14 @@ Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/
 <indexterm><primary>xmlSecDSigCtxGetPreSignBuffer</primary></indexterm><programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigCtxGetPreSignBuffer
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
 <para>
-Gets pointer to the buffer with serialized <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element
+Gets pointer to the buffer with serialized <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element
 just before signature claculation (valid if and only if 
 <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</type></link> context flag is set.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -501,7 +501,7 @@ Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to output FILE.
@@ -517,7 +517,7 @@ Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to output FILE.
@@ -531,8 +531,8 @@ Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>
 } xmlSecDSigReferenceOrigin;
 </programlisting>
 <para>
-The possible <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node locations: in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> 
-node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.</para>
+The possible <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node locations: in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> 
+node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.</para>
 <para>
 
 </para><variablelist role="enum">
@@ -570,7 +570,7 @@ node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><uli
 };
 </programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.</para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> processing context.</para>
 <para>
 
 </para><variablelist role="struct">
@@ -582,12 +582,12 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="ht
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> <structfield>dsigCtx</structfield></term>
-<listitem><simpara>			the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> processing context.
+<listitem><simpara>			the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> <structfield>origin</structfield></term>
-<listitem><simpara>			the signature origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink>).
+<listitem><simpara>			the signature origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -620,17 +620,17 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="ht
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link> *<structfield>id</structfield></term>
-<listitem><simpara>				the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node ID attribute. 
+<listitem><simpara>				the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node ID attribute. 
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link> *<structfield>uri</structfield></term>
-<listitem><simpara>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node URI attribute. 
+<listitem><simpara>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node URI attribute. 
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link> *<structfield>type</structfield></term>
-<listitem><simpara>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node Type attribute. 
+<listitem><simpara>			the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node Type attribute. 
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -650,17 +650,17 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="ht
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
 <para>
-Creates new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context. Caller is responsible
+Creates new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context. Caller is responsible
 for destroying the returned context by calling <link linkend="xmlSecDSigReferenceCtxDestroy"><type>xmlSecDSigReferenceCtxDestroy</type></link>
 function.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node processing context.
+<listitem><simpara>		the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>origin</parameter>&nbsp;:</term>
-<listitem><simpara>		the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node).
+<listitem><simpara>		the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created context or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -674,7 +674,7 @@ Destroy context object created with <link linkend="xmlSecDSigReferenceCtxCreate"
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -684,20 +684,20 @@ Destroy context object created with <link linkend="xmlSecDSigReferenceCtxCreate"
                                              <link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
 <para>
-Initializes new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context. Caller is responsible
+Initializes new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context. Caller is responsible
 for cleaning up the returned context by calling <link linkend="xmlSecDSigReferenceCtxFinalize"><type>xmlSecDSigReferenceCtxFinalize</type></link>
 function.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dsigCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node processing context.
+<listitem><simpara>		the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>origin</parameter>&nbsp;:</term>
-<listitem><simpara>		the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node).
+<listitem><simpara>		the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on succes or aa negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -711,7 +711,7 @@ Cleans up context object created with <link linkend="xmlSecDSigReferenceCtxIniti
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -737,10 +737,10 @@ from elsewhere.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on succes or aa negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -750,7 +750,7 @@ from elsewhere.</para>
 <indexterm><primary>xmlSecDSigReferenceCtxGetPreDigestBuffer</primary></indexterm><programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigReferenceCtxGetPreDigestBuffer
                                             (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
 <para>
-Gets the results of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> node processing just before digesting
+Gets the results of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node processing just before digesting
 (valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</type></link> or
 <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</type></link> flas of signature context
 is set).</para>
@@ -758,7 +758,7 @@ is set).</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the buffer or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -773,7 +773,7 @@ Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>o
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to output FILE.
@@ -790,7 +790,7 @@ Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>o
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>		the pointer to output FILE.
@@ -809,11 +809,11 @@ The references list klass.</para>
 <indexterm><primary>xmlSecDSigReferenceCtxListGetKlass</primary></indexterm><programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecDSigReferenceCtxListGetKlass
                                             (void);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing contexts list klass.</para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing contexts list klass.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink></ulink></ulink></ulink></ulink></ulink></ulink></ulink> element processing context list klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context list klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

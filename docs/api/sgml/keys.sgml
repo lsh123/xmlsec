@@ -61,19 +61,19 @@ struct      <link linkend="xmlSecKey">xmlSecKey</link>;
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (void);
 <link linkend="void">void</link>        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
 <link linkend="void">void</link>        <link linkend="xmlSecKeyEmpty">xmlSecKeyEmpty</link>                  (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyDuplicate">xmlSecKeyDuplicate</link>             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
 <link linkend="int">int</link>         <link linkend="xmlSecKeyCopy">xmlSecKeyCopy</link>                   (<link linkend="xmlSecKey">xmlSecKeyPtr</link> keyDst,
                                              <link linkend="xmlSecKey">xmlSecKeyPtr</link> keySrc);
 const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyGetName">xmlSecKeyGetName</link>             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
 <link linkend="int">int</link>         <link linkend="xmlSecKeySetName">xmlSecKeySetName</link>                (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name);
 <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> <link linkend="xmlSecKeyGetType">xmlSecKeyGetType</link>          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link>          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetValue">xmlSecKeyGetValue</link>          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
 <link linkend="int">int</link>         <link linkend="xmlSecKeySetValue">xmlSecKeySetValue</link>               (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> value);
-<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link>           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyGetData">xmlSecKeyGetData</link>           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
-<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link>        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> <link linkend="xmlSecKeyEnsureData">xmlSecKeyEnsureData</link>        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
 <link linkend="int">int</link>         <link linkend="xmlSecKeyAdoptData">xmlSecKeyAdoptData</link>              (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
@@ -672,7 +672,7 @@ Clears the <parameter>key</parameter> data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDuplicate">xmlSecKeyDuplicate ()</title>
-<indexterm><primary>xmlSecKeyDuplicate</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyDuplicate             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
+<indexterm><primary>xmlSecKeyDuplicate</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyDuplicate             (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Creates a duplicate of the given <parameter>key</parameter>.</para>
 <para>
@@ -751,7 +751,7 @@ Gets <parameter>key</parameter> type.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetValue">xmlSecKeyGetValue ()</title>
-<indexterm><primary>xmlSecKeyGetValue</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecKeyGetValue          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
+<indexterm><primary>xmlSecKeyGetValue</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetValue          (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
 <para>
 Gets key value (see also <link linkend="xmlSecKeySetValue"><type>xmlSecKeySetValue</type></link> function).</para>
 <para>
@@ -783,7 +783,7 @@ Sets key value (see also <link linkend="xmlSecKeyGetValue"><type>xmlSecKeyGetVal
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyGetData">xmlSecKeyGetData ()</title>
-<indexterm><primary>xmlSecKeyGetData</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecKeyGetData           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+<indexterm><primary>xmlSecKeyGetData</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyGetData           (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
 Gets key's data.</para>
@@ -802,7 +802,7 @@ Gets key's data.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyEnsureData">xmlSecKeyEnsureData ()</title>
-<indexterm><primary>xmlSecKeyEnsureData</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecKeyEnsureData        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
+<indexterm><primary>xmlSecKeyEnsureData</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> xmlSecKeyEnsureData        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
 <para>
 If necessary, creates key data of <parameter>dataId</parameter> klass and adds to <parameter>key</parameter>.</para>

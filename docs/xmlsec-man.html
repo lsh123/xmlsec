@@ -44,7 +44,7 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <h1>XMLSEC1</h1>
-<p> Section: User Commands (1)<br>Updated: December 2004<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a></p>
+<p> Section: User Commands (1)<br>Updated: February 2005<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a></p>
 <hr>
 <a name="lbAB"> </a><h2>NAME</h2>
 <p>  xmlsec1 - sign, verify, encrypt and decrypt XML documents <a name="lbAC"> </a> </p>
@@ -74,8 +74,6 @@
 <dd> encrypt data and output XML document </dd>
 <dt><b>--decrypt</b></dt>
 <dd> decrypt data from XML document </dd>
-<dt><b>--xkms-server-request</b></dt>
-<dd> process data as XKMS server request </dd>
 </dl>
 <a name="lbAE"> </a><h2>OPTIONS</h2>
 <dl compact>
@@ -110,28 +108,6 @@
 <dt> <b>--enabled-cipher-reference-uris</b> &lt;list&gt; <dt></dt>
 </dt>
 <dd> <dd>comma separated list of of the following values: "empty", "same-doc", "local","remote" to restrict possible URI attribute values for the &lt;enc:CipherReference&gt; element </dd>
-</dd>
-<dt> <b>--xkms-service</b> &lt;uri&gt; <dt></dt>
-</dt>
-<dd> <dd>sets XKMS "Service" &lt;uri&gt; </dd>
-</dd>
-<dt> <b>--xkms-format</b> &lt;format&gt; <dt></dt>
-</dt>
-<dd> <dd>sets the XKMS request/response format to one of the following values: </dd>
-</dd>
-<dt></dt>
-<dd> "plain" (default), "soap-1.1" or "soap-1.2" </dd>
-<dt> <b>--xkms-stop-on-unknown-response-mechanism</b> <dt></dt>
-</dt>
-<dd> <dd>stop processing XKMS server request if unknown ResponseMechanism value was found </dd>
-</dd>
-<dt> <b>--xkms-stop-on-unknown-respond-with</b> <dt></dt>
-</dt>
-<dd> <dd>stop processing XKMS server request if unknown RespondWith value was found </dd>
-</dd>
-<dt> <b>--xkms-stop-on-unknown-key-usage</b> <dt></dt>
-</dt>
-<dd> <dd>stop processing XKMS server request if unknown KeyUsage value was found </dd>
 </dd>
 <dt> <b>--session-key</b> &lt;keyKlass&gt;-&lt;keySize&gt; <dt></dt>
 </dt>
@@ -265,6 +241,10 @@
 </dt>
 <dd> <dd>skip strict checking of X509 data </dd>
 </dd>
+<dt> <b>--crypto</b> &lt;name&gt; <dt></dt>
+</dt>
+<dd> <dd>the name of the crypto engine to use from the following list: openssl, gnutls, nss, mscrypto (if no crypto engine is specified then the default one is used) </dd>
+</dd>
 <dt> <b>--crypto-config</b> &lt;path&gt; <dt></dt>
 </dt>
 <dd> <dd>path to crypto engine configuration </dd>
@@ -312,7 +292,7 @@
 <dd> </dd>
 </dl>
 <hr>
-<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 22:41:39 GMT, December 30, 2004 </p>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 06:00:49 GMT, February 22, 2005 </p>
 </td></tr></table></td>
 </tr></table></body>
 </html>

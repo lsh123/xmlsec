@@ -1,5 +1,9 @@
 2005-02-21  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* docs/* docs/api/*  man/*: updated docs
+
+2005-02-21  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* configure.in, docs/download.html, docs/index.html, docs/news.html,
 	include/xmlsec/version.h: preparing new release 1.2.7
 

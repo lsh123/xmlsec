@@ -447,7 +447,7 @@ else
          NSPR_CFLAGS="-I$with_nspr/include"
          if test "$with_gnu_ld" = yes
          then
-           NSPR_LIBS="-Wl,-rpath -Wl,$with_nspr/lib -L$with_nspr/lib $NSPR_LIBS_LIST"
+           NSPR_LIBS="-Wl,-rpath-link -Wl,$with_nspr/lib -L$with_nspr/lib $NSPR_LIBS_LIST"
          else
            NSPR_LIBS="-L$with_nspr/lib $NSPR_LIBS_LIST"
          fi
@@ -479,7 +479,7 @@ else
                else
                   if test "$with_gnu_ld" = yes
                   then
-                     NSPR_LIBS="-Wl,-rpath -Wl,$dir -L$dir $NSPR_LIBS_LIST"
+                     NSPR_LIBS="-Wl,-rpath-link -Wl,$dir -L$dir $NSPR_LIBS_LIST"
                   else
                      NSPR_LIBS="-L$dir $NSPR_LIBS_LIST"
                   fi
@@ -521,7 +521,7 @@ else
        NSS_CFLAGS="-I$with_nss/include"
        if test "$with_gnu_ld" = yes
        then
-          NSS_LIBS="-Wl,-rpath -Wl,$with_nss/lib -L$with_nss/lib $NSS_LIBS_LIST"
+          NSS_LIBS="-Wl,-rpath-link -Wl,$with_nss/lib -L$with_nss/lib $NSS_LIBS_LIST"
        else
           NSS_LIBS="-L$with_nss/lib $NSS_LIBS_LIST"
        fi
@@ -552,7 +552,7 @@ else
              else
                 if test "$with_gnu_ld" = yes
                 then
-                   NSS_LIBS="-Wl,-rpath -Wl,$dir -L$dir $NSS_LIBS_LIST"
+                   NSS_LIBS="-Wl,-rpath-link -Wl,$dir -L$dir $NSS_LIBS_LIST"
                 else
                    NSS_LIBS="-L$dir $NSS_LIBS_LIST"
                 fi

@@ -1,3 +1,7 @@
+Mon 12 May 2003 01:38:11 PM PDT Aleksey Sanin  <aleksey@aleksey.com>
+    
+	* configure.in: use '-rpath-link' instead '-rpath' for NSS (Wan-Teh)
+
 Mon May 12 10:01:30 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: link with NSS using -rpath (Tej)

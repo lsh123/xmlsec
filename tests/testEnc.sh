@@ -118,7 +118,7 @@ execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname-element-root" \
     "--keys $keysfile"
 
 execEncTest "aleksey-xmlenc-01/enc-des3cbc-aes192-keyname" \
-    "--keys $topfolder/keys/keys.xml --allowed key-name,enc-key" \
+    "--keys $topfolder/keys/keys.xml --allowed-key-data key-name,enc-key" \
     "--keys $keysfile  --session-key des-192  --binary $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
     "--keys $keysfile"
 
@@ -129,11 +129,11 @@ execEncTest "merlin-xmlenc-five/encrypt-data-aes128-cbc" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-content-tripledes-cbc" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --allowed key-name --xml $topfolder/merlin-xmlenc-five/encrypt-content-tripledes-cbc.data --node-id Payment" \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --allowed-key-data key-name --xml $topfolder/merlin-xmlenc-five/encrypt-content-tripledes-cbc.data --node-id Payment" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-content-aes256-cbc-prop" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys $topfolder/merlin-xmlenc-five/keys.xml --allowed key-name --xml $topfolder/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.data --node-id Payment" \
+    "--keys $topfolder/merlin-xmlenc-five/keys.xml --allowed-key-data key-name --xml $topfolder/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.data --node-id Payment" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
 execEncTest "merlin-xmlenc-five/encrypt-element-aes192-cbc-ref" \
     "--keys $topfolder/merlin-xmlenc-five/keys.xml"
@@ -185,93 +185,93 @@ execEncTest "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" 
 
 execEncTest "01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes128-kt-rsa_oaep_sha1" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-text-aes192-kt-rsa1_5" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-aes192-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-aes192-kt-rsa1_5.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-element-3des-kw-3des" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-3des-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-3des-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-content-aes128-kw-3des" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-aes128-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-aes128-kw-3des.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes128-kw-aes128" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes128.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes128.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes128-kw-aes256" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes128-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-content-3des-kw-aes192" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-3des-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-3des-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-content-aes192-kw-aes256" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-aes192-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-content-aes192-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes192-kw-aes192" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes192-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-element-aes256-kw-aes256" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes256-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-element-aes256-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" 
 
 execEncTest "01-phaos-xmlenc-3/enc-text-3des-kw-aes256" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-3des-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-3des-kw-aes256.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 execEncTest "01-phaos-xmlenc-3/enc-text-aes128-kw-aes192" \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml" \
-    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard"  \
+    "--keys $topfolder/01-phaos-xmlenc-3/keys.xml --allowed-key-data key-name --xml $topfolder/01-phaos-xmlenc-3/enc-text-aes128-kw-aes192.data --node-name http://example.org/paymentv2:CreditCard"  \
     "--keys $topfolder/01-phaos-xmlenc-3/keys.xml"
 
 

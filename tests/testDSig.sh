@@ -151,14 +151,14 @@ execDSigTest "merlin-exc-c14n-one/exc-signature" \
     " " 
     
 execDSigTest "aleksey-xmldsig-01/enveloping-dsa-x509chain" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509" \
+    "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509" \
     "--privkey $topfolder/keys/dsakey.pem,$topfolder/keys/dsacert.pem,$topfolder/keys/ca2cert.pem" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509"
+    "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-rsa-x509chain" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509" \
+    "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509" \
     "--privkey $topfolder/keys/rsakey.pem,$topfolder/keys/rsacert.pem,$topfolder/keys/ca2cert.pem" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509"
+    "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-hmac-ripemd160" \
     "--hmackey $topfolder/keys/hmackey.bin" \
@@ -186,7 +186,7 @@ execDSigTest "aleksey-xmldsig-01/xpointer-hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509 --verification-time 2002-10-02+10:00:00" 
+    "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509 --verification-time 2002-10-02+10:00:00" 
 
 execDSigTest "aleksey-xmldsig-01/dtd-hmac-91" \
     "--hmackey $topfolder/keys/hmackey.bin --dtdfile $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
@@ -211,7 +211,7 @@ execDSigTest "merlin-xmldsig-twenty-three/signature-x509-crt-crl" \
     "--trusted $topfolder/merlin-xmldsig-twenty-three/certs/ca.pem"
 
 execDSigTest "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted $topfolder/keys/cacert.pem --allowed x509" 
+    "--trusted $topfolder/keys/cacert.pem --allowed-key-data x509" 
 
     
 rm -rf $tmpfile

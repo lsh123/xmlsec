@@ -265,12 +265,15 @@ static xmlSecAppCmdLineParam pwdParam = {
     NULL
 };    
 
-static xmlSecAppCmdLineParam allowedParam = { 
+static xmlSecAppCmdLineParam allowedKeyDataParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
-    "--allowed",
+    "--allowed-key-data",
     NULL,
-    "--allowed <list>"
-    "\n\tcomma separated list of allowed key origins",
+    "--allowed-key-data <list>"
+    "\n\tcomma separated list of allowed key data (possible"
+    "\n\tvalues are: \"key-name\",\"key-value\",\"rsa\",\"dsa\",\"aes\","
+    "\n\t\"x509\",\"pgp\",...); by default, all registered key"
+    "\n\tdata are allowed",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
@@ -569,7 +572,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &nodeXPathParam,
     
     /* Keys Manager params */
-    &allowedParam,
+    &allowedKeyDataParam,
     &genKeyParam,
     &keysParam,
     &privkeyParam,
@@ -1191,9 +1194,10 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     }
 
     /* read allowed key data list */
-    for(value = allowedParam.value; value != NULL; value = value->next) {
+    for(value = allowedKeyDataParam.value; value != NULL; value = value->next) {
 	if(value->strListValue == NULL) {
-	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", allowedParam.fullName);
+	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
+		    allowedKeyDataParam.fullName);
 	    return(-1);
 	} else {
 	    const char* p;
@@ -1371,12 +1375,6 @@ xmlSecAppLoadKeys(void) {
     }
 
 #endif /* XMLSEC_NO_X509 */    
-
-#if TODO
-    &allowedParam,
-    &verificationTimeParam,
-    &depthParam,    
-#endif /* TODO */
 
     return(0);
 }

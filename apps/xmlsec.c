@@ -269,27 +269,29 @@ static xmlSecAppCmdLineParam pwdParam = {
     NULL
 };    
 
-static xmlSecAppCmdLineParam allowedKeyDataParam = { 
+static xmlSecAppCmdLineParam enabledKeyDataParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
-    "--allowed-key-data",
+    "--enabled-key-data",
     NULL,
-    "--allowed-key-data <list>"
-    "\n\tcomma separated list of allowed key data (possible"
+    "--enabled-key-data <list>"
+    "\n\tcomma separated list of enabled key data (possible"
     "\n\tvalues are: \"key-name\",\"key-value\",\"rsa\",\"dsa\",\"aes\","
     "\n\t\"x509\",\"pgp\",...); by default, all registered key"
-    "\n\tdata are allowed",
+    "\n\tdata are enabled",
     xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagParamNameValue | xmlSecAppCmdLineParamFlagMultipleValues,
     NULL
 };
 
-static xmlSecAppCmdLineParam allowedRetrievalMethodUrisParam = { 
+static xmlSecAppCmdLineParam enabledRetrievalMethodUrisParam = { 
     xmlSecAppCmdLineTopicKeysMngr,
-    "--allowed-retrieval-method-uris",
+    "--enabled-retrieval-method-uris",
     NULL,
-    "--allowed-retrieval-uris [empty-local|local|all]"
-    "\n\trestricts possible URI attribute values for the <dsig:RetrievalMethod> element",
-    xmlSecAppCmdLineParamTypeString,
+    "--enabled-retrieval-uris <list>"
+    "\n\tcomma separated list of of the following values:\n"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI\n"
+    "\n\tattribute values for the <dsig:RetrievalMethod> element.",
+    xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
@@ -464,13 +466,15 @@ static xmlSecAppCmdLineParam storeAllParam = {
  *
  ***************************************************************/
 #ifndef XMLSEC_NO_XMLENC
-static xmlSecAppCmdLineParam allowedCipherRefUrisParam = { 
+static xmlSecAppCmdLineParam enabledCipherRefUrisParam = { 
     xmlSecAppCmdLineTopicEncCommon,
-    "--allowed-cipher-reference-uris",
+    "--enabled-cipher-reference-uris",
     NULL,
-    "--allowed-cipher-reference-uris [empty-local|local|all]"
-    "\n\trestricts possible URI attribute values for the <enc:CipherReference> element",
-    xmlSecAppCmdLineParamTypeString,
+    "--enabled-cipher-reference-uris <list>"
+    "\n\tcomma separated list of of the following values:\n"
+    "\n\t\"empty\", \"same-doc\", \"local\",\"remote\" to restrict possible URI\n"
+    "\n\tattribute values for the <enc:CipherReference> element",
+    xmlSecAppCmdLineParamTypeStringList,
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
@@ -575,7 +579,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #ifndef XMLSEC_NO_XMLENC
     &binaryDataParam,
     &xmlDataParam,
-    &allowedCipherRefUrisParam,
+    &enabledCipherRefUrisParam,
 #endif /* XMLSEC_NO_XMLENC */
              
     /* common dsig and enc parameters */
@@ -589,8 +593,8 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
     &nodeXPathParam,
     
     /* Keys Manager params */
-    &allowedKeyDataParam,
-    &allowedRetrievalMethodUrisParam,
+    &enabledKeyDataParam,
+    &enabledRetrievalMethodUrisParam,
     &genKeyParam,
     &keysFileParam,
     &privkeyParam,
@@ -1268,12 +1272,12 @@ xmlSecAppPrepareEncCtx(xmlSecEncCtxPtr encCtx) {
 	}
     }
 
-    if(xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam) != NULL) {
-	encCtx->encTransformCtx.allowedUris = xmlSecAppGetUriType(
-		    xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam));
-	if(encCtx->encTransformCtx.allowedUris == xmlSecTransformUriTypeNone) {
+    if(xmlSecAppCmdLineParamGetStringList(&enabledCipherRefUrisParam) != NULL) {
+	encCtx->encTransformCtx.enabledUris = xmlSecAppGetUriType(
+		    xmlSecAppCmdLineParamGetStringList(&enabledCipherRefUrisParam));
+	if(encCtx->encTransformCtx.enabledUris == xmlSecTransformUriTypeNone) {
 	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
-		    xmlSecAppCmdLineParamGetString(&allowedCipherRefUrisParam));
+		    xmlSecAppCmdLineParamGetStringList(&enabledCipherRefUrisParam));
 	    return(-1);
 	}
     }
@@ -1333,11 +1337,11 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	keyInfoCtx->certsVerificationDepth = xmlSecAppCmdLineParamGetInt(&depthParam, 0);
     }
 
-    /* read allowed key data list */
-    for(value = allowedKeyDataParam.value; value != NULL; value = value->next) {
+    /* read enabled key data list */
+    for(value = enabledKeyDataParam.value; value != NULL; value = value->next) {
 	if(value->strListValue == NULL) {
 	    fprintf(stderr, "Error: invalid value for option \"%s\".\n", 
-		    allowedKeyDataParam.fullName);
+		    enabledKeyDataParam.fullName);
 	    return(-1);
 	} else {
 	    const char* p;
@@ -1352,13 +1356,13 @@ xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
 	}
     }
 
-    /* read allowed RetrievalMethod uris */
-    if(xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam) != NULL) {
-	keyInfoCtx->allowedRetrievalMethodUris = xmlSecAppGetUriType(
-		    xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam));
-	if(keyInfoCtx->allowedRetrievalMethodUris == xmlSecTransformUriTypeNone) {
+    /* read enabled RetrievalMethod uris */
+    if(xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam) != NULL) {
+	keyInfoCtx->enabledRetrievalMethodUris = xmlSecAppGetUriType(
+		    xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam));
+	if(keyInfoCtx->enabledRetrievalMethodUris == xmlSecTransformUriTypeNone) {
 	    fprintf(stderr, "Error: failed to parse \"%s\"\n",
-		    xmlSecAppCmdLineParamGetString(&allowedRetrievalMethodUrisParam));
+		    xmlSecAppCmdLineParamGetStringList(&enabledRetrievalMethodUrisParam));
 	    return(-1);
 	}
     }
@@ -1870,15 +1874,24 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
 
 static xmlSecTransformUriType 
 xmlSecAppGetUriType(const char* string) {
-    if((string == NULL) || (strcmp(string, "all") == 0)) {
-	return(xmlSecTransformUriTypeAny);
-    } else if(strcmp(string, "empty-local") == 0) {
-	return(xmlSecTransformUriTypeLocalEmpty);
-    } else if(strcmp(string, "local") == 0) {
-	return(xmlSecTransformUriTypeLocalEmpty | xmlSecTransformUriTypeLocalXPointer);
+    xmlSecTransformUriType type = xmlSecTransformUriTypeNone;
+    
+    while((string != NULL) && (string[0] != '\0')) {
+	if(strcmp(string, "empty") == 0) {
+	    type |= xmlSecTransformUriTypeEmpty;
+	} else if(strcmp(string, "same-doc") == 0) {
+	    type |= xmlSecTransformUriTypeSameDocument;
+	} else if(strcmp(string, "local") == 0) {
+	    type |= xmlSecTransformUriTypeLocal;
+	} else if(strcmp(string, "remote") == 0) {
+	    type |= xmlSecTransformUriTypeRemote;
+	} else {
+	    fprintf(stderr, "Error: invalid uri type: \"%s\"\n", string);
+	    return(xmlSecTransformUriTypeNone);
+	}
+	string += strlen(string) + 1;
     }
-    fprintf(stderr, "Error: invalid uri type: \"%s\"\n", string);
-    return(xmlSecTransformUriTypeNone);
+    return(type);
 }
 
 static FILE* 

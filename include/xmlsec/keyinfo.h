@@ -47,13 +47,13 @@ struct _xmlSecKeyInfoCtx {
     xmlSecKeyInfoMode			mode;
     xmlSecKeysMngrPtr			keysMngr;
     int					base64LineSize;
-    xmlSecPtrListPtr			allowedKeyDataIds;
+    xmlSecPtrListPtr			enabledKeyDataIds;
     int					stopWhenKeyFound;
     int					stopWhenUnknownNodeFound;
         
     /* RetrievalMethod */
     xmlSecTransformCtxPtr		retrievalMethodTransformCtx;
-    xmlSecTransformUriType		allowedRetrievalMethodUris;
+    xmlSecTransformUriType		enabledRetrievalMethodUris;
     int 				maxRetrievalMethodLevel;
     int					stopWhenUnknownRetrievalMethodHrefFound;
 

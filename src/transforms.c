@@ -238,9 +238,11 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
     xmlSecTransformUriType uriType = 0;
 
     if((uri == NULL) || (xmlStrlen(uri) == 0)) {
-	uriType = xmlSecTransformUriTypeLocalEmpty;
+	uriType = xmlSecTransformUriTypeEmpty;
     } else if(uri[0] == '#') {
-	uriType = xmlSecTransformUriTypeLocalXPointer;
+	uriType = xmlSecTransformUriTypeSameDocument;
+    } else if(xmlStrncmp(uri, BAD_CAST "file://", 7) == 0) {
+	uriType = xmlSecTransformUriTypeLocal;
     } else {
 	uriType = xmlSecTransformUriTypeRemote;
     }    
@@ -298,7 +300,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
     
     memset(ctx, 0, sizeof(xmlSecTransformCtx));
 
-    ret = xmlSecPtrListInitialize(&(ctx->allowedTransforms), xmlSecTransformIdListId);
+    ret = xmlSecPtrListInitialize(&(ctx->enabledTransforms), xmlSecTransformIdListId);
     if(ret < 0) { 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -308,7 +310,7 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
 	return(-1);
     }
 
-    ctx->allowedUris = xmlSecTransformUriTypeAny;
+    ctx->enabledUris = xmlSecTransformUriTypeAny;
     return(0);
 }
 
@@ -317,7 +319,7 @@ xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
     
     xmlSecTransformCtxReset(ctx);
-    xmlSecPtrListFinalize(&(ctx->allowedTransforms));
+    xmlSecPtrListFinalize(&(ctx->enabledTransforms));
     memset(ctx, 0, sizeof(xmlSecTransformCtx));
 }
 
@@ -358,8 +360,8 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     dst->userData 	= src->userData;  
     dst->flags1		= src->flags1;  
     dst->flags2		= src->flags2;  
-    dst->allowedUris	= src->allowedUris;
-    ret = xmlSecPtrListCopy(&(dst->allowedTransforms), &(src->allowedTransforms));
+    dst->enabledUris	= src->enabledUris;
+    ret = xmlSecPtrListCopy(&(dst->enabledTransforms), &(src->enabledTransforms));
     if(ret < 0) { 
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -629,7 +631,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     xmlSecAssert2(hereNode != NULL, -1);
 
     /* check uri */
-    if(xmlSecTransformUriTypeCheck(ctx->allowedUris, uri) != 1) {
+    if(xmlSecTransformUriTypeCheck(ctx->enabledUris, uri) != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    NULL,
@@ -1209,9 +1211,9 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
 	return(NULL);		
     }
 
-    /* check with allowed transforms list */
-    if((xmlSecPtrListGetSize(&(transformCtx->allowedTransforms)) > 0) &&
-       (xmlSecTransformIdListFind(&(transformCtx->allowedTransforms), id) != 1)) {
+    /* check with enabled transforms list */
+    if((xmlSecPtrListGetSize(&(transformCtx->enabledTransforms)) > 0) &&
+       (xmlSecTransformIdListFind(&(transformCtx->enabledTransforms), id) != 1)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(id)),

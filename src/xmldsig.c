@@ -140,7 +140,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     dsigCtx->storeReferences  = 0;
     dsigCtx->storeManifests   = 0;
     
-    dsigCtx->allowedReferenceUris = xmlSecTransformUriTypeAny;
+    dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeAny;
     /* TODO: set other values */	    
     return(0);
 }
@@ -155,8 +155,8 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecPtrListFinalize(&(dsigCtx->references));
     xmlSecPtrListFinalize(&(dsigCtx->manifests));
 
-    if(dsigCtx->allowedReferenceTransforms != NULL) {
-	xmlSecPtrListDestroy(dsigCtx->allowedReferenceTransforms);	
+    if(dsigCtx->enabledReferenceTransforms != NULL) {
+	xmlSecPtrListDestroy(dsigCtx->enabledReferenceTransforms);	
     }
     if((dsigCtx->dontDestroyC14NMethod == 0) && (dsigCtx->c14nMethod != NULL)) {
 	xmlSecTransformDestroy(dsigCtx->c14nMethod);
@@ -1118,9 +1118,9 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     }
     
     /* copy enabled transforms */
-    if(dsigCtx->allowedReferenceTransforms != NULL) {
-	ret = xmlSecPtrListCopy(&(dsigRefCtx->digestTransformCtx.allowedTransforms), 
-				     dsigCtx->allowedReferenceTransforms);
+    if(dsigCtx->enabledReferenceTransforms != NULL) {
+	ret = xmlSecPtrListCopy(&(dsigRefCtx->digestTransformCtx.enabledTransforms), 
+				     dsigCtx->enabledReferenceTransforms);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -1131,7 +1131,7 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
 	}
     }    
     
-    dsigRefCtx->digestTransformCtx.allowedUris = dsigCtx->allowedReferenceUris;
+    dsigRefCtx->digestTransformCtx.enabledUris = dsigCtx->enabledReferenceUris;
     return(0);
 }
 
@@ -1222,7 +1222,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     dsigRefCtx->id  = xmlGetProp(node, xmlSecAttrId);
     dsigRefCtx->type= xmlGetProp(node, xmlSecAttrType);
 
-    /* set start URI (and check that it is allowed!) */
+    /* set start URI (and check that it is enabled!) */
     ret = xmlSecTransformCtxSetUri(transformCtx, dsigRefCtx->uri, node);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

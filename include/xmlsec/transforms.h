@@ -99,9 +99,10 @@ typedef enum  {
  *************************************************************************/
 typedef unsigned int				xmlSecTransformUriType;
 #define xmlSecTransformUriTypeNone		0x0000
-#define xmlSecTransformUriTypeLocalEmpty	0x0001
-#define xmlSecTransformUriTypeLocalXPointer	0x0002		
-#define xmlSecTransformUriTypeRemote		0x0004
+#define xmlSecTransformUriTypeEmpty		0x0001
+#define xmlSecTransformUriTypeSameDocument	0x0002		
+#define xmlSecTransformUriTypeLocal		0x0004
+#define xmlSecTransformUriTypeRemote		0x0008
 #define xmlSecTransformUriTypeAny		0xFFFF
 XMLSEC_EXPORT int 			xmlSecTransformUriTypeCheck	(xmlSecTransformUriType type,
 									 const xmlChar* uri);
@@ -172,8 +173,8 @@ struct _xmlSecTransformCtx {
     void*				userData;
     unsigned int			flags1;
     unsigned int			flags2;
-    xmlSecTransformUriType		allowedUris;
-    xmlSecPtrList			allowedTransforms;
+    xmlSecTransformUriType		enabledUris;
+    xmlSecPtrList			enabledTransforms;
 
     /* results */
     xmlSecBufferPtr			result;

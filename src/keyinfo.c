@@ -97,8 +97,8 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
 	nodeNs = xmlSecGetNodeNsHref(cur);
 	
 	/* use global list only if we don't have a local one */
-	if(keyInfoCtx->allowedKeyDataIds != NULL) {
-	    dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->allowedKeyDataIds,
+	if(keyInfoCtx->enabledKeyDataIds != NULL) {
+	    dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->enabledKeyDataIds,
 			    nodeName, nodeNs, xmlSecKeyDataUsageKeyInfoNodeRead);
 	} else {	
     	    dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
@@ -166,8 +166,8 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
 	nodeNs = xmlSecGetNodeNsHref(cur);
 
 	/* use global list only if we don't have a local one */
-	if(keyInfoCtx->allowedKeyDataIds != NULL) {
-        	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->allowedKeyDataIds,
+	if(keyInfoCtx->enabledKeyDataIds != NULL) {
+        	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->enabledKeyDataIds,
 			    nodeName, nodeNs, 
 			    xmlSecKeyDataUsageKeyInfoNodeWrite);
 	} else {
@@ -257,7 +257,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     keyInfoCtx->keysMngr 			= keysMngr;
     keyInfoCtx->stopWhenKeyFound		= 1;
     keyInfoCtx->maxRetrievalMethodLevel		= 1;
-    keyInfoCtx->allowedRetrievalMethodUris 	= xmlSecTransformUriTypeAny;
+    keyInfoCtx->enabledRetrievalMethodUris 	= xmlSecTransformUriTypeAny;
     keyInfoCtx->maxEncryptedKeyLevel 		= 1;
     keyInfoCtx->certsVerificationDepth 		= 9;
     
@@ -278,8 +278,8 @@ void
 xmlSecKeyInfoCtxFinalize(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert(keyInfoCtx != NULL);
     
-    if(keyInfoCtx->allowedKeyDataIds != NULL) {
-	xmlSecPtrListDestroy(keyInfoCtx->allowedKeyDataIds);
+    if(keyInfoCtx->enabledKeyDataIds != NULL) {
+	xmlSecPtrListDestroy(keyInfoCtx->enabledKeyDataIds);
     }
     if(keyInfoCtx->retrievalMethodTransformCtx != NULL) {
 	xmlSecTransformCtxDestroy(keyInfoCtx->retrievalMethodTransformCtx);
@@ -356,27 +356,27 @@ xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
     int ret;
     
     xmlSecAssert2(dst != NULL, -1);
-    xmlSecAssert2(dst->allowedKeyDataIds == NULL, -1);
+    xmlSecAssert2(dst->enabledKeyDataIds == NULL, -1);
     xmlSecAssert2(src != NULL, -1);
     
     dst->userData 	= src->userData;
     dst->keysMngr	= src->keysMngr;
     dst->base64LineSize	= src->base64LineSize;
 
-    if(src->allowedKeyDataIds != NULL) {
-	dst->allowedKeyDataIds = xmlSecPtrListDuplicate(src->allowedKeyDataIds);
-	if(dst->allowedKeyDataIds == NULL) {
+    if(src->enabledKeyDataIds != NULL) {
+	dst->enabledKeyDataIds = xmlSecPtrListDuplicate(src->enabledKeyDataIds);
+	if(dst->enabledKeyDataIds == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecPtrListDuplicate",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"allowedKeyDataIds");    
+			"enabledKeyDataIds");    
 	    return(-1);
 	}
     }
     
     dst->maxRetrievalMethodLevel= src->maxRetrievalMethodLevel;
-    dst->allowedRetrievalMethodUris= src->allowedRetrievalMethodUris;
+    dst->enabledRetrievalMethodUris= src->enabledRetrievalMethodUris;
     /* TODO: copy transormCtx? */
     
     dst->maxEncryptedKeyLevel	= src->maxEncryptedKeyLevel;
@@ -406,9 +406,9 @@ xmlSecKeyInfoCtxEnableKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeyDataId da
     xmlSecAssert2(keyInfoCtx != NULL, -1);
     xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, -1);
     
-    if(keyInfoCtx->allowedKeyDataIds == NULL) {
-	keyInfoCtx->allowedKeyDataIds = xmlSecPtrListCreate(xmlSecKeyDataIdListId);
-	if(keyInfoCtx->allowedKeyDataIds == NULL) {
+    if(keyInfoCtx->enabledKeyDataIds == NULL) {
+	keyInfoCtx->enabledKeyDataIds = xmlSecPtrListCreate(xmlSecKeyDataIdListId);
+	if(keyInfoCtx->enabledKeyDataIds == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecPtrListCreate",
@@ -418,7 +418,7 @@ xmlSecKeyInfoCtxEnableKeyData(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeyDataId da
 	}	
     }
     
-    ret = xmlSecPtrListAdd(keyInfoCtx->allowedKeyDataIds, (const xmlSecPtr)dataId);
+    ret = xmlSecPtrListAdd(keyInfoCtx->enabledKeyDataIds, (const xmlSecPtr)dataId);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -469,14 +469,14 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 
     fprintf(output, "= KEY INFO %s CONTEXT\n", 
 	    (keyInfoCtx->mode == xmlSecKeyInfoModeRead) ? "READ" : "WRITE");
-    if(keyInfoCtx->allowedKeyDataIds != NULL) {
+    if(keyInfoCtx->enabledKeyDataIds != NULL) {
 	xmlSecKeyDataId dataId;
 	size_t i, size;
 
-	fprintf(output, "== Allowed Key Data Ids:");
-	size = xmlSecPtrListGetSize(keyInfoCtx->allowedKeyDataIds);
+	fprintf(output, "== enabled Key Data Ids:");
+	size = xmlSecPtrListGetSize(keyInfoCtx->enabledKeyDataIds);
 	for(i = 0; i < size; ++i) {
-	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(keyInfoCtx->allowedKeyDataIds, i);
+	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(keyInfoCtx->enabledKeyDataIds, i);
 	    xmlSecAssert(dataId != NULL);
 	    xmlSecAssert(dataId->name != NULL);
 	    
@@ -488,7 +488,7 @@ xmlSecKeyInfoCtxDebugDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 	}
 	fprintf(output, "\n");
     } else {
-	fprintf(output, "== Allowed Key Data Ids: all\n");
+	fprintf(output, "== enabled Key Data Ids: all\n");
     }
     fprintf(output, "== RetrievalMethod level (cur/max): %d/%d\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
@@ -521,22 +521,22 @@ xmlSecKeyInfoCtxDebugXmlDump(xmlSecKeyInfoCtxPtr keyInfoCtx, FILE* output) {
 	    break;
     }
     	    
-    if(keyInfoCtx->allowedKeyDataIds != NULL) {
+    if(keyInfoCtx->enabledKeyDataIds != NULL) {
 	xmlSecKeyDataId dataId;
 	size_t i, size;
 
-	fprintf(output, "<AllowedKeyDataIds>\n");
-	size = xmlSecPtrListGetSize(keyInfoCtx->allowedKeyDataIds);
+	fprintf(output, "<EnabledKeyDataIds>\n");
+	size = xmlSecPtrListGetSize(keyInfoCtx->enabledKeyDataIds);
 	for(i = 0; i < size; ++i) {
-	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(keyInfoCtx->allowedKeyDataIds, i);
+	    dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(keyInfoCtx->enabledKeyDataIds, i);
 	    xmlSecAssert(dataId != NULL);
 	    xmlSecAssert(dataId->name != NULL);
 	    
 	    fprintf(output, "<DataId name=\"%s\" />", dataId->name);
 	}
-	fprintf(output, "</AllowedKeyDataIds>\n");
+	fprintf(output, "</EnabledKeyDataIds>\n");
     } else {
-	fprintf(output, "<AllowedKeyDataIds type=\"all\" />\n");
+	fprintf(output, "<EnabledKeyDataIds type=\"all\" />\n");
     }
     fprintf(output, "<RetrievalMethodLevel cur=\"%d\" max=\"%d\" />\n",
 	    keyInfoCtx->curRetrievalMethodLevel, 
@@ -801,8 +801,8 @@ xmlSecKeyDataValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
     nodeNs = xmlSecGetNodeNsHref(cur);
 
     /* use global list only if we don't have a local one */
-    if(keyInfoCtx->allowedKeyDataIds != NULL) {
-	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->allowedKeyDataIds,
+    if(keyInfoCtx->enabledKeyDataIds != NULL) {
+	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->enabledKeyDataIds,
 			    nodeName, nodeNs, xmlSecKeyDataUsageKeyValueNodeRead);
     } else {	
     	dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),
@@ -865,10 +865,10 @@ xmlSecKeyDataValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node
 	/* nothing to write */
 	return(0);
     }
-    if((keyInfoCtx->allowedKeyDataIds != NULL) && 
-        !xmlSecKeyDataIdListFind(keyInfoCtx->allowedKeyDataIds, id)) {
+    if((keyInfoCtx->enabledKeyDataIds != NULL) && 
+        !xmlSecKeyDataIdListFind(keyInfoCtx->enabledKeyDataIds, id)) {
 
-	/* we are not allowed to write out key data with this id */
+	/* we are not enabled to write out key data with this id */
 	return(0);
     }
     if(xmlSecKeyReqMatchKey(&(keyInfoCtx->keyReq), key) != 1) {
@@ -1014,9 +1014,9 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	goto done;
     }
-    keyInfoCtx->retrievalMethodTransformCtx->allowedUris = keyInfoCtx->allowedRetrievalMethodUris;
+    keyInfoCtx->retrievalMethodTransformCtx->enabledUris = keyInfoCtx->enabledRetrievalMethodUris;
 
-    /* set start URI and check that it is allowed */
+    /* set start URI and check that it is enabled */
     uri = xmlGetProp(node, xmlSecAttrURI);
     ret = xmlSecTransformCtxSetUri(keyInfoCtx->retrievalMethodTransformCtx, uri, node);
     if(ret < 0) {
@@ -1072,8 +1072,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
     retrType = xmlGetProp(node, xmlSecAttrType);
     if(retrType != NULL) {
 	/* use global list only if we don't have a local one */
-	if(keyInfoCtx->allowedKeyDataIds != NULL) {
-	    dataId = xmlSecKeyDataIdListFindByHref(keyInfoCtx->allowedKeyDataIds,
+	if(keyInfoCtx->enabledKeyDataIds != NULL) {
+	    dataId = xmlSecKeyDataIdListFindByHref(keyInfoCtx->enabledKeyDataIds,
 			    retrType, xmlSecKeyDataUsageRetrievalMethodNode);
 	} else {	
     	    dataId = xmlSecKeyDataIdListFindByHref(xmlSecKeyDataIdsGet(),
@@ -1188,8 +1188,8 @@ xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId, xmlSecKeyPtr k
     nodeNs = xmlSecGetNodeNsHref(cur);
 
     /* use global list only if we don't have a local one */
-    if(keyInfoCtx->allowedKeyDataIds != NULL) {
-	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->allowedKeyDataIds,
+    if(keyInfoCtx->enabledKeyDataIds != NULL) {
+	dataId = xmlSecKeyDataIdListFindByNode(keyInfoCtx->enabledKeyDataIds,
 			    nodeName, nodeNs, xmlSecKeyDataUsageRetrievalMethodNodeXml);
     } else {	
     	dataId = xmlSecKeyDataIdListFindByNode(xmlSecKeyDataIdsGet(),

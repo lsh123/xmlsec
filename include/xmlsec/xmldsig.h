@@ -62,8 +62,8 @@ struct _xmlSecDSigCtx {
     int				storeReferences;
     int				storeManifests;	
 
-    xmlSecTransformUriType	allowedReferenceUris;
-    xmlSecPtrListPtr		allowedReferenceTransforms;
+    xmlSecTransformUriType	enabledReferenceUris;
+    xmlSecPtrListPtr		enabledReferenceTransforms;
     
     /* these data are returned */
     xmlSecTransformOperation	operation;

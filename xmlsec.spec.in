@@ -57,7 +57,7 @@ Requires: xmlsec1-devel = %{version}
 Requires: xmlsec1-nss = %{version}
 Requires: libxml2-devel >= @LIBXML_MIN_VERSION@
 Requires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
-Requires: mozilla-nss-devel >= @NSS_MIN_VERSION@
+Requires: mozilla-nss-devel >= @MOZILLA_MIN_VERSION@
 Requires: zlib-devel 
 
 %description nss-devel

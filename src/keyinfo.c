@@ -636,8 +636,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
        ((dataId->usage & xmlSecKeyDataUsageRetrievalMethodNodeXml) != 0)) {
 
 	ret = xmlSecKeyDataRetrievalMethodReadXmlResult(dataId, key,
-				    xmlBufferContent(state->curBuf),
-                            	    xmlBufferLength(state->curBuf),
+				    xmlSecBufferGetData(state->curBuf),
+                            	    xmlSecBufferGetSize(state->curBuf),
 				    keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -647,8 +647,8 @@ xmlSecKeyDataRetrievalMethodXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNod
 	}    
     } else {
 	ret = xmlSecKeyDataBinRead(dataId, key, 
-				    xmlBufferContent(state->curBuf),
-                            	    xmlBufferLength(state->curBuf),
+				    xmlSecBufferGetData(state->curBuf),
+                            	    xmlSecBufferGetSize(state->curBuf),
 				    keyInfoCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -863,8 +863,8 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     } 
 
     ret = xmlSecKeyDataBinRead(keyInfoCtx->keyId, key,
-			   xmlBufferContent(encResult->buffer),
-			   xmlBufferLength(encResult->buffer),
+			   xmlSecBufferGetData(encResult->buffer),
+			   xmlSecBufferGetSize(encResult->buffer),
 			   keyInfoCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

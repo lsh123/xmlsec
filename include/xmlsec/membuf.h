@@ -17,18 +17,52 @@ extern "C" {
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
-#include <xmlsec/transforms.h>
+typedef struct _xmlSecBuffer				xmlSecBuffer, *xmlSecBufferPtr;
 
-/**
- * xmlSecMemBuf:
+enum xmlSecAllocMode{
+    xmlSecAllocExact = 0,
+    xmlSecAllocDouble
+};
+
+/*****************************************************************************
  *
- * The memory buffer transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecMemBuf;
+ * xmlSecBuffer
+ *
+ ****************************************************************************/
+struct _xmlSecBuffer {
+    unsigned char* 	 data;
+    size_t 		 size;
+    size_t		 maxSize;
+    enum xmlSecAllocMode allocMode;
+};
 
-XMLSEC_EXPORT xmlBufferPtr	xmlSecMemBufTransformGetBuffer		
-							(xmlSecTransformPtr transform,
-							 int removeBuffer);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecBufferCreate		(size_t size);
+XMLSEC_EXPORT void		xmlSecBufferDestroy		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT int		xmlSecBufferInitialize		(xmlSecBufferPtr buf,
+								 size_t size);
+XMLSEC_EXPORT void		xmlSecBufferFinalize		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT unsigned char*	xmlSecBufferGetData		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT int		xmlSecBufferSetData		(xmlSecBufferPtr buf,
+								 const unsigned char* data,
+								 size_t size);
+XMLSEC_EXPORT size_t		xmlSecBufferGetSize		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT int		xmlSecBufferSetSize		(xmlSecBufferPtr buf,
+								 size_t size);
+XMLSEC_EXPORT size_t		xmlSecBufferGetMaxSize		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT int		xmlSecBufferSetMaxSize		(xmlSecBufferPtr buf,
+								 size_t size);
+XMLSEC_EXPORT void		xmlSecBufferEmpty		(xmlSecBufferPtr buf);
+XMLSEC_EXPORT int		xmlSecBufferAppend		(xmlSecBufferPtr buf,
+								 const unsigned char* data,
+								 size_t size);
+XMLSEC_EXPORT int		xmlSecBufferPrepend		(xmlSecBufferPtr buf,
+								 const unsigned char* data,
+								 size_t size);
+XMLSEC_EXPORT int		xmlSecBufferRemoveHead		(xmlSecBufferPtr buf,
+								 size_t size);
+XMLSEC_EXPORT int		xmlSecBufferRemoveTail		(xmlSecBufferPtr buf,
+								 size_t size);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

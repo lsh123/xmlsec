@@ -85,7 +85,7 @@ struct _xmlSecDSigResult {
     xmlSecReferenceResultPtr	lastSignRef;
     xmlSecReferenceResultPtr	firstManifestRef;
     xmlSecReferenceResultPtr	lastManifestRef; 
-    xmlBufferPtr		buffer;
+    xmlSecBufferPtr		buffer;
 };
 
 /**
@@ -129,7 +129,7 @@ struct _xmlSecReferenceResult {
     xmlChar			*id;
     xmlChar			*type;
     xmlSecTransformId		digestMethod;
-    xmlBufferPtr		buffer;
+    xmlSecBufferPtr		buffer;
 }; 
 
 

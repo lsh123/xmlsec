@@ -15,6 +15,7 @@ extern "C" {
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
+#include <xmlsec/membuf.h>
 
 /**
  * Forward declarations
@@ -416,11 +417,11 @@ XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugDump	(xmlSecKeyDataPtr data,
 XMLSEC_EXPORT void		xmlSecKeyDataBinaryValueDebugXmlDump	(xmlSecKeyDataPtr data,
 									 FILE* output);
 
-XMLSEC_EXPORT size_t		xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT xmlBufferPtr	xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data);
-XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
-								  const unsigned char* buf,
-								  size_t bufSize);
+XMLSEC_EXPORT size_t		xmlSecKeyDataBinaryValueGetSize		(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecKeyDataBinaryValueGetBuffer	(xmlSecKeyDataPtr data);
+XMLSEC_EXPORT int		xmlSecKeyDataBinaryValueSetBuffer	(xmlSecKeyDataPtr data,
+									 const unsigned char* buf,
+									 size_t bufSize);
 
 /**************************************************************************
  *

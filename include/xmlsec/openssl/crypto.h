@@ -21,7 +21,7 @@ extern "C" {
  */
 XMLSEC_EXPORT int		xmlSecOpenSSLInit			(void);
 XMLSEC_EXPORT int		xmlSecOpenSSLShutdown			(void);
-XMLSEC_EXPORT int		xmlSecOpenSSLGenerateRandom		(xmlBufferPtr buffer,
+XMLSEC_EXPORT int		xmlSecOpenSSLGenerateRandom		(xmlSecBufferPtr buffer,
 									 size_t sizeBytes);
 /********************************************************************
  *

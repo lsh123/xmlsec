@@ -461,7 +461,9 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     ret = xmlSecTransformWriteBin((xmlSecTransformPtr)state->first, 
 				  xmlBufferContent(buffer),
 				  xmlBufferLength(buffer));
-    xmlBufferFree(buffer); buffer = NULL;
+    xmlBufferEmpty(buffer); 
+    xmlBufferFree(buffer); 
+    buffer = NULL;
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -604,8 +606,8 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     if(!ctx->ignoreType && (res->type != NULL)) {
 	if(xmlStrEqual(res->type, xmlSecEncTypeElement)) {
 	    ret = xmlSecReplaceNodeBuffer(encNode, 
-				    xmlBufferContent(res->buffer),  
-				    xmlBufferLength(res->buffer));
+				    xmlSecBufferGetData(res->buffer),  
+				    xmlSecBufferGetSize(res->buffer));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -618,8 +620,8 @@ xmlSecDecrypt(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
 	} else if(xmlStrEqual(res->type, xmlSecEncTypeContent)) {
 	    /* replace the node with the buffer */
 	    ret = xmlSecReplaceNodeBuffer(encNode, 
-				       xmlBufferContent(res->buffer),
-				       xmlBufferLength(res->buffer));
+				       xmlSecBufferGetData(res->buffer),
+				       xmlSecBufferGetSize(res->buffer));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -732,8 +734,8 @@ xmlSecEncStateWriteResult(xmlSecEncStatePtr state, xmlNodePtr encNode,
     }
     
     ret = xmlSecCipherDataNodeWrite(state->cipherDataNode, 
-				xmlBufferContent(result->buffer), 
-				xmlBufferLength(result->buffer));
+				xmlSecBufferGetData(result->buffer), 
+				xmlSecBufferGetSize(result->buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -862,8 +864,7 @@ xmlSecEncResultDestroy(xmlSecEncResultPtr result) {
     }
 
     if(result->buffer != NULL) {
-	xmlBufferEmpty(result->buffer);
-	xmlBufferFree(result->buffer); 	
+	xmlSecBufferDestroy(result->buffer); 	
     }
 
     if(result->id != NULL) {
@@ -921,8 +922,8 @@ xmlSecEncResultDebugDump(xmlSecEncResultPtr result, FILE *output) {
 
     if(result->buffer != NULL) {
 	fprintf(output, "== start buffer:\n");
-	fwrite(xmlBufferContent(result->buffer), 
-	       xmlBufferLength(result->buffer), 1,
+	fwrite(xmlSecBufferGetData(result->buffer), 
+	       xmlSecBufferGetSize(result->buffer), 1,
 	       output);
 	fprintf(output, "\n== end buffer\n");
     }	    
@@ -967,8 +968,8 @@ xmlSecEncResultDebugXmlDump(xmlSecEncResultPtr result, FILE *output) {
 
     if(result->buffer != NULL) {
 	fprintf(output, "<Buffer>");
-	fwrite(xmlBufferContent(result->buffer), 
-	       xmlBufferLength(result->buffer), 1,
+	fwrite(xmlSecBufferGetData(result->buffer), 
+	       xmlSecBufferGetSize(result->buffer), 1,
 	       output);
 	fprintf(output, "</Buffer>\n");
     }	    

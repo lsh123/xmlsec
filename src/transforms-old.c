@@ -372,11 +372,11 @@ xmlSecTransformStateCreate(xmlDocPtr doc, xmlSecNodeSetPtr nodeSet,
     }
     memset(state, 0, sizeof(xmlSecTransformState));
     
-    state->curBuf = xmlBufferCreate();
+    state->curBuf = xmlSecBufferCreate(0);
     if(state->curBuf == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlBufferCreate");
+		    "xmlSecBufferCreate");
 	xmlSecTransformStateDestroy(state);
         return(NULL);
     }
@@ -407,8 +407,7 @@ xmlSecTransformStateDestroy(xmlSecTransformStatePtr state) {
 
     xmlSecTransformStateDestroyCurrentDoc(state);
     if(state->curBuf != NULL) {
-	xmlBufferEmpty(state->curBuf);
-	xmlBufferFree(state->curBuf);
+	xmlSecBufferDestroy(state->curBuf);
     }
     if(state->curFirstBinTransform != NULL) {
 	xmlSecTransformDestroyAll(state->curFirstBinTransform);
@@ -783,8 +782,8 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
 	    return(-1);
 	}
 	/* parse XML doc from memory */
-	state->curDoc = xmlSecParseMemory(xmlBufferContent(state->curBuf), 
-		    			  xmlBufferLength(state->curBuf), 1);
+	state->curDoc = xmlSecParseMemory(xmlSecBufferGetData(state->curBuf), 
+		    			  xmlSecBufferGetSize(state->curBuf), 1);
 	if(state->curDoc == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -792,7 +791,7 @@ xmlSecTransformCreateXml(xmlSecTransformStatePtr state) {
 	    return(-1);	    
 	}
 	/* do not forget to empty buffer! */
-	xmlBufferEmpty(state->curBuf);	
+	xmlSecBufferEmpty(state->curBuf);	
     } else {
 	/* 
 	 * do nothing because curDoc != NULL and there is no pending 
@@ -928,8 +927,7 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
 
     /* "reassign" the buffer */
     if(state->curBuf != NULL) {
-	xmlBufferEmpty(state->curBuf);
-	xmlBufferFree(state->curBuf);
+	xmlSecBufferDestroy(state->curBuf);
     }
     state->curBuf = xmlSecMemBufTransformGetBuffer(buffer, 1);
         
@@ -981,7 +979,7 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
     state->curFirstBinTransform = ptr;
 	
     /* empty the current buffer */
-    xmlBufferEmpty(state->curBuf);
+    xmlSecBufferEmpty(state->curBuf);
     
     do {
 	ret = xmlSecTransformReadBin(state->curLastBinTransform, buffer, XMLSEC_TRANSFORM_BUFFER_SIZE);
@@ -991,7 +989,7 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
 			"xmlSecTransformRead - %d", ret);
 	    return(-1);
 	} else if(ret > 0) {
-	    xmlBufferAdd(state->curBuf, buffer, ret);
+	    xmlSecBufferAppend(state->curBuf, buffer, ret);
 	}
     } while(ret > 0);
 

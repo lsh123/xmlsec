@@ -56,7 +56,7 @@ static int  	xmlSecRsaPkcs1SetKeyReq		(xmlSecTransformPtr transform,
 static int  	xmlSecRsaPkcs1SetKey		(xmlSecTransformPtr transform, 
 						 xmlSecKeyPtr key);
 static int  	xmlSecRsaPkcs1Process		(xmlSecBufferedTransformPtr buffered, 
-						 xmlBufferPtr buffer);
+						 xmlSecBufferPtr buffer);
 
 static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaPkcs1Id = {
     /* same as xmlSecTransformId */    
@@ -98,7 +98,7 @@ static int  	xmlSecRsaOaepSetKey		(xmlSecTransformPtr transform,
 static int 	xmlSecRsaOaepReadNode	 	(xmlSecTransformPtr transform,
 						 xmlNodePtr transformNode);
 static int  	xmlSecRsaOaepProcess		(xmlSecBufferedTransformPtr buffered, 
-						 xmlBufferPtr buffer);
+						 xmlSecBufferPtr buffer);
 
 static const struct _xmlSecBufferedTransformIdStruct xmlSecEncRsaOaepId = {
     /* same as xmlSecTransformId */    
@@ -487,7 +487,7 @@ xmlSecRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) {
+xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlSecBufferPtr buffer) {
     size_t size;
     int ret;    
 
@@ -503,16 +503,16 @@ xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer)
 	return(-1);
     }    
 
-    size = xmlBufferLength(buffer);
+    size = xmlSecBufferGetSize(buffer);
     if(buffered->encode) {
-	xmlBufferResize(buffer, RSA_size(xmlSecRsaPkcs1Rsa(buffered)));
-	ret = RSA_public_encrypt(size, xmlBufferContent(buffer),
-				 (unsigned char*)xmlBufferContent(buffer), 
+	xmlSecBufferSetMaxSize(buffer, RSA_size(xmlSecRsaPkcs1Rsa(buffered)));
+	ret = RSA_public_encrypt(size, xmlSecBufferGetData(buffer),
+				 (unsigned char*)xmlSecBufferGetData(buffer), 
 				 xmlSecRsaPkcs1Rsa(buffered),
 				 RSA_PKCS1_PADDING);
     } else if(size == (size_t)RSA_size(xmlSecRsaPkcs1Rsa(buffered))) {
-	ret = RSA_private_decrypt(size, xmlBufferContent(buffer),
-				 (unsigned char*)xmlBufferContent(buffer), 
+	ret = RSA_private_decrypt(size, xmlSecBufferGetData(buffer),
+				 (unsigned char*)xmlSecBufferGetData(buffer), 
 				 xmlSecRsaPkcs1Rsa(buffered),
 				 RSA_PKCS1_PADDING);
     } else {
@@ -527,7 +527,7 @@ xmlSecRsaPkcs1Process(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer)
 		    (buffered->encode) ? "RSA_public_encrypt" : "RSA_private_decrypt");
 	return(-1);	
     }
-    buffer->use = ret;
+    xmlSecBufferSetSize(buffer, ret);
     return(0);
 }
 
@@ -587,7 +587,7 @@ xmlSecRsaOaepDestroy(xmlSecTransformPtr transform) {
 	RSA_free(xmlSecRsaOaepRsa(buffered));
     } 
     if(buffered->reserved2 != NULL) {
-	xmlBufferFree((xmlBufferPtr)buffered->reserved2);
+	xmlSecBufferDestroy((xmlSecBufferPtr)buffered->reserved2);
     }   
     xmlSecBufferedDestroy(buffered);        
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -709,7 +709,7 @@ xmlSecRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) {
+xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlSecBufferPtr buffer) {
     size_t size;
     int rsa_size = 0;
     int ret;    
@@ -728,17 +728,17 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
     }    
     rsa = xmlSecRsaOaepRsa(buffered);
     rsa_size = RSA_size(rsa);
-    size = xmlBufferLength(buffer);
+    size = xmlSecBufferGetSize(buffer);
     if(buffered->encode) {
-	xmlBufferResize(buffer, rsa_size);
+	xmlSecBufferSetMaxSize(buffer, rsa_size);
 	
 	if(buffered->reserved2 == NULL) {    
 	    /* 
 	     * simple case: OAEPparams not specified
 	     * we can use standard OpenSSL function
 	     */
-    	    ret = RSA_public_encrypt(size, xmlBufferContent(buffer),  
-	                           (unsigned char*)xmlBufferContent(buffer), 
+    	    ret = RSA_public_encrypt(size, xmlSecBufferGetData(buffer),  
+	                           (unsigned char*)xmlSecBufferGetData(buffer), 
 				   rsa, RSA_PKCS1_OAEP_PADDING); 
 	    if(ret <= 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -748,18 +748,18 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	    }
 	} else {
 	    ret = RSA_padding_add_PKCS1_OAEP(
-			    (unsigned char*)xmlBufferContent(buffer), rsa_size, 
-			    xmlBufferContent(buffer), size,
-			    xmlBufferContent((xmlBufferPtr)buffered->reserved2), 
-			    xmlBufferLength((xmlBufferPtr)buffered->reserved2));
+			    (unsigned char*)xmlSecBufferGetData(buffer), rsa_size, 
+			    xmlSecBufferGetData(buffer), size,
+			    xmlSecBufferGetData((xmlSecBufferPtr)buffered->reserved2), 
+			    xmlSecBufferGetSize((xmlSecBufferPtr)buffered->reserved2));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    "RSA_padding_add_PKCS1_OAEP - %d", ret);
 		return(-1);
 	    }	
-	    ret = RSA_public_encrypt(rsa_size, xmlBufferContent(buffer),
-				 (unsigned char*)xmlBufferContent(buffer), 
+	    ret = RSA_public_encrypt(rsa_size, xmlSecBufferGetData(buffer),
+				 (unsigned char*)xmlSecBufferGetData(buffer), 
 				 rsa, RSA_NO_PADDING);
 	    if(ret <= 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -775,8 +775,8 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	     * simple case: OAEPparams not specified
 	     * we can use standard OpenSSL function
 	     */
-    	    ret = RSA_private_decrypt(size, xmlBufferContent(buffer),  
-	                           (unsigned char*)xmlBufferContent(buffer), 
+    	    ret = RSA_private_decrypt(size, xmlSecBufferGetData(buffer),  
+	                           (unsigned char*)xmlSecBufferGetData(buffer), 
 				   rsa, RSA_PKCS1_OAEP_PADDING); 
 	    if(ret <= 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -787,8 +787,8 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	} else {
 	    BIGNUM bn;
 	
-	    ret = RSA_private_decrypt(size, xmlBufferContent(buffer),
-				 (unsigned char*)xmlBufferContent(buffer), 
+	    ret = RSA_private_decrypt(size, xmlSecBufferGetData(buffer),
+				 (unsigned char*)xmlSecBufferGetData(buffer), 
 				 rsa, RSA_NO_PADDING);
 	    if(ret <= 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -804,20 +804,20 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 	     * buffer again
 	     */
 	    BN_init(&bn);
-	    if(BN_bin2bn(xmlBufferContent(buffer), ret, &bn) == NULL) {
+	    if(BN_bin2bn(xmlSecBufferGetData(buffer), ret, &bn) == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    "BN_bin2bn");
 		return(-1);		    
 	    }
-	    ret = BN_bn2bin(&bn, (unsigned char*)xmlBufferContent(buffer));
+	    ret = BN_bn2bin(&bn, (unsigned char*)xmlSecBufferGetData(buffer));
 	    BN_clear_free(&bn);
 	
 	    ret = RSA_padding_check_PKCS1_OAEP(
-			    (unsigned char*)xmlBufferContent(buffer), size, 
-			    xmlBufferContent(buffer), ret, rsa_size,
-			    xmlBufferContent((xmlBufferPtr)buffered->reserved2), 
-			    xmlBufferLength((xmlBufferPtr)buffered->reserved2));
+			    xmlSecBufferGetData(buffer), size, 
+			    xmlSecBufferGetData(buffer), ret, rsa_size,
+			    xmlSecBufferGetData((xmlSecBufferPtr)buffered->reserved2), 
+			    xmlSecBufferGetSize((xmlSecBufferPtr)buffered->reserved2));
 	    if(ret < 0) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -831,7 +831,7 @@ xmlSecRsaOaepProcess(xmlSecBufferedTransformPtr buffered,  xmlBufferPtr buffer) 
 		    "size %d != rsa size %d", size, rsa_size);
 	return(-1);	
     }
-    buffer->use = ret;
+    xmlSecBufferSetSize(buffer, ret);
     return(0);
 }
 

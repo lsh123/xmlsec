@@ -61,33 +61,28 @@ xmlSecOpenSSLShutdown(void) {
 }
 
 int
-xmlSecOpenSSLGenerateRandom(xmlBufferPtr buffer, size_t size) {	
+xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
     int ret;
     
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
-    /* clean up it just in case */
-    xmlBufferEmpty(buffer);
-    
-    ret = xmlBufferResize(buffer, size);
-    if(ret != 1) {
+    ret = xmlSecBufferSetSize(buffer, size);
+    if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "xmlBufferResize");
+		    "xmlSecBufferSetSize`");
 	return(-1);
     }
         
     /* get random data */
-    ret = RAND_bytes((unsigned char*)xmlBufferContent(buffer), size);
+    ret = RAND_bytes((unsigned char*)xmlSecBufferGetData(buffer), size);
     if(ret != 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    "RAND_bytes");
 	return(-1);    
     }	
-    
-    buffer->use = size;    
     return(0);
 }
 

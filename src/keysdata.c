@@ -459,11 +459,11 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
         
     /* create buffer */
     xmlSecAssert2(data->reserved0 == NULL, -1);
-    data->reserved0 = xmlBufferCreate();
+    data->reserved0 = xmlSecBufferCreate(0);
     if(data->reserved0 == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlBufferCreate");
+		    "xmlSecBufferCreate");
 	return(-1);
     }
     
@@ -472,7 +472,7 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
 
 int
 xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     int ret;
     
     xmlSecAssert2(xmlSecKeyDataIsValid(dst), -1);
@@ -483,8 +483,8 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     
     /* copy data */
     ret = xmlSecKeyDataBinaryValueSetBuffer(dst,
-		    xmlBufferContent(buffer),
-		    xmlBufferLength(buffer));
+		    xmlSecBufferGetData(buffer),
+		    xmlSecBufferGetSize(buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -502,8 +502,7 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
     /* destroy buffer */
     if(data->reserved0 != NULL) {
 	/* zero buffer before destroying */
-	xmlBufferEmpty((xmlBufferPtr)(data->reserved0));
-	xmlBufferFree((xmlBufferPtr)(data->reserved0));
+	xmlSecBufferDestroy((xmlSecBufferPtr)(data->reserved0));
 	data->reserved0 = NULL;
     }
 }
@@ -542,7 +541,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);
     if(data != NULL) {
-	xmlBufferPtr buffer;
+	xmlSecBufferPtr buffer;
 	
 	if(!xmlSecKeyDataCheckId(data, id)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -553,14 +552,14 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 	}
 	
 	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
-	if((buffer != NULL) && ((size_t)xmlBufferLength(buffer) != len)) {
+	if((buffer != NULL) && ((size_t)xmlSecBufferGetSize(buffer) != len)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a value of different size");
 	    xmlFree(str);
 	    return(-1);		
 	}
-	if((buffer != NULL) && (len > 0) && (memcmp(xmlBufferContent(buffer), str, len) != 0)) {
+	if((buffer != NULL) && (len > 0) && (memcmp(xmlSecBufferGetData(buffer), str, len) != 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a different value");
@@ -616,7 +615,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr
 
 int 
 xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     xmlChar* str;
     
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
@@ -634,8 +633,8 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    str = xmlSecBase64Encode(xmlBufferContent(buffer),
-			     xmlBufferLength(buffer),
+    str = xmlSecBase64Encode(xmlSecBufferGetData(buffer),
+			     xmlSecBufferGetSize(buffer),
 			     keyInfoCtx->base64LineSize);
     if(str == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -662,7 +661,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);
     if(data != NULL) {
-	xmlBufferPtr buffer;
+	xmlSecBufferPtr buffer;
 	
 	if(!xmlSecKeyDataCheckId(data, id)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -672,13 +671,13 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 	}
 	
 	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
-	if((buffer != NULL) && ((size_t)xmlBufferLength(buffer) != bufSize)) {
+	if((buffer != NULL) && ((size_t)xmlSecBufferGetSize(buffer) != bufSize)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a value of different size");
 	    return(-1);		
 	}
-	if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlBufferContent(buffer), buf, bufSize) != 0)) {
+	if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_INVALID_KEY_DATA,
 			"key already has a different value");
@@ -728,7 +727,7 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, const unsi
 
 int 
 xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned char** buf, size_t* bufSize, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(id != xmlSecKeyDataIdUnknown, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -746,7 +745,7 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    (*bufSize) = xmlBufferLength(buffer);
+    (*bufSize) = xmlSecBufferGetSize(buffer);
     (*buf) = (unsigned char*) xmlMalloc((*bufSize));
     if((*buf) == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -754,13 +753,13 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, unsigned 
 		    "%d", (*bufSize));
 	return(-1);
     }
-    memcpy((*buf), xmlBufferContent(buffer), (*bufSize));    
+    memcpy((*buf), xmlSecBufferGetData(buffer), (*bufSize));    
     return(0);
 }
 
 void 
 xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(data->id->dataNodeName != NULL);
@@ -776,7 +775,7 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
 
 void 
 xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(data->id->dataNodeName != NULL);
@@ -792,7 +791,7 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 size_t
 xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
     xmlSecAssert2(data->reserved0 != NULL, 0);
@@ -801,20 +800,20 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(buffer != NULL, 0);
 
     /* return size in bits */    
-    return(8 * xmlBufferLength(buffer));    
+    return(8 * xmlSecBufferGetSize(buffer));    
 }
 
-xmlBufferPtr 
+xmlSecBufferPtr 
 xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), NULL);
     xmlSecAssert2(data->reserved0 != NULL, NULL);
     
-    return((xmlBufferPtr)data->reserved0);    
+    return((xmlSecBufferPtr)data->reserved0);    
 }
 
 int
 xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(buf != NULL, -1);
@@ -823,10 +822,7 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, const unsigned char* bu
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
 
-    /* we might have private key here, so erasy the memory! */
-    xmlBufferEmpty(buffer);
-    xmlBufferAdd(buffer, buf, bufSize);
-    return(0);
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 
 /***********************************************************************
@@ -902,7 +898,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
 void
 xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
     xmlSecAssert(xmlSecKeyDataStoreIsValid(store));    
-    xmlSecAssert2(store->id->objSize > 0, NULL);
+    xmlSecAssert(store->id->objSize > 0);
     
     if(store->id->finalize != NULL) {  
         (store->id->finalize)(store);

@@ -22,6 +22,288 @@
 #include <xmlsec/membuf.h>
 #include <xmlsec/errors.h>
 
+/*****************************************************************************
+ *
+ * xmlSecBuffer
+ *
+ ****************************************************************************/
+xmlSecBufferPtr 
+xmlSecBufferCreate(size_t size) {
+    xmlSecBufferPtr buf;
+    int ret;
+    
+    buf = (xmlSecBufferPtr)xmlMalloc(sizeof(xmlSecBuffer));
+    if(buf == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "sizeof(xmlSecBuffer)=%d", sizeof(xmlSecBuffer));
+	return(NULL);
+    }
+
+    ret = xmlSecBufferInitialize(buf, size);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferInitialize(size=%d)", size);
+	xmlSecBufferDestroy(buf);
+	return(NULL);
+    }
+    
+    return(buf);
+}
+
+void 
+xmlSecBufferDestroy(xmlSecBufferPtr buf) {
+    xmlSecAssert(buf != NULL);
+    
+    xmlSecBufferFinalize(buf);
+    xmlFree(buf);
+}
+
+int 
+xmlSecBufferInitialize(xmlSecBufferPtr buf, size_t size) {
+    xmlSecAssert2(buf != NULL, -1);
+
+    buf->data = NULL;
+    buf->size = buf->maxSize = 0;
+    buf->allocMode = xmlSecAllocExact;
+        
+    return(xmlSecBufferSetMaxSize(buf, size));
+}
+
+void 
+xmlSecBufferFinalize(xmlSecBufferPtr buf) {
+    xmlSecAssert(buf != NULL);
+
+    xmlSecBufferEmpty(buf);    
+    if(buf->data != 0) {
+	xmlFree(buf->data);
+    }
+    buf->data = NULL;
+    buf->size = buf->maxSize = 0;
+}
+
+void
+xmlSecBufferEmpty(xmlSecBufferPtr buf) {
+    xmlSecAssert(buf != NULL);
+    
+    if(buf->data != 0) {
+	xmlSecAssert(buf->maxSize > 0);
+
+	memset(buf->data, 0, buf->maxSize);
+    }
+    buf->size = 0;
+}
+
+unsigned char* 
+xmlSecBufferGetData(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, NULL);
+    
+    return(buf->data);
+}
+
+int 
+xmlSecBufferSetData(xmlSecBufferPtr buf, const unsigned char* data, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buf != NULL, -1);
+
+    xmlSecBufferEmpty(buf);
+    if(size > 0) {
+	xmlSecAssert2(data != NULL, -1);
+    
+	ret = xmlSecBufferSetMaxSize(buf, size);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferSetMaxSize(size=%d)", size);
+	    return(-1);
+        }
+	
+	memcpy(buf->data, data, size);
+    }
+    
+    buf->size = size;    
+    return(0);
+}
+
+size_t 
+xmlSecBufferGetSize(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, 0);
+
+    return(buf->size);
+}
+
+int 
+xmlSecBufferSetSize(xmlSecBufferPtr buf, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buf != NULL, -1);
+
+    ret = xmlSecBufferSetMaxSize(buf, size);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferSetMaxSize(size=%d)", size);
+	return(-1);
+    }
+    
+    
+    buf->size = size;
+    return(0);
+}
+
+size_t 
+xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
+    xmlSecAssert2(buf != NULL, 0);
+
+    return(buf->maxSize);
+}
+
+int 
+xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, size_t size) {
+    unsigned char* newData;
+    size_t newSize;
+    
+    xmlSecAssert2(buf != NULL, -1);
+    if(size <= buf->maxSize) {
+	return(0);
+    }
+    
+    switch(buf->allocMode) {
+	case xmlSecAllocExact:
+	    newSize = size + 8;
+	    break;
+	case xmlSecAllocDouble:
+	    newSize = 2 * size + 8;
+	    break;
+	default:
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"unknown allocation mode %d", buf->allocMode);
+	    return(-1);
+    }
+    
+    newData = (unsigned char*)xmlRealloc(buf->data, newSize);
+    if(newData == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", newSize);
+	return(-1);
+    }
+    
+    buf->data = newData;
+    buf->maxSize = newSize;
+
+    if(buf->size < buf->maxSize) {
+	xmlSecAssert2(buf->data != NULL, -1);
+	memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+    }
+    
+    return(0);
+}
+
+
+int 
+xmlSecBufferAppend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buf != NULL, -1);
+
+    if(size > 0) {
+	xmlSecAssert2(data != NULL, -1);
+    
+        ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferSetMaxSize(size=%d)", buf->size + size);
+	    return(-1);
+	}
+	
+	memcpy(buf->data + buf->size, data, size);
+	buf->size += size;    
+    }
+    
+    return(0);
+}
+
+int
+xmlSecBufferPrepend(xmlSecBufferPtr buf, const unsigned char* data, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buf != NULL, -1);
+
+    if(size > 0) {
+	xmlSecAssert2(data != NULL, -1);
+    
+	ret = xmlSecBufferSetMaxSize(buf, buf->size + size);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferSetMaxSize(size=%d)", buf->size + size);
+	    return(-1);
+	}
+
+	memmove(buf->data + size, buf->data, buf->size);	
+	memcpy(buf->data, data, size);
+	buf->size += size;    
+    }
+    
+    return(0);
+}
+
+int 
+xmlSecBufferRemoveHead(xmlSecBufferPtr buf, size_t size) {
+    xmlSecAssert2(buf != NULL, -1);
+    
+    if(size < buf->size) {
+	xmlSecAssert2(buf->data != NULL, -1);
+	
+	buf->size -= size;
+	memmove(buf->data, buf->data + size, buf->size);
+    } else {
+	buf->size = 0;
+    }
+    if(buf->size < buf->maxSize) {
+	xmlSecAssert2(buf->data != NULL, -1);
+	memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+    }
+    return(0);
+}
+
+int 
+xmlSecBufferRemoveTail(xmlSecBufferPtr buf, size_t size) {
+    xmlSecAssert2(buf != NULL, -1);
+
+    if(size < buf->size) {
+	buf->size -= size;
+    } else {
+	buf->size = 0;
+    }
+    if(buf->size < buf->maxSize) {
+	xmlSecAssert2(buf->data != NULL, -1);
+	memset(buf->data + buf->size, 0, buf->maxSize - buf->size);
+    }
+    return(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 static xmlSecTransformPtr xmlSecMemBufTransformCreate	(xmlSecTransformId id);
 static void		xmlSecMemBufTransformDestroy	(xmlSecTransformPtr transform);
 static int  		xmlSecMemBufTransformRead	(xmlSecTransformPtr transform, 
@@ -64,12 +346,12 @@ xmlSecTransformId xmlSecMemBuf = (xmlSecTransformId)&xmlSecMemBufTransformId;
  * 
  * Gets the memory transform buffer. 
  *
- * Returns the xmlBufferPtr. If @removeBuffer is set to 1 then the buffer 
+ * Returns the xmlSecBufferPtr. If @removeBuffer is set to 1 then the buffer 
  * is removed from transform and the caller is responsible for freeing it
  */
-xmlBufferPtr
+xmlSecBufferPtr
 xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
-    xmlBufferPtr ptr;
+    xmlSecBufferPtr ptr;
 
     xmlSecAssert2(transform != NULL, NULL);
     
@@ -80,7 +362,7 @@ xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
 	return(NULL);
     }
     
-    ptr = (xmlBufferPtr)(transform->reserved0);
+    ptr = (xmlSecBufferPtr)(transform->reserved0);
     if(removeBuffer) {
 	transform->reserved0 = NULL;
     }
@@ -135,8 +417,7 @@ xmlSecMemBufTransformDestroy(xmlSecTransformPtr transform) {
     }
     
     if(transform->reserved0 != NULL) {
-	xmlBufferEmpty((xmlBufferPtr)(transform->reserved0));
-	xmlBufferFree((xmlBufferPtr)(transform->reserved0)); 
+	xmlSecBufferDestroy((xmlSecBufferPtr)(transform->reserved0)); 
     }    
     memset(transform, 0, sizeof(xmlSecTransform));
     xmlFree(transform);    
@@ -179,16 +460,16 @@ xmlSecMemBufTransformRead(xmlSecTransformPtr transform,
     }
     
     if(transform->reserved0 == NULL) {
-	transform->reserved0 = xmlBufferCreate();
+	transform->reserved0 = xmlSecBufferCreate(0);
 	if(transform->reserved0 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);
 	}
     }
     
-    xmlBufferAdd((xmlBufferPtr)(transform->reserved0), buf, ret);
+    xmlSecBufferAppend((xmlSecBufferPtr)(transform->reserved0), buf, ret);
     return(ret);
 }
 
@@ -198,7 +479,7 @@ xmlSecMemBufTransformRead(xmlSecTransformPtr transform,
 static int
 xmlSecMemBufTransformWrite(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
-    xmlBufferPtr ptr;
+    xmlSecBufferPtr ptr;
     int ret;
             
     xmlSecAssert2(transform != NULL, -1);
@@ -217,20 +498,20 @@ xmlSecMemBufTransformWrite(xmlSecTransformPtr transform,
     }
     
     if(transform->reserved0 == NULL) {
-	transform->reserved0 = ptr = xmlBufferCreate();
+	transform->reserved0 = ptr = xmlSecBufferCreate(0);
 	if(transform->reserved0 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		        XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);
 	}
     } else {
-	ptr = (xmlBufferPtr)(transform->reserved0);
+	ptr = (xmlSecBufferPtr)(transform->reserved0);
     }
     
     if(transform->next == NULL) {
 	/* nothing to write to */
-	xmlBufferAdd(ptr, buf, size);	
+	xmlSecBufferAppend(ptr, buf, size);	
 	return(size);
     }
     
@@ -242,7 +523,7 @@ xmlSecMemBufTransformWrite(xmlSecTransformPtr transform,
 	return(-1);
     }
 
-    xmlBufferAdd(ptr, buf, ret);
+    xmlSecBufferAppend(ptr, buf, ret);
     return(ret);
 }
 

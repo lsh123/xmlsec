@@ -436,7 +436,7 @@ xmlSecMacHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInf
 static int
 xmlSecMacHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecDigestTransformPtr digest;
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     const EVP_MD *md = NULL;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMacHmacSha1) || xmlSecTransformCheckId(transform, xmlSecMacHmacRipeMd160) || xmlSecTransformCheckId(transform, xmlSecMacHmacMd5), -1);
@@ -448,11 +448,11 @@ xmlSecMacHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    if((size_t)xmlBufferLength(buffer) < 1) {
+    if((size_t)xmlSecBufferGetSize(buffer) < 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "%d bytes < %d bytes", 
-		    xmlBufferLength(buffer),
+		    xmlSecBufferGetSize(buffer),
 		    1);
 	return(-1);    
     }
@@ -471,8 +471,8 @@ xmlSecMacHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     }
 
     HMAC_Init(xmlSecMacHmacContext(digest), 
-		xmlBufferContent(buffer),  
-		xmlBufferLength(buffer), md); 
+		xmlSecBufferGetData(buffer),  
+		xmlSecBufferGetSize(buffer), md); 
     return(0);
 }
 

@@ -286,8 +286,7 @@ xmlSecDSigResultDestroy(xmlSecDSigResultPtr result) {
 
     /* destroy buffer */
     if(result->buffer != NULL) {
-	xmlBufferEmpty(result->buffer);
-	xmlBufferFree(result->buffer);     
+	xmlSecBufferDestroy(result->buffer);     
     }
     if(result->key != NULL) {
 	xmlSecKeyDestroy(result->key);
@@ -321,8 +320,8 @@ xmlSecDSigResultDebugDump(xmlSecDSigResultPtr result, FILE *output) {
     }
     if(result->buffer != NULL) {
 	fprintf(output, "== start buffer:\n");
-	fwrite(xmlBufferContent(result->buffer), 
-	       xmlBufferLength(result->buffer), 1,
+	fwrite(xmlSecBufferGetData(result->buffer), 
+	       xmlSecBufferGetSize(result->buffer), 1,
 	       output);
 	fprintf(output, "\n== end buffer\n");
     }	    
@@ -365,8 +364,8 @@ xmlSecDSigResultDebugXmlDump(xmlSecDSigResultPtr result, FILE *output) {
     }
     if(result->buffer != NULL) {
 	fprintf(output, "<SignatureBuffer>");
-	fwrite(xmlBufferContent(result->buffer), 
-	       xmlBufferLength(result->buffer), 1,
+	fwrite(xmlSecBufferGetData(result->buffer), 
+	       xmlSecBufferGetSize(result->buffer), 1,
 	       output);
 	fprintf(output, "</SignatureBuffer>\n");
     }	    
@@ -1183,8 +1182,7 @@ xmlSecReferenceDestroy(xmlSecReferenceResultPtr ref) {
     
     /* destroy buffer */
     if(ref->buffer != NULL) {
-	xmlBufferEmpty(ref->buffer);
-	xmlBufferFree(ref->buffer); 
+	xmlSecBufferDestroy(ref->buffer); 
     }
     
     /* remove from the chain */
@@ -1239,8 +1237,8 @@ xmlSecDSigReferenceDebugDump(xmlSecReferenceResultPtr ref, FILE *output) {
     
     if(ref->buffer != NULL) {
 	fprintf(output, "==== start buffer:\n");
-	fwrite(xmlBufferContent(ref->buffer), 
-	       xmlBufferLength(ref->buffer), 1,
+	fwrite(xmlSecBufferGetData(ref->buffer), 
+	       xmlSecBufferGetSize(ref->buffer), 1,
 	       output);
 	fprintf(output, "\n==== end buffer:\n");
     }   	    
@@ -1295,8 +1293,8 @@ xmlSecDSigReferenceDebugXmlDump(xmlSecReferenceResultPtr ref, FILE *output) {
     }
     if(ref->buffer != NULL) {
 	fprintf(output, "<DigestBuffer>");
-	fwrite(xmlBufferContent(ref->buffer), 
-	       xmlBufferLength(ref->buffer), 1,
+	fwrite(xmlSecBufferGetData(ref->buffer), 
+	       xmlSecBufferGetSize(ref->buffer), 1,
 	       output);
 	fprintf(output, "</DigestBuffer>\n");
     }   	    

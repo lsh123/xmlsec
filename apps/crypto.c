@@ -224,7 +224,7 @@ int
 xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* keyKlass, const char *filename, const char *name) {
     FILE *f;
     unsigned char buf[1024];
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     xmlSecKeyPtr key;
     xmlSecKeyDataId dataId;
     xmlSecKeyInfoCtx keyInfoCtx;
@@ -244,11 +244,11 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
     }
 
     /* read file to buffer */
-    buffer = xmlBufferCreate();
+    buffer = xmlSecBufferCreate(0);
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlBufferCreate");
+		    "xmlSecBufferCreate");
 	return(-1);	
     }
 
@@ -257,14 +257,14 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "fopen(%s)", filename);
-	xmlBufferFree(buffer);
+	xmlSecBufferDestroy(buffer);
 	return(-1);
     }
 
     while(1) {
         ret = fread(buf, 1, sizeof(buf), f);
 	if(ret > 0) {
-	    xmlBufferAdd(buffer, buf, ret);
+	    xmlSecBufferAppend(buffer, buf, ret);
 	} else if(ret == 0) {
 	    break;
 	} else {
@@ -272,7 +272,7 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"fread(%s)", filename);
 	    fclose(f);
-	    xmlBufferFree(buffer);
+	    xmlSecBufferDestroy(buffer);
 	    return(-1);
 	}
     }
@@ -284,25 +284,25 @@ xmlSecAppCryptoSimpleKeysMngrBinaryKeyLoad(xmlSecKeysMngrPtr mngr, const char* k
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeyCreate");
-	xmlBufferFree(buffer);
+	xmlSecBufferDestroy(buffer);
 	return(-1);    
     }
 
     memset(&keyInfoCtx, 0, sizeof(keyInfoCtx));
     keyInfoCtx.keyType = xmlSecKeyDataTypeAny;
     ret = xmlSecKeyDataBinRead(dataId, key, 
-			xmlBufferContent(buffer),
-			xmlBufferLength(buffer),
+			xmlSecBufferGetData(buffer),
+			xmlSecBufferGetSize(buffer),
 			&keyInfoCtx);	
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "xmlSecKeyDataBinRead");
-	xmlBufferFree(buffer);
+	xmlSecBufferDestroy(buffer);
 	xmlSecKeyDestroy(key);
 	return(-1);    
     }
-    xmlBufferFree(buffer);
+    xmlSecBufferDestroy(buffer);
     
     ret = xmlSecKeySetName(key, BAD_CAST name);
     if(ret < 0) {

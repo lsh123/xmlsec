@@ -949,8 +949,8 @@ int decrypt(xmlDocPtr doc) {
 	if((encResult != NULL) && encResult->replaced && (encResult->buffer != NULL)) {
 	    ret = xmlDocDump(f, doc);    
         } else if((encResult != NULL) && !encResult->replaced) {
-    	    ret = fwrite(xmlBufferContent(encResult->buffer), 
-	    		 xmlBufferLength(encResult->buffer),
+    	    ret = fwrite(xmlSecBufferGetData(encResult->buffer), 
+	    		 xmlSecBufferGetSize(encResult->buffer),
 	        	 1, f);		       
 	} else {
 	    if(f != stdout) {

@@ -34,7 +34,7 @@ typedef struct _xmlSecBufferedTransform  		xmlSecBufferedTransform,
  * Returns 0 in success or a negative value otherwise.
  */
 typedef int (*xmlSecBufferedProcessMethod)	(xmlSecBufferedTransformPtr transform,
-						 xmlBufferPtr buffer);
+						 xmlSecBufferPtr buffer);
 
 /**
  * xmlSecBufferedTransformId:
@@ -125,7 +125,7 @@ struct _xmlSecBufferedTransform {
     void*				reserved3;
     
     /* xmlSecBufferedTransform specific */
-    xmlBufferPtr			buffer;
+    xmlSecBufferPtr			buffer;
 };
 
 /**
@@ -142,7 +142,7 @@ XMLSEC_EXPORT int  	xmlSecBufferedTransformFlush	(xmlSecTransformPtr transform);
 
 XMLSEC_EXPORT void 	xmlSecBufferedDestroy		(xmlSecBufferedTransformPtr buffered);
 XMLSEC_EXPORT int 	xmlSecBufferedProcess		(xmlSecTransformPtr transform,
-							 xmlBufferPtr buffer);
+							 xmlSecBufferPtr buffer);
 
 #ifdef __cplusplus
 }

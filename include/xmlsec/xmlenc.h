@@ -87,7 +87,7 @@ struct _xmlSecEncResult {
     xmlChar			*encoding;
     xmlSecTransformId		encryptionMethod;
     xmlSecKeyPtr		key;
-    xmlBufferPtr		buffer;
+    xmlSecBufferPtr		buffer;
     int				replaced;
 };
 

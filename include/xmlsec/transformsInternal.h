@@ -73,7 +73,7 @@ struct _xmlSecTransformState {
     xmlSecNodeSetPtr			curNodeSet;
     
     /* current state: binary */
-    xmlBufferPtr			curBuf;	
+    xmlSecBufferPtr			curBuf;	
     xmlSecTransformPtr			curFirstBinTransform; 
     xmlSecTransformPtr			curLastBinTransform; 
 

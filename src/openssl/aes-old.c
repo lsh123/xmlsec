@@ -116,7 +116,7 @@ static int  	xmlSecKWAesSetKey		(xmlSecTransformPtr transform,
 static int  	xmlSecKWAesSetKeyReq		(xmlSecTransformPtr transform, 
 						 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int  	xmlSecKWAesProcess		(xmlSecBufferedTransformPtr buffered, 
-						 xmlBufferPtr buffer);
+						 xmlSecBufferPtr buffer);
 static size_t  	xmlSecKWAesGetKeySize		(xmlSecTransformPtr transform);
 static int  	xmlSecKWAesEncode		(const unsigned char *key,
 						 size_t keySize,
@@ -299,7 +299,7 @@ static int
 xmlSecAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecCipherTransformPtr cipher;
     xmlSecCipherTransformId cipherId;
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     int ret;
     
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc), -1);
@@ -312,11 +312,11 @@ xmlSecAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);
     
-    if((size_t)xmlBufferLength(buffer) < cipherId->keySize) {
+    if((size_t)xmlSecBufferGetSize(buffer) < cipherId->keySize) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "%d bytes < %d bytes", 
-		    xmlBufferLength(buffer),
+		    xmlSecBufferGetSize(buffer),
 		    cipherId->keySize);
 	return(-1);    
     }
@@ -324,11 +324,11 @@ xmlSecAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     if(cipher->encode) {
 	ret = EVP_EncryptInit(&(cipher->cipherCtx), 
 			      (EVP_CIPHER *)cipher->cipherData,
-			      xmlBufferContent(buffer), NULL); 
+			      xmlSecBufferGetData(buffer), NULL); 
     } else {
 	ret = EVP_DecryptInit(&(cipher->cipherCtx), 
 			      (EVP_CIPHER *)cipher->cipherData,
-			      xmlBufferContent(buffer), NULL); 
+			      xmlSecBufferGetData(buffer), NULL); 
     }
     
     if(ret != 1) {
@@ -362,7 +362,7 @@ xmlSecAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx
  *
  **************************************************************************/
 #define xmlSecKWAesKeyData(t) \
-    ((xmlBufferPtr)(((xmlSecBufferedTransformPtr)( t ))->reserved1))
+    ((xmlSecBufferPtr)(((xmlSecBufferedTransformPtr)( t ))->reserved1))
     
 /**
  * xmlSecKWAesCreate:
@@ -421,8 +421,7 @@ xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
     buffered = (xmlSecBufferedTransformPtr)transform;
 
     if(xmlSecKWAesKeyData(buffered) != NULL) {
-	xmlBufferEmpty(xmlSecKWAesKeyData(buffered));
-	xmlBufferFree(xmlSecKWAesKeyData(buffered));
+	xmlSecBufferDestroy(xmlSecKWAesKeyData(buffered));
     }    
     xmlSecBufferedDestroy(buffered);        
     memset(buffered, 0, sizeof(xmlSecBufferedTransform));
@@ -435,7 +434,7 @@ xmlSecKWAesDestroy(xmlSecTransformPtr transform) {
 static int
 xmlSecKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferedTransformPtr buffered;
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(transform != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -447,30 +446,30 @@ xmlSecKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
     xmlSecAssert2(buffer != NULL, -1);
 
-    if((size_t)xmlBufferLength(buffer) < xmlSecKWAesGetKeySize(transform)) {
+    if((size_t)xmlSecBufferGetSize(buffer) < xmlSecKWAesGetKeySize(transform)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "%d bytes < %d bytes", 
-		    xmlBufferLength(buffer),
+		    xmlSecBufferGetSize(buffer),
 		    xmlSecKWAesGetKeySize(transform));
 	return(-1);    
     }
 
     if(xmlSecKWAesKeyData(buffered) == NULL) {
-	transform->reserved1 = xmlBufferCreate();
+	transform->reserved1 = xmlSecBufferCreate(0);
 	if(transform->reserved1 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);    
 	}
     } else {
-	xmlBufferEmpty(xmlSecKWAesKeyData(buffered));
+	xmlSecBufferEmpty(xmlSecKWAesKeyData(buffered));
     }    
     
-    xmlBufferAdd(xmlSecKWAesKeyData(buffered), 
-		xmlBufferContent(buffer),
-		xmlBufferLength(buffer));
+    xmlSecBufferAppend(xmlSecKWAesKeyData(buffered), 
+		xmlSecBufferGetData(buffer),
+		xmlSecBufferGetSize(buffer));
     return(0);
 }
 
@@ -494,7 +493,7 @@ xmlSecKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoC
  * xmlSecKWAesProcess:
  */
 static int
-xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
+xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlSecBufferPtr buffer) {
     size_t size;
     int ret;    
 
@@ -512,16 +511,16 @@ xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
 	return(-1);
     } 
 
-    if((size_t)xmlBufferLength(xmlSecKWAesKeyData(buffered)) < xmlSecKWAesGetKeySize((xmlSecTransformPtr)buffered)) {
+    if((size_t)xmlSecBufferGetSize(xmlSecKWAesKeyData(buffered)) < xmlSecKWAesGetKeySize((xmlSecTransformPtr)buffered)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
 		    "%d bytes < %d bytes", 
-		    xmlBufferLength(xmlSecKWAesKeyData(buffered)),
+		    xmlSecBufferGetSize(xmlSecKWAesKeyData(buffered)),
 		    xmlSecKWAesGetKeySize((xmlSecTransformPtr)buffered));
 	return(-1);    
     }
 
-    size = xmlBufferLength(buffer);
+    size = xmlSecBufferGetSize(buffer);
     if((size % 8) != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
@@ -530,23 +529,23 @@ xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
     }
     if(buffered->encode) { 
 	/* the encoded key is 8 bytes longer */
-	ret = xmlBufferResize(buffer, size + 8 + 8);
-	if(ret != 1) {
+	ret = xmlSecBufferSetMaxSize(buffer, size + 8 + 8);
+	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferResize(buffer, %d)", size + 16);	    
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferSetMaxSize(buffer, %d)", size + 16);	    
 	    return(-1);
 	}
 	
-	ret = xmlSecKWAesEncode(xmlBufferContent(xmlSecKWAesKeyData(buffered)),
-				xmlBufferLength(xmlSecKWAesKeyData(buffered)),
-				(unsigned char *)xmlBufferContent(buffer),
+	ret = xmlSecKWAesEncode(xmlSecBufferGetData(xmlSecKWAesKeyData(buffered)),
+				xmlSecBufferGetSize(xmlSecKWAesKeyData(buffered)),
+				(unsigned char *)xmlSecBufferGetData(buffer),
 				size);
     } else {
 	/* the decoded key is shorter than encoded buffer */
-	ret = xmlSecKWAesDecode(xmlBufferContent(xmlSecKWAesKeyData(buffered)),
-				xmlBufferLength(xmlSecKWAesKeyData(buffered)),
-				(unsigned char *)xmlBufferContent(buffer),
+	ret = xmlSecKWAesDecode(xmlSecBufferGetData(xmlSecKWAesKeyData(buffered)),
+				xmlSecBufferGetSize(xmlSecKWAesKeyData(buffered)),
+				(unsigned char *)xmlSecBufferGetData(buffer),
 				size);
     }
     if(ret <= 0) {
@@ -555,7 +554,7 @@ xmlSecKWAesProcess(xmlSecBufferedTransformPtr buffered, xmlBufferPtr buffer) {
 		    (buffered->encode) ? "xmlSecKWAesEncode" : "xmlSecKWAesDecode");
 	return(-1);	
     }
-    buffer->use = ret;
+    xmlSecBufferSetSize(buffer, ret);
     
     return(0);
 }

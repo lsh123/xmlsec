@@ -64,7 +64,7 @@ static int  		xmlSecTransformXsltWrite	(xmlSecTransformPtr transform,
 							 const unsigned char *buf, 
 							 size_t size);
 static int  		xmlSecTransformXsltFlush	(xmlSecTransformPtr transform);
-static int		xmlSecTransformXsltExecute	(xmlBufferPtr buffer,
+static int		xmlSecTransformXsltExecute	(xmlSecBufferPtr buffer,
 							 xmlBufferPtr xslt);
 
 static const struct _xmlSecTransformKlass xmlSecTransformXsltId = {
@@ -92,6 +92,9 @@ static const struct _xmlSecTransformKlass xmlSecTransformXsltId = {
 
 xmlSecTransformId xmlSecTransformXslt = (xmlSecTransformId)&xmlSecTransformXsltId; 
 
+#define xmlSecTransformXsltGetXsl(transform) \
+    ((xmlBufferPtr)((transform)->reserved1))
+    
 /**
  * xmlSecTransformXsltCreate:
  */
@@ -142,12 +145,11 @@ xmlSecTransformXsltDestroy(xmlSecTransformPtr transform) {
     xsltTransform = (xmlSecTransformPtr)transform;
     
     if(xsltTransform->reserved0 != NULL) {
-	xmlBufferEmpty((xmlBufferPtr)(xsltTransform->reserved0));
-	xmlBufferFree((xmlBufferPtr)(xsltTransform->reserved0)); 
+	xmlSecBufferDestroy((xmlSecBufferPtr)(xsltTransform->reserved0)); 
     }    
-    if(xsltTransform->reserved1 != NULL) {
-	xmlBufferEmpty((xmlBufferPtr)(xsltTransform->reserved1));
-	xmlBufferFree((xmlBufferPtr)(xsltTransform->reserved1)); 
+    if(xmlSecTransformXsltGetXsl(xsltTransform) != NULL) {
+	xmlBufferEmpty(xmlSecTransformXsltGetXsl(xsltTransform)); 
+	xmlBufferFree(xmlSecTransformXsltGetXsl(xsltTransform)); 
     }
 
     memset(transform, 0, sizeof(xmlSecTransform));
@@ -161,7 +163,7 @@ static int
 xmlSecTransformXsltRead(xmlSecTransformPtr transform, 
 			unsigned char *buf, size_t size) {
     xmlSecTransformPtr xsltTransform;
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     int ret;
 
     xmlSecAssert2(transform != NULL, -1);    
@@ -174,21 +176,21 @@ xmlSecTransformXsltRead(xmlSecTransformPtr transform,
     }
     xsltTransform = (xmlSecTransformPtr)transform;
 
-    xmlSecAssert2(xsltTransform->reserved1 != NULL, -1);
+    xmlSecAssert2(xmlSecTransformXsltGetXsl(xsltTransform) != NULL, -1);
 
     /* it's the first call, read data! */
-    buffer = (xmlBufferPtr)(xsltTransform->reserved0);
+    buffer = (xmlSecBufferPtr)(xsltTransform->reserved0);
     if(buffer == NULL) {
 	if(xsltTransform->prev == NULL) {
 	    /* nothing to read */
 	    return(0);
 	}
 	
-	xsltTransform->reserved0 = buffer = xmlBufferCreate();
+	xsltTransform->reserved0 = buffer = xmlSecBufferCreate(0);
 	if(xsltTransform->reserved0 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);
 	}
 	
@@ -200,13 +202,12 @@ xmlSecTransformXsltRead(xmlSecTransformPtr transform,
 			    "xmlSecTransformRead - %d", ret);
 	        return(-1);
 	    } else if(ret > 0) {
-		xmlBufferAdd(buffer, buf, ret);
+		xmlSecBufferAppend(buffer, buf, ret);
 	    }
 	}while(ret > 0);
 	
 	/* execute xslt transform */
-	ret = xmlSecTransformXsltExecute(buffer, 
-				        (xmlBufferPtr)xsltTransform->reserved1);
+	ret = xmlSecTransformXsltExecute(buffer, xmlSecTransformXsltGetXsl(xsltTransform));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -215,14 +216,14 @@ xmlSecTransformXsltRead(xmlSecTransformPtr transform,
 	}
     }
     
-    if(size > (size_t)xmlBufferLength(buffer)) {
-	size = (size_t)xmlBufferLength(buffer);
+    if(size > (size_t)xmlSecBufferGetSize(buffer)) {
+	size = (size_t)xmlSecBufferGetSize(buffer);
     }
     if((size > 0) && (buf != NULL)) {
 	/* copy data to the caller */
-	memcpy(buf, xmlBufferContent(buffer), size);
+	memcpy(buf, xmlSecBufferGetData(buffer), size);
 	/* remove them from our buffer */
-	xmlBufferShrink(buffer, size);
+	xmlSecBufferRemoveHead(buffer, size);
 	return(size);
     }    
     return(size);
@@ -235,7 +236,7 @@ static int
 xmlSecTransformXsltWrite(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
     xmlSecTransformPtr xsltTransform;
-    xmlBufferPtr ptr;
+    xmlSecBufferPtr ptr;
 
     xmlSecAssert2(transform != NULL, -1);    
             
@@ -253,18 +254,18 @@ xmlSecTransformXsltWrite(xmlSecTransformPtr transform,
     }
     
     if(xsltTransform->reserved0 == NULL) {
-	xsltTransform->reserved0 = ptr = xmlBufferCreate();
+	xsltTransform->reserved0 = ptr = xmlSecBufferCreate(0);
 	if(xsltTransform->reserved0 == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);
 	}
     } else {
-	ptr = (xmlBufferPtr)(xsltTransform->reserved0);
+	ptr = (xmlSecBufferPtr)(xsltTransform->reserved0);
     }
 
-    xmlBufferAdd(ptr, buf, size);
+    xmlSecBufferAppend(ptr, buf, size);
     return(size);
 }
 
@@ -286,7 +287,7 @@ xmlSecTransformXsltFlush(xmlSecTransformPtr transform) {
     }
     xsltTransform = (xmlSecTransformPtr)transform;
 
-    xmlSecAssert2(xsltTransform->reserved1 != NULL, -1);
+    xmlSecAssert2(xmlSecTransformXsltGetXsl(xsltTransform) != NULL, -1);
     
     if(xsltTransform->next == NULL) {
     	/* nothing to flush */
@@ -295,13 +296,12 @@ xmlSecTransformXsltFlush(xmlSecTransformPtr transform) {
 
     
     if(xsltTransform->reserved0 != NULL) { 
-	xmlBufferPtr buffer;
+	xmlSecBufferPtr buffer;
 		
-	buffer = (xmlBufferPtr)(xsltTransform->reserved0); 
+	buffer = (xmlSecBufferPtr)(xsltTransform->reserved0); 
 	
 	/* execute xslt transform */
-	ret = xmlSecTransformXsltExecute(buffer, 
-				        (xmlBufferPtr)xsltTransform->reserved1);
+	ret = xmlSecTransformXsltExecute(buffer, xmlSecTransformXsltGetXsl(xsltTransform));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -310,7 +310,7 @@ xmlSecTransformXsltFlush(xmlSecTransformPtr transform) {
 	}
 
 	ret = xmlSecTransformWriteBin((xmlSecTransformPtr)(xsltTransform->next), 
-		    xmlBufferContent(buffer), xmlBufferLength(buffer));
+		    xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -318,7 +318,7 @@ xmlSecTransformXsltFlush(xmlSecTransformPtr transform) {
 	    return(-1);
 	}
 	/* remove them from our buffer */
-	xmlBufferEmpty(buffer);
+	xmlSecBufferEmpty(buffer);
     }
 
     ret = xmlSecTransformFlushBin((xmlSecTransformPtr)(xsltTransform->next));
@@ -342,8 +342,9 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     xmlNodePtr cur;
 
     xmlSecAssert2(transform != NULL, -1);    
+    xmlSecAssert2(xmlSecTransformXsltGetXsl(transform) == NULL, -1);
     xmlSecAssert2(transformNode != NULL, -1);    
-    
+        
     if(!xmlSecTransformCheckId(transform, xmlSecTransformXslt)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
@@ -356,7 +357,7 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "xmlBufferCreate");
+		    "xmlSecBufferCreate");
 	return(-1);
     }
     
@@ -366,10 +367,6 @@ xmlSecTransformXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr transformNo
 	cur = cur->next;
     }
         
-    if(xsltTransform->reserved1 != NULL) {
-	xmlBufferEmpty((xmlBufferPtr)xsltTransform->reserved1);
-	xmlBufferFree((xmlBufferPtr)(xsltTransform->reserved1)); 
-    }
     xsltTransform->reserved1 = buffer;
     return(0);
 }
@@ -397,7 +394,7 @@ xmlSecTransformXsltAdd(xmlNodePtr transformNode, const xmlChar *xslt) {
  * xmlSecTransformXsltExecute:
  */
 static int
-xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {
+xmlSecTransformXsltExecute(xmlSecBufferPtr buffer, xmlBufferPtr xslt) {
     xmlDocPtr doc = NULL;
     xmlDocPtr docXslt = NULL;
     xsltStylesheetPtr cur = NULL;
@@ -409,7 +406,7 @@ xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {
     xmlSecAssert2(buffer != NULL, -1);    
     xmlSecAssert2(xslt != NULL, -1);    
 
-    doc = xmlSecParseMemory(xmlBufferContent(buffer), xmlBufferLength(buffer), 1);
+    doc = xmlSecParseMemory(xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), 1);
     if(doc == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -462,9 +459,15 @@ xmlSecTransformXsltExecute(xmlBufferPtr buffer, xmlBufferPtr xslt) {
 	goto done;	
     }
 
-    xmlBufferEmpty(buffer);
-    xmlBufferAdd(buffer, xmlBufferContent(output->buffer), 
-		xmlBufferLength(output->buffer));
+    ret = xmlSecBufferSetData(buffer, xmlBufferContent(output->buffer), 
+			    xmlBufferLength(output->buffer));
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferSetData");
+	goto done;	
+    }
+
     res = 0;
 
     

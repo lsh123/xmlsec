@@ -118,7 +118,7 @@ xmlSecOpenSSLKeyDataAesValueGetKlass(void) {
 
 int
 xmlSecOpenSSLKeyDataAesValueSet(xmlSecKeyDataPtr data, const unsigned char* buf, size_t bufSize) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataAesValueId), -1);
     xmlSecAssert2(buf != NULL, -1);
@@ -127,11 +127,7 @@ xmlSecOpenSSLKeyDataAesValueSet(xmlSecKeyDataPtr data, const unsigned char* buf,
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
     
-    /* erase current content with zeros */    
-    xmlBufferEmpty(buffer);
-    
-    xmlBufferAdd(buffer, buf, bufSize);
-    return(0);    
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 
 static int
@@ -192,7 +188,7 @@ xmlSecOpenSSLKeyDataAesValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecOpenSSLKeyDataAesValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataAesValueId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
@@ -205,14 +201,14 @@ xmlSecOpenSSLKeyDataAesValueGenerate(xmlSecKeyDataPtr data, size_t sizeBits) {
 
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataAesValueGetType(xmlSecKeyDataPtr data) {
-    xmlBufferPtr buffer;
+    xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecKeyDataAesValueId), xmlSecKeyDataTypeUnknown);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, xmlSecKeyDataTypeUnknown);
 
-    return((xmlBufferLength(buffer) > 0) ? xmlSecKeyDataTypeSymmetric : xmlSecKeyDataTypeUnknown);
+    return((xmlSecBufferGetSize(buffer) > 0) ? xmlSecKeyDataTypeSymmetric : xmlSecKeyDataTypeUnknown);
 }
 
 static size_t 

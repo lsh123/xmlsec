@@ -64,11 +64,11 @@ xmlSecBufferedTransformRead(xmlSecTransformPtr transform,
 	 * create the buffer, read everything from previous transform
 	 * and call process method
 	 */
-	buffered->buffer = xmlBufferCreate();
+	buffered->buffer = xmlSecBufferCreate(0);
 	if(buffered->buffer == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);
 	}
 	do {
@@ -79,7 +79,7 @@ xmlSecBufferedTransformRead(xmlSecTransformPtr transform,
 			    "xmlSecTransformRead");
 		return(-1);
 	    } else if(ret > 0) {
-		xmlBufferAdd(buffered->buffer, buf, ret);
+		xmlSecBufferAppend(buffered->buffer, buf, ret);
 	    }
 	} while(ret > 0);
 	
@@ -92,18 +92,17 @@ xmlSecBufferedTransformRead(xmlSecTransformPtr transform,
 	}
     }
     
-    res = xmlBufferLength(buffered->buffer);
+    res = xmlSecBufferGetSize(buffered->buffer);
     if(res <= size) {
-	memcpy(buf, xmlBufferContent(buffered->buffer), res);
+	memcpy(buf, xmlSecBufferGetData(buffered->buffer), res);
         buffered->status = xmlSecTransformStatusOk;  /* we are done */
-	xmlBufferEmpty(buffered->buffer);
-	xmlBufferFree(buffered->buffer);
+	xmlSecBufferDestroy(buffered->buffer);
 	buffered->buffer = NULL;
     } else {
 	res = size;
-	memcpy(buf, xmlBufferContent(buffered->buffer), res);
-	memset((void*)xmlBufferContent(buffered->buffer), 0, res);
-	xmlBufferShrink(buffered->buffer, res);
+	memcpy(buf, xmlSecBufferGetData(buffered->buffer), res);
+	memset((void*)xmlSecBufferGetData(buffered->buffer), 0, res);
+	xmlSecBufferRemoveHead(buffered->buffer, res);
     }
     
     return(res);
@@ -137,15 +136,15 @@ xmlSecBufferedTransformWrite(xmlSecTransformPtr transform,
     }
 
     if(buffered->buffer == NULL) {
-	buffered->buffer = xmlBufferCreate();
+	buffered->buffer = xmlSecBufferCreate(0);
 	if(buffered->buffer == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 	    		XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlBufferCreate");
+			"xmlSecBufferCreate");
 	    return(-1);
 	}
     }
-    xmlBufferAdd(buffered->buffer, buf, size);
+    xmlSecBufferAppend(buffered->buffer, buf, size);
     return(0);
 }
 
@@ -180,8 +179,8 @@ xmlSecBufferedTransformFlush(xmlSecTransformPtr transform) {
     }
     
     ret = xmlSecTransformWriteBin((xmlSecTransformPtr)buffered->next, 
-				  xmlBufferContent(buffered->buffer), 
-				  xmlBufferLength(buffered->buffer));
+				  xmlSecBufferGetData(buffered->buffer), 
+				  xmlSecBufferGetSize(buffered->buffer));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -190,8 +189,7 @@ xmlSecBufferedTransformFlush(xmlSecTransformPtr transform) {
     }	  
 
     buffered->status = xmlSecTransformStatusOk;  /* we are done */
-    xmlBufferEmpty(buffered->buffer);
-    xmlBufferFree(buffered->buffer);
+    xmlSecBufferDestroy(buffered->buffer);
     buffered->buffer = NULL;
 
     /* do not forget to flush next transform */
@@ -216,8 +214,7 @@ xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
     xmlSecAssert(buffered != NULL);
 
     if(buffered->buffer != NULL) {
-	xmlBufferEmpty(buffered->buffer);
-	xmlBufferFree(buffered->buffer);
+	xmlSecBufferDestroy(buffered->buffer);
     }
 }
 
@@ -232,7 +229,7 @@ xmlSecBufferedDestroy(xmlSecBufferedTransformPtr buffered) {
  * if an error occurs.
  */
 int 	
-xmlSecBufferedProcess(xmlSecTransformPtr transform, xmlBufferPtr buffer) {
+xmlSecBufferedProcess(xmlSecTransformPtr transform, xmlSecBufferPtr buffer) {
     xmlSecBufferedTransformPtr buffered;
 
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);

@@ -43,3 +43,24 @@ README
 	    -out rsacert.pem -infiles rsareq.pem
     > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
 
+3. Converting key and certs between PEM and DER formats
+
+  Convert PEM private key file to DER file
+  RSA key:
+    > openssl rsa -inform PEM -outform DER -in rsapriv.pem -out rsapriv.der
+  DSA key:
+    > openssl dsa -inform PEM -outform DER -in dsakey.pem -out dsakey.der
+  
+  Convert PEM public key file to DER file
+  RSA key:
+    > openssl rsa -inform PEM -outform DER -pubin -pubout -in lugh.key -out lugh.der
+  DSA key:
+    > openssl dsa -inform PEM -outform DER -pubin -pubout -in lugh.key -out lugh.der
+   
+  If you aren't sure if the public key is RSA or DSA, just run one of
+  the above commands, and the error messaging will make it clear :)
+   
+  Convert PEM cert file to DER file
+    > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
+
+

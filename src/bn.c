@@ -285,10 +285,10 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 }	
     }
 
-    /* check if we need to add 00 prefix */
+    /* check if we need to add 00 prefix, do this for empty bn too */
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
-    if(size > 0 && data[0] > 127) {
+    if(((size > 0) && (data[0] > 127)) || (size == 0))  {
         ch = 0;
         ret = xmlSecBufferPrepend(bn, &ch, 1);
         if(ret < 0) {

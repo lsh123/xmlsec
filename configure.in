@@ -234,7 +234,8 @@ if test "z$LIBXSLT_FOUND" = "zno" ; then
 	if test "$vers" -ge "$minvers" ; then
     	    LIBXSLT_LIBS="`$LIBXSLT_CONFIG --libs`"
 	    LIBXSLT_CFLAGS="`$LIBXSLT_CONFIG --cflags`"
-    	    AC_MSG_RESULT(yes ('$LIBXSLT_VERSION'))
+	    LIBXSLT_FOUND="yes"
+    	    AC_MSG_RESULT("yes ('$LIBXSLT_VERSION')")
 	else
     	    AC_MSG_ERROR(You need at least libxslt $LIBXSLT_MIN_VERSION for this version of $PACKAGE)
 	fi	

@@ -1,16 +1,5 @@
 
 
-/**
- * xmlSecMemBuf:
- *
- * The memory buffer transform id.
- */
-XMLSEC_EXPORT_VAR xmlSecTransformId xmlSecMemBuf;
-
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecMemBufTransformGetBuffer		
-							(xmlSecTransformPtr transform,
-							 int removeBuffer);
-
 /******************************************************************** 
  *
  * Base64 Transform

@@ -665,11 +665,11 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
      * if requested then insert a memory buffer to capture the digest data 
      */
     if(result->ctx->storeSignatures || result->ctx->fakeSignatures) {
-	memBuffer = xmlSecTransformCreate(xmlSecMemBuf, 1);
+	memBuffer = xmlSecTransformCreate(xmlSecTransformMemBufId, 1);
 	if(memBuffer == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformCreate(xmlSecMemBuf)");
+			"xmlSecTransformCreate(xmlSecTransformMemBufId)");
 	    goto done;
 	}
 	ret = xmlSecTransformStateUpdate(state, memBuffer);
@@ -716,7 +716,7 @@ xmlSecSignedInfoCalculate(xmlNodePtr signedInfoNode, int sign,
     }
 
     if(memBuffer != NULL) {
-	result->buffer = xmlSecMemBufTransformGetBuffer(memBuffer, 1);
+	result->buffer = xmlSecTransformMemBufGetBuffer(memBuffer, 1);
     }
     
     res = 0;
@@ -1024,11 +1024,11 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
      * if requested then insert a memory buffer to capture the digest data 
      */
     if(ref->ctx->storeReferences) {
-	memBuffer = xmlSecTransformCreate(xmlSecMemBuf, 1);
+	memBuffer = xmlSecTransformCreate(xmlSecTransformMemBufId, 1);
 	if(memBuffer == NULL) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecTransformCreate(xmlSecMemBuf)");
+			"xmlSecTransformCreate(xmlSecTransformMemBufId)");
 	    goto done;
 	}
 	ret = xmlSecTransformStateUpdate(state, memBuffer);
@@ -1103,7 +1103,7 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     ref->result = digestMethod->status;
     
     if(memBuffer != NULL) {
-	ref->buffer = xmlSecMemBufTransformGetBuffer(memBuffer, 1);
+	ref->buffer = xmlSecTransformMemBufGetBuffer(memBuffer, 1);
     }
     res = 0;
 

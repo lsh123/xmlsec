@@ -339,7 +339,6 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
     return(0);
 }
 
-
 int 
 xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int columns) {
     xmlChar* content;
@@ -361,62 +360,56 @@ xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int col
 }
 
 
+/*****************************************************************************
+ *
+ * Memory Buffer Transform
+ * 
+ * reserved0 --> the result buffer (xmlSecBufferPtr)
+ * 
+ ****************************************************************************/
+#define xmlSecTransformMemBufGetBuf(transform) \
+    ((xmlSecBufferPtr)((transform)->reserved0))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-static int		xmlSecMemBufTransformInitialize	(xmlSecTransformPtr transform);
-static void		xmlSecMemBufTransformFinalize	(xmlSecTransformPtr transform);
-static int  		xmlSecMemBufTransformRead	(xmlSecTransformPtr transform, 
-							 unsigned char *buf, 
-							 size_t size);
-static int  		xmlSecMemBufTransformWrite	(xmlSecTransformPtr transform, 
-							 const unsigned char *buf, 
-							 size_t size);
-static int  		xmlSecMemBufTransformFlush	(xmlSecTransformPtr transform);
-
-static const struct _xmlSecTransformKlass xmlSecMemBufTransformId = {
+static int		xmlSecTransformMemBufInitialize		(xmlSecTransformPtr transform);
+static void		xmlSecTransformMemBufFinalize		(xmlSecTransformPtr transform);
+static int  		xmlSecTransformMemBufExecute		(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),	/* size_t klassSize */
     sizeof(xmlSecTransform),		/* size_t objSize */
 
-    /* same as xmlSecTransformId */    
-    BAD_CAST "membuf",
+    xmlSecNameMemBuf,			/* const xmlChar* name; */
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
     0,					/* xmlSecAlgorithmUsage usage; */
     NULL,				/* const xmlChar href; */
 
-    xmlSecMemBufTransformInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMemBufTransformFinalize,	/* xmlSecTransformFianlizeMethod finalize; */
+    xmlSecTransformMemBufInitialize, 	/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformMemBufFinalize,	/* xmlSecTransformFianlizeMethod finalize; */
     NULL,				/* xmlSecTransformReadMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformMemBufExecute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* binary methods */
     NULL,
-    xmlSecMemBufTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecMemBufTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecMemBufTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,	/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,	/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,	/* xmlSecTransformFlushMethod flushBin; */
     
     NULL,
     NULL,
 };
-xmlSecTransformId xmlSecMemBuf = (xmlSecTransformId)&xmlSecMemBufTransformId; 
+
+xmlSecTransformId 
+xmlSecTransformMemBufGetKlass(void) {
+    return(&xmlSecTransformMemBufKlass);
+}
 
 /**
- * xmlSecMemBufTransformGetBuffer:
+ * xmlSecTransformMemBufGetBuffer:
  * @transform: the pointer to memory buffer transform.
  * @removeBuffer: the flag that indicates whether the buffer
  * 	will be removed from the transform.
@@ -427,176 +420,102 @@ xmlSecTransformId xmlSecMemBuf = (xmlSecTransformId)&xmlSecMemBufTransformId;
  * is removed from transform and the caller is responsible for freeing it
  */
 xmlSecBufferPtr
-xmlSecMemBufTransformGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
+xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform, int removeBuffer) {
     xmlSecBufferPtr ptr;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMemBuf), NULL);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), NULL);
+    xmlSecAssert2(xmlSecTransformMemBufGetBuf(transform) != NULL, NULL);
     
-    ptr = (xmlSecBufferPtr)(transform->reserved0);
+    ptr = xmlSecTransformMemBufGetBuf(transform);
     if(removeBuffer) {
 	transform->reserved0 = NULL;
     }
     return(ptr);
 }
 
-/**
- * xmlSecMemBufTransformInitialize:
- */
 static int
-xmlSecMemBufTransformInitialize(xmlSecTransformPtr transform) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMemBuf), -1);
+xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
 
-    transform->reserved0 = NULL;
+    transform->reserved0 = xmlSecBufferCreate(0);
+    if(transform->reserved0 == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecBufferCreate");
+	return(-1);
+    }
     return(0);    
 }
 
-/**
- * xmlSecMemBufTransformFinalize:
- */
 static void
-xmlSecMemBufTransformFinalize(xmlSecTransformPtr transform) {
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecMemBuf));
+xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId));
     
-    if(transform->reserved0 != NULL) {
-	xmlSecBufferDestroy((xmlSecBufferPtr)(transform->reserved0)); 
+    if(xmlSecTransformMemBufGetBuf(transform) != NULL) {
+	xmlSecBufferDestroy(xmlSecTransformMemBufGetBuf(transform)); 
     }    
     transform->reserved0 = NULL;
 }
 
-/**
- * xmlSecMemBufTransformRead
- */
-static int
-xmlSecMemBufTransformRead(xmlSecTransformPtr transform, 
-			unsigned char *buf, size_t size) {
+static int 
+xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecBufferPtr buffer;
+    xmlSecBufferPtr in, out;
+    size_t inSize;
     int ret;
 
-    xmlSecAssert2(transform != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
 
-    if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecMemBuf");
-	return(-1);
-    }
+    buffer = xmlSecTransformMemBufGetBuf(transform);
+    xmlSecAssert2(buffer != NULL, -1);
+    
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+    
+    inSize = xmlSecBufferGetSize(in);
 
-    if(transform->prev == NULL) {
-	/* nothing to read */
-	return(0);
+    if(transform->status == xmlSecTransformStatusNone) {
+	transform->status = xmlSecTransformStatusWorking;
     }
     
-    ret = xmlSecTransformReadBin((xmlSecTransformPtr)(transform->prev), buf, size);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformRead - %d", ret);
-	return(-1);
-    }
-    
-    if(ret == 0) {
-	/* we are done */
-	return(0);
-    }
-    
-    if(transform->reserved0 == NULL) {
-	transform->reserved0 = xmlSecBufferCreate(0);
-	if(transform->reserved0 == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlSecBufferCreate");
+    if(transform->status == xmlSecTransformStatusWorking) {	
+	/* just copy everything from in to our buffer and out */
+	ret = xmlSecBufferAppend(buffer, xmlSecBufferGetData(in), inSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferAppend(buffer, %d)", inSize);
 	    return(-1);
 	}
-    }
-    
-    xmlSecBufferAppend((xmlSecBufferPtr)(transform->reserved0), buf, ret);
-    return(ret);
-}
-
-/**
- * xmlSecMemBufTransformWrite
- */
-static int
-xmlSecMemBufTransformWrite(xmlSecTransformPtr transform, 
-			const unsigned char *buf, size_t size) {
-    xmlSecBufferPtr ptr;
-    int ret;
-            
-    xmlSecAssert2(transform != NULL, -1);
-    xmlSecAssert2(buf != NULL, -1);    
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecMemBuf");
-	return(-1);
-    }
-
-    if((buf == NULL) || (size == 0)) {
-	/* nothing to write */
-	return(0);
-    }
-    
-    if(transform->reserved0 == NULL) {
-	transform->reserved0 = ptr = xmlSecBufferCreate(0);
-	if(transform->reserved0 == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        XMLSEC_ERRORS_R_XML_FAILED,
-			"xmlSecBufferCreate");
+	
+	ret = xmlSecBufferAppend(out, xmlSecBufferGetData(in), inSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferAppend(out, %d)", inSize);
 	    return(-1);
 	}
+	
+	ret = xmlSecBufferRemoveHead(in, inSize);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE, 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBufferRemoveHead(%d)", inSize);
+	    return(-1);
+	}
+	    
+	if(last != 0) {
+	    transform->status = xmlSecTransformStatusFinished;
+	}
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+	/* the only way we can get here is if there is no input */
+	xmlSecAssert2(inSize == 0, -1);
     } else {
-	ptr = (xmlSecBufferPtr)(transform->reserved0);
-    }
-    
-    if(transform->next == NULL) {
-	/* nothing to write to */
-	xmlSecBufferAppend(ptr, buf, size);	
-	return(size);
-    }
-    
-    ret = xmlSecTransformWriteBin((xmlSecTransformPtr)(transform->next), buf, size);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
+	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformWrite - %d", ret);
+		    "invalid transform status %d", transform->status);
 	return(-1);
     }
-
-    xmlSecBufferAppend(ptr, buf, ret);
-    return(ret);
+    return(0);
 }
-
-/**
- * xmlSecMemBufTransformFlush:
- */
-static int
-xmlSecMemBufTransformFlush(xmlSecTransformPtr transform) {
-    int ret;
-
-    xmlSecAssert2(transform != NULL, -1);
-        
-    if(!xmlSecTransformCheckId(transform, xmlSecMemBuf)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecMemBuf");
-	return(-1);
-    }
-    
-    if(transform->next == NULL) { 
-	/* nothing to flush */
-	return(0);
-    }
-
-    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)(transform->next));
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformFlush");
-	return(-1);
-    }
-
-    return(ret);
-}
-
-

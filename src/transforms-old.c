@@ -113,12 +113,6 @@ xmlSecTransformsInit(void) {
 		    "failed to register input uri transform");
 	return(-1);
     }
-    if(xmlSecTransformRegister(xmlSecMemBuf) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "failed to register memory buffer transform");
-	return(-1);
-    }
     
     return(0);
 }
@@ -843,11 +837,11 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
     xmlSecAssert2(state->curDoc != NULL, -1);
     
     /* first of all, add the memory buffer at the end */
-    buffer = xmlSecTransformCreate(xmlSecMemBuf, 0);
+    buffer = xmlSecTransformCreate(xmlSecTransformMemBufId, 0);
     if(buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecTransformCreate(xmlSecMemBuf)");
+		    "xmlSecTransformCreate(xmlSecTransformMemBufId)");
 	return(-1);	
     }
     
@@ -929,7 +923,7 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
     if(state->curBuf != NULL) {
 	xmlSecBufferDestroy(state->curBuf);
     }
-    state->curBuf = xmlSecMemBufTransformGetBuffer(buffer, 1);
+    state->curBuf = xmlSecTransformMemBufGetBuffer(buffer, 1);
         
     /* cleanup */    
     xmlSecTransformDestroyAll(state->curFirstBinTransform);

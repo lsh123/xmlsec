@@ -31,6 +31,23 @@ typedef struct _xmlSecTransform 			xmlSecTransform, *xmlSecTransformPtr;
 typedef struct _xmlSecTransformCtx 			xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
 
 
+
+/********************************************************************
+ *
+ * Memory Buffer transform 
+ *
+ *******************************************************************/
+/**
+ * xmlSecTransformMemBufId:
+ * 
+ * The XSLT transform id.
+ */
+#define xmlSecTransformMemBufId \
+	xmlSecTransformMemBufGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformMemBufGetKlass		(void);
+XMLSEC_EXPORT xmlSecBufferPtr	xmlSecTransformMemBufGetBuffer		(xmlSecTransformPtr transform, 
+									 int removeBuffer);
+
 /********************************************************************
  *
  * XSLT transform 

@@ -53,7 +53,6 @@
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/x509.h>
 #include <xmlsec/xmlenc.h>
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/errors.h>

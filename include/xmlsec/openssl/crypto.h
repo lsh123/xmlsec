@@ -16,6 +16,9 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
+#include <openssl/err.h>
+
+
 /**
  * Init shutdown
  */
@@ -299,6 +302,31 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaOaepGetKlass	(void);
 XMLSEC_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha1GetKlass	(void);
 #endif /* XMLSEC_NO_SHA1 */
 
+
+/**************************************************************
+ *
+ * Error constants for OpenSSL 
+ *
+ *************************************************************/
+/**
+ * XMLSEC_OPENSSL_ERRORS_LIB:
+ *
+ * Macro. The XMLSec library id for OpenSSL errors reporting functions.
+ */
+#define XMLSEC_OPENSSL_ERRORS_LIB			(ERR_LIB_USER + 57)
+
+/**
+ * XMLSEC_OPENSSL_ERRORS_FUNCTION:
+ *
+ * Macro. The XMLSec library functions OpenSSL errors reporting functions.
+ */
+#define XMLSEC_OPENSSL_ERRORS_FUNCTION			0
+
+XMLSEC_EXPORT void 	xmlSecOpenSSLErrorsDefaultCallback		(const char* file, 
+									 int line, 
+									 const char* func,
+									 int reason, 
+									 const char* msg);
 
 #ifdef __cplusplus
 }

@@ -515,7 +515,7 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
     
     /* initialize buffer */
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert(buffer != NULL);
     
     xmlSecBufferFinalize(buffer);    
 }

@@ -7,6 +7,8 @@
  */
 #include "globals.h"
 
+#include <string.h>
+
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
@@ -19,6 +21,7 @@
 #include <xmlsec/openssl/crypto.h>
 #include <xmlsec/openssl/x509.h>
 
+static int 		xmlSecOpenSSLErrorsInit			(void);
 static int		xmlSecOpenSSLKeysInit			(void);
 static int		xmlSecOpenSSLTransformsInit		(void);
 
@@ -31,6 +34,12 @@ static int		xmlSecOpenSSLTransformsInit		(void);
  */
 int 
 xmlSecOpenSSLInit (void)  {
+    if(xmlSecOpenSSLErrorsInit() < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "failed to initiaze errors");
+	return(-1);
+    }
     if(xmlSecOpenSSLKeysInit() < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -86,9 +95,48 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     return(0);
 }
 
+void 
+xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
+				int reason, const char* msg) {
+
+    ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB, XMLSEC_OPENSSL_ERRORS_FUNCTION, 
+		  reason, file, line);
+    xmlSecErrorsDefaultCallback(file, line, func, reason, msg);
+}
+
+static int 
+xmlSecOpenSSLErrorsInit(void) {
+    static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
+    static ERR_STRING_DATA xmlSecOpenSSLStrLib[]= {
+	{ ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB,0,0),	"xmlsec routines"},
+	{ 0,     					NULL}
+    }; 
+    static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[]= {
+	{ XMLSEC_OPENSSL_ERRORS_LIB,			"xmlsec lib"},
+        { 0,						NULL}
+    };
+    size_t pos;
+
+    /* initialize reasons array */
+    memset(xmlSecOpenSSLStrReasons, 0, sizeof(xmlSecOpenSSLStrReasons));
+    for(pos = 0; (pos < XMLSEC_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(pos) != NULL); ++pos) {
+	xmlSecOpenSSLStrReasons[pos].error  = xmlSecErrorsGetCode(pos);
+	xmlSecOpenSSLStrReasons[pos].string = xmlSecErrorsGetMsg(pos);
+    }
+    
+    /* finally load xmlsec strings in OpenSSL */
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);     
+    
+    /* and set default errors callback for xmlsec to us */
+    xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
+    
+    return(0);
+}
+
 static int		
 xmlSecOpenSSLKeysInit(void) {
-
 #ifndef XMLSEC_NO_AES    
     if(xmlSecKeyDataIdsRegister(xmlSecOpenSSLKeyDataAesId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

@@ -14,13 +14,19 @@
 #include <time.h>
 
 #include <libxml/tree.h>
-#include <openssl/err.h>
+
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/errors.h>
 
 #define XMLSEC_ERRORS_BUFFER_SIZE	1024
 
-static ERR_STRING_DATA xmlSecStrReasons[]= {
+typedef struct _xmlSecErrorDescription			xmlSecErrorDescription, *xmlSecErrorDescriptionPtr;
+struct _xmlSecErrorDescription {
+    int 		errorCode;
+    const char*		errorMsg;
+};
+
+static xmlSecErrorDescription xmlSecErrorsTable[XMLSEC_ERRORS_MAX_NUMBER + 1] = {
   { XMLSEC_ERRORS_R_MALLOC_FAILED,		"failed to allocate memory" },
   { XMLSEC_ERRORS_R_XMLSEC_FAILED,		"xmlsec operation failed" },
   { XMLSEC_ERRORS_R_CRYPTO_FAILED,		"crypto operation failed" },
@@ -59,20 +65,6 @@ static ERR_STRING_DATA xmlSecStrReasons[]= {
   { 0,						NULL}
 };
 
-static ERR_STRING_DATA xmlSecStrLib[]= {
-  { ERR_PACK(XMLSEC_ERRORS_LIB,0,0),		"xmlsec routines"},
-  { 0,     					NULL}
-};
- 
-static ERR_STRING_DATA xmlSecStrDefReason[]= {
-  { XMLSEC_ERRORS_LIB,				"xmlsec lib"},
-  { 0,						NULL}
-};
-
-static void xmlSecErrorsDefaultCallback		(const char* file, int line, 
-				    		 const char* func,
-						 int reason, const char* msg);
-
 static xmlSecErrorsCallback xmlSecErrorsClbk = xmlSecErrorsDefaultCallback;
 int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed immidiatelly */
 
@@ -84,10 +76,6 @@ int  xmlSecPrintErrorMessages = 1;	/* whether the error messages will be printed
  */
 void 
 xmlSecErrorsInit(void) {
-    ERR_load_crypto_strings();
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrLib); /* define xmlsec lib name */
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrDefReason); /* define default reason */
-    ERR_load_strings(XMLSEC_ERRORS_LIB, xmlSecStrReasons); 
 }
 
 /** 
@@ -98,8 +86,6 @@ xmlSecErrorsInit(void) {
  */
 void 
 xmlSecErrorsShutdown(void) {
-    ERR_remove_state(0);
-    ERR_free_strings();
 }
 
 /**
@@ -112,6 +98,51 @@ xmlSecErrorsShutdown(void) {
 void 
 xmlSecErrorsSetCallback(xmlSecErrorsCallback callback) {
     xmlSecErrorsClbk = callback;
+}
+
+/**
+ * xmlSecErrorsDefaultCallback:
+ */
+void 
+xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
+			    int reason, const char* msg) {
+    if(xmlSecPrintErrorMessages) {    
+	const char* error_msg = NULL;
+	size_t i;
+
+	for(i = 0; (i < XMLSEC_ERRORS_MAX_NUMBER) && (xmlSecErrorsGetMsg(i) != NULL); ++i) {
+	    if(xmlSecErrorsGetCode(i) == reason) {
+		error_msg = xmlSecErrorsGetMsg(i);
+		break;
+	    }
+	}
+	xmlGenericError(xmlGenericErrorContext,
+	    "%s (%s:%d): error %d: %s : %s \n",
+	    (func != NULL) ? func : "unknown",
+	    (file != NULL) ? file : "unknown",
+	    line,
+	    reason,
+	    (error_msg != NULL) ? error_msg : "",
+	    (msg != NULL) ? msg : "");
+    }
+}
+
+int 
+xmlSecErrorsGetCode(size_t pos) {
+    /* could not use asserts here! */
+    if(pos < sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])) {
+	return(xmlSecErrorsTable[pos].errorCode);
+    }
+    return(0);
+}
+
+const char* 
+xmlSecErrorsGetMsg(size_t pos) {
+    /* could not use asserts here! */
+    if(pos < sizeof(xmlSecErrorsTable) / sizeof(xmlSecErrorsTable[0])) {
+	return(xmlSecErrorsTable[pos].errorMsg);
+    }
+    return(NULL);
 }
 
 /**
@@ -149,37 +180,3 @@ xmlSecError(const char* file, int line, const char* func,
     }	
 }
  
-/**
- * xmlSecErrorsDefaultCallback:
- */
-static void 
-xmlSecErrorsDefaultCallback(const char* file, int line, const char* func,
-			    int reason, const char* msg) {
-
-    ERR_put_error(XMLSEC_ERRORS_LIB, XMLSEC_ERRORS_FUNCTION, reason, file, line);
-
-    if(xmlSecPrintErrorMessages) {    
-	const char* error_msg = NULL;
-	unsigned long error = ERR_PACK(XMLSEC_ERRORS_LIB, XMLSEC_ERRORS_FUNCTION, reason);
-	unsigned int i;
-
-	for(i = 0; i < sizeof(xmlSecStrReasons)/sizeof(xmlSecStrReasons[0]); ++i) {
-	    if(xmlSecStrReasons[i].error == error) {
-		error_msg = xmlSecStrReasons[i].string;
-		break;
-	    }
-	}
-	xmlGenericError(xmlGenericErrorContext,
-	    "%s (%s:%d): error %d: %s : %s \n",
-	    (func != NULL) ? func : "unknown",
-	    (file != NULL) ? file : "unknown",
-	    line,
-	    reason,
-	    (error_msg != NULL) ? error_msg : "",
-	    (msg != NULL) ? msg : "");
-    }
-}
-
-
-
-

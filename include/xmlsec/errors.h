@@ -13,33 +13,11 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
-#include <openssl/err.h>
-
-/**************************************************************
- *
- * Error constants for OpenSSL 
- *
- *************************************************************/
-
-/**
- * XMLSEC_ERRORS_LIB:
- *
- * Macro. The XMLSec library id for OpenSSL errors reporting functions.
- */
-#define XMLSEC_ERRORS_LIB			(ERR_LIB_USER + 57)
-/**
- * XMLSEC_ERRORS_FUNCTION:
- *
- * Macro. The XMLSec library functions OpenSSL errors reporting functions.
- */
-#define XMLSEC_ERRORS_FUNCTION			0
-
 /***************************************************************
  *
  * Error codes
  *
  **************************************************************/
-
 /**
  * XMLSEC_ERRORS_R_MALLOC_FAILED:
  *
@@ -239,7 +217,6 @@ extern "C" {
  * The <dsig:Reference> validation failed.
  */
 #define XMLSEC_ERRORS_R_DSIG_INVALID_REFERENCE 	 51
-
 /**
  * XMLSEC_ERRORS_R_ASSERTION:
  *
@@ -256,10 +233,16 @@ extern "C" {
 #define XMLSEC_ERRORS_R_DISABLED		 101
 
 
-/**
+
+#define XMLSEC_ERRORS_MAX_NUMBER		256
+
+
+
+/*******************************************************************
+ *
  * Error functions
- */ 
- 
+ *
+ *******************************************************************/ 
 /**
  * xmlSecErrorsCallback:
  * @file: the error origin filename (__FILE__).
@@ -274,9 +257,19 @@ typedef void (*xmlSecErrorsCallback) 		(const char* file, int line,
 				    		 const char* func,
 						 int reason, const char* msg);
 
-XMLSEC_EXPORT void xmlSecErrorsInit		(void);
-XMLSEC_EXPORT void xmlSecErrorsShutdown		(void);
-XMLSEC_EXPORT void xmlSecErrorsSetCallback	(xmlSecErrorsCallback callback);
+
+XMLSEC_EXPORT void xmlSecErrorsInit			(void);
+XMLSEC_EXPORT void xmlSecErrorsShutdown			(void);
+XMLSEC_EXPORT void xmlSecErrorsSetCallback		(xmlSecErrorsCallback callback);
+XMLSEC_EXPORT void xmlSecErrorsDefaultCallback		(const char* file, 
+							 int line, 
+				    			 const char* func,
+							 int reason, 
+							 const char* msg);
+XMLSEC_EXPORT int xmlSecErrorsGetCode			(size_t pos);
+XMLSEC_EXPORT const char* xmlSecErrorsGetMsg		(size_t pos);
+
+
  
 /**
  * xmlSecPrintErrorMessages:

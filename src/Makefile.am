@@ -5,7 +5,6 @@ SUBDIRS = openssl
 INCLUDES = \
 -I$(top_srcdir) \
 -I$(top_srcdir)/include \
-$(OPENSSL_CFLAGS) \
 $(LIBXSLT_CFLAGS) \
 $(LIBXML_CFLAGS) \
 $(NULL)
@@ -39,7 +38,6 @@ $(NULL)
 
 
 libxmlsec_la_LIBADD = \
-$(OPENSSL_LIBS) \
 $(LIBXSLT_LIBS) \
 $(LIBXML_LIBS) \
 $(NULL)

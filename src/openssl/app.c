@@ -40,6 +40,7 @@ static X509*		xmlSecOpenSSLAppPemCertLoad		(const char* filename);
  */
 int
 xmlSecOpenSSLAppInit(void) {
+    ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -73,6 +74,10 @@ xmlSecOpenSSLAppShutdown(void) {
 #ifndef XMLSEC_OPENSSL096
     CRYPTO_cleanup_all_ex_data();
 #endif /* XMLSEC_OPENSSL096 */     
+
+    /* finally cleanup errors */
+    ERR_remove_state(0);
+    ERR_free_strings();
 
     return(0);
 }

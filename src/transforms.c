@@ -254,6 +254,9 @@ xmlSecTransformsFind(const xmlChar* href, xmlSecTransformUsage usage) {
  * xmlSecTransformCtx
  *
  *************************************************************************/
+static int 		xmlSecTransformCtxPushBin	(xmlSecTransformCtxPtr ctx, 
+							 const unsigned char* data,
+							 size_t dataSize);
 static int 		xmlSecTransformCtxPushUri	(xmlSecTransformCtxPtr ctx,
 							 const xmlChar* uri);
 static int 		xmlSecTransformCtxPushDoc	(xmlSecTransformCtxPtr ctx,
@@ -650,7 +653,8 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
 }
 
 xmlSecBufferPtr 
-xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
+xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc, 
+			  const unsigned char* data, size_t dataSize) {
     xmlSecTransformPtr transform;
     int ret;
         
@@ -670,77 +674,86 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
 	return(NULL);
     }
     ctx->status = xmlSecTransformStatusWorking;
-    
-    if((ctx->uri == NULL) || (xmlStrlen(ctx->uri) == 0)) {
-	ret = xmlSecTransformCtxPushDoc(ctx, doc);
+
+    if((data != NULL) && (dataSize > 0)) {
+	/* we should not have uri stored in ctx */
+	xmlSecAssert2(ctx->uri == NULL, NULL);
+
+	ret = xmlSecTransformCtxPushBin(ctx, data, dataSize);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecTransformCtxPushDoc", 
+			"xmlSecTransformCtxPushBin", 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"uri=\"%s\"",
-			xmlSecErrorsSafeString(ctx->uri));
+			"dataSize=%d", dataSize);
 	    return(NULL);
-	}
-    } else {
+	}	
+    } else if((ctx->uri != NULL) && (xmlStrlen(ctx->uri) > 0)) {
 	ret = xmlSecTransformCtxPushUri(ctx, ctx->uri);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
 			"xmlSecTransformCtxPushUri", 
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"uri=\"%s\"",
+			xmlSecErrorsSafeString(ctx->uri));
+	    return(NULL);
+	}
+    } else {
+	ret = xmlSecTransformCtxPushDoc(ctx, doc);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxPushDoc", 
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	    return(NULL);
 	}
     }
 
-    
     ctx->status = xmlSecTransformStatusFinished;
     return(xmlSecTransformMemBufGetBuffer(transform, 0));    
 }
 
-static int 
-xmlSecTransformCtxPushUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
+static int 	
+xmlSecTransformCtxPushBin(xmlSecTransformCtxPtr ctx, const unsigned char* data,
+			    size_t dataSize) {
     xmlSecTransformDataType firstType;
-    xmlSecTransformPtr uriTransform;
     int ret;
         
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->first != NULL, -1);
     xmlSecAssert2(ctx->status == xmlSecTransformStatusWorking, -1);
-    xmlSecAssert2(uri != NULL, -1);
+    xmlSecAssert2(data != NULL, -1);
     
-    uriTransform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformInputURIId);
-    if(uriTransform == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformCtxCreateAndPrepend",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInputURIId)));
-	return(-1);
+    /* we need to add parser transform if current first 
+     * transform does not expect binary */
+    firstType = xmlSecTransformGetDataType(ctx->first, xmlSecTransformModePush, ctx);
+    if((firstType & xmlSecTransformDataTypeBin) == 0) {
+	xmlSecTransformPtr transform;
+	
+	transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformXmlParserId);
+	if(transform == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"xmlSecTransformCtxCreateAndPrepend",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"transform=%s",
+			xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformXmlParserId)));
+	    return(-1);
+	}
     }
-    
-    ret = xmlSecTransformInputURIOpen(uriTransform, uri);
+
+    ret = xmlSecTransformPushBin(ctx->first, data, dataSize, 1, ctx);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
+        xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformInputURIOpen",
+		    "xmlSecTransformCtxPushBin", 
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "uri=%s",
-		    xmlSecErrorsSafeString(uri));
+		    "dataSize=%d", dataSize);
 	return(-1);
     }
-    
-    /* Now we have a choice: we either can push from first transform or pop 
-     * from last. Parser likes pop and does not like push; c14n transforms
-     * like push and do not like pop. 
-     */
-     
-     /* TODO: find first parser transform and do pop/push manually,
-      * if there are no parser transforms, just push data through
-      * from input uri transform */
-     
+
     return(0);
 }
 
@@ -758,7 +771,7 @@ xmlSecTransformCtxPushDoc(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     /* we need to add c14n transform if current first 
      * transform does not expect xml */
     firstType = xmlSecTransformGetDataType(ctx->first, xmlSecTransformModePush, ctx);
-    if((firstType & xmlSecTransformDataTypeXml) != 0) {
+    if((firstType & xmlSecTransformDataTypeXml) == 0) {
 	xmlSecTransformPtr transform;
 	
 	transform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformInclC14NId);
@@ -802,77 +815,61 @@ xmlSecTransformCtxPushDoc(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     return(0);
 }
 
-#if 0
-    /** 
-     * we have four cases:
-     *   1) same doc (empty uri), we expect XML (in the firs transform)
-     *      prepare nodes set
-     *   2) diff doc (non empty uri), we expect XML
-     *      load diff doc and prepare nodes set
-     *   3) same doc (empty uri), we do not expect (in the firs transform)
-     *      need to add c14n transform
-     *   4) diff doc (non empty uri), we do not expect XML
-     *      do nothing
-     */
-    xmlSecAssert2(ctx->first != NULL, NULL);
+
+static int 
+xmlSecTransformCtxPushUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     xmlSecTransformDataType firstType;
-    firstType = xmlSecTransformGetDataType(ctx->first, xmlSecTransformModePush, ctx);
-    sameDoc =  ? 1 : 0;
-    if((sameDoc != 0) && ((firstType & xmlSecTransformDataTypeXml) != 0)) {
-	/* we can push xml */
-	nodes = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetNormal);
-	if(nodes == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecNodeSetCreate", 
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(NULL);
-	}
-    } else if((sameDoc == 0) && ((firstType & xmlSecTransformDataTypeBin) == 0)) {
-	xmlDocPtr tmpDoc;
-	
-	/* we need to parse uri and get do because first transform requires xml */
-	xmlSecAssert2(ctx->uri != NULL, NULL);	
-	tmpDoc = xmlSecParseFile(ctx->uri);
-	if(tmpDoc == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecParseFile", 
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"uri=\"%s\"",
-			xmlSecErrorsSafeString(ctx->uri));
-	    return(NULL);
-	}
-
-	nodes = xmlSecNodeSetCreate(tmpDoc, NULL, xmlSecNodeSetNormal);
-	if(nodes == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecNodeSetCreate", 
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFreeDoc(tmpDoc);
-	    return(NULL);
-	}
-	xmlSecNodeSetDocDestroy(nodes);
-    } else if((sameDoc != 0) && ((firstType & xmlSecTransformDataTypeXml) == 0)) {
-	xmlSecTranaformPtr tmpTransform;
-	
-	/* need to add c14n transform because first transform requires binary */
-	/* TODO */
-    } else {
-	/* do nothing: we expect binary */
+    xmlSecTransformPtr uriTransform;
+    int ret;
+        
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->first != NULL, -1);
+    xmlSecAssert2(ctx->status == xmlSecTransformStatusWorking, -1);
+    xmlSecAssert2(uri != NULL, -1);
+    
+    uriTransform = xmlSecTransformCtxCreateAndPrepend(ctx, xmlSecTransformInputURIId);
+    if(uriTransform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformCtxCreateAndPrepend",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "transform=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInputURIId)));
+	return(-1);
     }
     
-    /* TODO */
-    
-    /* we are done! */
-    if(nodes != NULL) {
-	xmlSecNodeSetDestroy(nodes);
+    ret = xmlSecTransformInputURIOpen(uriTransform, uri);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformInputURIOpen",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "uri=%s",
+		    xmlSecErrorsSafeString(uri));
+	return(-1);
     }
-#endif /* 0 */
-
+    
+    /* Now we have a choice: we either can push from first transform or pop 
+     * from last. Parser likes pop and does not like push; c14n transforms
+     * like push and do not like pop. 
+     */
+     
+     /* TODO: find first parser transform and do pop/push manually,
+      * if there are no parser transforms, just push data through
+      * from input uri transform */
+    ret = xmlSecTransformPump(uriTransform, uriTransform->next, ctx);     
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformPump",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "uri=%s",
+		    xmlSecErrorsSafeString(uri));
+	return(-1);
+    }
+     
+    return(0);
+}
 
 void 
 xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
@@ -1105,6 +1102,81 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     xmlFree(href);   
     return(transform);
 }
+
+int 
+xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformDataType leftType;
+    xmlSecTransformDataType rightType;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(left), -1);
+    xmlSecAssert2(xmlSecTransformIsValid(right), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+    
+    leftType = xmlSecTransformGetDataType(left, xmlSecTransformModePop, transformCtx);
+    rightType = xmlSecTransformGetDataType(right, xmlSecTransformModePush, transformCtx);
+
+    if(((leftType & xmlSecTransformDataTypeXml) != 0) && 
+       ((rightType & xmlSecTransformDataTypeXml) != 0)) {
+       
+       xmlSecNodeSetPtr nodes = NULL;
+
+       ret = xmlSecTransformPopXml(left, &nodes, transformCtx);
+       if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
+			"xmlSecTransformPopXml",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+       }
+
+       ret = xmlSecTransformPushXml(right, nodes, transformCtx);
+       if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(right)),
+			"xmlSecTransformPushXml",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+       }
+    }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) && 
+    	       ((rightType & xmlSecTransformDataTypeBin) != 0)) {	
+	unsigned char buf[XMLSEC_TRANSFORM_BINARY_CHUNK];
+	size_t bufSize;
+	int final;
+	
+	do {
+	    ret = xmlSecTransformPopBin(left, buf, sizeof(buf), &bufSize, transformCtx);
+    	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
+			    "xmlSecTransformPopBin",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	    final = (bufSize == 0) ? 1 : 0;
+	    ret = xmlSecTransformPushBin(right, buf, bufSize, final, transformCtx);
+    	    if(ret < 0) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecTransformGetName(right)),
+			    "xmlSecTransformPushBin",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
+	} while(final == 0);
+    } else {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(left)),
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(right)),
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "transforms input/output data formats do not match");
+    }
+    return(0);
+}
+
 
 /**
  * xmlSecTransformSetKey:

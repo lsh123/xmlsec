@@ -301,8 +301,6 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
     return(0);
 }
 
-
-
 /** 
  * xmlSecTransformInputURIInitialize:
  */

@@ -120,9 +120,10 @@ XMLSEC_EXPORT xmlSecTransformPtr 	xmlSecTransformCtxNodeRead	(xmlSecTransformCtx
 XMLSEC_EXPORT int			xmlSecTransformCtxNodesListRead	(xmlSecTransformCtxPtr ctx,
 									 xmlNodePtr node,
 									 xmlSecTransformUsage usage);
-XMLSEC_EXPORT xmlSecTransformPtr	xmlSecTransformCtxAppendMemBuf	(xmlSecTransformCtxPtr ctx);
 XMLSEC_EXPORT xmlSecBufferPtr		xmlSecTransformCtxExecute	(xmlSecTransformCtxPtr ctx,
-									 xmlDocPtr doc);
+									 xmlDocPtr doc,
+									 const unsigned char* data,
+									 size_t dataSize);
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugDump 	(xmlSecTransformCtxPtr ctx,
 								        FILE* output);
 XMLSEC_EXPORT void			xmlSecTransformCtxDebugXmlDump	(xmlSecTransformCtxPtr ctx,
@@ -176,6 +177,9 @@ XMLSEC_EXPORT void			xmlSecTransformDestroy	(xmlSecTransformPtr transform,
 xmlSecTransformPtr			xmlSecTransformNodeRead	(xmlNodePtr node, 
 								 xmlSecTransformUsage usage,
 								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int			xmlSecTransformPump	(xmlSecTransformPtr left,
+								 xmlSecTransformPtr right,
+    								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 

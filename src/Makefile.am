@@ -11,6 +11,7 @@ $(NULL)
 
 EXTRA_DIST = \
 transforms-old.c \
+xmlenc-old.c \
 $(NULL)
 
 lib_LTLIBRARIES = libxmlsec.la

@@ -107,7 +107,8 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
 			"xmlXPathNewContext",
 			XMLSEC_ERRORS_R_XML_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
+	    xmlSecXPathDataDestroy(data);
+	    return(NULL);
 	}
 	break;
     case xmlSecXPathDataTypeXPointer:    
@@ -118,7 +119,8 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
 			"xmlXPtrNewContext",
 			XMLSEC_ERRORS_R_XML_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
+	    xmlSecXPathDataDestroy(data);
+	    return(NULL);
 	}
 	break;
     }

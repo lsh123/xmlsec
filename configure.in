@@ -262,6 +262,77 @@ AC_SUBST(OPENSSL_LDADDS)
 AC_SUBST(XMLSEC_OPENSSL_DEFINES)
 
 dnl ==========================================================================
+dnl See if we can find GnuTLS
+dnl ==========================================================================
+XMLSEC_GNUTLS_DEFINES=""
+GNUTLS_CONFIG="libgnutls-config"
+GNUTLS_WITHOUT="no"
+GNUTLS_MIN_VERSION="0.8.1"
+GNUTLS_VERSION=""
+GNUTLS_PREFIX=""
+GNUTLS_CFLAGS=""
+GNUTLS_LIBS=""
+GNUTLS_LDADDS=""
+AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
+AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]    gnutls location])
+if test "$with_gnutls" = "no" ; then
+    GNUTLS_WITHOUT="yes"
+    AC_MSG_RESULT(no)
+else
+    if test "$with_gnutls" != "" ; then
+	GNUTLS_PREFIX=$with_gnutls
+	GNUTLS_CONFIG=$GNUTLS_PREFIX/bin/$GNUTLS_CONFIG
+    fi
+    if ! $GNUTLS_CONFIG --version > /dev/null 2>&1
+    then
+	GNUTLS_WITHOUT="yes"
+	if test "$with_gnutls" != "" ; then
+	    AC_MSG_ERROR(Unable to find gnutls at '$with_gnutls')
+	else 
+	    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_XSLT=1"
+	    AC_MSG_RESULT(no)
+	fi
+    else
+        vers=`$GNUTLS_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	if test "$vers" -ge "$minvers"
+	then
+    	    GNUTLS_LIBS="`$GNUTLS_CONFIG --libs`"
+	    GNUTLS_CFLAGS="`$GNUTLS_CONFIG --cflags`"
+	    GNUTLS_VERSION="`$GNUTLS_CONFIG --version`"
+    	    AC_MSG_RESULT(yes ('$GNUTLS_VERSION'))
+	else
+	    GNUTLS_WITHOUT="yes"
+    	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $PACKAGE)
+	fi	
+    fi
+
+    dnl update crypt libraries list
+    if test "$GNUTLS_WITHOUT" = "no" ;
+    then
+	dnl first crypto library is default one
+	if test "z$XMLSEC_CRYPTO" = "z"
+	then
+	    XMLSEC_CRYPTO="gnutls"
+    	    XMLSEC_CRYPTO_LIB="xmlsec-gnutls"
+	    XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
+	    XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
+	    XMLSEC_CRYPTO_LDADDS="$GNUTLS_LDADDS"
+	fi	
+	XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
+    fi
+fi
+AC_SUBST(GNUTLS_WITHOUT)
+AC_SUBST(GNUTLS_MIN_VERSION)
+AC_SUBST(GNUTLS_VERSION)
+AC_SUBST(GNUTLS_CONFIG)	
+AC_SUBST(GNUTLS_PREFIX)
+AC_SUBST(GNUTLS_CFLAGS)
+AC_SUBST(GNUTLS_LIBS)
+AC_SUBST(GNUTLS_LDADDS)
+AC_SUBST(XMLSEC_GNUTLS_DEFINES)
+
+dnl ==========================================================================
 dnl See if we can find NSS
 dnl ==========================================================================
 ac_mozilla_name=mozilla-1.2
@@ -353,7 +424,6 @@ AC_SUBST(NSS_CFLAGS)
 AC_SUBST(NSS_LIBS)
 AC_SUBST(NSS_LDADDS)
 AC_SUBST(XMLSEC_NSS_DEFINES)
-
 
 dnl ==========================================================================
 dnl Do we have a crypto library?
@@ -605,10 +675,12 @@ xmlsec.pc
 include/Makefile
 include/xmlsec/Makefile
 include/xmlsec/openssl/Makefile
+include/xmlsec/gnutls/Makefile
 include/xmlsec/nss/Makefile
 include/xmlsec/version.h
 src/Makefile
 src/openssl/Makefile
+src/gnutls/Makefile
 src/nss/Makefile
 apps/Makefile
 tests/Makefile

@@ -9,10 +9,8 @@
 
 #include <string.h>
 
-#include <nspr/nspr.h>
-#include <nss/nss.h>
-#include <nss/secoid.h>
-#include <nss/pk11func.h>
+#include <gnutls/gnutls.h>
+#include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -20,21 +18,21 @@
 #include <xmlsec/transformsInternal.h>
 #include <xmlsec/errors.h>
 
-#include <xmlsec/nss/app.h>
-#include <xmlsec/nss/crypto.h>
+#include <xmlsec/gnutls/app.h>
+#include <xmlsec/gnutls/crypto.h>
 
-#define XMLSEC_NSS_MAX_DIGEST_SIZE		32
+#define XMLSEC_GNUTLS_MAX_DIGEST_SIZE		32
 
 /**************************************************************************
  *
- * Internal NSS Digest CTX
+ * Internal GNUTLS Digest CTX
  *
  *****************************************************************************/
-typedef struct _xmlSecNssDigestCtx		xmlSecNssDigestCtx, *xmlSecNssDigestCtxPtr;
-struct _xmlSecNssDigestCtx {
-    SECOidData*		digest;
-    PK11Context*	digestCtx;
-    unsigned char 	dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
+typedef struct _xmlSecGnuTLSDigestCtx		xmlSecGnuTLSDigestCtx, *xmlSecGnuTLSDigestCtxPtr;
+struct _xmlSecGnuTLSDigestCtx {
+    int			digest;
+    GcryMDHd		digestCtx;
+    unsigned char 	dgst[XMLSEC_GNUTLS_MAX_DIGEST_SIZE];
     size_t		dgstSize;	/* dgst size in bytes */
 };	    
 
@@ -42,30 +40,30 @@ struct _xmlSecNssDigestCtx {
  *
  * Digest transforms
  *
- * xmlSecNssDigestCtx is located after xmlSecTransform
+ * xmlSecGnuTLSDigestCtx is located after xmlSecTransform
  *
  *****************************************************************************/
-#define xmlSecNssDigestSize	\
-    (sizeof(xmlSecTransform) + sizeof(xmlSecNssDigestCtx))	
-#define xmlSecNssDigestGetCtx(transform) \
-    ((xmlSecNssDigestCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecGnuTLSDigestSize	\
+    (sizeof(xmlSecTransform) + sizeof(xmlSecGnuTLSDigestCtx))	
+#define xmlSecGnuTLSDigestGetCtx(transform) \
+    ((xmlSecGnuTLSDigestCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
 
-static int 	xmlSecNssDigestInitialize		(xmlSecTransformPtr transform);
-static void 	xmlSecNssDigestFinalize			(xmlSecTransformPtr transform);
-static int	xmlSecNssDigestVerify			(xmlSecTransformPtr transform, 
+static int 	xmlSecGnuTLSDigestInitialize		(xmlSecTransformPtr transform);
+static void 	xmlSecGnuTLSDigestFinalize		(xmlSecTransformPtr transform);
+static int	xmlSecGnuTLSDigestVerify		(xmlSecTransformPtr transform, 
 							 const unsigned char* data, 
 							 size_t dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
-static int 	xmlSecNssDigestExecute			(xmlSecTransformPtr transform, 
+static int 	xmlSecGnuTLSDigestExecute		(xmlSecTransformPtr transform, 
 							 int last, 
 							 xmlSecTransformCtxPtr transformCtx);
-static int	xmlSecNssDigestCheckId			(xmlSecTransformPtr transform);
+static int	xmlSecGnuTLSDigestCheckId		(xmlSecTransformPtr transform);
 
 static int
-xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
+xmlSecGnuTLSDigestCheckId(xmlSecTransformPtr transform) {
 
 #ifndef XMLSEC_NO_SHA1
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha1Id)) {
 	return(1);
     }
 #endif /* XMLSEC_NO_SHA1 */    
@@ -74,21 +72,21 @@ xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
 }
 
 static int 
-xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
-    xmlSecNssDigestCtxPtr ctx;
+xmlSecGnuTLSDigestInitialize(xmlSecTransformPtr transform) {
+    xmlSecGnuTLSDigestCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSDigestCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize), -1);
 
-    ctx = xmlSecNssDigestGetCtx(transform);
+    ctx = xmlSecGnuTLSDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     /* initialize context */
-    memset(ctx, 0, sizeof(xmlSecNssDigestCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSDigestCtx));
 
 #ifndef XMLSEC_NO_SHA1
-    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha1Id)) {
-	ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA1);
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformSha1Id)) {
+	ctx->digest = GCRY_MD_SHA1;
     } else
 #endif /* XMLSEC_NO_SHA1 */    	
 
@@ -101,58 +99,48 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
 	return(-1);
     }
     
-    if(ctx->digest == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecNssDigestGetOid",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    
-    ctx->digestCtx = PK11_CreateDigestContext(ctx->digest->offset);
+    ctx->digestCtx = gcry_md_open(ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(ctx->digestCtx == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "PK11_CreateDigestContext",
+		    "gcry_md_open",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-	
     return(0);
 }
 
 static void 
-xmlSecNssDigestFinalize(xmlSecTransformPtr transform) {
-    xmlSecNssDigestCtxPtr ctx;
+xmlSecGnuTLSDigestFinalize(xmlSecTransformPtr transform) {
+    xmlSecGnuTLSDigestCtxPtr ctx;
 
-    xmlSecAssert(xmlSecNssDigestCheckId(transform));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize));
+    xmlSecAssert(xmlSecGnuTLSDigestCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize));
 
-    ctx = xmlSecNssDigestGetCtx(transform);
+    ctx = xmlSecGnuTLSDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
     
     if(ctx->digestCtx != NULL) {
-	PK11_DestroyContext(ctx->digestCtx, PR_TRUE);
+	gcry_md_close(ctx->digestCtx);
     }
-    memset(ctx, 0, sizeof(xmlSecNssDigestCtx));
+    memset(ctx, 0, sizeof(xmlSecGnuTLSDigestCtx));
 }
 
 static int
-xmlSecNssDigestVerify(xmlSecTransformPtr transform, 
+xmlSecGnuTLSDigestVerify(xmlSecTransformPtr transform, 
 			const unsigned char* data, size_t dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
-    xmlSecNssDigestCtxPtr ctx;
+    xmlSecGnuTLSDigestCtxPtr ctx;
     
-    xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
+    xmlSecAssert2(xmlSecGnuTLSDigestCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize), -1);
     xmlSecAssert2(transform->encode == 0, -1);
     xmlSecAssert2(transform->status == xmlSecTransformStatusFinished, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecNssDigestGetCtx(transform);
+    ctx = xmlSecGnuTLSDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
     
@@ -182,33 +170,24 @@ xmlSecNssDigestVerify(xmlSecTransformPtr transform,
 }
 
 static int 
-xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecNssDigestCtxPtr ctx;
+xmlSecGnuTLSDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecGnuTLSDigestCtxPtr ctx;
     xmlSecBufferPtr in, out;
-    SECStatus rv;
     int ret;
     
-    xmlSecAssert2(xmlSecNssDigestCheckId(transform), -1);
+    xmlSecAssert2(xmlSecGnuTLSDigestCheckId(transform), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssDigestSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSDigestSize), -1);
 
-    ctx = xmlSecNssDigestGetCtx(transform);
+    ctx = xmlSecGnuTLSDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->digest != GCRY_MD_NONE, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
 
     in = &(transform->inBuf);
     out = &(transform->outBuf);
 
     if(transform->status == xmlSecTransformStatusNone) {
-	rv = PK11_DigestBegin(ctx->digestCtx);
-	if(rv != SECSuccess) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"PK11_DigestBegin",
-			XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
 	transform->status = xmlSecTransformStatusWorking;
     }
     
@@ -217,15 +196,7 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 
 	inSize = xmlSecBufferGetSize(in);
 	if(inSize > 0) {
-	    rv = PK11_DigestOp(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
-	    if (rv != SECSuccess) {
-		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "PK11_DigestOp",
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
-	    }
+	    gcry_md_write(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
 	    
 	    ret = xmlSecBufferRemoveHead(in, inSize);
 	    if(ret < 0) {
@@ -238,17 +209,27 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
 	    }
 	}
 	if(last) {
-	    rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &ctx->dgstSize, sizeof(ctx->dgst));
-	    if(rv != SECSuccess) {
+	    unsigned char* buf;
+	    
+	    /* get the final digest */
+	    gcry_md_final(ctx->digestCtx);
+	    buf = gcry_md_read(ctx->digestCtx, ctx->digest);
+	    if(buf == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE, 
 			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "PK11_DigestFinal",
+			    "gcry_md_read",
 			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
+	        return(-1);
 	    }
+	    
+	    /* copy it to our internal buffer */
+	    ctx->dgstSize = gcry_md_get_algo_dlen(ctx->digest);
 	    xmlSecAssert2(ctx->dgstSize > 0, -1);
+	    xmlSecAssert2(ctx->dgstSize <= sizeof(ctx->dgst), -1);
+	    memcpy(ctx->dgst, buf, ctx->dgstSize);
 
+	    /* and to the output if needed */
 	    if(transform->encode) {
 		ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
 		if(ret < 0) {
@@ -283,10 +264,10 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
  * SHA1 Digest transforms
  *
  *****************************************************************************/
-static xmlSecTransformKlass xmlSecNssSha1Klass = {
+static xmlSecTransformKlass xmlSecGnuTLSSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),		/* size_t klassSize */
-    xmlSecNssDigestSize,			/* size_t objSize */
+    xmlSecGnuTLSDigestSize,			/* size_t objSize */
 
     /* data */
     xmlSecNameSha1,
@@ -295,28 +276,27 @@ static xmlSecTransformKlass xmlSecNssSha1Klass = {
     xmlSecHrefSha1, 				/* xmlChar *href; */
     
     /* methods */
-    xmlSecNssDigestInitialize,			/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssDigestFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGnuTLSDigestInitialize,			/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSDigestFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
     NULL,					/* xmlSecTransformReadNodeMethod read; */
     NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecNssDigestVerify,			/* xmlSecTransformVerifyMethod verify; */
+    xmlSecGnuTLSDigestVerify,			/* xmlSecTransformVerifyMethod verify; */
     xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
     NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssDigestExecute,			/* xmlSecTransformExecuteMethod execute; */
+    xmlSecGnuTLSDigestExecute,			/* xmlSecTransformExecuteMethod execute; */
     
     NULL,					/* xmlSecTransformExecuteXmlMethod executeXml; */
     NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 
 xmlSecTransformId 
-xmlSecNssTransformSha1GetKlass(void) {
-    return(&xmlSecNssSha1Klass);
+xmlSecGnuTLSTransformSha1GetKlass(void) {
+    return(&xmlSecGnuTLSSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
-
 
 

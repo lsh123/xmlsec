@@ -72,6 +72,8 @@ static xmlSecXPathDataPtr 	xmlSecXPathDataCreate		(xmlSecXPathDataType type);
 static void		  	xmlSecXPathDataDestroy		(xmlSecXPathDataPtr data);
 static int		  	xmlSecXPathDataSetExpr		(xmlSecXPathDataPtr data,
 								 const xmlChar* expr);
+static int 			xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, 
+								 xmlNodePtr node);
 static int		  	xmlSecXPathDataNodeRead		(xmlSecXPathDataPtr data,
 								 xmlNodePtr node);
 static xmlSecNodeSetPtr		xmlSecXPathDataExecute		(xmlSecXPathDataPtr data,
@@ -164,13 +166,12 @@ xmlSecXPathDataSetExpr(xmlSecXPathDataPtr data, const xmlChar* expr) {
 
 
 static int 
-xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
+xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, xmlNodePtr node) {
     xmlNodePtr cur;
     xmlNsPtr ns;
     int ret;
     
     xmlSecAssert2(data != NULL, -1);    
-    xmlSecAssert2(data->expr == NULL, -1);
     xmlSecAssert2(data->ctx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
 
@@ -193,7 +194,29 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
 	    }
 	}
     }
+    
+    return(0);
+}
 
+static int 
+xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
+    int ret;
+    
+    xmlSecAssert2(data != NULL, -1);    
+    xmlSecAssert2(data->expr == NULL, -1);
+    xmlSecAssert2(data->ctx != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+
+    ret = xmlSecXPathDataRegisterNamespaces (data, node);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecXPathDataRegisterNamespaces",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    
     /* read node content and set expr */
     data->expr = xmlNodeGetContent(node);
     if(data->expr == NULL) {
@@ -828,6 +851,17 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
+
+    ret = xmlSecXPathDataRegisterNamespaces(data, hereNode);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecXPathDataRegisterNamespaces",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecXPathDataDestroy(data);
+	return(-1);
+    }    
 
     ret = xmlSecXPathDataSetExpr(data, expr);
     if(ret < 0) {

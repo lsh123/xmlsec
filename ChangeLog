@@ -1,3 +1,8 @@
+Fri Aug  8 22:18:45 2003  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xpath.c: register namespaces before processing XPointer
+	expression in the URI attribute (bug #119462, reported by Steve)
+
 Fri Aug  8 09:06:53 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/keys.h src/keys.c: added xmlsec-core functions to 

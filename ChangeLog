@@ -1,3 +1,7 @@
+Thu Jun  5 19:32:12 2003  Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* docs/*: fixing online verifier link
+
 Wed Jun  4 19:12:21 2003  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in: added _ALL_SOURCE define for aix

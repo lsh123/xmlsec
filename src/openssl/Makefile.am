@@ -40,7 +40,9 @@ $(LIBXSLT_LIBS) \
 $(LIBXML_LIBS) \
 $(NULL)
         
-libxmlsec_openssl_la_LDFLAGS = -version-info @XMLSEC_VERSION_INFO@
+libxmlsec_openssl_la_LDFLAGS = \
+    -version-info @XMLSEC_VERSION_INFO@ \
+    -release @XMLSEC_RELEASE_INFO@
 
 # what is this include dir ?
 libxmlsec_opensslincdir = $(includedir)/xmlsec

@@ -32,7 +32,9 @@ $(LIBXSLT_LIBS) \
 $(LIBXML_LIBS) \
 $(NULL)
         
-libxmlsec_gnutls_la_LDFLAGS = -version-info @XMLSEC_VERSION_INFO@
+libxmlsec_gnutls_la_LDFLAGS = \
+    -version-info @XMLSEC_VERSION_INFO@ \
+    -release @XMLSEC_RELEASE_INFO@
 
 # what is this include dir ?
 libxmlsec_gnutlsincdir = $(includedir)/xmlsec

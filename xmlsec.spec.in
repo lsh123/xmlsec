@@ -110,9 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README Copyright
 %doc %{_mandir}/man1/xmlsec.1*  
 
-%{prefix}/lib/libxmlsec.so.*
+%{prefix}/lib/libxmlsec-*.so.*
 %{prefix}/lib/libxmlsec.so
-%{prefix}/lib/libxmlsec-openssl.so.*
+%{prefix}/lib/libxmlsec-openssl-*.so.*
 %{prefix}/lib/libxmlsec-openssl.so
 %{prefix}/bin/xmlsec
 
@@ -132,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 #%files nss
 #%defattr(-, root, root)  
 
-#%{prefix}/lib/libxmlsec-nss.so.*
+#%{prefix}/lib/libxmlsec-nss-*.so.*
 #%{prefix}/lib/libxmlsec-nss.so
 
 #%files nss-devel

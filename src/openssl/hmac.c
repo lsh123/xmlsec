@@ -406,6 +406,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
     xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -440,6 +441,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
     xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -474,6 +476,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
     xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */

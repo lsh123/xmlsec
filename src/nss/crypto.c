@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include <nss/nss.h>
+#include <nss/pk11func.h>
 #include <nspr/prinit.h>
 
 
@@ -67,16 +68,33 @@ xmlSecNssShutdown(void) {
 
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
+    SECStatus rv;
+    int ret;
+    
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
-    
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-		NULL,
-		"xmlSecNssGenerateRandom",
-		XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
+
+    ret = xmlSecBufferSetSize(buffer, size);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "xmlSecBufferSetSize",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "size=%d", size);
+	return(-1);
+    }
+        
+    /* get random data */
+    rv = PK11_GenerateRandom((unsigned char*)xmlSecBufferGetData(buffer), size);
+    if(rv != SECSuccess) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    NULL,
+		    "PK11_GenerateRandom",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    "size=%d", size);
+	return(-1);    
+    }    
+    return(0);
 }
 
 
@@ -159,6 +177,44 @@ xmlSecNssTransformsInit(void) {
 	return(-1);
     }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_DES    
+    if(xmlSecTransformRegister(xmlSecNssTransformDes3CbcId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformDes3CbcId)),
+		    "xmlSecTransformRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_AES    
+    if(xmlSecTransformRegister(xmlSecNssTransformAes128CbcId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformAes128CbcId)),
+		    "xmlSecTransformRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    if(xmlSecTransformRegister(xmlSecNssTransformAes192CbcId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformAes192CbcId)),
+		    "xmlSecTransformRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    if(xmlSecTransformRegister(xmlSecNssTransformAes256CbcId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssTransformAes256CbcId)),
+		    "xmlSecTransformRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+#endif /* XMLSEC_NO_AES */
 
     return(0);
 }

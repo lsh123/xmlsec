@@ -476,6 +476,7 @@ static xmlSecTransformKlass xmlSecNssHmacSha1Klass = {
     xmlSecNssHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecNssHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -510,6 +511,7 @@ static xmlSecTransformKlass xmlSecNssHmacRipemd160Klass = {
     xmlSecNssHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecNssHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -544,6 +546,7 @@ static xmlSecTransformKlass xmlSecNssHmacMd5Klass = {
     xmlSecNssHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     xmlSecNssHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     xmlSecNssHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */

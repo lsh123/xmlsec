@@ -48,6 +48,7 @@ struct _xmlSecTransformKlass xmlSecTransformEnvelopedId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
     NULL,				/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */

@@ -74,29 +74,6 @@ xmlSecNssErrorsInit(void) {
 
 static int		
 xmlSecNssKeysInit(void) {
-#ifndef XMLSEC_NO_AES    
-#ifndef XMLSEC_NSS_096
-    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataAesId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataAesId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NSS_096 */    
-#endif /* XMLSEC_NO_AES */
-
-#ifndef XMLSEC_NO_DES    
-    if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataDesId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(xmlSecNssKeyDataDesId)),
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-#endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_DSA
     if(xmlSecKeyDataIdsRegister(xmlSecNssKeyDataDsaId) < 0) {

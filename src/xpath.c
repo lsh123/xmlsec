@@ -90,79 +90,80 @@ struct _xmlSecTransformKlass xmlSecTransformXPathId = {
 
     /* same as xmlSecTransformId */ 
     BAD_CAST "xpath",
-    xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
+    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPathNs, /* const xmlChar *href; */
+    xmlSecXPathNs, 				/* const xmlChar *href; */
 
-    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPathReadNode,	/* xmlSecTransformReadNodeMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPathReadNode,		/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,					/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
     
-    xmlSecTransformXPathExecute,	/* xmlSecTransformExecuteMethod executeXml; */
+    xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod executeXml; */
     NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecTransformXPath = (xmlSecTransformId)(&xmlSecTransformXPathId);
 
 struct _xmlSecTransformKlass xmlSecTransformXPath2Id = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
-    /* same as xmlSecTransformId */ 
     BAD_CAST "xpath2",
-    xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
+    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPath2Ns, /* const xmlChar *href; */
+    xmlSecXPath2Ns, 				/* const xmlChar *href; */
 
-    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPath2ReadNode,	/* xmlSecTransformReadNodeMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPath2ReadNode,		/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,					/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformXPath2Execute,	/* xmlSecTransformExecuteMethod executeXml; */
+    xmlSecTransformXPath2Execute,		/* xmlSecTransformExecuteMethod executeXml; */
     NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecTransformXPath2 = (xmlSecTransformId)(&xmlSecTransformXPath2Id);
 
 struct _xmlSecTransformKlass xmlSecTransformXPointerId = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),	/* size_t klassSize */
-    sizeof(xmlSecTransform),		/* size_t objSize */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    sizeof(xmlSecTransform),			/* size_t objSize */
 
-    /* same as xmlSecTransformId */ 
     BAD_CAST "xpointer",
-    xmlSecTransformTypeXml,		/* xmlSecTransformType type; */
+    xmlSecTransformTypeXml,			/* xmlSecTransformType type; */
     xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
-    xmlSecXPointerNs, /* const xmlChar *href; */
+    xmlSecXPointerNs, 				/* const xmlChar *href; */
 
-    xmlSecTransformXPathInitialize,	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformXPathFinalize,	/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPointerReadNode,	/* xmlSecTransformReadNodeMethod read; */
-    NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,				/* xmlSecTransformPopBinMethod popBin; */
-    NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,				/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPointerReadNode,		/* xmlSecTransformReadNodeMethod read; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
+    NULL,					/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    NULL,					/* xmlSecTransformExecuteMethod execute; */
 
-    xmlSecTransformXPointerExecute,	/* xmlSecTransformExecuteMethod executeXml; */
+    xmlSecTransformXPointerExecute,		/* xmlSecTransformExecuteMethod executeXml; */
     NULL,					/* xmlSecTransformExecuteC14NMethod executeC14N; */
 };
 xmlSecTransformId xmlSecTransformXPointer = (xmlSecTransformId)(&xmlSecTransformXPointerId);

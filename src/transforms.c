@@ -256,6 +256,15 @@ xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
     return((transform->id->verify)(transform, data, dataSize, transformCtx));
 }
 
+xmlSecTransformDataType	
+xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode, 
+		    xmlSecTransformCtxPtr transformCtx) {
+    xmlSecAssert2(xmlSecTransformIsValid(transform), xmlSecTransformDataTypeUnknown);
+    xmlSecAssert2(transform->id->getDataType != NULL, xmlSecTransformDataTypeUnknown);
+    
+    return((transform->id->getDataType)(transform, mode, transformCtx));    
+}
+
 int 
 xmlSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 		    size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
@@ -558,6 +567,44 @@ xmlSecTransformFlushBin(xmlSecTransformPtr transform) {
 	return(-1);
     }
     return(0);
+}
+
+xmlSecTransformDataType 
+xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode,
+				  xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformDataType type = xmlSecTransformDataTypeUnknown;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), xmlSecTransformDataTypeUnknown);
+    xmlSecAssert2(transform != transformCtx, xmlSecTransformDataTypeUnknown);
+
+    /* we'll try to guess the data type based on the handlers we have */
+    switch(mode) {
+	case xmlSecTransformModePush:
+	    if(transform->id->pushBin != NULL) {
+		type |= xmlSecTransformDataTypeBin;
+	    } 
+	    if(transform->id->pushXml != NULL) {
+		type |= xmlSecTransformDataTypeXml;
+	    } 
+	    break;
+	case xmlSecTransformModePop:
+	    if(transform->id->popBin != NULL) {
+		type |= xmlSecTransformDataTypeBin;
+	    } 
+	    if(transform->id->popXml != NULL) {
+		type |= xmlSecTransformDataTypeXml;
+	    } 
+	    break;
+	default:
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+			NULL,
+		        XMLSEC_ERRORS_R_INVALID_DATA,
+			"mode=%d", mode);
+	    return(xmlSecTransformDataTypeUnknown);
+    }
+    
+    return(type);
 }
 
 int 

@@ -217,6 +217,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformInputURIPopBin,	/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */

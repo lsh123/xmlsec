@@ -51,6 +51,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveTransformId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
     NULL,				/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
@@ -79,6 +80,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NInclusiveWithCommentsTransfo
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
     NULL,				/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
@@ -106,6 +108,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveTransformId = {
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
     NULL,				/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */
@@ -133,6 +136,7 @@ static const struct _xmlSecTransformKlass xmlSecC14NExclusiveWithCommentsTransfo
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
     NULL,				/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,	/* xmlSecTransformGetDataTypeMethod getDataType; */
     NULL,				/* xmlSecTransformPushBinMethod pushBin; */
     NULL,				/* xmlSecTransformPopBinMethod popBin; */
     NULL,				/* xmlSecTransformPushXmlMethod pushXml; */

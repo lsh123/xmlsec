@@ -60,6 +60,27 @@ typedef enum  {
 
 /**************************************************************************
  *
+ * xmlSecTransformMode
+ *
+ *************************************************************************/
+typedef enum  {
+    xmlSecTransformModeNone = 0,
+    xmlSecTransformModePush,
+    xmlSecTransformModePop
+} xmlSecTransformMode;
+
+/**************************************************************************
+ *
+ * xmlSecTransformDataType
+ *
+ *************************************************************************/
+typedef unsigned char			xmlSecTransformDataType;
+#define xmlSecTransformDataTypeUnknown	0x00
+#define xmlSecTransformDataTypeBin	0x01
+#define xmlSecTransformDataTypeXml	0x02
+
+/**************************************************************************
+ *
  * xmlSecTransformCtx
  *
  *************************************************************************/
@@ -129,6 +150,9 @@ XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform,
 								 const unsigned char* data,
 								 size_t dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformGetDataType(xmlSecTransformPtr transform,
+								 xmlSecTransformMode mode,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformPushBin	(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
@@ -146,7 +170,9 @@ XMLSEC_EXPORT int			xmlSecTransformPopXml	(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 
-
+XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
+								 xmlSecTransformMode mode,
+								 xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int			xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
@@ -344,6 +370,10 @@ typedef int		(*xmlSecTransformInitializeMethod) 	(xmlSecTransformPtr transform);
  */
 typedef void 		(*xmlSecTransformFinalizeMethod)	(xmlSecTransformPtr transform);
 
+typedef xmlSecTransformDataType	(*xmlSecTransformGetDataTypeMethod)(xmlSecTransformPtr transform,
+								 xmlSecTransformMode mode,
+								 xmlSecTransformCtxPtr transformCtx);
+
 /**
  * xmlSecTransformNodeReadMethod:
  * @transform: the pointer to the #xmlSecTransform structure.
@@ -500,6 +530,7 @@ struct _xmlSecTransformKlass {
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
     xmlSecTransformVerifyMethod		verify;
+    xmlSecTransformGetDataTypeMethod	getDataType;
     xmlSecTransformPushBinMethod	pushBin;
     xmlSecTransformPopBinMethod		popBin;
     xmlSecTransformPushXmlMethod	pushXml;

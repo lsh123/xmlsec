@@ -680,6 +680,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes128CbcKlass = {
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -711,6 +712,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes192CbcKlass = {
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -742,6 +744,7 @@ static xmlSecTransformKlass xmlSecOpenSSLAes256CbcKlass = {
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
@@ -777,6 +780,7 @@ static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {
     xmlSecOpenSSLEvpBlockCipherSetKeyReq,	/* xmlSecTransformSetKeyMethod setKeyReq; */
     xmlSecOpenSSLEvpBlockCipherSetKey,		/* xmlSecTransformSetKeyMethod setKey; */
     NULL,					/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
     NULL,					/* xmlSecTransformPushXmlMethod pushXml; */

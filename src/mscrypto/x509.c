@@ -1598,70 +1598,98 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 
 	cert = xmlSecMSCryptoX509StoreVerify(x509Store, ctx->hMemStore, keyInfoCtx);
 	if(cert != NULL) {
-	    xmlSecKeyDataPtr keyValue;
+	    xmlSecKeyDataPtr keyValue = NULL;
+        PCCERT_CONTEXT pCert = NULL;
 
 	    ctx->keyCert = CertDuplicateCertificateContext(cert);
 	    if(ctx->keyCert == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			    "CertDuplicateCertificateContext",
-			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			        "CertDuplicateCertificateContext",
+			        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			        XMLSEC_ERRORS_NO_MESSAGE);
+		    return(-1);
 	    }
 
-	    keyValue = xmlSecMSCryptoX509CertGetKey(ctx->keyCert);
-	    if(keyValue == NULL) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			    "xmlSecMSCryptoX509CertGetKey",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
-	    }
+		/* search key according to KeyReq */
+		pCert = CertDuplicateCertificateContext( ctx->keyCert ) ;
+		if( pCert == NULL ) {
+			xmlSecError( XMLSEC_ERRORS_HERE,
+		    	xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+				"CertDuplicateCertificateContext",
+				XMLSEC_ERRORS_R_CRYPTO_FAILED,
+				XMLSEC_ERRORS_NO_MESSAGE);
+
+			return(-1);
+		}
+
+		if( ( keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate ) == xmlSecKeyDataTypePrivate ) {
+			keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePrivate ) ;
+			if(keyValue == NULL) {
+				xmlSecError(XMLSEC_ERRORS_HERE,
+						xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+						"xmlSecMSCryptoCertAdopt",
+						XMLSEC_ERRORS_R_XMLSEC_FAILED,
+						XMLSEC_ERRORS_NO_MESSAGE);
+				CertFreeCertificateContext( pCert ) ;
+				return(-1);
+			}
+			pCert = NULL ;
+		} else if( ( keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePublic ) == xmlSecKeyDataTypePublic ) {
+			keyValue = xmlSecMSCryptoCertAdopt( pCert, xmlSecKeyDataTypePublic ) ;
+			if(keyValue == NULL) {
+				xmlSecError(XMLSEC_ERRORS_HERE,
+						xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+						"xmlSecMSCryptoCertAdopt",
+						XMLSEC_ERRORS_R_XMLSEC_FAILED,
+						XMLSEC_ERRORS_NO_MESSAGE);
+				CertFreeCertificateContext( pCert ) ;
+				return(-1);
+			}
+			pCert = NULL ;
+		}
 
 	    /* verify that the key matches our expectations */
 	    if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), keyValue) != 1) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			    "xmlSecKeyReqMatchKeyValue",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecKeyDataDestroy(keyValue);
-		return(-1);
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			        "xmlSecKeyReqMatchKeyValue",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        XMLSEC_ERRORS_NO_MESSAGE);
+		    xmlSecKeyDataDestroy(keyValue);
+		    return(-1);
 	    }	
 
 	    ret = xmlSecKeySetValue(key, keyValue);
 	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			    "xmlSecKeySetValue",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecKeyDataDestroy(keyValue);
-		return(-1);
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			        "xmlSecKeySetValue",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        XMLSEC_ERRORS_NO_MESSAGE);
+		    xmlSecKeyDataDestroy(keyValue);
+		    return(-1);
 	    }	    
 
 	    ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
 	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			    "xmlSecMSCryptoX509CertGetTime",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "notValidBefore");
-		return(-1);
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			        "xmlSecMSCryptoX509CertGetTime",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        "notValidBefore");
+		    return(-1);
 	    }
 
 	    ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotAfter, &(key->notValidAfter));
 	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			    "xmlSecMSCryptoX509CertGetTime",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "notValidAfter");
-		return(-1);
+		    xmlSecError(XMLSEC_ERRORS_HERE,
+			        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			        "xmlSecMSCryptoX509CertGetTime",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        "notValidAfter");
+		    return(-1);
 	    }
-
 	} else if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -2099,7 +2127,7 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    // todo: add error checks
+    /* todo: add error checks */
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
     subject = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
@@ -2135,7 +2163,7 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    // todo: add error checks
+    /* todo: add error checks */
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
     subject = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);

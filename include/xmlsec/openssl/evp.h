@@ -28,7 +28,7 @@ extern "C" {
  *
  *****************************************************************************/
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherInitialize	(xmlSecTransformPtr transform,
-								 const EVP_CIPHER *type);
+								 const EVP_CIPHER *cipher);
 XMLSEC_EXPORT void	xmlSecOpenSSLEvpBlockCipherFinalize	(xmlSecTransformPtr transform);
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherSetKey	(xmlSecTransformPtr transform,
 								 const unsigned char* key,
@@ -36,6 +36,25 @@ XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherSetKey	(xmlSecTransformPtr transfor
 XMLSEC_EXPORT int	xmlSecOpenSSLEvpBlockCipherExecute	(xmlSecTransformPtr transform,
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
+
+
+/******************************************************************************
+ *
+ * EVP Digest transforms
+ *
+ *****************************************************************************/
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpDigestInitialize	(xmlSecTransformPtr transform,
+								 const EVP_MD* digest);
+XMLSEC_EXPORT void	xmlSecOpenSSLEvpDigestFinalize		(xmlSecTransformPtr transform);
+XMLSEC_EXPORT int  	xmlSecOpenSSLEvpDigestVerify		(xmlSecTransformPtr transform, 
+								 const unsigned char* data,
+								 size_t dataSize,
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform, 
+								 int last,
+								 xmlSecTransformCtxPtr transformCtx);
+
+
 /******************************************************************************
  *
  * EVP helper functions

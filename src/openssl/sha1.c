@@ -14,212 +14,92 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <openssl/sha.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 #include <xmlsec/transformsInternal.h>
-#include <xmlsec/digests.h>
 #include <xmlsec/errors.h>
 
-static xmlSecTransformPtr xmlSecDigestSha1Create(xmlSecTransformId id);
-static void 	xmlSecDigestSha1Destroy		(xmlSecTransformPtr transform);
-static int 	xmlSecDigestSha1Update		(xmlSecDigestTransformPtr transform,
-						 const unsigned char *buffer,
-						 size_t size);
-static int 	xmlSecDigestSha1Sign		(xmlSecDigestTransformPtr transform,
-						 unsigned char **buffer,
-						 size_t *size);
-static int 	xmlSecDigestSha1Verify		(xmlSecDigestTransformPtr transform,
-						 const unsigned char *buffer,
-						 size_t size);
+#include <xmlsec/openssl/crypto.h>
+#include <xmlsec/openssl/evp.h>
+
+static xmlSecTransformPtr xmlSecSha1Create	(xmlSecTransformId id);
+static void 	xmlSecSha1Destroy		(xmlSecTransformPtr transform);
 
 
 
-struct _xmlSecDigestTransformIdStruct xmlSecDigestSha1Id = {
+static xmlSecTransformKlass xmlSecDigestSha1Id = {
     /* same as xmlSecTransformId */    
     BAD_CAST "dgst-sha1",
-    xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
-    xmlSecTransformUsageDigestMethod,	/* xmlSecTransformUsage usage; */
+    xmlSecTransformTypeBinary,			/* xmlSecTransformType type; */
+    xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
     BAD_CAST "http://www.w3.org/2000/09/xmldsig#sha1", /* xmlChar *href; */
     
-    xmlSecDigestSha1Create,		/* xmlSecTransformCreateMethod create; */
-    xmlSecDigestSha1Destroy,		/* xmlSecTransformDestroyMethod destroy; */
+    xmlSecSha1Create,			/* xmlSecTransformCreateMethod create; */
+    xmlSecSha1Destroy,			/* xmlSecTransformDestroyMethod destroy; */
     NULL,				/* xmlSecTransformReadNodeMethod read; */
     NULL,				/* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,				/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,				/* xmlSecTransformValidateMethod validate; */
-    NULL,				/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLEvpDigestVerify,	/* xmlSecTransformVerifyMethod verify; */
+    xmlSecOpenSSLEvpDigestExecute,	/* xmlSecTransformExecuteMethod execute; */
     
     /* xmlSecTransform data/methods */
     NULL,
-    xmlSecDigestTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecDigestTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecDigestTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecTransformDefault2ReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefault2WriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefault2FlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     NULL,
     NULL,
-        
-    /* xmlSecDigestTransform data/methods */
-    xmlSecDigestSha1Update,		/* xmlSecDigestUpdateMethod digestUpdate; */
-    xmlSecDigestSha1Sign,		/* xmlSecDigestSignMethod digestSign; */
-    xmlSecDigestSha1Verify		/* xmlSecDigestVerifyMethod digestVerify; */
 };
 xmlSecTransformId xmlSecDigestSha1 = (xmlSecTransformId)&xmlSecDigestSha1Id;  
 
-
-#define XMLSEC_SHA1_TRANSFORM_SIZE \
-    (sizeof(xmlSecDigestTransform) + sizeof(SHA_CTX) +  SHA_DIGEST_LENGTH)
-#define xmlSecDigestSha1Context(t) \
-    ((SHA_CTX*)(((xmlSecDigestTransformPtr)( t ))->digestData))
-
 /**
- * xmlSecDigestSha1Create:
- */
+ * xmlSecSha1Create:
+ */ 
 static xmlSecTransformPtr 
-xmlSecDigestSha1Create(xmlSecTransformId id) {
-    xmlSecDigestTransformPtr digest;
-
-    xmlSecAssert2(id != NULL, NULL);    
-    if(id != xmlSecDigestSha1){
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		     "xmlSecDigestSha1");
-	return(NULL);
-    }
-
-    /*
-     * Allocate a new xmlSecTransform and fill the fields.
-     */
-    digest = (xmlSecDigestTransformPtr) xmlMalloc(XMLSEC_SHA1_TRANSFORM_SIZE);
-    if(digest == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		     XMLSEC_ERRORS_R_MALLOC_FAILED,
-		     "%d", XMLSEC_SHA1_TRANSFORM_SIZE);
-	return(NULL);
-    }
-    memset(digest, 0, XMLSEC_SHA1_TRANSFORM_SIZE);
+xmlSecSha1Create(xmlSecTransformId id) {
+    xmlSecTransformPtr transform;
+    int ret;
+        
+    xmlSecAssert2(id == xmlSecDigestSha1, NULL);        
     
-    digest->id = id;
-    digest->digestData = ((unsigned char*)digest) + sizeof(xmlSecDigestTransform);
-    digest->digest = ((unsigned char*)digest->digestData) + sizeof(SHA_CTX);
-    digest->digestSize = SHA_DIGEST_LENGTH;
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", sizeof(xmlSecTransform));
+	return(NULL);
+    }
 
-    SHA1_Init(xmlSecDigestSha1Context(digest));    
+    memset(transform, 0, sizeof(xmlSecTransform));
+    transform->id = id;
 
-    return((xmlSecTransformPtr)digest);
+    ret = xmlSecOpenSSLEvpDigestInitialize(transform, EVP_sha1());	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpDigestInitialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    return(transform);
 }
 
 /**
- * xmlSecDigestSha1Destroy:
- */
+ * xmlSecSha1Destroy:
+ */ 
 static void 	
-xmlSecDigestSha1Destroy(xmlSecTransformPtr transform) {
-    xmlSecDigestTransformPtr digest;
+xmlSecSha1Destroy(xmlSecTransformPtr transform) {
 
-    xmlSecAssert(transform != NULL);    
-    
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		     "xmlSecDigestSha1");
-	return;
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecDigestSha1));
 
-    memset(digest, 0, XMLSEC_SHA1_TRANSFORM_SIZE);
-    xmlFree(digest);
+    xmlSecOpenSSLEvpDigestFinalize(transform);
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
 }
 
-/**
- * xmlSecDigestSha1Update:
- */
-static int 	
-xmlSecDigestSha1Update(xmlSecDigestTransformPtr transform,
-			const unsigned char *buffer, size_t size) {
-    xmlSecDigestTransformPtr digest;
-    
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		     "xmlSecDigestSha1");
-	return(-1);
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-    
-    if((buffer == NULL) || (size == 0) || (digest->status != xmlSecTransformStatusNone)) {
-	/* nothing to update */
-	return(0);
-    }
-    
-    SHA1_Update(xmlSecDigestSha1Context(digest), buffer, size);
-    return(0);
-}
-
-/**
- * xmlSecDigestSha1Sign:
- */
-static int 	
-xmlSecDigestSha1Sign(xmlSecDigestTransformPtr transform,
-			unsigned char **buffer, size_t *size) {
-    xmlSecDigestTransformPtr digest;
-    
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		     "xmlSecDigestSha1");
-	return(-1);
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-    if(digest->status != xmlSecTransformStatusNone) {
-	return(0);
-    }
-    
-    SHA1_Final(digest->digest, xmlSecDigestSha1Context(digest));
-    if(buffer != NULL) {
-	(*buffer) = digest->digest;
-    }        
-    if(size != NULL) {
-	(*size) = digest->digestSize;
-    }        
-    digest->status = xmlSecTransformStatusOk;
-    return(0);
-}
-
-/**
- * xmlSecDigestSha1Verify:
- */
-static int
-xmlSecDigestSha1Verify(xmlSecDigestTransformPtr transform,
-			 const unsigned char *buffer, size_t size) {
-    xmlSecDigestTransformPtr digest;
-    
-    xmlSecAssert2(transform != NULL, -1);
-    if(!xmlSecTransformCheckId(transform, xmlSecDigestSha1)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		     "xmlSecDigestSha1");
-	return(-1);
-    }    
-    digest = (xmlSecDigestTransformPtr)transform;
-
-    if(digest->status != xmlSecTransformStatusNone) {
-	return(0);
-    }
-    
-    SHA1_Final(digest->digest, xmlSecDigestSha1Context(digest));
-    if((buffer == NULL) || (size != digest->digestSize) || (digest->digest == NULL)) {
-	digest->status = xmlSecTransformStatusFail;
-    } else if(memcmp(digest->digest, buffer, digest->digestSize) != 0){
-	digest->status = xmlSecTransformStatusFail;
-    } else {
-	digest->status = xmlSecTransformStatusOk;
-    }
-    return(0);
-}
 
 #endif /* XMLSEC_NO_SHA1 */
 

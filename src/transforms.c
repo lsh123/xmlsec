@@ -557,6 +557,7 @@ int
 xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform, 
 			const unsigned char *buf, size_t size) {
     xmlSecTransformCtx ctx; /* todo */
+    size_t res = size;
     size_t chunkSize;
     int ret;
     
@@ -598,10 +599,10 @@ xmlSecTransformDefault2WriteBin(xmlSecTransformPtr transform,
 			    "xmlSecTransformWriteBin");
 		return(-1);
 	    }
-	    xmlSecBufferSetSize(&(transform->outBuf), 0);
 	}	
+	xmlSecBufferSetSize(&(transform->outBuf), 0);
     }    
-    return(0);
+    return(res);
 }
 
 /**
@@ -642,8 +643,8 @@ xmlSecTransformDefault2FlushBin(xmlSecTransformPtr transform) {
 			    "xmlSecTransformWriteBin");
 		return(-1);
 	    }
-	    xmlSecBufferSetSize(&(transform->outBuf), 0);
 	}	
+	xmlSecBufferSetSize(&(transform->outBuf), 0);
     }    
 
     if(transform->next != NULL) {

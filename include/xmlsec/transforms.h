@@ -120,7 +120,7 @@ XMLSEC_EXPORT int  			xmlSecTransformSetKey	(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 XMLSEC_EXPORT int  			xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
-XMLSEC_EXPORT int  			xmlSecTransformValidate	(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int  			xmlSecTransformVerify	(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -327,7 +327,7 @@ typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 
 
-typedef int  		(*xmlSecTransformValidateMethod)	(xmlSecTransformPtr transform, 
+typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform, 
 								 const unsigned char* data,
 								 size_t dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -429,7 +429,7 @@ struct _xmlSecTransformKlass {
     xmlSecTransformNodeReadMethod	readNode;    
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
-    xmlSecTransformValidateMethod	validate;
+    xmlSecTransformVerifyMethod		verify;
     xmlSecTransformExecuteMethod	execute;
     
     

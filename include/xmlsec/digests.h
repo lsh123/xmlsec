@@ -104,7 +104,7 @@ struct _xmlSecDigestTransformIdStruct {
     xmlSecTransformNodeReadMethod	readNode;    
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
-    xmlSecTransformValidateMethod	validate;
+    xmlSecTransformVerifyMethod		verify;
     xmlSecTransformExecuteMethod	execute;
     
     /* binary methods */

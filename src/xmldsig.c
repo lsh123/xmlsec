@@ -1057,6 +1057,8 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 		    "xmlSecTransformNodeRead(digestMethodNode)");
 	goto done;
     }
+    digestMethod->encode = sign;
+    
     ret = xmlSecTransformStateUpdate(state, digestMethod);
     if(ret < 0){
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1084,6 +1086,46 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
 	goto done;
     }
     
+    if(sign) {
+	xmlSecTransformPtr memBuf = NULL;	
+	xmlSecTransformPtr base64;
+	/* last transform for digest is base64 encode */
+	
+	base64 = xmlSecTransformCreate(xmlSecEncBase64Encode, 0);
+	if(base64 == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecEncBase64Encode)");
+	    goto done;
+	}
+	ret = xmlSecTransformStateUpdate(state, base64);
+	if(ret < 0) {    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate(xmlSecEncBase64Encode) - %d", ret);
+	    xmlSecTransformDestroy(base64, 1); 
+	    goto done;
+	}
+#if 0	
+	/* add mem buf at the end */
+	memBuf = xmlSecTransformCreate(xmlSecMemBuf, 0);
+	if(memBuf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformCreate(xmlSecMemBuf)");
+	    goto done;
+	}
+	ret = xmlSecTransformStateUpdate(state, memBuf);
+        if(ret < 0) {    
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecTransformStateUpdate(xmlSecMemBuf) - %d", ret);
+	    xmlSecTransformDestroy(memBuf, 1); 
+	    goto done;
+	}
+#endif	
+    }
+    
     ret = xmlSecTransformStateFinal(state, xmlSecTransformResultBinary);
     if(ret < 0) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1093,21 +1135,53 @@ xmlSecReferenceRead(xmlSecReferenceResultPtr ref, xmlNodePtr self, int sign) {
     }
     
     if(sign) {
-	ret = xmlSecDigestSignNode(digestMethod, digestValueNode, 1);
-	if(ret < 0) {
-    	    xmlSecError(XMLSEC_ERRORS_HERE,
+	if(state->curBuf == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecDigestSignNode");
-	    goto done;	
+			"result transform is null");
+	    goto done;
 	}
+	/* just in case */
+	xmlSecBufferAppend(state->curBuf, "\0", 1);
+	
+	xmlNodeSetContent(digestValueNode, xmlSecBufferGetData(state->curBuf));
     } else {
-	ret = xmlSecDigestVerifyNode(digestMethod, digestValueNode);
+	xmlSecTransformCtx transformCtx; /* todo */
+	xmlChar* nodeContent;
+	size_t dgstSize;
+		
+	nodeContent = xmlNodeGetContent(digestValueNode);
+	if(nodeContent == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+			" ");
+	    goto done;
+	}
+    
+	/* 
+	 * small trick: decode in the same buffer becasue base64 decode result 
+         * buffer size is always less than input buffer size
+         */
+	ret = xmlSecBase64Decode(nodeContent, (unsigned char *)nodeContent, 
+			     xmlStrlen(nodeContent) + 1);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"xmlSecBase64Decode - %d", ret);
+	    xmlFree(nodeContent);
+	    goto done;
+	}		     
+	dgstSize = ret;
+	
+	ret = xmlSecTransformVerify(digestMethod, nodeContent, dgstSize, &transformCtx);
 	if(ret < 0) {
     	    xmlSecError(XMLSEC_ERRORS_HERE,
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"xmlSecDigestVerifyNode - %d", ret);
+	    xmlFree(nodeContent);
 	    goto done;	
 	}
+	xmlFree(nodeContent);
     }
     ref->result = digestMethod->status;
     

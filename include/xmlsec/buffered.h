@@ -69,7 +69,7 @@ struct _xmlSecBufferedTransformIdStruct {
     xmlSecTransformNodeReadMethod	readNode;    
     xmlSecTransformSetKeyRequirements	setKeyReq;
     xmlSecTransformSetKeyMethod		setKey;
-    xmlSecTransformValidateMethod	validate;
+    xmlSecTransformVerifyMethod		verify;
     xmlSecTransformExecuteMethod	execute;
     
     /* binary methods */

@@ -11,8 +11,19 @@ XMLSEC_LIBS    =
 # There should never be a need to modify anything below this line.
 XMLSEC_OBJS_DIR = build
 XMLSEC_EXAMPLES = \
-	$(XMLSEC_OBJS_DIR)\sign1.exe\
-	$(XMLSEC_OBJS_DIR)\sign2.exe
+	$(XMLSEC_OBJS_DIR)\sign1.exe \
+	$(XMLSEC_OBJS_DIR)\sign2.exe \
+	$(XMLSEC_OBJS_DIR)\sign3.exe \
+	$(XMLSEC_OBJS_DIR)\verify1.exe \
+	$(XMLSEC_OBJS_DIR)\verify2.exe \
+	$(XMLSEC_OBJS_DIR)\verify3.exe \
+	$(XMLSEC_OBJS_DIR)\verify4.exe \
+	$(XMLSEC_OBJS_DIR)\encrypt1.exe \
+	$(XMLSEC_OBJS_DIR)\encrypt2.exe \
+	$(XMLSEC_OBJS_DIR)\encrypt3.exe \
+	$(XMLSEC_OBJS_DIR)\decrypt1.exe \
+	$(XMLSEC_OBJS_DIR)\decrypt2.exe \
+	$(XMLSEC_OBJS_DIR)\decrypt3.exe 
 
 # 
 !IF "$(XMLSEC_CRYPTO)" == "openssl"

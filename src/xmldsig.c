@@ -50,6 +50,17 @@ static int	xmlSecDSigCtxProcessManifestNode	(xmlSecDSigCtxPtr dsigCtx,
 /* The ID attribute in XMLDSig is 'Id' */
 static const xmlChar*		xmlSecDSigIds[] = { xmlSecAttrId, NULL };
 
+/**
+ * xmlSecDSigCtxCreate:
+ * @keysMngr: 		the pointer to keys manager.
+ *
+ * Creates <dsig:Signature/> element processing context.
+ * The caller is responsible for destroying returend object by calling 
+ * #xmlSecDSigCtxDestroy function.
+ *
+ * Returns pointer to newly allocated context object or NULL if an error
+ * occurs.
+ */
 xmlSecDSigCtxPtr	
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     xmlSecDSigCtxPtr dsigCtx;
@@ -79,6 +90,12 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     return(dsigCtx);    
 }
 
+/**
+ * xmlSecDSigCtxDestroy:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ *
+ * Destroy context object created with #xmlSecDSigCtxCreate function.
+ */
 void  
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert(dsigCtx != NULL);
@@ -87,6 +104,17 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
     xmlFree(dsigCtx);
 }
 
+/**
+ * xmlSecDSigCtxInitialize:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @keysMngr: 		the pointer to keys manager.
+ *
+ * Initializes <dsig:Signature/> element processing context.
+ * The caller is responsible for cleaing up returend object by calling 
+ * #xmlSecDSigCtxFinalize function.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     int ret;
@@ -141,6 +169,12 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     return(0);
 }
 
+/**
+ * xmlSecDSigCtxFinalize:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ *
+ * Cleans up @dsigCtx object initialized with #xmlSecDSigCtxInitialize function.
+ */
 void 
 xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert(dsigCtx != NULL);
@@ -163,14 +197,33 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 }
 
+/**
+ * xmlSecDSigCtxGetPreSignBuffer:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * 
+ * Gets pointer to the buffer with serialized <dsig:SignedInfo/> element
+ * just before signature claculation (valid if and only if 
+ * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 xmlSecBufferPtr 
-xmlSecDSigCtxPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
+xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert2(dsigCtx != NULL, NULL);
     
     return((dsigCtx->preSignMemBufMethod != NULL) ? 
 	    xmlSecTransformMemBufGetBuffer(dsigCtx->preSignMemBufMethod) : NULL);
 }
 
+/**
+ * xmlSecDSigCtxSign:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @tmpl:		the pointer to <dsig:Signature/> node with signature template.
+ *
+ * Signs the data as described in @tmpl node.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     int ret;
@@ -224,6 +277,17 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     return(0);    
 }
 
+/**
+ * xmlSecDSigCtxVerify:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @node:		the pointer with <dsig:Signature/> node.
+ * 
+ * Vaidates signature in the @node. The verification result is returned
+ * in #status member of the @dsigCtx object.
+ *
+ * Returns 0 on success (check #status member of @dsigCtx to get 
+ * signature verification result) or a negative value if an error occurs.
+ */
 int 
 xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     int ret;
@@ -931,6 +995,13 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     return(0);
 }
 
+/**
+ * xmlSecDSigCtxDebugDump:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @output:		the pointer to output FILE.
+ *
+ * Prints the debug information about @dsigCtx to @output.
+ */
 void 
 xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(dsigCtx != NULL);
@@ -992,17 +1063,24 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 	fprintf(output, "\n== Result - end buffer\n");
     }
     if(((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) &&
-       (xmlSecDSigCtxPreSignBuffer(dsigCtx) != NULL) &&
-       (xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)) != NULL)) {
+       (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
        
 	fprintf(output, "== PreSigned data - start buffer:\n");
-	fwrite(xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
-	       xmlSecBufferGetSize(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
+	fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
 	       1, output);
 	fprintf(output, "\n== PreSigned data - end buffer\n");       
     }
 }
 
+/**
+ * xmlSecDSigCtxDebugXmlDump:
+ * @dsigCtx:		the pointer to <dsig:Signature/> processing context.
+ * @output:		the pointer to output FILE.
+ *
+ * Prints the debug information about @dsigCtx to @output in XML format.
+ */
 void 
 xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(dsigCtx != NULL);
@@ -1073,12 +1151,12 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
 	fprintf(output, "</Result>\n");
     }
     if(((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) &&
-       (xmlSecDSigCtxPreSignBuffer(dsigCtx) != NULL) &&
-       (xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)) != NULL)) {
+       (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
        
 	fprintf(output, "<PreSignedData>");
-	fwrite(xmlSecBufferGetData(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
-	       xmlSecBufferGetSize(xmlSecDSigCtxPreSignBuffer(dsigCtx)), 
+	fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
 	       1, output);
 	fprintf(output, "</PreSignedData>\n");       
     }
@@ -1095,6 +1173,17 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
  * xmlSecDSigReferenceCtx
  *
  *************************************************************************/
+/**
+ * xmlSecDSigReferenceCtxCreate:
+ * @dsigCtx:		the pointer to parent <dsig:Signature/> node processing context.
+ * @origin:		the reference origin (<dsig:SignedInfo/> or <dsig:Manifest/> node).
+ *
+ * Creates new <dsig:Reference/> element processing context. Caller is responsible
+ * for destroying the returned context by calling #xmlSecDSigReferenceCtxDestroy
+ * function.
+ *
+ * Returns pointer to newly created context or NULL if an error occurs.
+ */
 xmlSecDSigReferenceCtxPtr	
 xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin origin) {
     xmlSecDSigReferenceCtxPtr dsigRefCtx;
@@ -1126,6 +1215,12 @@ xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin
     return(dsigRefCtx);    
 }
 
+/** 
+ * xmlSecDSigReferenceCtxDestroy:
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ *
+ * Destroy context object created with #xmlSecDSigReferenceCtxCreate function.
+ */
 void  
 xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert(dsigRefCtx != NULL);
@@ -1134,6 +1229,18 @@ xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlFree(dsigRefCtx);
 }
 
+/**
+ * xmlSecDSigReferenceCtxInitialize:
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ * @dsigCtx:		the pointer to parent <dsig:Signature/> node processing context.
+ * @origin:		the reference origin (<dsig:SignedInfo/> or <dsig:Manifest/> node).
+ *
+ * Initializes new <dsig:Reference/> element processing context. Caller is responsible
+ * for cleaning up the returned context by calling #xmlSecDSigReferenceCtxFinalize
+ * function.
+ *
+ * Returns 0 on succes or aa negative value otherwise.
+ */
 int 
 xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSigCtxPtr dsigCtx,
 				xmlSecDSigReferenceOrigin origin) {
@@ -1176,6 +1283,12 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     return(0);
 }
 
+/** 
+ * xmlSecDSigReferenceCtxFinalize:
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ *
+ * Cleans up context object created with #xmlSecDSigReferenceCtxInitialize function.
+ */
 void 
 xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert(dsigRefCtx != NULL);
@@ -1193,8 +1306,19 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
 }
 
+/**
+ * xmlSecDSigReferenceCtxGetPreDigestBuffer:
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ * 
+ * Gets the results of <dsig:Reference/> node processing just before digesting
+ * (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
+ * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flas of signature context
+ * is set).
+ *
+ * Returns pointer to the buffer or NULL if an error occurs.
+ */
 xmlSecBufferPtr 
-xmlSecDSigReferenceCtxPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
+xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert2(dsigRefCtx != NULL, NULL);
     
     return((dsigRefCtx->preDigestMemBufMethod != NULL) ? 
@@ -1203,7 +1327,9 @@ xmlSecDSigReferenceCtxPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
 
 /**
  * xmlSecDSigReferenceCtxProcessNode:
- *
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ * @node:		the pointer to <dsig:Reference/> node.
+
  * The Reference Element (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
  * 
  * Reference is an element that may occur one or more times. It specifies 
@@ -1217,28 +1343,7 @@ xmlSecDSigReferenceCtxPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * Manifest. An optional ID attribute permits a Reference to be referenced 
  * from elsewhere.
  *
- * Schema Definition:
- *
- *  <element name="Reference" type="ds:ReferenceType"/>
- *  <complexType name="ReferenceType">
- *    <sequence> 
- *      <element ref="ds:Transforms" minOccurs="0"/> 
- *      <element ref="ds:DigestMethod"/> 
- *      <element ref="ds:DigestValue"/> 
- *    </sequence>
- *    <attribute name="Id" type="ID" use="optional"/> 
- *    <attribute name="URI" type="anyURI" use="optional"/> 
- *    <attribute name="Type" type="anyURI" use="optional"/> 
- *  </complexType>
- *    
- * DTD:
- *    
- *   <!ELEMENT Reference (Transforms?, DigestMethod, DigestValue)  >
- *   <!ATTLIST Reference Id  ID  #IMPLIED
- *   		URI CDATA   #IMPLIED
- * 		Type    CDATA   #IMPLIED>
- *
- *
+ * Returns 0 on succes or aa negative value otherwise.
  */
 int 
 xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr node) {
@@ -1444,6 +1549,13 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     return(0);
 }
 
+/**
+ * xmlSecDSigReferenceCtxDebugDump:
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ * @output:		the pointer to output FILE.
+ *
+ * Prints debug information about @dsigRefCtx to @output.
+ */
 void 
 xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
     xmlSecAssert(dsigRefCtx != NULL);
@@ -1483,12 +1595,12 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
 	xmlSecTransformDebugDump(dsigRefCtx->digestMethod, output);
     }
 
-    if((xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx) != NULL) &&
-       (xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)) != NULL)) {
+    if((xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
        
 	fprintf(output, "== PreDigest data - start buffer:\n");
-	fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
-	       xmlSecBufferGetSize(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
+	fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
 	       1, output);
 	fprintf(output, "\n== PreDigest data - end buffer\n");       
     }
@@ -1504,6 +1616,13 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
     }
 }
 
+/**
+ * xmlSecDSigReferenceCtxDebugXmlDump:
+ * @dsigRefCtx:		the pointer to <dsig:Reference/> element processing context.
+ * @output:		the pointer to output FILE.
+ *
+ * Prints debug information about @dsigRefCtx to @output in output format.
+ */
 void 
 xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
     xmlSecAssert(dsigRefCtx != NULL);
@@ -1556,12 +1675,12 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
 	fprintf(output, "</Result>\n");
     }
 
-    if((xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx) != NULL) &&
-       (xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)) != NULL)) {
+    if((xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx) != NULL) &&
+       (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
        
 	fprintf(output, "<PreDigestData>");
-	fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
-	       xmlSecBufferGetSize(xmlSecDSigReferenceCtxPreDigestBuffer(dsigRefCtx)), 
+	fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
+	       xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
 	       1, output);
 	fprintf(output, "</PreDigestData>\n");       
     }
@@ -1586,6 +1705,13 @@ static xmlSecPtrListKlass xmlSecDSigReferenceCtxListKlass = {
     (xmlSecPtrDebugDumpItemMethod)xmlSecDSigReferenceCtxDebugXmlDump,	/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
+/**
+ * xmlSecDSigReferenceCtxListGetKlass:
+ *
+ * The <dsig:Reference/> element processing contexts list klass.
+ *
+ * Returns <dsig:Reference/> element processing context list klass.
+ */
 xmlSecPtrListId 
 xmlSecDSigReferenceCtxListGetKlass(void) {
     return(&xmlSecDSigReferenceCtxListKlass);

@@ -650,7 +650,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
 };
 
 /**
- * xmlSecTransformRemoveXmlTagsGetKlass:
+ * xmlSecTransformRemoveXmlTagsC14NGetKlass:
  *
  * The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/#sec-Base-64):
  * Base64 transform requires an octet stream for input. If an XPath node-set 

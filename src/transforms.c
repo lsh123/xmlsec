@@ -68,11 +68,27 @@
  *************************************************************************/
 static xmlSecPtrList xmlSecAllTransformIds;
 
+
+/** 
+ * xmlSecTransformIdsGet:
+ *
+ * Gets global registered transform klasses list.
+ * 
+ * Returns the pointer to list of all registered transform klasses.
+ */
 xmlSecPtrListPtr
 xmlSecTransformIdsGet(void) {
     return(&xmlSecAllTransformIds);
 }
 
+/** 
+ * xmlSecTransformIdsInit:
+ *
+ * Initializes the transform klasses. This function is called from the 
+ * #xmlSecInit function and the application should not call it directly.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformIdsInit(void) {
     int ret;
@@ -100,11 +116,25 @@ xmlSecTransformIdsInit(void) {
     return(0);
 }
 
+/**
+ * xmlSecTransformIdsShutdown:
+ * 
+ * Shuts down the keys data klasses. This function is called from the 
+ * #xmlSecShutdown function and the application should not call it directly.
+ */
 void
 xmlSecTransformIdsShutdown(void) {
     xmlSecPtrListFinalize(xmlSecTransformIdsGet());
 }
 
+/** 
+ * xmlSecTransformIdsRegister:
+ * @id:			the transform klass.
+ *
+ * Registers @id in the global list of transform klasses.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformIdsRegister(xmlSecTransformId id) {
     int ret;
@@ -124,6 +154,14 @@ xmlSecTransformIdsRegister(xmlSecTransformId id) {
     return(0);    
 }
 
+/**
+ * xmlSecTransformIdsRegisterDefault:
+ *
+ * Registers default (implemented by XML Security Library)
+ * transform klasses: XPath transform, Base64 transform, ...
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformIdsRegisterDefault(void) {
     if(xmlSecTransformIdsRegister(xmlSecTransformBase64Id) < 0) {
@@ -234,6 +272,16 @@ xmlSecTransformIdsRegisterDefault(void) {
  * utils
  *
  *************************************************************************/
+/**
+ * xmlSecTransformUriTypeCheck:
+ * @type:		the expected URI type.
+ * @uri:		the uri for checking.
+ *
+ * Checks if @uri matches expected type @type.
+ *
+ * Returns 1 if @uri matches @type, 0 if not or a negative value
+ * if an error occurs.
+ */
 int 
 xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
     xmlSecTransformUriType uriType = 0;
@@ -255,6 +303,17 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  * xmlSecTransformCtx
  *
  *************************************************************************/
+
+/**
+ * xmlSecTransformCtxCreate:
+ *
+ * Creates transforms chain processing context.
+ * The caller is responsible for destroying returend object by calling 
+ * #xmlSecTransformCtxDestroy function.
+ *
+ * Returns pointer to newly allocated context object or NULL if an error
+ * occurs.
+ */
 xmlSecTransformCtxPtr 
 xmlSecTransformCtxCreate(void) {
     xmlSecTransformCtxPtr ctx;
@@ -285,6 +344,12 @@ xmlSecTransformCtxCreate(void) {
     return(ctx);
 }
 
+/**
+ * xmlSecTransformCtxDestroy:
+ * @ctx:		the pointer to transforms chain processing context.
+ *
+ * Destroy context object created with #xmlSecTransformCtxCreate function.
+ */
 void
 xmlSecTransformCtxDestroy(xmlSecTransformCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
@@ -293,6 +358,16 @@ xmlSecTransformCtxDestroy(xmlSecTransformCtxPtr ctx) {
     xmlFree(ctx);
 }
 
+/**
+ * xmlSecTransformCtxInitialize:
+ * @ctx:		the pointer to transforms chain processing context.
+ *
+ * Initializes transforms chain processing context.
+ * The caller is responsible for cleaing up returend object by calling 
+ * #xmlSecTransformCtxFinalize function.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
     int ret;
@@ -315,6 +390,12 @@ xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxFinalize:
+ * @ctx:		the pointer to transforms chain processing context.
+ *
+ * Cleans up @ctx object initialized with #xmlSecTransformCtxInitialize function.
+ */
 void 
 xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
     xmlSecAssert(ctx != NULL);
@@ -324,6 +405,12 @@ xmlSecTransformCtxFinalize(xmlSecTransformCtxPtr ctx) {
     memset(ctx, 0, sizeof(xmlSecTransformCtx));
 }
 
+/**
+ * xmlSecTransformCtxReset:
+ * @ctx:		the pointer to transforms chain processing context.
+ *
+ * Resets transfroms context for new processing.
+ */
 void 
 xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
     xmlSecTransformPtr transform, tmp;    
@@ -351,6 +438,15 @@ xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
     ctx->first = ctx->last = NULL;
 }
 
+/**
+ * xmlSecTransformCtxCopyUserPref: 
+ * @dst:		the pointer to destination transforms chain processing context.
+ * @src:		the pointer to source transforms chain processing context.
+ *
+ * Copies user settings from @src context to @dst.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr src) {
     int ret;
@@ -377,6 +473,16 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxAppend: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @transform:		the pointer to new transform.
+ *
+ * Connects the @transform to the end of the chain of transforms in the @ctx 
+ * (see #xmlSecTransformConnect function for details).
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
     int ret;
@@ -405,6 +511,16 @@ xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxPrepend: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @transform:		the pointer to new transform.
+ *
+ * Connects the @transform to the beggining of the chain of transforms in the @ctx 
+ * (see #xmlSecTransformConnect function for details).
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
     int ret;
@@ -433,6 +549,16 @@ xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transfor
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxCreateAndAppend: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @id:			the new transform klass.
+ *
+ * Creaeates new transform and connects it to the end of the chain of 
+ * transforms in the @ctx (see #xmlSecTransformConnect function for details).
+ *
+ * Returns pointer to newly created transform or NULL if an error occurs.
+ */
 xmlSecTransformPtr 
 xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId id) {
     xmlSecTransformPtr transform;
@@ -468,6 +594,16 @@ xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId i
     return(transform);
 }
 
+/**
+ * xmlSecTransformCtxCreateAndPrepend: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @id:			the new transform klass.
+ *
+ * Creaeates new transform and connects it to the end of the chain of 
+ * transforms in the @ctx (see #xmlSecTransformConnect function for details).
+ *
+ * Returns pointer to newly created transform or NULL if an error occurs.
+ */
 xmlSecTransformPtr 
 xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformId id) {
     xmlSecTransformPtr transform;
@@ -503,7 +639,17 @@ xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformId 
     return(transform);
 }
 
-
+/**
+ * xmlSecTransformCtxNodeRead: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @node:		the pointer to transform's node.
+ * @usage:		the transform's usage (signature, encryption, etc.).
+ *
+ * Reads the transform from the @node and appends it to the current chain 
+ * of transforms in @ctx.
+ *
+ * Returns pointer to newly created transform or NULL if an error occurs.
+ */
 xmlSecTransformPtr
 xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, 
 			   xmlSecTransformUsage usage) {
@@ -540,6 +686,17 @@ xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node,
     return(transform);
 }
 
+/**
+ * xmlSecTransformCtxNodesListRead: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @node:		the pointer to <dsig:Transform/> nodes parent node.
+ * @usage:		the transform's usage (signature, encryption, etc.).
+ *
+ * Reads transforms from the <dsig:Transform/> children of the @node and 
+ * appends them to the current transforms chain in @ctx object.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlSecTransformUsage usage) {
     xmlSecTransformPtr transform;
@@ -589,7 +746,11 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
 }
 
 /**
- * xmlSecTransformCtxSetUri:
+ * xmlSecTransformCtxSetUri: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @uri:		the URI.
+ * @hereNode:		the pointer to "here" node required by some 
+ *			XML transforms (may be NULL).
  *
  * Parses uri and adds xpointer transforms if required.
  *
@@ -620,6 +781,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  * (and its applications) modify this node-set to include the element plus 
  * all descendents including namespaces and attributes -- but not comments.
  *
+ * Returns 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodePtr hereNode) {
@@ -757,6 +919,15 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxPrepare: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @inputDataType:	the expected input type.
+ *
+ * Prepares the transform context for processing data of @inputDataType.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inputDataType) {
     xmlSecTransformDataType firstType;
@@ -838,8 +1009,19 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxBinaryExecute: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @data:		the input binary data buffer.
+ * @dataSize:		the input data size.
+ *
+ * Processes binary data using transforms chain in the @ctx.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
-xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx, const unsigned char* data, size_t dataSize) {
+xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx, 
+				const unsigned char* data, size_t dataSize) {
     int ret;
         
     xmlSecAssert2(ctx != NULL, -1);
@@ -875,6 +1057,15 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx, const unsigned char* 
     return(0);    
 }
 
+/**
+ * xmlSecTransformCtxUriExecute: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @uri:		the URI.
+ *
+ * Process binary data from the URI using transforms chain in @ctx.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int 
 xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     xmlSecTransformPtr uriTransform;
@@ -909,7 +1100,7 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
 	return(-1);
     }
 
-    /* we do not need to do something special for this transofrm */
+    /* we do not need to do something special for this transform */
     ret = xmlSecTransformCtxPrepare(ctx, xmlSecTransformDataTypeUnknown);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -938,6 +1129,15 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxXmlExecute: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @nodes:		the input node set.
+ *
+ * Process @nodes using transforms in the transforms chain in @ctx.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) {
     int ret;
@@ -976,6 +1176,15 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
     return(0);
 }
 
+/**
+ * xmlSecTransformCtxExecute: 
+ * @ctx:		the pointer to transforms chain processing context.
+ * @doc:		the pointer to input document.
+ *
+ * Executes transforms chain in @ctx.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
 int
 xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     int ret;
@@ -1039,8 +1248,13 @@ xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
     return(0);
 }
 
-
-
+/**
+ * xmlSecTransformCtxDebugDump:
+ * @ctx:		the pointer to transforms chain processing context.
+ * @output:		the pointer to output FILE.
+ * 
+ * Prints transforms context debug information to @output.
+ */
 void 
 xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecTransformPtr transform;    
@@ -1068,6 +1282,13 @@ xmlSecTransformCtxDebugDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     }
 }
 
+/**
+ * xmlSecTransformCtxDebugXmlDump:
+ * @ctx:		the pointer to transforms chain processing context.
+ * @output:		the pointer to output FILE.
+ * 
+ * Prints transforms context debug information to @output in XML format.
+ */
 void 
 xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     xmlSecTransformPtr transform;    
@@ -1106,12 +1327,12 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
  *************************************************************************/
 /**
  * xmlSecTransformCreate:
- * @id: the transform id to create.
+ * @id: 		the transform id to create.
  *
- * Creates new transform from the transform id object.
+ * Creates new transform of the @id klass. The caller is responsible for
+ * destroying returned tansform using #xmlSecTransformDestroy function.
  *
- * Returns the pointer to newly created #xmlSecTransform structure
- * or NULL if an error occurs.
+ * Returns pointer to newly created transform or NULL if an error occurs.
  */ 
 xmlSecTransformPtr	
 xmlSecTransformCreate(xmlSecTransformId id) {
@@ -1176,9 +1397,9 @@ xmlSecTransformCreate(xmlSecTransformId id) {
 
 /**
  * xmlSecTransformDestroy:
- * @transform: the pointer to #xmlSecTransform structure.
+ * @transform: 		the pointer to transform.
  *
- * Destroys transform by calling appropriate transform specific function.
+ * Destroys transform created with #xmlSecTransformCreate function.
  */
 void
 xmlSecTransformDestroy(xmlSecTransformPtr transform) {
@@ -1207,16 +1428,21 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform) {
 
 /** 
  * xmlSecTransformNodeRead:
- * @transform: the pointer to #xmlSecTransform structure.
- * @node: the pointer to the <dsig:Transform/> node.
+ * @node: 		the pointer to the transform's node.
+ * @usage:		the transform usage (signature, encryption, ...).
+ * @transformCtx:	the transform's chaing processing context.
  *
  * Reads transform from the @node as follows:
- *    1) reads "Algorithm" attribute;
- *    2) checks the list of known algorithms;
- *    3) calls transform create method;
- *    4) calls transform read transform node method.
  *
- * Returns 0 on success or a negative value otherwise.
+ *    1) reads "Algorithm" attribute;
+ *
+ *    2) checks the lists of known and allowed transforms;
+ *
+ *    3) calls transform's create method;
+ *
+ *    4) calls transform's read transform node method.
+ *
+ * Returns pointer to newly created transform or NULL if an error occurs.
  */
 xmlSecTransformPtr
 xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTransformCtxPtr transformCtx) {
@@ -1297,6 +1523,17 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     return(transform);
 }
 
+/**
+ * xmlSecTransformPump:
+ * @left:		the source pumping transform.
+ * @right:		the destination pumping transform.
+ * @transformCtx:	the transform's chaing processing context.
+ *
+ * Pops data from @left transform and pushes to @right transform until
+ * no more data is available.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTransformCtxPtr transformCtx) {
     xmlSecTransformDataType leftType;
@@ -1374,11 +1611,10 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
 
 /**
  * xmlSecTransformSetKey:
- * @transform: the pointer to #xmlSecTransform structure.
- * @key: the pointer to #xmlSecKey structure. 
+ * @transform: 		the pointer to transform.
+ * @key: 		the pointer to key. 
  *
- * Sets the key for binary transform (wrapper for transform specific 
- * setKey() method).
+ * Sets the transform's key.
  *
  * Returns 0 on success or a negative value otherwise.
  */
@@ -1395,11 +1631,10 @@ xmlSecTransformSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 /**
  * xmlSecTransformSetKeyReq:
- * @transform: the pointer to #xmlSecTransform structure.
- * @keyInfoCtx: the pointer to #xmlSecKeyInfoCtx structure. 
+ * @transform: 		the pointer to transform.
+ * @keyReq: 		the pointer to keys requirements object. 
  *
- * Sets the key for binary transform (wrapper for transform specific 
- * setKeyReq() method).
+ * Sets the key requirements for @transform in the @keyReq.
  *
  * Returns 0 on success or a negative value otherwise.
  */
@@ -1419,6 +1654,19 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
     return(0);
 }
 
+/**
+ * xmlSecTransformVerify:
+ * @transform:		the pointer to transform.
+ * @data:		the binary data for verification.
+ * @dataSize:		the data size.
+ * @transformCtx:	the transform's chaing processing context.
+ *
+ * Verifies the data with transform's processing results
+ * (for digest, HMAC and signature transforms). The verification
+ * result is stored in the #status member of #xmlSecTransform object.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
 		    size_t dataSize, xmlSecTransformCtxPtr transformCtx) {
@@ -1429,6 +1677,17 @@ xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
     return((transform->id->verify)(transform, data, dataSize, transformCtx));
 }
 
+/**
+ * xmlSecTransformVerifyNodeContent:
+ * @transform:		the pointer to transform.
+ * @node:		the pointer to node.
+ * @transformCtx:	the transform's chaing processing context.
+ *
+ * Gets the @node content, base64 decodes it and calls #xmlSecTransformVerify
+ * function to verify binary results.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, xmlNodePtr node,
 				 xmlSecTransformCtxPtr transformCtx) {
@@ -1476,6 +1735,17 @@ xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, xmlNodePtr node,
     return(0);
 }
 
+/**
+ * xmlSecTransformGetDataType:
+ * @transform:		the pointer to transform.
+ * @mode:		the data mode (push or pop).
+ * @transformCtx:	the transform's chaing processing context.
+ *
+ * Gets transform input (@mode is "push") or output (@mode is "pop") data 
+ * type (binary or XML).
+ *
+ * Returns the transform's data type for the @mode operation.
+ */
 xmlSecTransformDataType	
 xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode, 
 		    xmlSecTransformCtxPtr transformCtx) {
@@ -1485,6 +1755,19 @@ xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mod
     return((transform->id->getDataType)(transform, mode, transformCtx));    
 }
 
+/**
+ * xmlSecTransformPushBin:
+ * @transform:		the pointer to transform object.
+ * @data:		the input binary data,
+ * @dataSize:		the input data size.
+ * @final:		the flag: if set to 1 then it's the last
+ *			data chunk.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Process binary @data and pushes results to next transform.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 		    size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
@@ -1495,6 +1778,20 @@ xmlSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
     return((transform->id->pushBin)(transform, data, dataSize, final, transformCtx));    
 }
 
+/**
+ * xmlSecTransformPopBin:
+ * @transform:		the pointer to transform object.
+ * @data:		the buffer to store result data.
+ * @maxDataSize:	the size of the buffer #data.
+ * @dataSize:		the pointer to returned data size.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Pops data from previous transform in the chain, processes data and 
+ * returns result in the @data buffer. The size of returned data is 
+ * placed in the @dataSize.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformPopBin(xmlSecTransformPtr transform, unsigned char* data,
 		    size_t maxDataSize, size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
@@ -1507,6 +1804,16 @@ xmlSecTransformPopBin(xmlSecTransformPtr transform, unsigned char* data,
     return((transform->id->popBin)(transform, data, maxDataSize, dataSize, transformCtx));    
 }
 
+/**
+ * xmlSecTransformPushXml:
+ * @transform:		the pointer to transform object.
+ * @nodes:		the input nodes.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Processes @nodes and pushes result to the next transform in the chain.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 		    xmlSecTransformCtxPtr transformCtx) {
@@ -1517,6 +1824,17 @@ xmlSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
     return((transform->id->pushXml)(transform, nodes, transformCtx));    
 }
 
+/**
+ * xmlSecTransformPopXml:
+ * @transform:		the pointer to transform object.
+ * @nodes:		the pointer to store popinter to result nodes.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Pops data from previous transform in the chain, processes the data and 
+ * returns result in @nodes.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
 		    xmlSecTransformCtxPtr transformCtx) {
@@ -1527,6 +1845,16 @@ xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     return((transform->id->popXml)(transform, nodes, transformCtx));    
 }
 
+/**
+ * xmlSecTransformExecute:
+ * @transform:		the pointer to transform.
+ * @last:		the flag: if set to 1 then it's the last data chunk.
+ * @transformCtx:	the transform's chaing processing context.
+ *
+ * Executes transform (used by default popBin/pushBin/popXml/pushXml methods).
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
@@ -1536,6 +1864,13 @@ xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
     return((transform->id->execute)(transform, last, transformCtx));
 }
 
+/**
+ * xmlSecTransformDebugDump:
+ * @transform:		the pointer to transform.
+ * @output:		the pointer to output FILE.
+ *
+ * Prints transform's debug information to @output.
+ */
 void 
 xmlSecTransformDebugDump(xmlSecTransformPtr transform, FILE* output) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
@@ -1546,6 +1881,13 @@ xmlSecTransformDebugDump(xmlSecTransformPtr transform, FILE* output) {
 		xmlSecErrorsSafeString(transform->id->href));
 }
 
+/**
+ * xmlSecTransformDebugXmlDump:
+ * @transform:		the pointer to transform.
+ * @output:		the pointer to output FILE.
+ *
+ * Prints transform's debug information to @output in XML format.
+ */
 void 
 xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
@@ -1563,17 +1905,16 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
  ************************************************************************/ 
 /**
  * xmlSecTransformConnect:
- * 
- * @left:
- * @right:
+ * @left:		the pointer to left (prev) transform.
+ * @right:		the pointer to right (next) transform.
+ * @transformCtx:	the transform's chaing processing context.
  *
  * If the data object is a node-set and the next transform requires octets, 
  * the signature application MUST attempt to convert the node-set to an octet 
  * stream using Canonical XML [XML-C14N].  
  *
- * The story is different if the right transform is base64 decode:
- *
- * http://www.w3.org/TR/xmldsig-core/#sec-Base-64
+ * The story is different if the right transform is base64 decode
+ * (http://www.w3.org/TR/xmldsig-core/#sec-Base-64):
  *
  * This transform requires an octet stream for input. If an XPath node-set 
  * (or sufficiently functional alternative) is given as input, then it is 
@@ -1585,6 +1926,8 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
  * automatically strips away the start and end tags of the identified element 
  * and any of its descendant elements as well as any descendant comments and 
  * processing instructions. The output of this transform is an octet stream.
+ *
+ * Returns 0 on success or a negative value if an error occurs. 
  */
 int 
 xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right, 
@@ -1654,72 +1997,11 @@ xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right,
     return(0);
 }
 
-
-/**
- * xmlSecTransformAddAfter:
- * @curTransform: the pointer to current transform (may be NULL).
- * @newTransform: the pointer to new transform.
- * 
- * Adds @newTransform after the @curTransform.
- *
- * Returns pointer to the new transforms chain or NULL if an error occurs.
- */
-xmlSecTransformPtr	
-xmlSecTransformAddAfter(xmlSecTransformPtr curTransform, 
-			xmlSecTransformPtr newTransform) {
-    xmlSecAssert2(xmlSecTransformIsValid(newTransform), NULL);
-
-    if(curTransform != NULL) {
-	xmlSecAssert2(xmlSecTransformIsValid(curTransform), NULL);
-
-	newTransform->prev = curTransform;
-	newTransform->next = curTransform->next;
-	curTransform->next = newTransform;
-	if(newTransform->next != NULL) {
-	    newTransform->next->prev = newTransform;
-	}
-    } else {
- 	newTransform->next = newTransform->prev = NULL;
-    }
-    return(newTransform);
-}
-
-/**
- * xmlSecTransformAddBefore
- * @curTransform: the pointer to current transform (may be NULL).
- * @newTransform: the pointer to new transform.
- * 
- * Adds @newTransform before the @curTransform.
- *
- * Returns pointer to the new transforms chain or NULL if an error occurs.
- */
-xmlSecTransformPtr	
-xmlSecTransformAddBefore(xmlSecTransformPtr curTransform, 
-			    xmlSecTransformPtr newTransform) {
-    xmlSecAssert2(xmlSecTransformIsValid(newTransform), NULL);
-
-    if(curTransform != NULL) {
-	xmlSecAssert2(xmlSecTransformIsValid(curTransform), NULL);
-
-	newTransform->next = curTransform;
-	newTransform->prev = curTransform->prev;
-	curTransform->prev = newTransform;
-	if(newTransform->prev != NULL) {
-	    newTransform->prev->next = newTransform;
-	}
-    } else {
-	newTransform->next = newTransform->prev = NULL;
-    }
-    return(newTransform);
-    
-}
-
 /**
  * xmlSecTransformRemove:
  * @transform: the pointer to #xmlSecTransform structure.
  *
- * Removes @transform from the chain. This method MUST be called by any 
- * bin transform id destructor.
+ * Removes @transform from the chain. 
  */
 void
 xmlSecTransformRemove(xmlSecTransformPtr transform) {
@@ -1740,6 +2022,18 @@ xmlSecTransformRemove(xmlSecTransformPtr transform) {
  * Default callbacks, most of the transforms can use them
  *
  ************************************************************************/ 
+/**
+ * xmlSecTransformDefaultGetDataType:
+ * @transform:		the pointer to transform.
+ * @mode:		the data mode (push or pop).
+ * @transformCtx:	the transform's chaing processing context.
+ *
+ * Gets transform input (@mode is "push") or output (@mode is "pop") data 
+ * type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
+ * methods.
+ *
+ * Returns the transform's data type for the @mode operation.
+ */
 xmlSecTransformDataType 
 xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode,
 				  xmlSecTransformCtxPtr transformCtx) {
@@ -1778,6 +2072,20 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
     return(type);
 }
 
+/**
+ * xmlSecTransformDefaultPushBin:
+ * @transform:		the pointer to transform object.
+ * @data:		the input binary data,
+ * @dataSize:		the input data size.
+ * @final:		the flag: if set to 1 then it's the last
+ *			data chunk.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Process binary @data by calling transform's execute method and pushes 
+ * results to next transform.
+ * 
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char* data,
 			size_t dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
@@ -1874,6 +2182,20 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char*
     return(0);
 }
 
+/**
+ * xmlSecTransformDefaultPopBin:
+ * @transform:		the pointer to transform object.
+ * @data:		the buffer to store result data.
+ * @maxDataSize:	the size of the buffer #data.
+ * @dataSize:		the pointer to returned data size.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Pops data from previous transform in the chain, processes data by calling
+ * transform's execute method and returns result in the @data buffer. The 
+ * size of returned data is placed in the @dataSize.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
 			    size_t maxDataSize, size_t* dataSize, xmlSecTransformCtxPtr transformCtx) {
@@ -1980,6 +2302,17 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
     return(0);
 }
 
+/**
+ * xmlSecTransformDefaultPushXml:
+ * @transform:		the pointer to transform object.
+ * @nodes:		the input nodes.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Processes @nodes by calling transform's execute method and pushes 
+ * result to the next transform in the chain.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
 int 
 xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes, 
 			    xmlSecTransformCtxPtr transformCtx) {
@@ -2017,7 +2350,19 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
     return(0);
 }
 
-int xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, 
+/**
+ * xmlSecTransformDefaultPopXml:
+ * @transform:		the pointer to transform object.
+ * @nodes:		the pointer to store popinter to result nodes.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Pops data from previous transform in the chain, processes the data 
+ * by calling transform's execute method and returns result in @nodes.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, 
 			    xmlSecTransformCtxPtr transformCtx) {
     int ret;
     
@@ -2071,11 +2416,28 @@ static xmlSecPtrListKlass xmlSecTransformIdListKlass = {
     NULL,							/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
+/**
+ * xmlSecTransformIdListGetKlass:
+ * 
+ * The transform id list klass.
+ *
+ * Returns pointer to the transform id list klass.
+ */
 xmlSecPtrListId 
 xmlSecTransformIdListGetKlass(void) {
     return(&xmlSecTransformIdListKlass);
 }
 
+/**
+ * xmlSecTransformIdListFind:
+ * @list:		the pointer to transform ids list.
+ * @transformId:	the transform klass.
+ *
+ * Lookups @dataId in @list.
+ *
+ * Returns 1 if @dataId is found in the @list, 0 if not and a negative
+ * value if an error occurs.
+ */
 int 
 xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) {
     size_t i, size;
@@ -2092,6 +2454,16 @@ xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) 
     return(0);
 }
 
+/** 
+ * xmlSecTransformIdListFindByHref:
+ * @list:		the pointer to transform ids list.
+ * @href:		the desired transform klass href.
+ * @usage:		the desired transform usage.
+ *
+ * Lookups data klass in the list with given @href and @usage in @list.
+ *
+ * Returns transform klass is found and NULL otherwise.
+ */ 
 xmlSecTransformId	
 xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
 			    xmlSecTransformUsage usage) {
@@ -2115,6 +2487,16 @@ xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
     return(xmlSecTransformIdUnknown);
 }
 
+/** 
+ * xmlSecTransformIdListFindByName:
+ * @list:		the pointer to transform ids list.
+ * @name:		the desired transform klass name.
+ * @usage:		the desired transform usage.
+ *
+ * Lookups data klass in the list with given @name and @usage in @list.
+ *
+ * Returns transform klass is found and NULL otherwise.
+ */ 
 xmlSecTransformId	
 xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name, 
 			    xmlSecTransformUsage usage) {
@@ -2138,6 +2520,13 @@ xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
     return(xmlSecTransformIdUnknown);
 }
 
+/** 
+ * xmlSecTransformIdListDebugDump:
+ * @list:		the pointer to transform ids list.
+ * @output:		the pointer to output FILE.
+ * 
+ * Prints binary transform debug information to @output.
+ */
 void 
 xmlSecTransformIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecTransformId transformId;
@@ -2161,6 +2550,13 @@ xmlSecTransformIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
     fprintf(output, "\n");
 }
 
+/** 
+ * xmlSecTransformIdListDebugXmlDump:
+ * @list:		the pointer to transform ids list.
+ * @output:		the pointer to output FILE.
+ * 
+ * Prints binary transform debug information to @output in XML format.
+ */
 void 
 xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecTransformId transformId;
@@ -2212,6 +2608,15 @@ static int	xmlSecTransformIOBufferWrite			(xmlSecTransformIOBufferPtr buffer,
 static int	xmlSecTransformIOBufferClose			(xmlSecTransformIOBufferPtr buffer);
 
 
+/**
+ * xmlSecTransformCreateOutputBuffer:
+ * @transform:		the pointer to transform.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Creates output buffer to write data to @transform.
+ *
+ * Returns pointer to new output buffer or NULL if an error occurs.
+ */
 xmlOutputBufferPtr 
 xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecTransformIOBufferPtr buffer; 
@@ -2259,6 +2664,15 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
     return(output);
 }
 
+/**
+ * xmlSecTransformCreateInputBuffer:
+ * @transform:		the pointer to transform.
+ * @transformCtx:	the pointer to transform context object.
+ *
+ * Creates input buffer to read data from @transform.
+ *
+ * Returns pointer to new input buffer or NULL if an error occurs.
+ */
 xmlParserInputBufferPtr 
 xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecTransformIOBufferPtr buffer;    

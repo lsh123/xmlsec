@@ -29,7 +29,8 @@ int         <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>          
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl);
 int         <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer</link>  (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
+<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</link>
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
 void        <link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link>          (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 void        <link linkend="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump</link>       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
@@ -48,7 +49,7 @@ void        <link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCt
 int         <link linkend="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</link>
                                             (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);
-<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer</link>
+<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> <link linkend="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer</link>
                                             (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
 void        <link linkend="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</link> (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
@@ -324,6 +325,10 @@ XML DSig processing context.</para>
 <title><anchor id="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate ()</title>
 <programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link> xmlSecDSigCtxCreate        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
+Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
+The caller is responsible for destroying returend object by calling 
+<link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link> function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -331,16 +336,17 @@ XML DSig processing context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the pointer to keys manager.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated context object or NULL if an error
+occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy ()</title>
 <programlisting>void        xmlSecDSigCtxDestroy            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<para>
+Destroy context object created with <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -349,9 +355,7 @@ XML DSig processing context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -359,26 +363,9 @@ XML DSig processing context.</para>
 <programlisting>int         xmlSecDSigCtxInitialize         (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize ()</title>
-<programlisting>void        xmlSecDSigCtxFinalize           (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
+The caller is responsible for cleaing up returend object by calling 
+<link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -387,9 +374,28 @@ XML DSig processing context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry> 		the pointer to keys manager.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize ()</title>
+<programlisting>void        xmlSecDSigCtxFinalize           (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<para>
+Cleans up <parameter>dsigCtx</parameter> object initialized with <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link> function.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -397,6 +403,8 @@ XML DSig processing context.</para>
 <programlisting>int         xmlSecDSigCtxSign               (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl);</programlisting>
 <para>
+Signs the data as described in <parameter>tmpl</parameter> node.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -404,14 +412,12 @@ XML DSig processing context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> node with signature template.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -419,26 +425,8 @@ XML DSig processing context.</para>
 <programlisting>int         xmlSecDSigCtxVerify             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer ()</title>
-<programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecDSigCtxPreSignBuffer  (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+Vaidates signature in the <parameter>node</parameter>. The verification result is returned
+in <link linkend="status">status</link> member of the <parameter>dsigCtx</parameter> object.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -447,11 +435,34 @@ XML DSig processing context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+<row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
+<entry>		the pointer with <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> node.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success (check <link linkend="status">status</link> member of <parameter>dsigCtx</parameter> to get 
+signature verification result) or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer ()</title>
+<programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigCtxGetPreSignBuffer
+                                            (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<para>
+Gets pointer to the buffer with serialized <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element
+just before signature claculation (valid if and only if 
+<link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link> context flag is set.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -459,25 +470,7 @@ XML DSig processing context.</para>
 <programlisting>void        xmlSecDSigCtxDebugDump          (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump ()</title>
-<programlisting>void        xmlSecDSigCtxDebugXmlDump       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>output</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -486,12 +479,30 @@ XML DSig processing context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to output FILE.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump ()</title>
+<programlisting>void        xmlSecDSigCtxDebugXmlDump       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>output</parameter> in XML format.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -621,6 +632,10 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
                                             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
 <para>
+Creates new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context. Caller is responsible
+for destroying the returned context by calling <link linkend="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</link>
+function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -628,19 +643,19 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
 </entry></row>
 <row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly created context or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy ()</title>
 <programlisting>void        xmlSecDSigReferenceCtxDestroy   (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<para>
+Destroy context object created with <link linkend="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -649,9 +664,7 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -661,29 +674,9 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
                                              <link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
                                              <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize ()</title>
-<programlisting>void        xmlSecDSigReferenceCtxFinalize  (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+Initializes new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context. Caller is responsible
+for cleaning up the returned context by calling <link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link>
+function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -692,9 +685,31 @@ The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Refer
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+</entry></row>
+<row><entry align="right"><parameter>dsigCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
+</entry></row>
+<row><entry align="right"><parameter>origin</parameter>&nbsp;:</entry>
+<entry>		the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on succes or aa negative value otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize ()</title>
+<programlisting>void        xmlSecDSigReferenceCtxFinalize  (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<para>
+Cleans up context object created with <link linkend="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</link> function.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -715,30 +730,7 @@ was created. The Type attribute facilitates the processing of referenced
 data. For example, while this specification makes no requirements over 
 external data, an application may wish to signal that the referent is a 
 Manifest. An optional ID attribute permits a Reference to be referenced 
-from elsewhere.
-</para>
-<para>
-Schema Definition:
-</para>
-<para>
- &lt;element name="Reference" type="ds:ReferenceType"/&gt;
- &lt;complexType name="ReferenceType"&gt;
-   &lt;sequence&gt; 
-     &lt;element ref="ds:Transforms" minOccurs="0"/&gt; 
-     &lt;element ref="ds:DigestMethod"/&gt; 
-     &lt;element ref="ds:DigestValue"/&gt; 
-   &lt;/sequence&gt;
-   &lt;attribute name="Id" type="ID" use="optional"/&gt; 
-   &lt;attribute name="URI" type="anyURI" use="optional"/&gt; 
-   &lt;attribute name="Type" type="anyURI" use="optional"/&gt; 
- &lt;/complexType&gt;
-   
-DTD:
-   
-  &lt;!ELEMENT Reference (Transforms?, DigestMethod, DigestValue)  &gt;
-  &lt;!ATTLIST Reference Id  ID  <link linkend="IMPLIED-CAPS">IMPLIED</link>
-  		URI CDATA   <link linkend="IMPLIED-CAPS">IMPLIED</link>
-		Type    CDATA   <link linkend="IMPLIED-CAPS">IMPLIED</link>&gt;</para>
+from elsewhere.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -747,20 +739,23 @@ DTD:
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on succes or aa negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer ()</title>
-<programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigReferenceCtxPreDigestBuffer
+<title><anchor id="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer ()</title>
+<programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link> xmlSecDSigReferenceCtxGetPreDigestBuffer
                                             (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<para>
+Gets the results of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> node processing just before digesting
+(valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</link> or
+<link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES-CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</link> flas of signature context
+is set).</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -769,11 +764,9 @@ DTD:
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the buffer or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -781,6 +774,8 @@ DTD:
 <programlisting>void        xmlSecDSigReferenceCtxDebugDump (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
+Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>output</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -788,12 +783,10 @@ DTD:
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -802,6 +795,8 @@ DTD:
                                             (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
+Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>output</parameter> in output format.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -809,12 +804,10 @@ DTD:
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dsigRefCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -830,15 +823,15 @@ The references list klass.</para>
 <programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecDSigReferenceCtxListGetKlass
                                             (void);</programlisting>
 <para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing contexts list klass.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec_Reference">&lt;dsig:Reference/&gt;</ulink> element processing context list klass.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

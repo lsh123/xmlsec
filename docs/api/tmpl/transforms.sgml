@@ -57,8 +57,10 @@ transforms
 
 </para>
 
-@keyId: 
+@id: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@keyId: 
 
 
 <!-- ##### ENUM xmlSecTransformStatus ##### -->
@@ -695,26 +697,6 @@ transforms
 @left: 
 @right: 
 @transformCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformAddAfter ##### -->
-<para>
-
-</para>
-
-@curTransform: 
-@newTransform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecTransformAddBefore ##### -->
-<para>
-
-</para>
-
-@curTransform: 
-@newTransform: 
 @Returns: 
 
 

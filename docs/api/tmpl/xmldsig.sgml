@@ -137,7 +137,7 @@ xmldsig
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecDSigCtxPreSignBuffer ##### -->
+<!-- ##### FUNCTION xmlSecDSigCtxGetPreSignBuffer ##### -->
 <para>
 
 </para>
@@ -237,7 +237,7 @@ xmldsig
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecDSigReferenceCtxPreDigestBuffer ##### -->
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxGetPreDigestBuffer ##### -->
 <para>
 
 </para>

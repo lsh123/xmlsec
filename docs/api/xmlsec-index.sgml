@@ -118,12 +118,12 @@
 <listitem><para><link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link></para></listitem>
+<listitem><para><link linkend="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</link></para></listitem>
+<listitem><para><link linkend="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link></para></listitem>
-<listitem><para><link linkend="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer</link></para></listitem>
-<listitem><para><link linkend="xmlSecDSigCtxPreSignBuffer">xmlSecDSigCtxPreSignBuffer</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link></para></listitem>
@@ -146,6 +146,8 @@
 <listitem><para><link linkend="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link></para></listitem>
+<listitem><para><link linkend="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer</link></para></listitem>
+<listitem><para><link linkend="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxListGetKlass">xmlSecDSigReferenceCtxListGetKlass</link></para></listitem>
@@ -154,8 +156,6 @@
 <listitem><para><link linkend="xmlSecDSigReferenceCtxListId">xmlSecDSigReferenceCtxListId</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtx</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtx</link></para></listitem>
-<listitem><para><link linkend="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer</link></para></listitem>
-<listitem><para><link linkend="xmlSecDSigReferenceCtxPreDigestBuffer">xmlSecDSigReferenceCtxPreDigestBuffer</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</link></para></listitem>
 <listitem><para><link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link></para></listitem>
@@ -1244,10 +1244,6 @@
 <listitem><para><link linkend="xmlSecTmplTransformAddXPointer">xmlSecTmplTransformAddXPointer</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link></para></listitem>
 <listitem><para><link linkend="xmlSecTmplTransformAddXsltStylesheet">xmlSecTmplTransformAddXsltStylesheet</link></para></listitem>
-<listitem><para><link linkend="xmlSecTransformAddAfter">xmlSecTransformAddAfter</link></para></listitem>
-<listitem><para><link linkend="xmlSecTransformAddAfter">xmlSecTransformAddAfter</link></para></listitem>
-<listitem><para><link linkend="xmlSecTransformAddBefore">xmlSecTransformAddBefore</link></para></listitem>
-<listitem><para><link linkend="xmlSecTransformAddBefore">xmlSecTransformAddBefore</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformAes192CbcId">xmlSecTransformAes192CbcId</link></para></listitem>

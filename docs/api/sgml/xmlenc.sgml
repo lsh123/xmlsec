@@ -278,6 +278,10 @@ XML Encrypiton context.</para>
 <title><anchor id="xmlSecEncCtxCreate">xmlSecEncCtxCreate ()</title>
 <programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link> xmlSecEncCtxCreate          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
+Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
+The caller is responsible for destroying returend object by calling 
+<link linkend="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy</link> function.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -285,16 +289,17 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry>
+<entry> 		the pointer to keys manager.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to newly allocated context object or NULL if an error
+occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxDestroy">xmlSecEncCtxDestroy ()</title>
 <programlisting>void        xmlSecEncCtxDestroy             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+<para>
+Destroy context object created with <link linkend="xmlSecEncCtxCreate">xmlSecEncCtxCreate</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -303,9 +308,7 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -313,26 +316,9 @@ XML Encrypiton context.</para>
 <programlisting>int         xmlSecEncCtxInitialize          (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize ()</title>
-<programlisting>void        xmlSecEncCtxFinalize            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+Initializes <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
+The caller is responsible for cleaing up returend object by calling 
+<link linkend="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize</link> function.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -341,15 +327,36 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry> 		the pointer to keys manager.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncCtxFinalize">xmlSecEncCtxFinalize ()</title>
+<programlisting>void        xmlSecEncCtxFinalize            (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+<para>
+Cleans up <parameter>encCtx</parameter> object.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxCopyUserPref">xmlSecEncCtxCopyUserPref ()</title>
 <programlisting>int         xmlSecEncCtxCopyUserPref        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> dst,
                                              <link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> src);</programlisting>
+<para>
+Copies user preference from <parameter>src</parameter> context to <parameter>dst</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -358,19 +365,19 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to destination context.
 </entry></row>
 <row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to source context.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecEncCtxReset">xmlSecEncCtxReset ()</title>
 <programlisting>void        xmlSecEncCtxReset               (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx);</programlisting>
+<para>
+Resets <parameter>encCtx</parameter> object, user settings are not touched.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -379,9 +386,7 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
-
-
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -391,6 +396,8 @@ XML Encrypiton context.</para>
                                              unsigned char *data,
                                              <link linkend="size-t">size_t</link> dataSize);</programlisting>
 <para>
+Encrypts <parameter>data</parameter> according to template <parameter>tmpl</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -398,20 +405,18 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
 </entry></row>
 <row><entry align="right"><parameter>data</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer for binary buffer.
 </entry></row>
 <row><entry align="right"><parameter>dataSize</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the <parameter>data</parameter> buffer size.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -420,6 +425,9 @@ XML Encrypiton context.</para>
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
+Encrypts <parameter>node</parameter> according to template <parameter>tmpl</parameter>. If requested, <parameter>node</parameter> is replaced
+with result <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -427,17 +435,15 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to node for encryption.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -446,6 +452,8 @@ XML Encrypiton context.</para>
                                              <link linkend="xmlNode">xmlNodePtr</link> tmpl,
                                              const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
+Encrypts data from <parameter>uri</parameter> according to template <parameter>tmpl</parameter>.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -453,17 +461,15 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>tmpl</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
 </entry></row>
 <row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the URI.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -471,6 +477,8 @@ XML Encrypiton context.</para>
 <programlisting>int         xmlSecEncCtxDecrypt             (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
+Decrypts <parameter>node</parameter> and if necessary replaces <parameter>node</parameter> with decrypted data.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -478,14 +486,12 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -493,6 +499,8 @@ XML Encrypiton context.</para>
 <programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> xmlSecEncCtxDecryptToBuffer (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
 <para>
+Decrypts <parameter>node</parameter> data to the <parameter>encCtx</parameter> buffer.</para>
+<para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
 <tgroup cols="2">
@@ -500,14 +508,12 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>node</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -515,25 +521,7 @@ XML Encrypiton context.</para>
 <programlisting>void        xmlSecEncCtxDebugDump           (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
                                              <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
 <para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
-</entry></row>
-<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump ()</title>
-<programlisting>void        xmlSecEncCtxDebugXmlDump        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
-                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+Prints the debug information about <parameter>encCtx</parameter> to <parameter>output</parameter>.</para>
 <para>
 
 </para><informaltable pgwide="1" frame="none" role="params">
@@ -542,12 +530,30 @@ XML Encrypiton context.</para>
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </entry></row>
 <row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
-<entry>
+<entry>		the pointer to output FILE.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecEncCtxDebugXmlDump">xmlSecEncCtxDebugXmlDump ()</title>
+<programlisting>void        xmlSecEncCtxDebugXmlDump        (<link linkend="xmlSecEncCtx">xmlSecEncCtxPtr</link> encCtx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+Prints the debug information about <parameter>encCtx</parameter> to <parameter>output</parameter> in XML format.</para>
+<para>
 
-
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>encCtx</parameter>&nbsp;:</entry>
+<entry>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec_EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>		the pointer to output FILE.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

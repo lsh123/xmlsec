@@ -1272,9 +1272,12 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
     return(encKeyNode);    
 }
 
-/**
+/*************************************************************************
+ *
  * <dsig:Transform/> node
- */
+ *
+ ************************************************************************/
+
 /**
  * xmlSecTmplTransformAddHmacOutputLength:
  * @transformNode: 	the pointer to <dsig:Transform/> node

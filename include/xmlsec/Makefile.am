@@ -7,7 +7,6 @@ xmlsecincdir = $(includedir)/xmlsec
 xmlsecinc_HEADERS = \
 base64.h \
 buffered.h \
-ciphers.h \
 digests.h \
 debug.h \
 errors.h \

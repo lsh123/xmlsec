@@ -1,16 +1,17 @@
-/**
- * AES transform methods
- */
+
+/***************************************************************************
+ *
+ *  AES CBC cipher transforms
+ *
+ ***************************************************************************/
 static xmlSecTransformPtr xmlSecAesCreate	(xmlSecTransformId id);
 static void 	xmlSecAesDestroy		(xmlSecTransformPtr transform);
 static int  	xmlSecAesSetKey			(xmlSecTransformPtr transform, 
 						 xmlSecKeyPtr key);
 static int  	xmlSecAesSetKeyReq		(xmlSecTransformPtr transform, 
 						 xmlSecKeyInfoCtxPtr keyInfoCtx);
-/**
- * AES transforms
- */
-static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
+
+static xmlSecTransformKlass xmlSecEncAes128CbcId = {
     /* same as xmlSecTransformId */    
     BAD_CAST "aes128",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
@@ -24,26 +25,18 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes128CbcId = {
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
-    NULL,
-    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
+    xmlSecOpenSSLEvpBlockCipherExecuteBin,
+    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
 
     /* xml / c14n methods */
     NULL,
     NULL,
-    
-    /* xmlSecCipherTransform data/methods */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
-    XMLSEC_AES128_KEY_SIZE,		/* size_t keySize */
-    XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
-    XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
-    2 * XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncAes128Cbc = (xmlSecTransformId)&xmlSecEncAes128CbcId;
 
-static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
+static xmlSecTransformKlass xmlSecEncAes192CbcId = {
     /* same as xmlSecTransformId */    
     BAD_CAST "aes192",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
@@ -57,24 +50,16 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes192CbcId = {
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
+    xmlSecOpenSSLEvpBlockCipherExecuteBin,
+    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
-    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
-    NULL,
-
-    /* xmlSecCipherTransform data/methods */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
-    XMLSEC_AES192_KEY_SIZE,		/* size_t keySize */
-    XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
-    XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
-    2 * XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncAes192Cbc = (xmlSecTransformId)&xmlSecEncAes192CbcId;
 
-static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
+static xmlSecTransformKlass xmlSecEncAes256CbcId = {
     /* same as xmlSecTransformId */    
     BAD_CAST "aes256",
     xmlSecTransformTypeBinary,		/* xmlSecTransformType type; */
@@ -88,27 +73,125 @@ static const struct _xmlSecCipherTransformIdStruct xmlSecEncAes256CbcId = {
     xmlSecAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
     
     /* binary data/methods */
+    xmlSecOpenSSLEvpBlockCipherExecuteBin,
+    xmlSecTransformDefaultReadBin,		/* xmlSecTransformReadMethod readBin; */
+    xmlSecTransformDefaultWriteBin,		/* xmlSecTransformWriteMethod writeBin; */
+    xmlSecTransformDefaultFlushBin,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
-    xmlSecCipherTransformRead,		/* xmlSecTransformReadMethod readBin; */
-    xmlSecCipherTransformWrite,		/* xmlSecTransformWriteMethod writeBin; */
-    xmlSecCipherTransformFlush,		/* xmlSecTransformFlushMethod flushBin; */
     NULL,
-    NULL,
-
-    /* xmlSecCipherTransform data/methods */
-    xmlSecEvpCipherUpdate,		/* xmlSecCipherUpdateMethod cipherUpdate; */
-    xmlSecEvpCipherFinal,		/* xmlSecCipherFinalMethod cipherFinal; */
-    XMLSEC_AES256_KEY_SIZE,		/* size_t keySize */
-    XMLSEC_AES_IV_SIZE,			/* size_t ivSize */
-    XMLSEC_AES_BLOCK_SIZE,		/* size_t bufInSize */
-    2 * XMLSEC_AES_BLOCK_SIZE		/* size_t bufOutSize */
 };
 xmlSecTransformId xmlSecEncAes256Cbc = (xmlSecTransformId)&xmlSecEncAes256CbcId;
 
+/**
+ * xmlSecAesCreate:
+ */ 
+static xmlSecTransformPtr 
+xmlSecAesCreate(xmlSecTransformId id) {
+    xmlSecTransformPtr transform;
+    const EVP_CIPHER *cipher;
+    int ret;
+        
+    xmlSecAssert2((id == xmlSecEncAes128Cbc) || (id == xmlSecEncAes192Cbc) || (id == xmlSecEncAes256Cbc), NULL);
+    
+    transform = (xmlSecTransformPtr)xmlMalloc(sizeof(xmlSecTransform));
+    if(transform == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "%d", sizeof(xmlSecTransform));
+	return(NULL);
+    }
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    transform->id = id;
+
+    if(id == xmlSecEncAes128Cbc) {
+	cipher = EVP_aes_128_cbc();	
+    } else if(id == xmlSecEncAes192Cbc) {
+	cipher = EVP_aes_192_cbc();	
+    } else if(id == xmlSecEncAes256Cbc) {
+	cipher = EVP_aes_256_cbc();	
+    } else {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "xmlSecEncAes128Cbc, xmlSecEncAes192Cbc, xmlSecEncAes256Cbc");
+	return(NULL);	
+    }
+
+    ret = xmlSecOpenSSLEvpBlockCipherInitialize(transform, cipher);	
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpBlockCipherInitialize");
+	xmlSecTransformDestroy(transform, 1);
+	return(NULL);
+    }
+    return(transform);
+}
 
 /**
- * AES Key Wrap
- */
+ * xmlSecAesDestroy:
+ */ 
+static void 	
+xmlSecAesDestroy(xmlSecTransformPtr transform) {
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc));
+
+    xmlSecOpenSSLEvpBlockCipherFinalize(transform);
+
+    memset(transform, 0, sizeof(xmlSecTransform));
+    xmlFree(transform);
+}
+
+static int  
+xmlSecAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc), -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    keyInfoCtx->keyId 	 = xmlSecKeyDataAesValueId;
+    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
+    if(transform->encode) {
+	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
+    } else {
+	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
+    }
+    return(0);
+}
+
+/** 
+ * xmlSecAesSetKey:
+ */ 
+static int  	
+xmlSecAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecBufferPtr buffer;
+    int ret;
+    
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(key->value != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataAesValueId), -1);
+    
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
+    xmlSecAssert2(buffer != NULL, -1);
+    
+    ret = xmlSecOpenSSLEvpBlockCipherSetKey(transform, xmlSecBufferGetData(buffer), 
+					    xmlSecBufferGetSize(buffer)); 
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "xmlSecOpenSSLEvpBlockCipherSetKey"); 
+	return(-1);    
+    }
+
+    return(0);
+}
+
+
+
+
+/**************************************************************************
+ *
+ * AES CBC Key Wrap transforms
+ *
+ **************************************************************************/
 static xmlSecTransformPtr xmlSecKWAesCreate	(xmlSecTransformId id);
 static void 	xmlSecKWAesDestroy		(xmlSecTransformPtr transform);
 static int  	xmlSecKWAesSetKey		(xmlSecTransformPtr transform, 
@@ -206,161 +289,6 @@ static const struct _xmlSecBufferedTransformIdStruct xmlSecKWAes256Id = {
 };
 xmlSecTransformId xmlSecKWAes256 = (xmlSecTransformId)&xmlSecKWAes256Id;
 
-/***************************************************************************
- *
- *  AES transform methods
- *
- ***************************************************************************/
- 
-/**
- * xmlSecAesCreate:
- */ 
-static xmlSecTransformPtr 
-xmlSecAesCreate(xmlSecTransformId id) {
-    xmlSecCipherTransformId cipherId;
-    xmlSecCipherTransformPtr cipher;
-    const EVP_CIPHER *type;
-    size_t size;
-    
-    xmlSecAssert2(id != NULL, NULL);
-    
-    if(id == xmlSecEncAes128Cbc) {
-	type = EVP_aes_128_cbc();	
-    } else if(id == xmlSecEncAes192Cbc) {
-	type = EVP_aes_192_cbc();	
-    } else if(id == xmlSecEncAes256Cbc) {
-	type = EVP_aes_256_cbc();	
-    } else {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncAes128Cbc, xmlSecEncAes192Cbc, xmlSecEncAes256Cbc");
-	return(NULL);	
-    }
-    cipherId = (xmlSecCipherTransformId)id;
-    
-    size = sizeof(xmlSecCipherTransform) +
-	   sizeof(unsigned char) * (cipherId->bufInSize + 
-				    cipherId->bufOutSize + 
-				    cipherId->ivSize);
-    cipher = (xmlSecCipherTransformPtr)xmlMalloc(size);
-    if(cipher == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "%d", size);
-	return(NULL);
-    }
-
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) + 
-			sizeof(unsigned char) * (cipherId->bufInSize + 
-        		cipherId->bufOutSize + cipherId->ivSize));
-    EVP_CIPHER_CTX_init(&(cipher->cipherCtx));
-    
-    cipher->id = id;
-    cipher->bufIn = ((unsigned char*)cipher) + sizeof(xmlSecCipherTransform);
-    cipher->bufOut = cipher->bufIn + cipherId->bufInSize;
-    cipher->iv = cipher->bufOut + cipherId->bufOutSize; 
-    cipher->cipherData = (void*)type; /* cache cipher type */
-    return((xmlSecTransformPtr)cipher);
-}
-
-/**
- * xmlSecAesDestroy:
- */ 
-static void 	
-xmlSecAesDestroy(xmlSecTransformPtr transform) {
-    xmlSecCipherTransformPtr cipher;
-    xmlSecCipherTransformId cipherId;
-
-    xmlSecAssert(transform != NULL);
-        
-    if(!xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) &&
-       !xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) &&
-       !xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc)) {
-
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncAes128Cbc, xmlSecEncAes192Cbc, xmlSecEncAes256Cbc");
-	return;
-    }
-    
-    cipher = (xmlSecCipherTransformPtr) transform;
-    cipherId = (xmlSecCipherTransformId)transform->id;
-    EVP_CIPHER_CTX_cleanup(&(cipher->cipherCtx));
-    memset(cipher, 0, sizeof(xmlSecCipherTransform) +
-			sizeof(unsigned char) * (cipherId->bufInSize + 
-        		cipherId->bufOutSize + cipherId->ivSize));
-    xmlFree(cipher);
-}
-
-/** 
- * xmlSecAesSetKey:
- */ 
-static int  	
-xmlSecAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecCipherTransformPtr cipher;
-    xmlSecCipherTransformId cipherId;
-    xmlSecBufferPtr buffer;
-    int ret;
-    
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc), -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(key->value != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(key->value, xmlSecKeyDataAesValueId), -1);
-    
-    cipher = (xmlSecCipherTransformPtr) transform;
-    cipherId = (xmlSecCipherTransformId)transform->id;
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(key->value);
-    xmlSecAssert2(buffer != NULL, -1);
-    
-    if((size_t)xmlSecBufferGetSize(buffer) < cipherId->keySize) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_INVALID_KEY_SIZE,
-		    "%d bytes < %d bytes", 
-		    xmlSecBufferGetSize(buffer),
-		    cipherId->keySize);
-	return(-1);    
-    }
-    
-    if(cipher->encode) {
-	ret = EVP_EncryptInit(&(cipher->cipherCtx), 
-			      (EVP_CIPHER *)cipher->cipherData,
-			      xmlSecBufferGetData(buffer), NULL); 
-    } else {
-	ret = EVP_DecryptInit(&(cipher->cipherCtx), 
-			      (EVP_CIPHER *)cipher->cipherData,
-			      xmlSecBufferGetData(buffer), NULL); 
-    }
-    
-    if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    (cipher->encode) ? "EVP_EncryptInit" : "EVP_DecryptInit");
-	return(-1);    
-    }
-    return(0);
-}
-
-static int  
-xmlSecAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecEncAes128Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes192Cbc) || xmlSecTransformCheckId(transform, xmlSecEncAes256Cbc), -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    keyInfoCtx->keyId 	 = xmlSecKeyDataAesValueId;
-    keyInfoCtx->keyType  = xmlSecKeyDataTypeSymmetric;
-    if(transform->encode) {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageEncrypt;
-    } else {
-	keyInfoCtx->keyUsage = xmlSecKeyUsageDecrypt;
-    }
-    return(0);
-}
-
-
-/**************************************************************************
- *
- *         AES Key Wrap
- *
- **************************************************************************/
 #define xmlSecKWAesKeyData(t) \
     ((xmlSecBufferPtr)(((xmlSecBufferedTransformPtr)( t ))->reserved1))
     

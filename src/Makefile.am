@@ -16,7 +16,6 @@ libxmlsec_la_SOURCES =\
 base64.c \
 buffered.c \
 c14n.c \
-ciphers.c \
 debug.c \
 digests.c \
 enveloped.c \

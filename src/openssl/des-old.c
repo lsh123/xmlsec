@@ -75,13 +75,8 @@ xmlSecDesCreate(xmlSecTransformId id) {
 static void 	
 xmlSecDesDestroy(xmlSecTransformPtr transform) {
 
-    xmlSecAssert(transform != NULL);    
-    if(!xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-		    "xmlSecEncDes3Cbc");
-	return;
-    }
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecEncDes3Cbc));
+
     xmlSecOpenSSLEvpBlockCipherFinalize(transform);
 
     memset(transform, 0, sizeof(xmlSecTransform));

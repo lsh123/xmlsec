@@ -25,7 +25,7 @@
 /* 
  * the table to map numbers to base64 
  */
-static const unsigned char base64[] =
+static const xmlSecByte base64[] =
 {  
 /*   0    1    2    3    4    5    6    7   */
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', /* 0 */
@@ -81,29 +81,29 @@ struct _xmlSecBase64Ctx {
 };
 
 static xmlSecBase64Status	xmlSecBase64CtxEncodeByte	(xmlSecBase64CtxPtr ctx, 
-								 unsigned char  inByte, 
-								 unsigned char* outByte);
+								 xmlSecByte  inByte, 
+								 xmlSecByte* outByte);
 static xmlSecBase64Status	xmlSecBase64CtxEncodeByteFinal	(xmlSecBase64CtxPtr ctx, 
-								 unsigned char* outByte);
+								 xmlSecByte* outByte);
 static xmlSecBase64Status	xmlSecBase64CtxDecodeByte	(xmlSecBase64CtxPtr ctx, 
-								 unsigned char inByte, 
-								 unsigned char* outByte);
+								 xmlSecByte inByte, 
+								 xmlSecByte* outByte);
 static int			xmlSecBase64CtxEncode		(xmlSecBase64CtxPtr ctx, 
-                						 const unsigned char* inBuf, 
+                						 const xmlSecByte* inBuf, 
 								 xmlSecSize inBufSize, 
 								 xmlSecSize* inBufResSize,
-                						 unsigned char* outBuf, 
+                						 xmlSecByte* outBuf, 
 								 xmlSecSize outBufSize, 
 								 xmlSecSize* outBufResSize);
 static int			xmlSecBase64CtxEncodeFinal	(xmlSecBase64CtxPtr ctx, 
-                						 unsigned char* outBuf, 
+                						 xmlSecByte* outBuf, 
 								 xmlSecSize outBufSize, 
 								 xmlSecSize* outBufResSize);
 static int			xmlSecBase64CtxDecode		(xmlSecBase64CtxPtr ctx, 
-                						 const unsigned char* inBuf, 
+                						 const xmlSecByte* inBuf, 
 								 xmlSecSize inBufSize, 
 								 xmlSecSize* inBufResSize,
-                						 unsigned char* outBuf, 
+                						 xmlSecByte* outBuf, 
 								 xmlSecSize outBufSize, 
 								 xmlSecSize* outBufResSize);
 static int			xmlSecBase64CtxDecodeIsFinished	(xmlSecBase64CtxPtr ctx);
@@ -213,8 +213,8 @@ xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
  */
 int
 xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
-		     const unsigned char *in, xmlSecSize inSize, 
-		     unsigned char *out, xmlSecSize outSize) {
+		     const xmlSecByte *in, xmlSecSize inSize, 
+		     xmlSecByte *out, xmlSecSize outSize) {
     xmlSecSize inResSize = 0, outResSize = 0;
     int ret;
     
@@ -263,7 +263,7 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
  */
 int
 xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx, 
-		    unsigned char *out, xmlSecSize outSize) {
+		    xmlSecByte *out, xmlSecSize outSize) {
     xmlSecSize outResSize = 0;
     int ret;
         
@@ -300,7 +300,7 @@ xmlSecBase64CtxFinal(xmlSecBase64CtxPtr ctx,
 }
 
 static xmlSecBase64Status
-xmlSecBase64CtxEncodeByte(xmlSecBase64CtxPtr ctx, unsigned char inByte, unsigned char* outByte) {
+xmlSecBase64CtxEncodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte* outByte) {
     xmlSecAssert2(ctx != NULL, xmlSecBase64StatusFailed);
     xmlSecAssert2(outByte != NULL, xmlSecBase64StatusFailed);
 
@@ -344,7 +344,7 @@ xmlSecBase64CtxEncodeByte(xmlSecBase64CtxPtr ctx, unsigned char inByte, unsigned
 }
 
 static xmlSecBase64Status
-xmlSecBase64CtxEncodeByteFinal(xmlSecBase64CtxPtr ctx, unsigned char* outByte) {
+xmlSecBase64CtxEncodeByteFinal(xmlSecBase64CtxPtr ctx, xmlSecByte* outByte) {
     xmlSecAssert2(ctx != NULL, xmlSecBase64StatusFailed);
     xmlSecAssert2(outByte != NULL, xmlSecBase64StatusFailed);
 
@@ -378,7 +378,7 @@ xmlSecBase64CtxEncodeByteFinal(xmlSecBase64CtxPtr ctx, unsigned char* outByte) {
 }
 
 static xmlSecBase64Status
-xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, unsigned char inByte, unsigned char* outByte) {
+xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, xmlSecByte inByte, xmlSecByte* outByte) {
     xmlSecAssert2(ctx != NULL, xmlSecBase64StatusFailed);
     xmlSecAssert2(outByte != NULL, xmlSecBase64StatusFailed);    
 
@@ -463,8 +463,8 @@ xmlSecBase64CtxDecodeByte(xmlSecBase64CtxPtr ctx, unsigned char inByte, unsigned
 
 static int
 xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx, 
-                     const unsigned char* inBuf, xmlSecSize inBufSize, xmlSecSize* inBufResSize,
-                     unsigned char* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
+                     const xmlSecByte* inBuf, xmlSecSize inBufSize, xmlSecSize* inBufResSize,
+                     xmlSecByte* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
     xmlSecBase64Status status = xmlSecBase64StatusNext;
     xmlSecSize inPos, outPos;
     
@@ -505,7 +505,7 @@ xmlSecBase64CtxEncode(xmlSecBase64CtxPtr ctx,
 
 static int
 xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx, 
-                     unsigned char* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
+                     xmlSecByte* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
     xmlSecBase64Status status = xmlSecBase64StatusNext;
     xmlSecSize outPos;
     
@@ -553,8 +553,8 @@ xmlSecBase64CtxEncodeFinal(xmlSecBase64CtxPtr ctx,
 
 static int
 xmlSecBase64CtxDecode(xmlSecBase64CtxPtr ctx, 
-                     const unsigned char* inBuf, xmlSecSize inBufSize, xmlSecSize* inBufResSize,
-                     unsigned char* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
+                     const xmlSecByte* inBuf, xmlSecSize inBufSize, xmlSecSize* inBufResSize,
+                     xmlSecByte* outBuf, xmlSecSize outBufSize, xmlSecSize* outBufResSize) {
     xmlSecBase64Status status = xmlSecBase64StatusNext;
     xmlSecSize inPos, outPos;
     
@@ -623,7 +623,7 @@ xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
  * or NULL if an error occurs.
  */
 xmlChar*
-xmlSecBase64Encode(const unsigned char *buf, xmlSecSize len, int columns) {
+xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
     xmlSecBase64Ctx ctx;
     xmlChar *ptr;
     xmlSecSize size;    
@@ -658,7 +658,7 @@ xmlSecBase64Encode(const unsigned char *buf, xmlSecSize len, int columns) {
 	return(NULL);
     }
 
-    ret = xmlSecBase64CtxUpdate(&ctx, buf, len, (unsigned char*)ptr, size);
+    ret = xmlSecBase64CtxUpdate(&ctx, buf, len, (xmlSecByte*)ptr, size);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -671,7 +671,7 @@ xmlSecBase64Encode(const unsigned char *buf, xmlSecSize len, int columns) {
     }
     size_update = ret;
 
-    ret = xmlSecBase64CtxFinal(&ctx, ((unsigned char*)ptr) + size_update, size - size_update);
+    ret = xmlSecBase64CtxFinal(&ctx, ((xmlSecByte*)ptr) + size_update, size - size_update);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -702,7 +702,7 @@ xmlSecBase64Encode(const unsigned char *buf, xmlSecSize len, int columns) {
  * a negative value if an error occurs 
  */
 int
-xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, xmlSecSize len) {
+xmlSecBase64Decode(const xmlChar* str, xmlSecByte *buf, xmlSecSize len) {
     xmlSecBase64Ctx ctx;
     int size_update;
     int size_final;
@@ -721,7 +721,7 @@ xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, xmlSecSize len) {
 	return(-1);
     }
     
-    ret = xmlSecBase64CtxUpdate(&ctx, (const unsigned char*)str, xmlStrlen(str), buf, len);
+    ret = xmlSecBase64CtxUpdate(&ctx, (const xmlSecByte*)str, xmlStrlen(str), buf, len);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -760,7 +760,7 @@ xmlSecBase64Decode(const xmlChar* str, unsigned char *buf, xmlSecSize len) {
 	(sizeof(xmlSecTransform) + sizeof(xmlSecBase64Ctx))
 #define xmlSecBase64GetCtx(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecBase64Size)) ? \
-	(xmlSecBase64CtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecBase64CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
 	(xmlSecBase64CtxPtr)NULL)
 
 static int		xmlSecBase64Initialize		(xmlSecTransformPtr transform);

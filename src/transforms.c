@@ -1023,7 +1023,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
  */
 int
 xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx, 
-				const unsigned char* data, xmlSecSize dataSize) {
+				const xmlSecByte* data, xmlSecSize dataSize) {
     int ret;
         
     xmlSecAssert2(ctx != NULL, -1);
@@ -1575,7 +1575,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
        }
     }  else if(((leftType & xmlSecTransformDataTypeBin) != 0) && 
     	       ((rightType & xmlSecTransformDataTypeBin) != 0)) {	
-	unsigned char buf[XMLSEC_TRANSFORM_BINARY_CHUNK];
+	xmlSecByte buf[XMLSEC_TRANSFORM_BINARY_CHUNK];
 	xmlSecSize bufSize;
 	int final;
 	
@@ -1670,7 +1670,7 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecTransformVerify(xmlSecTransformPtr transform, const unsigned char* data,
+xmlSecTransformVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
 		    xmlSecSize dataSize, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->verify != NULL, -1);
@@ -1771,7 +1771,7 @@ xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mod
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+xmlSecTransformPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 		    xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->pushBin != NULL, -1);
@@ -1795,7 +1795,7 @@ xmlSecTransformPushBin(xmlSecTransformPtr transform, const unsigned char* data,
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecTransformPopBin(xmlSecTransformPtr transform, unsigned char* data,
+xmlSecTransformPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 		    xmlSecSize maxDataSize, xmlSecSize* dataSize, xmlSecTransformCtxPtr transformCtx) {
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->id->popBin != NULL, -1);
@@ -2089,7 +2089,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 			xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize inSize = 0;
     xmlSecSize outSize = 0;
@@ -2199,7 +2199,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const unsigned char*
  * Returns 0 on success or a negative value if an error occurs.
  */
 int 
-xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, unsigned char* data,
+xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 			    xmlSecSize maxDataSize, xmlSecSize* dataSize, xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize outSize;
     int final = 0;
@@ -2602,10 +2602,10 @@ static xmlSecTransformIOBufferPtr xmlSecTransformIOBufferCreate	(xmlSecTransform
 								 xmlSecTransformCtxPtr transformCtx);
 static void	xmlSecTransformIOBufferDestroy			(xmlSecTransformIOBufferPtr buffer);
 static int	xmlSecTransformIOBufferRead			(xmlSecTransformIOBufferPtr buffer,
-								 unsigned char *buf,
+								 xmlSecByte *buf,
 								 xmlSecSize size);		
 static int	xmlSecTransformIOBufferWrite			(xmlSecTransformIOBufferPtr buffer,
-								 const unsigned char *buf,
+								 const xmlSecByte *buf,
 								 xmlSecSize size);		
 static int	xmlSecTransformIOBufferClose			(xmlSecTransformIOBufferPtr buffer);
 
@@ -2758,7 +2758,7 @@ xmlSecTransformIOBufferDestroy(xmlSecTransformIOBufferPtr buffer) {
 
 static int 
 xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer, 
-			    unsigned char *buf, xmlSecSize size) {
+			    xmlSecByte *buf, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buffer != NULL, -1);
@@ -2781,7 +2781,7 @@ xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer,
 
 static int 
 xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer, 
-			    const unsigned char *buf, xmlSecSize size) {
+			    const xmlSecByte *buf, xmlSecSize size) {
     int ret;
     
     xmlSecAssert2(buffer != NULL, -1);

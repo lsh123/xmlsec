@@ -43,7 +43,7 @@
  *
  ********************************************************************/
 #define xmlSecOpenSSLKWAesGetKey(transform) \
-    ((xmlSecBufferPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 #define xmlSecOpenSSLKWAesSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
 
@@ -57,17 +57,17 @@ static int  	xmlSecOpenSSLKWAesExecute			(xmlSecTransformPtr transform,
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
 static xmlSecSize  	xmlSecOpenSSLKWAesGetKeySize			(xmlSecTransformPtr transform);
-static int  	xmlSecOpenSSLKWAesEncode			(const unsigned char *key,
+static int  	xmlSecOpenSSLKWAesEncode			(const xmlSecByte *key,
 								 xmlSecSize keySize,
-								 const unsigned char* in,
+								 const xmlSecByte* in,
 								 xmlSecSize inSize,
-								 unsigned char* out,
+								 xmlSecByte* out,
 								 xmlSecSize outSize);
-static int  	xmlSecOpenSSLKWAesDecode			(const unsigned char *key,
+static int  	xmlSecOpenSSLKWAesDecode			(const xmlSecByte *key,
 								 xmlSecSize keySize,
-								 const unsigned char* in,
+								 const xmlSecByte* in,
 								 xmlSecSize inSize,
-								 unsigned char* out,
+								 xmlSecByte* out,
 								 xmlSecSize outSize);
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
@@ -489,17 +489,17 @@ xmlSecOpenSSLKWAesGetKeySize(xmlSecTransformPtr transform) {
  *          * If A is 0xA6A6A6A6A6A6A6A6, return success. Otherwise, return 
  *            an integrity check failure error.
  */
-static const unsigned char xmlSecOpenSSLKWAesMagicBlock[XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE] = { 
+static const xmlSecByte xmlSecOpenSSLKWAesMagicBlock[XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE] = { 
     0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
 };
 					    	
 static int  	
-xmlSecOpenSSLKWAesEncode(const unsigned char *key, xmlSecSize keySize,
-			 const unsigned char *in, xmlSecSize inSize,
-			 unsigned char *out, xmlSecSize outSize) {
+xmlSecOpenSSLKWAesEncode(const xmlSecByte *key, xmlSecSize keySize,
+			 const xmlSecByte *in, xmlSecSize inSize,
+			 xmlSecByte *out, xmlSecSize outSize) {
     AES_KEY aesKey;
-    unsigned char block[XMLSEC_OPENSSL_AES_BLOCK_SIZE];
-    unsigned char *p;
+    xmlSecByte block[XMLSEC_OPENSSL_AES_BLOCK_SIZE];
+    xmlSecByte *p;
     int N, i, j, t;
     int ret;
     
@@ -552,12 +552,12 @@ xmlSecOpenSSLKWAesEncode(const unsigned char *key, xmlSecSize keySize,
 }
 
 static int  	
-xmlSecOpenSSLKWAesDecode(const unsigned char *key, xmlSecSize keySize,
-			 const unsigned char *in, xmlSecSize inSize,
-			 unsigned char *out, xmlSecSize outSize) {
+xmlSecOpenSSLKWAesDecode(const xmlSecByte *key, xmlSecSize keySize,
+			 const xmlSecByte *in, xmlSecSize inSize,
+			 xmlSecByte *out, xmlSecSize outSize) {
     AES_KEY aesKey;
-    unsigned char block[XMLSEC_OPENSSL_AES_BLOCK_SIZE];
-    unsigned char *p;
+    xmlSecByte block[XMLSEC_OPENSSL_AES_BLOCK_SIZE];
+    xmlSecByte *p;
     int N, i, j, t;
     int ret;
 

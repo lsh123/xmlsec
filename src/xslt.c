@@ -50,7 +50,7 @@ struct _xmlSecXsltCtx {
 #define xmlSecXsltSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecXsltCtx))	
 #define xmlSecXsltGetCtx(transform) \
-    ((xmlSecXsltCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecXsltCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int		xmlSecXsltInitialize			(xmlSecTransformPtr transform);
 static void		xmlSecXsltFinalize			(xmlSecTransformPtr transform);
@@ -58,7 +58,7 @@ static int 		xmlSecXsltReadNode			(xmlSecTransformPtr transform,
 								 xmlNodePtr node,
 								 xmlSecTransformCtxPtr transformCtx);
 static int 		xmlSecXsltPushBin			(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 int final,
 							         xmlSecTransformCtxPtr transformCtx);
@@ -234,7 +234,7 @@ xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransfor
 }
 
 static int 
-xmlSecXsltPushBin(xmlSecTransformPtr transform, const unsigned char* data,
+xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
 				xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;
     int ret;

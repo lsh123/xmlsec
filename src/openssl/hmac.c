@@ -43,7 +43,7 @@ struct _xmlSecOpenSSLHmacCtx {
     const EVP_MD*	hmacDgst;
     HMAC_CTX		hmacCtx;
     int			ctxInitialized;
-    unsigned char 	dgst[EVP_MAX_MD_SIZE];
+    xmlSecByte 		dgst[EVP_MAX_MD_SIZE];
     xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 
@@ -55,7 +55,7 @@ struct _xmlSecOpenSSLHmacCtx {
  *
  *****************************************************************************/
 #define xmlSecOpenSSLHmacGetCtx(transform) \
-    ((xmlSecOpenSSLHmacCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecOpenSSLHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 #define xmlSecOpenSSLHmacSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLHmacCtx))
 
@@ -69,7 +69,7 @@ static int  	xmlSecOpenSSLHmacSetKeyReq			(xmlSecTransformPtr transform,
 static int  	xmlSecOpenSSLHmacSetKey				(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLHmacVerify				(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLHmacExecute			(xmlSecTransformPtr transform, 
@@ -230,13 +230,13 @@ xmlSecOpenSSLHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, xmlSecSize dataSize,
+			const xmlSecByte* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
-    static unsigned char last_byte_masks[] = 	
+    static xmlSecByte last_byte_masks[] = 	
 		{ 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
     xmlSecOpenSSLHmacCtxPtr ctx;
-    unsigned char mask;
+    xmlSecByte mask;
         
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLHmacSize), -1);

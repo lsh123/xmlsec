@@ -39,9 +39,9 @@ struct _xmlSecNssEvpBlockCipherCtx {
     xmlSecKeyDataId	keyId;
     int			keyInitialized;
     int			ctxInitialized;
-    unsigned char	key[XMLSEC_NSS_MAX_KEY_SIZE];
+    xmlSecByte		key[XMLSEC_NSS_MAX_KEY_SIZE];
     xmlSecSize		keySize;
-    unsigned char	iv[XMLSEC_NSS_MAX_IV_SIZE];
+    xmlSecByte		iv[XMLSEC_NSS_MAX_IV_SIZE];
     xmlSecSize		ivSize;
 };
 static int 	xmlSecNssEvpBlockCipherCtxInit		(xmlSecNssEvpBlockCipherCtxPtr ctx,
@@ -198,7 +198,7 @@ xmlSecNssEvpBlockCipherCtxUpdate(xmlSecNssEvpBlockCipherCtxPtr ctx,
     xmlSecSize inSize, inBlocks, outSize;
     int blockLen;
     int outLen = 0;
-    unsigned char* outBuf;
+    xmlSecByte* outBuf;
     SECStatus rv;
     int ret;
     
@@ -286,8 +286,8 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 				 xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize inSize, outSize;
     int blockLen, outLen = 0;
-    unsigned char* inBuf;
-    unsigned char* outBuf;
+    xmlSecByte* inBuf;
+    xmlSecByte* outBuf;
     SECStatus rv;
     int ret;
     
@@ -419,7 +419,7 @@ xmlSecNssEvpBlockCipherCtxFinal(xmlSecNssEvpBlockCipherCtxPtr ctx,
 #define xmlSecNssEvpBlockCipherSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecNssEvpBlockCipherCtx))
 #define xmlSecNssEvpBlockCipherGetCtx(transform) \
-    ((xmlSecNssEvpBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecNssEvpBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int	xmlSecNssEvpBlockCipherInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecNssEvpBlockCipherFinalize		(xmlSecTransformPtr transform);

@@ -761,7 +761,7 @@ xmlSecKeyPtr
 xmlSecKeyReadBinaryFile(xmlSecKeyDataId dataId, const char* filename) {
     xmlSecKeyInfoCtx keyInfoCtx;
     xmlSecBuffer buffer;
-    unsigned char buf[1024];
+    xmlSecByte buf[1024];
     xmlSecKeyPtr key;
     FILE *f;
     int ret;

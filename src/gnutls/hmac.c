@@ -34,7 +34,7 @@ typedef struct _xmlSecGnuTLSHmacCtx		xmlSecGnuTLSHmacCtx, *xmlSecGnuTLSHmacCtxPt
 struct _xmlSecGnuTLSHmacCtx {
     int			digest;
     GcryMDHd		digestCtx;
-    unsigned char 	dgst[XMLSEC_GNUTLS_MAX_HMAC_SIZE];
+    xmlSecByte	 	dgst[XMLSEC_GNUTLS_MAX_HMAC_SIZE];
     xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 
@@ -46,7 +46,7 @@ struct _xmlSecGnuTLSHmacCtx {
  *
  *****************************************************************************/
 #define xmlSecGnuTLSHmacGetCtx(transform) \
-    ((xmlSecGnuTLSHmacCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecGnuTLSHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 #define xmlSecGnuTLSHmacSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecGnuTLSHmacCtx))
 #define xmlSecGnuTLSHmacCheckId(transform) \
@@ -64,7 +64,7 @@ static int  	xmlSecGnuTLSHmacSetKeyReq		(xmlSecTransformPtr transform,
 static int  	xmlSecGnuTLSHmacSetKey			(xmlSecTransformPtr transform, 
 							 xmlSecKeyPtr key);
 static int	xmlSecGnuTLSHmacVerify			(xmlSecTransformPtr transform, 
-							 const unsigned char* data, 
+							 const xmlSecByte* data, 
 							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int 	xmlSecGnuTLSHmacExecute			(xmlSecTransformPtr transform, 
@@ -255,13 +255,13 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, xmlSecSize dataSize,
+			const xmlSecByte* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
-    static unsigned char last_byte_masks[] = 	
+    static xmlSecByte last_byte_masks[] = 	
 		{ 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
     xmlSecGnuTLSHmacCtxPtr ctx;
-    unsigned char mask;
+    xmlSecByte mask;
         
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
@@ -319,7 +319,7 @@ static int
 xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     xmlSecBufferPtr in, out;
-    unsigned char* dgst;
+    xmlSecByte* dgst;
     xmlSecSize dgstSize;
     int ret;
     

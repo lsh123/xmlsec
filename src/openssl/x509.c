@@ -64,12 +64,12 @@ static int		xmlSecOpenSSLKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
 								xmlSecKeyPtr key,
 								xmlSecKeyInfoCtxPtr keyInfoCtx);
 static xmlSecKeyDataPtr	xmlSecOpenSSLX509CertGetKey		(X509* cert);
-static X509*		xmlSecOpenSSLX509CertDerRead		(const unsigned char* buf, 
+static X509*		xmlSecOpenSSLX509CertDerRead		(const xmlSecByte* buf, 
 								 xmlSecSize size);
 static X509*		xmlSecOpenSSLX509CertBase64DerRead	(xmlChar* buf);
 static xmlChar*		xmlSecOpenSSLX509CertBase64DerWrite	(X509* cert, 
 								 int base64LineWrap);
-static X509_CRL*	xmlSecOpenSSLX509CrlDerRead		(unsigned char* buf, 
+static X509_CRL*	xmlSecOpenSSLX509CrlDerRead		(xmlSecByte* buf, 
 								 xmlSecSize size);
 static X509_CRL*	xmlSecOpenSSLX509CrlBase64DerRead	(xmlChar* buf);
 static xmlChar*		xmlSecOpenSSLX509CrlBase64DerWrite	(X509_CRL* crl, 
@@ -185,7 +185,7 @@ struct _xmlSecOpenSSLX509DataCtx {
 #define xmlSecOpenSSLX509DataSize	\
     (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLX509DataCtx))	
 #define xmlSecOpenSSLX509DataGetCtx(data) \
-    ((xmlSecOpenSSLX509DataCtxPtr)(((unsigned char*)(data)) + sizeof(xmlSecKeyData)))
+    ((xmlSecOpenSSLX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
 static int		xmlSecOpenSSLKeyDataX509Initialize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLKeyDataX509Duplicate	(xmlSecKeyDataPtr dst,
@@ -1416,7 +1416,7 @@ xmlSecOpenSSLX509CertBase64DerRead(xmlChar* buf) {
     xmlSecAssert2(buf != NULL, NULL);
     
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (unsigned char*)buf, xmlStrlen(buf)); 
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf)); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1426,11 +1426,11 @@ xmlSecOpenSSLX509CertBase64DerRead(xmlChar* buf) {
 	return(NULL);
     }
     
-    return(xmlSecOpenSSLX509CertDerRead((unsigned char*)buf, ret));
+    return(xmlSecOpenSSLX509CertDerRead((xmlSecByte*)buf, ret));
 }
 
 static X509*
-xmlSecOpenSSLX509CertDerRead(const unsigned char* buf, xmlSecSize size) {
+xmlSecOpenSSLX509CertDerRead(const xmlSecByte* buf, xmlSecSize size) {
     X509 *cert = NULL;
     BIO *mem = NULL;
     int ret;
@@ -1478,7 +1478,7 @@ static xmlChar*
 xmlSecOpenSSLX509CertBase64DerWrite(X509* cert, int base64LineWrap) {
     xmlChar *res = NULL;
     BIO *mem = NULL;
-    unsigned char *p = NULL;
+    xmlSecByte *p = NULL;
     long size;
 
     xmlSecAssert2(cert != NULL, NULL);
@@ -1530,7 +1530,7 @@ xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
     xmlSecAssert2(buf != NULL, NULL);
     
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (unsigned char*)buf, xmlStrlen(buf)); 
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf)); 
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -1540,11 +1540,11 @@ xmlSecOpenSSLX509CrlBase64DerRead(xmlChar* buf) {
 	return(NULL);
     }
     
-    return(xmlSecOpenSSLX509CrlDerRead((unsigned char*)buf, ret));
+    return(xmlSecOpenSSLX509CrlDerRead((xmlSecByte*)buf, ret));
 }
 
 static X509_CRL*
-xmlSecOpenSSLX509CrlDerRead(unsigned char* buf, xmlSecSize size) {
+xmlSecOpenSSLX509CrlDerRead(xmlSecByte* buf, xmlSecSize size) {
     X509_CRL *crl = NULL;
     BIO *mem = NULL;
     int ret;
@@ -1592,7 +1592,7 @@ static xmlChar*
 xmlSecOpenSSLX509CrlBase64DerWrite(X509_CRL* crl, int base64LineWrap) {
     xmlChar *res = NULL;
     BIO *mem = NULL;
-    unsigned char *p = NULL;
+    xmlSecByte *p = NULL;
     long size;
 
     xmlSecAssert2(crl != NULL, NULL);
@@ -1694,7 +1694,7 @@ xmlSecOpenSSLX509CertDebugXmlDump(X509* cert, FILE* output) {
  *************************************************************************/
 static int		xmlSecOpenSSLKeyDataRawX509CertBinRead	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
-								 const unsigned char* buf,
+								 const xmlSecByte* buf,
 								 xmlSecSize bufSize,
 								 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
@@ -1750,7 +1750,7 @@ xmlSecOpenSSLKeyDataRawX509CertGetKlass(void) {
 
 static int
 xmlSecOpenSSLKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    const unsigned char* buf, xmlSecSize bufSize,
+				    const xmlSecByte* buf, xmlSecSize bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data;
     X509* cert;

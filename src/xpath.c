@@ -371,7 +371,7 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
     (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
 #define xmlSecXPathTransformGetDataList(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecXPathTransformSize)) ? \
-	(xmlSecPtrListPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
 	(xmlSecPtrListPtr)NULL)
 #define xmlSecTransformXPathCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformXPathId) || \

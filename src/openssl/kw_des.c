@@ -40,7 +40,7 @@
  *
  ********************************************************************/
 #define xmlSecOpenSSLKWDes3GetKey(transform) \
-    ((xmlSecBufferPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 #define xmlSecOpenSSLKWDes3Size	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
 
@@ -53,28 +53,28 @@ static int  	xmlSecOpenSSLKWDes3SetKey			(xmlSecTransformPtr transform,
 static int  	xmlSecOpenSSLKWDes3Execute			(xmlSecTransformPtr transform, 
 								 int last,
 								 xmlSecTransformCtxPtr transformCtx);
-static int  	xmlSecOpenSSLKWDes3Encode			(const unsigned char *key,
+static int  	xmlSecOpenSSLKWDes3Encode			(const xmlSecByte *key,
 								 xmlSecSize keySize,
-								 const unsigned char *in,
+								 const xmlSecByte *in,
 								 xmlSecSize inSize,
-								 unsigned char *out,
+								 xmlSecByte *out,
 								 xmlSecSize outSize);
-static int  	xmlSecOpenSSLKWDes3Decode			(const unsigned char *key,
+static int  	xmlSecOpenSSLKWDes3Decode			(const xmlSecByte *key,
 							         xmlSecSize keySize,
-								 const unsigned char *in,
+								 const xmlSecByte *in,
 								 xmlSecSize inSize,
-								 unsigned char *out,
+								 xmlSecByte *out,
 								 xmlSecSize outSize);
-static int	xmlSecOpenSSLKWDes3Encrypt			(const unsigned char *key, 
+static int	xmlSecOpenSSLKWDes3Encrypt			(const xmlSecByte *key, 
 								 xmlSecSize keySize,
-						    		 const unsigned char *iv,
+						    		 const xmlSecByte *iv,
 								 xmlSecSize ivSize,
-								 const unsigned char *in, 
+								 const xmlSecByte *in, 
 								 xmlSecSize inSize,
-								 unsigned char *out,
+								 xmlSecByte *out,
 								 xmlSecSize outSize, 
 								 int enc);
-static int 	xmlSecOpenSSLKWDes3BufferReverse		(unsigned char *buf, 
+static int 	xmlSecOpenSSLKWDes3BufferReverse		(xmlSecByte *buf, 
 								 xmlSecSize size);
 
 static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
@@ -330,7 +330,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     return(0);
 }
 
-static unsigned char xmlSecOpenSSLKWDes3Iv[XMLSEC_OPENSSL_DES3_IV_LENGTH] = { 
+static xmlSecByte xmlSecOpenSSLKWDes3Iv[XMLSEC_OPENSSL_DES3_IV_LENGTH] = { 
     0x4a, 0xdd, 0xa2, 0x2c, 0x79, 0xe8, 0x21, 0x05 
 };
 /**
@@ -357,11 +357,11 @@ static unsigned char xmlSecOpenSSLKWDes3Iv[XMLSEC_OPENSSL_DES3_IV_LENGTH] = {
  *
  */
 static int  	
-xmlSecOpenSSLKWDes3Encode(const unsigned char *key, xmlSecSize keySize,
-			const unsigned char *in, xmlSecSize inSize,
-			unsigned char *out, xmlSecSize outSize) {
-    unsigned char sha1[SHA_DIGEST_LENGTH];    
-    unsigned char iv[XMLSEC_OPENSSL_DES3_IV_LENGTH];
+xmlSecOpenSSLKWDes3Encode(const xmlSecByte *key, xmlSecSize keySize,
+			const xmlSecByte *in, xmlSecSize inSize,
+			xmlSecByte *out, xmlSecSize outSize) {
+    xmlSecByte sha1[SHA_DIGEST_LENGTH];    
+    xmlSecByte iv[XMLSEC_OPENSSL_DES3_IV_LENGTH];
     xmlSecSize s;    
     int ret;
 
@@ -471,10 +471,10 @@ xmlSecOpenSSLKWDes3Encode(const unsigned char *key, xmlSecSize keySize,
  * 8. WK is the wrapped key, now extracted for use in data decryption.
  */
 static int  	
-xmlSecOpenSSLKWDes3Decode(const unsigned char *key, xmlSecSize keySize,
-			const unsigned char *in, xmlSecSize inSize,
-			unsigned char *out, xmlSecSize outSize) {
-    unsigned char sha1[SHA_DIGEST_LENGTH];    
+xmlSecOpenSSLKWDes3Decode(const xmlSecByte *key, xmlSecSize keySize,
+			const xmlSecByte *in, xmlSecSize inSize,
+			xmlSecByte *out, xmlSecSize outSize) {
+    xmlSecByte sha1[SHA_DIGEST_LENGTH];    
     xmlSecSize s;    
     int ret;
 
@@ -549,10 +549,10 @@ xmlSecOpenSSLKWDes3Decode(const unsigned char *key, xmlSecSize keySize,
 }
 
 static int
-xmlSecOpenSSLKWDes3Encrypt(const unsigned char *key, xmlSecSize keySize,
-			   const unsigned char *iv, xmlSecSize ivSize,
-            		   const unsigned char *in, xmlSecSize inSize,
-	        	   unsigned char *out, xmlSecSize outSize, int enc) {
+xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
+			   const xmlSecByte *iv, xmlSecSize ivSize,
+            		   const xmlSecByte *in, xmlSecSize inSize,
+	        	   xmlSecByte *out, xmlSecSize outSize, int enc) {
     EVP_CIPHER_CTX cipherCtx;
     int updateLen;
     int finalLen;
@@ -607,10 +607,10 @@ xmlSecOpenSSLKWDes3Encrypt(const unsigned char *key, xmlSecSize keySize,
 }	      
 
 static int 
-xmlSecOpenSSLKWDes3BufferReverse(unsigned char *buf, xmlSecSize size) {
+xmlSecOpenSSLKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size) {
     xmlSecSize s;
     xmlSecSize i;
-    unsigned char c;
+    xmlSecByte c;
     
     xmlSecAssert2(buf != NULL, -1);
     

@@ -110,7 +110,7 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     }
         
     /* get random data */
-    rv = PK11_GenerateRandom((unsigned char*)xmlSecBufferGetData(buffer), size);
+    rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), size);
     if(rv != SECSuccess) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    NULL,

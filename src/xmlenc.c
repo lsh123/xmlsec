@@ -294,7 +294,7 @@ xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
  */
 int 
 xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, 
-			  const unsigned char* data, xmlSecSize dataSize) {
+			  const xmlSecByte* data, xmlSecSize dataSize) {
     int ret;
     
     xmlSecAssert2(encCtx != NULL, -1);

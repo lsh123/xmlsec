@@ -58,7 +58,7 @@ struct _xmlSecOpenSSLX509StoreCtx {
  *
  ***************************************************************************/
 #define xmlSecOpenSSLX509StoreGetCtx(store) \
-    ((xmlSecOpenSSLX509StoreCtxPtr)(((unsigned char*)(store)) + \
+    ((xmlSecOpenSSLX509StoreCtxPtr)(((xmlSecByte*)(store)) + \
 				    sizeof(xmlSecKeyDataStoreKlass)))
 #define xmlSecOpenSSLX509StoreSize	\
     (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecOpenSSLX509StoreCtx))
@@ -93,13 +93,13 @@ static X509*		xmlSecOpenSSLX509FindNextChainCert		(STACK_OF(X509) *chain,
 		    							 X509 *cert);
 static int		xmlSecOpenSSLX509VerifyCertAgainstCrls		(STACK_OF(X509_CRL) *crls, 
 								         X509* cert);
-static X509_NAME*	xmlSecOpenSSLX509NameRead			(unsigned char *str, 
+static X509_NAME*	xmlSecOpenSSLX509NameRead			(xmlSecByte *str, 
 									 int len);
-static int 		xmlSecOpenSSLX509NameStringRead			(unsigned char **str, 
+static int 		xmlSecOpenSSLX509NameStringRead			(xmlSecByte **str, 
 									 int *strLen, 
-									 unsigned char *res, 
+									 xmlSecByte *res, 
 									 int resLen, 
-									 unsigned char delim, 
+									 xmlSecByte delim, 
 									 int ingoreTrailingSpaces);
 static int		xmlSecOpenSSLX509NamesCompare			(X509_NAME *a,
 									 X509_NAME *b);
@@ -678,7 +678,7 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 	ASN1_OCTET_STRING *keyId;
 	
 	/* our usual trick with base64 decode */
-	len = xmlSecBase64Decode(ski, (unsigned char*)ski, xmlStrlen(ski));
+	len = xmlSecBase64Decode(ski, (xmlSecByte*)ski, xmlStrlen(ski));
 	if(len < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -791,9 +791,9 @@ xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
  * xmlSecOpenSSLX509NameRead:
  */       
 static X509_NAME *
-xmlSecOpenSSLX509NameRead(unsigned char *str, int len) {
-    unsigned char name[256];
-    unsigned char value[256];
+xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
+    xmlSecByte name[256];
+    xmlSecByte value[256];
     int nameLen, valueLen;
     X509_NAME *nm;
     int type = MBSTRING_ASC;
@@ -900,10 +900,10 @@ xmlSecOpenSSLX509NameRead(unsigned char *str, int len) {
  * xmlSecOpenSSLX509NameStringRead:
  */
 static int 
-xmlSecOpenSSLX509NameStringRead(unsigned char **str, int *strLen, 
-			unsigned char *res, int resLen,
-			unsigned char delim, int ingoreTrailingSpaces) {
-    unsigned char *p, *q, *nonSpace; 
+xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen, 
+			xmlSecByte *res, int resLen,
+			xmlSecByte delim, int ingoreTrailingSpaces) {
+    xmlSecByte *p, *q, *nonSpace; 
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(strLen != NULL, -1);

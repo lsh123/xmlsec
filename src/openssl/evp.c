@@ -45,7 +45,7 @@ struct _xmlSecOpenSSLEvpKeyDataCtx {
 #define xmlSecOpenSSLEvpKeyDataSize	\
     (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLEvpKeyDataCtx))	
 #define xmlSecOpenSSLEvpKeyDataGetCtx(data) \
-    ((xmlSecOpenSSLEvpKeyDataCtxPtr)(((unsigned char*)(data)) + sizeof(xmlSecKeyData)))
+    ((xmlSecOpenSSLEvpKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
 static int		xmlSecOpenSSLEvpKeyDataInitialize	(xmlSecKeyDataPtr data);
 static int		xmlSecOpenSSLEvpKeyDataDuplicate	(xmlSecKeyDataPtr dst,

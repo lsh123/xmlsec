@@ -36,7 +36,7 @@
     (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
 #define xmlSecTransformC14NGetNsList(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecTransformC14NSize)) ? \
-	(xmlSecPtrListPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
 	(xmlSecPtrListPtr)NULL)
 
 #define xmlSecTransformC14NCheckId(transform) \
@@ -60,7 +60,7 @@ static int		xmlSecTransformC14NPushXml	(xmlSecTransformPtr transform,
 							 xmlSecNodeSetPtr nodes,
 							 xmlSecTransformCtxPtr transformCtx);
 static int		xmlSecTransformC14NPopBin	(xmlSecTransformPtr transform, 
-							 unsigned char* data,
+							 xmlSecByte* data,
 							 xmlSecSize maxDataSize,
 							 xmlSecSize* dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
@@ -284,7 +284,7 @@ xmlSecTransformC14NPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
 }
 
 static int 
-xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, unsigned char* data,
+xmlSecTransformC14NPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 			    xmlSecSize maxDataSize, xmlSecSize* dataSize,
 			    xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr nsList;

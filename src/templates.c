@@ -1334,7 +1334,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
  */
 int  	
 xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, 
-			const unsigned char *buf, xmlSecSize size) {
+			const xmlSecByte *buf, xmlSecSize size) {
     xmlNodePtr oaepParamNode;
     xmlChar *base64;
 

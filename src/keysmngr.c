@@ -316,7 +316,7 @@ xmlSecKeyStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKeyInf
 	(sizeof(xmlSecKeyStore) + sizeof(xmlSecPtrList))
 #define xmlSecSimpleKeysStoreGetList(store) \
     ((xmlSecKeyStoreCheckSize((store), xmlSecSimpleKeysStoreSize)) ? \
-	(xmlSecPtrListPtr)(((unsigned char*)(store)) + sizeof(xmlSecKeyStore)) : \
+	(xmlSecPtrListPtr)(((xmlSecByte*)(store)) + sizeof(xmlSecKeyStore)) : \
 	(xmlSecPtrListPtr)NULL)
 
 static int			xmlSecSimpleKeysStoreInitialize	(xmlSecKeyStorePtr store);

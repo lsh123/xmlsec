@@ -36,7 +36,7 @@ typedef struct _xmlSecNssHmacCtx		xmlSecNssHmacCtx, *xmlSecNssHmacCtxPtr;
 struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE	digestType;
     PK11Context*	digestCtx;
-    unsigned char 	dgst[XMLSEC_NSS_MAX_HMAC_SIZE];
+    xmlSecByte 		dgst[XMLSEC_NSS_MAX_HMAC_SIZE];
     xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 
@@ -48,7 +48,7 @@ struct _xmlSecNssHmacCtx {
  *
  *****************************************************************************/
 #define xmlSecNssHmacGetCtx(transform) \
-    ((xmlSecNssHmacCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecNssHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 #define xmlSecNssHmacSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecNssHmacCtx))
 #define xmlSecNssHmacCheckId(transform) \
@@ -66,7 +66,7 @@ static int  	xmlSecNssHmacSetKeyReq			(xmlSecTransformPtr transform,
 static int  	xmlSecNssHmacSetKey			(xmlSecTransformPtr transform, 
 							 xmlSecKeyPtr key);
 static int	xmlSecNssHmacVerify			(xmlSecTransformPtr transform, 
-							 const unsigned char* data, 
+							 const xmlSecByte* data, 
 							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int 	xmlSecNssHmacExecute			(xmlSecTransformPtr transform, 
@@ -286,13 +286,13 @@ xmlSecNssHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
 static int
 xmlSecNssHmacVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, xmlSecSize dataSize,
+			const xmlSecByte* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
-    static unsigned char last_byte_masks[] = 	
+    static xmlSecByte last_byte_masks[] = 	
 		{ 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
     xmlSecNssHmacCtxPtr ctx;
-    unsigned char mask;
+    xmlSecByte mask;
         
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);

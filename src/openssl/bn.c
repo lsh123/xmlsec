@@ -97,7 +97,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
 int
 xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {
     xmlSecBuffer buf;
-    size_t size;
+    xmlSecSize size;
     int ret;
     
     xmlSecAssert2(a != NULL, -1);

@@ -319,13 +319,13 @@ struct _xmlSecInputURICtx {
 	(sizeof(xmlSecTransform) + sizeof(xmlSecInputURICtx))
 #define xmlSecTransformInputUriGetCtx(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecTransformInputUriSize)) ? \
-	(xmlSecInputURICtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecInputURICtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
 	(xmlSecInputURICtxPtr)NULL)
 
 static int		xmlSecTransformInputURIInitialize	(xmlSecTransformPtr transform);
 static void		xmlSecTransformInputURIFinalize		(xmlSecTransformPtr transform);
 static int		xmlSecTransformInputURIPopBin		(xmlSecTransformPtr transform, 
-								 unsigned char* data,
+								 xmlSecByte* data,
 								 xmlSecSize maxDataSize,
 								 xmlSecSize* dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -462,7 +462,7 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
 }
 
 static int 
-xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, unsigned char* data,
+xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
 			      xmlSecSize maxDataSize, xmlSecSize* dataSize, 
 			      xmlSecTransformCtxPtr transformCtx) {
     xmlSecInputURICtxPtr ctx;

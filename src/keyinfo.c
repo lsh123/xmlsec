@@ -1473,7 +1473,7 @@ xmlSecKeyDataEncryptedKeyXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePt
 static int 
 xmlSecKeyDataEncryptedKeyXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyInfoCtx keyInfoCtx2;
-    unsigned char *keyBuf = NULL;
+    xmlSecByte *keyBuf = NULL;
     xmlSecSize keySize = 0;
     int res = -1;
     int ret;

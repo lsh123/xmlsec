@@ -45,12 +45,12 @@ static int	xmlSecOpenSSLSymKeyDataXmlWrite		(xmlSecKeyDataId id,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecOpenSSLSymKeyDataBinRead		(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
-							 const unsigned char* buf,
+							 const xmlSecByte* buf,
 							 xmlSecSize bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecOpenSSLSymKeyDataBinWrite		(xmlSecKeyDataId id,
 							 xmlSecKeyPtr key,
-							 unsigned char** buf,
+							 xmlSecByte** buf,
 							 xmlSecSize* bufSize,
 							 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static int	xmlSecOpenSSLSymKeyDataGenerate		(xmlSecKeyDataPtr data,
@@ -110,7 +110,7 @@ xmlSecOpenSSLSymKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecOpenSSLSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    const unsigned char* buf, xmlSecSize bufSize,
+				    const xmlSecByte* buf, xmlSecSize bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecOpenSSLSymKeyDataKlassCheck(id), -1);
     
@@ -119,7 +119,7 @@ xmlSecOpenSSLSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 static int
 xmlSecOpenSSLSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-				    unsigned char** buf, xmlSecSize* bufSize,
+				    xmlSecByte** buf, xmlSecSize* bufSize,
 				    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecOpenSSLSymKeyDataKlassCheck(id), -1);
     
@@ -265,7 +265,7 @@ xmlSecOpenSSLKeyDataAesGetKlass(void) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const unsigned char* buf, xmlSecSize bufSize) {
+xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataAesId), -1);
@@ -348,7 +348,7 @@ xmlSecOpenSSLKeyDataDesGetKlass(void) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const unsigned char* buf, xmlSecSize bufSize) {
+xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDesId), -1);
@@ -430,7 +430,7 @@ xmlSecOpenSSLKeyDataHmacGetKlass(void) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const unsigned char* buf, xmlSecSize bufSize) {
+xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
     
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataHmacId), -1);

@@ -29,7 +29,7 @@ typedef struct _xmlSecOpenSSLDigestCtx		xmlSecOpenSSLDigestCtx, *xmlSecOpenSSLDi
 struct _xmlSecOpenSSLDigestCtx {
     const EVP_MD*	digest;
     EVP_MD_CTX		digestCtx;
-    unsigned char 	dgst[EVP_MAX_MD_SIZE];
+    xmlSecByte 		dgst[EVP_MAX_MD_SIZE];
     xmlSecSize		dgstSize;	/* dgst size in bytes */
 };	    
 
@@ -43,13 +43,13 @@ struct _xmlSecOpenSSLDigestCtx {
 #define xmlSecOpenSSLEvpDigestSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLDigestCtx))	
 #define xmlSecOpenSSLEvpDigestGetCtx(transform) \
-    ((xmlSecOpenSSLDigestCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecOpenSSLDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 
 static int	xmlSecOpenSSLEvpDigestInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLEvpDigestFinalize		(xmlSecTransformPtr transform);
 static int  	xmlSecOpenSSLEvpDigestVerify		(xmlSecTransformPtr transform, 
-							 const unsigned char* data,
+							 const xmlSecByte* data,
 							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLEvpDigestExecute		(xmlSecTransformPtr transform, 
@@ -134,7 +134,7 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, xmlSecSize dataSize,
+			const xmlSecByte* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLDigestCtxPtr ctx;
     

@@ -56,7 +56,7 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
 #define xmlSecOpenSSLRsaPkcs1Size	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaPkcs1Ctx))	
 #define xmlSecOpenSSLRsaPkcs1GetCtx(transform) \
-    ((xmlSecOpenSSLRsaPkcs1CtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecOpenSSLRsaPkcs1CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int 	xmlSecOpenSSLRsaPkcs1Initialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaPkcs1Finalize			(xmlSecTransformPtr transform);
@@ -378,7 +378,7 @@ struct _xmlSecOpenSSLRsaOaepCtx {
 #define xmlSecOpenSSLRsaOaepSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaOaepCtx))	
 #define xmlSecOpenSSLRsaOaepGetCtx(transform) \
-    ((xmlSecOpenSSLRsaOaepCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecOpenSSLRsaOaepCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int 	xmlSecOpenSSLRsaOaepInitialize			(xmlSecTransformPtr transform);
 static void 	xmlSecOpenSSLRsaOaepFinalize			(xmlSecTransformPtr transform);

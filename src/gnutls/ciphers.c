@@ -77,7 +77,7 @@ xmlSecGnuTLSBlockCipherCtxInit(xmlSecGnuTLSBlockCipherCtxPtr ctx,
     xmlSecAssert2(blockLen > 0, -1);
     
     if(encrypt) {
-	unsigned char* iv;
+	xmlSecByte* iv;
     	xmlSecSize outSize;
 	
 	/* allocate space for IV */	
@@ -147,7 +147,7 @@ xmlSecGnuTLSBlockCipherCtxUpdate(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 				  xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize inSize, inBlocks, outSize;
     int blockLen;
-    unsigned char* outBuf;
+    xmlSecByte* outBuf;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
@@ -246,8 +246,8 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 				 xmlSecTransformCtxPtr transformCtx) {
     xmlSecSize inSize, outSize;
     int blockLen, outLen = 0;
-    unsigned char* inBuf;
-    unsigned char* outBuf;
+    xmlSecByte* inBuf;
+    xmlSecByte* outBuf;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
@@ -408,7 +408,7 @@ xmlSecGnuTLSBlockCipherCtxFinal(xmlSecGnuTLSBlockCipherCtxPtr ctx,
 #define xmlSecGnuTLSBlockCipherSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecGnuTLSBlockCipherCtx))
 #define xmlSecGnuTLSBlockCipherGetCtx(transform) \
-    ((xmlSecGnuTLSBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecGnuTLSBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int	xmlSecGnuTLSBlockCipherInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecGnuTLSBlockCipherFinalize		(xmlSecTransformPtr transform);

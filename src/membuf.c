@@ -36,7 +36,7 @@
 	(sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
 #define xmlSecTransformMemBufGetBuf(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecTransformMemBufSize)) ? \
-	(xmlSecBufferPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)) : \
+	(xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
 	(xmlSecBufferPtr)NULL)
 
 static int		xmlSecTransformMemBufInitialize		(xmlSecTransformPtr transform);

@@ -458,7 +458,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, 
-			const unsigned char *buffer, xmlSecSize size) {
+			const xmlSecByte *buffer, xmlSecSize size) {
     static const char dummyPrefix[] = "<dummy>";
     static const char dummyPostfix[] = "</dummy>";
     xmlDocPtr doc;
@@ -467,9 +467,9 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(buffer != NULL, -1);    
     
-    doc = xmlSecParseMemoryExt((unsigned char*)dummyPrefix, strlen(dummyPrefix),
+    doc = xmlSecParseMemoryExt((xmlSecByte*)dummyPrefix, strlen(dummyPrefix),
 			       buffer, size,
-			       (unsigned char*)dummyPostfix, strlen(dummyPostfix));
+			       (xmlSecByte*)dummyPostfix, strlen(dummyPostfix));
     if(doc == NULL){
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

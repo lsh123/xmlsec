@@ -52,7 +52,7 @@ struct _xmlSecOpenSSLEvpSignatureCtx {
 #define xmlSecOpenSSLEvpSignatureSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLEvpSignatureCtx))
 #define xmlSecOpenSSLEvpSignatureGetCtx(transform) \
-    ((xmlSecOpenSSLEvpSignatureCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecOpenSSLEvpSignatureCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int	xmlSecOpenSSLEvpSignatureCheckId		(xmlSecTransformPtr transform);
 static int	xmlSecOpenSSLEvpSignatureInitialize		(xmlSecTransformPtr transform);
@@ -62,7 +62,7 @@ static int  	xmlSecOpenSSLEvpSignatureSetKeyReq		(xmlSecTransformPtr transform,
 static int	xmlSecOpenSSLEvpSignatureSetKey			(xmlSecTransformPtr transform,
 								 xmlSecKeyPtr key);
 static int  	xmlSecOpenSSLEvpSignatureVerify			(xmlSecTransformPtr transform, 
-								 const unsigned char* data,
+								 const xmlSecByte* data,
 								 xmlSecSize dataSize,
 								 xmlSecTransformCtxPtr transformCtx);
 static int	xmlSecOpenSSLEvpSignatureExecute		(xmlSecTransformPtr transform, 
@@ -221,7 +221,7 @@ xmlSecOpenSSLEvpSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPt
 
 static int
 xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, xmlSecSize dataSize,
+			const xmlSecByte* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
     int ret;
@@ -236,7 +236,7 @@ xmlSecOpenSSLEvpSignatureVerify(xmlSecTransformPtr transform,
     ctx = xmlSecOpenSSLEvpSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ret = EVP_VerifyFinal(&(ctx->digestCtx), (unsigned char*)data, dataSize, ctx->pKey);
+    ret = EVP_VerifyFinal(&(ctx->digestCtx), (xmlSecByte*)data, dataSize, ctx->pKey);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -507,7 +507,7 @@ xmlSecOpenSSLDsaEvpUpdate(EVP_MD_CTX *ctx,const void *data,unsigned long count)
 }
 
 static int 
-xmlSecOpenSSLDsaEvpFinal(EVP_MD_CTX *ctx,unsigned char *md)
+xmlSecOpenSSLDsaEvpFinal(EVP_MD_CTX *ctx,xmlSecByte *md)
 { 
     return SHA1_Final(md,ctx->md_data); 
 }
@@ -515,8 +515,8 @@ xmlSecOpenSSLDsaEvpFinal(EVP_MD_CTX *ctx,unsigned char *md)
 
 static int 	
 xmlSecOpenSSLDsaEvpSign(int type ATTRIBUTE_UNUSED, 
-			const unsigned char *dgst, int dlen,
-			unsigned char *sig, unsigned int *siglen, DSA *dsa) {
+			const xmlSecByte *dgst, int dlen,
+			xmlSecByte *sig, unsigned int *siglen, DSA *dsa) {
     DSA_SIG *s;
     int rSize, sSize;
 
@@ -552,8 +552,8 @@ xmlSecOpenSSLDsaEvpSign(int type ATTRIBUTE_UNUSED,
 
 static int 
 xmlSecOpenSSLDsaEvpVerify(int type ATTRIBUTE_UNUSED, 
-			const unsigned char *dgst, int dgst_len,
-			const unsigned char *sigbuf, int siglen, DSA *dsa) {
+			const xmlSecByte *dgst, int dgst_len,
+			const xmlSecByte *sigbuf, int siglen, DSA *dsa) {
     DSA_SIG *s;    
     int ret = -1;
 

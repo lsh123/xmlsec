@@ -34,7 +34,7 @@ typedef struct _xmlSecNssDigestCtx		xmlSecNssDigestCtx, *xmlSecNssDigestCtxPtr;
 struct _xmlSecNssDigestCtx {
     SECOidData*		digest;
     PK11Context*	digestCtx;
-    unsigned char 	dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
+    xmlSecByte 		dgst[XMLSEC_NSS_MAX_DIGEST_SIZE];
     xmlSecSize		dgstSize;	/* dgst size in bytes */
 };	    
 
@@ -48,12 +48,12 @@ struct _xmlSecNssDigestCtx {
 #define xmlSecNssDigestSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecNssDigestCtx))	
 #define xmlSecNssDigestGetCtx(transform) \
-    ((xmlSecNssDigestCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecNssDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int 	xmlSecNssDigestInitialize		(xmlSecTransformPtr transform);
 static void 	xmlSecNssDigestFinalize			(xmlSecTransformPtr transform);
 static int	xmlSecNssDigestVerify			(xmlSecTransformPtr transform, 
-							 const unsigned char* data, 
+							 const xmlSecByte* data, 
 							 xmlSecSize dataSize,
 							 xmlSecTransformCtxPtr transformCtx);
 static int 	xmlSecNssDigestExecute			(xmlSecTransformPtr transform, 
@@ -141,7 +141,7 @@ xmlSecNssDigestFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecNssDigestVerify(xmlSecTransformPtr transform, 
-			const unsigned char* data, xmlSecSize dataSize,
+			const xmlSecByte* data, xmlSecSize dataSize,
 			xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssDigestCtxPtr ctx;
     

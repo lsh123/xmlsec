@@ -39,9 +39,9 @@ struct _xmlSecOpenSSLEvpBlockCipherCtx {
     EVP_CIPHER_CTX	cipherCtx;
     int			keyInitialized;
     int			ctxInitialized;
-    unsigned char	key[EVP_MAX_KEY_LENGTH];
-    unsigned char	iv[EVP_MAX_IV_LENGTH];
-    unsigned char 	pad[EVP_MAX_BLOCK_LENGTH];
+    xmlSecByte		key[EVP_MAX_KEY_LENGTH];
+    xmlSecByte		iv[EVP_MAX_IV_LENGTH];
+    xmlSecByte	 	pad[EVP_MAX_BLOCK_LENGTH];
 };
 static int 	xmlSecOpenSSLEvpBlockCipherCtxInit	(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 							 xmlSecBufferPtr in,
@@ -157,7 +157,7 @@ xmlSecOpenSSLEvpBlockCipherCtxUpdate(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 				  xmlSecTransformCtxPtr transformCtx) {
     int blockLen, fixLength = 0, outLen = 0;
     xmlSecSize inSize, outSize;
-    unsigned char* outBuf;
+    xmlSecByte* outBuf;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
@@ -279,7 +279,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 				 xmlSecTransformCtxPtr transformCtx) {
     int blockLen, outLen = 0, outLen2 = 0;
     xmlSecSize outSize;
-    unsigned char* outBuf;
+    xmlSecByte* outBuf;
     int ret;
     
     xmlSecAssert2(ctx != NULL, -1);
@@ -429,7 +429,7 @@ xmlSecOpenSSLEvpBlockCipherCtxFinal(xmlSecOpenSSLEvpBlockCipherCtxPtr ctx,
 #define xmlSecOpenSSLEvpBlockCipherSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLEvpBlockCipherCtx))
 #define xmlSecOpenSSLEvpBlockCipherGetCtx(transform) \
-    ((xmlSecOpenSSLEvpBlockCipherCtxPtr)(((unsigned char*)(transform)) + sizeof(xmlSecTransform)))
+    ((xmlSecOpenSSLEvpBlockCipherCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int	xmlSecOpenSSLEvpBlockCipherInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLEvpBlockCipherFinalize	(xmlSecTransformPtr transform);

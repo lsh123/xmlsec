@@ -34,6 +34,9 @@ conftest.o
 *.stamp
 *.cache
 stamp-h1
+stamp-h2
+stamp-h3
+stamp-h4
 tmp
 xmlsec*.tar.gz
 

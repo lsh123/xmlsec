@@ -50,9 +50,13 @@
 #define     <link linkend="XMLSEC-ERRORS-R-INVALID-STATUS-CAPS">XMLSEC_ERRORS_R_INVALID_STATUS</link>
 #define     <link linkend="XMLSEC-ERRORS-R-DATA-NOT-MATCH-CAPS">XMLSEC_ERRORS_R_DATA_NOT_MATCH</link>
 #define     <link linkend="XMLSEC-ERRORS-R-UNEXPECTED-NODE-CAPS">XMLSEC_ERRORS_R_UNEXPECTED_NODE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</link>
+#define     <link linkend="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</link>
 #define     <link linkend="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</link>
 #define     <link linkend="XMLSEC-ERRORS-R-DISABLED-CAPS">XMLSEC_ERRORS_R_DISABLED</link>
 #define     <link linkend="XMLSEC-ERRORS-R-NOT-IMPLEMENTED-CAPS">XMLSEC_ERRORS_R_NOT_IMPLEMENTED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</link>
+#define     <link linkend="XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</link>
 #define     <link linkend="XMLSEC-ERRORS-MAX-NUMBER-CAPS">XMLSEC_ERRORS_MAX_NUMBER</link>
 void        (<link linkend="xmlSecErrorsCallback">*xmlSecErrorsCallback</link>)         (const char *file,
                                              int line,
@@ -432,6 +436,24 @@ Unexpected node.</para>
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-INVALID-URI-TYPE-CAPS">XMLSEC_ERRORS_R_INVALID_URI_TYPE</title>
+<programlisting>#define XMLSEC_ERRORS_R_INVALID_URI_TYPE 	 55
+</programlisting>
+<para>
+Invalid URI type.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-MAX-ENCKEY-LEVEL-CAPS">XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL</title>
+<programlisting>#define XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL	 56
+</programlisting>
+<para>
+Max EncryptedKey level reached.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="XMLSEC-ERRORS-R-ASSERTION-CAPS">XMLSEC_ERRORS_R_ASSERTION</title>
 <programlisting>#define XMLSEC_ERRORS_R_ASSERTION		 100
 </programlisting>
@@ -457,6 +479,20 @@ enable it.</para>
 </programlisting>
 <para>
 Feature is not implemented.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-TRANSFORM-DISABLED-CAPS">XMLSEC_ERRORS_R_TRANSFORM_DISABLED</title>
+<programlisting>#define XMLSEC_ERRORS_R_TRANSFORM_DISABLED	111
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-ERRORS-R-KEYDATA-DISABLED-CAPS">XMLSEC_ERRORS_R_KEYDATA_DISABLED</title>
+<programlisting>#define XMLSEC_ERRORS_R_KEYDATA_DISABLED	112
+</programlisting>
 <para>
 
 </para></refsect2>

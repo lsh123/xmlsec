@@ -15,17 +15,21 @@
 
 
 typedef     <link linkend="xmlSecKeyUsage">xmlSecKeyUsage</link>;
+#define     <link linkend="xmlSecKeyUsageSign">xmlSecKeyUsageSign</link>
+#define     <link linkend="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</link>
+#define     <link linkend="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</link>
+#define     <link linkend="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</link>
+#define     <link linkend="xmlSecKeyUsageAny">xmlSecKeyUsageAny</link>
 struct      <link linkend="xmlSecKeyReq">xmlSecKeyReq</link>;
 int         <link linkend="xmlSecKeyReqInitialize">xmlSecKeyReqInitialize</link>          (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
 void        <link linkend="xmlSecKeyReqFinalize">xmlSecKeyReqFinalize</link>            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
+void        <link linkend="xmlSecKeyReqReset">xmlSecKeyReqReset</link>               (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
 int         <link linkend="xmlSecKeyReqCopy">xmlSecKeyReqCopy</link>                (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> dst,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> src);
 int         <link linkend="xmlSecKeyReqMatchKey">xmlSecKeyReqMatchKey</link>            (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
 int         <link linkend="xmlSecKeyReqMatchKeyValue">xmlSecKeyReqMatchKeyValue</link>       (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq,
                                              <link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> value);
-#define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
-#define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
 struct      <link linkend="xmlSecKey">xmlSecKey</link>;
 <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyCreate">xmlSecKeyCreate</link>                (void);
 void        <link linkend="xmlSecKeyDestroy">xmlSecKeyDestroy</link>                (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key);
@@ -57,6 +61,8 @@ void        <link linkend="xmlSecKeyDebugXmlDump">xmlSecKeyDebugXmlDump</link>  
 int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                  (<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);
+#define     <link linkend="xmlSecKeyIsValid">xmlSecKeyIsValid</link>                (key)
+#define     <link linkend="xmlSecKeyCheckId">xmlSecKeyCheckId</link>                (key, keyId)
 #define     <link linkend="xmlSecKeyPtrListId">xmlSecKeyPtrListId</link>
 <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyPtrListGetKlass">xmlSecKeyPtrListGetKlass</link>    (void);
 </synopsis>
@@ -81,6 +87,51 @@ int         <link linkend="xmlSecKeyMatch">xmlSecKeyMatch</link>                
 </programlisting>
 <para>
 The key usage.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUsageSign">xmlSecKeyUsageSign</title>
+<programlisting>#define	xmlSecKeyUsageSign		0x0001
+</programlisting>
+<para>
+Key can be used in any way.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUsageVerify">xmlSecKeyUsageVerify</title>
+<programlisting>#define	xmlSecKeyUsageVerify		0x0002
+</programlisting>
+<para>
+Key for signing.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUsageEncrypt">xmlSecKeyUsageEncrypt</title>
+<programlisting>#define	xmlSecKeyUsageEncrypt		0x0004
+</programlisting>
+<para>
+Key for signature verification.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUsageDecrypt">xmlSecKeyUsageDecrypt</title>
+<programlisting>#define	xmlSecKeyUsageDecrypt		0x0008
+</programlisting>
+<para>
+An encryption key.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyUsageAny">xmlSecKeyUsageAny</title>
+<programlisting>#define	xmlSecKeyUsageAny		0xFFFF
+</programlisting>
+<para>
+A decryption key.</para>
 <para>
 
 </para></refsect2>
@@ -158,6 +209,22 @@ The key requirements information.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyReqReset">xmlSecKeyReqReset ()</title>
+<programlisting>void        xmlSecKeyReqReset               (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> keyReq);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyReq</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyReqCopy">xmlSecKeyReqCopy ()</title>
 <programlisting>int         xmlSecKeyReqCopy                (<link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> dst,
                                              <link linkend="xmlSecKeyReqPtr">xmlSecKeyReqPtr</link> src);</programlisting>
@@ -221,42 +288,6 @@ The key requirements information.</para>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
 
 
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyIsValid">xmlSecKeyIsValid()</title>
-<programlisting>#define     xmlSecKeyIsValid(key)</programlisting>
-<para>
-Macro. Returns 1 if <parameter>key</parameter> is not NULL and <parameter>key</parameter>-&gt;id is not NULL
-or 0 otherwise.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to key.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyCheckId">xmlSecKeyCheckId()</title>
-<programlisting>#define     xmlSecKeyCheckId(key, keyId)</programlisting>
-<para>
-Macro. Returns 1 if <parameter>key</parameter> is valid and <parameter>key</parameter>'s id is equal to <parameter>keyId</parameter>.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
-<entry> the pointer to key.
-</entry></row>
-<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
-<entry> the key Id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
@@ -661,6 +692,42 @@ key type is <parameter>type</parameter>).</para>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>1 if the key satisfies the given criteria or 0 otherwise.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyIsValid">xmlSecKeyIsValid()</title>
+<programlisting>#define     xmlSecKeyIsValid(key)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>key</parameter> is not NULL and <parameter>key</parameter>-&gt;id is not NULL
+or 0 otherwise.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to key.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyCheckId">xmlSecKeyCheckId()</title>
+<programlisting>#define     xmlSecKeyCheckId(key, keyId)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>key</parameter> is valid and <parameter>key</parameter>'s id is equal to <parameter>keyId</parameter>.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>key</parameter>&nbsp;:</entry>
+<entry> the pointer to key.
+</entry></row>
+<row><entry align="right"><parameter>keyId</parameter>&nbsp;:</entry>
+<entry> the key Id.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

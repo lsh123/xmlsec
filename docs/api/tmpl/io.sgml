@@ -54,3 +54,28 @@ The IO transforms.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecTransformInputURIId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformInputURIGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformInputURIOpen ##### -->
+<para>
+
+</para>
+
+@transform: 
+@uri: 
+@Returns: 
+
+

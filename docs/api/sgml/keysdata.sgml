@@ -34,8 +34,12 @@ typedef     <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link>;
 #define     <link linkend="xmlSecKeyDataTypePublic">xmlSecKeyDataTypePublic</link>
 #define     <link linkend="xmlSecKeyDataTypePrivate">xmlSecKeyDataTypePrivate</link>
 #define     <link linkend="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</link>
+#define     <link linkend="xmlSecKeyDataTypeSession">xmlSecKeyDataTypeSession</link>
+#define     <link linkend="xmlSecKeyDataTypePermanent">xmlSecKeyDataTypePermanent</link>
 #define     <link linkend="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</link>
+<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet</link>        (void);
 int         <link linkend="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit</link>            (void);
+void        <link linkend="xmlSecKeyDataIdsShutdown">xmlSecKeyDataIdsShutdown</link>        (void);
 int         <link linkend="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault</link> (void);
 int         <link linkend="xmlSecKeyDataIdsRegister">xmlSecKeyDataIdsRegister</link>        (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);
 struct      <link linkend="xmlSecKeyData">xmlSecKeyData</link>;
@@ -110,6 +114,25 @@ void        (<link linkend="xmlSecKeyDataDebugDumpMethod">*xmlSecKeyDataDebugDum
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecKeyDataKlass">xmlSecKeyDataKlass</link>;
 #define     <link linkend="xmlSecKeyDataKlassGetName">xmlSecKeyDataKlassGetName</link>       (klass)
+#define     <link linkend="xmlSecKeyDataListId">xmlSecKeyDataListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataListGetKlass">xmlSecKeyDataListGetKlass</link>   (void);
+#define     <link linkend="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecKeyDataIdListGetKlass">xmlSecKeyDataIdListGetKlass</link> (void);
+int         <link linkend="xmlSecKeyDataIdListFind">xmlSecKeyDataIdListFind</link>         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdListFindByNode">xmlSecKeyDataIdListFindByNode</link>
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdListFindByHref">xmlSecKeyDataIdListFindByHref</link>
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *href,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataIdListFindByName">xmlSecKeyDataIdListFindByName</link>
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);
 #define     <link linkend="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</link>
 int         <link linkend="xmlSecKeyDataBinaryValueInitialize">xmlSecKeyDataBinaryValueInitialize</link>
                                             (<link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link> data);
@@ -163,6 +186,7 @@ int         <link linkend="xmlSecKeyDataStoreFind">xmlSecKeyDataStoreFind</link>
 #define     <link linkend="xmlSecKeyDataStoreGetName">xmlSecKeyDataStoreGetName</link>       (store)
 #define     <link linkend="xmlSecKeyDataStoreIsValid">xmlSecKeyDataStoreIsValid</link>       (store)
 #define     <link linkend="xmlSecKeyDataStoreCheckId">xmlSecKeyDataStoreCheckId</link>       (store, storeId)
+#define     <link linkend="xmlSecKeyDataStoreCheckSize">xmlSecKeyDataStoreCheckSize</link>     (store, size)
 #define     <link linkend="xmlSecKeyDataStoreIdUnknown">xmlSecKeyDataStoreIdUnknown</link>
 int         (<link linkend="xmlSecKeyDataStoreInitializeMethod">*xmlSecKeyDataStoreInitializeMethod</link>)
                                             (<link linkend="xmlSecKeyDataStorePtr">xmlSecKeyDataStorePtr</link> store);
@@ -332,12 +356,41 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyDataTypeSession">xmlSecKeyDataTypeSession</title>
+<programlisting>#define xmlSecKeyDataTypeSession			0x0008
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataTypePermanent">xmlSecKeyDataTypePermanent</title>
+<programlisting>#define xmlSecKeyDataTypePermanent			0x0010
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</title>
 <programlisting>#define xmlSecKeyDataTypeAny				0xFFFF
 </programlisting>
 <para>
 
 </para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsGet">xmlSecKeyDataIdsGet ()</title>
+<programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecKeyDataIdsGet        (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit ()</title>
 <programlisting>int         xmlSecKeyDataIdsInit            (void);</programlisting>
@@ -353,6 +406,12 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdsShutdown">xmlSecKeyDataIdsShutdown ()</title>
+<programlisting>void        xmlSecKeyDataIdsShutdown        (void);</programlisting>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault ()</title>
 <programlisting>int         xmlSecKeyDataIdsRegisterDefault (void);</programlisting>
@@ -1171,6 +1230,157 @@ The data id.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecKeyDataListId">xmlSecKeyDataListId</title>
+<programlisting>#define xmlSecKeyDataListId	xmlSecKeyDataListGetKlass()
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataListGetKlass">xmlSecKeyDataListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyDataListGetKlass   (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</title>
+<programlisting>#define xmlSecKeyDataIdListId	xmlSecKeyDataIdListGetKlass()
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListGetKlass">xmlSecKeyDataIdListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecKeyDataIdListGetKlass (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListFind">xmlSecKeyDataIdListFind ()</title>
+<programlisting>int         xmlSecKeyDataIdListFind         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> dataId);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>dataId</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListFindByNode">xmlSecKeyDataIdListFindByNode ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdListFindByNode
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeName,
+                                             const <link linkend="xmlChar">xmlChar</link> *nodeNs,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>nodeName</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>nodeNs</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListFindByHref">xmlSecKeyDataIdListFindByHref ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdListFindByHref
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *href,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>href</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataIdListFindByName">xmlSecKeyDataIdListFindByName ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataIdListFindByName
+                                            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             const <link linkend="xmlChar">xmlChar</link> *name,
+                                             <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>name</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>usage</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecKeyDataBinarySize">xmlSecKeyDataBinarySize</title>
 <programlisting>#define     xmlSecKeyDataBinarySize</programlisting>
 <para>
@@ -1627,6 +1837,25 @@ Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</
 </entry></row>
 <row><entry align="right"><parameter>storeId</parameter>&nbsp;:</entry>
 <entry> the store Id.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataStoreCheckSize">xmlSecKeyDataStoreCheckSize()</title>
+<programlisting>#define     xmlSecKeyDataStoreCheckSize(store, size)</programlisting>
+<para>
+Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>stores</parameter>'s object has at least <parameter>size</parameter> bytes.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>store</parameter>&nbsp;:</entry>
+<entry> the pointer to store.
+</entry></row>
+<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
+<entry> the expected size.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

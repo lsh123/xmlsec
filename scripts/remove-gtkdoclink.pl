@@ -11,7 +11,7 @@ while ($file = shift @ARGV) {
 	$entire_file = $entire_file . $_;
     }
     close (IN);
-    $entire_file =~ s%<GTKDOCLINK\s+HREF="([^"]*)"\s*>(.*?)</GTKDOCLINK\s*>% "<STRONG>$2</STRONG>" %ge;
+    $entire_file =~ s%<GTKDOCLINK\s+HREF="([^"]*)"\s*>(.*?)</GTKDOCLINK\s*>% "<font>$2</font>" %ge;
 
     open (OUT, ">$file") || die "Can't open $file: $!";
     print OUT $entire_file;

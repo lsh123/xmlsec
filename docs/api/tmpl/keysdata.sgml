@@ -150,11 +150,33 @@ keysdata
 
 
 
+<!-- ##### MACRO xmlSecKeyDataTypeSession ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyDataTypePermanent ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO xmlSecKeyDataTypeAny ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsGet ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDataIdsInit ##### -->
@@ -163,6 +185,13 @@ keysdata
 </para>
 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdsShutdown ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### FUNCTION xmlSecKeyDataIdsRegisterDefault ##### -->
@@ -533,6 +562,80 @@ keysdata
 @klass: 
 
 
+<!-- ##### MACRO xmlSecKeyDataListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataIdListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFind ##### -->
+<para>
+
+</para>
+
+@list: 
+@dataId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFindByNode ##### -->
+<para>
+
+</para>
+
+@list: 
+@nodeName: 
+@nodeNs: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFindByHref ##### -->
+<para>
+
+</para>
+
+@list: 
+@href: 
+@usage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyDataIdListFindByName ##### -->
+<para>
+
+</para>
+
+@list: 
+@name: 
+@usage: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecKeyDataBinarySize ##### -->
 <para>
 
@@ -726,6 +829,15 @@ keysdata
 
 @store: 
 @storeId: 
+
+
+<!-- ##### MACRO xmlSecKeyDataStoreCheckSize ##### -->
+<para>
+
+</para>
+
+@store: 
+@size: 
 
 
 <!-- ##### MACRO xmlSecKeyDataStoreIdUnknown ##### -->

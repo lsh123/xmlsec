@@ -23,6 +23,11 @@ int         <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks<
                                              <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
                                              <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
                                              <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);
+#define     <link linkend="xmlSecTransformInputURIId">xmlSecTransformInputURIId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass</link>
+                                            (void);
+int         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>     (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);
 </synopsis>
 </refsynopsisdiv>
 
@@ -104,6 +109,52 @@ Register a new set of I/O callback for handling parser input.</para>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>the registered handler number or a negative value if 
 an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformInputURIId">xmlSecTransformInputURIId</title>
+<programlisting>#define     xmlSecTransformInputURIId</programlisting>
+<para>
+The Input URI transform id.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass ()</title>
+<programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInputURIGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen ()</title>
+<programlisting>int         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link> transform,
+                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
+<para>
+Opens the given <parameter>uri</parameter> for reading.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>transform</parameter>&nbsp;:</entry>
+<entry> the pointer to IO transform.
+</entry></row>
+<row><entry align="right"><parameter>uri</parameter>&nbsp;:</entry>
+<entry> the URL to open.
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value otherwise.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 

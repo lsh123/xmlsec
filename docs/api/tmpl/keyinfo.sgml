@@ -46,64 +46,89 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 @type: 
 
 
-<!-- ##### MACRO xmlSecKeyDataNameId ##### -->
+<!-- ##### ENUM xmlSecKeyInfoMode ##### -->
+<para>
+
+</para>
+
+@xmlSecKeyInfoModeRead: 
+@xmlSecKeyInfoModeWrite: 
+
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### MACRO xmlSecKeyDataValueId ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### MACRO xmlSecKeyDataRetrievalMethodId ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### MACRO xmlSecKeyDataEncryptedKeyId ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataNameGetKlass ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF ##### -->
 <para>
 
 </para>
 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataValueGetKlass ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF ##### -->
 <para>
 
 </para>
 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataRetrievalMethodGetKlass ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD ##### -->
 <para>
 
 </para>
 
-@Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyDataEncryptedKeyGetKlass ##### -->
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS ##### -->
 <para>
 
 </para>
 
-@Returns: 
+
+
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION ##### -->
+<para>
+
+</para>
+
 
 
 <!-- ##### STRUCT xmlSecKeyInfoCtx ##### -->
@@ -130,4 +155,144 @@ The &lt;dsig:KeyInfo&gt; element manipulation functions.
 @keyReq: 
 @reserved0: 
 @reserved1: 
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxCreate ##### -->
+<para>
+
+</para>
+
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxDestroy ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxInitialize ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxFinalize ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxReset ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxCopyUserPref ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxCreateEncCtx ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecKeyInfoCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@keyInfoCtx: 
+@output: 
+
+
+<!-- ##### MACRO xmlSecKeyDataNameId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataNameGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataValueId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataValueGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataRetrievalMethodId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataRetrievalMethodGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyDataEncryptedKeyId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataEncryptedKeyGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 

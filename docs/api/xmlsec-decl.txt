@@ -1649,179 +1649,144 @@ xmlSecNodeSetPtr nset,xmlOutputBufferPtr out
 xmlSecNodeSetPtr nset,FILE *output
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecSignatureCreate</NAME>
+<NAME>xmlSecTmplSignatureCreate</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-const xmlChar *id
+xmlDocPtr doc,xmlSecTransformId c14nMethodId,xmlSecTransformId signMethodId,const xmlChar *id
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecSignatureDestroy</NAME>
-<RETURNS>void 	</RETURNS>
-xmlNodePtr signNode
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSignatureAddSignedInfo</NAME>
+<NAME>xmlSecTmplSignatureEnsureKeyInfo</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr signNode,const xmlChar *id
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecSignatureAddKeyInfo</NAME>
+<NAME>xmlSecTmplSignatureAddReference</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr signNode,const xmlChar *id
+xmlNodePtr signNode,xmlSecTransformId digestMethodId,const xmlChar *id,const xmlChar *uri,const xmlChar *type
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecSignatureAddObject</NAME>
+<NAME>xmlSecTmplReferenceAddTransform</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr referenceNode,xmlSecTransformId transformId
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplSignatureAddObject</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr signNode,const xmlChar *id,const xmlChar *mimeType,const xmlChar *encoding
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecSignedInfoAddC14NMethod</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr signedInfoNode,xmlSecTransformId c14nMethod
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSignedInfoAddSignMethod</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr signedInfoNode,xmlSecTransformId signMethod
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecSignedInfoAddReference</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr signedInfoNode,const xmlChar *id,const xmlChar *uri,const xmlChar *type
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecReferenceAddDigestMethod</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr refNode,xmlSecTransformId digestMethod
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecReferenceAddTransform</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr refNode,xmlSecTransformId transform
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecObjectAddSignProperties</NAME>
+<NAME>xmlSecTmplObjectAddSignProperties</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr objectNode,const xmlChar *id,const xmlChar *target
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecObjectAddManifest</NAME>
+<NAME>xmlSecTmplObjectAddManifest</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr objectNode,const xmlChar *id
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecManifestAddReference</NAME>
+<NAME>xmlSecTmplManifestAddReference</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr manifestNode,const xmlChar *id,const xmlChar *uri,const xmlChar *type
+xmlNodePtr manifestNode,xmlSecTransformId digestMethodId,const xmlChar *id,const xmlChar *uri,const xmlChar *type
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecEncDataCreate</NAME>
+<NAME>xmlSecTmplEncDataCreate</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-const xmlChar *id,const xmlChar *type,const xmlChar *mimeType,const xmlChar *encoding
+xmlDocPtr doc,xmlSecTransformId encMethodId,const xmlChar *id,const xmlChar *type,const xmlChar *mimeType,const xmlChar *encoding
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecEncDataDestroy</NAME>
-<RETURNS>void  </RETURNS>
-xmlNodePtr encNode
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecEncDataAddEncMethod</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr encNode,xmlSecTransformId encMethod
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecEncDataAddKeyInfo</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr encNode
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecEncDataAddEncProperties</NAME>
+<NAME>xmlSecTmplEncDataEnsureKeyInfo</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr encNode,const xmlChar *id
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecEncDataAddEncProperty</NAME>
+<NAME>xmlSecTmplEncDataEnsureEncProperties</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr encNode,const xmlChar *id
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplEncDataAddEncProperty</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr encNode,const xmlChar *id,const xmlChar *target
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecEncDataAddCipherValue</NAME>
+<NAME>xmlSecTmplEncDataEnsureCipherValue</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr encNode
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecEncDataAddCipherReference</NAME>
+<NAME>xmlSecTmplEncDataEnsureCipherReference</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr encNode,const xmlChar *uri
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecCipherReferenceAddTransform</NAME>
+<NAME>xmlSecTmplCipherReferenceAddTransform</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr encNode,xmlSecTransformId transform
+xmlNodePtr cipherReferenceNode,xmlSecTransformId transformId
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecKeyInfoAddKeyName</NAME>
+<NAME>xmlSecTmplKeyInfoAddKeyName</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr keyInfoNode
+xmlNodePtr keyInfoNode,const xmlChar* name
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecKeyInfoAddKeyValue</NAME>
-<RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr keyInfoNode
-</FUNCTION>
-<FUNCTION>
-<NAME>xmlSecKeyInfoAddX509Data</NAME>
+<NAME>xmlSecTmplKeyInfoAddKeyValue</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr keyInfoNode
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecKeyInfoAddRetrievalMethod</NAME>
+<NAME>xmlSecTmplKeyInfoAddX509Data</NAME>
+<RETURNS>xmlNodePtr  </RETURNS>
+xmlNodePtr keyInfoNode
+</FUNCTION>
+<FUNCTION>
+<NAME>xmlSecTmplKeyInfoAddRetrievalMethod</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
 xmlNodePtr keyInfoNode,const xmlChar *uri,const xmlChar *type
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecRetrievalMethodAddTransform</NAME>
+<NAME>xmlSecTmplRetrievalMethodAddTransform</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr retrMethod,xmlSecTransformId transform
+xmlNodePtr retrMethodNode,xmlSecTransformId transformId
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecKeyInfoAddEncryptedKey</NAME>
+<NAME>xmlSecTmplKeyInfoAddEncryptedKey</NAME>
 <RETURNS>xmlNodePtr  </RETURNS>
-xmlNodePtr keyInfoNode,const xmlChar *id,const xmlChar *type,const xmlChar *recipient
+xmlNodePtr keyInfoNode,xmlSecTransformId encMethodId,const xmlChar *id,const xmlChar *type,const xmlChar *recipient
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecHmacAddOutputLength</NAME>
+<NAME>xmlSecTmplTransformAddHmacOutputLength</NAME>
 <RETURNS>int 	</RETURNS>
-xmlNodePtr node,size_t bitsLen
+xmlNodePtr transformNode,size_t bitsLen
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecEncRsaOaepAddParam</NAME>
+<NAME>xmlSecTmplTransformAddRsaOaepParam</NAME>
 <RETURNS>int  </RETURNS>
-xmlNodePtr node,const unsigned char *buf,size_t size
+xmlNodePtr transformNode,const unsigned char *buf,size_t size
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecXsltAddStylesheet</NAME>
+<NAME>xmlSecTmplTransformAddXsltStylesheet</NAME>
 <RETURNS>int 	</RETURNS>
-xmlNodePtr node,const xmlChar *xslt
+xmlNodePtr transformNode,const xmlChar *xslt
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecC14NExclAddInclNamespaces</NAME>
+<NAME>xmlSecTmplTransformAddC14NInclNamespaces</NAME>
 <RETURNS>int 	</RETURNS>
-xmlNodePtr node,const xmlChar *prefixList
+xmlNodePtr transformNode,const xmlChar *prefixList
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecTransformXPathAdd</NAME>
+<NAME>xmlSecTmplTransformAddXPath</NAME>
 <RETURNS>int  </RETURNS>
-xmlNodePtr node,const xmlChar *expression,const xmlChar **namespaces
+xmlNodePtr transformNode,const xmlChar *expression,const xmlChar **nsList
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecTransformXPath2Add</NAME>
+<NAME>xmlSecTmplTransformAddXPath2</NAME>
 <RETURNS>int  </RETURNS>
-xmlNodePtr node,const xmlChar* type,const xmlChar *expression,const xmlChar **namespaces
+xmlNodePtr transformNode,const xmlChar* type,const xmlChar *expression,const xmlChar **nsList
 </FUNCTION>
 <FUNCTION>
-<NAME>xmlSecTransformXPointerAdd</NAME>
+<NAME>xmlSecTmplTransformAddXPointer</NAME>
 <RETURNS>int  </RETURNS>
-xmlNodePtr node,const xmlChar *expression,const xmlChar **namespaces
+xmlNodePtr transformNode,const xmlChar *expression,const xmlChar **nsList
 </FUNCTION>
 <MACRO>
 <NAME>XMLSEC_TRANSFORM_BINARY_CHUNK</NAME>

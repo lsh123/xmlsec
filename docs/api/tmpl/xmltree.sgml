@@ -22,40 +22,6 @@ The XML tree helper functions.
 @node: 
 
 
-<!-- ##### FUNCTION xmlSecParseFile ##### -->
-<para>
-
-</para>
-
-@filename: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecParseMemory ##### -->
-<para>
-
-</para>
-
-@buffer: 
-@size: 
-@recovery: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecParseMemoryExt ##### -->
-<para>
-
-</para>
-
-@prefix: 
-@prefixSize: 
-@buffer: 
-@bufferSize: 
-@postfix: 
-@postfixSize: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecGetNodeNsHref ##### -->
 <para>
 

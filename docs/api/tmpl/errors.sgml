@@ -269,6 +269,20 @@ function.
 
 
 
+<!-- ##### MACRO XMLSEC_ERRORS_R_INVALID_URI_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_MAX_ENCKEY_LEVEL ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO XMLSEC_ERRORS_R_ASSERTION ##### -->
 <para>
 
@@ -284,6 +298,20 @@ function.
 
 
 <!-- ##### MACRO XMLSEC_ERRORS_R_NOT_IMPLEMENTED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_TRANSFORM_DISABLED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_ERRORS_R_KEYDATA_DISABLED ##### -->
 <para>
 
 </para>

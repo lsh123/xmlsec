@@ -14,6 +14,14 @@ buffer
 
 </para>
 
+<!-- ##### ENUM xmlSecAllocMode ##### -->
+<para>
+
+</para>
+
+@xmlSecAllocModeExact: 
+@xmlSecAllocModeDouble: 
+
 <!-- ##### STRUCT xmlSecBuffer ##### -->
 <para>
 
@@ -23,6 +31,15 @@ buffer
 @size: 
 @maxSize: 
 @allocMode: 
+
+<!-- ##### FUNCTION xmlSecBufferSetDefaultAllocMode ##### -->
+<para>
+
+</para>
+
+@defAllocMode: 
+@defInitialSize: 
+
 
 <!-- ##### FUNCTION xmlSecBufferCreate ##### -->
 <para>
@@ -185,6 +202,15 @@ buffer
 @buf: 
 @node: 
 @columns: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBufferCreateOutputBuffer ##### -->
+<para>
+
+</para>
+
+@buf: 
 @Returns: 
 
 

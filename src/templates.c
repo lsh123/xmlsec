@@ -43,7 +43,7 @@ static int 		xmlSecTmplNodeWriteNsList	(xmlNodePtr parentNode,
  *			second case, application must later call @xmlSetTreeDoc
  *			to ensure that all the children nodes have correct 
  *			pointer to XML document.
- * @c14nMethodId: 	the signature canoninicalization method.
+ * @c14nMethodId: 	the signature canonicalization method.
  * @signMethodId: 	the signature  method.
  * @id: 		the node id (may be NULL).
  *

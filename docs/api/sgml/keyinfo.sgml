@@ -20,17 +20,42 @@ int         <link linkend="xmlSecKeyInfoNodeRead">xmlSecKeyInfoNodeRead</link>  
 int         <link linkend="xmlSecKeyInfoNodeWrite">xmlSecKeyInfoNodeWrite</link>          (<link linkend="xmlNodePtr">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> key,
                                              <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+enum        <link linkend="xmlSecKeyInfoMode">xmlSecKeyInfoMode</link>;
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND-CAPS">XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN-CAPS">XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF-CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF-CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</link>
+#define     <link linkend="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION-CAPS">XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</link>
+struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
+<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> <link linkend="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate</link>  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
+void        <link linkend="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy</link>         (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize</link>      (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);
+void        <link linkend="xmlSecKeyInfoCtxFinalize">xmlSecKeyInfoCtxFinalize</link>        (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+void        <link linkend="xmlSecKeyInfoCtxReset">xmlSecKeyInfoCtxReset</link>           (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+int         <link linkend="xmlSecKeyInfoCtxCopyUserPref">xmlSecKeyInfoCtxCopyUserPref</link>    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> dst,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> src);
+int         <link linkend="xmlSecKeyInfoCtxCreateEncCtx">xmlSecKeyInfoCtxCreateEncCtx</link>    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
+void        <link linkend="xmlSecKeyInfoCtxDebugDump">xmlSecKeyInfoCtxDebugDump</link>       (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
+void        <link linkend="xmlSecKeyInfoCtxDebugXmlDump">xmlSecKeyInfoCtxDebugXmlDump</link>    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);
 #define     <link linkend="xmlSecKeyDataNameId">xmlSecKeyDataNameId</link>
-#define     <link linkend="xmlSecKeyDataValueId">xmlSecKeyDataValueId</link>
-#define     <link linkend="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</link>
-#define     <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass</link>   (void);
+#define     <link linkend="xmlSecKeyDataValueId">xmlSecKeyDataValueId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass</link>  (void);
+#define     <link linkend="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass</link>
                                             (void);
+#define     <link linkend="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass</link>
                                             (void);
-struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
 </synopsis>
 </refsynopsisdiv>
 
@@ -101,103 +126,137 @@ Writes the key into the &lt;dsig:KeyInfo&gt; template <parameter>keyInfoNode</pa
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataNameId">xmlSecKeyDataNameId</title>
-<programlisting>#define xmlSecKeyDataNameId 		xmlSecKeyDataNameGetKlass()
+<title><anchor id="xmlSecKeyInfoMode">enum xmlSecKeyInfoMode</title>
+<programlisting>typedef enum {
+    xmlSecKeyInfoModeRead = 0,
+    xmlSecKeyInfoModeWrite
+} xmlSecKeyInfoMode;
 </programlisting>
 <para>
-The &lt;dsig:KeyName&gt; processing class.</para>
+The <parameter>xmlSecKeyInfoCtx</parameter> operation mode (read or write).</para>
 <para>
 
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataValueId">xmlSecKeyDataValueId</title>
-<programlisting>#define xmlSecKeyDataValueId		xmlSecKeyDataValueGetKlass()
-</programlisting>
-<para>
-The &lt;dsig:KeyValue&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</title>
-<programlisting>#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
-</programlisting>
-<para>
-The &lt;dsig:RetrievalMethod&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</title>
-<programlisting>#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
-</programlisting>
-<para>
-The &lt;enc:EncryptedKey&gt; processing class.</para>
-<para>
-
-</para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataNameGetKlass   (void);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
+</para><informaltable pgwide="1" frame="none" role="enum">
 <tgroup cols="2">
 <colspec colwidth="2*">
 <colspec colwidth="8*">
 <tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
+<row>
+<entry><literal>xmlSecKeyInfoModeRead</literal></entry>
+<entry> read &lt;dsig:KeyInfo /&gt; element.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecKeyInfoModeWrite</literal></entry>
+<entry> write &lt;dsig:KeyInfo /&gt; element.
+</entry>
+</row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-DONT-STOP-ON-KEY-FOUND-CAPS">XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND		0x00000001
+</programlisting>
+<para>
+If flag is set then we will continue reading &lt;dsig:KeyInfo /&gt; 
+element even when key is already found.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
-                                            (void);</programlisting>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_STOP_ON_UNKNOWN_CHILD		0x00000002
+</programlisting>
+<para>
+If flags is set then we abort if an unknown &lt;dsig:X509Data /&gt; 
+child is found.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass ()</title>
-<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass
-                                            (void);</programlisting>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-KEYNAME-STOP-ON-UNKNOWN-CAPS">XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYNAME_STOP_ON_UNKNOWN		0x00000004
+</programlisting>
+<para>
+If flags is set then we abort if an unknown key name 
+(content of &lt;dsig:KeyName /&gt; element) is found.</para>
 <para>
 
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-KEYVALUE-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_KEYVALUE_STOP_ON_UNKNOWN_CHILD	0x00000008
+</programlisting>
+<para>
 
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-UNKNOWN-HREF-CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_UNKNOWN_HREF	0x00000010
+</programlisting>
+<para>
+If flag is set then we abort if an unknown href attribute
+of &lt;dsig:RetrievalMethod /&gt; element is found.</para>
+<para>
 
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-RETRMETHOD-STOP-ON-MISMATCH-HREF-CAPS">XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_RETRMETHOD_STOP_ON_MISMATCH_HREF	0x00000020
+</programlisting>
+<para>
+If flag is set then we abort if an href attribute &lt;dsig:RetrievalMethod /&gt; 
+element does not match the real key data type.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CHILD-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CHILD	0x00000100
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-DONT-VERIFY-CERTS-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_DONT_VERIFY_CERTS		0x00000200
+</programlisting>
+<para>
+If flag is set then we'll load certificates from &lt;dsig:X509Data /&gt;
+element without verification.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-UNKNOWN-CERT-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT	0x00000400
+</programlisting>
+<para>
+If flag is set then we'll stop when we could not resolve reference
+to certificate from &lt;dsig:X509IssuerSerial /&gt;, &lt;dsig:X509SKI /&gt; or 
+&lt;dsig:X509SubjectName /&gt; elements.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-X509DATA-STOP-ON-INVALID-CERT-CAPS">XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_INVALID_CERT	0x00000800
+</programlisting>
+<para>
+If the flag is set then we'll stop when &lt;dsig:X509Data /&gt; element
+processing does not return a verified certificate.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="XMLSEC-KEYINFO-FLAGS-ENCKEY-DONT-STOP-ON-FAILED-DECRYPTION-CAPS">XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION</title>
+<programlisting>#define XMLSEC_KEYINFO_FLAGS_ENCKEY_DONT_STOP_ON_FAILED_DECRYPTION 0x00001000
+</programlisting>
+<para>
+If the flag is set then we'll stop when &lt;enc:EncryptedKey /&gt; element
+processing fails.</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyInfoCtx">struct xmlSecKeyInfoCtx</title>
 <programlisting>struct xmlSecKeyInfoCtx {
@@ -356,6 +415,272 @@ The &lt;dsig:KeyInfo /&gt; reading or writing context.</para>
 <entry>		reserved for the future.
 </entry>
 </row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxCreate">xmlSecKeyInfoCtxCreate ()</title>
+<programlisting><link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> xmlSecKeyInfoCtxCreate  (<link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxDestroy">xmlSecKeyInfoCtxDestroy ()</title>
+<programlisting>void        xmlSecKeyInfoCtxDestroy         (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxInitialize">xmlSecKeyInfoCtxInitialize ()</title>
+<programlisting>int         xmlSecKeyInfoCtxInitialize      (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
+                                             <link linkend="xmlSecKeysMngrPtr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>keysMngr</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxFinalize">xmlSecKeyInfoCtxFinalize ()</title>
+<programlisting>void        xmlSecKeyInfoCtxFinalize        (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxReset">xmlSecKeyInfoCtxReset ()</title>
+<programlisting>void        xmlSecKeyInfoCtxReset           (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxCopyUserPref">xmlSecKeyInfoCtxCopyUserPref ()</title>
+<programlisting>int         xmlSecKeyInfoCtxCopyUserPref    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> dst,
+                                             <link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> src);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxCreateEncCtx">xmlSecKeyInfoCtxCreateEncCtx ()</title>
+<programlisting>int         xmlSecKeyInfoCtxCreateEncCtx    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxDebugDump">xmlSecKeyInfoCtxDebugDump ()</title>
+<programlisting>void        xmlSecKeyInfoCtxDebugDump       (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyInfoCtxDebugXmlDump">xmlSecKeyInfoCtxDebugXmlDump ()</title>
+<programlisting>void        xmlSecKeyInfoCtxDebugXmlDump    (<link linkend="xmlSecKeyInfoCtxPtr">xmlSecKeyInfoCtxPtr</link> keyInfoCtx,
+                                             <link linkend="FILE-CAPS">FILE</link> *output);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>keyInfoCtx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>output</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataNameId">xmlSecKeyDataNameId</title>
+<programlisting>#define xmlSecKeyDataNameId 		xmlSecKeyDataNameGetKlass()
+</programlisting>
+<para>
+The &lt;dsig:KeyName&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataNameGetKlass">xmlSecKeyDataNameGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataNameGetKlass   (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataValueId">xmlSecKeyDataValueId</title>
+<programlisting>#define xmlSecKeyDataValueId		xmlSecKeyDataValueGetKlass()
+</programlisting>
+<para>
+The &lt;dsig:KeyValue&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataValueGetKlass">xmlSecKeyDataValueGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataValueGetKlass  (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataRetrievalMethodId">xmlSecKeyDataRetrievalMethodId</title>
+<programlisting>#define xmlSecKeyDataRetrievalMethodId	xmlSecKeyDataRetrievalMethodGetKlass()
+</programlisting>
+<para>
+The &lt;dsig:RetrievalMethod&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataRetrievalMethodGetKlass">xmlSecKeyDataRetrievalMethodGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataRetrievalMethodGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataEncryptedKeyId">xmlSecKeyDataEncryptedKeyId</title>
+<programlisting>#define xmlSecKeyDataEncryptedKeyId	xmlSecKeyDataEncryptedKeyGetKlass()
+</programlisting>
+<para>
+The &lt;enc:EncryptedKey&gt; processing class.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecKeyDataEncryptedKeyGetKlass">xmlSecKeyDataEncryptedKeyGetKlass ()</title>
+<programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecKeyDataEncryptedKeyGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
 </tbody></tgroup></informaltable></refsect2>
 
 </refsect1>

@@ -20,6 +20,41 @@ The keys helper functions.
 </para>
 
 
+<!-- ##### MACRO xmlSecKeyUsageSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyUsageVerify ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyUsageEncrypt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyUsageDecrypt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO xmlSecKeyUsageAny ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### STRUCT xmlSecKeyReq ##### -->
 <para>
 
@@ -40,6 +75,14 @@ The keys helper functions.
 
 
 <!-- ##### FUNCTION xmlSecKeyReqFinalize ##### -->
+<para>
+
+</para>
+
+@keyReq: 
+
+
+<!-- ##### FUNCTION xmlSecKeyReqReset ##### -->
 <para>
 
 </para>
@@ -75,23 +118,6 @@ The keys helper functions.
 @keyReq: 
 @value: 
 @Returns: 
-
-
-<!-- ##### MACRO xmlSecKeyIsValid ##### -->
-<para>
-
-</para>
-
-@key: 
-
-
-<!-- ##### MACRO xmlSecKeyCheckId ##### -->
-<para>
-
-</para>
-
-@key: 
-@keyId: 
 
 
 <!-- ##### STRUCT xmlSecKey ##### -->
@@ -270,6 +296,23 @@ The keys helper functions.
 @name: 
 @keyReq: 
 @Returns: 
+
+
+<!-- ##### MACRO xmlSecKeyIsValid ##### -->
+<para>
+
+</para>
+
+@key: 
+
+
+<!-- ##### MACRO xmlSecKeyCheckId ##### -->
+<para>
+
+</para>
+
+@key: 
+@keyId: 
 
 
 <!-- ##### MACRO xmlSecKeyPtrListId ##### -->

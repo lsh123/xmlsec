@@ -15,16 +15,6 @@
 
 
 #define     <link linkend="xmlSecNodeGetName">xmlSecNodeGetName</link>               (node)
-<link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseFile">xmlSecParseFile</link>                 (const char *filename);
-<link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>               (unsigned char *buffer,
-                                             <link linkend="size-t">size_t</link> size,
-                                             int recovery);
-<link linkend="xmlDocPtr">xmlDocPtr</link>   <link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>            (unsigned char *prefix,
-                                             <link linkend="size-t">size_t</link> prefixSize,
-                                             unsigned char *buffer,
-                                             <link linkend="size-t">size_t</link> bufferSize,
-                                             unsigned char *postfix,
-                                             <link linkend="size-t">size_t</link> postfixSize);
 const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecGetNodeNsHref">xmlSecGetNodeNsHref</link>          (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur);
 int         <link linkend="xmlSecCheckNodeName">xmlSecCheckNodeName</link>             (const <link linkend="xmlNodePtr">xmlNodePtr</link> cur,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
@@ -90,90 +80,6 @@ void        <link linkend="xmlSecAddIDs">xmlSecAddIDs</link>                    
 <entry>
 
 
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecParseFile">xmlSecParseFile ()</title>
-<programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseFile                 (const char *filename);</programlisting>
-<para>
-Loads XML Doc from file <parameter>filename</parameter>. We need a special version because of 
-c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData">xmlSAXParseFileWithData</link>() function.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>filename</parameter>&nbsp;:</entry>
-<entry> the filename.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecParseMemory">xmlSecParseMemory ()</title>
-<programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseMemory               (unsigned char *buffer,
-                                             <link linkend="size-t">size_t</link> size,
-                                             int recovery);</programlisting>
-<para>
-Loads XML Doc from memory. We need a special version because of 
-c14n issue. The code is copied from <link linkend="xmlSAXParseMemory">xmlSAXParseMemory</link>() function.</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> the input buffer.
-</entry></row>
-<row><entry align="right"><parameter>size</parameter>&nbsp;:</entry>
-<entry> the input buffer size.
-</entry></row>
-<row><entry align="right"><parameter>recovery</parameter>&nbsp;:</entry>
-<entry> the flag.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecParseMemoryExt">xmlSecParseMemoryExt ()</title>
-<programlisting><link linkend="xmlDocPtr">xmlDocPtr</link>   xmlSecParseMemoryExt            (unsigned char *prefix,
-                                             <link linkend="size-t">size_t</link> prefixSize,
-                                             unsigned char *buffer,
-                                             <link linkend="size-t">size_t</link> bufferSize,
-                                             unsigned char *postfix,
-                                             <link linkend="size-t">size_t</link> postfixSize);</programlisting>
-<para>
-Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter>buffer</parameter> and <parameter>postfix</parameter>. '</para>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>prefix</parameter>&nbsp;:</entry>
-<entry> the first part of the input.
-</entry></row>
-<row><entry align="right"><parameter>prefixSize</parameter>&nbsp;:</entry>
-<entry> the size of the first part of the input.
-</entry></row>
-<row><entry align="right"><parameter>buffer</parameter>&nbsp;:</entry>
-<entry> the second part of the input.
-</entry></row>
-<row><entry align="right"><parameter>bufferSize</parameter>&nbsp;:</entry>
-<entry> the size of the second part of the input.
-</entry></row>
-<row><entry align="right"><parameter>postfix</parameter>&nbsp;:</entry>
-<entry> the third part of the input.
-</entry></row>
-<row><entry align="right"><parameter>postfixSize</parameter>&nbsp;:</entry>
-<entry> the size of the third part of the input.
-</entry></row>
-<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>pointer to the loaded XML document or NULL if an error occurs.
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

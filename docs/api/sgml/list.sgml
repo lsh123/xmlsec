@@ -17,9 +17,17 @@
 typedef     <link linkend="xmlSecPtr">xmlSecPtr</link>;
 typedef     <link linkend="xmlSecPtrListId">xmlSecPtrListId</link>;
 struct      <link linkend="xmlSecPtrList">xmlSecPtrList</link>;
+void        <link linkend="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode</link>
+                                            (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
+                                             <link linkend="size-t">size_t</link> defInitialSize);
+int         <link linkend="xmlSecPtrListInitialize">xmlSecPtrListInitialize</link>         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
+void        <link linkend="xmlSecPtrListFinalize">xmlSecPtrListFinalize</link>           (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
 <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListCreate">xmlSecPtrListCreate</link>        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);
-<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
 void        <link linkend="xmlSecPtrListDestroy">xmlSecPtrListDestroy</link>            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
+int         <link linkend="xmlSecPtrListCopy">xmlSecPtrListCopy</link>               (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> dst,
+                                             <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> src);
+<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> <link linkend="xmlSecPtrListDuplicate">xmlSecPtrListDuplicate</link>     (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
 <link linkend="size-t">size_t</link>      <link linkend="xmlSecPtrListGetSize">xmlSecPtrListGetSize</link>            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);
 <link linkend="xmlSecPtr">xmlSecPtr</link>   <link linkend="xmlSecPtrListGetItem">xmlSecPtrListGetItem</link>            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
                                              <link linkend="size-t">size_t</link> pos);
@@ -44,6 +52,11 @@ void        (<link linkend="xmlSecPtrDebugDumpItemMethod">*xmlSecPtrDebugDumpIte
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 #define     <link linkend="xmlSecPtrListKlassGetName">xmlSecPtrListKlassGetName</link>       (klass)
+#define     <link linkend="xmlSecStaticObjectListId">xmlSecStaticObjectListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecStaticObjectListGetKlass">xmlSecStaticObjectListGetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecStringListId">xmlSecStringListId</link>
+<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> <link linkend="xmlSecStringListGetKlass">xmlSecStringListGetKlass</link>    (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -89,6 +102,65 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 
 </para></refsect2>
 <refsect2>
+<title><anchor id="xmlSecPtrListSetDefaultAllocMode">xmlSecPtrListSetDefaultAllocMode ()</title>
+<programlisting>void        xmlSecPtrListSetDefaultAllocMode
+                                            (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
+                                             <link linkend="size-t">size_t</link> defInitialSize);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>defAllocMode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>defInitialSize</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListInitialize">xmlSecPtrListInitialize ()</title>
+<programlisting>int         xmlSecPtrListInitialize         (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list,
+                                             <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListFinalize">xmlSecPtrListFinalize ()</title>
+<programlisting>void        xmlSecPtrListFinalize           (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecPtrListCreate">xmlSecPtrListCreate ()</title>
 <programlisting><link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> xmlSecPtrListCreate        (<link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
 <para>
@@ -99,6 +171,44 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <colspec colwidth="8*">
 <tbody>
 <row><entry align="right"><parameter>id</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListDestroy">xmlSecPtrListDestroy ()</title>
+<programlisting>void        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecPtrListCopy">xmlSecPtrListCopy ()</title>
+<programlisting>int         xmlSecPtrListCopy               (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> dst,
+                                             <link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> src);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>dst</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>src</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
@@ -120,22 +230,6 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
-
-
-</entry></row>
-</tbody></tgroup></informaltable></refsect2>
-<refsect2>
-<title><anchor id="xmlSecPtrListDestroy">xmlSecPtrListDestroy ()</title>
-<programlisting>void        xmlSecPtrListDestroy            (<link linkend="xmlSecPtrListPtr">xmlSecPtrListPtr</link> list);</programlisting>
-<para>
-
-</para><informaltable pgwide="1" frame="none" role="params">
-<tgroup cols="2">
-<colspec colwidth="2*">
-<colspec colwidth="8*">
-<tbody>
-<row><entry align="right"><parameter>list</parameter>&nbsp;:</entry>
-<entry>
 
 
 </entry></row>
@@ -430,6 +524,49 @@ The "unknown" id.</para>
 <tbody>
 <row><entry align="right"><parameter>klass</parameter>&nbsp;:</entry>
 <entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecStaticObjectListId">xmlSecStaticObjectListId</title>
+<programlisting>#define     xmlSecStaticObjectListId</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecStaticObjectListGetKlass">xmlSecStaticObjectListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecStaticObjectListGetKlass
+                                            (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecStringListId">xmlSecStringListId</title>
+<programlisting>#define     xmlSecStringListId</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecStringListGetKlass">xmlSecStringListGetKlass ()</title>
+<programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link> xmlSecStringListGetKlass    (void);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
 
 
 </entry></row>

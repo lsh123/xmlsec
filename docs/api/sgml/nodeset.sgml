@@ -25,6 +25,7 @@ int         (<link linkend="xmlSecNodeSetWalkCallback">*xmlSecNodeSetWalkCallbac
                                              <link linkend="xmlNodeSetPtr">xmlNodeSetPtr</link> nodes,
                                              <link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link> type);
 void        <link linkend="xmlSecNodeSetDestroy">xmlSecNodeSetDestroy</link>            (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);
+void        <link linkend="xmlSecNodeSetDocDestroy">xmlSecNodeSetDocDestroy</link>         (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);
 int         <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> parent);
@@ -41,6 +42,8 @@ int         <link linkend="xmlSecNodeSetContains">xmlSecNodeSetContains</link>  
 int         <link linkend="xmlSecNodeSetWalk">xmlSecNodeSetWalk</link>               (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlSecNodeSetWalkCallback">xmlSecNodeSetWalkCallback</link> walkFunc,
                                              void *data);
+int         <link linkend="xmlSecNodeSetDumpTextNodes">xmlSecNodeSetDumpTextNodes</link>      (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> out);
 void        <link linkend="xmlSecNodeSetDebugDump">xmlSecNodeSetDebugDump</link>          (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="FILE-CAPS">FILE</link> *output);
 </synopsis>
@@ -290,6 +293,22 @@ Destroys the nodes set.</para>
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
+<title><anchor id="xmlSecNodeSetDocDestroy">xmlSecNodeSetDocDestroy ()</title>
+<programlisting>void        xmlSecNodeSetDocDestroy         (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
 <title><anchor id="xmlSecNodeSetContains">xmlSecNodeSetContains ()</title>
 <programlisting>int         xmlSecNodeSetContains           (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
@@ -436,6 +455,28 @@ is interrupted.</para>
 <entry> the application specific data passed to the <parameter>walkFunc</parameter>.
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>0 on success or a negative value if an error occurs.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNodeSetDumpTextNodes">xmlSecNodeSetDumpTextNodes ()</title>
+<programlisting>int         xmlSecNodeSetDumpTextNodes      (<link linkend="xmlSecNodeSetPtr">xmlSecNodeSetPtr</link> nset,
+                                             <link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> out);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>nset</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>out</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

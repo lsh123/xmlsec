@@ -14,9 +14,14 @@
 
 
 
+#define     <link linkend="XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</link>
 <link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> <link linkend="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</link>    (int encode,
                                              int columns);
 void        <link linkend="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</link>          (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);
+int         <link linkend="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize</link>       (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+                                             int encode,
+                                             int columns);
+void        <link linkend="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</link>         (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);
 int         <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>           (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
                                              unsigned char *in,
                                              <link linkend="size-t">size_t</link> inLen,
@@ -47,6 +52,15 @@ int         <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>        
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</title>
+<programlisting>#define XMLSEC_BASE64_LINESIZE				64
+</programlisting>
+<para>
+The default max line size for base64 encoding</para>
+<para>
+
+</para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate ()</title>
 <programlisting><link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> xmlSecBase64CtxCreate    (int encode,
@@ -84,6 +98,48 @@ Destroys base64 context.</para>
 <tbody>
 <row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
 <entry> the pointer to <link linkend="xmlSecBase64Ctx">xmlSecBase64Ctx</link> structure.
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize ()</title>
+<programlisting>int         xmlSecBase64CtxInitialize       (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx,
+                                             int encode,
+                                             int columns);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>encode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize ()</title>
+<programlisting>void        xmlSecBase64CtxFinalize         (<link linkend="xmlSecBase64CtxPtr">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>ctx</parameter>&nbsp;:</entry>
+<entry>
+
+
 </entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>

@@ -38,6 +38,26 @@ The ciphers transform.
 ciphers.h
 
 
+<!-- ##### SECTION ./tmpl/debug.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/debug.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/debug.sgml:Short_Description ##### -->
+The usefull debugging functions.
+
+
+<!-- ##### SECTION ./tmpl/debug.sgml:Title ##### -->
+debug.h
+
+
 <!-- ##### SECTION ./tmpl/digests.sgml:Long_Description ##### -->
 <para>
 
@@ -76,6 +96,66 @@ The internal keys functions.
 
 <!-- ##### SECTION ./tmpl/keysInternal.sgml:Title ##### -->
 keysInternal.h
+
+
+<!-- ##### SECTION ./tmpl/todo.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/todo.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/todo.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/todo.sgml:Title ##### -->
+todo
+
+
+<!-- ##### SECTION ./tmpl/transforms-old.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/transforms-old.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/transforms-old.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/transforms-old.sgml:Title ##### -->
+transforms-old
+
+
+<!-- ##### SECTION ./tmpl/transformsInternal.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/transformsInternal.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/transformsInternal.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/transformsInternal.sgml:Title ##### -->
+transformsInternal
 
 
 <!-- ##### MACRO XMLSEC_ERRORS_FUNCTION ##### -->
@@ -452,6 +532,16 @@ keysInternal.h
 @size: 
 @Returns: 
 
+<!-- ##### FUNCTION xmlSecC14NExclAddInclNamespaces ##### -->
+<para>
+
+</para>
+
+@node: 
+@prefixList: 
+@Returns: 
+@transformNode: 
+
 <!-- ##### VARIABLE xmlSecC14NExclusive ##### -->
 <para>
 
@@ -541,6 +631,15 @@ keysInternal.h
 
 </para>
 
+@transform: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecCipherReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@encNode: 
 @transform: 
 @Returns: 
 
@@ -989,6 +1088,77 @@ keysInternal.h
 </para>
 
 
+<!-- ##### FUNCTION xmlSecEncDataAddCipherReference ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@uri: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataAddCipherValue ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataAddEncMethod ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@encMethod: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataAddEncProperties ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataAddEncProperty ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@target: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataAddKeyInfo ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@type: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecEncDataDestroy ##### -->
+<para>
+
+</para>
+
+@encNode: 
+
 <!-- ##### VARIABLE xmlSecEncDes3Cbc ##### -->
 <para>
 
@@ -1052,6 +1222,17 @@ keysInternal.h
 
 </para>
 
+
+<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
+<para>
+
+</para>
+
+@node: 
+@buf: 
+@size: 
+@Returns: 
+@transformNode: 
 
 <!-- ##### VARIABLE xmlSecEncRsaPkcs1 ##### -->
 <para>
@@ -1378,6 +1559,16 @@ keysInternal.h
 
 @Returns: 
 
+<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
+<para>
+
+</para>
+
+@node: 
+@bitsLen: 
+@Returns: 
+@transformNode: 
+
 <!-- ##### VARIABLE xmlSecHmacKey ##### -->
 <para>
 
@@ -1552,6 +1743,51 @@ keysInternal.h
 
 </para>
 
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddEncryptedKey ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@id: 
+@type: 
+@recipient: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddKeyName ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddKeyValue ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddRetrievalMethod ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@uri: 
+@type: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecKeyInfoAddX509Data ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@Returns: 
 
 <!-- ##### MACRO xmlSecKeyInfoNodeCheckEncKeysLevel ##### -->
 <para>
@@ -1768,6 +2004,17 @@ keysInternal.h
 
 </para>
 
+
+<!-- ##### FUNCTION xmlSecManifestAddReference ##### -->
+<para>
+
+</para>
+
+@manifestNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
 
 <!-- ##### VARIABLE xmlSecMemBuf ##### -->
 <para>
@@ -2062,6 +2309,25 @@ keysInternal.h
 
 @Returns: 
 
+<!-- ##### FUNCTION xmlSecObjectAddManifest ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecObjectAddSignProperties ##### -->
+<para>
+
+</para>
+
+@objectNode: 
+@id: 
+@target: 
+@Returns: 
+
 <!-- ##### FUNCTION xmlSecOpenSSLEvpKeyAdopt ##### -->
 <para>
 
@@ -2253,6 +2519,24 @@ keysInternal.h
 @pwd: 
 @Returns: 
 
+<!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@digestMethod: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@refNode: 
+@transform: 
+@Returns: 
+
 <!-- ##### STRUCT xmlSecReferenceResult ##### -->
 <para>
 
@@ -2295,6 +2579,16 @@ keysInternal.h
 @closeFunc: 
 @Returns: 
 
+<!-- ##### FUNCTION xmlSecRetrievalMethodAddTransform ##### -->
+<para>
+
+</para>
+
+@retrMethod: 
+@transform: 
+@Returns: 
+@id: 
+
 <!-- ##### VARIABLE xmlSecRsaKey ##### -->
 <para>
 
@@ -2321,6 +2615,81 @@ keysInternal.h
 
 </para>
 
+
+<!-- ##### FUNCTION xmlSecSignatureAddKeyInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSignatureAddObject ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@mimeType: 
+@encoding: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSignatureAddSignedInfo ##### -->
+<para>
+
+</para>
+
+@signNode: 
+@id: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSignatureCreate ##### -->
+<para>
+
+</para>
+
+@id: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSignatureDestroy ##### -->
+<para>
+
+</para>
+
+@signNode: 
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddC14NMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@c14nMethod: 
+@Returns: 
+@encMethod: 
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddReference ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@id: 
+@uri: 
+@type: 
+@Returns: 
+
+<!-- ##### FUNCTION xmlSecSignedInfoAddSignMethod ##### -->
+<para>
+
+</para>
+
+@signedInfoNode: 
+@signMethod: 
+@Returns: 
+@encMethod: 
 
 <!-- ##### FUNCTION xmlSecSimpleKeysMngrAddCertsDir ##### -->
 <para>
@@ -2785,11 +3154,45 @@ keysInternal.h
 </para>
 
 
+<!-- ##### FUNCTION xmlSecTransformXPath2Add ##### -->
+<para>
+
+</para>
+
+@node: 
+@type: 
+@expression: 
+@namespaces: 
+@Returns: 
+@transformNode: 
+
+<!-- ##### FUNCTION xmlSecTransformXPathAdd ##### -->
+<para>
+
+</para>
+
+@node: 
+@expression: 
+@namespaces: 
+@Returns: 
+@transformNode: 
+
 <!-- ##### VARIABLE xmlSecTransformXPointer ##### -->
 <para>
 
 </para>
 
+
+<!-- ##### FUNCTION xmlSecTransformXPointerAdd ##### -->
+<para>
+
+</para>
+
+@node: 
+@expression: 
+@namespaces: 
+@Returns: 
+@transformNode: 
 
 <!-- ##### VARIABLE xmlSecTransformXslt ##### -->
 <para>
@@ -3140,4 +3543,13 @@ keysInternal.h
 @transform: 
 @here: 
 @trasnform: 
+
+<!-- ##### FUNCTION xmlSecXsltAddStylesheet ##### -->
+<para>
+
+</para>
+
+@node: 
+@xslt: 
+@Returns: 
 

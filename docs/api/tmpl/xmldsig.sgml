@@ -14,6 +14,15 @@ standard implementation.
 
 </para>
 
+<!-- ##### ENUM xmlSecDSigStatus ##### -->
+<para>
+
+</para>
+
+@xmlSecDSigStatusUnknown: 
+@xmlSecDSigStatusSucceeded: 
+@xmlSecDSigStatusInvalid: 
+
 <!-- ##### STRUCT xmlSecDSigCtx ##### -->
 <para>
 
@@ -62,5 +71,195 @@ standard implementation.
 @dsigCtx: 
 <!-- # Unused Parameters # -->
 @ctx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxInitialize ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxFinalize ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxAdoptSignatureKey ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxSign ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@tmpl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxVerify ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxPreSignBuffer ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecDSigCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@output: 
+
+
+<!-- ##### ENUM xmlSecDSigReferenceOrigin ##### -->
+<para>
+
+</para>
+
+@xmlSecDSigReferenceOriginSignedInfo: 
+@xmlSecDSigReferenceOriginManifest: 
+
+<!-- ##### STRUCT xmlSecDSigReferenceCtx ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@origin: 
+@digestTransformCtx: 
+@digestMethod: 
+@result: 
+@status: 
+@preDigestMemBufMethod: 
+@id: 
+@uri: 
+@type: 
+@reserved0: 
+@reserved1: 
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxCreate ##### -->
+<para>
+
+</para>
+
+@dsigCtx: 
+@origin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxDestroy ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxInitialize ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@dsigCtx: 
+@origin: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxFinalize ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxProcessNode ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxPreDigestBuffer ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@dsigRefCtx: 
+@output: 
+
+
+<!-- ##### MACRO xmlSecDSigReferenceCtxListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecDSigReferenceCtxListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

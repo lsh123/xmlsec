@@ -14,7 +14,10 @@
 
 
 
+enum        <link linkend="xmlSecAllocMode">xmlSecAllocMode</link>;
 struct      <link linkend="xmlSecBuffer">xmlSecBuffer</link>;
+void        <link linkend="xmlSecBufferSetDefaultAllocMode">xmlSecBufferSetDefaultAllocMode</link> (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
+                                             <link linkend="size-t">size_t</link> defInitialSize);
 <link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> <link linkend="xmlSecBufferCreate">xmlSecBufferCreate</link>          (<link linkend="size-t">size_t</link> size);
 void        <link linkend="xmlSecBufferDestroy">xmlSecBufferDestroy</link>             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
 int         <link linkend="xmlSecBufferInitialize">xmlSecBufferInitialize</link>          (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
@@ -48,6 +51,8 @@ int         <link linkend="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase6
                                             (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf,
                                              <link linkend="xmlNodePtr">xmlNodePtr</link> node,
                                              int columns);
+<link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> <link linkend="xmlSecBufferCreateOutputBuffer">xmlSecBufferCreateOutputBuffer</link>
+                                            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);
 </synopsis>
 </refsynopsisdiv>
 
@@ -64,6 +69,35 @@ int         <link linkend="xmlSecBufferBase64NodeContentWrite">xmlSecBufferBase6
 
 <refsect1>
 <title>Details</title>
+<refsect2>
+<title><anchor id="xmlSecAllocMode">enum xmlSecAllocMode</title>
+<programlisting>typedef enum {
+    xmlSecAllocModeExact = 0,
+    xmlSecAllocModeDouble
+} xmlSecAllocMode;
+</programlisting>
+<para>
+The memory allocation mode (used by <parameter>xmlSecBuffer</parameter> and <parameter>xmlSecList</parameter>).</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="enum">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row>
+<entry><literal>xmlSecAllocModeExact</literal></entry>
+<entry> 	the memory allocation mode that minimizes total 
+			allocated memory size.
+</entry>
+</row>
+<row>
+<entry><literal>xmlSecAllocModeDouble</literal></entry>
+<entry>	the memory allocation mode that tries to minimize
+			the number of malloc calls.
+</entry>
+</row>
+</tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBuffer">struct xmlSecBuffer</title>
 <programlisting>struct xmlSecBuffer {
@@ -102,6 +136,26 @@ Binary data buffer.</para>
 <entry> the buffer memory allocation mode.
 </entry>
 </row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferSetDefaultAllocMode">xmlSecBufferSetDefaultAllocMode ()</title>
+<programlisting>void        xmlSecBufferSetDefaultAllocMode (<link linkend="xmlSecAllocMode">xmlSecAllocMode</link> defAllocMode,
+                                             <link linkend="size-t">size_t</link> defInitialSize);</programlisting>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>defAllocMode</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><parameter>defInitialSize</parameter>&nbsp;:</entry>
+<entry>
+
+
+</entry></row>
 </tbody></tgroup></informaltable></refsect2>
 <refsect2>
 <title><anchor id="xmlSecBufferCreate">xmlSecBufferCreate ()</title>
@@ -454,6 +508,28 @@ Binary data buffer.</para>
 <entry>
 </entry></row>
 <row><entry align="right"><parameter>columns</parameter>&nbsp;:</entry>
+<entry>
+</entry></row>
+<row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>
+
+
+</entry></row>
+</tbody></tgroup></informaltable></refsect2>
+<refsect2>
+<title><anchor id="xmlSecBufferCreateOutputBuffer">xmlSecBufferCreateOutputBuffer ()</title>
+<programlisting><link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link> xmlSecBufferCreateOutputBuffer
+                                            (<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link> buf);</programlisting>
+<para>
+Caller is responsible for destroying <parameter>buf</parameter> (if necessary)
+when processing is done.</para>
+<para>
+
+</para><informaltable pgwide="1" frame="none" role="params">
+<tgroup cols="2">
+<colspec colwidth="2*">
+<colspec colwidth="8*">
+<tbody>
+<row><entry align="right"><parameter>buf</parameter>&nbsp;:</entry>
 <entry>
 </entry></row>
 <row><entry align="right"><emphasis>Returns</emphasis> :</entry><entry>

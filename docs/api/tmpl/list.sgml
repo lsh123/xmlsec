@@ -37,12 +37,57 @@ list
 @max: 
 @allocMode: 
 
+<!-- ##### FUNCTION xmlSecPtrListSetDefaultAllocMode ##### -->
+<para>
+
+</para>
+
+@defAllocMode: 
+@defInitialSize: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListInitialize ##### -->
+<para>
+
+</para>
+
+@list: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListFinalize ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
 <!-- ##### FUNCTION xmlSecPtrListCreate ##### -->
 <para>
 
 </para>
 
 @id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListDestroy ##### -->
+<para>
+
+</para>
+
+@list: 
+
+
+<!-- ##### FUNCTION xmlSecPtrListCopy ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
 @Returns: 
 
 
@@ -53,14 +98,6 @@ list
 
 @list: 
 @Returns: 
-
-
-<!-- ##### FUNCTION xmlSecPtrListDestroy ##### -->
-<para>
-
-</para>
-
-@list: 
 
 
 <!-- ##### FUNCTION xmlSecPtrListGetSize ##### -->
@@ -206,5 +243,35 @@ list
 </para>
 
 @klass: 
+
+
+<!-- ##### MACRO xmlSecStaticObjectListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecStaticObjectListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecStringListId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecStringListGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

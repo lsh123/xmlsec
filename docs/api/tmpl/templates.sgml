@@ -14,24 +14,19 @@ templates
 
 </para>
 
-<!-- ##### FUNCTION xmlSecSignatureCreate ##### -->
+<!-- ##### FUNCTION xmlSecTmplSignatureCreate ##### -->
 <para>
 
 </para>
 
+@doc: 
+@c14nMethodId: 
+@signMethodId: 
 @id: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSignatureDestroy ##### -->
-<para>
-
-</para>
-
-@signNode: 
-
-
-<!-- ##### FUNCTION xmlSecSignatureAddSignedInfo ##### -->
+<!-- ##### FUNCTION xmlSecTmplSignatureEnsureKeyInfo ##### -->
 <para>
 
 </para>
@@ -41,17 +36,30 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSignatureAddKeyInfo ##### -->
+<!-- ##### FUNCTION xmlSecTmplSignatureAddReference ##### -->
 <para>
 
 </para>
 
 @signNode: 
+@digestMethodId: 
 @id: 
+@uri: 
+@type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSignatureAddObject ##### -->
+<!-- ##### FUNCTION xmlSecTmplReferenceAddTransform ##### -->
+<para>
+
+</para>
+
+@referenceNode: 
+@transformId: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplSignatureAddObject ##### -->
 <para>
 
 </para>
@@ -63,63 +71,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecSignedInfoAddC14NMethod ##### -->
-<para>
-
-</para>
-
-@signedInfoNode: 
-@c14nMethod: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@encMethod: 
-
-
-<!-- ##### FUNCTION xmlSecSignedInfoAddSignMethod ##### -->
-<para>
-
-</para>
-
-@signedInfoNode: 
-@signMethod: 
-@Returns: 
-<!-- # Unused Parameters # -->
-@encMethod: 
-
-
-<!-- ##### FUNCTION xmlSecSignedInfoAddReference ##### -->
-<para>
-
-</para>
-
-@signedInfoNode: 
-@id: 
-@uri: 
-@type: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecReferenceAddDigestMethod ##### -->
-<para>
-
-</para>
-
-@refNode: 
-@digestMethod: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecReferenceAddTransform ##### -->
-<para>
-
-</para>
-
-@refNode: 
-@transform: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecObjectAddSignProperties ##### -->
+<!-- ##### FUNCTION xmlSecTmplObjectAddSignProperties ##### -->
 <para>
 
 </para>
@@ -130,7 +82,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecObjectAddManifest ##### -->
+<!-- ##### FUNCTION xmlSecTmplObjectAddManifest ##### -->
 <para>
 
 </para>
@@ -140,23 +92,26 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecManifestAddReference ##### -->
+<!-- ##### FUNCTION xmlSecTmplManifestAddReference ##### -->
 <para>
 
 </para>
 
 @manifestNode: 
+@digestMethodId: 
 @id: 
 @uri: 
 @type: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncDataCreate ##### -->
+<!-- ##### FUNCTION xmlSecTmplEncDataCreate ##### -->
 <para>
 
 </para>
 
+@doc: 
+@encMethodId: 
 @id: 
 @type: 
 @mimeType: 
@@ -164,34 +119,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncDataDestroy ##### -->
-<para>
-
-</para>
-
-@encNode: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddEncMethod ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@encMethod: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddKeyInfo ##### -->
-<para>
-
-</para>
-
-@encNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecEncDataAddEncProperties ##### -->
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureKeyInfo ##### -->
 <para>
 
 </para>
@@ -201,7 +129,17 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncDataAddEncProperty ##### -->
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureEncProperties ##### -->
+<para>
+
+</para>
+
+@encNode: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplEncDataAddEncProperty ##### -->
 <para>
 
 </para>
@@ -212,7 +150,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncDataAddCipherValue ##### -->
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureCipherValue ##### -->
 <para>
 
 </para>
@@ -221,7 +159,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecEncDataAddCipherReference ##### -->
+<!-- ##### FUNCTION xmlSecTmplEncDataEnsureCipherReference ##### -->
 <para>
 
 </para>
@@ -231,17 +169,27 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecCipherReferenceAddTransform ##### -->
+<!-- ##### FUNCTION xmlSecTmplCipherReferenceAddTransform ##### -->
 <para>
 
 </para>
 
-@encNode: 
-@transform: 
+@cipherReferenceNode: 
+@transformId: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyInfoAddKeyName ##### -->
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyName ##### -->
+<para>
+
+</para>
+
+@keyInfoNode: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddKeyValue ##### -->
 <para>
 
 </para>
@@ -250,7 +198,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyInfoAddKeyValue ##### -->
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddX509Data ##### -->
 <para>
 
 </para>
@@ -259,16 +207,7 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecKeyInfoAddX509Data ##### -->
-<para>
-
-</para>
-
-@keyInfoNode: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecKeyInfoAddRetrievalMethod ##### -->
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddRetrievalMethod ##### -->
 <para>
 
 </para>
@@ -279,62 +218,101 @@ templates
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecRetrievalMethodAddTransform ##### -->
+<!-- ##### FUNCTION xmlSecTmplRetrievalMethodAddTransform ##### -->
 <para>
 
 </para>
 
-@retrMethod: 
-@transform: 
+@retrMethodNode: 
+@transformId: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@id: 
 
 
-<!-- ##### FUNCTION xmlSecKeyInfoAddEncryptedKey ##### -->
+<!-- ##### FUNCTION xmlSecTmplKeyInfoAddEncryptedKey ##### -->
 <para>
 
 </para>
 
 @keyInfoNode: 
+@encMethodId: 
 @id: 
 @type: 
 @recipient: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecHmacAddOutputLength ##### -->
+<!-- ##### FUNCTION xmlSecTmplTransformAddHmacOutputLength ##### -->
 <para>
 
 </para>
 
-@node: 
+@transformNode: 
 @bitsLen: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@transformNode: 
 
 
-<!-- ##### FUNCTION xmlSecEncRsaOaepAddParam ##### -->
+<!-- ##### FUNCTION xmlSecTmplTransformAddRsaOaepParam ##### -->
 <para>
 
 </para>
 
-@node: 
+@transformNode: 
 @buf: 
 @size: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@transformNode: 
 
 
-<!-- ##### FUNCTION xmlSecXsltAddStylesheet ##### -->
+<!-- ##### FUNCTION xmlSecTmplTransformAddXsltStylesheet ##### -->
 <para>
 
 </para>
 
-@node: 
+@transformNode: 
 @xslt: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplTransformAddC14NInclNamespaces ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@prefixList: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplTransformAddXPath ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@expression: 
+@nsList: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplTransformAddXPath2 ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@type: 
+@expression: 
+@nsList: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplTransformAddXPointer ##### -->
+<para>
+
+</para>
+
+@transformNode: 
+@expression: 
+@nsList: 
 @Returns: 
 
 

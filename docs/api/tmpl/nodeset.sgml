@@ -81,6 +81,14 @@ The enchanced nodes set imlmentation.
 @nset: 
 
 
+<!-- ##### FUNCTION xmlSecNodeSetDocDestroy ##### -->
+<para>
+
+</para>
+
+@nset: 
+
+
 <!-- ##### FUNCTION xmlSecNodeSetContains ##### -->
 <para>
 
@@ -137,6 +145,16 @@ The enchanced nodes set imlmentation.
 @Returns: 
 <!-- # Unused Parameters # -->
 @func: 
+
+
+<!-- ##### FUNCTION xmlSecNodeSetDumpTextNodes ##### -->
+<para>
+
+</para>
+
+@nset: 
+@out: 
+@Returns: 
 
 
 <!-- ##### FUNCTION xmlSecNodeSetDebugDump ##### -->

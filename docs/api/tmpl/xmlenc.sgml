@@ -15,6 +15,14 @@ standard implementation.
 
 </para>
 
+<!-- ##### ENUM xmlEncCtxMode ##### -->
+<para>
+
+</para>
+
+@xmlEncCtxModeEncryptedData: 
+@xmlEncCtxModeEncryptedKey: 
+
 <!-- ##### STRUCT xmlSecEncCtx ##### -->
 <para>
 
@@ -64,5 +72,113 @@ standard implementation.
 @encCtx: 
 <!-- # Unused Parameters # -->
 @ctx: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxInitialize ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@keysMngr: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxFinalize ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxCopyUserPref ##### -->
+<para>
+
+</para>
+
+@dst: 
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxReset ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxBinaryEncrypt ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@tmpl: 
+@data: 
+@dataSize: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxXmlEncrypt ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@tmpl: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxUriEncrypt ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@tmpl: 
+@uri: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxDecrypt ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxDecryptToBuffer ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@node: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxDebugDump ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@output: 
+
+
+<!-- ##### FUNCTION xmlSecEncCtxDebugXmlDump ##### -->
+<para>
+
+</para>
+
+@encCtx: 
+@output: 
 
 

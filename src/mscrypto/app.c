@@ -1168,7 +1168,7 @@ xmlSecMSCryptoAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
 /**
  * xmlSecMSCryptoAppDefaultKeysMngrSave:
  * @mngr: 		the pointer to keys manager.
- * @filename:		the destination filename.
+ * @filename:   the destination filename.
  * @type:		the type of keys to save (public/private/symmetric).
  *
  * Saves keys from @mngr to  XML keys file.
@@ -1185,27 +1185,80 @@ xmlSecMSCryptoAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
     
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeysMngrGetKeysStore",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecKeysMngrGetKeysStore",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
     ret = xmlSecMSCryptoKeysStoreSave(store, filename, type);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecMSCryptoKeysStoreSave",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "filename%s", xmlSecErrorsSafeString(filename));
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        "xmlSecMSCryptoKeysStoreSave",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        "filename%s", xmlSecErrorsSafeString(filename));
+        return(-1);
     }
     
     return(0);
 }
 
+/**
+ * xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad:
+ * @mngr: 		the pointer to keys manager.
+ * @hKey:       the key handle.
+ *  
+ * Adds private key @hKey to the keys manager @mngr.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */ 
+int
+xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKey) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(hKey != 0, -1);
+
+    /* TODO */
+    return(0);
+}
+
+/**
+ * xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad:
+ * @mngr: 		the pointer to keys manager.
+ * @hKey:       the key handle.
+ *  
+ * Adds public key @hKey to the keys manager @mngr.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */ 
+int 
+xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKey) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(hKey != 0, -1);
+
+    /* TODO */
+    return(0);
+}
+
+/**
+ * xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad:
+ * @mngr: 		the pointer to keys manager.
+ * @hKey:       the key handle.
+ *  
+ * Adds symmetric key @hKey to the keys manager @mngr.
+ * 
+ * Returns 0 on success or a negative value otherwise.
+ */ 
+int 
+xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad(xmlSecKeysMngrPtr mngr, HCRYPTKEY hKey) {
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(hKey != 0, -1);
+
+    /* TODO */
+    return(0);
+}
 
 /**
  * xmlSecMSCryptoAppGetDefaultPwdCallback:

@@ -204,11 +204,12 @@ xmlSecBase64Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPt
     in = &(transform->inBuf);
     out = &(transform->outBuf);
 
+    if(transform->status == xmlSecTransformStatusNone) {
+	ctx->encode = transform->encode;
+	transform->status = xmlSecTransformStatusWorking;
+    }
+
     switch(transform->status) {
-	case xmlSecTransformStatusNone:
-		ctx->encode = transform->encode;
-		transform->status = xmlSecTransformStatusWorking;
-		break;
 	case xmlSecTransformStatusWorking:
 	    while(xmlSecBufferGetSize(in) > 0) {
 		/* find next chunk size */

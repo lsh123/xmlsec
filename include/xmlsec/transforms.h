@@ -175,7 +175,6 @@ XMLSEC_EXPORT int 			xmlSecTransformExecute	(xmlSecTransformPtr transform,
 								 int last, 
 								 xmlSecTransformCtxPtr transformCtx);
 
-
 XMLSEC_EXPORT xmlSecTransformDataType	xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
 								 xmlSecTransformMode mode,
 								 xmlSecTransformCtxPtr transformCtx);
@@ -250,6 +249,16 @@ XMLSEC_EXPORT int			xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform,
  	(xmlSecTransformIsValid(( transform )) && \
 	((( transform )->id->objSize) >= ( size )))
 
+
+/************************************************************************
+ *
+ * IO buffers for transforms
+ *
+ ************************************************************************/ 
+XMLSEC_EXPORT xmlOutputBufferPtr 	xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, 
+								 xmlSecTransformCtxPtr transformCtx);
+XMLSEC_EXPORT xmlParserInputBufferPtr 	xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, 
+								 xmlSecTransformCtxPtr transformCtx);
 
 /************************************************************************
  *

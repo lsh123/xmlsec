@@ -6,13 +6,6 @@ XMLSEC_EXPORT int 			xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform,
 								  xmlSecNodeSetPtr *nodes);
 
 
-XMLSEC_EXPORT int			xmlSecTransformReadBin	(xmlSecTransformPtr transform,
-								 unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformWriteBin	(xmlSecTransformPtr transform,
-								 const unsigned char *buf,
-								 size_t size);		
-XMLSEC_EXPORT int			xmlSecTransformFlushBin	(xmlSecTransformPtr transform);
 XMLSEC_EXPORT int 			xmlSecTransformExecuteXml(xmlSecTransformPtr transform,
 								  xmlDocPtr ctxDoc,
 								  xmlDocPtr *doc,

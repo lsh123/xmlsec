@@ -236,7 +236,9 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
     
     if(transform->status == xmlSecTransformStatusNone) {
 	transform->status = xmlSecTransformStatusWorking;
-    } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+    } 
+    
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
 	/* just do nothing */
 	xmlSecAssert2(outSize == 0, -1);
 

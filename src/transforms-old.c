@@ -757,6 +757,7 @@ xmlSecTransformCreateBin(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
+    xmlSecTransformCtx transformCtx; /* todo */
     xmlSecTransformPtr buffer;
     xmlOutputBufferPtr output;
     int ret;
@@ -793,14 +794,13 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
     state->curLastBinTransform = buffer;
 
     /* now create output buffer for c14n */
-    output = xmlOutputBufferCreateIO((xmlOutputWriteCallback)xmlSecTransformWriteBin, 
-				  (xmlOutputCloseCallback)xmlSecTransformFlushBin, 
-				  (void*)state->curFirstBinTransform, NULL);
+    output = xmlSecTransformCreateOutputBuffer(state->curFirstBinTransform,
+					       &transformCtx);
     if(output == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlOutputBufferCreateIO",
-		    XMLSEC_ERRORS_R_XML_FAILED,
+		    "xmlSecTransformCreateOutputBuffer",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
@@ -879,8 +879,10 @@ xmlSecTransformCreateBinFromXml(xmlSecTransformStatePtr state) {
  */
 static int  
 xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
+    xmlSecTransformCtx transformCtx; /* todo */
     xmlSecTransformPtr ptr;
     unsigned char buffer[XMLSEC_TRANSFORM_BUFFER_SIZE];
+    size_t bufSize;
     int ret;
 
     xmlSecAssert2(state != NULL, -1);
@@ -927,19 +929,20 @@ xmlSecTransformCreateBinFromUri(xmlSecTransformStatePtr state) {
     xmlSecBufferEmpty(state->curBuf);
     
     do {
-	ret = xmlSecTransformReadBin(state->curLastBinTransform, buffer, XMLSEC_TRANSFORM_BUFFER_SIZE);
+	bufSize = sizeof(buffer);
+	ret = xmlSecTransformPopBin(state->curLastBinTransform, buffer, &bufSize, &transformCtx);
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
-			"xmlSecTransformReadBin",
+			"xmlSecTransformPopBin",
 			XMLSEC_ERRORS_R_XMLSEC_FAILED,
 			"transform=%s",
 			xmlSecErrorsSafeString(xmlSecTransformGetName(state->curLastBinTransform)));
 	    return(-1);
-	} else if(ret > 0) {
-	    xmlSecBufferAppend(state->curBuf, buffer, ret);
+	} else if(bufSize > 0 ) {
+	    xmlSecBufferAppend(state->curBuf, buffer, bufSize);
 	}
-    } while(ret > 0);
+    } while(bufSize > 0);
 
     /* cleanup */
     xmlSecTransformDestroyAll(state->curFirstBinTransform);
@@ -1301,97 +1304,6 @@ xmlSecTransformDestroyAll(xmlSecTransformPtr transform) {
     xmlSecTransformDestroy(transform, 0);
 }
 
-/**
- * xmlSecTransformReadBin:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the output buffer.
- * @size: the output buffer size.
- *
- * Reads chunk of data from the transform (wrapper transform specific
- * readBin() function).
- *
- * Returns the number of bytes in the buffer or negative value
- * if an error occurs.
- */
-int
-xmlSecTransformReadBin(xmlSecTransformPtr transform, 
-		       unsigned char *buf, size_t size) {
-    xmlSecTransformCtx ctx; /* todo */
-    int ret;
-        
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    
-    ret = xmlSecTransformPopBin(transform, buf, &size, &ctx);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecTransformPopBin",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    return(size);
-}
-
-/**
- * xmlSecTransformWriteBin:
- * @transform: the pointer to #xmlSecTransform structure.
- * @buf: the input data buffer.
- * @size: the input data size.
- *
- * Writes data to the transform (wrapper to the transform specific
- * writeBin() function).
- * 
- * Returns the number of bytes consumed or a negative value otherwise.
- */
-int
-xmlSecTransformWriteBin(xmlSecTransformPtr transform, 
-			const unsigned char *buf, size_t size) {
-    xmlSecTransformCtx ctx; /* todo */
-    int ret;
-        
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    
-    ret = xmlSecTransformPushBin(transform, buf, size, 0, &ctx);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecTransformPushBin",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    return(size);
-}
-
-/**
- * xmlSecTransformFlushBin:
- * @transform: the pointer to #xmlSecTransform structure.
- *
- * Finalizes writing (wrapper for transform specific flushBin() method). 
- *
- * Returns 0 if success or negative value otherwise.
- */
-int
-xmlSecTransformFlushBin(xmlSecTransformPtr transform) {
-    xmlSecTransformCtx ctx; /* todo */
-    int ret;
-        
-    xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
-    
-    ret = xmlSecTransformPushBin(transform, NULL, 0, 1, &ctx);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecTransformPushBin",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }
-    return(0);
-}
 
 int  
 xmlSecTransformOldExecuteXml(xmlSecTransformPtr transform, xmlDocPtr ctxDoc,

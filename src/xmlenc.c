@@ -170,6 +170,7 @@ int
 xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, const unsigned char *buf, size_t size,
 		    xmlSecEncResultPtr *result) {
+    xmlSecTransformCtx transformCtx; /* todo */
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     int ret;
@@ -209,23 +210,11 @@ xmlSecEncryptMemory(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     }
          
     /* encrypt the data */
-    ret = xmlSecTransformWriteBin(state->first, buf, size);
+    ret = xmlSecTransformPushBin(state->first, buf, size, 1, &transformCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformWriteBin",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->first)));
-	xmlSecEncResultDestroy(res);
-	xmlSecEncStateDestroy(state);    
-	return(-1);	    	
-    }
-    ret = xmlSecTransformFlushBin(state->first);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformFlushBin",
+		    "xmlSecTransformPushBin",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "transform=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->first)));
@@ -277,10 +266,12 @@ int
 xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		xmlNodePtr encNode, const char *uri, 
 		xmlSecEncResultPtr *result) {
+    xmlSecTransformCtx transformCtx;
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     xmlSecTransformPtr inputUri = NULL;
     unsigned char buf[1024];
+    size_t bufSize;
     int ret;
 
     xmlSecAssert2(encNode != NULL, -1);
@@ -361,12 +352,13 @@ xmlSecEncryptUri(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
          
     /* encrypt the data */
     do {
-	ret = xmlSecTransformReadBin(state->last, buf, sizeof(buf));
-    } while(ret > 0);
+	bufSize = sizeof(buf);
+	ret = xmlSecTransformPopBin(state->last, buf, &bufSize, &transformCtx);
+    } while((ret >= 0) && (bufSize > 0));
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformReadBin",
+		    "xmlSecTransformPopBin",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "transform=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->last)));
@@ -418,6 +410,7 @@ int
 xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key, 
 		    xmlNodePtr encNode, xmlNodePtr src, 
 		    xmlSecEncResultPtr *result) {
+    xmlSecTransformCtx transformCtx; /* todo */
     xmlSecEncStatePtr state = NULL;
     xmlSecEncResultPtr res = NULL;
     xmlBufferPtr buffer = NULL;
@@ -500,30 +493,20 @@ xmlSecEncryptXmlNode(xmlSecEncCtxPtr ctx, void *context, xmlSecKeyPtr key,
     }
         
     /* encrypt the data */
-    ret = xmlSecTransformWriteBin(state->first, 
+    ret = xmlSecTransformPushBin(state->first, 
 				  xmlBufferContent(buffer),
-				  xmlBufferLength(buffer));
+				  xmlBufferLength(buffer),
+				  1,
+				  &transformCtx);
     xmlBufferEmpty(buffer); 
     xmlBufferFree(buffer); 
     buffer = NULL;
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformWriteBin",
+		    "xmlSecTransformPushBin",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 	    	    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->first)));
-	xmlSecEncResultDestroy(res);
-	xmlSecEncStateDestroy(state);    
-	return(-1);	    	
-    }
-    ret = xmlSecTransformFlushBin(state->first);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformFlushBin",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->first)));
 	xmlSecEncResultDestroy(res);
 	xmlSecEncStateDestroy(state);    
@@ -1373,6 +1356,7 @@ xmlSecCipherDataNodeWrite(xmlNodePtr cipherDataNode,
 static int
 xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state, 
 			  xmlSecEncResultPtr result) {
+    xmlSecTransformCtx transformCtx;
     xmlSecTransformPtr base64;
     xmlSecTransformPtr memBuf;
     xmlChar *content;
@@ -1443,12 +1427,11 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
     }
 	
     /* decrypt the data */
-    ret = xmlSecTransformWriteBin(state->first, 
-				  content, xmlStrlen(content));
+    ret = xmlSecTransformPushBin(state->first, content, xmlStrlen(content), 1, &transformCtx);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformWriteBin",
+		    "xmlSecTransformPushBin",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "transform=%s",
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->first)));
@@ -1456,19 +1439,6 @@ xmlSecCipherValueNodeRead(xmlNodePtr cipherValueNode, xmlSecEncStatePtr state,
 	return(-1);	    	
     }
 	
-    /* flush everything */
-    ret = xmlSecTransformFlushBin((xmlSecTransformPtr)state->first);
-    if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecTransformFlushBin",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "transform=%s",
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(state->first)));
-	xmlFree(content);
-        return(-1);	    	
-    }
-
     result->buffer = xmlSecTransformMemBufGetBuffer((xmlSecTransformPtr)state->last, 1);
     if(result->buffer == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

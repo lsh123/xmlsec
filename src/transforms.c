@@ -831,6 +831,235 @@ int xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr*
     return(0);
 }
 
+/************************************************************************
+ *
+ * IO buffers for transforms
+ *
+ ************************************************************************/ 
+typedef struct _xmlSecTransformIOBuffer			xmlSecTransformIOBuffer,
+							*xmlSecTransformIOBufferPtr;
+typedef enum {
+    xmlSecTransformIOBufferModeRead,
+    xmlSecTransformIOBufferModeWrite
+} xmlSecTransformIOBufferMode;
+
+struct _xmlSecTransformIOBuffer {
+    xmlSecTransformIOBufferMode		mode;
+    xmlSecTransformPtr			transform;
+    xmlSecTransformCtxPtr		transformCtx;
+};
+
+static xmlSecTransformIOBufferPtr xmlSecTransformIOBufferCreate	(xmlSecTransformIOBufferMode mode,
+								 xmlSecTransformPtr transform,
+								 xmlSecTransformCtxPtr transformCtx);
+static void	xmlSecTransformIOBufferDestroy			(xmlSecTransformIOBufferPtr buffer);
+static int	xmlSecTransformIOBufferRead			(xmlSecTransformIOBufferPtr buffer,
+								 unsigned char *buf,
+								 size_t size);		
+static int	xmlSecTransformIOBufferWrite			(xmlSecTransformIOBufferPtr buffer,
+								 const unsigned char *buf,
+								 size_t size);		
+static int	xmlSecTransformIOBufferClose			(xmlSecTransformIOBufferPtr buffer);
+
+
+xmlOutputBufferPtr 
+xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformIOBufferPtr buffer; 
+    xmlSecTransformDataType type;
+    xmlOutputBufferPtr output;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
+    
+    /* check that we have binary push method for this transform */
+    type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePush, transformCtx);
+    if((type & xmlSecTransformDataTypeBin) == 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "push binary data not supported");
+	return(NULL);
+    }
+    
+    buffer = xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferModeWrite, transform, transformCtx);
+    if(buffer == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformIOBufferCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    output = xmlOutputBufferCreateIO((xmlOutputWriteCallback)xmlSecTransformIOBufferWrite,
+				     (xmlOutputCloseCallback)xmlSecTransformIOBufferClose,
+				     buffer,
+				     NULL); 
+    if(output == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlOutputBufferCreateIO",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecTransformIOBufferDestroy(buffer);
+	return(NULL);
+    }
+    
+    return(output);
+}
+
+xmlParserInputBufferPtr 
+xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformIOBufferPtr buffer;    
+    xmlSecTransformDataType type;
+    xmlParserInputBufferPtr input;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
+
+    /* check that we have binary pop method for this transform */
+    type = xmlSecTransformDefaultGetDataType(transform, xmlSecTransformModePop, transformCtx);
+    if((type & xmlSecTransformDataTypeBin) == 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    NULL,
+		    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+		    "pop binary data not supported");
+	return(NULL);
+    }    
+
+    buffer = xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferModeRead, transform, transformCtx);
+    if(buffer == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlSecTransformIOBufferCreate",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+    }
+    
+    input = xmlParserInputBufferCreateIO((xmlInputReadCallback)xmlSecTransformIOBufferRead,
+				     (xmlInputCloseCallback)xmlSecTransformIOBufferClose,
+				     buffer,
+				     XML_CHAR_ENCODING_NONE); 
+    if(input == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "xmlParserInputBufferCreateIO",
+		    XMLSEC_ERRORS_R_XML_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	xmlSecTransformIOBufferDestroy(buffer);
+	return(NULL);
+    }
+    
+    return(input);
+}
+
+static xmlSecTransformIOBufferPtr 
+xmlSecTransformIOBufferCreate(xmlSecTransformIOBufferMode mode, xmlSecTransformPtr transform,
+			      xmlSecTransformCtxPtr transformCtx) {
+    xmlSecTransformIOBufferPtr buffer;
+    
+    xmlSecAssert2(xmlSecTransformIsValid(transform), NULL);
+    xmlSecAssert2(transformCtx != NULL, NULL);
+    
+    buffer = (xmlSecTransformIOBufferPtr)xmlMalloc(sizeof(xmlSecTransformIOBuffer));
+    if(buffer == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlMalloc",
+		    XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    "size=%d", sizeof(xmlSecTransformIOBuffer)); 
+	return(NULL);
+    }
+    memset(buffer, 0, sizeof(xmlSecTransformIOBuffer));
+    
+    buffer->mode = mode;
+    buffer->transform = transform;
+    buffer->transformCtx = transformCtx;
+    
+    return(buffer);
+}
+
+static void 
+xmlSecTransformIOBufferDestroy(xmlSecTransformIOBufferPtr buffer) {
+    xmlSecAssert(buffer != NULL);
+
+    memset(buffer, 0, sizeof(xmlSecTransformIOBuffer));
+    xmlFree(buffer);
+}
+
+static int 
+xmlSecTransformIOBufferRead(xmlSecTransformIOBufferPtr buffer, 
+			    unsigned char *buf, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(buffer->mode == xmlSecTransformIOBufferModeRead, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(buffer->transform), -1);
+    xmlSecAssert2(buffer->transformCtx != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+    
+    ret = xmlSecTransformPopBin(buffer->transform, buf, &size, buffer->transformCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(buffer->transform)),
+		    "xmlSecTransformPopBin",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    return(size);
+}
+
+static int 
+xmlSecTransformIOBufferWrite(xmlSecTransformIOBufferPtr buffer, 
+			    const unsigned char *buf, size_t size) {
+    int ret;
+    
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(buffer->mode == xmlSecTransformIOBufferModeWrite, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(buffer->transform), -1);
+    xmlSecAssert2(buffer->transformCtx != NULL, -1);
+    xmlSecAssert2(buf != NULL, -1);
+
+    ret = xmlSecTransformPushBin(buffer->transform, buf, size, 0, buffer->transformCtx);
+    if(ret < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(buffer->transform)),
+		    "xmlSecTransformPushBin",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+    return(size);
+}
+
+static int 
+xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
+    int ret;
+    
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2(xmlSecTransformIsValid(buffer->transform), -1);
+    xmlSecAssert2(buffer->transformCtx != NULL, -1);
+    
+    /* need to flush write buffer before destroing */
+    if(buffer->mode == xmlSecTransformIOBufferModeWrite) {
+        ret = xmlSecTransformPushBin(buffer->transform, NULL, 0, 1, buffer->transformCtx);
+	if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecTransformGetName(buffer->transform)),
+			"xmlSecTransformPushBin",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+    }
+    
+    xmlSecTransformIOBufferDestroy(buffer);
+    return(0);
+}
 
 
 #include "transforms-old.c"

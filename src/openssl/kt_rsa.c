@@ -209,7 +209,9 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
     if(transform->status == xmlSecTransformStatusNone) {
 	transform->status = xmlSecTransformStatusWorking;
-    } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+    } 
+    
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
 	/* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	ret = xmlSecOpenSSLRsaPkcs1Process(transform, transformCtx);
@@ -604,7 +606,9 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     if(transform->status == xmlSecTransformStatusNone) {
 	transform->status = xmlSecTransformStatusWorking;
-    } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+    } 
+    
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
 	/* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	ret = xmlSecOpenSSLRsaOaepProcess(transform, transformCtx);

@@ -288,7 +288,9 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     
     if(transform->status == xmlSecTransformStatusNone) {
 	transform->status = xmlSecTransformStatusWorking;
-    } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+    }
+    
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
 	/* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	if((inSize % 8) != 0) {

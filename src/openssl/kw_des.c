@@ -221,7 +221,9 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     
     if(transform->status == xmlSecTransformStatusNone) {
 	transform->status = xmlSecTransformStatusWorking;
-    } else if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+    }
+    
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
 	/* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
 	if((inSize % XMLSEC_OPENSSL_DES3_BLOCK_LENGTH) != 0) {

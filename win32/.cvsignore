@@ -2,3 +2,5 @@ Makefile
 configure.txt
 *.int
 binaries
+*.win32
+*.win32.zip

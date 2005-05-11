@@ -1,3 +1,8 @@
+2005-05-11  Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* src/openssl/signatures.c: fixed "disable-dsa" build option 
+	(patch from Bernd Becker)
+
 Wed  6 Apr 2005 00:18:21 CEST Igor Zlatkovic <igor@zlatkovic.com>
 
 	* .cvsignore: added Eclipse project files

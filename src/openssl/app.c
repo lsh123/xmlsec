@@ -286,6 +286,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	    return(NULL);
 	}
 	break;
+#ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
 	key = xmlSecOpenSSLAppPkcs12LoadBIO(bio, pwd, pwdCallback, pwdCallbackCtx);
         if(key == NULL) {
@@ -298,7 +299,6 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	}
 	return(key);
 	
-#ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatCertPem:
     case xmlSecKeyDataFormatCertDer: 
 	key = xmlSecOpenSSLAppKeyFromCertLoadBIO(bio, format);

@@ -620,8 +620,6 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 	return(-1);
     }    
     X509_VERIFY_PARAM_set_depth(ctx->vpm, 9); /* the default cert verification path in openssl */	
-    X509_VERIFY_PARAM_set_flags(ctx->vpm, (ctx->vpm->flags ^ (~X509_V_FLAG_X509_STRICT)));
-    
     X509_STORE_set1_param(ctx->xst, ctx->vpm);
     
 #else  /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */

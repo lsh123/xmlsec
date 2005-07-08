@@ -51,7 +51,6 @@ struct _xmlSecOpenSSLX509StoreCtx {
 
 #if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
     X509_VERIFY_PARAM * vpm;	    
-    STACK_OF(X509)* 	trusted;
 #endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 };	    
 
@@ -151,12 +150,6 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
 
     ctx = xmlSecOpenSSLX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
-
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-    if((res == NULL) && (ctx->trusted != NULL)) {
-        res = xmlSecOpenSSLX509FindCert(ctx->trusted, subjectName, issuerName, issuerSerial, ski);
-    }
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 
     if((res == NULL) && (ctx->untrusted != NULL)) {
         res = xmlSecOpenSSLX509FindCert(ctx->untrusted, subjectName, issuerName, issuerSerial, ski);
@@ -329,7 +322,6 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
 	    }
 
 #if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-	    X509_STORE_CTX_trusted_stack(&xsc, ctx->trusted);
 	    X509_STORE_CTX_set0_param(&xsc, vpm);	    
 #endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
 
@@ -454,19 +446,6 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
     xmlSecAssert2(ctx != NULL, -1);
 
     if((type & xmlSecKeyDataTypeTrusted) != 0) {
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-        xmlSecAssert2(ctx->trusted != NULL, -1);
-
-        ret = sk_X509_push(ctx->trusted, cert);
-        if(ret < 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "sk_X509_push",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);
-        }
-#else /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
         xmlSecAssert2(ctx->xst != NULL, -1);
 
         ret = X509_STORE_add_cert(ctx->xst, cert);
@@ -480,7 +459,6 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
         }
         /* add cert increments the reference */
         X509_free(cert);
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
     } else {
 	xmlSecAssert2(ctx->untrusted != NULL, -1);
 
@@ -600,16 +578,6 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     }    
     
 #if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-    ctx->trusted = sk_X509_new_null();
-    if(ctx->trusted == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-		    "sk_X509_new_null",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }    
-	
     ctx->vpm = X509_VERIFY_PARAM_new();
     if(ctx->vpm == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -648,9 +616,6 @@ xmlSecOpenSSLX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 	sk_X509_CRL_pop_free(ctx->crls, X509_CRL_free);
     }
 #if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-    if(ctx->trusted != NULL) {
-	sk_X509_pop_free(ctx->trusted, X509_free);
-    }
     if(ctx->vpm != NULL) {
 	X509_VERIFY_PARAM_free(ctx->vpm);
     }

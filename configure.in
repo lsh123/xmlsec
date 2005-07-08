@@ -278,12 +278,27 @@ elif test "z$with_openssl" != "z" ; then
     fi
     OPENSSL_FOUND="yes"
 elif test "z$PKG_CONFIG_ENABLED" = "zyes" ; then
-    PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
-	[OPENSSL_FOUND=yes],
-	[OPENSSL_FOUND=no])
-    PKG_CHECK_MODULES(OPENSSL097, openssl >= 0.9.7,
-	[OPENSSL_VERSION="0.9.7"],
-	[OPENSSL_VERSION="0.9.6"])
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.8,
+    	    [OPENSSL_VERSION="0.9.8"],
+	    [OPENSSL_VERSION=""])
+    fi
+    
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        PKG_CHECK_MODULES(OPENSSL, openssl >= 0.9.7,
+    	    [OPENSSL_VERSION="0.9.7"],
+	    [OPENSSL_VERSION=""])
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        PKG_CHECK_MODULES(OPENSSL, openssl >= $OPENSSL_MIN_VERSION,
+	    [OPENSSL_VERSION="$OPENSSL_MIN_VERSION"],
+	    [OPENSSL_VERSION=""])
+    fi
+
+    if test "z$OPENSSL_VERSION" != "z" ; then
+	OPENSSL_FOUND="yes"
+    fi
 fi
 
 if test "z$OPENSSL_FOUND" = "zno" ; then
@@ -322,45 +337,65 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
     fi
 fi
 
-if test "z$OPENSSL_FOUND" = "zyes" -a "zOPENSSL_VERSION" = "z" ; then
+if test "z$OPENSSL_FOUND" = "zyes" -a "z$OPENSSL_VERSION" = "z" ; then
     AC_MSG_CHECKING(for openssl libraries >= $OPENSSL_MIN_VERSION) 
 
     dnl Check the OpenSSL version    
     OLD_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$OPENSSL_CFLAGS"
-    AC_EGREP_CPP(yes,[
-	#include <openssl/opensslv.h>
-	#if OPENSSL_VERSION_NUMBER >= 0x00906000L
-	    yes
-	#endif
-    ],[
-	OPENSSL_FOUND="yes"
-    ],[
-	OPENSSL_FOUND="no"
-    ]) 
-    
-    if test "z$OPENSSL_FOUND" = "zyes" ; then
-	AC_EGREP_CPP(yes,[
-	    #include <openssl/opensslv.h>
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(yes,[
+    	    #include <openssl/opensslv.h>
+	    #if OPENSSL_VERSION_NUMBER >= 0x00908000L
+		yes
+	    #endif
+	],[
+	    OPENSSL_VERSION="0.9.8"
+	],[
+	    OPENSSL_VERSION=""
+	])
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(yes,[
+    	    #include <openssl/opensslv.h>
 	    #if OPENSSL_VERSION_NUMBER >= 0x00907000L
 		yes
 	    #endif
 	],[
 	    OPENSSL_VERSION="0.9.7"
 	],[
+	    OPENSSL_VERSION=""
+	]) 
+    fi
+
+    if test "z$OPENSSL_VERSION" = "z" ; then
+        AC_EGREP_CPP(yes,[
+    	    #include <openssl/opensslv.h>
+	    #if OPENSSL_VERSION_NUMBER >= 0x00906000L
+		yes
+	    #endif
+	],[
 	    OPENSSL_VERSION="0.9.6"
-	])
-	AC_MSG_RESULT(Found OpenSSL version '$OPENSSL_VERSION')
-    else
-	AC_MSG_RESULT(no)
-    fi    
+	],[
+	    AC_MSG_RESULT(no)
+	]) 
+    fi
+    
     CPPFLAGS=$OLD_CPPFLAGS
 fi    
 
 if test "z$OPENSSL_FOUND" = "zyes" ; then
     XMLSEC_NO_OPENSSL="0"
-    if test "zOPENSSL_VERSION" = "z0.9.6" ; then
+    if test "z$OPENSSL_VERSION" = "z0.9.6" ; then
 	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_096=1"
+    fi    
+    if test "z$OPENSSL_VERSION" = "z0.9.7" ; then
+	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_097=1"
+    fi    
+    if test "z$OPENSSL_VERSION" = "z0.9.8" ; then
+	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_098=1"
     fi    
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
     	

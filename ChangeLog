@@ -1,3 +1,7 @@
+2005-07-08  Aleksey Sanin  <aleksey@aleksey.com>
+	* configure.in src/openssl/x509vfy.c: initial support 
+	for OpenSSL 0.9.8
+
 2005-05-12  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* src/openssl/app.c: fixed "disable-x509" build option 

@@ -343,6 +343,18 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACOutputLength[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha1[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha512[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacRipemd160[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacRipemd160[];
 
@@ -404,6 +416,18 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAPrivateExponent[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha1[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha512[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaPkcs1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaPkcs1[];
 
@@ -418,6 +442,18 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRsaOAEPparams[];
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha1[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameSha512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefSha512[];
 
 /*************************************************************************
  *

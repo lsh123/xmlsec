@@ -505,6 +505,7 @@ xmlSecTransformDsaSha1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass());
 }
 
+
 /** 
  * xmlSecTransformHmacSha1GetKlass:
  *
@@ -526,6 +527,98 @@ xmlSecTransformHmacSha1GetKlass(void) {
     }
     
     return(xmlSecCryptoDLGetFunctions()->transformHmacSha1GetKlass());
+}
+
+/** 
+ * xmlSecTransformHmacSha224GetKlass:
+ *
+ * The HMAC-SHA224 transform klass.
+ *
+ * Returns the HMAC-SHA224 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformHmacSha224GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha224GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformHmacSha224Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformHmacSha224GetKlass());
+}
+
+/** 
+ * xmlSecTransformHmacSha256GetKlass:
+ *
+ * The HMAC-SHA256 transform klass.
+ *
+ * Returns the HMAC-SHA256 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformHmacSha256GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha256GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformHmacSha256Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformHmacSha256GetKlass());
+}
+
+/** 
+ * xmlSecTransformHmacSha384GetKlass:
+ *
+ * The HMAC-SHA384 transform klass.
+ *
+ * Returns the HMAC-SHA384 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformHmacSha384GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha384GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformHmacSha384Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformHmacSha384GetKlass());
+}
+
+/** 
+ * xmlSecTransformHmacSha512GetKlass:
+ *
+ * The HMAC-SHA512 transform klass.
+ *
+ * Returns the HMAC-SHA512 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformHmacSha512GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacSha512GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformHmacSha512Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformHmacSha512GetKlass());
 }
 
 /** 
@@ -620,6 +713,98 @@ xmlSecTransformRsaSha1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformRsaSha1GetKlass());
 }
 
+/**
+ * xmlSecTransformRsaSha224GetKlass:
+ * 
+ * The RSA-SHA224 signature transform klass.
+ *
+ * Returns RSA-SHA224 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaSha224GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha224GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformRsaSha224Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformRsaSha224GetKlass());
+}
+
+/**
+ * xmlSecTransformRsaSha256GetKlass:
+ * 
+ * The RSA-SHA256 signature transform klass.
+ *
+ * Returns RSA-SHA256 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaSha256GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha256GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformRsaSha256Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformRsaSha256GetKlass());
+}
+
+/**
+ * xmlSecTransformRsaSha384GetKlass:
+ * 
+ * The RSA-SHA384 signature transform klass.
+ *
+ * Returns RSA-SHA384 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaSha384GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha384GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformRsaSha384Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformRsaSha384GetKlass());
+}
+
+/**
+ * xmlSecTransformRsaSha512GetKlass:
+ * 
+ * The RSA-SHA512 signature transform klass.
+ *
+ * Returns RSA-SHA512 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaSha512GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaSha512GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformRsaSha512Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformRsaSha512GetKlass());
+}
+
 /** 
  * xmlSecTransformRsaPkcs1GetKlass:
  *
@@ -687,6 +872,98 @@ xmlSecTransformSha1GetKlass(void) {
     }
     
     return(xmlSecCryptoDLGetFunctions()->transformSha1GetKlass());
+}
+
+/** 
+ * xmlSecTransformSha224GetKlass:
+ *
+ * SHA224 digest transform klass.
+ *
+ * Returns pointer to SHA224 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformSha224GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha224GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformSha224Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformSha224GetKlass());
+}
+
+/** 
+ * xmlSecTransformSha256GetKlass:
+ *
+ * SHA256 digest transform klass.
+ *
+ * Returns pointer to SHA256 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformSha256GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha256GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformSha256Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformSha256GetKlass());
+}
+
+/** 
+ * xmlSecTransformSha384GetKlass:
+ *
+ * SHA384 digest transform klass.
+ *
+ * Returns pointer to SHA384 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformSha384GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha384GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformSha384Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformSha384GetKlass());
+}
+
+/** 
+ * xmlSecTransformSha512GetKlass:
+ *
+ * SHA512 digest transform klass.
+ *
+ * Returns pointer to SHA512 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformSha512GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformSha512GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformSha512Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformSha512GetKlass());
 }
 
 /******************************************************************************

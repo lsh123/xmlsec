@@ -764,6 +764,70 @@ AM_CONDITIONAL(XMLSEC_NO_SHA1, test "z$XMLSEC_NO_SHA1" = "z1")
 AC_SUBST(XMLSEC_NO_SHA1)
 
 dnl ==========================================================================
+dnl See do we need SHA224 suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for SHA224 support) 
+AC_ARG_ENABLE(sha224,   [  --enable-sha224         enable SHA224 support (yes)])
+if test "z$enable_sha224" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA224=1"
+    XMLSEC_NO_SHA224="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_SHA224="0"
+    AC_MSG_RESULT(yes)
+fi    
+AM_CONDITIONAL(XMLSEC_NO_SHA224, test "z$XMLSEC_NO_SHA224" = "z1")
+AC_SUBST(XMLSEC_NO_SHA224)
+
+dnl ==========================================================================
+dnl See do we need SHA256 suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for SHA256 support) 
+AC_ARG_ENABLE(sha256,   [  --enable-sha256         enable SHA256 support (yes)])
+if test "z$enable_sha256" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA256=1"
+    XMLSEC_NO_SHA256="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_SHA256="0"
+    AC_MSG_RESULT(yes)
+fi    
+AM_CONDITIONAL(XMLSEC_NO_SHA256, test "z$XMLSEC_NO_SHA256" = "z1")
+AC_SUBST(XMLSEC_NO_SHA256)
+
+dnl ==========================================================================
+dnl See do we need SHA384 suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for SHA384 support) 
+AC_ARG_ENABLE(sha384,   [  --enable-sha384         enable SHA384 support (yes)])
+if test "z$enable_sha384" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA384=1"
+    XMLSEC_NO_SHA384="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_SHA384="0"
+    AC_MSG_RESULT(yes)
+fi    
+AM_CONDITIONAL(XMLSEC_NO_SHA384, test "z$XMLSEC_NO_SHA384" = "z1")
+AC_SUBST(XMLSEC_NO_SHA384)
+
+dnl ==========================================================================
+dnl See do we need SHA512 suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for SHA512 support) 
+AC_ARG_ENABLE(sha512,   [  --enable-sha512         enable SHA512 support (yes)])
+if test "z$enable_sha512" = "zno" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_SHA512=1"
+    XMLSEC_NO_SHA512="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_SHA512="0"
+    AC_MSG_RESULT(yes)
+fi    
+AM_CONDITIONAL(XMLSEC_NO_SHA512, test "z$XMLSEC_NO_SHA512" = "z1")
+AC_SUBST(XMLSEC_NO_SHA512)
+
+dnl ==========================================================================
 dnl See do we need RIPEMD-160 suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for RIPEMD-160 support) 

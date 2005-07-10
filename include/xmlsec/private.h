@@ -349,13 +349,25 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @transformKWDes3GetKlass:	the method to get pointer to Triple DES key wrapper transform.
  * @transformDsaSha1GetKlass:	the method to get pointer to DSA-SHA1 signature transform.
  * @transformHmacSha1GetKlass:	the method to get pointer to HMAC-SHA1 transform.
+ * @transformHmacSha224GetKlass: the method to get pointer to HMAC-SHA224 transform.
+ * @transformHmacSha256GetKlass: the method to get pointer to HMAC-SHA256 transform.
+ * @transformHmacSha384GetKlass: the method to get pointer to HMAC-SHA384 transform.
+ * @transformHmacSha512GetKlass: the method to get pointer to HMAC-SHA512 transform.
  * @transformHmacRipemd160GetKlass: the method to get pointer to HMAC-RIPEMD160 transform.
  * @transformHmacMd5GetKlass:	the method to get pointer to HMAC-MD5 transform.
  * @transformRipemd160GetKlass:	the method to get pointer to RIPEMD160 digest transform.
  * @transformRsaSha1GetKlass:	the method to get pointer to RSA-SHA1 signature transform.
+ * @transformRsaSha224GetKlass:	the method to get pointer to RSA-SHA224 signature transform.
+ * @transformRsaSha256GetKlass:	the method to get pointer to RSA-SHA256 signature transform.
+ * @transformRsaSha384GetKlass:	the method to get pointer to RSA-SHA384 signature transform.
+ * @transformRsaSha512GetKlass:	the method to get pointer to RSA-SHA512 signature transform.
  * @transformRsaPkcs1GetKlass:	the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:	the method to get pointer to RSA-OAEP key transport transform.
  * @transformSha1GetKlass:	the method to get pointer to SHA1 digest transform.
+ * @transformSha224GetKlass:	the method to get pointer to SHA224 digest transform.
+ * @transformSha256GetKlass:	the method to get pointer to SHA256 digest transform.
+ * @transformSha384GetKlass:	the method to get pointer to SHA384 digest transform.
+ * @transformSha512GetKlass:	the method to get pointer to SHA512 digest transform.
  * @cryptoAppInit:		the default crypto engine initialization method.
  * @cryptoAppShutdown:		the default crypto engine shutdown method.
  * @cryptoAppDefaultKeysMngrInit: 	the default keys manager init method.
@@ -411,14 +423,26 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod		 transformKWDes3GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformDsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformHmacSha224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformHmacSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformHmacSha384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformHmacSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformRsaSha224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformRsaSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformRsaSha384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformRsaSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaPkcs1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaOaepGetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformSha1GetKlass;
-     
+    xmlSecCryptoTransformGetKlassMethod		 transformSha224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformSha384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformSha512GetKlass;
+    
     /**
      * High level routines form xmlsec command line utility
      */ 

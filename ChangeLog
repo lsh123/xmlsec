@@ -1,3 +1,11 @@
+2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/xmldsig.html docs/xmlenc.html
+	include/xmlsec/app.h include/xmlsec/private.h include/xmlsec/strings.h
+	include/xmlsec/openssl/crypto.h include/xmlsec/openssl/symbols.h
+	src/app.c src/dl.c src/strings.c: preparations for SHA224/256/384/512
+	and friends
+
 2005-07-09  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* configure.in tests/aleksey-xmldsig-01/* tests/keys/* 

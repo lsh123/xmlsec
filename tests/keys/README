@@ -1,8 +1,7 @@
 README
 
 0. Passwords
- For the cacert.pe the password is "qwerty".
- For all *.p8-pem and *.p8-der keys the password is "secret".
+ For all files the password is "secret".
 
 1. Files list
 
@@ -23,6 +22,8 @@ README
 2. How certificates were generated:
 
  A. Create new CA 
+    - Change DAYS and CADAYS in CA.pl to 3650 (10 years)
+    > export SSLEAY_CONFIG="-config ./openssl.cnf"
     > CA.pl -newca
     > cp ./demoCA/cacert.pem .
     > cp ./demoCA/private/cakey.pem .
@@ -30,34 +31,50 @@ README
 
  B. Generate RSA key and second level CA
     > openssl genrsa -out ca2key.pem
-    > openssl req -new -key ca2key.pem -out ca2req.pem
-    > openssl ca -cert cacert.pem -keyfile cakey.pem \
+    > openssl req -config ./openssl.cnf -new -key ca2key.pem -out ca2req.pem
+    > openssl ca -config ./openssl.cnf -cert cacert.pem -keyfile cakey.pem \
 	    -out ca2cert.pem -infiles ca2req.pem
     > openssl verify -CAfile cacert.pem ca2cert.pem
 
  C. Generate and sign DSA key with second level CA
-    > penssl dsaparam -out dsakey.pem -genkey 512
-    > openssl req -new -key dsakey.pem -out dsareq.pem
-    > openssl ca -cert ca2cert.pem -keyfile ca2key.pem \
+    > openssl dsaparam -out dsakey.pem -genkey 512
+    > openssl req -config ./openssl.cnf -new -key dsakey.pem -out dsareq.pem
+    > openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
 	    -out dsacert.pem -infiles dsareq.pem
     > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem dsacert.pem
 
  D. Generate and sign RSA key with second level CA
     > openssl genrsa -out rsakey.pem
-    > openssl req -new -key rsakey.pem -out rsareq.pem
-    > openssl ca -cert ca2cert.pem -keyfile ca2key.pem \
+    > openssl req -config ./openssl.cnf -new -key rsakey.pem -out rsareq.pem
+    > openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
 	    -out rsacert.pem -infiles rsareq.pem
     > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
 
+ E. Generate and sign short-live RSA cert for "expired cert" test
+    > openssl genrsa -out expiredkey.pem
+    > openssl req -config ./openssl.cnf -new -days 1 -key expiredkey.pem \
+	    -out expiredreq.pem
+    > openssl ca -config ./openssl.cnf -days 1 -cert ca2cert.pem \
+	    -keyfile ca2key.pem -out expiredcert.pem -infiles expiredreq.pem
+    > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem expiredcert.pem
+ 
 3. Converting key and certs between PEM and DER formats
 
-  Convert PEM private key file to DER file
+  - Convert PEM private key file to DER file
   RSA key:
-    > openssl rsa -inform PEM -outform DER -in rsapriv.pem -out rsapriv.der
+    > openssl rsa -inform PEM -outform DER -in rsakey.pem -out rsakey.der
+    > openssl rsa -inform PEM -outform DER -in expiredkey.pem -out expiredkey.der
   DSA key:
     > openssl dsa -inform PEM -outform DER -in dsakey.pem -out dsakey.der
+
+  - Convert PEM cert file to DER file
+    > openssl x509 -outform DER -in cacert.pem -out cacert.der 
+    > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
+    > openssl x509 -outform DER -in dsacert.pem -out dsacert.der 
+    > openssl x509 -outform DER -in rsacert.pem -out rsacert.der 
+    > openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der 
   
-  Convert PEM public key file to DER file
+  - (optional) Convert PEM public key file to DER file
   RSA key:
     > openssl rsa -inform PEM -outform DER -pubin -pubout -in lugh.key -out lugh.der
   DSA key:
@@ -66,20 +83,30 @@ README
   If you aren't sure if the public key is RSA or DSA, just run one of
   the above commands, and the error messaging will make it clear :)
    
-  Convert PEM cert file to DER file
-    > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
-
-  Convert DER cert file to PEM file
-   > openssl x509 -inform DER -outform PEM -in ca2cert.der -out ca2cert.pem
+  - (optional) Convert DER cert file to PEM file
+    > openssl x509 -inform DER -outform PEM -in ca2cert.der -out ca2cert.pem
 
 4. Converting an unencrypted PEM or DER file containing a private key
    to an encrypted PEM or DER file containing the same private key but
    encrypted
-     > openssl pkcs8 -in unencryptedfile.<der|pem> -inform <der|pem> -out encryptedfile.<der|pem> -outform <der|pem> -topk8
-
+     > openssl pkcs8 -in dsakey.pem -inform pem -out dsakey.p8-pem -outform pem -topk8
+     > openssl pkcs8 -in dsakey.der -inform der -out dsakey.p8-der -outform der -topk8
+     > openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
+     > openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
+     
 5. NSS is unfriendly towards standalone private keys.
    This procedure helps convert raw private keys into PKCS12 form that is 
    suitable for not only NSS but all crypto engines.
+
+    > cat dsakey.pem dsacert.pem ca2cert.pem cacert.pem > alldsa.pem
+    > openssl pkcs12 -export -in alldsa.pem -name TestDsaKey -out dsakey.p12
+
+    > cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
+    > openssl pkcs12 -export -in allrsa.pem -name TestDsaKey -out rsakey.p12
+
+    > cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
+    > openssl pkcs12 -export -in allexpired.pem -name TestDsaKey -out expiredkey.p12
+
 
    5a.
        Input: DSA/RSA private key in PEM or DER format
@@ -124,7 +151,10 @@ README
 
        # now using the certs and key in PEM format, conver them to a PKCS12 file
        # enter some password on prompt
-       > openssl pkcs12 -export -in allcerts.pem -inkey key.pem -name <nickname of key & keycert> [-caname <nickname of cert1> -caname <nickname of cert2>.... ] -out keycert.p12
+       > openssl pkcs12 -export -in allcerts.pem -inkey key.pem \
+         -name <nickname of key & keycert> 
+	 [-caname <nickname of cert1> -caname <nickname of cert2>.... ] 
+	 -out keycert.p12
     
        # This pkcs12 file can be used directly on the xmlsec command line, or
        # can be pre-loaded into the crypto engine database (if any).

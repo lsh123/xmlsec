@@ -1,3 +1,11 @@
+2005-07-09  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in tests/aleksey-xmldsig-01/* tests/keys/* 
+	tests/merlin-xmldsig-twenty-three/signature.tmpl 
+	tests/testDSig.sh: updating test certificates for picky
+	OpenSSL 0.9.8
+	
+
 2005-07-08  Aleksey Sanin  <aleksey@aleksey.com>
 	* configure.in src/openssl/x509vfy.c: initial support 
 	for OpenSSL 0.9.8

@@ -1,5 +1,5 @@
-V	120131080059Z		01	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Second Level Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
-V	120131080127Z		02	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Third Level DSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
-V	120131080148Z		03	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Third Level RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
-V	020503080301Z		04	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Expired Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
-V	130328040222Z		05	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Examples RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	150708022901Z		D68EB8E091822CF7	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Root Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	150708022955Z		D68EB8E091822CF8	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Second Level RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	150708023159Z		D68EB8E091822CF9	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level DSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	150708023302Z		D68EB8E091822CFA	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Third Level RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com
+V	050711035156Z		D68EB8E091822CFB	unknown	/C=US/ST=California/O=XML Security Library (http://www.aleksey.com/xmlsec)/OU=Test Expired RSA Certificate/CN=Aleksey Sanin/emailAddress=xmlsec@aleksey.com

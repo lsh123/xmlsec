@@ -236,8 +236,13 @@ execDSigTest "" "aleksey-xmldsig-01/xpointer-hmac" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
+#
+# To generate expired cert run the following command
+# > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl
+#
 execDSigTest "" "aleksey-xmldsig-01/enveloping-expired-cert" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-time 2002-04-17+10:00:00" 
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509 --verification-time 2005-07-10+10:00:00" 
+
 
 execDSigTest "" "aleksey-xmldsig-01/dtd-hmac-91" \
     "--hmackey $topfolder/keys/hmackey.bin --dtd-file $topfolder/aleksey-xmldsig-01/dtd-hmac-91.dtd" \
@@ -250,9 +255,9 @@ execDSigTest "" "aleksey-xmldsig-01/x509data-test" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest "" "aleksey-xmldsig-01/x509data-sn-test" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa2cert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option tests/keys/rsa2key.$priv_key_format --pwd secret" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsa2cert.$cert_format --enabled-key-data x509"
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option tests/keys/rsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
 execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
     ""

@@ -17,15 +17,22 @@
         <DigestValue>3om1gINPzaogcdLuDdjIQlls4NE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>pcsM3Uz0+85OJTV28sg+mQ5khOCxeToam9ojj5F7D5IVXoQAnCNDuyDbKLsn0UKv
-I06RXzlb4MXb88fBJaFd4ygfpy3Ude8n6erjwxtwU6tPiesHyJB64GSD9yeSGDZt
-UnD0EYB9ammZxoqVUlZR5FiqG/vTUtjHN+Fo6DTuY+g=</SignatureValue>
+    <SignatureValue>W/X7k6Q6T9RFW56VkRV9HGW5wkyUxvvlUcEyUkggVE04gsOK0Rx0rqq2woUxzkk1
+jvXfCtm2xknb2/cOmqfO/g==</SignatureValue>
     <KeyInfo>
       <X509Data>
         
       <X509IssuerSerial>
-<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Second Level Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
-<X509SerialNumber>-1</X509SerialNumber>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Root Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>15460497845462904056</X509SerialNumber>
+</X509IssuerSerial>
+<X509IssuerSerial>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Root Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>15460497845462904055</X509SerialNumber>
+</X509IssuerSerial>
+<X509IssuerSerial>
+<X509IssuerName>emailAddress=xmlsec@aleksey.com,CN=Aleksey Sanin,OU=Test Second Level RSA Certificate,O=XML Security Library (http://www.aleksey.com/xmlsec),ST=California,C=US</X509IssuerName>
+<X509SerialNumber>15460497845462904058</X509SerialNumber>
 </X509IssuerSerial>
 </X509Data>
     </KeyInfo>

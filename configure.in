@@ -272,9 +272,9 @@ if test "z$with_openssl" = "zno" ; then
 elif test "z$with_openssl" != "z" ; then
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -I$with_openssl/include"
     if test -f "$with_openssl/lib/libcrypto$shrext" ; then
-	OPENSSL_LIBS="-L$with_openssl/lib -lcrypto"
+	OPENSSL_LIBS="-L$with_openssl/lib -lcrypto -ldl"
     else
-	OPENSSL_LIBS="$with_openssl/lib/libcrypto.a"
+	OPENSSL_LIBS="$with_openssl/lib/libcrypto.a -ldl"
     fi
     OPENSSL_FOUND="yes"
 elif test "z$PKG_CONFIG_ENABLED" = "zyes" ; then
@@ -322,9 +322,9 @@ if test "z$OPENSSL_FOUND" = "zno" ; then
 	if test -f $dir/libcrypto.a ; then
 	    dnl do not add -L/usr/lib because compiler does it anyway
 	    if test "z$dir" = "z/usr/lib" ; then
-		OPENSSL_LIBS="-lcrypto"
+		OPENSSL_LIBS="-lcrypto -ldl"
 	    else
-		OPENSSL_LIBS="-L$dir -lcrypto"
+		OPENSSL_LIBS="-L$dir -lcrypto -ldl"
 	    fi
 	    OPENSSL_LIBS_FOUND="yes"
 	    ac_found_openssl_lib_dir=$dir

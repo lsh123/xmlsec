@@ -144,7 +144,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
 #endif /* XMLSEC_NO_X509 */
     gXmlSecSkeletonFunctions->cryptoAppKeyLoad 			= xmlSecSkeletonAppKeyLoad; 
     gXmlSecSkeletonFunctions->cryptoAppKeyLoadMemory		= xmlSecSkeletonAppKeyLoadMemory; 
-    gXmlSecSkeletonFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecSkeletonAppGetDefaultPwdCallback;
+    gXmlSecSkeletonFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecSkeletonAppGetDefaultPwdCallback();
 
     return(gXmlSecSkeletonFunctions);
 }

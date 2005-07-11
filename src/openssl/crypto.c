@@ -230,7 +230,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_X509 */
     gXmlSecOpenSSLFunctions->cryptoAppKeyLoad 			= xmlSecOpenSSLAppKeyLoad; 
     gXmlSecOpenSSLFunctions->cryptoAppKeyLoadMemory		= xmlSecOpenSSLAppKeyLoadMemory; 
-    gXmlSecOpenSSLFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecOpenSSLAppGetDefaultPwdCallback;
+    gXmlSecOpenSSLFunctions->cryptoAppDefaultPwdCallback	= (void*)xmlSecOpenSSLAppGetDefaultPwdCallback();
 
     return(gXmlSecOpenSSLFunctions);
 }

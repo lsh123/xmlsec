@@ -33,7 +33,8 @@
 
 static int 		xmlSecOpenSSLAppLoadRANDFile		(const char *file);
 static int 		xmlSecOpenSSLAppSaveRANDFile		(const char *file);
-static int		xmlSecOpenSSLDefaultPasswordCallback	(char *buf, int bufsiz, int verify, void *userdata);
+static int		xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsiz, int verify, void *userdata);
+static int      xmlSecOpenSSLDummyPasswordCallback  (char *buf, int bufsize, int verify, void *userdata);
 
 /**
  * xmlSecOpenSSLAppInit:
@@ -202,6 +203,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     return(key);
 }
 
+
 /**
  * xmlSecOpenSSLAppKeyLoadBIO:
  * @bio:		the key BIO.
@@ -230,11 +232,13 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     switch(format) {
     case xmlSecKeyDataFormatPem:
         /* try to read private key first */    
-	pKey = PEM_read_bio_PrivateKey(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
+	    pKey = PEM_read_bio_PrivateKey(bio, NULL, 
+            (pwd != NULL) ? xmlSecOpenSSLDummyPasswordCallback : (pem_password_cb*)pwdCallback, 
+            (pwd != NULL) ? pwd : pwdCallbackCtx);
         if(pKey == NULL) {
     	    /* go to start of the file and try to read public key */
 	    BIO_reset(bio); 
-	    pKey = PEM_read_bio_PUBKEY(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
+	    pKey = PEM_read_bio_PUBKEY(bio, NULL, (pem_password_cb*)pwdCallback, pwdCallbackCtx);
 	    if(pKey == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
@@ -264,7 +268,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	break;
     case xmlSecKeyDataFormatPkcs8Pem:
         /* try to read private key first */    
-	pKey = PEM_read_bio_PrivateKey(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
+	pKey = PEM_read_bio_PrivateKey(bio, NULL, (pem_password_cb*)pwdCallback, pwdCallbackCtx);
         if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -276,7 +280,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
 	break;
     case xmlSecKeyDataFormatPkcs8Der:
         /* try to read private key first */    
-	pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, (pem_password_cb*)pwdCallback, (void*)pwd);
+	pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, (pem_password_cb*)pwdCallback, pwdCallbackCtx);
         if(pKey == NULL) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,
@@ -1459,7 +1463,7 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
     
 	/* if we don't need to verify password then we are done */
         if(verify == 0) {
-	    return(0);
+	    return(strlen(buf));
         }
 
 	if(filename != NULL) {
@@ -1492,8 +1496,8 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 	/* check if passwords match */
 	if(strcmp(buf, buf2) == 0) {
 	    memset(buf2, 0, bufsize);
-    	    xmlFree(buf2);
-	    return(-1);	    
+    	xmlFree(buf2);
+	    return(strlen(buf));	    
 	}
 	
 	/* try again */
@@ -1502,5 +1506,17 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
     }
     
     return(-1);
+}
+
+static int
+xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize, int verify, void *userdata) {
+    char* password = (char*)userdata;
+    
+    if((password == NULL) || (strlen(password) + 1 > bufsize)) {
+        return(-1);
+    }
+    
+    strcpy(buf, password);
+    return (strlen(buf));
 }
 

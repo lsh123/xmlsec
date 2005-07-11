@@ -212,11 +212,6 @@ execEncTest "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" 
 #merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.xml
 #merlin-xmlenc-five/encsig-hmac-sha256-dh.xml
 #merlin-xmlenc-five/encsig-hmac-sha256-kw-tripledes-dh.xml
-#merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5.xml
-#merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p.xml
-#merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128.xml
-#merlin-xmlenc-five/encsig-sha384-hmac-sha384-kw-aes192.xml
-#merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256.xml
 
 execEncTest "01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5" \
     "$priv_key_option $topfolder/01-phaos-xmlenc-3/rsa-priv-key.$priv_key_format --pwd secret" \

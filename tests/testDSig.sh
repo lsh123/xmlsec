@@ -116,6 +116,7 @@ echo "--- log file is $logfile"
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
+
 execDSigTest "" "aleksey-xmldsig-01/enveloping-dsa-x509chain" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
@@ -338,6 +339,16 @@ execDSigTest "" "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+execDSigTest "" "merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+execDSigTest "" "merlin-xmlenc-five/encsig-sha384-hmac-sha384-kw-aes192" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+execDSigTest "" "merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+
+#merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5.xml
+#merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p.xml
+
     
 execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
     " " \

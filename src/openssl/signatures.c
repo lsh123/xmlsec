@@ -166,7 +166,7 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
     } else 
 #endif /* XMLSEC_NO_MD5 */
 
-#ifndef XMLSEC_NO_RIPEM160
+#ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaRipemd160Id)) {
 	ctx->digest	= EVP_ripemd160();
 	ctx->keyId	= xmlSecOpenSSLKeyDataRsaId;

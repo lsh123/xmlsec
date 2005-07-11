@@ -1,5 +1,11 @@
 2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* src/openssl/evp.c: added hack from Erwann ABALEA: 
+	OpenSSL ENGINE keys are always private since we can't query
+	engine and do real check
+
+2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* docs/* include/* src/* tests/*: added support for 
 	RSA-MD5/RIPEMD160/SHA224/SHA256/SHA384/SHA512 for OpenSSL 0.9.8
 

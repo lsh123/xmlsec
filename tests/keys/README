@@ -50,7 +50,14 @@ README
 	    -out rsacert.pem -infiles rsareq.pem
     > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem rsacert.pem
 
- E. Generate and sign short-live RSA cert for "expired cert" test
+ E. Generate and sign large RSA key with second level CA
+    > openssl genrsa -out largersakey.pem 4096
+    > openssl req -config ./openssl.cnf -new -key largersakey.pem -out largersareq.pem
+    > openssl ca -config ./openssl.cnf -cert ca2cert.pem -keyfile ca2key.pem \
+	    -out largersacert.pem -infiles largersareq.pem
+    > openssl verify -CAfile cacert.pem -untrusted ca2cert.pem largersacert.pem
+
+ F. Generate and sign short-live RSA cert for "expired cert" test
     > openssl genrsa -out expiredkey.pem
     > openssl req -config ./openssl.cnf -new -days 1 -key expiredkey.pem \
 	    -out expiredreq.pem
@@ -63,6 +70,7 @@ README
   - Convert PEM private key file to DER file
   RSA key:
     > openssl rsa -inform PEM -outform DER -in rsakey.pem -out rsakey.der
+    > openssl rsa -inform PEM -outform DER -in largersakey.pem -out largersakey.der
     > openssl rsa -inform PEM -outform DER -in expiredkey.pem -out expiredkey.der
   DSA key:
     > openssl dsa -inform PEM -outform DER -in dsakey.pem -out dsakey.der
@@ -72,6 +80,7 @@ README
     > openssl x509 -outform DER -in ca2cert.pem -out ca2cert.der 
     > openssl x509 -outform DER -in dsacert.pem -out dsacert.der 
     > openssl x509 -outform DER -in rsacert.pem -out rsacert.der 
+    > openssl x509 -outform DER -in largersacert.pem -out largersacert.der 
     > openssl x509 -outform DER -in expiredcert.pem -out expiredcert.der 
   
   - (optional) Convert PEM public key file to DER file
@@ -93,6 +102,10 @@ README
      > openssl pkcs8 -in dsakey.der -inform der -out dsakey.p8-der -outform der -topk8
      > openssl pkcs8 -in rsakey.pem -inform pem -out rsakey.p8-pem -outform pem -topk8
      > openssl pkcs8 -in rsakey.der -inform der -out rsakey.p8-der -outform der -topk8
+     > openssl pkcs8 -in largersakey.pem -inform pem -out largersakey.p8-pem \
+        -outform pem -topk8
+     > openssl pkcs8 -in largersakey.der -inform der -out largersakey.p8-der \
+        -outform der -topk8
      
 5. NSS is unfriendly towards standalone private keys.
    This procedure helps convert raw private keys into PKCS12 form that is 
@@ -103,6 +116,9 @@ README
 
     > cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
     > openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey.p12
+
+    > cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
+    > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey.p12
 
     > cat expiredkey.pem expiredcert.pem ca2cert.pem cacert.pem > allexpired.pem
     > openssl pkcs12 -export -in allexpired.pem -name TestExpiredRsaKey \

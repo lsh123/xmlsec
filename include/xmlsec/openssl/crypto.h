@@ -28,7 +28,6 @@ extern "C" {
 #define XMLSEC_NO_SHA512 1
 #endif /* defined(XMLSEC_OPENSSL_096) || defined(XMLSEC_OPENSSL_097) */
 
-
 /* OpenSSL 0.9.6 does not have AES */
 #if defined(XMLSEC_OPENSSL_096)
 #define XMLSEC_NO_AES	 1
@@ -182,6 +181,7 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataDsaAdoptEvp	(xmlSecKeyDataPtr data
 									 EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLKeyDataDsaGetEvp	(xmlSecKeyDataPtr data);
 
+#ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecOpenSSLTransformDsaSha1Id:
  * 
@@ -190,7 +190,7 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLKeyDataDsaGetEvp	(xmlSecKeyDataPtr 
 #define xmlSecOpenSSLTransformDsaSha1Id \
 	xmlSecOpenSSLTransformDsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha1GetKlass(void);
-
+#endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
 
@@ -211,6 +211,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId	xmlSecOpenSSLKeyDataHmacGetKlass(void);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataHmacSet	(xmlSecKeyDataPtr data,
 									 const xmlSecByte* buf,
 									 xmlSecSize bufSize);
+
+#ifndef XMLSEC_NO_MD5									 
 /**
  * xmlSecOpenSSLTransformHmacMd5Id:
  * 
@@ -219,7 +221,9 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataHmacSet	(xmlSecKeyDataPtr data,
 #define xmlSecOpenSSLTransformHmacMd5Id \
 	xmlSecOpenSSLTransformHmacMd5GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
 
+#ifndef XMLSEC_NO_RIPEMD160
 /**
  * xmlSecOpenSSLTransformHmacRipemd160Id:
  * 
@@ -228,7 +232,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacMd5GetKlass(voi
 #define xmlSecOpenSSLTransformHmacRipemd160Id \
 	xmlSecOpenSSLTransformHmacRipemd160GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacRipemd160GetKlass(void);
+#endif /* XMLSEC_NO_RIPEMD160 */
 
+#ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecOpenSSLTransformHmacSha1Id:
  * 
@@ -237,7 +243,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacRipemd160GetKla
 #define xmlSecOpenSSLTransformHmacSha1Id \
 	xmlSecOpenSSLTransformHmacSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
 /**
  * xmlSecOpenSSLTransformHmacSha224Id:
  * 
@@ -246,7 +254,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha1GetKlass(vo
 #define xmlSecOpenSSLTransformHmacSha224Id \
 	xmlSecOpenSSLTransformHmacSha224GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
 
+#ifndef XMLSEC_NO_SHA256
 /**
  * xmlSecOpenSSLTransformHmacSha256Id:
  * 
@@ -255,7 +265,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha224GetKlass(
 #define xmlSecOpenSSLTransformHmacSha256Id \
 	xmlSecOpenSSLTransformHmacSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA384
 /**
  * xmlSecOpenSSLTransformHmacSha384Id:
  * 
@@ -264,7 +276,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha256GetKlass(
 #define xmlSecOpenSSLTransformHmacSha384Id \
 	xmlSecOpenSSLTransformHmacSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
 
+#ifndef XMLSEC_NO_SHA512
 /**
  * xmlSecOpenSSLTransformHmacSha512Id:
  * 
@@ -273,7 +287,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha384GetKlass(
 #define xmlSecOpenSSLTransformHmacSha512Id \
 	xmlSecOpenSSLTransformHmacSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha512GetKlass(void);
-
+#endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */
 
@@ -334,6 +348,29 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataRsaAdoptEvp	(xmlSecKeyDataPtr data
 									 EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLKeyDataRsaGetEvp	(xmlSecKeyDataPtr data);
 
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecOpenSSLTransformRsaMd5Id:
+ * 
+ * The RSA-MD5 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformRsaMd5Id	\
+	xmlSecOpenSSLTransformRsaMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_RIPEMD160
+/**
+ * xmlSecOpenSSLTransformRsaRipemd160Id:
+ * 
+ * The RSA-RIPEMD160 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformRsaRipemd160Id	\
+	xmlSecOpenSSLTransformRsaRipemd160GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaRipemd160GetKlass(void);
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecOpenSSLTransformRsaSha1Id:
  * 
@@ -342,7 +379,9 @@ XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLKeyDataRsaGetEvp	(xmlSecKeyDataPtr 
 #define xmlSecOpenSSLTransformRsaSha1Id	\
 	xmlSecOpenSSLTransformRsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA224
 /**
  * xmlSecOpenSSLTransformRsaSha224Id:
  * 
@@ -351,7 +390,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha1GetKlass(voi
 #define xmlSecOpenSSLTransformRsaSha224Id	\
 	xmlSecOpenSSLTransformRsaSha224GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha224GetKlass(void);
+#endif /* XMLSEC_NO_SHA224 */
 
+#ifndef XMLSEC_NO_SHA256
 /**
  * xmlSecOpenSSLTransformRsaSha256Id:
  * 
@@ -360,7 +401,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha224GetKlass(v
 #define xmlSecOpenSSLTransformRsaSha256Id	\
 	xmlSecOpenSSLTransformRsaSha256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
 
+#ifndef XMLSEC_NO_SHA384
 /**
  * xmlSecOpenSSLTransformRsaSha384Id:
  * 
@@ -369,7 +412,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha256GetKlass(v
 #define xmlSecOpenSSLTransformRsaSha384Id	\
 	xmlSecOpenSSLTransformRsaSha384GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
 
+#ifndef XMLSEC_NO_SHA512
 /**
  * xmlSecOpenSSLTransformRsaSha512Id:
  * 
@@ -378,6 +423,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha384GetKlass(v
 #define xmlSecOpenSSLTransformRsaSha512Id	\
 	xmlSecOpenSSLTransformRsaSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformRsaSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
 
 /**
  * xmlSecOpenSSLTransformRsaPkcs1Id:

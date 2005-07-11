@@ -421,6 +421,12 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAModulus[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAExponent[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeRSAPrivateExponent[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaMd5[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaMd5[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaRipemd160[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameRsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefRsaSha1[];
 

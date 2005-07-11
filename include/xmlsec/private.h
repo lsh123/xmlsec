@@ -357,6 +357,8 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @transformHmacSha512GetKlass: the method to get pointer to HMAC-SHA512 transform.
  * @transformMd5GetKlass:	the method to get pointer to MD5 digest transform.
  * @transformRipemd160GetKlass:	the method to get pointer to RIPEMD160 digest transform.
+ * @transformRsaMd5GetKlass:	the method to get pointer to RSA-MD5 signature transform.
+ * @transformRsaRipemd160GetKlass: the method to get pointer to RSA-RIPEMD160 signature transform.
  * @transformRsaSha1GetKlass:	the method to get pointer to RSA-SHA1 signature transform.
  * @transformRsaSha224GetKlass:	the method to get pointer to RSA-SHA224 signature transform.
  * @transformRsaSha256GetKlass:	the method to get pointer to RSA-SHA256 signature transform.
@@ -432,6 +434,8 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRipemd160GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformRsaMd5GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformRsaRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha256GetKlass;

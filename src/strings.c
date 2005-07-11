@@ -411,6 +411,12 @@ const xmlChar xmlSecNodeRSAModulus[]		= "Modulus";
 const xmlChar xmlSecNodeRSAExponent[]		= "Exponent";
 const xmlChar xmlSecNodeRSAPrivateExponent[] 	= "PrivateExponent";
 
+const xmlChar xmlSecNameRsaMd5[]		= "rsa-md5";
+const xmlChar xmlSecHrefRsaMd5[]		= "http://www.w3.org/2001/04/xmldsig-more#rsa-md5";
+
+const xmlChar xmlSecNameRsaRipemd160[]		= "rsa-ripemd160";
+const xmlChar xmlSecHrefRsaRipemd160[]		= "http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160";
+
 const xmlChar xmlSecNameRsaSha1[]		= "rsa-sha1";
 const xmlChar xmlSecHrefRsaSha1[]		= "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
 

@@ -240,6 +240,20 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformMd5GetKlass(void);
 #define xmlSecTransformRipemd160Id		xmlSecTransformRipemd160GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformRipemd160GetKlass(void);
 /**
+ * xmlSecTransformRsaMd5Id:
+ * 
+ * The RSA-MD5 signature transform klass.
+ */
+#define xmlSecTransformRsaMd5Id			xmlSecTransformRsaMd5GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformRsaMd5GetKlass	(void);	
+/**
+ * xmlSecTransformRsaRipemd160Id:
+ * 
+ * The RSA-RIPEMD160 signature transform klass.
+ */
+#define xmlSecTransformRsaRipemd160Id		xmlSecTransformRsaRipemd160GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformRsaRipemd160GetKlass	(void);	
+/**
  * xmlSecTransformRsaSha1Id:
  * 
  * The RSA-SHA1 signature transform klass.

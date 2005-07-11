@@ -201,6 +201,41 @@ execDSigTest "" "aleksey-xmldsig-01/enveloping-sha512-hmac-sha512-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
+execDSigTest "" "aleksey-xmldsig-01/enveloping-md5-rsa-md5" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-ripemd160-rsa-ripemd160" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha1-rsa-sha1" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha224-rsa-sha224" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha256-rsa-sha256" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha384-rsa-sha384" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha512-rsa-sha512" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
+    "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
+
 #
 # To generate expired cert run the following command
 # > xmlsec1 sign --pkcs12 tests/keys/expiredkey.p12 --pwd secret --output out.xml ./tests/aleksey-xmldsig-01/enveloping-expired-cert.tmpl

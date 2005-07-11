@@ -1,5 +1,10 @@
 2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* docs/* include/* src/* tests/*: added support for 
+	RSA-MD5/RIPEMD160/SHA224/SHA256/SHA384/SHA512 for OpenSSL 0.9.8
+
+2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* configure.in docs/ include/ src/ tests/: implemented
 	SHA224/256/384/512, HMAC-SHA224/256/384/512, MD5 for OpenSSL 0.9.8
 

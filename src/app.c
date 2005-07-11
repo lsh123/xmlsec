@@ -712,6 +712,51 @@ xmlSecTransformRipemd160GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformRipemd160GetKlass());
 }
 
+/**
+ * xmlSecTransformRsaMd5GetKlass:
+ * 
+ * The RSA-MD5 signature transform klass.
+ *
+ * Returns RSA-MD5 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaMd5GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaMd5GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformRsaMd5Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformRsaMd5GetKlass());
+}
+
+/**
+ * xmlSecTransformRsaRipemd160GetKlass:
+ * 
+ * The RSA-RIPEMD160 signature transform klass.
+ *
+ * Returns RSA-RIPEMD160 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId
+xmlSecTransformRsaRipemd160GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformRsaRipemd160GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformRsaRipemd160Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformRsaRipemd160GetKlass());
+}
 
 /**
  * xmlSecTransformRsaSha1GetKlass:

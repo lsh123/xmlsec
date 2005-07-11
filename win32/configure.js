@@ -40,7 +40,7 @@ var verMicroXmlSec;
 var withCrypto = "openssl";
 var withDefaultCrypto = "openssl";
 var withOpenSSL = 0;
-var withOpenSSL096 = 0;
+var withOpenSSLVersion = "";
 var withNss = 0;
 var withMSCrypto = 0;
 var withLibXSLT = 1;
@@ -96,7 +96,8 @@ function usage()
 	txt += "either 'yes' or 'no'.\n\n";
 	txt += "XmlSec Library options, default value given in parentheses:\n\n";
 	txt += "  crypto:     Crypto engines list, first is default: \"openssl\",\n";
-	txt += "              \"openssl_096\", \"nss\", \"mscrypto\" (\"" + withCrypto + "\");\n"
+	txt += "              \"openssl=096\", \"openssl=097\", \"openssl=098\", \n";
+	txt += "              \"nss\", \"mscrypto\" (\"" + withCrypto + "\");\n"
  	txt += "  xslt:       LibXSLT is used (" + (withLibXSLT? "yes" : "no")  + ")\n";	
  	txt += "  iconv:      Use the iconv library (" + (withIconv? "yes" : "no")  + ")\n";	
  	txt += "  nt4:        Enable NT 4.0 support (" + (withNT4? "yes" : "no")  + ")\n";	
@@ -156,7 +157,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_CRYPTO=" + withCrypto);	
 	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);	
 	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);	
-	vf.WriteLine("WITH_OPENSSL_096=" + withOpenSSL096);	
+	vf.WriteLine("WITH_OPENSSL_VERSION=" + withOpenSSLVersion);	
 	vf.WriteLine("WITH_NSS=" + withNss);	
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);	
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
@@ -303,8 +304,16 @@ withCrypto = "";
 for (j = 0; j < crlist.length; j++) {		
 	if (crlist[j] == "openssl")
 		withOpenSSL = 1;
-	else if (crlist[j] == "openssl_096")
-		withOpenSSL096 = 1;
+		withOpenSSLVersion = "XMLSEC_OPENSSL_098"; /* default */
+	else if (crlist[j] == "openssl=096")
+		withOpenSSL = 1;
+		withOpenSSLVersion = "XMLSEC_OPENSSL_096";
+	else if (crlist[j] == "openssl=097")
+		withOpenSSL = 1;
+		withOpenSSLVersion = "XMLSEC_OPENSSL_097";
+	else if (crlist[j] == "openssl=098")
+		withOpenSSL = 1;
+		withOpenSSLVersion = "XMLSEC_OPENSSL_098";
 	else if (crlist[j] == "nss")
 		withNss = 1;
 	else if (crlist[j] == "mscrypto")
@@ -315,12 +324,8 @@ for (j = 0; j < crlist.length; j++) {
 	}
 	withCrypto = withCrypto + " " + crlist[j];
 }
-if ((withOpenSSL == 1) && (withOpenSSL096 == 1)) {
-	WScript.Echo("Only one of \"openssl\" and \"openssl_096\" could be specified. Aborting.");
-	WScript.Quit(error);
-}
 withDefaultCrypto = crlist[0];
-if (withDefaultCrypto == "openssl_096")
+if (withDefaultCrypto == "openssl=096" || withDefaultCrypto="openssl=097" || withDefaultCrypto="openssl=098")
 	withDefaultCrypto = "openssl";
 
 // Discover the version.
@@ -348,15 +353,15 @@ WScript.Echo("Created Makefile.");
 // Display the final configuration.
 var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
-txtOut += "        Use Crypto: " + withCrypto + "\n";
-txtOut += "Use Default Crypto: " + withDefaultCrypto + "\n";
+txtOut += "         Use Crypto: " + withCrypto + "\n";
+txtOut += " Use Default Crypto: " + withDefaultCrypto + "\n";
 txtOut += "       Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
-txtOut += "   Use OpenSSL 096: " + boolToStr(withOpenSSL096) + "\n";
-txtOut += "           Use NSS: " + boolToStr(withNss) + "\n";
-txtOut += "      Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
-txtOut += "       Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
-txtOut += "         Use iconv: " + boolToStr(withIconv) + "\n";
-txtOut += "    NT 4.0 support: " + boolToStr(withNT4) + "\n";
+txtOut += "Use OpenSSL Version: " + boolToStr(withOpenSSLVersion) + "\n";
+txtOut += "            Use NSS: " + boolToStr(withNss) + "\n";
+txtOut += "       Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
+txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";
+txtOut += "          Use iconv: " + boolToStr(withIconv) + "\n";
+txtOut += "     NT 4.0 support: " + boolToStr(withNT4) + "\n";
 txtOut += "\n";
 txtOut += "Win32 build configuration\n";
 txtOut += "-------------------------\n";

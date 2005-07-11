@@ -348,13 +348,14 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @transformDes3CbcGetKlass:	the method to get pointer to Triple DES encryption transform.
  * @transformKWDes3GetKlass:	the method to get pointer to Triple DES key wrapper transform.
  * @transformDsaSha1GetKlass:	the method to get pointer to DSA-SHA1 signature transform.
+ * @transformHmacMd5GetKlass:	the method to get pointer to HMAC-MD5 transform.
+ * @transformHmacRipemd160GetKlass: the method to get pointer to HMAC-RIPEMD160 transform.
  * @transformHmacSha1GetKlass:	the method to get pointer to HMAC-SHA1 transform.
  * @transformHmacSha224GetKlass: the method to get pointer to HMAC-SHA224 transform.
  * @transformHmacSha256GetKlass: the method to get pointer to HMAC-SHA256 transform.
  * @transformHmacSha384GetKlass: the method to get pointer to HMAC-SHA384 transform.
  * @transformHmacSha512GetKlass: the method to get pointer to HMAC-SHA512 transform.
- * @transformHmacRipemd160GetKlass: the method to get pointer to HMAC-RIPEMD160 transform.
- * @transformHmacMd5GetKlass:	the method to get pointer to HMAC-MD5 transform.
+ * @transformMd5GetKlass:	the method to get pointer to MD5 digest transform.
  * @transformRipemd160GetKlass:	the method to get pointer to RIPEMD160 digest transform.
  * @transformRsaSha1GetKlass:	the method to get pointer to RSA-SHA1 signature transform.
  * @transformRsaSha224GetKlass:	the method to get pointer to RSA-SHA224 signature transform.
@@ -422,13 +423,14 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod		 transformDes3CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformKWDes3GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformDsaSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformHmacMd5GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformHmacRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha256GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha512GetKlass;
-    xmlSecCryptoTransformGetKlassMethod		 transformHmacRipemd160GetKlass;
-    xmlSecCryptoTransformGetKlassMethod		 transformHmacMd5GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha224GetKlass;

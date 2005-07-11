@@ -203,13 +203,13 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeyDataHmacSet		(xmlSecKeyDataPtr data,
 									 const xmlSecByte* buf,
 									 xmlSecSize bufSize);
 /**
- * xmlSecNssTransformHmacSha1Id:
+ * xmlSecNssTransformHmacMd5Id:
  * 
- * The HMAC with SHA1 signature transform klass.
+ * The HMAC with MD5 signature transform klass.
  */
-#define xmlSecNssTransformHmacSha1Id \
-	xmlSecNssTransformHmacSha1GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
+#define xmlSecNssTransformHmacMd5Id \
+	xmlSecNssTransformHmacMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
 
 /**
  * xmlSecNssTransformHmacRipemd160Id:
@@ -221,13 +221,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(void);
 
 /**
- * xmlSecNssTransformHmacMd5Id:
+ * xmlSecNssTransformHmacSha1Id:
  * 
- * The HMAC with MD5 signature transform klass.
+ * The HMAC with SHA1 signature transform klass.
  */
-#define xmlSecNssTransformHmacMd5Id \
-	xmlSecNssTransformHmacMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
+#define xmlSecNssTransformHmacSha1Id \
+	xmlSecNssTransformHmacSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
 
 
 #endif /* XMLSEC_NO_HMAC */

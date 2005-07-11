@@ -211,27 +211,77 @@ execDSigTest "" "aleksey-xmldsig-01/enveloping-rsa-x509chain" \
     "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
-execDSigTest "" "aleksey-xmldsig-01/enveloping-hmac-ripemd160" \
+execDSigTest "" "aleksey-xmldsig-01/enveloping-md5-hmac-md5" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
-execDSigTest "" "aleksey-xmldsig-01/enveloping-hmac-ripemd160-64" \
+execDSigTest "" "aleksey-xmldsig-01/enveloping-md5-hmac-md5-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
-execDSigTest "" "aleksey-xmldsig-01/enveloping-hmac-md5" \
+execDSigTest "" "aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
-execDSigTest "" "aleksey-xmldsig-01/enveloping-hmac-md5-64" \
+execDSigTest "" "aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 
 
 execDSigTest "" "aleksey-xmldsig-01/xpointer-hmac" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha1-hmac-sha1" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha1-hmac-sha1-64" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha224-hmac-sha224" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha256-hmac-sha256-64" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha384-hmac-sha384" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha384-hmac-sha384-64" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha512-hmac-sha512" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "aleksey-xmldsig-01/enveloping-sha512-hmac-sha512-64" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" \
     "--hmackey $topfolder/keys/hmackey.bin" 

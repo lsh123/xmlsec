@@ -1,5 +1,10 @@
 2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* configure.in docs/ include/ src/ tests/: implemented
+	SHA224/256/384/512, HMAC-SHA224/256/384/512, MD5 for OpenSSL 0.9.8
+
+2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* configure.in docs/xmldsig.html docs/xmlenc.html
 	include/xmlsec/app.h include/xmlsec/private.h include/xmlsec/strings.h
 	include/xmlsec/openssl/crypto.h include/xmlsec/openssl/symbols.h

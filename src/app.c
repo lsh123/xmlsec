@@ -505,6 +505,51 @@ xmlSecTransformDsaSha1GetKlass(void) {
     return(xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass());
 }
 
+/** 
+ * xmlSecTransformHmacMd5GetKlass:
+ *
+ * The HMAC-MD5 transform klass.
+ *
+ * Returns the HMAC-MD5 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformHmacMd5GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformHmacMd5Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass());
+}
+
+/** 
+ * xmlSecTransformHmacRipemd160GetKlass:
+ *
+ * The HMAC-RIPEMD160 transform klass.
+ *
+ * Returns the HMAC-RIPEMD160 transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformHmacRipemd160GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformHmacRipemd160Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass());
+}
 
 /** 
  * xmlSecTransformHmacSha1GetKlass:
@@ -622,49 +667,26 @@ xmlSecTransformHmacSha512GetKlass(void) {
 }
 
 /** 
- * xmlSecTransformHmacRipemd160GetKlass:
+ * xmlSecTransformMd5GetKlass:
  *
- * The HMAC-RIPEMD160 transform klass.
+ * MD5 digest transform klass.
  *
- * Returns the HMAC-RIPEMD160 transform klass or NULL if an error
+ * Returns pointer to MD5 digest transform klass or NULL if an error
  * occurs (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */
 xmlSecTransformId 
-xmlSecTransformHmacRipemd160GetKlass(void) {
-    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass == NULL)) {
+xmlSecTransformMd5GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformMd5GetKlass == NULL)) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "transformHmacRipemd160Id",
+		    "transformMd5Id",
 		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
         return(xmlSecTransformIdUnknown);
     }
     
-    return(xmlSecCryptoDLGetFunctions()->transformHmacRipemd160GetKlass());
-}
-
-/** 
- * xmlSecTransformHmacMd5GetKlass:
- *
- * The HMAC-MD5 transform klass.
- *
- * Returns the HMAC-MD5 transform klass or NULL if an error
- * occurs (the xmlsec-crypto library is not loaded or this transform is not
- * implemented).
- */
-xmlSecTransformId 
-xmlSecTransformHmacMd5GetKlass(void) {	
-    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass == NULL)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "transformHmacMd5Id",
-		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-        return(xmlSecTransformIdUnknown);
-    }
-    
-    return(xmlSecCryptoDLGetFunctions()->transformHmacMd5GetKlass());
+    return(xmlSecCryptoDLGetFunctions()->transformMd5GetKlass());
 }
 
 /** 
@@ -689,6 +711,7 @@ xmlSecTransformRipemd160GetKlass(void) {
     
     return(xmlSecCryptoDLGetFunctions()->transformRipemd160GetKlass());
 }
+
 
 /**
  * xmlSecTransformRsaSha1GetKlass:

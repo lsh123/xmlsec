@@ -453,7 +453,6 @@ xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL_096
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes128CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes192CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformAes256CbcId)) {
@@ -461,7 +460,6 @@ xmlSecOpenSSLEvpBlockCipherCheckId(xmlSecTransformPtr transform) {
        return(1);
     }
 #endif /* XMLSEC_NO_AES */
-#endif /* XMLSEC_OPENSSL_096 */
     
     return(0);
 }
@@ -486,7 +484,6 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL_096
     if(transform->id == xmlSecOpenSSLTransformAes128CbcId) {
 	ctx->cipher 	= EVP_aes_128_cbc();	
 	ctx->keyId 	= xmlSecOpenSSLKeyDataAesId;
@@ -498,7 +495,6 @@ xmlSecOpenSSLEvpBlockCipherInitialize(xmlSecTransformPtr transform) {
 	ctx->keyId 	= xmlSecOpenSSLKeyDataAesId;
     } else 
 #endif /* XMLSEC_NO_AES */
-#endif /* XMLSEC_OPENSSL_096 */
 
     if(1) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -693,7 +689,6 @@ xmlSecOpenSSLEvpBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSe
 
 
 #ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL_096
 /*********************************************************************
  *
  * AES CBC cipher transforms
@@ -817,7 +812,6 @@ xmlSecOpenSSLTransformAes256CbcGetKlass(void) {
 }
 
 #endif /* XMLSEC_NO_AES */
-#endif /* XMLSEC_OPENSSL_096 */
 
 #ifndef XMLSEC_NO_DES
 static xmlSecTransformKlass xmlSecOpenSSLDes3CbcKlass = {

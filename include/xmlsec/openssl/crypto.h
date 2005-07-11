@@ -20,6 +20,19 @@ extern "C" {
 
 #include <openssl/err.h>
 
+/* OpenSSL 0.9.6 and 0.9.7 do not have SHA 224/256/384/512 */
+#if defined(XMLSEC_OPENSSL_096) || defined(XMLSEC_OPENSSL_097)
+#define XMLSEC_NO_SHA224 1
+#define XMLSEC_NO_SHA256 1
+#define XMLSEC_NO_SHA384 1
+#define XMLSEC_NO_SHA512 1
+#endif /* defined(XMLSEC_OPENSSL_096) || defined(XMLSEC_OPENSSL_097) */
+
+
+/* OpenSSL 0.9.6 does not have AES */
+#if defined(XMLSEC_OPENSSL_096)
+#define XMLSEC_NO_AES	 1
+#endif /* XMLSEC_OPENSSL_096 */
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr	xmlSecCryptoGetFunctions_openssl(void);
 
@@ -42,7 +55,6 @@ XMLSEC_CRYPTO_EXPORT const xmlChar*	xmlSecOpenSSLGetDefaultTrustedCertsFolder(vo
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_AES
-#ifndef XMLSEC_OPENSSL_096
 /**
  * xmlSecOpenSSLKeyDataAesId:
  * 
@@ -108,7 +120,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecOpenSSLTransformKWAes192GetKlass(vo
 	xmlSecOpenSSLTransformKWAes256GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecOpenSSLTransformKWAes256GetKlass(void);
 
-#endif /* XMLSEC_OPENSSL_096 */
 #endif /* XMLSEC_NO_AES */
 
 /********************************************************************
@@ -201,6 +212,24 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLKeyDataHmacSet	(xmlSecKeyDataPtr data,
 									 const xmlSecByte* buf,
 									 xmlSecSize bufSize);
 /**
+ * xmlSecOpenSSLTransformHmacMd5Id:
+ * 
+ * The HMAC with MD5 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformHmacMd5Id \
+	xmlSecOpenSSLTransformHmacMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacMd5GetKlass(void);
+
+/**
+ * xmlSecOpenSSLTransformHmacRipemd160Id:
+ * 
+ * The HMAC with RipeMD160 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformHmacRipemd160Id \
+	xmlSecOpenSSLTransformHmacRipemd160GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacRipemd160GetKlass(void);
+
+/**
  * xmlSecOpenSSLTransformHmacSha1Id:
  * 
  * The HMAC with SHA1 signature transform klass.
@@ -246,25 +275,24 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha384GetKlass(
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacSha512GetKlass(void);
 
 
-/**
- * xmlSecOpenSSLTransformHmacRipemd160Id:
- * 
- * The HMAC with RipeMD160 signature transform klass.
- */
-#define xmlSecOpenSSLTransformHmacRipemd160Id \
-	xmlSecOpenSSLTransformHmacRipemd160GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacRipemd160GetKlass(void);
-
-/**
- * xmlSecOpenSSLTransformHmacMd5Id:
- * 
- * The HMAC with MD5 signature transform klass.
- */
-#define xmlSecOpenSSLTransformHmacMd5Id \
-	xmlSecOpenSSLTransformHmacMd5GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformHmacMd5GetKlass(void);
-
 #endif /* XMLSEC_NO_HMAC */
+
+/********************************************************************
+ *
+ * Md5 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecOpenSSLTransformMd5Id:
+ * 
+ * The MD5 digest transform klass.
+ */
+#define xmlSecOpenSSLTransformMd5Id \
+	xmlSecOpenSSLTransformMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
 
 /********************************************************************
  *

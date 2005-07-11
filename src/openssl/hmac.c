@@ -59,6 +59,7 @@ struct _xmlSecOpenSSLHmacCtx {
 #define xmlSecOpenSSLHmacSize	\
     (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLHmacCtx))
 
+static int	xmlSecOpenSSLHmacCheckId			(xmlSecTransformPtr transform);
 static int	xmlSecOpenSSLHmacInitialize			(xmlSecTransformPtr transform);
 static void	xmlSecOpenSSLHmacFinalize			(xmlSecTransformPtr transform);
 static int 	xmlSecOpenSSLHmacNodeRead			(xmlSecTransformPtr transform,
@@ -77,10 +78,58 @@ static int	xmlSecOpenSSLHmacExecute			(xmlSecTransformPtr transform,
 								 xmlSecTransformCtxPtr transformCtx);
 
 
-#define xmlSecOpenSSLHmacCheckId(transform) \
-    (xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformHmacSha1Id) || \
-     xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformHmacRipemd160Id) || \
-     xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformHmacMd5Id))
+static int
+xmlSecOpenSSLHmacCheckId(xmlSecTransformPtr transform) {
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha1Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */    
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha224Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_SHA224 */    
+    
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha256Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */    
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha384Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_SHA384 */    
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha512Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_SHA512 */    
+
+#ifndef XMLSEC_NO_RIPEMD160
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacRipemd160Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_RIPEMD160 */    
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacMd5Id)) {
+	return(1);
+    } else
+#endif /* XMLSEC_NO_MD5 */    
+
+    {
+	return(0);
+    }
+    
+    return(0);
+}
+
 
 
 static int 
@@ -95,14 +144,50 @@ xmlSecOpenSSLHmacInitialize(xmlSecTransformPtr transform) {
     
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecOpenSSLHmacCtx));
-    
+
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha1Id)) {
-	ctx->hmacDgst = EVP_sha1();
-    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacRipemd160Id)) {
-	ctx->hmacDgst = EVP_ripemd160();	   
-    } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacMd5Id)) {
-	ctx->hmacDgst = EVP_md5();
-    } else {
+        ctx->hmacDgst = EVP_sha1();
+    } else 
+#endif /* XMLSEC_NO_SHA1 */    
+
+#ifndef XMLSEC_NO_SHA224
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha224Id)) {
+        ctx->hmacDgst = EVP_sha224();
+    } else 
+#endif /* XMLSEC_NO_SHA224 */    
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha256Id)) {
+        ctx->hmacDgst = EVP_sha256();
+    } else 
+#endif /* XMLSEC_NO_SHA256 */    
+    
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha384Id)) {
+        ctx->hmacDgst = EVP_sha384();
+    } else 
+#endif /* XMLSEC_NO_SHA384 */    
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacSha512Id)) {
+        ctx->hmacDgst = EVP_sha512();
+    } else 
+#endif /* XMLSEC_NO_SHA512 */    
+
+#ifndef XMLSEC_NO_RIPEMD160 
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacRipemd160Id)) {
+        ctx->hmacDgst = EVP_ripemd160();
+    } else 
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformHmacMd5Id)) {
+        ctx->hmacDgst = EVP_md5();
+    } else 
+#endif /* XMLSEC_NO_MD5 */
+    
+    {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -380,89 +465,7 @@ xmlSecOpenSSLHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     return(0);
 }
 
-/** 
- * HMAC SHA1
- */
-static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
-
-    xmlSecNameHmacSha1,				/* const xmlChar* name; */
-    xmlSecHrefHmacSha1, 			/* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    
-    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
-    
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
-};
-
-/** 
- * xmlSecOpenSSLTransformHmacSha1GetKlass:
- *
- * The HMAC-SHA1 transform klass.
- *
- * Returns the HMAC-SHA1 transform klass.
- */
-xmlSecTransformId 
-xmlSecOpenSSLTransformHmacSha1GetKlass(void) {
-    return(&xmlSecOpenSSLHmacSha1Klass);
-}
-
-/** 
- * HMAC RIPEMD160 
- */
-static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
-
-    xmlSecNameHmacRipemd160,			/* const xmlChar* name; */
-    xmlSecHrefHmacRipemd160, 			/* const xmlChar* href; */
-    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
-    
-    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
-    
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
-};
-
-/** 
- * xmlSecOpenSSLTransformHmacRipemd160GetKlass:
- *
- * The HMAC-RIPEMD160 transform klass.
- *
- * Returns the HMAC-RIPEMD160 transform klass.
- */
-xmlSecTransformId 
-xmlSecOpenSSLTransformHmacRipemd160GetKlass(void) {
-    return(&xmlSecOpenSSLHmacRipemd160Klass);
-}
+#ifndef XMLSEC_NO_MD5 
 
 /** 
  * HMAC MD5
@@ -505,6 +508,279 @@ xmlSecTransformId
 xmlSecOpenSSLTransformHmacMd5GetKlass(void) {
     return(&xmlSecOpenSSLHmacMd5Klass);
 }
+
+#endif /* XMLSEC_NO_MD5 */
+
+
+#ifndef XMLSEC_NO_RIPEMD160 
+/** 
+ * HMAC RIPEMD160 
+ */
+static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
+
+    xmlSecNameHmacRipemd160,			/* const xmlChar* name; */
+    xmlSecHrefHmacRipemd160, 			/* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
+    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecOpenSSLTransformHmacRipemd160GetKlass:
+ *
+ * The HMAC-RIPEMD160 transform klass.
+ *
+ * Returns the HMAC-RIPEMD160 transform klass.
+ */
+xmlSecTransformId 
+xmlSecOpenSSLTransformHmacRipemd160GetKlass(void) {
+    return(&xmlSecOpenSSLHmacRipemd160Klass);
+}
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_SHA1
+/** 
+ * HMAC SHA1
+ */
+static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
+
+    xmlSecNameHmacSha1,				/* const xmlChar* name; */
+    xmlSecHrefHmacSha1, 			/* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
+    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecOpenSSLTransformHmacSha1GetKlass:
+ *
+ * The HMAC-SHA1 transform klass.
+ *
+ * Returns the HMAC-SHA1 transform klass.
+ */
+xmlSecTransformId 
+xmlSecOpenSSLTransformHmacSha1GetKlass(void) {
+    return(&xmlSecOpenSSLHmacSha1Klass);
+}
+
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA224
+/** 
+ * HMAC SHA224
+ */
+static xmlSecTransformKlass xmlSecOpenSSLHmacSha224Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
+
+    xmlSecNameHmacSha224,			/* const xmlChar* name; */
+    xmlSecHrefHmacSha224, 			/* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
+    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecOpenSSLTransformHmacSha224GetKlass:
+ *
+ * The HMAC-SHA224 transform klass.
+ *
+ * Returns the HMAC-SHA224 transform klass.
+ */
+xmlSecTransformId 
+xmlSecOpenSSLTransformHmacSha224GetKlass(void) {
+    return(&xmlSecOpenSSLHmacSha224Klass);
+}
+
+#endif /* XMLSEC_NO_SHA224 */
+
+#ifndef XMLSEC_NO_SHA256
+/** 
+ * HMAC SHA256
+ */
+static xmlSecTransformKlass xmlSecOpenSSLHmacSha256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
+
+    xmlSecNameHmacSha256,			/* const xmlChar* name; */
+    xmlSecHrefHmacSha256, 			/* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
+    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecOpenSSLTransformHmacSha256GetKlass:
+ *
+ * The HMAC-SHA256 transform klass.
+ *
+ * Returns the HMAC-SHA256 transform klass.
+ */
+xmlSecTransformId 
+xmlSecOpenSSLTransformHmacSha256GetKlass(void) {
+    return(&xmlSecOpenSSLHmacSha256Klass);
+}
+
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/** 
+ * HMAC SHA384
+ */
+static xmlSecTransformKlass xmlSecOpenSSLHmacSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
+
+    xmlSecNameHmacSha384,			/* const xmlChar* name; */
+    xmlSecHrefHmacSha384, 			/* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
+    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecOpenSSLTransformHmacSha384GetKlass:
+ *
+ * The HMAC-SHA384 transform klass.
+ *
+ * Returns the HMAC-SHA384 transform klass.
+ */
+xmlSecTransformId 
+xmlSecOpenSSLTransformHmacSha384GetKlass(void) {
+    return(&xmlSecOpenSSLHmacSha384Klass);
+}
+
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/** 
+ * HMAC SHA512
+ */
+static xmlSecTransformKlass xmlSecOpenSSLHmacSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
+    xmlSecOpenSSLHmacSize,			/* xmlSecSize objSize */
+
+    xmlSecNameHmacSha512,			/* const xmlChar* name; */
+    xmlSecHrefHmacSha512, 			/* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,	/* xmlSecTransformUsage usage; */
+    
+    xmlSecOpenSSLHmacInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLHmacFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecOpenSSLHmacNodeRead,			/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLHmacSetKeyReq,			/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLHmacSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLHmacVerify,			/* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLHmacExecute,			/* xmlSecTransformExecuteMethod execute; */
+    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecOpenSSLTransformHmacSha512GetKlass:
+ *
+ * The HMAC-SHA512 transform klass.
+ *
+ * Returns the HMAC-SHA512 transform klass.
+ */
+xmlSecTransformId 
+xmlSecOpenSSLTransformHmacSha512GetKlass(void) {
+    return(&xmlSecOpenSSLHmacSha512Klass);
+}
+
+#endif /* XMLSEC_NO_SHA512 */
+
 
 #endif /* XMLSEC_NO_HMAC */
 

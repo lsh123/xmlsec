@@ -331,6 +331,12 @@ const xmlChar xmlSecHrefHMACKeyValue[]		= "http://www.aleksey.com/xmlsec/2002#HM
 
 const xmlChar xmlSecNodeHMACOutputLength[] 	= "HMACOutputLength";
 
+const xmlChar xmlSecNameHmacMd5[]		= "hmac-md5";
+const xmlChar xmlSecHrefHmacMd5[]		= "http://www.w3.org/2001/04/xmldsig-more#hmac-md5";
+
+const xmlChar xmlSecNameHmacRipemd160[]		= "hmac-ripemd160";
+const xmlChar xmlSecHrefHmacRipemd160[]		= "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
+
 const xmlChar xmlSecNameHmacSha1[]		= "hmac-sha1";
 const xmlChar xmlSecHrefHmacSha1[]		= "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
 
@@ -345,12 +351,6 @@ const xmlChar xmlSecHrefHmacSha384[]		= "http://www.w3.org/2001/04/xmldsig-more#
 
 const xmlChar xmlSecNameHmacSha512[]		= "hmac-sha512";
 const xmlChar xmlSecHrefHmacSha512[]		= "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
-
-const xmlChar xmlSecNameHmacRipemd160[]		= "hmac-ripemd160";
-const xmlChar xmlSecHrefHmacRipemd160[]		= "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
-
-const xmlChar xmlSecNameHmacMd5[]		= "hmac-md5";
-const xmlChar xmlSecHrefHmacMd5[]		= "http://www.w3.org/2001/04/xmldsig-more#hmac-md5";
 
 /*************************************************************************
  *
@@ -374,6 +374,14 @@ const xmlChar xmlSecNodeKeyValue[]		= "KeyValue";
  *
  ************************************************************************/
 const xmlChar xmlSecNameMemBuf[]		= "membuf-transform";
+
+/*************************************************************************
+ *
+ * MD5 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameMd5[]			= "md5";
+const xmlChar xmlSecHrefMd5[]			= "http://www.w3.org/2001/04/xmldsig-more#md5";
 
 /*************************************************************************
  *
@@ -437,13 +445,13 @@ const xmlChar xmlSecNameSha224[]		= "sha224";
 const xmlChar xmlSecHrefSha224[]		= "http://www.w3.org/2001/04/xmldsig-more#sha224";
 
 const xmlChar xmlSecNameSha256[]		= "sha256";
-const xmlChar xmlSecHrefSha256[]		= "http://www.w3.org/2001/04/xmldsig-more#sha256";
+const xmlChar xmlSecHrefSha256[]		= "http://www.w3.org/2001/04/xmlenc#sha256";
 
 const xmlChar xmlSecNameSha384[]		= "sha384";
 const xmlChar xmlSecHrefSha384[]		= "http://www.w3.org/2001/04/xmldsig-more#sha384";
 
 const xmlChar xmlSecNameSha512[]		= "sha512";
-const xmlChar xmlSecHrefSha512[]		= "http://www.w3.org/2001/04/xmldsig-more#sha512";
+const xmlChar xmlSecHrefSha512[]		= "http://www.w3.org/2001/04/xmlenc#sha512";
 
 /*************************************************************************
  *

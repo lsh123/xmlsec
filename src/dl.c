@@ -705,6 +705,24 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
 	return(-1);
     }    
 
+    if((functions->transformHmacMd5GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacMd5GetKlass()) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformHmacMd5GetKlass())),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }    
+
+    if((functions->transformHmacRipemd160GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacRipemd160GetKlass()) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformHmacRipemd160GetKlass())),
+		    "xmlSecTransformIdsRegister",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }    
+
     if((functions->transformHmacSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacSha1GetKlass()) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformHmacSha1GetKlass())),
@@ -750,18 +768,9 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
 	return(-1);
     }
 
-    if((functions->transformHmacRipemd160GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacRipemd160GetKlass()) < 0) {
+    if((functions->transformMd5GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformMd5GetKlass()) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformHmacRipemd160GetKlass())),
-		    "xmlSecTransformIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
-    }    
-
-    if((functions->transformHmacMd5GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformHmacMd5GetKlass()) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformHmacMd5GetKlass())),
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformMd5GetKlass())),
 		    "xmlSecTransformIdsRegister",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);

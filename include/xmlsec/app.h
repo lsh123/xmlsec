@@ -175,6 +175,21 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformKWDes3GetKlass	(void);
  */
 #define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformDsaSha1GetKlass	(void);	
+
+/**
+ * xmlSecTransformHmacMd5Id:
+ * 
+ * The HMAC with MD5 signature transform klass.
+ */
+#define xmlSecTransformHmacMd5Id		xmlSecTransformHmacMd5GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformHmacMd5GetKlass	(void);	
+/**
+ * xmlSecTransformHmacRipemd160Id:
+ * 
+ * The HMAC with RipeMD160 signature transform klass.
+ */
+#define xmlSecTransformHmacRipemd160Id		xmlSecTransformHmacRipemd160GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformHmacRipemd160GetKlass(void);
 /**
  * xmlSecTransformHmacSha1Id:
  * 
@@ -211,19 +226,12 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformHmacSha384GetKlass	(void);
 #define xmlSecTransformHmacSha512Id		xmlSecTransformHmacSha512GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformHmacSha512GetKlass	(void);	
 /**
- * xmlSecTransformHmacRipemd160Id:
+ * xmlSecTransformMd5Id:
  * 
- * The HMAC with RipeMD160 signature transform klass.
+ * The MD5 digest transform klass.
  */
-#define xmlSecTransformHmacRipemd160Id		xmlSecTransformHmacRipemd160GetKlass()
-XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformHmacRipemd160GetKlass(void);
-/**
- * xmlSecTransformHmacMd5Id:
- * 
- * The HMAC with MD5 signature transform klass.
- */
-#define xmlSecTransformHmacMd5Id		xmlSecTransformHmacMd5GetKlass()
-XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformHmacMd5GetKlass	(void);	
+#define xmlSecTransformMd5Id			xmlSecTransformMd5GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformMd5GetKlass(void);
 /**
  * xmlSecTransformRipemd160Id:
  * 

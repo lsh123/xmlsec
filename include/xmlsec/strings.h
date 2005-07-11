@@ -340,6 +340,12 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHMACKeyValue[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeHMACOutputLength[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacMd5[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacMd5[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacRipemd160[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacRipemd160[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha1[];
 
@@ -354,12 +360,6 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha384[];
 
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacSha512[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacSha512[];
-
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacRipemd160[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacRipemd160[];
-
-XMLSEC_EXPORT_VAR const xmlChar xmlSecNameHmacMd5[];
-XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefHmacMd5[];
 
 /*************************************************************************
  *
@@ -383,6 +383,14 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeKeyValue[];
  *
  ************************************************************************/
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMemBuf[];
+
+/*************************************************************************
+ *
+ * MD5 strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameMd5[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefMd5[];
 
 /*************************************************************************
  *

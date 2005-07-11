@@ -2,14 +2,15 @@
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
   <SignedInfo>
     <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-md5">
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#hmac-sha512">
       <HMACOutputLength>64</HMACOutputLength>
     </SignatureMethod>
     <Reference URI="#object">
-      <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <DigestValue>7/XTsHaBSOnJ/jXD5v0zL6VKYsk=</DigestValue>
+      <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+      <DigestValue>E2Jo801uUCgAIa65niLU7jPSWPWUbsgT+okPgBcw/h72V7bmI0J2faJ+8EbwVwah
+XDnbRaf22WqerzX1vL0QzA==</DigestValue>
     </Reference>
   </SignedInfo>
-  <SignatureValue>GlqEfgOS/dk=</SignatureValue>
+  <SignatureValue>rQcObPRcpOc=</SignatureValue>
   <Object Id="object">some text</Object>
 </Signature>

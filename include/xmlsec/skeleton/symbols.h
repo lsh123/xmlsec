@@ -58,14 +58,27 @@ extern "C" {
 #define xmlSecTransformDes3CbcId		xmlSecSkeletonTransformDes3CbcId
 #define xmlSecTransformKWDes3Id			xmlSecSkeletonTransformKWDes3Id
 #define xmlSecTransformDsaSha1Id		xmlSecSkeletonTransformDsaSha1Id
-#define xmlSecTransformHmacSha1Id		xmlSecSkeletonTransformHmacSha1Id
-#define xmlSecTransformHmacRipemd160Id		xmlSecSkeletonTransformHmacRipemd160Id
 #define xmlSecTransformHmacMd5Id		xmlSecSkeletonTransformHmacMd5Id
+#define xmlSecTransformHmacRipemd160Id		xmlSecSkeletonTransformHmacRipemd160Id
+#define xmlSecTransformHmacSha1Id		xmlSecSkeletonTransformHmacSha1Id
+#define xmlSecTransformHmacSha224Id		xmlSecSkeletonTransformHmacSha224Id
+#define xmlSecTransformHmacSha256Id		xmlSecSkeletonTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id		xmlSecSkeletonTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id		xmlSecSkeletonTransformHmacSha512Id
+#define xmlSecTransformMd5Id			xmlSecSkeletonTransformMd5Id
 #define xmlSecTransformRipemd160Id		xmlSecSkeletonTransformRipemd160Id
 #define xmlSecTransformRsaSha1Id		xmlSecSkeletonTransformRsaSha1Id
+#define xmlSecTransformRsaSha224Id		xmlSecSkeletonTransformRsaSha224Id
+#define xmlSecTransformRsaSha256Id		xmlSecSkeletonTransformRsaSha256Id
+#define xmlSecTransformRsaSha384Id		xmlSecSkeletonTransformRsaSha384Id
+#define xmlSecTransformRsaSha512Id		xmlSecSkeletonTransformRsaSha512Id
 #define xmlSecTransformRsaPkcs1Id		xmlSecSkeletonTransformRsaPkcs1Id
 #define xmlSecTransformRsaOaepId		xmlSecSkeletonTransformRsaOaepId
 #define xmlSecTransformSha1Id			xmlSecSkeletonTransformSha1Id
+#define xmlSecTransformSha224Id			xmlSecSkeletonTransformSha224Id
+#define xmlSecTransformSha256Id			xmlSecSkeletonTransformSha256Id
+#define xmlSecTransformSha384Id			xmlSecSkeletonTransformSha384Id
+#define xmlSecTransformSha512Id			xmlSecSkeletonTransformSha512Id
 
 /**
  * High level routines form xmlsec command line utility

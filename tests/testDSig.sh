@@ -116,91 +116,6 @@ echo "--- log file is $logfile"
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    " " 
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-dsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    " " 
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    " " 
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" 
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" \
-    "--hmackey $topfolder/keys/hmackey.bin" 
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-rsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
-    " " 
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-external-b64-dsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    " " 
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-external-dsa" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    " " 
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-keyname" \
-    "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret"
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-crt" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-sn" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-is" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-ski" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
-
-execDSigTest "" "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
-    
-execDSigTest "" "merlin-xmldsig-twenty-three/signature" \
-    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$cert_format" \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
-
-execDSigTest "" "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
-    
-execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
-    " " \
-    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
-    " " 
-    
 execDSigTest "" "aleksey-xmldsig-01/enveloping-dsa-x509chain" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
     "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
@@ -309,6 +224,91 @@ execDSigTest "" "aleksey-xmldsig-01/x509data-sn-test" \
     "$priv_key_option tests/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    " " 
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-dsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    " " 
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    " " 
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloping-rsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    " " 
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-external-b64-dsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    " " 
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-external-dsa" \
+    " " \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    " " 
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-keyname" \
+    "--pubkey-cert-$cert_format:Lugh $topfolder/merlin-xmldsig-twenty-three/certs/lugh-cert.$cert_format" \
+    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option:test-dsa $topfolder/keys/dsakey.$priv_key_format --pwd secret"
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-crt" \
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-sn" \
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/badb.$cert_format" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-is" \
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/macha.$cert_format" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-x509-ski" \
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
+
+execDSigTest "" "merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt" \
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/ca.$cert_format --untrusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/nemain.$cert_format" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret"\
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --trusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
+    
+execDSigTest "" "merlin-xmldsig-twenty-three/signature" \
+    "--trusted-$cert_format $topfolder/merlin-xmldsig-twenty-three/certs/merlin.$cert_format" \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
+
+execDSigTest "" "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+    
+execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
+    " " \
+    "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
+    " " 
+    
 execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
     ""
     
@@ -336,8 +336,8 @@ execDSigTest "phaos-xmldsig-three" "signature-dsa-enveloping" \
 execDSigTest "phaos-xmldsig-three" "signature-dsa-manifest" \
     "--trusted-$cert_format certs/dsa-ca-cert.$cert_format"
 
-# execDSigTest "phaos-xmldsig-three" "signature-hmac-md5-c14n-enveloping" \
-#    "--hmackey certs/hmackey.bin"
+execDSigTest "phaos-xmldsig-three" "signature-hmac-md5-c14n-enveloping" \
+    "--hmackey certs/hmackey.bin"
     
 execDSigTest "phaos-xmldsig-three" "signature-hmac-sha1-40-c14n-comments-detached" \
     "--hmackey certs/hmackey.bin"

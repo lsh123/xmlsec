@@ -11,7 +11,7 @@ REM
 SET XMLSEC_PREFIX=d:\sdk
 SET XMLSEC_INCLUDE=%XMLSEC_PREFIX%\include;%XMLSEC_PREFIX%\include\mozilla;%XMLSEC_PREFIX%\include\mozilla\nspr;%XMLSEC_PREFIX%\include\mozilla\nss;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%XMLSEC_PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=static=no iconv=no nt4=yes debug=yes xslt=yes crypto=openssl
+SET XMLSEC_OPTIONS=static=no iconv=no nt4=yes debug=yes xslt=yes crypto=openssl=097
 
 REM mscrypto,openssl
 

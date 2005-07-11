@@ -302,30 +302,32 @@ var crlist, j;
 crlist = withCrypto.split(",");			
 withCrypto = "";
 for (j = 0; j < crlist.length; j++) {		
-	if (crlist[j] == "openssl")
+	if (crlist[j] == "openssl") {
 		withOpenSSL = 1;
 		withOpenSSLVersion = "XMLSEC_OPENSSL_098"; /* default */
-	else if (crlist[j] == "openssl=096")
+	} else if (crlist[j] == "openssl=096") {
 		withOpenSSL = 1;
 		withOpenSSLVersion = "XMLSEC_OPENSSL_096";
-	else if (crlist[j] == "openssl=097")
+	} else if (crlist[j] == "openssl=097") {
 		withOpenSSL = 1;
 		withOpenSSLVersion = "XMLSEC_OPENSSL_097";
-	else if (crlist[j] == "openssl=098")
+	} else if (crlist[j] == "openssl=098") {
 		withOpenSSL = 1;
 		withOpenSSLVersion = "XMLSEC_OPENSSL_098";
-	else if (crlist[j] == "nss")
+	} else if (crlist[j] == "nss") {
 		withNss = 1;
-	else if (crlist[j] == "mscrypto")
+	} else if (crlist[j] == "mscrypto") {
 		withMSCrypto = 1;
-	else {
+	} else {
 		WScript.Echo("Unknown crypto engine \"" + crlist[j] + "\" is found. Aborting.");
 		WScript.Quit(error);
 	}
 	withCrypto = withCrypto + " " + crlist[j];
 }
 withDefaultCrypto = crlist[0];
-if (withDefaultCrypto == "openssl=096" || withDefaultCrypto="openssl=097" || withDefaultCrypto="openssl=098")
+if (withDefaultCrypto == "openssl=096" || 
+    withDefaultCrypto == "openssl=097" ||
+    withDefaultCrypto == "openssl=098")
 	withDefaultCrypto = "openssl";
 
 // Discover the version.

@@ -1,5 +1,10 @@
 2005-07-12  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* configure.in docs/download.html docs/index.html docs/news.html:
+	preparation for new 1.2.9 release 
+
+2005-07-12  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/xmltree.c: fixing a problem with namespaces in the
 	nodes created by "template" functions
 

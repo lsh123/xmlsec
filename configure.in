@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmlsec1], 1.1.2, [http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1], 1.2.9, [http://www.aleksey.com/xmlsec])
 
 XMLSEC_PACKAGE=xmlsec1
 XMLSEC_VERSION_MAJOR=1

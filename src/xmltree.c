@@ -212,8 +212,8 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
 	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
 	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
-	    xmlSetNs(cur, nsPtr);
 	}
+	xmlSetNs(cur, nsPtr);
     }
     
     /* TODO: add indents */
@@ -314,8 +314,8 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
 	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
-	    xmlSetNs(cur, nsPtr);
 	}
+	xmlSetNs(cur, nsPtr);
     }
 
     /* TODO: add indents */
@@ -369,8 +369,8 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
 	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
-	    xmlSetNs(cur, nsPtr);
 	}
+	xmlSetNs(cur, nsPtr);
     }
 
     /* TODO: add indents */

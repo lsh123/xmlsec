@@ -1,3 +1,8 @@
+2005-07-12  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/xmltree.c: fixing a problem with namespaces in the
+	nodes created by "template" functions
+
 2005-07-10  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* src/openssl/evp.c: added hack from Erwann ABALEA: 

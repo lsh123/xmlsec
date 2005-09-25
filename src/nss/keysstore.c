@@ -481,25 +481,5 @@ done:
 	xmlSecKeyDestroy(key);
     }
 
-    /* now that we have a key, make sure it is valid and let the simple
-     * store adopt it */
-    if (retval) {
-	if (xmlSecKeyIsValid(retval)) {
-	    ret = xmlSecSimpleKeysStoreAdoptKey(*ss, retval);
-	    if (ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-			    xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-			    "xmlSecSimpleKeysStoreAdoptKey",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		xmlSecKeyDestroy(retval);
-		retval = NULL;
-	    }
-        } else {
-	    xmlSecKeyDestroy(retval);
-	    retval = NULL;
-	}
-    }
-
     return (retval);
 }

@@ -21,7 +21,7 @@ AC_SUBST(XMLSEC_VERSION_MINOR)
 AC_SUBST(XMLSEC_VERSION_SUBMINOR)
 AC_SUBST(XMLSEC_VERSION_INFO)
 
-AM_INIT_AUTOMAKE([1.9 tar-ustar])
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
 dnl
@@ -417,91 +417,6 @@ AC_SUBST(OPENSSL_CRYPTO_LIB)
 AC_SUBST(OPENSSL_MIN_VERSION)
 
 dnl ==========================================================================
-dnl See if we can find GnuTLS
-dnl ==========================================================================
-GNUTLS_CONFIG="libgnutls-config"
-XMLSEC_NO_GNUTLS="1"
-GNUTLS_MIN_VERSION="0.8.1"
-GNUTLS_NEW_MIN_VERSION="1.0.0"
-GNUTLS_VERSION=""
-GNUTLS_CFLAGS=""
-GNUTLS_LIBS=""
-GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
-GNUTLS_FOUND="no"
-AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]       gnutls location])
-if test "z$with_gnutls" = "zno" ; then
-    AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
-    AC_MSG_RESULT(no)
-    GNUTLS_FOUND="without"
-elif test "z$with_gnutls" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
-    PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_NEW_MIN_VERSION,
-	[GNUTLS_FOUND=yes],
-	[GNUTLS_FOUND=no])
-
-    if test "z$GNUTLS_FOUND" = "zno" ; then 
-	PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
-	    [GNUTLS_FOUND=yes],
-	    [GNUTLS_FOUND=no])
-	if test "z$GNUTLS_FOUND" = "zyes" ; then 
-	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
-	fi
-    fi
-fi
-
-if test "z$GNUTLS_FOUND" = "zno" ; then 
-    AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
-    if test "z$with_gnutls" != "z" ; then
-	GNUTLS_CONFIG=$with_gnutls/bin/$GNUTLS_CONFIG
-    fi
-    if ! $GNUTLS_CONFIG --version > /dev/null 2>&1 ; then
-	if test "z$with_gnutls" != "z" ; then
-	    AC_MSG_ERROR(Unable to find gnutls at '$with_gnutls')
-	else 
-	    AC_MSG_RESULT(no)
-	fi
-    else
-        vers=`$GNUTLS_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	if test "$vers" -ge "$minvers" ; then
-	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS `$GNUTLS_CONFIG --cflags`"
-    	    GNUTLS_LIBS="$GNUTLS_LIBS `$GNUTLS_CONFIG --libs`"
-	    GNUTLS_FOUND=yes
-	
-	    new_minvers=`echo $GNUTLS_NEW_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
-	    if test "$vers" -lt "$new_minvers" ; then
-		GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
-	    fi    
-	    AC_MSG_RESULT(yes)
-	else
-    	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $XMLSEC_PACKAGE)
-	fi	
-    fi
-fi
-
-if test "z$GNUTLS_FOUND" = "zyes" ; then 
-    XMLSEC_NO_GNUTLS="0"
-    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
-
-    dnl first crypto library is default one
-    if test "z$XMLSEC_CRYPTO" = "z" ; then
-	XMLSEC_CRYPTO="gnutls"
-    	XMLSEC_CRYPTO_LIB="$GNUTLS_CRYPTO_LIB"
-	XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
-    fi	
-    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
-else
-    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
-fi
-
-AM_CONDITIONAL(XMLSEC_NO_GNUTLS, test "z$XMLSEC_NO_GNUTLS" = "z1")
-AC_SUBST(XMLSEC_NO_GNUTLS)
-AC_SUBST(GNUTLS_CFLAGS)
-AC_SUBST(GNUTLS_LIBS)
-AC_SUBST(GNUTLS_CRYPTO_LIB)
-AC_SUBST(GNUTLS_MIN_VERSION)
-
-dnl ==========================================================================
 dnl See if we can find NSS and NSPR
 dnl Allow the use of:
 dnl   1.  Mozilla style distribution where all mozilla components (NSS, NSPR
@@ -733,6 +648,91 @@ AC_SUBST(NSS_CRYPTO_LIB)
 AC_SUBST(NSS_MIN_VERSION)
 AC_SUBST(NSPR_MIN_VERSION)
 AC_SUBST(MOZILLA_MIN_VERSION)
+
+dnl ==========================================================================
+dnl See if we can find GnuTLS
+dnl ==========================================================================
+GNUTLS_CONFIG="libgnutls-config"
+XMLSEC_NO_GNUTLS="1"
+GNUTLS_MIN_VERSION="0.8.1"
+GNUTLS_NEW_MIN_VERSION="1.0.0"
+GNUTLS_VERSION=""
+GNUTLS_CFLAGS=""
+GNUTLS_LIBS=""
+GNUTLS_CRYPTO_LIB="$XMLSEC_PACKAGE-gnutls"
+GNUTLS_FOUND="no"
+AC_ARG_WITH(gnutls, [  --with-gnutls=[PFX]       gnutls location])
+if test "z$with_gnutls" = "zno" ; then
+    AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
+    AC_MSG_RESULT(no)
+    GNUTLS_FOUND="without"
+elif test "z$with_gnutls" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
+    PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_NEW_MIN_VERSION,
+	[GNUTLS_FOUND=yes],
+	[GNUTLS_FOUND=no])
+
+    if test "z$GNUTLS_FOUND" = "zno" ; then 
+	PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,
+	    [GNUTLS_FOUND=yes],
+	    [GNUTLS_FOUND=no])
+	if test "z$GNUTLS_FOUND" = "zyes" ; then 
+	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
+	fi
+    fi
+fi
+
+if test "z$GNUTLS_FOUND" = "zno" ; then 
+    AC_MSG_CHECKING(for gnutls libraries >= $GNUTLS_MIN_VERSION) 
+    if test "z$with_gnutls" != "z" ; then
+	GNUTLS_CONFIG=$with_gnutls/bin/$GNUTLS_CONFIG
+    fi
+    if ! $GNUTLS_CONFIG --version > /dev/null 2>&1 ; then
+	if test "z$with_gnutls" != "z" ; then
+	    AC_MSG_ERROR(Unable to find gnutls at '$with_gnutls')
+	else 
+	    AC_MSG_RESULT(no)
+	fi
+    else
+        vers=`$GNUTLS_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	minvers=`echo $GNUTLS_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	if test "$vers" -ge "$minvers" ; then
+	    GNUTLS_CFLAGS="$GNUTLS_CFLAGS `$GNUTLS_CONFIG --cflags`"
+    	    GNUTLS_LIBS="$GNUTLS_LIBS `$GNUTLS_CONFIG --libs`"
+	    GNUTLS_FOUND=yes
+	
+	    new_minvers=`echo $GNUTLS_NEW_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	    if test "$vers" -lt "$new_minvers" ; then
+		GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_GNUTLS_OLD=1"
+	    fi    
+	    AC_MSG_RESULT(yes)
+	else
+    	    AC_MSG_ERROR(You need at least gnutls $GNUTLS_MIN_VERSION for this version of $XMLSEC_PACKAGE)
+	fi	
+    fi
+fi
+
+if test "z$GNUTLS_FOUND" = "zyes" ; then 
+    XMLSEC_NO_GNUTLS="0"
+    GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
+
+    dnl first crypto library is default one
+    if test "z$XMLSEC_CRYPTO" = "z" ; then
+	XMLSEC_CRYPTO="gnutls"
+    	XMLSEC_CRYPTO_LIB="$GNUTLS_CRYPTO_LIB"
+	XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS"
+	XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
+    fi	
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
+else
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
+fi
+
+AM_CONDITIONAL(XMLSEC_NO_GNUTLS, test "z$XMLSEC_NO_GNUTLS" = "z1")
+AC_SUBST(XMLSEC_NO_GNUTLS)
+AC_SUBST(GNUTLS_CFLAGS)
+AC_SUBST(GNUTLS_LIBS)
+AC_SUBST(GNUTLS_CRYPTO_LIB)
+AC_SUBST(GNUTLS_MIN_VERSION)
 
 dnl ==========================================================================
 dnl Do we have a crypto library?

@@ -96,12 +96,14 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 
     /* TODO: Check what provider is best suited here.... */
     if (!CryptAcquireContext(&ctx->provider, NULL, MS_STRONG_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
+    	if (!CryptAcquireContext(&ctx->provider, NULL, MS_ENHANCED_PROV,PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+		xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+		return(-1);
+	}
     }
 
     return(0);

@@ -48,7 +48,7 @@
             </div>
 <h3>0. Where can I read more about XML Signature and XML
 Encryption?</h3>
-<p>First of all, read the original specifications: <a href="http://www.w3.org/Signature/">XML Digital Signature</a> and <a href="http://www.w3.org/Encryption/">XML Encrytpion</a>. Also there <a href="related.html#books">several  books</a> available that can
+<p>First of all, read the original specifications: <a href="http://www.w3.org/Signature/">XML Digital Signature</a> and <a href="http://www.w3.org/Encryption/">XML Encrytpion</a>. Also there <a href="related.html#books">several books</a> available that can
 help you get started.<br></p>
 <h3>1. License(s).</h3>
 <h4> <a name="section_1_1"></a>1.1. Licensing Terms for
@@ -73,7 +73,7 @@ with proprietary
 applications/libraries<br>
 </td>
                   <td style="vertical-align: top; font-weight: bold;">Using
-with MIT/BSD  applications/libraries <br>
+with MIT/BSD applications/libraries <br>
 </td>
                   <td style="vertical-align: top; font-weight: bold;">Using
 with GPL
@@ -105,7 +105,7 @@ xmlsec-core library)<br>
                   <td style="vertical-align: top;">Yes.<br>
 </td>
                   <td style="vertical-align: top;">Yes.</td>
-                  <td style="vertical-align: top;">May be. <a href="http://www.openssl.org/support/faq.cgi#LEGAL2">OpenSSL FAQ</a> 
+                  <td style="vertical-align: top;">May be. <a href="http://www.openssl.org/support/faq.cgi#LEGAL2">OpenSSL FAQ</a>
 states that OpenSSL library is covered by a <a href="http://www.gnu.org/licenses/gpl-faq.html#WritingFSWithNFLibs">special
 GPL exception</a> thus it could be used in GPLed
 applications/libraries. However, some people think that this is not
@@ -124,7 +124,7 @@ xmlsec-core library) </td>
 <a href="http://www.opensource.org/licenses/gpl-license.php">GPL</a><br>
 </td>
                   <td style="vertical-align: top;">Yes, but only if
-the  application is not distributed.<br>
+the application is not distributed.<br>
 </td>
                   <td style="vertical-align: top;">Yes.</td>
                   <td style="vertical-align: top;">Yes.<br>
@@ -313,13 +313,13 @@ It can be anything you want! <br></p>
 <br><code>Id</code><code>Data</code><blockquote><code> &lt;?xml version="1.0"
 encoding="UTF-8"&gt;<br>
 &lt;Root&gt;<br>
-  &lt;Data Id="1234"&gt;<br>
-    The data I want to sign<br>
-  &lt;/Data&gt;<br>
+&lt;Data Id="1234"&gt;<br>
+The data I want to sign<br>
+&lt;/Data&gt;<br>
 &lt;/Root&gt;<br></code></blockquote>
 <p>One can use a simple DTD: </p>
 <blockquote><code> &lt;!DOCTYPE test [<br>
- &lt;!ATTLIST Data Id ID #IMPLIED&gt;<br>
+&lt;!ATTLIST Data Id ID #IMPLIED&gt;<br>
 ]&gt;<br></code></blockquote>
 <p> The DTD might be directly included in the XML file or
 located in a standalone file. In the second case, you might load the
@@ -329,8 +329,8 @@ This is a new W3C Working Draft and not all XML parsers support it now
 (LibXML2 does!). <br></p>
 <p>3) Application can directly declare ID attribute to
 LibXML2/XMLSec. If you are using xmlsec command line utility see
-"--id-attr" option.  If you are writing a C/C++ application
-yourself, call <code>xmlAddID</code> function.
+"--id-attr" option. If you are writing a C/C++ application
+yourself, call<code>xmlAddID</code> function.
 However, this approach might make you signature non-interoperable with
 other
 XMLDSig implementations.<br></p>

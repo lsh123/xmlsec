@@ -1,3 +1,7 @@
+2005-11-14  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in: fixing shrext vs. shrext_cmds conflict
+
 2005-09-25  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/nss/pkikeys.c: fixing xmlsec-nss crash
 	* configure.in: change crypto libs order to be openssl/nss/gnutls

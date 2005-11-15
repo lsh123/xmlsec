@@ -90,6 +90,13 @@ case "${host}" in
 esac
 
 dnl ==========================================================================
+dnl Hack for autoconf version mismatch
+dnl ==========================================================================
+if test "z$shrext" == "z" ; then 
+    shrext=$shrext_cmds
+fi
+
+dnl ==========================================================================
 dnl Check for __FUNCTION__ or __FUNCTION__
 dnl ==========================================================================
 AC_MSG_CHECKING(for __FUNCTION__ or __func__)

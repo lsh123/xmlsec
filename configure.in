@@ -486,7 +486,7 @@ if test "z$NSS_FOUND" = "zno" ; then
 
     if test "z$with_nspr" != "z" ; then
 	NSPR_PREFIX="$with_nspr"
-	NSPR_CFLAGS="-I$with_nspr/include"
+	NSPR_CFLAGS="-I$with_nspr/include -I$with_nspr/include/nspr"
 	if test "z$with_gnu_ld" = "zyes" ; then
 	    NSPR_LIBS="-Wl,-rpath-link -Wl,$with_nspr/lib -L$with_nspr/lib $NSPR_LIBS_LIST"
 	else
@@ -557,7 +557,7 @@ if test "z$NSS_FOUND" = "zno" ; then
     NSS_NSS_H=""
 
     if test "z$with_nss" != "z" ; then
-	NSS_CFLAGS="$NSS_CFLAGS -I$with_nss/include"
+	NSS_CFLAGS="$NSS_CFLAGS -I$with_nss/include -I$with_nss/include/nss"
 	if test "z$with_gnu_ld" = "zyes" ; then
 	    NSS_LIBS="$NSS_LIBS -Wl,-rpath-link -Wl,$with_nss/lib -L$with_nss/lib $NSS_LIBS_LIST"
         else

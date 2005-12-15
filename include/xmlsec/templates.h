@@ -117,6 +117,8 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplKeyInfoAddEncryptedKey	(xmlNodePtr keyInfoNod
  *
  **********************************************************************/ 
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddIssuerSerial	(xmlNodePtr x509DataNode);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar* issuerName);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const xmlChar* serial);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSubjectName	(xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddSKI		(xmlNodePtr x509DataNode);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplX509DataAddCertificate	(xmlNodePtr x509DataNode);

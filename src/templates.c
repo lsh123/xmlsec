@@ -1451,6 +1451,92 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
 }
 
 /**
+ * xmlSecTmplX509IssuerSerialAddIssuerName:
+ * @x509IssuerSerialNode: 	the pointer to <dsig:X509IssuerSerial/> node.
+ * @issuerName:		the issuer name (optional).	
+ *
+ * Adds <dsig:X509IssuerName/> node to the <dsig:X509IssuerSerial/> node @x509IssuerSerialNode.
+ *
+ * Returns the pointer to the newly created <dsig:X509IssuerName/> node or
+ * NULL if an error occurs.
+ */
+xmlNodePtr
+xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar* issuerName) {
+	xmlNodePtr res;
+	
+	xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
+	
+  if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName,
+				xmlSecDSigNs) != NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName),
+		    XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(NULL);
+	}
+
+	res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName, xmlSecDSigNs);
+    if(res == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecAddChild",
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "node=%s",
+		    xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
+	return(NULL);	
+    }
+
+		if (issuerName != NULL) {
+			xmlNodeSetContent(res, issuerName);
+		}
+		return(res);
+}
+
+/**
+ * xmlSecTmplX509IssuerSerialAddIssuerName:
+ * @x509IssuerSerialNode: 	the pointer to <dsig:X509IssuerSerial/> node.
+ * @serial:		the serial number (optional).	
+ *
+ * Adds <dsig:X509SerialNumber/> node to the <dsig:X509IssuerSerial/> node @x509IssuerSerialNode.
+ *
+ * Returns the pointer to the newly created <dsig:X509SerialNumber/> node or
+ * NULL if an error occurs.
+ */
+xmlNodePtr
+xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const xmlChar* serial) {
+	xmlNodePtr res;
+
+	xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
+
+	if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber,
+				xmlSecDSigNs) != NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+				NULL,
+				xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber),
+				XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
+				XMLSEC_ERRORS_NO_MESSAGE);
+		return(NULL);
+	}
+
+	res = xmlSecAddChild(x509IssuerSerialNode, xmlSecNodeX509SerialNumber, xmlSecDSigNs);
+	if(res == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+				NULL,
+				"xmlSecAddChild",
+				XMLSEC_ERRORS_R_XMLSEC_FAILED,
+				"node=%s",
+				xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
+		return(NULL);	
+	}
+
+	if (serial != NULL) {
+		xmlNodeSetContent(res, serial);
+	}
+	return(res);
+}
+
+/**
  * xmlSecTmplX509DataAddSubjectName:
  * @x509DataNode: 	the pointer to <dsig:X509Data/> node.
  * 

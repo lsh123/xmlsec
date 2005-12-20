@@ -1,3 +1,8 @@
+2005-12-20  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* src/mscrypto/x509vfy.c: check MSCrypto store for certs
+	(patch from Dmitry Belyavsky); replace tabs with spaces
+
 2005-12-15  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/templates.h src/templates.c: functions

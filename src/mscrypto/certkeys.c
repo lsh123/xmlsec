@@ -427,7 +427,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         BOOL fCallerFreeProv = FALSE;
 
         if (!CryptAcquireCertificatePrivateKey(pCert, 
-					       CRYPT_ACQUIRE_USE_PROV_INFO_FLAG, 
+					       CRYPT_ACQUIRE_COMPARE_KEY_FLAG, 
 					       NULL, 
 					       &hProv, 
 					       &(ctx->dwKeySpec), 

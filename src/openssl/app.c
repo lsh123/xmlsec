@@ -49,6 +49,7 @@ static int      xmlSecOpenSSLDummyPasswordCallback  (char *buf, int bufsize, int
 int
 xmlSecOpenSSLAppInit(const char* config) {
     ERR_load_crypto_strings();
+    OPENSSL_config();
     OpenSSL_add_all_algorithms();
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {

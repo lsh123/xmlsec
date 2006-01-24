@@ -272,7 +272,7 @@ static xmlSecAppCmdLineParam pkcs8PemParam = {
     xmlSecAppCmdLineTopicKeysMngr,
     "--pkcs8-pem",
     "--privkey-p8-pem",
-    "--pkcs-pem[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
+    "--pkcs8-pem[:<name>] <file>[,<cafile>[,<cafile>[...]]]"
     "\n\tload private key from PKCS8 PEM file and PEM certificates"
     "\n\tthat verify this key",
     xmlSecAppCmdLineParamTypeStringList,

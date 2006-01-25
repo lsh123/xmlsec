@@ -52,7 +52,7 @@ static const char bugs[] =
     "Report bugs to http://www.aleksey.com/xmlsec/bugs.html\n";
 
 static const char helpCommands1[] =     
-    "Usage: xmlsec <command> [<options>] [<file>]\n"
+    "Usage: xmlsec <command> [<options>] [<files>]\n"
     "\n"
     "xmlsec is a command line tool for signing, verifying, encrypting and\n"
     "decrypting XML documents. The allowed <command> values are:\n"

@@ -1510,7 +1510,7 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
     if(id == xmlSecTransformIdUnknown) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlSecTransformIdsListFindByHref",
+		    "xmlSecTransformIdListFindByHref",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    "href=%s", 
 		    xmlSecErrorsSafeString(href));

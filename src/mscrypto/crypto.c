@@ -6,6 +6,7 @@
  * 
  * Copyrigth (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).  
  */
 #include "globals.h"
 
@@ -69,6 +70,10 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->keyDataDsaGetKlass 		= xmlSecMSCryptoKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_GOST
+    gXmlSecMSCryptoFunctions->keyDataGost2001GetKlass 		= xmlSecMSCryptoKeyDataGost2001GetKlass;
+#endif /* XMLSEC_NO_GOST*/
+
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->keyDataX509GetKlass 		= xmlSecMSCryptoKeyDataX509GetKlass;
     gXmlSecMSCryptoFunctions->keyDataRawX509CertGetKlass	= xmlSecMSCryptoKeyDataRawX509CertGetKlass;
@@ -103,9 +108,17 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformDsaSha1GetKlass 		= xmlSecMSCryptoTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_GOST
+    gXmlSecMSCryptoFunctions->transformGost2001GostR3411_94GetKlass 		= xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass;
+#endif /* XMLSEC_NO_GOST */
+
 #ifndef XMLSEC_NO_SHA1    
     gXmlSecMSCryptoFunctions->transformSha1GetKlass 		= xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_GOST    
+    gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass 		= xmlSecMSCryptoTransformGostR3411_94GetKlass;
+#endif /* XMLSEC_NO_GOST */
 
     /**
      * High level routines form xmlsec command line utility

@@ -80,6 +80,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDsaSha1GetKlass(vo
 
 /********************************************************************
  *
+ * GOST2001 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST
+
+/**
+ * xmlSecMSCryptoKeyDataGost2001Id:
+ * 
+ * The GOST2001 key klass.
+ */
+#define xmlSecMSCryptoKeyDataGost2001Id \
+	xmlSecMSCryptoKeyDataGost2001GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataGost2001GetKlass	(void);
+
+/**
+ * xmlSecMSCryptoTransformGost2001GostR3411_94Id:
+ * 
+ * The GOST2001 GOSTR3411_94 signature transform klass.
+ */
+#define xmlSecMSCryptoTransformGost2001GostR3411_94Id \
+	xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void);
+
+#endif /* XMLSEC_NO_GOST */
+
+/********************************************************************
+ *
  * RSA transforms
  *
  *******************************************************************/
@@ -142,6 +169,23 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(vo
 	xmlSecMSCryptoTransformSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
+
+/********************************************************************
+ *
+ * GOSTR3411_94 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST
+
+/**
+ * xmlSecMSCryptoTransformGostR3411_94Id:
+ * 
+ * The GOSTR3411_94 digest transform klass.
+ */
+#define xmlSecMSCryptoTransformGostR3411_94Id \
+	xmlSecMSCryptoTransformGostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_94GetKlass(void);
+#endif /* XMLSEC_NO_GOST */
 
 /********************************************************************
  *

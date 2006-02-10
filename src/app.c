@@ -174,6 +174,29 @@ xmlSecKeyDataDsaGetKlass(void) {
 }
 
 /** 
+ * xmlSecKeyDataGost2001GetKlass:
+ * 
+ * The GOST2001 key data klass.
+ *
+ * Returns GOST2001 key data klass or NULL if an error occurs
+ * (xmlsec-crypto library is not loaded or the GOST2001 key data
+ * klass is not implemented).
+ */
+xmlSecKeyDataId	
+xmlSecKeyDataGost2001GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->keyDataGost2001GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "keyDataGost2001Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecKeyDataIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->keyDataGost2001GetKlass());
+}
+
+/** 
  * xmlSecKeyDataHmacGetKlass:
  * 
  * The HMAC key data klass.
@@ -503,6 +526,29 @@ xmlSecTransformDsaSha1GetKlass(void) {
     }
     
     return(xmlSecCryptoDLGetFunctions()->transformDsaSha1GetKlass());
+}
+
+/** 
+ * xmlSecTransformGost2001GostR3411_94GetKlass:
+ * 
+ * The GOST2001-GOSTR3411_94 signature transform klass.
+ *
+ * Returns GOST2001-GOSTR3411_94 signature transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformGost2001GostR3411_94GetKlass(void) {	
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGost2001GostR3411_94GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformGost2001GostR3411_94Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformGost2001GostR3411_94GetKlass());
 }
 
 /** 
@@ -918,6 +964,30 @@ xmlSecTransformRsaOaepGetKlass(void) {
     
     return(xmlSecCryptoDLGetFunctions()->transformRsaOaepGetKlass());
 }
+
+/** 
+ * xmlSecTransformGostR3411_94GetKlass:
+ *
+ * GOSTR3411_94 digest transform klass.
+ *
+ * Returns pointer to GOSTR3411_94 digest transform klass or NULL if an error
+ * occurs (the xmlsec-crypto library is not loaded or this transform is not
+ * implemented).
+ */
+xmlSecTransformId 
+xmlSecTransformGostR3411_94GetKlass(void) {
+    if((xmlSecCryptoDLGetFunctions() == NULL) || (xmlSecCryptoDLGetFunctions()->transformGostR3411_94GetKlass == NULL)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "transformGostR3411_94Id",
+		    XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+        return(xmlSecTransformIdUnknown);
+    }
+    
+    return(xmlSecCryptoDLGetFunctions()->transformGostR3411_94GetKlass());
+}
+
 
 /** 
  * xmlSecTransformSha1GetKlass:

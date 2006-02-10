@@ -5,12 +5,16 @@
  * distribution for preciese wording.
  * 
  * Copyrigth (C) 2003 Cordys R&D BV, All rights reserved.
+ * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).  
  */
 #include "globals.h"
 
 #include <string.h>
 #include <windows.h>
 #include <wincrypt.h>
+#ifndef XMLSEC_NO_GOST
+#include "csp_calg.h"
+#endif
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -63,6 +67,12 @@ xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_SHA1 */    
     
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_94Id)) {
+	return(1);
+    }
+#endif /* XMLSEC_NO_GOST*/    
+    
     return(0);
 }
 
@@ -84,6 +94,24 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 	ctx->alg_id = CALG_SHA;
     } else 
 #endif /* XMLSEC_NO_SHA1 */    
+
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_94Id)) {
+		ctx->alg_id = CALG_MAGPRO_HASH_R3411_94;
+
+    /* TODO: Check what provider is best suited here.... */
+    if (!CryptAcquireContext(&ctx->provider, NULL, 0, PROV_MAGPRO_GOST, CRYPT_VERIFYCONTEXT)) {
+	xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    NULL,
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
+
+    return(0);
+    } else 
+#endif /* XMLSEC_NO_GOST*/    
 
     {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
@@ -337,4 +365,48 @@ xmlSecMSCryptoTransformSha1GetKlass(void) {
     return(&xmlSecMSCryptoSha1Klass);
 }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_GOST
+/******************************************************************************
+ *
+ * GOSTR3411_94
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),		/* size_t klassSize */
+    xmlSecMSCryptoDigestSize,			/* size_t objSize */
+
+    xmlSecNameGostR3411_94,				/* const xmlChar* name; */
+    xmlSecHrefGostR3411_94, 				/* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,		/* xmlSecTransformUsage usage; */
+    xmlSecMSCryptoDigestInitialize,		/* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoDigestFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
+    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
+    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoDigestVerify,			/* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
+    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoDigestExecute,		/* xmlSecTransformExecuteMethod execute; */    
+    NULL,					/* void* reserved0; */
+    NULL,					/* void* reserved1; */
+};
+
+/** 
+ * xmlSecMSCryptoTransformGostR3411_94GetKlass:
+ *
+ * GOSTR3411_94 digest transform klass.
+ *
+ * Returns pointer to GOSTR3411_94 digest transform klass.
+ */
+xmlSecTransformId 
+xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
+    return(&xmlSecMSCryptoGostR3411_94Klass);
+}
+#endif /* XMLSEC_NO_GOST*/
 

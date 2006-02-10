@@ -13,6 +13,10 @@
 
 #include <windows.h>
 #include <wincrypt.h>
+#ifndef XMLSEC_NO_GOST
+#include "csp_oid.h"
+#include "csp_calg.h"
+#endif
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/xmltree.h>
@@ -24,6 +28,7 @@
 
 #include <xmlsec/mscrypto/certkeys.h>
 #include <xmlsec/mscrypto/crypto.h>
+#include <xmlsec/mscrypto/x509.h>
 
 #define XMLSEC_CONTAINER_NAME "xmlsec-key-container"
 
@@ -795,6 +800,20 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 	}
     }
 #endif /* XMLSEC_NO_DSA */	
+
+#ifndef XMLSEC_NO_GOST
+    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_2001_CP) || !strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_2001)) {
+	data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataGost2001Id);
+	if(data == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+	    		    NULL,
+			    "xmlSecKeyDataCreate",
+			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			    "xmlSecMSCryptoKeyDataGost2001Id");
+		return(NULL);	    
+	}
+    }
+#endif /* XMLSEC_NO_GOST*/	
 
     if (NULL == data) {
     	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -2408,3 +2427,223 @@ xmlSecMSCryptoKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 #endif /* XMLSEC_NO_DSA */
 
 
+#ifndef XMLSEC_NO_GOST
+/**************************************************************************
+ *
+ * GOST2001 xml key representation processing. Contain errors.
+ *
+ *************************************************************************/
+static int		xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data);
+static int		xmlSecMSCryptoKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst,
+							 xmlSecKeyDataPtr src);
+static void		xmlSecMSCryptoKeyDataGost2001Finalize(xmlSecKeyDataPtr data);
+static int		xmlSecMSCryptoKeyDataGost2001XmlRead	(xmlSecKeyDataId id,
+							 xmlSecKeyPtr key,
+							 xmlNodePtr node,
+							 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecMSCryptoKeyDataGost2001XmlWrite(xmlSecKeyDataId id,
+							 xmlSecKeyPtr key,
+							 xmlNodePtr node,
+							 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int		xmlSecMSCryptoKeyDataGost2001Generate(xmlSecKeyDataPtr data,
+							 xmlSecSize sizeBits,
+							 xmlSecKeyDataType type);
+
+static xmlSecKeyDataType xmlSecMSCryptoKeyDataGost2001GetType(xmlSecKeyDataPtr data);
+static xmlSecSize	 xmlSecMSCryptoKeyDataGost2001GetSize(xmlSecKeyDataPtr data);
+static void		 xmlSecMSCryptoKeyDataGost2001DebugDump(xmlSecKeyDataPtr data,
+							 FILE* output);
+static void		xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data,
+							 FILE* output);
+
+static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecMSCryptoKeyDataSize,
+
+    /* data */
+    xmlSecNameGOST2001KeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+					/* xmlSecKeyDataUsage usage; */
+    /*xmlSecHrefGOST2001KeyValue*/NULL,		/* const xmlChar* href; */
+    /*xmlSecNodeGOST2001KeyValue*/NULL,		/* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,			/* const xmlChar* dataNodeNs; */
+    
+    /* constructors/destructor */
+    xmlSecMSCryptoKeyDataGost2001Initialize,	/* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoKeyDataGost2001Duplicate,	/* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCryptoKeyDataGost2001Finalize,	/* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL, /* xmlSecMSCryptoKeyDataGost2001Generate,*/	/* xmlSecKeyDataGenerateMethod generate; */
+    
+    /* get info */
+    xmlSecMSCryptoKeyDataGost2001GetType, 	/* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCryptoKeyDataGost2001GetSize,	/* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,				/* xmlSecKeyDataGetIdentifier getIdentifier; */    
+
+    /* read/write */
+    NULL,	/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,	/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,				/* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,				/* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCryptoKeyDataGost2001DebugDump,	/* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCryptoKeyDataGost2001DebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,				/* void* reserved0; */
+    NULL,				/* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoKeyDataGost2001GetKlass:
+ * 
+ * The GOST2001 key data klass.
+ *
+ * Returns pointer to GOST2001 key data klass.
+ */
+xmlSecKeyDataId 
+xmlSecMSCryptoKeyDataGost2001GetKlass(void) {
+    return(&xmlSecMSCryptoKeyDataGost2001Klass);
+}
+
+
+static int
+xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
+
+    xmlSecMSCryptoKeyDataInitialize(data);
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    ctx->providerName = "MagPro CSP";
+    ctx->providerType = PROV_MAGPRO_GOST;
+    
+    return(0);
+}
+
+static int
+xmlSecMSCryptoKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCryptoKeyDataGost2001Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCryptoKeyDataGost2001Id), -1);
+
+    return(xmlSecMSCryptoKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id));
+    
+    xmlSecMSCryptoKeyDataFinalize(data);
+}
+
+#if 0
+static int
+xmlSecMSCryptoKeyDataGost2001Generate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+    xmlSecMSCryptoKeyDataCtxPtr ctx;
+    HCRYPTPROV hProv = 0; 
+    HCRYPTKEY hKey = 0;
+    DWORD dwKeySpec;
+    DWORD dwSize;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), xmlSecKeyDataTypeUnknown);
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), -1);
+    xmlSecAssert2(sizeBits > 0, -1);
+
+    ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+
+    if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, 0)) {
+	    if (NTE_BAD_KEYSET == GetLastError()) {
+	        if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, CRYPT_NEWKEYSET)) {
+		        xmlSecError(XMLSEC_ERRORS_HERE,
+			            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			            "CryptAcquireContext",
+			            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			            XMLSEC_ERRORS_NO_MESSAGE);
+		        return(-1);
+	        }
+	    } else {
+	        xmlSecError(XMLSEC_ERRORS_HERE,
+			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+			    "CryptAcquireContext",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    XMLSEC_ERRORS_NO_MESSAGE);
+	        return(-1);
+	    }
+    }
+
+    dwKeySpec = AT_SIGNATURE;
+    dwSize = ((sizeBits << 16) | CRYPT_EXPORTABLE);
+    if (!CryptGenKey(hProv, CALG_DSS_SIGN, dwSize, &hKey)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		        "CryptGenKey",
+		        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
+    }
+
+    ret = xmlSecMSCryptoKeyDataAdoptKey(data, hProv, TRUE, hKey, dwKeySpec, 
+	xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+    if(ret < 0) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		        "xmlSecMSCryptoKeyDataAdoptKey",
+		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		        XMLSEC_ERRORS_NO_MESSAGE);
+	    goto done;
+    }
+    hProv = 0;
+    hKey = 0;
+
+    /* success */
+    res = 0;
+
+done:
+    if (hProv != 0) {
+    	CryptReleaseContext(hProv, 0);
+    }
+
+    if (hKey != 0) {
+	    CryptDestroyKey(hKey);
+    }
+
+    return(res);
+}
+#endif
+static xmlSecKeyDataType
+xmlSecMSCryptoKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
+    return(xmlSecMSCryptoKeyDataGetType(data));
+}
+
+static xmlSecSize 
+xmlSecMSCryptoKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), 0);
+
+    return xmlSecMSCryptoKeyDataGetSize(data);
+}
+
+static void 
+xmlSecMSCryptoKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id));
+    xmlSecAssert(output != NULL);
+    
+    fprintf(output, "=== dsa key: size = %d\n", 
+	    xmlSecMSCryptoKeyDataGost2001GetSize(data));
+}
+
+static void
+xmlSecMSCryptoKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id));
+    xmlSecAssert(output != NULL);
+        
+    fprintf(output, "<GOST2001KeyValue size=\"%d\" />\n", 
+	    xmlSecMSCryptoKeyDataGost2001GetSize(data));
+}
+
+#endif /* XMLSEC_NO_GOST*/

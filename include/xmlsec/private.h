@@ -403,6 +403,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod		 keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod		 keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod		 keyDataDsaGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod		 keyDataGost2001GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod		 keyDataHmacGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod		 keyDataRsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod		 keyDataX509GetKlass;
@@ -425,6 +426,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod		 transformDes3CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformKWDes3GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformDsaSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformGost2001GostR3411_94GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacRipemd160GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformHmacSha1GetKlass;
@@ -443,6 +445,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod		 transformRsaSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaPkcs1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformRsaOaepGetKlass;
+    xmlSecCryptoTransformGetKlassMethod		 transformGostR3411_94GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformSha1GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformSha224GetKlass;
     xmlSecCryptoTransformGetKlassMethod		 transformSha256GetKlass;

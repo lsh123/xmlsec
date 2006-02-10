@@ -66,6 +66,13 @@ XMLSEC_EXPORT xmlSecKeyDataId			xmlSecKeyDataDesGetKlass	(void);
 #define xmlSecKeyDataDsaId			xmlSecKeyDataDsaGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId			xmlSecKeyDataDsaGetKlass	(void);		
 /** 
+ * xmlSecKeyDataGost2001Id:
+ * 
+ * The GOST2001 key klass.
+ */
+#define xmlSecKeyDataGost2001Id			xmlSecKeyDataGost2001GetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId			xmlSecKeyDataGost2001GetKlass	(void);		
+/** 
  * xmlSecKeyDataHmacId:
  * 
  * The DHMAC key klass.
@@ -175,6 +182,14 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformKWDes3GetKlass	(void);
  */
 #define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformDsaSha1GetKlass	(void);	
+
+/**
+ * xmlSecTransformGost2001GostR3411_94Id:
+ * 
+ * The GOST2001-GOSTR3411_94 signature transform klass.
+ */
+#define xmlSecTransformGost2001GostR3411_94Id		xmlSecTransformGost2001GostR3411_94GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformGost2001GostR3411_94GetKlass	(void);	
 
 /**
  * xmlSecTransformHmacMd5Id:
@@ -303,6 +318,13 @@ XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformRsaPkcs1GetKlass	(void);
  */
 #define xmlSecTransformRsaOaepId		xmlSecTransformRsaOaepGetKlass()
 XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformRsaOaepGetKlass	(void);	
+/**
+ * xmlSecTransformGostR3411_94Id:
+ * 
+ * The GOSTR3411_94 digest transform klass.
+ */
+#define xmlSecTransformGostR3411_94Id			xmlSecTransformGostR3411_94GetKlass()
+XMLSEC_EXPORT xmlSecTransformId			xmlSecTransformGostR3411_94GetKlass	(void);
 /**
  * xmlSecTransformSha1Id:
  * 

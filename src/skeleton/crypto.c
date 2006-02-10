@@ -64,6 +64,10 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->keyDataDsaGetKlass 	= xmlSecSkeletonKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */    
 
+#ifndef XMLSEC_NO_GOST
+    gXmlSecSkeletonFunctions->keyDataGost2001GetKlass 	= xmlSecSkeletonKeyDataGost2001GetKlass;
+#endif /* XMLSEC_NO_GOST */    
+
 #ifndef XMLSEC_NO_HMAC  
     gXmlSecSkeletonFunctions->keyDataHmacGetKlass 	= xmlSecSkeletonKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */    
@@ -105,6 +109,10 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->transformDsaSha1GetKlass 		= xmlSecSkeletonTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_GOST
+    gXmlSecSkeletonFunctions->transformGost2001GostR3411_94GetKlass 		= xmlSecSkeletonTransformGost2001GostR3411_94GetKlass;
+#endif /* XMLSEC_GOST */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecSkeletonFunctions->transformHmacSha1GetKlass 	= xmlSecSkeletonTransformHmacSha1GetKlass;
     gXmlSecSkeletonFunctions->transformHmacRipemd160GetKlass 	= xmlSecSkeletonTransformHmacRipemd160GetKlass;
@@ -124,6 +132,10 @@ xmlSecCryptoGetFunctions_skeleton(void) {
 #ifndef XMLSEC_NO_SHA1    
     gXmlSecSkeletonFunctions->transformSha1GetKlass 		= xmlSecSkeletonTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_GOST    
+    gXmlSecSkeletonFunctions->transformGostR3411_94GetKlass 		= xmlSecSkeletonTransformGostR3411_94GetKlass;
+#endif /* XMLSEC_NO_GOST */
 
     /**
      * High level routines form xmlsec command line utility

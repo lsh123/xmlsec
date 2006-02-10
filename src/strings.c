@@ -285,6 +285,18 @@ const xmlChar xmlSecHrefKWDes3[]		= "http://www.w3.org/2001/04/xmlenc#kw-tripled
 
 /*************************************************************************
  *
+ * GOST2001 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameGOST2001KeyValue[]		= "gost2001";
+const xmlChar xmlSecNodeGOST2001KeyValue[]		= "GOST3410-2001-KeyValue";
+const xmlChar xmlSecHrefGOST2001KeyValue[]		= "http://www.w3.org/2000/09/xmldsig#GOST2001KeyValue";
+
+const xmlChar xmlSecNameGost2001GostR3411_94[]		= "gostr34102001-gostr3411";
+const xmlChar xmlSecHrefGost2001GostR3411_94[]		= "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
+
+/*************************************************************************
+ *
  * DSA strings
  *
  ************************************************************************/
@@ -438,6 +450,14 @@ const xmlChar xmlSecHrefRsaPkcs1[]		= "http://www.w3.org/2001/04/xmlenc#rsa-1_5"
 const xmlChar xmlSecNameRsaOaep[]		= "rsa-oaep-mgf1p";
 const xmlChar xmlSecHrefRsaOaep[]		= "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p";
 const xmlChar xmlSecNodeRsaOAEPparams[]		= "OAEPparams";
+
+/*************************************************************************
+ *
+ * GOSTR3411_94 strings
+ *
+ ************************************************************************/
+const xmlChar xmlSecNameGostR3411_94[]			= "gostr3411";
+const xmlChar xmlSecHrefGostR3411_94[]			= "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
 
 /*************************************************************************
  *

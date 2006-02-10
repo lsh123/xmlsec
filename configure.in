@@ -961,6 +961,22 @@ AM_CONDITIONAL(XMLSEC_NO_AES, test "z$XMLSEC_NO_AES" = "z1")
 AC_SUBST(XMLSEC_NO_AES)
 
 dnl ==========================================================================
+dnl See do we need GOST suport
+dnl ==========================================================================
+AC_MSG_CHECKING(for GOST support) 
+AC_ARG_ENABLE(gost,   [  --enable-gost           enable GOST support (no)])
+if test "z$enable_gost" != "zyes" ; then
+    XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_GOST=1"
+    XMLSEC_NO_GOST="1"
+    AC_MSG_RESULT(no)
+else
+    XMLSEC_NO_GOST="0"
+    AC_MSG_RESULT(yes)
+fi    
+AM_CONDITIONAL(XMLSEC_NO_GOST, test "z$XMLSEC_NO_GOST" = "z1")
+AC_SUBST(XMLSEC_NO_GOST)
+
+dnl ==========================================================================
 dnl See do we need XMLDSig suport
 dnl ==========================================================================
 AC_MSG_CHECKING(for XMLDSig support) 

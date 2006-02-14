@@ -95,6 +95,10 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptUntrustedStore (
 										HCERTSTORE untrustedStore
 								) ;
 
+XMLSEC_CRYPTO_EXPORT void       xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (
+                                        xmlSecKeyDataStorePtr store, 
+                                        int val
+                                ) ;
 
 #endif /* XMLSEC_NO_X509 */
 

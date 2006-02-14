@@ -44,6 +44,7 @@ typedef struct _xmlSecMSCryptoX509StoreCtx    xmlSecMSCryptoX509StoreCtx,
 struct _xmlSecMSCryptoX509StoreCtx {
     HCERTSTORE trusted;
     HCERTSTORE untrusted;
+    int        dont_use_system_trusted_certs;
 };        
 
 /****************************************************************************
@@ -261,101 +262,118 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
     xmlFree(subject);
 }
 
-static DWORD 
-xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT pCertContext, LPFILETIME pfTime,
-        HCERTSTORE hAdditionalStore)
+/**
+ @cert: the certificate we check
+ @pfTime: pointer to FILETIME that we are interested in
+ @store_untrusted: untrusted certificates added via API
+ @store_doc: untrusted certificates/CRLs extracted from a document
+ */
+static BOOL 
+xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
+		HCERTSTORE store_untrusted, HCERTSTORE store_doc)
 {
-    PCCERT_CHAIN_CONTEXT     pChainContext;
-    CERT_ENHKEY_USAGE        EnhkeyUsage;
-    CERT_USAGE_MATCH         CertUsage;  
-    CERT_CHAIN_PARA          ChainPara;
-    DWORD                    dwFlags=CERT_CHAIN_REVOCATION_CHECK_CHAIN;
-    DWORD dwRes = 0;
+	PCCERT_CHAIN_CONTEXT     pChainContext = NULL;
+	CERT_CHAIN_PARA          chainPara;
+	BOOL rc = FALSE;
+	HCERTSTORE store_add = NULL;
 
     /* Initialize data structures. */
 
-    EnhkeyUsage.cUsageIdentifier = 0;
-    EnhkeyUsage.rgpszUsageIdentifier=NULL;
-    CertUsage.dwType = USAGE_MATCH_TYPE_AND;
-    CertUsage.Usage  = EnhkeyUsage;
-    ChainPara.cbSize = sizeof(CERT_CHAIN_PARA);
-    ChainPara.RequestedUsage=CertUsage;
+	memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
+	chainPara.cbSize = sizeof(CERT_CHAIN_PARA);
+
+	/* Create additional store for CertGetCertificateChain() */
+	store_add = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
+	if (!store_add) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+					"chain additional collection store",
+					"CertOpenStore",
+					XMLSEC_ERRORS_R_CRYPTO_FAILED,
+					XMLSEC_ERRORS_NO_MESSAGE);
+		goto end;
+	}
+	if (!CertAddStoreToCollection(store_add, store_doc, 0, 0)) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+					"adding document store",
+					"CertAddStoreToCollection",
+					XMLSEC_ERRORS_R_CRYPTO_FAILED,
+					XMLSEC_ERRORS_NO_MESSAGE);
+		goto end;
+	}
+	if (!CertAddStoreToCollection(store_add, store_untrusted, 0, 0)) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+					"adding untrusted store",
+					"CertAddStoreToCollection",
+					XMLSEC_ERRORS_R_CRYPTO_FAILED,
+					XMLSEC_ERRORS_NO_MESSAGE);
+		goto end;
+	}
 
     /* Build a chain using CertGetCertificateChain
      and the certificate retrieved. */
-
     if(!CertGetCertificateChain(
                 NULL,                  /* use the default chain engine */
-                pCertContext,
+				cert,
                 pfTime,
-                hAdditionalStore,
-                &ChainPara,            /* use AND logic and enhanced key usage 
-                              as indicated in the ChainPara 
-                              data structure */
-                dwFlags,
+				store_add,
+				&chainPara,
+				CERT_CHAIN_REVOCATION_CHECK_CHAIN,
                 NULL,
                 &pChainContext))
     {
         xmlSecError(XMLSEC_ERRORS_HERE,
+		    "building certificate chain, checking root",
+		    "CertGetCertificateChain",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+		goto end;
+	}
+	if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
+		CertFreeCertificateChain(pChainContext); pChainContext = NULL;
+		if(!CertGetCertificateChain(
+			   NULL,                  /* use the default chain engine */
+			   cert,
+			   pfTime,
+			   store_add,
+			   &chainPara,
+			   CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
             NULL,
-            NULL,
-            XMLSEC_ERRORS_R_MALLOC_FAILED,
+			   &pChainContext))
+		{
+			xmlSecError(XMLSEC_ERRORS_HERE,
+						"building certificate chain, excluding root",
+						"CertGetCertificateChain",
+						XMLSEC_ERRORS_R_CRYPTO_FAILED,
             XMLSEC_ERRORS_NO_MESSAGE);
-        return (-1);
+			goto end;
+		}
     }
 
-    dwRes = pChainContext->TrustStatus.dwErrorStatus;
+	if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR)
+		rc = TRUE;
 
-    CertFreeCertificateChain(pChainContext);
-    return (dwRes);
+end:
+	if (pChainContext) CertFreeCertificateChain(pChainContext);
+	if (store_add) CertCloseStore(store_add, 0);
+	return (rc);
 }
 
-
+/**
+ @cert: the certificate we check
+ @pfTime: pointer to FILETIME that we are interested in
+ @store_trusted: trusted certificates added via API
+ @store_untrusted: untrusted certificates added via API
+ @certs: untrusted certificates/CRLs extracted from a document
+ @store: pointer to store klass passed to error functions
+ */
 static BOOL
-xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, HCERTSTORE certs, 
-                  xmlSecKeyInfoCtx* keyInfoCtx) {
-    xmlSecMSCryptoX509StoreCtxPtr ctx;
+xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
+	HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
+	xmlSecKeyDataStorePtr store) {
     PCCERT_CONTEXT issuerCert = NULL;
-    FILETIME fTime;
     DWORD flags;
-    DWORD dwApiCheckResult;
-    
-    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), FALSE);
-    xmlSecAssert2(cert != NULL, FALSE);
-    xmlSecAssert2(cert->pCertInfo != NULL, FALSE);
-    xmlSecAssert2(certs != NULL, FALSE);
-    xmlSecAssert2(keyInfoCtx != NULL, FALSE);
 
-    ctx = xmlSecMSCryptoX509StoreGetCtx(store);
-    xmlSecAssert2(ctx != NULL, FALSE);
-    xmlSecAssert2(ctx->trusted != NULL, FALSE);
-    xmlSecAssert2(ctx->untrusted != NULL, FALSE);
-
-    if(keyInfoCtx->certsVerificationTime > 0) {
-        /* convert the time to FILETIME */
-        xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
-    } else {
-        /* Defaults to current time */
-        GetSystemTimeAsFileTime(&fTime);
-    }
-
-    dwApiCheckResult = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->trusted);
-    
-    switch(dwApiCheckResult)
-    {
-        case CERT_TRUST_NO_ERROR :
-            return (TRUE);
-        case CERT_TRUST_IS_NOT_TIME_VALID: 
-        case CERT_TRUST_IS_NOT_TIME_NESTED: 
-        case CERT_TRUST_IS_REVOKED:
-        case CERT_TRUST_IS_NOT_SIGNATURE_VALID:
-            return (FALSE);
-        default:
-            /* Other errors may be fixed by in-document certificates */
-            break;
-    }
-
-    if (!xmlSecMSCrypoVerifyCertTime(cert, &fTime)) {
+    if (!xmlSecMSCrypoVerifyCertTime(cert, pfTime)) {
         xmlSecMSCryptoX509StoreCertError(store, cert, CERT_STORE_TIME_VALIDITY_FLAG);
         return(FALSE);
     }
@@ -363,11 +381,12 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     if (!xmlSecMSCryptoCheckRevocation(certs, cert)) {
         return(FALSE);
     }
+
     /**
      * Try to find the cert in the trusted cert store. We will trust
      * the certificate in the trusted store.
      */
-    issuerCert = CertFindCertificateInStore(ctx->trusted, 
+    issuerCert = CertFindCertificateInStore(store_trusted, 
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -375,6 +394,8 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
                 NULL);
     if( issuerCert != NULL) {
         /* We have found the trusted cert, so return true */
+	    /* todo: do we want to verify the trusted cert's revocation? we must,
+		 * I think */
         CertFreeCertificateContext( issuerCert ) ;
         return( TRUE ) ;
     }
@@ -385,7 +406,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     }
 
     /* try to find issuer cert in the trusted cert in the store */
-    issuerCert = CertFindCertificateInStore(ctx->trusted, 
+    issuerCert = CertFindCertificateInStore(store_trusted, 
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -398,7 +419,8 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-        /* todo: do we want to verify the trusted cert? */
+	    /* todo: do we want to verify the trusted cert? we must check
+		 * revocation, I think */
         CertFreeCertificateContext(issuerCert);
         return(TRUE);
     }
@@ -417,7 +439,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-        if(!xmlSecMSCryptoX509StoreConstructCertsChain(store, issuerCert, certs, keyInfoCtx)) {
+    	if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
             xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
@@ -427,7 +449,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     }
 
     /* try the untrusted certs in the store */
-    issuerCert = CertFindCertificateInStore(ctx->untrusted, 
+    issuerCert = CertFindCertificateInStore(store_untrusted, 
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -440,7 +462,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-        if(!xmlSecMSCryptoX509StoreConstructCertsChain(store, issuerCert, certs, keyInfoCtx)) {
+    	if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
@@ -449,6 +471,51 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     }
 
     return(FALSE);
+}
+
+static BOOL
+xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, HCERTSTORE certs, 
+			      xmlSecKeyInfoCtx* keyInfoCtx) {
+    xmlSecMSCryptoX509StoreCtxPtr ctx;
+    PCCERT_CONTEXT tempCert = NULL;
+    FILETIME fTime;
+    BOOL res = FALSE;
+    
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), FALSE);
+    xmlSecAssert2(cert != NULL, FALSE);
+    xmlSecAssert2(cert->pCertInfo != NULL, FALSE);
+    xmlSecAssert2(certs != NULL, FALSE);
+    xmlSecAssert2(keyInfoCtx != NULL, FALSE);
+
+    ctx = xmlSecMSCryptoX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, FALSE);
+    xmlSecAssert2(ctx->trusted != NULL, FALSE);
+    xmlSecAssert2(ctx->untrusted != NULL, FALSE);
+
+    if(keyInfoCtx->certsVerificationTime > 0) {
+	    /* convert the time to FILETIME */
+    	xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+    } else {
+	    /* Defaults to current time */
+	    GetSystemTimeAsFileTime(&fTime);
+    }
+
+    /* try the certificates in the keys manager */
+    if(!res) {
+    	tempCert = CertEnumCertificatesInStore(ctx->trusted, NULL);
+	    if(tempCert) {
+		    CertFreeCertificateContext(tempCert);
+            res = xmlSecMSCryptoBuildCertChainManually(cert, &fTime, ctx->trusted, ctx->untrusted, certs, store);
+        }
+    }
+
+    /* try the certificates in the system */
+    if(!res && !ctx->dont_use_system_trusted_certs) {
+		res = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->untrusted, certs);
+	}
+
+    /* done */
+    return res;
 }
 
 /**
@@ -656,6 +723,26 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
     return(0);
 }
 
+/** 
+ * xmlSecMSCryptoX509StoreEnableSystemTrustedCerts: 
+ * @store:              the pointer to X509 key data store klass.
+ * @val:                the enable/disable flag
+ *
+ * Enables/disables the system trusted certs.
+ */
+void
+xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, int val) {
+    xmlSecMSCryptoX509StoreCtxPtr ctx;
+    
+    xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId));
+    
+    ctx = xmlSecMSCryptoX509StoreGetCtx(store);
+    xmlSecAssert(ctx != NULL);
+    xmlSecAssert(ctx->untrusted != NULL);
+    
+    /* it is other way around to make default value 0 mimic old behaiviour */
+    ctx->dont_use_system_trusted_certs = !val;
+}
 
 static int
 xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {

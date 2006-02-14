@@ -1,3 +1,8 @@
+2006-02-14  Aleksey Sanin  <aleksey@aleksey.com>
+	* include/xmlsec/mscrypto/x509.h src/mscrypto/x509vfy.h:
+	added an option for disabling system trusted certs
+	for mscrypto store (based on patch from Dmitry Belyavsky)
+
 2006-02-10  Aleksey Sanin  <aleksey@aleksey.com>
 	* authors docs/authors.html
 	include/xmlsec/app.h include/xmlsec/private.h 

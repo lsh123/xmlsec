@@ -874,9 +874,55 @@ Key Wrap 256<br>
 </td>
                 </tr>
 </tbody></table>
-<br><br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a>
-with
-Seed and PgenCounter is not supported.<br><p>Test vectors (from <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C
+
+<div align="left"> <br><h4 style="text-align: center;">Other algorithms</h4>
+            <table style="width: 85%; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2"><tbody>
+<tr>
+<td style="width: 40%;" align="left" valign="top"><b>Features
+and
+algorithms<br></b></td>
+                  <td align="left" valign="top"> <b>XMLSec with
+OpenSSL </b> </td>
+                  <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
+                  <td style="vertical-align: top;"> <b>XMLSec with NSS</b>
+                  </td>
+                  <td style="vertical-align: top;"> <b>XMLSec with
+MSCrypto</b> </td>
+                </tr>
+<tr>
+<td style="vertical-align: top; width: 40%;">GOST94 digests<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">Y<a href="#gost-mscrypto"><sup>(2)</sup></a><br>
+</td>
+                </tr>
+<td style="vertical-align: top; width: 40%;">GOST2001 signatures<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">Y<a href="#gost-mscrypto"><sup>(2)</sup></a><br>
+</td>
+                </tr>
+
+</tbody></table>
+
+<br>
+<br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a>
+with Seed and PgenCounter is not supported.
+<br><a name="gost-mscrypto"></a><sup>(2)</sup> Requires install of a CSP 
+providing these algorithms.<br>
+
+
+<p>Test vectors (from <a href="http://www.w3.org/Signature/2001/04/05-xmldsig-interop.html">IETF/W3C
 XML Signature WG: XML Signature Interoperability page</a>): <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2002AprJun/att-0016/01-merlin-xmldsig-twenty-three.tar.gz">merlin-xmldsig-twenty-three.tar.gz</a>
             <br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001AprJun/att-00%2033/01-merlin-xmldsig-sixteen.tar.gz">merlin-xmldsig-sixteen.tar.gz</a>
 (features, deprecated)<br><a href="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JanMar/att-0155/04-merlin-xmldsig-fifteen.tar.gz">merlin-xmldsig-fifteen.tar.gz</a>

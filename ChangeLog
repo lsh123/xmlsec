@@ -6,8 +6,9 @@
 	src/strings.c src/transforms.c src/mscrypto/certkeys.c
 	src/mscrypto/crypto.c src/mscrypto/digests.c
 	src/mscrypto/signatures.c src/skeleton/crypto.c:
-	added support for GOST 2001 keys/signatures: mscrypto
-	only (patch from Dmitry Belyavsky)
+	added support for GOST94 for digests and 
+	GOST 2001 keys/signatures: mscrypto only (patch from 
+	Dmitry Belyavsky)
 
 2005-12-20  Aleksey Sanin  <aleksey@aleksey.com>
 

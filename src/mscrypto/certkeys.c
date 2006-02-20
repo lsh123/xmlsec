@@ -670,9 +670,9 @@ xmlSecMSCryptoKeyDataFinalize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
     
-    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyKey(ctx);
     xmlSecMSCryptoKeyDataCtxDestroyCert(ctx);
+    xmlSecMSCryptoKeyDataCtxDestroyProvider(ctx);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoKeyDataCtx));
 }

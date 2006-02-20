@@ -1,3 +1,6 @@
+2006-02-16  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/mscrypto/certkeys.c: fixed memleak in msrypto
+
 2006-02-14  Aleksey Sanin  <aleksey@aleksey.com>
 	* include/xmlsec/mscrypto/x509.h src/mscrypto/x509vfy.h:
 	added an option for disabling system trusted certs

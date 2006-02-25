@@ -254,7 +254,9 @@ libc.lib and can only be linked to statically. The other is called
 msvcrt.dll and can only be linked to dynamically. The first one occurs
 in its single-threaded and multithreaded variant, which gives three
 different runtimes. These three then live in their debug and release
-incarnations, which results in six C runtimes. The rule is simple:
+incarnations, which results in six C runtimes. Worse, different versions
+of Microsoft Visual C/C++ have different runtimes (e.g. MSVC 6.0 
+runtime is not compatible with .NET 2003 runtime). The rule is simple:
 exactly the same runtime must be used throughout the application.
 Client code must use the same runtime as XMLSec, LibXML, LibXSLT,
 OpenSSL or any other library used.<br>

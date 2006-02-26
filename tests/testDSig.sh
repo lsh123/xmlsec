@@ -302,12 +302,6 @@ execDSigTest "" "aleksey-xmldsig-01/x509data-sn-test" \
     "$priv_key_option tests/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
-execDSigTest "" "aleksey-xmldsig-01/enveloped-gost" \
-    "enveloped-signature gostr34102001-gostr3411 gostr3411" \
-    "--trusted-$cert_format $topfolder/keys/gost2001ca.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --enabled-key-data x509" \
-    "" \
-    ""
-
 execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     "enveloped-signature sha1 dsa-sha1" \
     " " \
@@ -547,6 +541,13 @@ echo "$xmlsec_app verify --keys-file $keysfile $tmpfile" >> $logfile
 $VALGRIND $xmlsec_app verify $xmlsec_params --keys-file $keysfile $tmpfile >> $logfile 2>> $logfile
 printRes $?
 
+
+echo "--------- These tests CAN FAIL (extra OS config required) ----------"
+execDSigTest "" "aleksey-xmldsig-01/enveloped-gost" \
+    "enveloped-signature gostr34102001-gostr3411 gostr3411" \
+    "--trusted-$cert_format $topfolder/keys/gost2001ca.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --enabled-key-data x509" \
+    "" \
+    ""
 
 
 echo "--------- Negative Testing: next test MUST FAIL ----------"

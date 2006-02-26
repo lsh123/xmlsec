@@ -1,3 +1,8 @@
+2006-02-26  Aleksey Sanin  <aleksey@aleksey.com>
+	* apps/xmlsec.c tests/testDSig.sh: added an ability to skip
+	tests for transforms not available in given built
+	* tests/: added GOST test from Dmitry Belyavsky
+
 2006-02-16  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/mscrypto/certkeys.c: fixed memleak in msrypto
 

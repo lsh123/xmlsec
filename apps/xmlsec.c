@@ -124,6 +124,10 @@ static const char helpListTransforms[] =
     "Usage: xmlsec list-transforms\n"
     "Prints the list of known transform klasses\n";
 
+static const char helpCheckTransforms[] =     
+    "Usage: xmlsec check-transforms <transform> [<transform> ... ]\n"
+    "Checks the given transforms against the list of known transform klasses\n";
+
 #define xmlSecAppCmdLineTopicGeneral		0x0001
 #define xmlSecAppCmdLineTopicDSigCommon		0x0002
 #define xmlSecAppCmdLineTopicDSigSign		0x0004
@@ -908,6 +912,7 @@ typedef enum {
     xmlSecAppCommandHelp,
     xmlSecAppCommandListKeyData,
     xmlSecAppCommandListTransforms,    
+    xmlSecAppCommandCheckTransforms,    
     xmlSecAppCommandVersion,
     xmlSecAppCommandKeys,
     xmlSecAppCommandSign,
@@ -972,6 +977,7 @@ static void			xmlSecAppPrintXkmsServerCtx	(xmlSecXkmsServerCtxPtr xkmsServerCtx)
 
 static void			xmlSecAppListKeyData		(void);
 static void			xmlSecAppListTransforms		(void);
+static int			xmlSecAppCheckTransform	    (const char * name);
 
 static xmlSecTransformUriType	xmlSecAppGetUriType		(const char* string);
 static FILE* 			xmlSecAppOpenFile		(const char* filename);
@@ -1085,6 +1091,16 @@ int main(int argc, const char **argv) {
 	    break;
 	case xmlSecAppCommandListTransforms:
 	    xmlSecAppListTransforms();
+	    break;	    
+	case xmlSecAppCommandCheckTransforms:
+	    for(i = pos; i < argc; ++i) {
+            if(xmlSecAppCheckTransform(argv[i]) < 0) {
+                fprintf(stderr, "Error: transform \"%s\" not found\n", argv[i]);
+                goto fail;
+            } else {
+                fprintf(stdout, "Transforms \"%s\" found\n", argv[i]);
+            }
+	    }
 	    break;	    
 	case xmlSecAppCommandKeys:
 	    for(i = pos; i < argc; ++i) {
@@ -1995,6 +2011,14 @@ xmlSecAppListTransforms(void) {
 }
 
 static int 
+xmlSecAppCheckTransform(const char * name) {
+    if(xmlSecTransformIdListFindByName(xmlSecTransformIdsGet(), BAD_CAST name, xmlSecTransformUsageAny) == xmlSecTransformIdUnknown) {
+        return -1;
+    }
+    return 0;
+}
+
+static int 
 xmlSecAppPrepareKeyInfoReadCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAppCmdLineValuePtr value;
     int ret;
@@ -2688,6 +2712,11 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 	(*cmdLineTopics) = 0;
 	return(xmlSecAppCommandListTransforms);
     } else 
+
+    if((strcmp(cmd, "check-transforms") == 0) || (strcmp(cmd, "--check-transforms") == 0)) {
+	(*cmdLineTopics) = 0;
+	return(xmlSecAppCommandCheckTransforms);
+    } else 
     
     if((strcmp(cmd, "keys") == 0) || (strcmp(cmd, "--keys") == 0)) {
 	(*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral | 
@@ -2789,6 +2818,9 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandListTransforms:
 	fprintf(stdout, "%s\n", helpListTransforms);
+        break;
+    case xmlSecAppCommandCheckTransforms:
+	fprintf(stdout, "%s\n", helpCheckTransforms);
         break;
     case xmlSecAppCommandKeys:
 	fprintf(stdout, "%s\n", helpKeys);

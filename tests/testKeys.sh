@@ -57,8 +57,22 @@ printRes() {
 }
 
 execKeysTest() {    
-    key_name=$1
-    alg_name=$2
+    req_key_data=$1
+    key_name=$2
+    alg_name=$3
+
+    if [ -n "$req_key_data" ] ; then
+	printf "    Checking $req_key_data key data presense                      "
+        echo "$xmlsec_app check-key-data $req_key_data" >> $logfile
+	$xmlsec_app check-key-data $req_key_data >> $logfile 2>> $logfile
+	res=$?
+	if [ $res = 0 ]; then
+    	    echo "   OK"	    
+	else
+	    echo " Skip"
+	    return
+	fi
+    fi
 
     printf "    Creating new key: $alg_name                           "
 
@@ -84,13 +98,34 @@ if [ "z$crypto" = "znss" ] ; then
     cp -f $nssdbfolder/*.db $crypto_config
 fi
 
-execKeysTest "test-hmac-sha1" 	"hmac-192"
-execKeysTest "test-rsa      " 	"rsa-1024"
-execKeysTest "test-dsa      " 	"dsa-1024"
-execKeysTest "test-des      " 	"des-192 "
-execKeysTest "test-aes128   " 	"aes-128 "
-execKeysTest "test-aes192   " 	"aes-192 "
-execKeysTest "test-aes256   " 	"aes-256 "
+execKeysTest \
+	"hmac" \
+	"test-hmac-sha1" \
+	"hmac-192"
+execKeysTest \
+	"rsa " \
+	"test-rsa      " \
+	"rsa-1024"
+execKeysTest \
+	"dsa " \
+	"test-dsa      " \
+	"dsa-1024"
+execKeysTest \
+	"des " \
+	"test-des      " \
+    	"des-192 "
+execKeysTest \
+	"aes " \
+	"test-aes128   " \
+	"aes-128 "
+execKeysTest \
+	"aes " \
+	"test-aes192   " \
+	"aes-192 "
+execKeysTest \
+	"aes " \
+	"test-aes256   " \
+	"aes-256 "
 
 echo "--- testKeys finished ---" >> $logfile
 echo "--- testKeys finished ---"

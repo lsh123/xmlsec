@@ -120,12 +120,16 @@ static const char helpListKeyData[] =
     "Usage: xmlsec list-key-data\n"
     "Prints the list of known key data klasses\n";
 
+static const char helpCheckKeyData[] =     
+    "Usage: xmlsec check-key-data <key-data-name> [<key-data-name> ... ]\n"
+    "Checks the given key-data against the list of known key-data klasses\n";
+
 static const char helpListTransforms[] =     
     "Usage: xmlsec list-transforms\n"
     "Prints the list of known transform klasses\n";
 
 static const char helpCheckTransforms[] =     
-    "Usage: xmlsec check-transforms <transform> [<transform> ... ]\n"
+    "Usage: xmlsec check-transforms <transform-name> [<transform-name> ... ]\n"
     "Checks the given transforms against the list of known transform klasses\n";
 
 #define xmlSecAppCmdLineTopicGeneral		0x0001
@@ -911,6 +915,7 @@ typedef enum {
     xmlSecAppCommandUnknown = 0,
     xmlSecAppCommandHelp,
     xmlSecAppCommandListKeyData,
+    xmlSecAppCommandCheckKeyData,
     xmlSecAppCommandListTransforms,    
     xmlSecAppCommandCheckTransforms,    
     xmlSecAppCommandVersion,
@@ -976,6 +981,7 @@ static void			xmlSecAppPrintXkmsServerCtx	(xmlSecXkmsServerCtxPtr xkmsServerCtx)
 #endif /* XMLSEC_NO_XKMS */
 
 static void			xmlSecAppListKeyData		(void);
+static int			xmlSecAppCheckKeyData	    (const char * name);
 static void			xmlSecAppListTransforms		(void);
 static int			xmlSecAppCheckTransform	    (const char * name);
 
@@ -1088,6 +1094,16 @@ int main(int argc, const char **argv) {
 	switch(command) {
 	case xmlSecAppCommandListKeyData:
 	    xmlSecAppListKeyData();
+	    break;
+	case xmlSecAppCommandCheckKeyData:
+	    for(i = pos; i < argc; ++i) {
+            if(xmlSecAppCheckKeyData(argv[i]) < 0) {
+                fprintf(stderr, "Error: key data \"%s\" not found\n", argv[i]);
+                goto fail;
+            } else {
+                fprintf(stdout, "Key data \"%s\" found\n", argv[i]);
+            }
+	    }
 	    break;
 	case xmlSecAppCommandListTransforms:
 	    xmlSecAppListTransforms();
@@ -2004,6 +2020,14 @@ xmlSecAppListKeyData(void) {
     xmlSecKeyDataIdListDebugDump(xmlSecKeyDataIdsGet(), stdout);
 }
 
+static int 
+xmlSecAppCheckKeyData(const char * name) {
+    if(xmlSecKeyDataIdListFindByName(xmlSecKeyDataIdsGet(), BAD_CAST name, xmlSecKeyDataUsageAny) == xmlSecKeyDataIdUnknown) {
+        return -1;
+    }
+    return 0;
+}
+
 static void 
 xmlSecAppListTransforms(void) {
     fprintf(stdout, "Registered transform klasses:\n");
@@ -2708,6 +2732,11 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 	return(xmlSecAppCommandListKeyData);
     } else 
 
+    if((strcmp(cmd, "check-key-data") == 0) || (strcmp(cmd, "--check-key-data") == 0)) {
+	(*cmdLineTopics) = 0;
+	return(xmlSecAppCommandCheckKeyData);
+    } else 
+
     if((strcmp(cmd, "list-transforms") == 0) || (strcmp(cmd, "--list-transforms") == 0)) {
 	(*cmdLineTopics) = 0;
 	return(xmlSecAppCommandListTransforms);
@@ -2815,6 +2844,9 @@ xmlSecAppPrintHelp(xmlSecAppCommand command, xmlSecAppCmdLineParamTopic topics) 
         break;
     case xmlSecAppCommandListKeyData:
 	fprintf(stdout, "%s\n", helpListKeyData);
+        break;
+    case xmlSecAppCommandCheckKeyData:
+	fprintf(stdout, "%s\n", helpCheckKeyData);
         break;
     case xmlSecAppCommandListTransforms:
 	fprintf(stdout, "%s\n", helpListTransforms);

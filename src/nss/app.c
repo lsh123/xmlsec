@@ -437,7 +437,6 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     SECKEYPublicKey *pubkey = NULL;
     SECKEYPrivateKey *privkey = NULL;
     CERTSubjectPublicKeyInfo *spki = NULL;
-    SECKEYEncryptedPrivateKeyInfo *epki = NULL;
     SECItem nickname;
     PK11SlotInfo *slot = NULL;
     SECStatus status;
@@ -546,9 +545,6 @@ done:
     }
     if(spki != NULL) {
 	SECKEY_DestroySubjectPublicKeyInfo(spki);
-    }
-    if(epki != NULL) {
-	SECKEY_DestroyEncryptedPrivateKeyInfo(epki, PR_TRUE);
     }
     return (retval);
 }

@@ -855,7 +855,11 @@ xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
      */    
     n = sk_X509_CRL_num(crls);
     for(i = 0; i < n; i++) {
-	crl = sk_X509_CRL_value(crls, i);     
+	crl = sk_X509_CRL_value(crls, i);
+	if(crl == NULL) {
+	    continue;
+	}
+	
 	issuer = X509_CRL_get_issuer(crl);
 	if(xmlSecOpenSSLX509NamesCompare(X509_CRL_get_issuer(crl), issuer) == 0) { 
 	    break;

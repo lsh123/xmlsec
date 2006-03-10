@@ -711,12 +711,12 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     } else {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+		    "CanonicalizationMethod",
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "expected=%s",
 		    xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
 	return(-1);
-    }	
+    }
     
     /* insert membuf if requested */
     if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) {
@@ -734,7 +734,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     }
         
     /* next node is required SignatureMethod. */
-    cur = xmlSecGetNextElementNode(cur->next);
+    cur = xmlSecGetNextElementNode( ((cur != NULL) ? cur->next : node->children) );
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeSignatureMethod, xmlSecDSigNs))) {
 	dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx), 
 					cur, xmlSecTransformUsageSignatureMethod);
@@ -1446,7 +1446,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     }
 
     /* first is optional Transforms node */
-    cur = xmlSecGetNextElementNode(node->children);
+    cur  = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecDSigNs))) {
 	ret = xmlSecTransformCtxNodesListRead(transformCtx, 
 					cur, xmlSecTransformUsageDSigTransform);
@@ -1459,7 +1459,8 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	    return(-1);
 	}	
-        cur = xmlSecGetNextElementNode(cur->next);
+        
+	cur = xmlSecGetNextElementNode(cur->next);
     }
 
     /* insert membuf if requested */
@@ -1496,6 +1497,8 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
 	    return(-1);	
 	}	
+	
+	cur = xmlSecGetNextElementNode(cur->next);     
     } else if(dsigRefCtx->dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
 	/* the dsig spec does require DigestMethod node
 	 * to be present but in some case it application might decide to
@@ -1522,8 +1525,10 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     dsigRefCtx->digestMethod->operation = dsigRefCtx->dsigCtx->operation;
 
     /* last node is required DigestValue */
-    cur = xmlSecGetNextElementNode(cur->next);     
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeDigestValue, xmlSecDSigNs))) {
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDigestValue, xmlSecDSigNs))) {
+	digestValueNode = cur;
+	cur = xmlSecGetNextElementNode(cur->next);     
+    } else {
     	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
 		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
@@ -1532,8 +1537,6 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 		    xmlSecErrorsSafeString(xmlSecNodeDigestValue));
 	return(-1);
     }
-    digestValueNode = cur;
-    cur = xmlSecGetNextElementNode(cur->next);     
 
     /* if we have something else then it's an error */
     if(cur != NULL) {

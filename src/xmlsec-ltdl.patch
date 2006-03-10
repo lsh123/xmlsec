@@ -132,3 +132,19 @@
  
  
  
+--- xmlsec-ltdl.c.orig	2003-09-11 16:40:14.000000000 -0700
++++ xmlsec-ltdl.c	2006-03-10 11:43:24.000000000 -0800
+@@ -3019,7 +3019,12 @@
+ 	      break;
+ 	    }
+ 	}
+-
++      if(!prev->next) 
++      {
++          MUTEX_SETERROR (LT_DLSTRERROR (REMOVE_LOADER));
++	  ++errors;
++	  goto done;
++      }
+       place = prev->next;
+       prev->next = prev->next->next;
+     }

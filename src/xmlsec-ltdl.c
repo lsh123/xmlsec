@@ -3019,7 +3019,12 @@ xmlsec_lt_dlloader_remove (loader_name)
 	      break;
 	    }
 	}
-
+      if(!prev->next) 
+      {
+          MUTEX_SETERROR (LT_DLSTRERROR (REMOVE_LOADER));
+	  ++errors;
+	  goto done;
+      }
       place = prev->next;
       prev->next = prev->next->next;
     }

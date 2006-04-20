@@ -2917,7 +2917,7 @@ xmlSecAppOpenFile(const char* filename) {
     if((filename == NULL) || (strcmp(filename, "-") == 0)) {
 	return(stdout);
     }
-    file = fopen(filename, "w");
+    file = fopen(filename, "wb");
     if(file == NULL) {
 	fprintf(stderr, "Error: failed to open file \"%s\"\n", filename);
 	return(NULL);

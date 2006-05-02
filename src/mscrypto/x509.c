@@ -367,6 +367,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);	
     }
+    CertFreeCertificateContext(cert);
     ctx->numCerts++;
       
     return(0);

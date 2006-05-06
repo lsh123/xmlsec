@@ -389,7 +389,7 @@ XMLSEC_MSCRYPTO_ALIBS   = kernel32.lib user32.lib gdi32.lib Crypt32.lib Advapi32
 
 
 # The archiver and its options.
-AR = lib.exe
+AR = link.exe /lib
 ARFLAGS = /nologo
 
 

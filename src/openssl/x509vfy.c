@@ -476,6 +476,40 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
 }
 
 /**
+ * xmlSecOpenSSLX509StoreAdoptCrl:
+ * @store:		the pointer to X509 key data store klass.
+ * @crl:		the pointer to OpenSSL X509_CRL.
+ *
+ * Adds X509 CRL to the store.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int 
+xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
+    int ret;
+    
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
+    xmlSecAssert2(crl != NULL, -1);
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+	xmlSecAssert2(ctx->crls != NULL, -1);
+
+	ret = sk_X509_CRL_push(ctx->crls, crl);
+	if(ret < 1) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+			"sk_X509_CRL_push",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}
+
+    return (0);
+}
+
+/**
  * xmlSecOpenSSLX509StoreAddCertsPath:
  * @store: the pointer to OpenSSL x509 store.
  * @path: the path to the certs dir.

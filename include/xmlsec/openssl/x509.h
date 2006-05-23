@@ -93,6 +93,8 @@ XMLSEC_CRYPTO_EXPORT X509* 		xmlSecOpenSSLX509StoreVerify	(xmlSecKeyDataStorePtr
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAdoptCert	(xmlSecKeyDataStorePtr store,
 									 X509* cert,
 									 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAdoptCrl	(xmlSecKeyDataStorePtr store,
+									 X509_CRL* crl);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store,
 									 const char* path);
 #endif /* XMLSEC_NO_X509 */

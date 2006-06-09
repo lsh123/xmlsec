@@ -452,6 +452,9 @@ NSS_LIBS_LIST="-lnss3 -lsmime3"
 NSPR_LIBS_LIST="-lnspr4 -lplds4 -lplc4"
 NSS_CRYPTO_LIB="$XMLSEC_PACKAGE-nss"
 NSS_FOUND="no"
+NSPR_PACKAGE=mozilla-nspr
+NSS_PACKAGE=mozilla-nss
+
 
 dnl if nss is disabled, bail out early
 AC_ARG_WITH(nss,     [  --with-nss=[PFX]          nss location])
@@ -462,9 +465,29 @@ if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
     AC_MSG_RESULT(no)
     NSS_FOUND="without"
 elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
-    PKG_CHECK_MODULES(NSS, mozilla-nspr >= $MOZILLA_MIN_VERSION mozilla-nss >= $MOZILLA_MIN_VERSION,
-	[NSS_FOUND=yes],
-	[NSS_FOUND=no])
+    dnl
+    dnl Mozilla's NSS/NSPR are distributed under different names
+    dnl in different distribution:
+    dnl 	mozilla-nspr and mozilla-nss
+    dnl		xulrunner-nspr and xulrunner-nss
+    dnl		nspr and nss
+    dnl We are going to try all options
+    dnl
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, mozilla-nspr >= $MOZILLA_MIN_VERSION mozilla-nss >= $MOZILLA_MIN_VERSION,
+    	    [NSS_FOUND=yes NSPR_PACKAGE=mozilla-nspr NSS_PACKAGE=mozilla-nss],
+	    [NSS_FOUND=no])
+    fi
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, xulrunner-nspr >= $MOZILLA_MIN_VERSION xulrunner-nss >= $MOZILLA_MIN_VERSION,
+    	    [NSS_FOUND=yes NSPR_PACKAGE=xulrunner-nspr NSS_PACKAGE=xulrunner-nss],
+	    [NSS_FOUND=no])
+    fi
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, nspr >= $MOZILLA_MIN_VERSION nss >= $MOZILLA_MIN_VERSION,
+    	    [NSS_FOUND=yes NSPR_PACKAGE=nspr NSS_PACKAGE=nss],
+	    [NSS_FOUND=no])
+    fi
 fi
 
 if test "z$NSS_FOUND" = "zno" ; then 
@@ -649,6 +672,8 @@ fi
 
 AM_CONDITIONAL(XMLSEC_NO_NSS, test "z$XMLSEC_NO_NSS" = "z1")
 AC_SUBST(XMLSEC_NO_NSS)
+AC_SUBST(NSPR_PACKAGE)
+AC_SUBST(NSS_PACKAGE)
 AC_SUBST(NSS_CFLAGS)
 AC_SUBST(NSS_LIBS)
 AC_SUBST(NSS_CRYPTO_LIB)

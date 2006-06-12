@@ -1,3 +1,7 @@
+2006-06-12  Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* xmlsec-config.in: lib64/ folder patch from Daniel
+
 2006-06-08  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* config.h.in configure.in xmlsec-nss.pc.in: support different

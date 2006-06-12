@@ -1,4 +1,9 @@
 2006-06-12  Aleksey Sanin  <aleksey@aleksey.com>
+
+	* configure.in docs/download.html docs/index.html docs/news.html 
+	include/xmlsec/version.h: preparation for new 1.2.10 release
+
+2006-06-12  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* xmlsec-config.in: lib64/ folder patch from Daniel
 

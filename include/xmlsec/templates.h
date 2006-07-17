@@ -29,6 +29,11 @@ XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreate		(xmlDocPtr doc,
 								 xmlSecTransformId c14nMethodId,
 								 xmlSecTransformId signMethodId,
 								 const xmlChar *id);
+XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureCreateNsPref       (xmlDocPtr doc,
+                                                                xmlSecTransformId c14nMethodId,
+                                                                xmlSecTransformId signMethodId,
+                                                                const xmlChar *id,
+                                                                const xmlChar *nsPrefix);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureEnsureKeyInfo	(xmlNodePtr signNode,
 								 const xmlChar *id);
 XMLSEC_EXPORT xmlNodePtr xmlSecTmplSignatureAddReference	(xmlNodePtr signNode,

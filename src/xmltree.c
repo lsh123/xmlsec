@@ -209,8 +209,9 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     if(ns != NULL) {
 	xmlNsPtr nsPtr;
 	
-	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
-	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
+        /* find namespace by href and check that its prefix is not overwritten */
+	nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
+	if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
 	}
 	xmlSetNs(cur, nsPtr);
@@ -311,8 +312,9 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     if(ns != NULL) {
 	xmlNsPtr nsPtr;
 	
-	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
-	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
+        /* find namespace by href and check that its prefix is not overwritten */
+	nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
+	if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
 	}
 	xmlSetNs(cur, nsPtr);
@@ -366,8 +368,9 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     if(ns != NULL) {
 	xmlNsPtr nsPtr;
 	
-	nsPtr = xmlSearchNs(cur->doc, cur, NULL);
-	if((nsPtr == NULL) || !xmlStrEqual(nsPtr->href, ns)) {
+        /* find namespace by href and check that its prefix is not overwritten */
+	nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
+	if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
 	    nsPtr = xmlNewNs(cur, ns, NULL);
 	}
 	xmlSetNs(cur, nsPtr);

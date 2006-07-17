@@ -1,5 +1,11 @@
 2006-06-12  Aleksey Sanin  <aleksey@aleksey.com>
 
+	* include/xmlsec/templates.h, src/templates.c, src/xmltree.c:
+	support for custom namespaces prefixes for xmldisg namespace
+	(based on patch from Barry Ferg)
+
+2006-06-12  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* configure.in docs/download.html docs/index.html docs/news.html 
 	include/xmlsec/version.h: preparation for new 1.2.10 release
 

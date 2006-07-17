@@ -60,6 +60,36 @@ static int 		xmlSecTmplNodeWriteNsList	(xmlNodePtr parentNode,
 xmlNodePtr
 xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
 		      xmlSecTransformId signMethodId, const xmlChar *id) {
+    return xmlSecTmplSignatureCreateNsPref(doc, c14nMethodId, signMethodId, id, NULL);
+}
+
+/**
+ * xmlSecTmplSignatureCreateNsPref:
+ * @doc: 		the pointer to signature document or NULL; in the 
+ *			second case, application must later call @xmlSetTreeDoc
+ *			to ensure that all the children nodes have correct 
+ *			pointer to XML document.
+ * @c14nMethodId: 	the signature canonicalization method.
+ * @signMethodId: 	the signature  method.
+ * @id: 		the node id (may be NULL).
+ * @nsPrefix:	the namespace prefix for the signature element (e.g. "dsig"), or NULL 
+ *
+ * Creates new <dsig:Signature/> node with the mandatory
+ * <dsig:SignedInfo/>, <dsig:CanonicalizationMethod/>,
+ * <dsig:SignatureMethod/> and <dsig:SignatureValue/> children and
+ * sub-children. This method differs from xmlSecTmplSignatureCreate in
+ * that it will define the http://www.w3.org/2000/09/xmldsig#
+ * namespace with the given prefix that will be used for all of the
+ * appropriate child nodes.  The application is responsible for
+ * inserting the returned node in the XML document.
+ *
+ * Returns the pointer to newly created <dsig:Signature/> node or NULL if an 
+ * error occurs.
+ */
+xmlNodePtr
+xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
+                                xmlSecTransformId signMethodId, const xmlChar *id,
+                                const xmlChar* nsPrefix) {
     xmlNodePtr signNode;
     xmlNodePtr signedInfoNode;
     xmlNodePtr cur;
@@ -82,7 +112,7 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
 	return(NULL);	            
     }
     
-    ns = xmlNewNs(signNode, xmlSecDSigNs, NULL);
+    ns = xmlNewNs(signNode, xmlSecDSigNs, nsPrefix);
     if(ns == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

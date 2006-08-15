@@ -1,3 +1,7 @@
+2006-08-15  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/openssl/x509vfy.c: fixed loading certs from a directory
+	during openssl x509 store init (based on idea from David Norrel)
+
 2006-06-12  Aleksey Sanin  <aleksey@aleksey.com>
 
 	* include/xmlsec/templates.h, src/templates.c, src/xmltree.c:

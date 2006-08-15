@@ -540,13 +540,21 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }    
-    X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_DEFAULT);
+    if(!X509_LOOKUP_add_dir(lookup, path, X509_FILETYPE_PEM)) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "X509_LOOKUP_add_dir",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	return(-1);
+    }
     return(0);
 }
 
 static int
 xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     const xmlChar* path;
+    X509_LOOKUP *lookup = NULL;
     
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
@@ -575,20 +583,36 @@ xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 	return(-1);
     }
     
-    path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
-    if(path != NULL) {
-	X509_LOOKUP *lookup = NULL;
 	
-	lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
-        if(lookup == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
+    lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_hash_dir());
+    if(lookup == NULL) {
+         xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
 		    "X509_STORE_add_lookup",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
+         return(-1);
+    }    
+
+    path = xmlSecOpenSSLGetDefaultTrustedCertsFolder();
+    if(path != NULL) {
+	if(!X509_LOOKUP_add_dir(lookup, (char*)path, X509_FILETYPE_PEM)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "X509_LOOKUP_add_dir",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
 	    return(-1);
 	}    
-	X509_LOOKUP_add_dir(lookup, (char*)path, X509_FILETYPE_DEFAULT);
+    } else {
+	if(!X509_LOOKUP_add_dir(lookup, NULL, X509_FILETYPE_DEFAULT)) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+		    "X509_LOOKUP_add_dir",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}    
     }
 
     ctx->untrusted = sk_X509_new_null();

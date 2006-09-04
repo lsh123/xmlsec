@@ -1,3 +1,8 @@
+2006-09-04  Aleksey Sanin  <aleksey@aleksey.com>
+	* include/xmlsec/openssl/app.h src/openssl/app.c src/openssl/x509vfy.c:
+	added xmlSecOpenSSLAppKeysMngrAddCertsFile() function 
+	(David Norrel)
+
 2006-08-15  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/openssl/x509vfy.c: fixed loading certs from a directory
 	during openssl x509 store init (based on idea from David Norrel)

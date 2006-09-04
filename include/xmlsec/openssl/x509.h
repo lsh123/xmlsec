@@ -97,6 +97,9 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAdoptCrl	(xmlSecKeyDataStorePtr 
 									 X509_CRL* crl);
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store,
 									 const char* path);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store,
+                                                                         const char* file);
+
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

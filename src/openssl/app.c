@@ -1136,6 +1136,47 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLAppKeysMngrAddCertsFile:
+ * @mngr:               the keys manager.
+ * @file:               the file containing trusted certificates.
+ *
+ * Reads certs from @file and adds to the list of trusted certificates.
+ * It is possible for @file to contain multiple certs.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *file) {
+    xmlSecKeyDataStorePtr x509Store;
+    int ret;
+
+    xmlSecAssert2(mngr != NULL, -1);
+    xmlSecAssert2(file != NULL, -1);
+
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecOpenSSLX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeysMngrGetDataStore",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecOpenSSLX509StoreId");
+        return(-1);
+    }
+
+    ret = xmlSecOpenSSLX509StoreAddCertsFile(x509Store, file);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLX509StoreAddCertsFile",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "file=%s", xmlSecErrorsSafeString(file));
+        return(-1);
+    }
+
+    return(0);
+}
+
 static X509*	
 xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
     X509 *cert;

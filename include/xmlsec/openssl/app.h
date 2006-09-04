@@ -55,6 +55,9 @@ XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr 
 
 XMLSEC_CRYPTO_EXPORT int		xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, 
 									 const char *path);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr,
+                                                                         const char *file);
+
 #endif /* XMLSEC_NO_X509 */
 
 

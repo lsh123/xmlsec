@@ -551,6 +551,48 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
     return(0);
 }
 
+/**
+ * xmlSecOpenSSLX509StoreAddCertsFile:
+ * @store: the pointer to OpenSSL x509 store.
+ * @file: the certs file.
+ *
+ * Adds all certs in @file to the list of trusted certs
+ * in @store. It is possible for @file to contain multiple certs.
+ *
+ * Returns 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *file) {
+    xmlSecOpenSSLX509StoreCtxPtr ctx;
+    X509_LOOKUP *lookup = NULL;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecOpenSSLX509StoreId), -1);
+    xmlSecAssert2(file != NULL, -1);
+
+    ctx = xmlSecOpenSSLX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->xst != NULL, -1);
+
+    lookup = X509_STORE_add_lookup(ctx->xst, X509_LOOKUP_file());
+    if(lookup == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                    "X509_STORE_add_lookup",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    if(!X509_LOOKUP_load_file(lookup, file, X509_FILETYPE_PEM)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                    "X509_LOOKUP_load_file",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+    return(0);
+}
+
 static int
 xmlSecOpenSSLX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     const xmlChar* path;

@@ -1,0 +1,6 @@
+#
+# Don't allow access to svn files
+#
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule \.svn/ - [F]

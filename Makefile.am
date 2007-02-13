@@ -10,6 +10,8 @@ pkgconfig_DATA 	= xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@
 pkgconfigdir 	= $(libdir)/pkgconfig
 confexecdir	= $(libdir)
 confexec_DATA 	= xmlsec1Conf.sh
+m4datadir	= $(datadir)/aclocal
+m4data_DATA	= xmlsec1.m4
 
 DISTCLEANFILES = \
 	xmlsec1Conf.sh \

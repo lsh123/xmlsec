@@ -258,7 +258,7 @@ make
 	<para>XML Security Library "klass" includes three main parts:
 	<itemizedlist>
 	<listitem><para>"Klass" declaration structure that defines "klass" interfaces
-	and global constand data (for example, the human-readable name of 
+	and global constant data (for example, the human-readable name of 
 	the "klass").
 	<example>
 	    <title>Base transform "klass" and its child XPath transform "klass" structure.</title>

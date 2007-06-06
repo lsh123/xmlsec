@@ -544,6 +544,28 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     return(xmlSecMSCryptoKeyDataCtxGetKey(ctx));
 }
 
+HCRYPTKEY
+xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
+	xmlSecMSCryptoKeyDataCtxPtr ctx;
+	HCRYPTKEY hKey;
+
+	xmlSecAssert2(xmlSecKeyDataIsValid(data), 0);
+	xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecMSCryptoKeyDataSize), 0);
+
+	ctx = xmlSecMSCryptoKeyDataGetCtx(data);
+	xmlSecAssert2(ctx != NULL, 0);
+
+	if( !CryptGetUserKey(xmlSecMSCryptoKeyDataCtxGetProvider(ctx), AT_KEYEXCHANGE, &(hKey))) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"CryptGetUserKey",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+		return(0);
+	}
+	return (hKey);
+}
+
 /**
  * xmlSecMSCryptoKeyDataGetCert:
  * @data:		the key data to retrieve certificate from.

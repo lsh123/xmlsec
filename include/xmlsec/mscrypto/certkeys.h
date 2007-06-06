@@ -23,6 +23,7 @@ extern "C" {
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoKeyDataGetCert	(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT HCRYPTKEY 		xmlSecMSCryptoKeyDataGetKey	(xmlSecKeyDataPtr data, 
 									 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT HCRYPTKEY	xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoCertDup		(PCCERT_CONTEXT pCert);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecMSCryptoCertAdopt		(PCCERT_CONTEXT pCert, xmlSecKeyDataType type);
 

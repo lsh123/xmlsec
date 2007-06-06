@@ -406,7 +406,68 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 				NULL);
 	    xmlFree(bdata);
 	}
-    }   
+    }
+
+    /*
+     * Try ro find certificate with name="Friendly Name"
+     */
+    if (NULL == pCertContext) {
+      DWORD dwPropSize;
+      PBYTE pbFriendlyName;
+      PCCERT_CONTEXT pCertCtxIter = NULL;
+      size_t len = xmlStrlen(name) + 1;     
+      wchar_t * lpFName;
+	
+      lpFName = (wchar_t *)xmlMalloc(sizeof(wchar_t) * len);
+      if(lpFName == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    	XMLSEC_ERRORS_NO_MESSAGE);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+      }
+      MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, name, -1, lpFName, len);
+      
+      while (pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter)) {
+	if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
+						      CERT_FRIENDLY_NAME_PROP_ID,
+						      NULL,
+						      &dwPropSize)) {
+	  continue;
+	}
+
+	pbFriendlyName = xmlMalloc(dwPropSize);
+	if(pbFriendlyName == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    	XMLSEC_ERRORS_NO_MESSAGE);
+	    xmlFree(lpFName);
+	    CertCloseStore(hStoreHandle, 0);
+	    return(NULL);
+	}
+	if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
+						      CERT_FRIENDLY_NAME_PROP_ID,
+						      pbFriendlyName,
+						      &dwPropSize)) {
+	  xmlFree(pbFriendlyName);
+	  continue;
+	}
+
+	/* Compare FriendlyName to name */
+	if (!wcscmp(lpFName, (const wchar_t *)pbFriendlyName)) {
+	  pCertContext = pCertCtxIter;
+	  xmlFree(pbFriendlyName);
+	  break;
+	}
+	xmlFree(pbFriendlyName);
+      }
+
+      xmlFree(lpFName);
+    }
 
     /* We could do the following here: 
      * It would be nice if we could locate the cert with issuer name and

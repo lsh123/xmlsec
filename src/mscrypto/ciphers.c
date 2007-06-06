@@ -552,6 +552,22 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
 		return(-1);
 	    }
+	} else if (dwError == NTE_BAD_KEYSET) {
+	  /* This error can indicate that a newly installed provider 
+	   * does not have a usable key container yet. It needs to be
+	   * created, and then we have to try again CryptAcquireContext.
+	   * This is also referenced in 
+	   * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
+	   */
+	    if(!CryptAcquireContext(&ctx->cryptProvider, NULL, ctx->providerName,
+				    ctx->providerType, CRYPT_NEWKEYSET)) {
+	        xmlSecError(XMLSEC_ERRORS_HERE, 
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    "CryptAcquireContext",
+		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+		return(-1);
+	    }
 	} else {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

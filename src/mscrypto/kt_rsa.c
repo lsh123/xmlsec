@@ -364,7 +364,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 	    outBuf[i] = inBuf[inSize - (i + 1)];
 	}
 
-	if (0 == (hKey = xmlSecMSCryptoKeyDataGetKey(ctx->data, xmlSecKeyDataTypePrivate))) {
+	if (0 == (hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data))) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlSecMSCryptoKeyDataGetKey",

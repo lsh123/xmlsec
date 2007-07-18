@@ -24,6 +24,10 @@
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 
 /**
@@ -361,7 +365,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "len=%d", (*len));
+		    "len=%ld", (*len));
 	return(NULL);
     }
     memset(str, 0, (*len) + 1);

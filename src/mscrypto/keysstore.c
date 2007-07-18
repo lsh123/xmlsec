@@ -39,6 +39,10 @@
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
 
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 #define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME	"MY"
 
 /****************************************************************************
@@ -304,7 +308,6 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     const char* storeName;
     HCERTSTORE hStoreHandle = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -314,7 +317,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     if(storeName == NULL) {
 	storeName = XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME;
     }
-	    
+
     hStoreHandle = CertOpenSystemStore(0, storeName);
     if (NULL == hStoreHandle) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

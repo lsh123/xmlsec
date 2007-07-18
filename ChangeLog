@@ -1,3 +1,7 @@
+2007-06-17  Aleksey Sanin  <aleksey@aleksey.com>
+        * bug #454397 - mingw build (cross-compilation) and several 
+        minor cleanups (patch from Roumen Petrov)
+
 2007-06-16  Aleksey Sanin  <aleksey@aleksey.com>
 	* configure.in: configure fixes (patch from Roumen Petrov)
 

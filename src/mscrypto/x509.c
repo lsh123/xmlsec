@@ -41,6 +41,10 @@
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
 
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 
 /*************************************************************************
  *
@@ -84,7 +88,6 @@ static int		xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
 								xmlSecKeyPtr key,
 								xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static xmlSecKeyDataPtr	xmlSecMSCryptoX509CertGetKey		(PCCERT_CONTEXT cert);
 static PCCERT_CONTEXT	xmlSecMSCryptoX509CertDerRead		(const xmlSecByte* buf, 
 								 xmlSecSize size);
 static PCCERT_CONTEXT	xmlSecMSCryptoX509CertBase64DerRead	(xmlChar* buf);
@@ -1713,42 +1716,15 @@ xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     result = (result) << 32;
     result |= t.dwLowDateTime;
     result /= 10000;    /* Convert from 100 nano-sec periods to seconds. */
+#if defined(__MINGW32__)
+    result -= 11644473600000ULL;  /* Convert from Windows epoch to Unix epoch */
+#else
     result -= 11644473600000;  /* Convert from Windows epoch to Unix epoch */
+#endif
 
     (*res) = (time_t)result;
 
     return(0);
-}
-
-static xmlSecKeyDataPtr	
-xmlSecMSCryptoX509CertGetKey(PCCERT_CONTEXT cert) {
-    xmlSecKeyDataPtr data;
-    PCCERT_CONTEXT pCert = NULL;
-
-    xmlSecAssert2(cert != NULL, NULL);
-
-    pCert = CertDuplicateCertificateContext(cert);
-    if(pCert == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "CertDuplicateCertificateContext",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(NULL);
-    }    
-
-    data = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePublic);
-    if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecMSCryptoCertAdopt",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	CertFreeCertificateContext(pCert);
-	return(NULL);	    
-    }    
-
-    return(data);
 }
 
 static PCCERT_CONTEXT
@@ -1968,44 +1944,13 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
     return(res);
 }
 
-static BOOL 
-IsHexDigit(char c) {
-    switch (c) {
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case '0':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	    return TRUE;
-	    break;
-	default:
-	    return FALSE;
-    }
-}
+
 
 static int
 xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
     xmlSecBn bn;
-    xmlChar* res;
     int ret;
-    
+
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(num != NULL, -1);
 
@@ -2015,7 +1960,7 @@ xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
 		    NULL,
 		    "xmlSecBnInitialize",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", num->cbData + 1);
+		    "size=%ld", num->cbData + 1);
 	return(-1);
     }
 
@@ -2052,7 +1997,6 @@ xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
 static xmlChar*
 xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
     xmlChar *res = NULL;
-    DWORD id = 0;
     DWORD dwSize;
     BYTE *bSKI = NULL;
     PCERT_EXTENSION pCertExt;

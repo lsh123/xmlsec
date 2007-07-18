@@ -28,6 +28,14 @@
 #include <xmlsec/mscrypto/certkeys.h>
 #include <xmlsec/mscrypto/x509.h>
 
+/*FIXME: include header files*/
+extern HCRYPTPROV xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data);
+extern DWORD xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data);
+
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 /**************************************************************************
  *
  * Internal MSCrypto signatures ctx
@@ -58,7 +66,7 @@ struct _xmlSecMSCryptoSignatureCtx {
 static int	xmlSecMSCryptoSignatureCheckId		(xmlSecTransformPtr transform);
 static int	xmlSecMSCryptoSignatureInitialize	(xmlSecTransformPtr transform);
 static void	xmlSecMSCryptoSignatureFinalize		(xmlSecTransformPtr transform);
-static int	xmlSecMSCryptopSignatureSetKeyReq	(xmlSecTransformPtr transform, 
+static int	xmlSecMSCryptoSignatureSetKeyReq	(xmlSecTransformPtr transform, 
 							 xmlSecKeyReqPtr keyReq);
 static int	xmlSecMSCryptoSignatureSetKey		(xmlSecTransformPtr transform,
 							 xmlSecKeyPtr key);
@@ -162,7 +170,6 @@ static void xmlSecMSCryptoSignatureFinalize(xmlSecTransformPtr transform) {
 static int xmlSecMSCryptoSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCryptoSignatureCtxPtr ctx;
     xmlSecKeyDataPtr value;
-    PCCERT_CONTEXT pCert;
 
     xmlSecAssert2(xmlSecMSCryptoSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -261,12 +268,14 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     	    *l-- = *j++;
 	    *m-- = *k++;
 	}
+#ifndef XMLSEC_NO_GOST
     } else if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
 	j = (BYTE *)data;
 	l = tmpBuf + dataSize - 1;
 	while (l >= tmpBuf) {
 	    *l-- = *j++;
 	}
+#endif /*ndef XMLSEC_NO_GOST*/
     } else if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
 	j = (BYTE *)data;
 	l = tmpBuf + dataSize - 1;
@@ -328,7 +337,6 @@ static int
 xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoSignatureCtxPtr ctx;
     HCRYPTPROV hProv;
-    HCRYPTKEY hKey;
     DWORD dwKeySpec;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
@@ -463,6 +471,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 		    *m-- = *i++;
 		    *n-- = *j++;
 		}
+#ifndef XMLSEC_NO_GOST
     } else if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
 		i = tmpBuf;
 		j = outBuf + dwSigLen - 1;
@@ -470,6 +479,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 		while (j >= outBuf) {
 		    *j-- = *i++;
 		}
+#endif /*ndef XMLSEC_NO_GOST*/
 	    } else if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
 		i = tmpBuf;
 		j = outBuf + dwSigLen - 1;

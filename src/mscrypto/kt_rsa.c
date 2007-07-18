@@ -239,7 +239,6 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     xmlSecSize inSize, outSize;
     xmlSecSize keySize;
     int ret;
-    unsigned int outlen;
     HCRYPTKEY hKey = 0;
     DWORD dwInLen;
     DWORD dwBufLen;

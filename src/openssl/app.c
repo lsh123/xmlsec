@@ -18,6 +18,7 @@
 #include <openssl/rand.h>
 #include <openssl/pem.h>
 #include <openssl/pkcs12.h>
+#include <openssl/conf.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -49,7 +50,7 @@ static int      xmlSecOpenSSLDummyPasswordCallback  (char *buf, int bufsize, int
 int
 xmlSecOpenSSLAppInit(const char* config) {
     ERR_load_crypto_strings();
-    OPENSSL_config();
+    OPENSSL_config(NULL);
     OpenSSL_add_all_algorithms();
 
     if((RAND_status() != 1) && (xmlSecOpenSSLAppLoadRANDFile(NULL) != 1)) {

@@ -45,6 +45,7 @@ endif
 INCLUDES = \
 	-DXMLSEC_CRYPTO=\"@XMLSEC_CRYPTO@\" \
 	-DPACKAGE=\"@PACKAGE@\" \
+	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
 	$(XMLSEC_APP_DEFINES) \

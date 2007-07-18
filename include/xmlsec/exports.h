@@ -19,7 +19,7 @@ extern "C" {
    Windows platform with MSVC compiler. */
 
 #if !defined XMLSEC_EXPORT
-#  if defined _MSC_VER
+#  if defined(_WIN32)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
 #      if !defined(XMLSEC_STATIC)
@@ -29,11 +29,20 @@ extern "C" {
 #      endif
      /* if a client program includes this file: */
 #    else
+#if 1
+       /* gcc fail by initialisation of global variable with error
+          (as example in .../openssl/ciphers.c):
+            "initializer element is not constant"
+          To avoid this we shouldn't use __declspec(dllimport).
+          This will enable auto-import feature. */
+#      define XMLSEC_EXPORT
+#else
 #      if !defined(XMLSEC_STATIC)
 #        define XMLSEC_EXPORT __declspec(dllimport) 
 #      else
 #        define XMLSEC_EXPORT 
 #      endif
+#endif
 #    endif
    /* This holds on all other platforms/compilers, which are easier to
       handle in regard to this. */
@@ -43,7 +52,7 @@ extern "C" {
 #endif
 
 #if !defined XMLSEC_CRYPTO_EXPORT
-#  if defined _MSC_VER
+#  if defined(_WIN32)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC_CRYPTO)
 #      if !defined(XMLSEC_STATIC)
@@ -67,7 +76,7 @@ extern "C" {
 #endif
 
 #if !defined XMLSEC_EXPORT_VAR
-#  if defined _MSC_VER
+#  if defined(_WIN32)
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
 #      if !defined(XMLSEC_STATIC)

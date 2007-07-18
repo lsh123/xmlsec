@@ -43,3 +43,7 @@ xmlsec*.tar.gz
 .project
 .cdtproject
 .externalToolBuilders
+missing
+install-sh
+mkinstalldirs
+depcomp

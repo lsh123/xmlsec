@@ -34,6 +34,10 @@
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
 
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 /**************************************************************************
  *
  * Internal MSCRYPTO X509 store CTX
@@ -62,14 +66,6 @@ struct _xmlSecMSCryptoX509StoreCtx {
  
 static int         xmlSecMSCryptoX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void        xmlSecMSCryptoX509StoreFinalize      (xmlSecKeyDataStorePtr store);
-static int         xmlSecMSCryptoX509NameStringRead     (xmlSecByte **str, 
-                             int *strLen, 
-                             xmlSecByte *res, 
-                             int resLen,
-                             xmlSecByte delim, 
-                             int ingoreTrailingSpaces);
-static xmlSecByte *     xmlSecMSCryptoX509NameRead      (xmlSecByte *str, 
-                             int len);
 
 static xmlSecKeyDataStoreKlass xmlSecMSCryptoX509StoreKlass = {
     sizeof(xmlSecKeyDataStoreKlass),
@@ -155,15 +151,17 @@ xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
 
     xmlSecAssert(pft != NULL);
 
+#if defined( __MINGW32__)
+    ll = Int32x32To64(t, 10000000) + 116444736000000000ULL;
+#else
     ll = Int32x32To64(t, 10000000) + 116444736000000000;
+#endif
     pft->dwLowDateTime = (DWORD)ll;
     pft->dwHighDateTime = ll >> 32;
 }
 
 static BOOL
 xmlSecMSCrypoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pft) {
-    LONG res;
-
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(pCert->pCertInfo != NULL, FALSE);
     xmlSecAssert2(pft != NULL, FALSE);
@@ -583,7 +581,6 @@ int
 xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     HCERTSTORE certStore;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
     xmlSecAssert2(pCert != NULL, -1);
@@ -605,7 +602,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
                 "type=%d", type);
         return(-1);
     }
-    
+
     /* TODO: The context to be added here is not duplicated first, 
     * hopefully this will not lead to errors when closing teh store 
     * and freeing the mem for all the context in the store.
@@ -636,7 +633,6 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
 int    
 xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
     xmlSecAssert2( keyStore != NULL, -1);
@@ -669,7 +665,6 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
 int
 xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE trustedStore) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
     xmlSecAssert2( trustedStore != NULL, -1);
@@ -702,7 +697,6 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
 int
 xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE untrustedStore) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), -1);
     xmlSecAssert2( untrustedStore != NULL, -1);
@@ -888,7 +882,6 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 static PCCERT_CONTEXT        
 xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issuerName, 
                xmlChar *issuerSerial, xmlChar *ski) {
-    xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT pCert = NULL;
     int ret;
 
@@ -929,7 +922,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
         CERT_NAME_BLOB cnb;
         BYTE *cName = NULL; 
         DWORD cNameLen = 0;    
-        
+
         /* aleksey: for some unknown to me reasons, mscrypto wants Email
         * instead of emailAddress. This code is not bullet proof and may 
         * produce incorrect results if someone has "emailAddress=" string
@@ -1054,7 +1047,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
                         NULL);
         xmlFree(binSki);
     }
-  
+
   return(pCert);
 }
 

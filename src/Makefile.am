@@ -4,7 +4,7 @@ SUBDIRS = . $(XMLSEC_CRYPTO_LIST)
 
 INCLUDES = \
 	-DPACKAGE=\"@PACKAGE@\" \
-	-I$(top_srcdir) \
+	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
 	$(LIBXSLT_CFLAGS) \
@@ -62,8 +62,9 @@ libxmlsec1_la_LIBADD = \
 	$(LIBXML_LIBS) \
 	$(XMLSEC_DL_LIBS) \
 	$(NULL)
-        
+
 libxmlsec1_la_LDFLAGS = \
+	@XMLSEC_EXTRA_LDFLAGS@ \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	$(NULL)
 

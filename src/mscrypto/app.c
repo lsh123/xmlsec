@@ -25,6 +25,10 @@
 #include <xmlsec/mscrypto/keysstore.h>
 #include <xmlsec/mscrypto/x509.h>
 
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 /* I don't see any other way then to use a global var to get the 
  * config info to the mscrypto keysstore :(  WK 
  */
@@ -559,8 +563,6 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
-    DWORD dwData, dwDataLen;
-    BOOL bres;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
@@ -575,7 +577,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 		    NULL,
 		    "PFXIsPFXBlob",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "size=%d",
+		    "size=%ld",
 		    pfx.cbData);
 	goto done;
     }

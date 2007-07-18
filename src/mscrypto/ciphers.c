@@ -21,6 +21,10 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 
+#if defined(__MINGW32__)
+#  include "xmlsec-mingw.h"
+#endif
+
 #ifndef MS_ENH_RSA_AES_PROV_PROTO
 #define MS_ENH_RSA_AES_PROV_PROTO "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 #endif /* MS_ENH_RSA_AES_PROV_PROTO */
@@ -252,7 +256,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "CryptEn/Decrypt",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", dwCLen);
+		    "size=%ld", dwCLen);
 	return(-1);
     }
 
@@ -397,7 +401,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 		    xmlSecErrorsSafeString(cipherName),
 		    "CryptEn/Decrypt",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", dwCLen);
+		    "size=%ld", dwCLen);
 	return(-1);
     }
 
@@ -648,10 +652,7 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
     BYTE* bufData;
-    size_t keySize;
-    HCRYPTPROV hProv = 0;
-    HCRYPTKEY hPubPrivKey = 0;
-    
+
     xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);
@@ -1036,7 +1037,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 		    NULL,
 		    "CryptExportKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "len=%d", keyBlobLen);
+		    "len=%ld", keyBlobLen);
 	goto done;
     }
     pubKeyStruc = (PUBLICKEYSTRUC*)keyBlob;
@@ -1066,7 +1067,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 		    NULL,
 		    "CryptExportKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "rsaPubKey->magic=0x%08x", rsaPubKey->magic);
+		    "rsaPubKey->magic=0x%08lx", rsaPubKey->magic);
 	goto done;
     }
     bitLen = rsaPubKey->bitlen;
@@ -1092,7 +1093,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 		    NULL,
 		    "CryptExportKey",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "len=%d", keyBlobLen);
+		    "len=%ld", keyBlobLen);
 	goto done;
     }
     ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)); 
@@ -1224,7 +1225,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
-		    "dwKeyMaterial=%d;dwProvSessionKeySize=%d", 
+		    "dwKeyMaterial=%ld;dwProvSessionKeySize=%ld", 
 		    dwKeyMaterial, dwProvSessionKeySize);
 	goto done;
     }
@@ -1257,7 +1258,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 		    NULL,
 		    NULL,
 		    XMLSEC_ERRORS_R_INVALID_SIZE,
-		    "dwKeyMaterial=%d;dwPublicKeySize=%d", 
+		    "dwKeyMaterial=%ld;dwPublicKeySize=%ld", 
 		    dwKeyMaterial, dwPublicKeySize);
 	goto done;
     }
@@ -1297,7 +1298,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* Copy private key algorithm to buffer */
     algId		    = (ALG_ID*)(keyBlob + sizeof(PUBLICKEYSTRUC));
     (*algId)		    = dwPrivKeyAlg;
-    
+
     /* Place the key material in reverse order */
     pbPtr		    = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(ALG_ID));
     for (n = 0; n < dwKeyMaterial; n++) {
@@ -1314,7 +1315,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 		    NULL,
 		    "CryptGenRandom",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "rndBlobSize=%d", rndBlobSize);
+		    "rndBlobSize=%ld", rndBlobSize);
 	goto done;
     }
     /* aleksey: why are we doing this? */

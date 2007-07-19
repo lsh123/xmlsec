@@ -851,9 +851,9 @@ if test "z$MSCRYPTO_ENABLE" = "zyes" ; then
     MSCRYPTO_CFLAGS="$MSCRYPTO_CFLAGS -DXMLSEC_CRYPTO_MSCRYPTO=1"
     case $host in
 	*-*-mingw*)
-		dnl since mingw crypt32 library is limited we will use own
-		dnl def-file with ugly libtool workaround
-		MSCRYPTO_LIBS='-export-symbols $(srcdir)/mingw-crypt32.def';;
+		dnl since mingw crypt32 library is limited
+		dnl we use own def-file
+		MSCRYPTO_LIBS='-Wl,$(srcdir)/mingw-crypt32.def';;
 	*)
 		MSCRYPTO_LIBS="-lcrypt32";;
     esac

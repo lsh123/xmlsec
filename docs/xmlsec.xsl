@@ -159,9 +159,9 @@
 	</a>
 	</td></tr>
 	
-	<!-- Sponsored links block markers -->
-	<xsl:comment>Sponsored links - start</xsl:comment>
-	<xsl:comment>Sponsored links - end</xsl:comment>
+	<!-- links block markers -->
+	<xsl:comment>Links - start</xsl:comment>
+	<xsl:comment>Links - end</xsl:comment>
 	
 	</table>
      </td>

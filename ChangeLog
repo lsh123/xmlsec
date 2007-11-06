@@ -1,18 +1,28 @@
+2007-11-06  Aleksey Sanin  <aleksey@aleksey.com>
+	
+	* configure.in docs/download.html docs/index.html docs/news.html 
+	include/xmlsec/version.h: preparation for new 1.2.11 release
+
 2007-07-19  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* bug #454397 - mingw build: added missing files
 
 2007-07-19  Aleksey Sanin  <aleksey@aleksey.com>
+
         * bug #454397 - mingw build: normal way to pass def file to linker
         (patch from Roumen Petrov)
 
 2007-07-17  Aleksey Sanin  <aleksey@aleksey.com>
-        * bug #454397 - mingw build (cross-compilation) and several 
+
+        * bug #454397 - mingw build: (cross-compilation) and several 
         minor cleanups (patch from Roumen Petrov)
 
 2007-06-16  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* configure.in: configure fixes (patch from Roumen Petrov)
 
 2007-06-06  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/mscrypto/*: better support for non micorsoft CSP's (patch from 
 	Wouter and Ed Shallow)
 
@@ -21,11 +31,13 @@
 	* Makefile.am xmlsec1.m4: automake macro for xmlsec1 (from Heiko Ronsdorf)
 
 2006-09-04  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* include/xmlsec/openssl/app.h src/openssl/app.c src/openssl/x509vfy.c:
 	added xmlSecOpenSSLAppKeysMngrAddCertsFile() function 
 	(David Norrel)
 
 2006-08-15  Aleksey Sanin  <aleksey@aleksey.com>
+
 	* src/openssl/x509vfy.c: fixed loading certs from a directory
 	during openssl x509 store init (based on idea from David Norrel)
 

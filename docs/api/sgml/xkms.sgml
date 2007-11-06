@@ -33,7 +33,7 @@ struct      <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtx</link>;
 <link linkend="void">void</link>        <link linkend="xmlSecXkmsServerCtxReset">xmlSecXkmsServerCtxReset</link>        (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx);
 <link linkend="int">int</link>         <link linkend="xmlSecXkmsServerCtxCopyUserPref">xmlSecXkmsServerCtxCopyUserPref</link> (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> dst,
                                              <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> src);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxProcess">xmlSecXkmsServerCtxProcess</link>      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxProcess">xmlSecXkmsServerCtxProcess</link>      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
                                              <link linkend="xmlDoc">xmlDocPtr</link> doc);
@@ -46,7 +46,7 @@ struct      <link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtx</link>;
                                             (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format);
-<link linkend="xmlNodePtr">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxResponseWrap">xmlSecXkmsServerCtxResponseWrap</link> (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+<link linkend="xmlNode">xmlNodePtr</link>  <link linkend="xmlSecXkmsServerCtxResponseWrap">xmlSecXkmsServerCtxResponseWrap</link> (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
                                              <link linkend="xmlDoc">xmlDocPtr</link> doc);
@@ -760,7 +760,7 @@ Copies user preference from <parameter>src</parameter> context to <parameter>dst
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecXkmsServerCtxProcess">xmlSecXkmsServerCtxProcess ()</title>
-<indexterm><primary>xmlSecXkmsServerCtxProcess</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecXkmsServerCtxProcess      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+<indexterm><primary>xmlSecXkmsServerCtxProcess</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecXkmsServerCtxProcess      (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
                                              <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>
@@ -850,7 +850,7 @@ Removes SOAP or other envelope from XKMS request.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecXkmsServerCtxResponseWrap">xmlSecXkmsServerCtxResponseWrap ()</title>
-<indexterm><primary>xmlSecXkmsServerCtxResponseWrap</primary></indexterm><programlisting><link linkend="xmlNodePtr">xmlNodePtr</link>  xmlSecXkmsServerCtxResponseWrap (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
+<indexterm><primary>xmlSecXkmsServerCtxResponseWrap</primary></indexterm><programlisting><link linkend="xmlNode">xmlNodePtr</link>  xmlSecXkmsServerCtxResponseWrap (<link linkend="xmlSecXkmsServerCtx">xmlSecXkmsServerCtxPtr</link> ctx,
                                              <link linkend="xmlNode">xmlNodePtr</link> node,
                                              <link linkend="xmlSecXkmsServerFormat">xmlSecXkmsServerFormat</link> format,
                                              <link linkend="xmlDoc">xmlDocPtr</link> doc);</programlisting>

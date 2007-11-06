@@ -17,7 +17,7 @@
 
 <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> <link linkend="xmlSecKeysMngrCreate">xmlSecKeysMngrCreate</link>      (void);
 <link linkend="void">void</link>        <link linkend="xmlSecKeysMngrDestroy">xmlSecKeysMngrDestroy</link>           (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey</link>          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 <link linkend="int">int</link>         <link linkend="xmlSecKeysMngrAdoptKeysStore">xmlSecKeysMngrAdoptKeysStore</link>    (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
@@ -29,15 +29,15 @@
 <link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> <link linkend="xmlSecKeysMngrGetDataStore">xmlSecKeysMngrGetDataStore</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link> id);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> (<link linkend="xmlSecGetKeyCallback">*xmlSecGetKeyCallback</link>)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 struct      <link linkend="xmlSecKeysMngr">xmlSecKeysMngr</link>;
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey</link>           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 struct      <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
 <link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> <link linkend="xmlSecKeyStoreCreate">xmlSecKeyStoreCreate</link>      (<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link> id);
 <link linkend="void">void</link>        <link linkend="xmlSecKeyStoreDestroy">xmlSecKeyStoreDestroy</link>           (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> <link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link>          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey</link>          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 #define     <link linkend="xmlSecKeyStoreGetName">xmlSecKeyStoreGetName</link>           (store)
@@ -48,7 +48,7 @@ struct      <link linkend="xmlSecKeyStore">xmlSecKeyStore</link>;
 <link linkend="int">int</link>         (<link linkend="xmlSecKeyStoreInitializeMethod">*xmlSecKeyStoreInitializeMethod</link>)
                                             (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
 <link linkend="void">void</link>        (<link linkend="xmlSecKeyStoreFinalizeMethod">*xmlSecKeyStoreFinalizeMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);
-<link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyStoreFindKeyMethod">*xmlSecKeyStoreFindKeyMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<link linkend="xmlSecKey">xmlSecKeyPtr</link> (<link linkend="xmlSecKeyStoreFindKeyMethod">*xmlSecKeyStoreFindKeyMethod</link>) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);
 struct      <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
@@ -111,7 +111,7 @@ Destroys keys manager created with <link linkend="xmlSecKeysMngrCreate"><type>xm
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrFindKey">xmlSecKeysMngrFindKey ()</title>
-<indexterm><primary>xmlSecKeysMngrFindKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrFindKey          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+<indexterm><primary>xmlSecKeysMngrFindKey</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeysMngrFindKey          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
@@ -127,7 +127,7 @@ for destroying the returned key using <link linkend="xmlSecKeyDestroy"><type>xml
 <listitem><simpara>		the desired key name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to a key or NULL if key is not found or an error occurs.
 </simpara></listitem></varlistentry>
@@ -206,18 +206,18 @@ occurs.
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecGetKeyCallback">xmlSecGetKeyCallback ()</title>
-<indexterm><primary>xmlSecGetKeyCallback</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<indexterm><primary>xmlSecGetKeyCallback</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> (*xmlSecGetKeyCallback)        (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
-<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<listitem><simpara> 		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to key or NULL if the key is not found or 
 an error occurs.
@@ -249,24 +249,24 @@ The keys manager structure.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecGetKeyCallback">xmlSecGetKeyCallback</link> <structfield>getKey</structfield></term>
-<listitem><simpara> 			the callback used to read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<listitem><simpara> 			the callback used to read <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeysMngrGetKey">xmlSecKeysMngrGetKey ()</title>
-<indexterm><primary>xmlSecKeysMngrGetKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
+<indexterm><primary>xmlSecKeysMngrGetKey</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeysMngrGetKey           (<link linkend="xmlNode">xmlNodePtr</link> keyInfoNode,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
+Reads the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node <parameter>keyInfoNode</parameter> and extracts the key.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>keyInfoNode</parameter>&nbsp;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node.
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.	
+<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node processing context.	
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to key or NULL if the key is not found or 
 an error occurs.
@@ -333,7 +333,7 @@ Destroys the store created with <link linkend="xmlSecKeyStoreCreate"><type>xmlSe
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreFindKey">xmlSecKeyStoreFindKey ()</title>
-<indexterm><primary>xmlSecKeyStoreFindKey</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> xmlSecKeyStoreFindKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<indexterm><primary>xmlSecKeyStoreFindKey</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> xmlSecKeyStoreFindKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
@@ -349,7 +349,7 @@ the returned key using <link linkend="xmlSecKeyDestroy"><type>xmlSecKeyDestroy</
 <listitem><simpara>		the desired key name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the pointer to a key or NULL if key is not found or an error occurs.
 </simpara></listitem></varlistentry>
@@ -447,7 +447,7 @@ Keys store specific finalization (destroy) method.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecKeyStoreFindKeyMethod">xmlSecKeyStoreFindKeyMethod ()</title>
-<indexterm><primary>xmlSecKeyStoreFindKeyMethod</primary></indexterm><programlisting><link linkend="xmlSecKeyPtr">xmlSecKeyPtr</link> (*xmlSecKeyStoreFindKeyMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
+<indexterm><primary>xmlSecKeyStoreFindKeyMethod</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link> (*xmlSecKeyStoreFindKeyMethod) (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
                                              const <link linkend="xmlChar">xmlChar</link> *name,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>

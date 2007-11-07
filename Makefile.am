@@ -41,6 +41,7 @@ EXTRA_DIST = \
 	xmlsec1.pc @XMLSEC_CRYPTO_PC_FILES_LIST@ \
 	xmlsec1-config \
 	xmlsec1.spec \
+	xmlsec1.m4 \
 	$(NULL)
 
 EXTRA_CLEAN = \
@@ -135,9 +136,6 @@ cleantar:
 rpm: cleantar
 	@(unset CDPATH && $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
 
-tag-release:
-	@cvs tag -F xmlsec-$(SAFE_VERSION) > /dev/null
-
-rpm-release: clean cleantar rpm tag-release
+rpm-release: clean cleantar rpm 
 	
 

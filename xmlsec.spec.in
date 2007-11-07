@@ -17,6 +17,9 @@ BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Prefix: %{_prefix}
 Docdir: %{_docdir}
 
+%define _unpackaged_files_terminate_build  0 
+%define _missing_doc_files_terminate_build 0
+
 %description
 XML Security Library is a C library based on LibXML2  and OpenSSL. 
 The library was created with a goal to support major XML security 

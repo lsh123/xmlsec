@@ -50,7 +50,7 @@ extern "C" {
  * The library version info string in the format
  * "<major-number>+<minor-number>:<sub-minor-number>:<minor-number>".
  */
-#define XMLSEC_VERSION_INFO		"3:10:2"
+#define XMLSEC_VERSION_INFO		"3:11:2"
 
 
 #ifdef __cplusplus

@@ -30,7 +30,7 @@ XMLSEC_EXAMPLES = \
 !IF "$(XMLSEC_CRYPTO)" == "openssl"
 XMLSEC_CFLAGS = $(XMLSEC_CFLAGS) /D "XMLSEC_CRYPTO_OPENSSL" /D "XMLSEC_CRYPTO=\"openssl\""
 XMLSEC_SOLIBS = libxmlsec-openssl.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
-XMLSEC_ALIBS  = libxmlsec-openssl.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
+XMLSEC_ALIBS  = libxmlsec-openssl_a.lib libeay32.lib wsock32.lib user32.lib gdi32.lib 
 !ENDIF
 
 !IF "$(XMLSEC_CRYPTO)" == "nss"

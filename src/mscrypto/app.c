@@ -648,7 +648,18 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 
 	/* Find the certificate that has the private key */
 	if((TRUE == CertGetCertificateContextProperty(pCert, CERT_KEY_SPEC_PROP_ID, &dwData, &dwDataLen)) && (dwData > 0)) {
-	    keyData = xmlSecMSCryptoCertAdopt(pCert, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
+	    tmpcert = CertDuplicateCertificateContext(pCert);
+	    if(tmpcert == NULL) {
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			    NULL,
+			    "CertDuplicateCertificateContext",
+			    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			    "data=%s",
+			    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+		goto done;
+	    }
+
+	    keyData = xmlSecMSCryptoCertAdopt(tmpcert, xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
 	    if(keyData == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
 			    NULL,
@@ -657,6 +668,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 			    XMLSEC_ERRORS_NO_MESSAGE);
 		goto done;
 	    }
+        tmpcert = NULL;
 	
 	    tmpcert = CertDuplicateCertificateContext(pCert);
 	    if(tmpcert == NULL) {

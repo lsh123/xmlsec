@@ -1221,7 +1221,7 @@ xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
 	return(NULL);	
     }
     if(name != NULL) {
-	xmlNodeSetContent(res, name);
+	xmlSecNodeEncodeAndSetContent(res, name);
     }
     return(res);
 }
@@ -1518,7 +1518,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
     }
 
 		if (issuerName != NULL) {
-			xmlNodeSetContent(res, issuerName);
+			xmlSecNodeEncodeAndSetContent(res, issuerName);
 		}
 		return(res);
 }
@@ -1561,7 +1561,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
 	}
 
 	if (serial != NULL) {
-		xmlNodeSetContent(res, serial);
+		xmlSecNodeEncodeAndSetContent(res, serial);
 	}
 	return(res);
 }
@@ -1960,7 +1960,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
 	return(-1);    
     }
     
-    xmlNodeSetContent(xpathNode, expression);
+    xmlSecNodeEncodeAndSetContent(xpathNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpathNode, nsList) : 0);
 }
 
@@ -1998,7 +1998,7 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
     }
     xmlSetProp(xpathNode, xmlSecAttrFilter, type);
     
-    xmlNodeSetContent(xpathNode, expression);
+    xmlSecNodeEncodeAndSetContent(xpathNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpathNode, nsList) : 0);
 }
 
@@ -2044,7 +2044,7 @@ xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expressi
     }
     
     
-    xmlNodeSetContent(xpointerNode, expression);
+    xmlSecNodeEncodeAndSetContent(xpointerNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpointerNode, nsList) : 0);
 }
 

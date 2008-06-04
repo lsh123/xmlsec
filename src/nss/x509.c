@@ -1196,7 +1196,7 @@ xmlSecNssX509SubjectNameNodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSec
 	xmlFree(buf);
 	return(-1);
     }
-    xmlNodeSetContent(cur, buf);
+    xmlSecNodeEncodeAndSetContent(cur, buf);
     xmlFree(buf);
     return(0);
 }
@@ -1386,7 +1386,7 @@ xmlSecNssX509IssuerSerialNodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSe
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlNodeSetContent(issuerNameNode, buf);
+    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
     xmlFree(buf);
 
     buf = xmlSecNssASN1IntegerWrite(&(cert->serialNumber));
@@ -1504,7 +1504,7 @@ xmlSecNssX509SKINodeWrite(CERTCertificate* cert, xmlNodePtr node, xmlSecKeyInfoC
 	xmlFree(buf);
 	return(-1);
     }
-    xmlNodeSetContent(cur, buf);
+    xmlSecNodeEncodeAndSetContent(cur, buf);
     xmlFree(buf);
 
     return(0);

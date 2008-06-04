@@ -74,7 +74,9 @@ XMLSEC_EXPORT int		xmlSecReplaceNodeBufferAndReturn
 							 const xmlSecByte *buffer, 
 							 xmlSecSize size,
 							 xmlNodePtr* replaced);
-
+XMLSEC_EXPORT int		xmlSecNodeEncodeAndSetContent
+							(xmlNodePtr node,
+							 const xmlChar *buffer);
 XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 xmlNodePtr cur,
 							 const xmlChar** ids);

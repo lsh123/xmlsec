@@ -1,4 +1,10 @@
 2008-06-04  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/templates.c src/keyinfo.c src/xmltree.c src/mscrypto/x509.c 
+        src/openssl/x509.c src/nss/x509.c include/xmlsec/xmltree.h:
+	added new function xmlSecNodeEncodeAndSetContent for encoding
+	special chars in the node content (bug reported by Cliff Hones)
+
+2008-06-04  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/xmltree.c, src/xmlenc.c, include/xmlsec/xmltree.h, include/xmlsec/xmlenc.h: 
 	add an option to return the replaced (encrypted) node(s) to the caller
 	(based on the patch from Frank Gross)

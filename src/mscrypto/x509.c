@@ -1165,7 +1165,7 @@ xmlSecMSCryptoX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xml
 	xmlFree(buf);
 	return(-1);
     }
-    xmlNodeSetContent(cur, buf);
+    xmlSecNodeEncodeAndSetContent(cur, buf);
     xmlFree(buf);
     return(0);
 }
@@ -1358,7 +1358,7 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlNodeSetContent(issuerNameNode, buf);
+    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
     xmlFree(buf);
 
     ret = xmlSecMSCryptoASN1IntegerWrite(issuerNumberNode, &(cert->pCertInfo->SerialNumber));
@@ -1473,7 +1473,7 @@ xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyIn
 	xmlFree(buf);
 	return(-1);
     }
-    xmlNodeSetContent(cur, buf);
+    xmlSecNodeEncodeAndSetContent(cur, buf);
     xmlFree(buf);
 
     return(0);

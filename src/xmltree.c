@@ -598,6 +598,43 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
 }
 
 /**
+ * xmlSecNodeEncodeAndSetContent:
+ * @node: 		    the pointer to an XML node.
+ * @buffer: 		the pointer to the node content.
+ *
+ * Encodes "special" characters in the @buffer and sets the result
+ * as the node content.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(node->doc != NULL, -1);
+    
+    if(buffer != NULL) {
+	    xmlChar * tmp;
+
+        tmp = xmlEncodeSpecialChars(node->doc, buffer);        
+        if (tmp == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlEncodeSpecialChars",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        "Failed to encode special characters");
+            return(-1);         
+        }
+
+        xmlNodeSetContent(node, tmp);
+        xmlFree(tmp);
+    } else {
+        xmlNodeSetContent(node, NULL);
+    }
+
+    return(0);
+}
+
+/**
  * xmlSecAddIDs:
  * @doc: 		the pointer to an XML document.
  * @cur: 		the pointer to an XML node.

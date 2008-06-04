@@ -1154,7 +1154,7 @@ xmlSecOpenSSLX509SubjectNameNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfo
 	xmlFree(buf);
 	return(-1);
     }
-    xmlNodeSetContent(cur, buf);
+    xmlSecNodeEncodeAndSetContent(cur, buf);
     xmlFree(buf);
     return(0);
 }
@@ -1357,7 +1357,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlNodeSetContent(issuerNameNode, buf);
+    xmlSecNodeEncodeAndSetContent(issuerNameNode, buf);
     xmlFree(buf);
 
     buf = xmlSecOpenSSLASN1IntegerWrite(X509_get_serialNumber(cert));
@@ -1369,7 +1369,7 @@ xmlSecOpenSSLX509IssuerSerialNodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInf
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-    xmlNodeSetContent(issuerNumberNode, buf);
+    xmlSecNodeEncodeAndSetContent(issuerNumberNode, buf);
     xmlFree(buf);
 
     return(0);
@@ -1488,7 +1488,7 @@ xmlSecOpenSSLX509SKINodeWrite(X509* cert, xmlNodePtr node, xmlSecKeyInfoCtxPtr k
 	xmlFree(buf);
 	return(-1);
     }
-    xmlNodeSetContent(cur, buf);
+    xmlSecNodeEncodeAndSetContent(cur, buf);
     xmlFree(buf);
 
     return(0);

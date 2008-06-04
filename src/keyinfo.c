@@ -779,8 +779,7 @@ xmlSecKeyDataNameXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node,
 
     name = xmlSecKeyGetName(key);
     if(name != NULL) {
-	/* TODO: encode the key name */
-	xmlNodeSetContent(node, name);
+	    xmlSecNodeEncodeAndSetContent(node, name);
     }
     return(0);
 }

@@ -56,11 +56,24 @@ XMLSEC_EXPORT xmlNodePtr	xmlSecAddPrevSibling	(xmlNodePtr node,
 
 XMLSEC_EXPORT int		xmlSecReplaceNode	(xmlNodePtr node,
 						         xmlNodePtr newNode);
+XMLSEC_EXPORT int		xmlSecReplaceNodeAndReturn
+							(xmlNodePtr node,
+						         xmlNodePtr newNode,
+						         xmlNodePtr* replaced);
 XMLSEC_EXPORT int		xmlSecReplaceContent	(xmlNodePtr node,
 							 xmlNodePtr newNode);
+XMLSEC_EXPORT int		xmlSecReplaceContentAndReturn
+							(xmlNodePtr node,
+							 xmlNodePtr newNode,
+							 xmlNodePtr* replaced);
 XMLSEC_EXPORT int		xmlSecReplaceNodeBuffer	(xmlNodePtr node,
 							 const xmlSecByte *buffer, 
 							 xmlSecSize size);
+XMLSEC_EXPORT int		xmlSecReplaceNodeBufferAndReturn
+							(xmlNodePtr node,
+							 const xmlSecByte *buffer, 
+							 xmlSecSize size,
+							 xmlNodePtr* replaced);
 
 XMLSEC_EXPORT void		xmlSecAddIDs		(xmlDocPtr doc,
 							 xmlNodePtr cur,

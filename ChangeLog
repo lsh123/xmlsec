@@ -1,3 +1,8 @@
+2008-06-04  Aleksey Sanin  <aleksey@aleksey.com>
+	* src/xmltree.c, src/xmlenc.c, include/xmlsec/xmltree.h, include/xmlsec/xmlenc.h: 
+	add an option to return the replaced (encrypted) node(s) to the caller
+	(based on the patch from Frank Gross)
+
 2008-05-23  Aleksey Sanin  <aleksey@aleksey.com>
 	
 	* src/mscrypto/app.c: fix MS certificates ref counting

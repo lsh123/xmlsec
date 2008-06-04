@@ -419,6 +419,21 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
+    return xmlSecReplaceNodeAndReturn(node, newNode, NULL);
+}
+
+/**                 
+ * xmlSecReplaceNodeAndReturn:
+ * @node: 		the current node.
+ * @newNode: 		the new node.
+ * @replaced:   	the replaced node, or release it if NULL is given
+ * 
+ * Swaps the @node and @newNode in the XML tree.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
     xmlNodePtr oldNode;
     int restoreRoot = 0;
     
@@ -448,7 +463,13 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
 	xmlDocSetRootElement(oldNode->doc, newNode);
     }
 
-    xmlFreeNode(oldNode);
+    /* return the old node if requested */
+    if(replaced != NULL) {
+     	(*replaced) = oldNode;  	  	
+    } else {
+   	xmlFreeNode(oldNode); 
+    }
+   
     return(0);
 }
 
@@ -463,18 +484,54 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
+     return xmlSecReplaceContentAndReturn(node, newNode, NULL);
+}
+
+/**
+ * xmlSecReplaceContentAndReturn
+ * @node: 		the current node.
+ * @newNode: 		the new node.
+ * @replaced:   	the replaced nodes, or release them if NULL is given
+ * 
+ * Swaps the content of @node and @newNode.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *replaced) {
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(newNode != NULL, -1);  
 
     xmlUnlinkNode(newNode);
     xmlSetTreeDoc(newNode, node->doc);
-    xmlNodeSetContent(node, NULL);
+
+    /* return the old nodes if requested */
+    if(replaced != NULL) {
+        xmlNodePtr cur, next, tail;
+
+        (*replaced) = tail = NULL;
+        for(cur = node->children; (cur != NULL); cur = next) {
+            next = cur->next;
+            if((*replaced) != NULL) {
+		/* n is unlinked in this function */        	
+                xmlAddNextSibling(tail, cur); 
+		tail = cur;
+            } else {
+		/* this is the first node, (*replaced) is the head */
+                xmlUnlinkNode(cur);
+    	        (*replaced) = tail = cur;    	    
+          }
+        }
+    } else {
+	/* just delete the content */
+        xmlNodeSetContent(node, NULL);
+    }
+
     xmlAddChild(node, newNode);
     xmlSetTreeDoc(newNode, node->doc);
 
     return(0);
 }
-
 
 /**
  * xmlSecReplaceNodeBuffer:
@@ -487,8 +544,23 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  * Returns 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecReplaceNodeBuffer(xmlNodePtr node, 
-			const xmlSecByte *buffer, xmlSecSize size) {
+xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size) {
+    return xmlSecReplaceNodeBufferAndReturn(node, buffer, size, NULL);
+}
+
+/**
+ * xmlSecReplaceNodeBufferAndReturn:
+ * @node: 		the current node.
+ * @buffer: 		the XML data.
+ * @size: 		the XML data size.
+ * @replaced: 		the replaced nodes, or release them if NULL is given
+ * 
+ * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
+ *
+ * Returns 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
     xmlNodePtr results = NULL;
     xmlNodePtr next = NULL;
 
@@ -514,7 +586,13 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node,
 
     /* remove old node */
     xmlUnlinkNode(node);
-    xmlFreeNode(node);  
+
+    /* return the old node if requested */
+    if(replaced != NULL) {
+     	(*replaced) = node;  	  	
+    } else {
+   	xmlFreeNode(node); 
+    }
 
     return(0);
 }

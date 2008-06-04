@@ -192,34 +192,45 @@ xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
     encCtx->resultBase64Encoded = 0;
     encCtx->resultReplaced	= 0;
     encCtx->encMethod		= NULL;
+    
+    if (encCtx->replacedNodeList != NULL) { 
+	  	xmlFreeNodeList(encCtx->replacedNodeList);
+    	encCtx->replacedNodeList = NULL;
+    }
+    
     if(encCtx->encKey != NULL) {
-	xmlSecKeyDestroy(encCtx->encKey);
-	encCtx->encKey = NULL;
+	    xmlSecKeyDestroy(encCtx->encKey);
+	    encCtx->encKey = NULL;
     }
     
     if(encCtx->id != NULL) {
-	xmlFree(encCtx->id);
-	encCtx->id = NULL;
+	    xmlFree(encCtx->id);
+	    encCtx->id = NULL;
     }	
+
     if(encCtx->type != NULL) {
-	xmlFree(encCtx->type);
-	encCtx->type = NULL;
+	    xmlFree(encCtx->type);
+	    encCtx->type = NULL;
     }
+
     if(encCtx->mimeType != NULL) {
-	xmlFree(encCtx->mimeType);
-	encCtx->mimeType = NULL;
+	    xmlFree(encCtx->mimeType);
+	    encCtx->mimeType = NULL;
     }
+
     if(encCtx->encoding != NULL) {
-	xmlFree(encCtx->encoding);
-	encCtx->encoding = NULL;
+	    xmlFree(encCtx->encoding);
+	    encCtx->encoding = NULL;
     }	
+
     if(encCtx->recipient != NULL) {
-	xmlFree(encCtx->recipient);
-	encCtx->recipient = NULL;
+	    xmlFree(encCtx->recipient);
+	    encCtx->recipient = NULL;
     }
+
     if(encCtx->carriedKeyName != NULL) {
-	xmlFree(encCtx->carriedKeyName);
-	encCtx->carriedKeyName = NULL;
+	    xmlFree(encCtx->carriedKeyName);
+	    encCtx->carriedKeyName = NULL;
     }
     
     encCtx->encDataNode = encCtx->encMethodNode = 
@@ -445,43 +456,73 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
 		    "xmlSecEncCtxEncDataNodeWrite",
 		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+    	return(-1);
     }
     
     /* now we need to update our original document */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
-	ret = xmlSecReplaceNode(node, tmpl);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecReplaceNode",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
-	    return(-1);
-	}
-	encCtx->resultReplaced = 1;			       
+        /* check if we need to return the replaced node */
+        if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
+            ret = xmlSecReplaceNodeAndReturn(node, tmpl, &(encCtx->replacedNodeList));
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                NULL,
+                "xmlSecReplaceNode",
+                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                "node=%s",
+                xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+                return(-1);
+            }
+        } else {
+            ret = xmlSecReplaceNode(node, tmpl);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+		            NULL,
+		            "xmlSecReplaceNode",
+		            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		            "node=%s",
+		            xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+                return(-1);
+            }
+        }
+
+	    encCtx->resultReplaced = 1;			       
     } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
-	ret = xmlSecReplaceContent(node, tmpl);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecReplaceContent",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
-	    return(-1);
-	}
-	encCtx->resultReplaced = 1;			       
+        /* check if we need to return the replaced node */
+        if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {        
+            ret = xmlSecReplaceContentAndReturn(node, tmpl, &(encCtx->replacedNodeList));
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+	                NULL,
+	                "xmlSecReplaceContentAndReturn",
+	                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+	                "node=%s",
+	                xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+                return(-1);
+            }
+        } else {
+            ret = xmlSecReplaceContent(node, tmpl);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+	                NULL,
+	                "xmlSecReplaceContent",
+	                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+	                "node=%s",
+	                xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+                return(-1);
+            }
+        }
+
+        encCtx->resultReplaced = 1;			       
     } else {
-	/* we should've catached this error before */
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_TYPE,
-		    "type=%s", 
-		    xmlSecErrorsSafeString(encCtx->type));
-	return(-1);	    	
+	    /* we should've catached this error before */
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+		        NULL,
+		        NULL,
+		        XMLSEC_ERRORS_R_INVALID_TYPE,
+		        "type=%s", 
+		        xmlSecErrorsSafeString(encCtx->type));
+	    return(-1);	    	
     }
     return(0);    
 }
@@ -589,31 +630,62 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
     
     /* replace original node if requested */
     if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncElement)) {
-	ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer));
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecReplaceNodeBuffer",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
-	    return(-1);	    	
-	}
-	encCtx->resultReplaced = 1;			       
+        /* check if we need to return the replaced node */
+        if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
+	        ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+	        if(ret < 0) {
+	            xmlSecError(XMLSEC_ERRORS_HERE,
+			        NULL,
+			        "xmlSecReplaceNodeBufferAndReturn",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        "node=%s",
+			        xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+	            return(-1);	    	
+	        }
+        } else {
+	        ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer),  xmlSecBufferGetSize(buffer));
+	        if(ret < 0) {
+	            xmlSecError(XMLSEC_ERRORS_HERE,
+			        NULL,
+			        "xmlSecReplaceNodeBuffer",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        "node=%s",
+			        xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+	            return(-1);	    	
+	        }
+        }
+
+        encCtx->resultReplaced = 1;			       
     } else if((encCtx->type != NULL) && xmlStrEqual(encCtx->type, xmlSecTypeEncContent)) {
-	/* replace the node with the buffer */
-	ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecReplaceNodeBuffer",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
-	    return(-1);	    	
-	}	
-	encCtx->resultReplaced = 1;			       
+        /* replace the node with the buffer */
+
+        /* check if we need to return the replaced node */
+        if((encCtx->flags & XMLSEC_ENC_RETURN_REPLACED_NODE) != 0) {
+	        ret = xmlSecReplaceNodeBufferAndReturn(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer), &(encCtx->replacedNodeList));
+	        if(ret < 0) {
+	            xmlSecError(XMLSEC_ERRORS_HERE,
+			        NULL,
+			        "xmlSecReplaceNodeBufferAndReturn",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        "node=%s",
+			        xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+	            return(-1);	    	
+	        }	
+        } else {
+            ret = xmlSecReplaceNodeBuffer(node, xmlSecBufferGetData(buffer), xmlSecBufferGetSize(buffer));
+	        if(ret < 0) {
+	            xmlSecError(XMLSEC_ERRORS_HERE,
+			        NULL,
+			        "xmlSecReplaceNodeBuffer",
+			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			        "node=%s",
+			        xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+	            return(-1);	    	
+	        }	  
+        }
+    	encCtx->resultReplaced = 1;			       
     }
+
     return(0);
 }
 

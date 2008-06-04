@@ -41,6 +41,14 @@ typedef enum {
     xmlEncCtxModeEncryptedKey
 } xmlEncCtxMode;
 
+
+/**
+ * XMLSEC_ENC_RETURN_REPLACED_NODE:
+ *
+ * If this flag is set, then the replaced node will be returned in the replacedNodeList
+ */
+#define XMLSEC_ENC_RETURN_REPLACED_NODE			0x00000001
+
 /** 
  * xmlSecEncCtx:
  * @userData:			the pointer to user data (xmlsec and xmlsec-crypto libraries
@@ -61,6 +69,7 @@ typedef enum {
  * @resultReplaced:		the flag: if set then resulted <enc:EncryptedData/>
  *				or <enc:EncryptedKey/> node is added to the document.
  * @encMethod:			the pointer to encryption transform.
+ * @replacedNodeList: the first node of the list of replaced nodes depending on the nodeReplacementMode
  * @id:				the ID attribute of <enc:EncryptedData/>
  *				or <enc:EncryptedKey/> node.
  * @type:			the Type attribute of <enc:EncryptedData/>
@@ -76,7 +85,6 @@ typedef enum {
  * @encMethodNode:		the pointer to <enc:EncryptionMethod/> node.
  * @keyInfoNode:		the pointer to <enc:KeyInfo/> node.
  * @cipherValueNode:		the pointer to <enc:CipherValue/> node.
- * @reserved0:			reserved for the future.
  * @reserved1:			reserved for the future.
  * 
  * XML Encrypiton context.
@@ -99,7 +107,7 @@ struct _xmlSecEncCtx {
     int				resultBase64Encoded;
     int				resultReplaced;
     xmlSecTransformPtr		encMethod;
-
+		
     /* attributes from EncryptedData or EncryptedKey */    
     xmlChar*			id;
     xmlChar*			type;
@@ -113,10 +121,9 @@ struct _xmlSecEncCtx {
     xmlNodePtr			encMethodNode;
     xmlNodePtr			keyInfoNode;
     xmlNodePtr			cipherValueNode;
-    
-    /* reserved for future */
-    void*			reserved0;
-    void*			reserved1;
+        
+    xmlNodePtr			replacedNodeList; /* the pointer to the replaced node */
+    void*			reserved1;	  /* reserved for future */
 };
 
 XMLSEC_EXPORT xmlSecEncCtxPtr	xmlSecEncCtxCreate		(xmlSecKeysMngrPtr keysMngr);

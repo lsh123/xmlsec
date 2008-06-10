@@ -1084,7 +1084,6 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 
     cert = xmlSecOpenSSLX509StoreFindCert(x509Store, subject, NULL, NULL, NULL, keyInfoCtx);
     if(cert == NULL){
-	xmlFree(subject);
 
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1093,8 +1092,11 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 			XMLSEC_ERRORS_R_CERT_NOT_FOUND,
 			"subject=%s", 
 			xmlSecErrorsSafeString(subject));
+    	    xmlFree(subject);
 	    return(-1);
 	}
+
+	xmlFree(subject);	
 	return(0);
     }
 
@@ -1105,6 +1107,7 @@ xmlSecOpenSSLX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
 		    "X509_dup",
 		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
+
 	xmlFree(subject);
 	return(-1);
     }
@@ -1257,8 +1260,6 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 
     cert = xmlSecOpenSSLX509StoreFindCert(x509Store, NULL, issuerName, issuerSerial, NULL, keyInfoCtx);
     if(cert == NULL){
-	xmlFree(issuerSerial);
-	xmlFree(issuerName);
 
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1268,8 +1269,12 @@ xmlSecOpenSSLX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
 			"issuerName=%s;issuerSerial=%s",
 		        xmlSecErrorsSafeString(issuerName), 
 			xmlSecErrorsSafeString(issuerSerial));
+    	    xmlFree(issuerSerial);
+	    xmlFree(issuerName);
 	    return(-1);
 	}
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
 	return(0);    
     }
 

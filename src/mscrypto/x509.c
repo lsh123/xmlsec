@@ -1267,9 +1267,6 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
 
     cert = xmlSecMSCryptoX509StoreFindCert(x509Store, NULL, issuerName, issuerSerial, NULL, keyInfoCtx);
     if(cert == NULL){
-	xmlFree(issuerSerial);
-	xmlFree(issuerName);
-
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1278,8 +1275,13 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
 			"issuerName=%s;issuerSerial=%s",
 			xmlSecErrorsSafeString(issuerName), 
 			xmlSecErrorsSafeString(issuerSerial));
+	    xmlFree(issuerSerial);
+	    xmlFree(issuerName);
 	    return(-1);
 	}
+
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
 	return(0);    
     }
 

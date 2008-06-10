@@ -1137,7 +1137,6 @@ xmlSecNssX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecK
 
     cert = xmlSecNssX509StoreFindCert(x509Store, subject, NULL, NULL, NULL, keyInfoCtx);
     if(cert == NULL){
-	xmlFree(subject);
 
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1146,8 +1145,11 @@ xmlSecNssX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecK
 			XMLSEC_ERRORS_R_CERT_NOT_FOUND,
 			"subject=%s", 
 			xmlSecErrorsSafeString(subject));
+	    xmlFree(subject);
 	    return(-1);
 	}
+
+	xmlFree(subject);
 	return(0);
     }
 
@@ -1298,9 +1300,6 @@ xmlSecNssX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSec
 
     cert = xmlSecNssX509StoreFindCert(x509Store, NULL, issuerName, issuerSerial, NULL, keyInfoCtx);
     if(cert == NULL){
-	xmlFree(issuerSerial);
-	xmlFree(issuerName);
-
 	if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_STOP_ON_UNKNOWN_CERT) != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 		        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
@@ -1309,8 +1308,13 @@ xmlSecNssX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSec
 			"issuerName=%s;issuerSerial=%s",
 		        xmlSecErrorsSafeString(issuerName), 
 			xmlSecErrorsSafeString(issuerSerial));
+	    xmlFree(issuerSerial);
+	    xmlFree(issuerName);
 	    return(-1);
 	}
+
+	xmlFree(issuerSerial);
+	xmlFree(issuerName);
 	return(0);    
     }
 

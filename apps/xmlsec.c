@@ -1202,7 +1202,7 @@ int main(int argc, const char **argv) {
        (xmlSecAppCmdLineParamGetInt(&repeatParam, 1) > 0)) {
        
 	repeats = xmlSecAppCmdLineParamGetInt(&repeatParam, 1);
-        fprintf(stderr, "Executed %d tests in %ld msec\n", repeats, total_time / (CLOCKS_PER_SEC / 1000));    
+        fprintf(stderr, "Executed %d tests in %ld msec\n", repeats, (1000 * total_time) / CLOCKS_PER_SEC);    
     }
 
     goto success;

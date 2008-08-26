@@ -1,3 +1,6 @@
+2008-08-26  Aleksey Sanin  <aleksey@aleksey.com>
+	* apps/xmlsec.c: fix integer division (patch from Mikhail)
+
 2008-06-10  Aleksey Sanin  <aleksey@aleksey.com>
 	* src/mscrypto/x509.c src/openssl/x509.c src/nss/x509.c: fix crash
 	in the error reporting (based on patch from Frank Gross)

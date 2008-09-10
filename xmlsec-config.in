@@ -4,12 +4,7 @@ prefix="@prefix@"
 package="@PACKAGE@"
 exec_prefix="@exec_prefix@"
 exec_prefix_set=no
-if [ "`ldd /bin/sh | grep lib64`" = "" ]
-then
-    archlib=lib
-else
-    archlib=lib64
-fi
+package_libdir="@libdir@"
 
 usage()
 {
@@ -194,7 +189,7 @@ esac
 # Assemble all the settings together
 #
 the_flags="$the_flags @XMLSEC_CORE_CFLAGS@ $the_xml_flags $the_xslt_flags $the_crypto_flags"
-the_libs="$the_libs -L${exec_prefix}/$archlib @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
+the_libs="$the_libs -L${package_libdir} @XMLSEC_CORE_LIBS@ $the_xmlsec_crypto_lib -lxmlsec1 $the_xml_libs $the_xslt_libs $the_crypto_libs"
 
 if $cflags; then
     all_flags="$the_flags"

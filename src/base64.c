@@ -108,6 +108,31 @@ static int			xmlSecBase64CtxDecode		(xmlSecBase64CtxPtr ctx,
 								 xmlSecSize* outBufResSize);
 static int			xmlSecBase64CtxDecodeIsFinished	(xmlSecBase64CtxPtr ctx);
 
+
+static int g_xmlsec_base64_default_line_size = XMLSEC_BASE64_LINESIZE;
+
+/**
+ * xmlSecBase64GetDefaultLineSize:
+ *
+ * Returns the current default line size.
+ */
+int
+xmlSecBase64GetDefaultLineSize()
+{
+    return g_xmlsec_base64_default_line_size;
+}
+
+/**
+ * xmlSecBase64SetDefaultLineSize:
+ *
+ * Sets the current default line size.
+ */
+void
+xmlSecBase64SetDefaultLineSize(int columns)
+{
+    g_xmlsec_base64_default_line_size = columns;
+}
+
 /**
  * xmlSecBase64CtxCreate:
  * @encode:		the encode/decode flag (1 - encode, 0 - decode) 
@@ -843,7 +868,7 @@ xmlSecBase64Initialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     transform->operation = xmlSecTransformOperationDecode;
-    ret = xmlSecBase64CtxInitialize(ctx, 0, XMLSEC_BASE64_LINESIZE);
+    ret = xmlSecBase64CtxInitialize(ctx, 0, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

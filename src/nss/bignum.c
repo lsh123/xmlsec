@@ -142,7 +142,7 @@ xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks)
 	xmlNodeSetContent(cur, xmlSecStringEmpty);
     }
     
-    ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, XMLSEC_BASE64_LINESIZE);
+    ret = xmlSecBufferBase64NodeContentWrite(&buf, cur, xmlSecBase64GetDefaultLineSize());
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

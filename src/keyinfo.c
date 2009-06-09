@@ -277,7 +277,7 @@ xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr key
     
     memset(keyInfoCtx, 0, sizeof(xmlSecKeyInfoCtx));
     keyInfoCtx->keysMngr = keysMngr;
-    keyInfoCtx->base64LineSize = XMLSEC_BASE64_LINESIZE;    
+    keyInfoCtx->base64LineSize = xmlSecBase64GetDefaultLineSize();    
     ret = xmlSecPtrListInitialize(&(keyInfoCtx->enabledKeyData), xmlSecKeyDataIdListId);
     if(ret < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

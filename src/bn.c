@@ -949,7 +949,7 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 
     switch(format) {
     case xmlSecBnBase64:
-	ret = xmlSecBufferBase64NodeContentWrite(bn, cur, XMLSEC_BASE64_LINESIZE);
+	ret = xmlSecBufferBase64NodeContentWrite(bn, cur, xmlSecBase64GetDefaultLineSize());
 	if(ret < 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
 			NULL,

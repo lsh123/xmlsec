@@ -748,9 +748,14 @@ if test "z$with_gnutls" = "zno" ; then
     AC_MSG_RESULT(no)
     GNUTLS_FOUND="without"
 elif test "z$with_gnutls" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
-    PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_NEW_MIN_VERSION,
+    PKG_CHECK_MODULES(GNUTLS, gnutls >= $GNUTLS_NEW_MIN_VERSION,
 	[GNUTLS_FOUND=yes],
 	[GNUTLS_FOUND=no])
+    if test "z$GNUTLS_FOUND" = "zno" ; then 
+        PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_NEW_MIN_VERSION,
+	    [GNUTLS_FOUND=yes],
+	    [GNUTLS_FOUND=no])
+    fi
 
     if test "z$GNUTLS_FOUND" = "zno" ; then 
 	PKG_CHECK_MODULES(GNUTLS, libgnutls >= $GNUTLS_MIN_VERSION,

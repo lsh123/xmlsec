@@ -76,6 +76,7 @@
 	The new <a href="download.html">XML Security Library 1.2.12</a> release
 	includes the following changes (see ChangeLog for the complete list of changes):
 	<ul>	
+	<li>Fixed HMAC vulnerability with small values of HMAC length.</li>
 	<li>Added an option to return the replaced (based on the patch from Frank Gross)</li>
 	<li>Added new function xmlSecNodeEncodeAndSetContent for encoding
 	special chars in the node content.</li>
@@ -106,43 +107,6 @@
 	<li>Cleanups from Coverity tool reports</li>
 	<li>Bug fixes</li>
 	</ul>
-</li>
-<br><li>July 12 2005<br>
-	The new <a href="download.html">XML Security Library 1.2.9</a> release
-	includes few bug fixes and adds support for the recently released 
-	<a href="http://www.openssl.org">OpenSSL 0.9.8</a> including several 
-	new algorithms for <a href="xmldsig.html">xmlsec-openssl</a>:
-	<ul>
-<li>SHA224/SHA256/SHA384/SHA512</li>
-	    <li>HMAC-SHA224/SHA256/SHA384/SHA512</li>
-	    <li>RSA-MD5/RIPEMD160/SHA224/SHA256/SHA384/SHA512</li>
-	</ul>
-</li>
-<br><li>March 30 2005<br>
-	The new <a href="download.html">XML Security Library 1.2.8</a> release
-	merges OpenOffice.org changes to xmlsec-mscrypto and xmlsec-nss into
-	main xmlsec source tree.
-</li>
-<br><li>February 23 2005<br>
-	The new <a href="download.html">XML Security Library 1.2.7</a> release
-	includes several bug fixes and minor enchancements:
-	<ul>
-<li>(core) added xmlSecSimpleKeysStoreGetKeys() function;</li>
-	<li>(core) added functions to create &lt;X509Data/&gt; node children
-	     in the signature template;</li>
-	<li>(core) fixed xmlSecGenerateID() function;</li>
-	<li>(core) fixed dynamic linking initialization/shutdown when custom memory 
-	    allocation functions are used;</li>
-	<li>(core) fixed encrypted text parsing and xmlParseInNodeContext() function;</li>
-	<li>(openssl) fixed parsing quoted values in the certificate subject;</li>
-	<li>(mscrypto) negative numbers support in xmlSecBnFromString()/xmlSecBnToString() functions.</li>
-	</ul>
-</li>
-
-<br><li>August 25 2004<br>
-	The new <a href="download.html">XML Security Library 1.2.6</a> 
-	fixes several minor bugs and adds support for loading keys and
-	certificates from memory.
 </li>
 
 </ul>

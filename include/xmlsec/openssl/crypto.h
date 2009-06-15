@@ -200,6 +200,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha1GetKlass(voi
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
+
+XMLSEC_CRYPTO_EXPORT int               xmlSecOpenSSLHmacGetMinOutputLength();
+XMLSEC_CRYPTO_EXPORT void              xmlSecOpenSSLHmacSetMinOutputLength(int min_length);
+
 /** 
  * xmlSecOpenSSLKeyDataHmacId:
  * 

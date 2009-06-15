@@ -2,6 +2,9 @@
 	* configure.in docs/download.html docs/index.html docs/news.html 
 	include/xmlsec/version.h: preparation for new 1.2.12 release
 
+2009-06-15  Aleksey Sanin  <aleksey@aleksey.com>
+	* fixed HMAC vuln with small values of HMAC length 
+
 2009-06-13  Aleksey Sanin  <aleksey@aleksey.com>
         * fixing gnutls detection (bug #585629)
 

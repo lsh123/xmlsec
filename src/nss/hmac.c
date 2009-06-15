@@ -26,7 +26,37 @@
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
+#define XMLSEC_NSS_MIN_HMAC_SIZE		64
 #define XMLSEC_NSS_MAX_HMAC_SIZE		128
+
+/**************************************************************************
+ *
+ * Configuration
+ *
+ *****************************************************************************/
+static int g_xmlsec_nss_hmac_min_length = XMLSEC_NSS_MIN_HMAC_SIZE;
+
+/**
+ * xmlSecNssHmacGetMinOutputLength: 
+ * 
+ * Returns the min HMAC output length
+ */
+int xmlSecNssHmacGetMinOutputLength()
+{
+    return g_xmlsec_nss_hmac_min_length;
+}
+
+/**
+ * xmlSecNssHmacSetMinOutputLength: 
+ *
+ * @min_length: the new min length 
+ * 
+ * Sets the min HMAC output length
+ */
+void xmlSecNssHmacSetMinOutputLength(int min_length)
+{
+    g_xmlsec_nss_hmac_min_length = min_length;
+}
 
 /**************************************************************************
  *
@@ -162,7 +192,20 @@ xmlSecNssHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTrans
 	    ctx->dgstSize = atoi((char*)content);	    
 	    xmlFree(content);
 	}
-	/* todo: error if dgstSize == 0 ?*/
+
+	/* Ensure that HMAC length is greater than min specified.
+	   Otherwise, an attacker can set this lenght to 0 or very 
+	   small value
+	*/
+	if(ctx->dgstSize < xmlSecNssHmacGetMinOutputLength()) {
+ 	   xmlSecError(XMLSEC_ERRORS_HERE,
+		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+		    xmlSecNodeHMACOutputLength,
+		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+		    "HMAC output length is too small");
+	   return(-1);
+	}
+
 	cur = xmlSecGetNextElementNode(cur->next);
     }
     

@@ -113,6 +113,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass(void
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
+
+XMLSEC_CRYPTO_EXPORT int               xmlSecGnuTLSHmacGetMinOutputLength();
+XMLSEC_CRYPTO_EXPORT void              xmlSecGnuTLSHmacSetMinOutputLength(int min_length);
+
 /** 
  * xmlSecGnuTLSKeyDataHmacId:
  * 

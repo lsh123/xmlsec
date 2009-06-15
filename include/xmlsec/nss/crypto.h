@@ -191,6 +191,10 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDsaSha1GetKlass(void);
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_HMAC
+
+XMLSEC_CRYPTO_EXPORT int               xmlSecNssHmacGetMinOutputLength();
+XMLSEC_CRYPTO_EXPORT void              xmlSecNssHmacSetMinOutputLength(int min_length);
+
 /** 
  * xmlSecNssKeyDataHmacId:
  * 

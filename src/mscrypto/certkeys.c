@@ -13,6 +13,7 @@
 
 #include <windows.h>
 #include <wincrypt.h>
+
 #ifndef XMLSEC_NO_GOST
 #include "csp_oid.h"
 #include "csp_calg.h"
@@ -32,6 +33,13 @@
 
 #if defined(__MINGW32__)
 #  include "xmlsec-mingw.h"
+#endif
+
+// GOST CSP don't support keys duplicating, so we use NT4 analogs for these...
+#ifndef XMLSEC_NO_GOST
+#ifndef XMLSEC_MSCRYPTO_NT4
+#define XMLSEC_MSCRYPTO_NT4
+#endif
 #endif
 
 #define XMLSEC_CONTAINER_NAME "xmlsec-key-container"
@@ -828,7 +836,9 @@ xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
 #endif /* XMLSEC_NO_DSA */	
 
 #ifndef XMLSEC_NO_GOST
-    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_2001_CP) || !strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_2001)) {
+    if (!strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_2001_CP) ||
+        !strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_2001) ||
+    	  !strcmp(pCert->pCertInfo->SubjectPublicKeyInfo.Algorithm.pszObjId,  szOID_MAGPRO_PUBKEY_SIGN_R3410_94_CP)) {
 	data = xmlSecKeyDataCreate(xmlSecMSCryptoKeyDataGost2001Id);
 	if(data == NULL) {
 		xmlSecError(XMLSEC_ERRORS_HERE,
@@ -2490,8 +2500,8 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
     xmlSecNameGOST2001KeyValue,
     xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
 					/* xmlSecKeyDataUsage usage; */
-    /*xmlSecHrefGOST2001KeyValue*/NULL,		/* const xmlChar* href; */
-    /*xmlSecNodeGOST2001KeyValue*/NULL,		/* const xmlChar* dataNodeName; */
+    xmlSecHrefGOST2001KeyValue,		/* const xmlChar* href; */
+    xmlSecNodeGOST2001KeyValue,		/* const xmlChar* dataNodeName; */
     xmlSecDSigNs,			/* const xmlChar* dataNodeNs; */
     
     /* constructors/destructor */
@@ -2536,6 +2546,7 @@ xmlSecMSCryptoKeyDataGost2001GetKlass(void) {
 static int
 xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
+    HCRYPTPROV tmp_ctx = 0;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
 
@@ -2544,9 +2555,24 @@ xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ctx->providerName = "MagPro CSP";
-    ctx->providerType = PROV_MAGPRO_GOST;
-    
+    /* GOST Algorithm is provided by several CSP's, so we try to find any installed */
+    if (CryptAcquireContext(&tmp_ctx, NULL, NULL, PROV_MAGPRO_GOST, CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {
+      ctx->providerName = "MagPro CSP";
+      ctx->providerType = PROV_MAGPRO_GOST;
+    } else {
+      if (CryptAcquireContext(&tmp_ctx, NULL, NULL, PROV_CRYPTOPRO_GOST, CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {
+        ctx->providerName = "CryptoPro CSP";
+        ctx->providerType = PROV_CRYPTOPRO_GOST;
+      } else {
+    	  xmlSecError(XMLSEC_ERRORS_HERE,
+		      xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+		      "xmlSecMSCryptoKeyDataGost2001Initialize",
+		      XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		      XMLSEC_ERRORS_NO_MESSAGE);
+		    return -1;
+     }
+    }
+    CryptReleaseContext(tmp_ctx, 0);
     return(0);
 }
 

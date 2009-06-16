@@ -289,8 +289,8 @@ const xmlChar xmlSecHrefKWDes3[]		= "http://www.w3.org/2001/04/xmlenc#kw-tripled
  *
  ************************************************************************/
 const xmlChar xmlSecNameGOST2001KeyValue[]		= "gost2001";
-const xmlChar xmlSecNodeGOST2001KeyValue[]		= "GOST3410-2001-KeyValue";
-const xmlChar xmlSecHrefGOST2001KeyValue[]		= "http://www.w3.org/2000/09/xmldsig#GOST2001KeyValue";
+const xmlChar xmlSecNodeGOST2001KeyValue[]		= "gostr34102001-gostr3411";
+const xmlChar xmlSecHrefGOST2001KeyValue[]		= "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
 
 const xmlChar xmlSecNameGost2001GostR3411_94[]		= "gostr34102001-gostr3411";
 const xmlChar xmlSecHrefGost2001GostR3411_94[]		= "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";

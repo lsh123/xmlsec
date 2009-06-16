@@ -73,8 +73,9 @@
  * @{ 
  */
 
-
 #define PROV_MAGPRO_GOST 501
+
+#define PROV_CRYPTOPRO_GOST 75
 
 /*! @} */
 /*! \defgroup PP_MAGPRO PP_MAGPRO 

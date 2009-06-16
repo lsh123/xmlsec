@@ -101,6 +101,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 
     /* TODO: Check what provider is best suited here.... */
     if (!CryptAcquireContext(&ctx->provider, NULL, 0, PROV_MAGPRO_GOST, CRYPT_VERIFYCONTEXT)) {
+      if (!CryptAcquireContext(&ctx->provider, NULL, 0, PROV_CRYPTOPRO_GOST, CRYPT_VERIFYCONTEXT)) {
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,
@@ -108,7 +109,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 		    XMLSEC_ERRORS_NO_MESSAGE);
 	return(-1);
     }
-
+    }
     return(0);
     } else 
 #endif /* XMLSEC_NO_GOST*/    

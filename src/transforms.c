@@ -2521,7 +2521,6 @@ xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
 
 	if(((usage & transformId->usage) != 0) && (transformId->href != NULL) && 
 	   xmlStrEqual(href, transformId->href)) {
-	   
 	   return(transformId);	   
 	}
     }

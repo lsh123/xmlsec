@@ -3,6 +3,10 @@
 	include/xmlsec/version.h: preparation for new 1.2.12 release
 
 2009-06-15  Aleksey Sanin  <aleksey@aleksey.com>
+	* added support for the GOST implemented by Russian Crypto Pro CSP 
+	(patch from Dennis Prochko)
+
+2009-06-15  Aleksey Sanin  <aleksey@aleksey.com>
 	* fixed HMAC vuln with small values of HMAC length 
 
 2009-06-13  Aleksey Sanin  <aleksey@aleksey.com>

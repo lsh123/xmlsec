@@ -1,12 +1,12 @@
 #!/bin/sh 
 
 # config
+cur_pwd=`pwd`
+today=`date +%F-%T`
+
 git_uri=git://git.gnome.org/xmlsec
 rpm_root=/usr/src/redhat
 build_root="$rpm_root/BUILD/xmlsec-build-area-$today"
-
-cur_pwd=`pwd`
-today=`date +%F-%T`
 
 echo "Creating build area $build_root"
 rm -rf "$build_root"

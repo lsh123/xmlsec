@@ -128,7 +128,6 @@ perfcheck: $(TEST_APP)
 	@(export PERF_TEST=10 && $(MAKE) check)
 
 dist-hook:
-	@($(RM) -rf `find $(distdir) -name CVS`)
 
 cleantar:
 	@($(RM) -f xmlsec*.tar.gz COPYING.LIB)

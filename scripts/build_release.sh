@@ -1,8 +1,7 @@
 #!/bin/sh 
 
 # config
-svn_module=xmlsec
-svn_uri=svn+ssh://aleksey@svn.gnome.org/svn/$svn_module/trunk
+git_uri=git://git.gnome.org/xmlsec
 rpm_root=/usr/src/redhat
 build_root="$rpm_root/BUILD/xmlsec-build-area-$today"
 
@@ -15,9 +14,9 @@ mkdir -p "$build_root"
 cd "$build_root"
 
 echo "Checking out the module $svn_module"
-svn checkout $svn_uri $svn_module
-cd $svn_module
-find . -name ".svn" | xargs rm -r
+git clone $git_uri
+cd xmlsec
+find . -name ".git" | xargs rm -r
 
 ./autogen.sh --prefix=/usr --sysconfdir=/etc
 make rpm-release

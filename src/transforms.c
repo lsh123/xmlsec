@@ -204,6 +204,24 @@ xmlSecTransformIdsRegisterDefault(void) {
 		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14NWithCommentsId)));
 	return(-1);
     }
+    if(xmlSecTransformIdsRegister(xmlSecTransformInclC14N11Id) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformIdsRegister",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14N11Id)));
+	return(-1);
+    }
+    if(xmlSecTransformIdsRegister(xmlSecTransformInclC14N11WithCommentsId) < 0) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    NULL,
+		    "xmlSecTransformIdsRegister",	    
+		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+		    "name=%s",
+		    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformInclC14N11WithCommentsId)));
+	return(-1);
+    }
     if(xmlSecTransformIdsRegister(xmlSecTransformExclC14NId) < 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,

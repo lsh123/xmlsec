@@ -263,6 +263,12 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14N[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameC14NWithComments[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14NWithComments[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameC14N11[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14N11[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameC14N11WithComments[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefC14N11WithComments[];
+
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameExcC14N[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefExcC14N[];
 

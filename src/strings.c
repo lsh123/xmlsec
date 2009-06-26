@@ -257,6 +257,12 @@ const xmlChar xmlSecHrefC14N[]			= "http://www.w3.org/TR/2001/REC-xml-c14n-20010
 const xmlChar xmlSecNameC14NWithComments[]	= "c14n-with-comments";
 const xmlChar xmlSecHrefC14NWithComments[]	= "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments";
 
+const xmlChar xmlSecNameC14N11[]		= "c14n11";
+const xmlChar xmlSecHrefC14N11[]		= "http://www.w3.org/2006/12/xml-c14n11";
+
+const xmlChar xmlSecNameC14N11WithComments[]	= "c14n11-with-comments";
+const xmlChar xmlSecHrefC14N11WithComments[]	= "http://www.w3.org/2006/12/xml-c14n11#WithComments";
+
 const xmlChar xmlSecNameExcC14N[]		= "exc-c14n";
 const xmlChar xmlSecHrefExcC14N[]		= "http://www.w3.org/2001/10/xml-exc-c14n#";
 
@@ -268,6 +274,7 @@ const xmlChar xmlSecNsExcC14NWithComments[]	= "http://www.w3.org/2001/10/xml-exc
 
 const xmlChar xmlSecNodeInclusiveNamespaces[]	= "InclusiveNamespaces";
 const xmlChar xmlSecAttrPrefixList[]		= "PrefixList";
+
 /*************************************************************************
  *
  * DES strings

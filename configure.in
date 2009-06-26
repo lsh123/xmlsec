@@ -182,7 +182,7 @@ fi
 dnl ==========================================================================
 dnl find libxml
 dnl ==========================================================================
-LIBXML_MIN_VERSION="2.6.12"
+LIBXML_MIN_VERSION="2.7.4"
 LIBXML_CONFIG="xml2-config"
 LIBXML_CFLAGS=""
 LIBXML_LIBS=""

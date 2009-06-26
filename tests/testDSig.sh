@@ -130,6 +130,65 @@ echo "--- log file is $logfile"
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
+##########################################################################
+#
+# xmldsig2ed-tests
+#
+# http://www.w3.org/TR/xmldsig2ed-tests/
+#
+##########################################################################
+
+execDSigTest "xmldsig2ed-tests" "defCan-1" \
+    "c14n11 sha1 hmac-sha1" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+execDSigTest "xmldsig2ed-tests" "defCan-2" \
+    "c14n11 xslt xpath sha1 hmac-sha1" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" \
+    "--hmackey $topfolder/keys/hmackey.bin" 
+
+#
+# differences in XSLT transform output, tbd
+# 
+# execDSigTest "xmldsig2ed-tests" "defCan-3" \
+#     "c14n11 xslt xpath sha1 hmac-sha1" \
+#     "--hmackey $topfolder/keys/hmackey.bin" \
+#     "--hmackey $topfolder/keys/hmackey.bin" \
+#     "--hmackey $topfolder/keys/hmackey.bin" 
+# 
+
+execDSigTest "xmldsig2ed-tests" "xpointer-1-SUN" \
+     "c14n11 xpointer sha1 hmac-sha1" \
+     "--hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest "xmldsig2ed-tests" "xpointer-2-SUN" \
+     "c14n11 xpointer sha1 hmac-sha1" \
+     "--hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest "xmldsig2ed-tests" "xpointer-3-SUN" \
+     "c14n11 xpointer sha1 hmac-sha1" \
+     "--hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest "xmldsig2ed-tests" "xpointer-4-SUN" \
+     "c14n11 xpointer sha1 hmac-sha1" \
+     "--hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest "xmldsig2ed-tests" "xpointer-5-SUN" \
+     "c14n11 xpointer sha1 hmac-sha1" \
+     "--hmackey $topfolder/keys/hmackey.bin"
+
+execDSigTest "xmldsig2ed-tests" "xpointer-6-SUN" \
+     "c14n11 xpointer sha1 hmac-sha1" \
+     "--hmackey $topfolder/keys/hmackey.bin"
+
+##########################################################################
+#
+# aleksey-xmldsig-01
+#
+##########################################################################
 
 execDSigTest "" "aleksey-xmldsig-01/enveloping-dsa-x509chain" \
     "sha1 dsa-sha1" \
@@ -302,6 +361,12 @@ execDSigTest "" "aleksey-xmldsig-01/x509data-sn-test" \
     "$priv_key_option tests/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
+##########################################################################
+#
+# merlin-xmldsig-twenty-three
+#
+##########################################################################
+
 execDSigTest "" "merlin-xmldsig-twenty-three/signature-enveloped-dsa" \
     "enveloped-signature sha1 dsa-sha1" \
     " " \
@@ -392,17 +457,26 @@ execDSigTest "" "merlin-xmldsig-twenty-three/signature" \
     "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
 
+##########################################################################
+#
+# merlin-xmlenc-five
+#
+##########################################################################
+
 execDSigTest "" "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
     "ripemd160 hmac-ripemd160 kw-tripledes" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+
 execDSigTest "" "merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128" \
     "sha256 hmac-sha256 kw-aes128" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+
 execDSigTest "" "merlin-xmlenc-five/encsig-sha384-hmac-sha384-kw-aes192" \
     "sha384 hmac-sha384 kw-aes192" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+
 execDSigTest "" "merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256" \
     "sha512 hmac-sha512 kw-aes256" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
@@ -410,6 +484,11 @@ execDSigTest "" "merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256" \
 #merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5.xml
 #merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p.xml
 
+##########################################################################
+#
+# merlin-exc-c14n-one
+#
+##########################################################################
     
 execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
     "exc-c14n sha1 dsa-sha1" \
@@ -420,11 +499,23 @@ execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
 execDSigTest "" "merlin-exc-c14n-one/exc-signature" \
     "exc-c14n sha1 dsa-sha1" \
     " "
+
+##########################################################################
+#
+# merlin-c14n-three
+#
+##########################################################################
     
 execDSigTest "" "merlin-c14n-three/signature" \
     "c14n c14n-with-comments exc-c14n exc-c14n-with-comments xpath sha1 dsa-sha1" \
     " "
     
+##########################################################################
+#
+# merlin-xpath-filter2-three
+#
+##########################################################################
+
 execDSigTest "" "merlin-xpath-filter2-three/sign-xfdl" \
     "enveloped-signature xpath2 sha1 dsa-sha1" \
     ""
@@ -432,6 +523,11 @@ execDSigTest "" "merlin-xpath-filter2-three/sign-xfdl" \
 execDSigTest "" "merlin-xpath-filter2-three/sign-spec" \
     "enveloped-signature xpath2 sha1 dsa-sha1" \
     ""
+##########################################################################
+#
+# phaos-xmldsig-three
+#
+##########################################################################
 
 execDSigTest "phaos-xmldsig-three" "signature-big" \
     "base64 xslt xpath sha1 rsa-sha1" \
@@ -530,7 +626,12 @@ execDSigTest "phaos-xmldsig-three" "signature-rsa-xpath-transform-enveloped" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
 
+##########################################################################
+#
 # test dynamic signature
+#
+##########################################################################
+
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
 echo "$xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile

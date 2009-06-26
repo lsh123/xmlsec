@@ -887,6 +887,24 @@ XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NGetKlass		(void);
 XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14NWithCommentsGetKlass(void);
 
 /**
+ * xmlSecTransformInclC14N11Id:
+ * 
+ * The regular (inclusive) C14N 1.1 without comments transform klass.
+ */
+#define xmlSecTransformInclC14N11Id \
+	xmlSecTransformInclC14N11GetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14N11GetKlass	(void);
+
+/**
+ * xmlSecTransformInclC14N11WithCommentsId:
+ * 
+ * The regular (inclusive) C14N 1.1 with comments transform klass.
+ */
+#define xmlSecTransformInclC14N11WithCommentsId \
+	xmlSecTransformInclC14N11WithCommentsGetKlass()
+XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformInclC14N11WithCommentsGetKlass(void);
+
+/**
  * xmlSecTransformExclC14NId
  * 
  * The exclusive C14N without comments transform klass.

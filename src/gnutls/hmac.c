@@ -23,7 +23,7 @@
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
 
-#define XMLSEC_GNUTLS_MIN_HMAC_SIZE		64
+#define XMLSEC_GNUTLS_MIN_HMAC_SIZE		40
 #define XMLSEC_GNUTLS_MAX_HMAC_SIZE		128
 
 /**************************************************************************

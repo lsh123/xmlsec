@@ -32,7 +32,7 @@
 
 #include <xmlsec/openssl/crypto.h>
 
-#define XMLSEC_OPENSSL_MIN_HMAC_SIZE		64
+#define XMLSEC_OPENSSL_MIN_HMAC_SIZE		40
 
 /**************************************************************************
  *

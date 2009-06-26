@@ -26,7 +26,7 @@
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
-#define XMLSEC_NSS_MIN_HMAC_SIZE		64
+#define XMLSEC_NSS_MIN_HMAC_SIZE		40
 #define XMLSEC_NSS_MAX_HMAC_SIZE		128
 
 /**************************************************************************

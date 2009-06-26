@@ -523,7 +523,7 @@ xmlSecTransformXPathGetKlass(void) {
     return(&xmlSecTransformXPathKlass);
 }
 
-static const char xpathPattern[] = "(//. | //@* | //namespace::*)[%s]";
+static const char xpathPattern[] = "(//. | //@* | //namespace::*)[boolean(%s)]";
 static int 
 xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;

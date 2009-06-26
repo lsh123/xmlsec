@@ -1,6 +1,0 @@
-Makefile
-Makefile.in
-.deps
-.libs
-xmlsec1.1
-xmlsec1-config.1

@@ -2,11 +2,11 @@
 parser
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Parser transform implementation.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Parser transform implementation.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

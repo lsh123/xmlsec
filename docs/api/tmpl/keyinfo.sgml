@@ -2,11 +2,11 @@
 keyinfo
 
 <!-- ##### SECTION Short_Description ##### -->
-
+&lt;dsig:KeyInfo/&gt; node parser.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+&lt;dsig:KeyInfo/&gt; node parser.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

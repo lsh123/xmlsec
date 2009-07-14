@@ -2,11 +2,11 @@
 xmlenc
 
 <!-- ##### SECTION Short_Description ##### -->
-
+XML Encryption support.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+XML Encryption support.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

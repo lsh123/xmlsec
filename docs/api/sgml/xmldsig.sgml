@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xmldsig</refname><refpurpose></refpurpose>
+<refname>xmldsig</refname><refpurpose>XML Digital Signature support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -81,7 +81,7 @@ struct      <link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtx</link>
 <refsect1>
 <title>Description</title>
 <para>
-
+XML Digital Signature support.
 </para>
 </refsect1>
 

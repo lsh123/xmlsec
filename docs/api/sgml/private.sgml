@@ -567,7 +567,7 @@ The list of crypto engine functions, key data and transform classes.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link> <structfield>keyDataGost2001GetKlass</structfield></term>
-<listitem><simpara>
+<listitem><simpara>	the method to get pointer to GOST 2001 key data klass.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -642,7 +642,7 @@ The list of crypto engine functions, key data and transform classes.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link> <structfield>transformGost2001GostR3411_94GetKlass</structfield></term>
-<listitem><simpara>
+<listitem><simpara> the method to get pointer to GOST2001 transform.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -737,7 +737,7 @@ The list of crypto engine functions, key data and transform classes.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link> <structfield>transformGostR3411_94GetKlass</structfield></term>
-<listitem><simpara>
+<listitem><simpara> the method to get pointer to GOST R3411 transform.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -846,12 +846,16 @@ The list of crypto engine functions, key data and transform classes.</para>
 <indexterm><primary>xmlSecStrPrintf</primary></indexterm><programlisting>#define xmlSecStrPrintf 	xmlStrPrintf
 </programlisting>
 <para>
+Prints a string (see <parameter>xmlStrPrintf</parameter>).</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecStrVPrintf">xmlSecStrVPrintf</title>
 <indexterm><primary>xmlSecStrVPrintf</primary></indexterm><programlisting>#define xmlSecStrVPrintf 	xmlStrVPrintf
 </programlisting>
+<para>
+Prints a string (see <parameter>xmlStrVPrintf</parameter>).</para>
 <para>
 
 </para></refsect2>

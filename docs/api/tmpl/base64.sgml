@@ -2,11 +2,11 @@
 base64
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Base64 encoding/decoding functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Base64 encoding/decoding functions.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

@@ -27,7 +27,7 @@ extern "C" {
  */
 #define XMLSEC_BASE64_LINESIZE				64
 
-XMLSEC_EXPORT int		xmlSecBase64GetDefaultLineSize	();
+XMLSEC_EXPORT int		xmlSecBase64GetDefaultLineSize	(void);
 XMLSEC_EXPORT void		xmlSecBase64SetDefaultLineSize	(int columns);
 
 

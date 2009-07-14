@@ -556,6 +556,15 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
     return(xmlSecMSCryptoKeyDataCtxGetKey(ctx));
 }
 
+/**
+ * xmlSecMSCryptoKeyDataGetDecryptKey:
+ * @data: 	the key data pointer
+ * 
+ * Native MSCrypto decrypt key retrieval from xmlsec keydata. The
+ * returned HKEY must not be destroyed by the caller.
+ *
+ * Returns HKEY on success or NULL otherwise.
+ */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
 	xmlSecMSCryptoKeyDataCtxPtr ctx;

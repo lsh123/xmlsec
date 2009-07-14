@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>membuf</refname><refpurpose></refpurpose>
+<refname>membuf</refname><refpurpose>Memory buffer transform implementation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -34,7 +34,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Memory buffer transform implementation.
 </para>
 </refsect1>
 

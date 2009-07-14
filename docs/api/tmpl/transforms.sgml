@@ -2,11 +2,11 @@
 transforms
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Transform object definition.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Transform object definition.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -1086,6 +1086,36 @@ transforms
 
 
 <!-- ##### FUNCTION xmlSecTransformInclC14NWithCommentsGetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformInclC14N11Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformInclC14N11GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformInclC14N11WithCommentsId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformInclC14N11WithCommentsGetKlass ##### -->
 <para>
 
 </para>

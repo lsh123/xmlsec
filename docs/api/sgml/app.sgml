@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>app</refname><refpurpose></refpurpose>
+<refname>app</refname><refpurpose>Crypto-engine independent application support function.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -210,7 +210,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Crypto-engine application support function used by xmlsec command line utility.
 </para>
 </refsect1>
 

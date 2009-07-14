@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xmlsec</refname><refpurpose></refpurpose>
+<refname>xmlsec</refname><refpurpose>Utility functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -42,7 +42,7 @@ enum        <link linkend="xmlSecCheckVersionMode">xmlSecCheckVersionMode</link>
 <refsect1>
 <title>Description</title>
 <para>
-
+Utility functions.
 </para>
 </refsect1>
 

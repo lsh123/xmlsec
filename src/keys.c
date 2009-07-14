@@ -91,7 +91,6 @@ xmlSecKeyUseWithCopy(xmlSecKeyUseWithPtr dst, xmlSecKeyUseWithPtr src) {
 
 /** 
  * xmlSecKeyUseWithCreate:
- * @keyUseWith:         the pointer to information about key application/user.
  * @application:        the application value.
  * @identifier:         the identifier value.
  *

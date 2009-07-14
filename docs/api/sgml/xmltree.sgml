@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xmltree</refname><refpurpose></refpurpose>
+<refname>xmltree</refname><refpurpose>XML tree operations.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -175,7 +175,7 @@ struct      <link linkend="xmlSecQName2BitMaskInfo">xmlSecQName2BitMaskInfo</lin
 <refsect1>
 <title>Description</title>
 <para>
-
+XML tree operations.
 </para>
 </refsect1>
 
@@ -709,8 +709,10 @@ Macro. Returns the hex value of the <parameter>c</parameter>.</para>
 </variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecQName2IntegerInfoConstPtr">xmlSecQName2IntegerInfoConstPtr</title>
-<indexterm><primary>xmlSecQName2IntegerInfoConstPtr</primary></indexterm><programlisting>typedef const struct _xmlSecQName2IntegerInfo*		xmlSecQName2IntegerInfoConstPtr;
+<indexterm><primary>xmlSecQName2IntegerInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2IntegerInfo *		xmlSecQName2IntegerInfoConstPtr;
 </programlisting>
+<para>
+Pointer to constant QName &lt;-&gt; Integer conversion definition.</para>
 <para>
 
 </para></refsect2>
@@ -724,8 +726,26 @@ Macro. Returns the hex value of the <parameter>c</parameter>.</para>
 };
 </programlisting>
 <para>
+QName &lt;-&gt; Integer conversion definition.</para>
+<para>
 
-</para></refsect2>
+</para><variablelist role="struct">
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>qnameHref</structfield></term>
+<listitem><simpara>		the QName href
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>qnameLocalPart</structfield></term>
+<listitem><simpara>	the QName local
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="int">int</link> <structfield>intValue</structfield></term>
+<listitem><simpara>		the integer value
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecQName2IntegerGetInfo">xmlSecQName2IntegerGetInfo ()</title>
 <indexterm><primary>xmlSecQName2IntegerGetInfo</primary></indexterm><programlisting><link linkend="xmlSecQName2IntegerInfoConst">xmlSecQName2IntegerInfoConstPtr</link> xmlSecQName2IntegerGetInfo
@@ -780,23 +800,23 @@ Maps qname qname to an integer and returns it in <parameter>intValue</parameter>
                                              const <link linkend="xmlChar">xmlChar</link> *qname,
                                              <link linkend="int">int</link> *intValue);</programlisting>
 <para>
+Converts <parameter>qname</parameter> into integer in context of <parameter>node</parameter>.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>info</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>qname</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>              the qname string.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>intValue</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>           the pointer to result integer value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -950,7 +970,7 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter>.</para
 <listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>             the pointer to output FILE.
@@ -974,7 +994,7 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML
 <listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>             the pointer to output FILE.
@@ -985,12 +1005,16 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML
 <indexterm><primary>xmlSecBitMask</primary></indexterm><programlisting>typedef unsigned int                            	xmlSecBitMask;
 </programlisting>
 <para>
+Bitmask datatype.</para>
+<para>
 
 </para></refsect2>
 <refsect2>
 <title><anchor id="xmlSecQName2BitMaskInfoConstPtr">xmlSecQName2BitMaskInfoConstPtr</title>
-<indexterm><primary>xmlSecQName2BitMaskInfoConstPtr</primary></indexterm><programlisting>typedef const struct _xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;
+<indexterm><primary>xmlSecQName2BitMaskInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;
 </programlisting>
+<para>
+Pointer to constant QName &lt;-&gt; Bitmask conversion definition.</para>
 <para>
 
 </para></refsect2>
@@ -1004,8 +1028,26 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML
 };
 </programlisting>
 <para>
+QName &lt;-&gt; Bitmask conversion definition.</para>
+<para>
 
-</para></refsect2>
+</para><variablelist role="struct">
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>qnameHref</structfield></term>
+<listitem><simpara>		the QName href
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term>const <link linkend="xmlChar">xmlChar</link> *<structfield>qnameLocalPart</structfield></term>
+<listitem><simpara>	the QName local
+</simpara></listitem>
+</varlistentry>
+<varlistentry>
+<term><link linkend="xmlSecBitMask">xmlSecBitMask</link> <structfield>mask</structfield></term>
+<listitem><simpara>		the bitmask value
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
 <refsect2>
 <title><anchor id="xmlSecQName2BitMaskGetInfo">xmlSecQName2BitMaskGetInfo ()</title>
 <indexterm><primary>xmlSecQName2BitMaskGetInfo</primary></indexterm><programlisting><link linkend="xmlSecQName2BitMaskInfoConst">xmlSecQName2BitMaskInfoConstPtr</link> xmlSecQName2BitMaskGetInfo
@@ -1096,23 +1138,23 @@ after all the &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&
                                              const <link linkend="xmlChar">xmlChar</link> *qname,
                                              <link linkend="xmlSecBitMask">xmlSecBitMask</link> *mask);</programlisting>
 <para>
+Converts <parameter>qname</parameter> into integer in context of <parameter>node</parameter>.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>info</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>qname</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>              the qname string.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mask</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>               the pointer to result msk value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -1187,7 +1229,7 @@ Prints debug information about <parameter>mask</parameter> to <parameter>output<
 <listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>             the pointer to output FILE.
@@ -1211,7 +1253,7 @@ Prints debug information about <parameter>mask</parameter> to <parameter>output<
 <listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara> 		the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&nbsp;:</term>
 <listitem><simpara>             the pointer to output FILE.

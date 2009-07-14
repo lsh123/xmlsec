@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>version</refname><refpurpose></refpurpose>
+<refname>version</refname><refpurpose>Version macros.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -34,7 +34,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Version macros.
 </para>
 </refsect1>
 

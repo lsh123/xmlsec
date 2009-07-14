@@ -2,11 +2,11 @@
 keys
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Crypto key object definition.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Crypto key object definition.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -189,7 +189,7 @@ keys
 @keyBitsSize: 
 @keyUseWithList: 
 @reserved1: 
-@eserved2: 
+@reserved2: 
 
 <!-- ##### FUNCTION xmlSecKeyReqInitialize ##### -->
 <para>

@@ -261,10 +261,15 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
 }
 
 /**
- @cert: the certificate we check
- @pfTime: pointer to FILETIME that we are interested in
- @store_untrusted: untrusted certificates added via API
- @store_doc: untrusted certificates/CRLs extracted from a document
+ * xmlSecBuildChainUsingWinapi:
+ * @cert: the certificate we check
+ * @pfTime: pointer to FILETIME that we are interested in
+ * @store_untrusted: untrusted certificates added via API
+ * @store_doc: untrusted certificates/CRLs extracted from a document
+ * 
+ * Builds certificates chain using Windows API.
+ * 
+ * Returns TRUE on success or FALSE otherwise.
  */
 static BOOL 
 xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
@@ -357,12 +362,17 @@ end:
 }
 
 /**
- @cert: the certificate we check
- @pfTime: pointer to FILETIME that we are interested in
- @store_trusted: trusted certificates added via API
- @store_untrusted: untrusted certificates added via API
- @certs: untrusted certificates/CRLs extracted from a document
- @store: pointer to store klass passed to error functions
+ * xmlSecMSCryptoBuildCertChainManually:
+ * @cert: the certificate we check
+ * @pfTime: pointer to FILETIME that we are interested in
+ * @store_trusted: trusted certificates added via API
+ * @store_untrusted: untrusted certificates added via API
+ * @certs: untrusted certificates/CRLs extracted from a document
+ * @store: pointer to store klass passed to error functions
+ * 
+ * Builds certificates chain manually.
+ * 
+ * Returns TRUE on success or FALSE otherwise.
  */
 static BOOL
 xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
@@ -380,7 +390,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
         return(FALSE);
     }
 
-    /**
+    /*
      * Try to find the cert in the trusted cert store. We will trust
      * the certificate in the trusted store.
      */
@@ -392,8 +402,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 NULL);
     if( issuerCert != NULL) {
         /* We have found the trusted cert, so return true */
-	    /* todo: do we want to verify the trusted cert's revocation? we must,
-		 * I think */
+	/* todo: do we want to verify the trusted cert's revocation? we must, I think */
         CertFreeCertificateContext( issuerCert ) ;
         return( TRUE ) ;
     }
@@ -686,7 +695,7 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
 }
 
 /** 
- * xmlSecMSCryptoX509StoreAdoptTrustedStore: 
+ * xmlSecMSCryptoX509StoreAdoptUntrustedStore: 
  * @store:              the pointer to X509 key data store klass.
  * @untrustedStore:     the pointer to certs store.
  *

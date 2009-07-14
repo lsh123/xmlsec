@@ -668,6 +668,8 @@ xmlSecSimpleKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecK
  * xmlSecSimpleKeysStoreGetKeys:
  * @store:		the pointer to simple keys store.
  * 
+ * Gets list of keys from simple keys store.
+ * 
  * Returns pointer to the list of keys stored in the keys store or NULL
  * if an error occurs.
  */

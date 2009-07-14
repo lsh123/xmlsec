@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keyinfo</refname><refpurpose></refpurpose>
+<refname>keyinfo</refname><refpurpose><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node parser.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -73,7 +73,7 @@ struct      <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node parser.
 </para>
 </refsect1>
 

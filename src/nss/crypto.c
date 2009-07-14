@@ -252,6 +252,8 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 /**
  * xmlSecNssGetInternalKeySlot:
  * 
+ * Gets internal NSS key slot.
+ * 
  * Returns internal key slot and initializes it if needed.
  */
 PK11SlotInfo * 

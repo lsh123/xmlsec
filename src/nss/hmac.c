@@ -39,6 +39,8 @@ static int g_xmlsec_nss_hmac_min_length = XMLSEC_NSS_MIN_HMAC_SIZE;
 /**
  * xmlSecNssHmacGetMinOutputLength: 
  * 
+ * Gets the value of min HMAC length.
+ * 
  * Returns the min HMAC output length
  */
 int xmlSecNssHmacGetMinOutputLength(void)

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>crypto</refname><refpurpose></refpurpose>
+<refname>crypto</refname><refpurpose>Crypto transforms implementation for MS Crypto.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -96,7 +96,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Crypto transforms implementation for MS Crypto.
 </para>
 </refsect1>
 

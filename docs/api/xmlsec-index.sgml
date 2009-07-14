@@ -1110,6 +1110,10 @@
 <listitem><para><link linkend="xmlSecTransformIdsRegister">xmlSecTransformIdsRegister</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformIdsShutdown">xmlSecTransformIdsShutdown</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformInclC14N11GetKlass">xmlSecTransformInclC14N11GetKlass</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformInclC14N11Id">xmlSecTransformInclC14N11Id</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformInclC14N11WithCommentsGetKlass">xmlSecTransformInclC14N11WithCommentsGetKlass</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformInclC14N11WithCommentsId">xmlSecTransformInclC14N11WithCommentsId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformInclC14NGetKlass">xmlSecTransformInclC14NGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformInclC14NId">xmlSecTransformInclC14NId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformInclC14NWithCommentsGetKlass">xmlSecTransformInclC14NWithCommentsGetKlass</link></para></listitem>

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keysstore</refname><refpurpose></refpurpose>
+<refname>keysstore</refname><refpurpose>Keys store implementation for MS Crypto.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -40,7 +40,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Keys store implementation for MS Crypto.
 </para>
 </refsect1>
 

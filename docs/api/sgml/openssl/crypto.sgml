@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>crypto</refname><refpurpose></refpurpose>
+<refname>crypto</refname><refpurpose>Crypto transforms implementation for OpenSSL.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -191,7 +191,7 @@ const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecOpenSSLGetDef
 <refsect1>
 <title>Description</title>
 <para>
-
+Crypto transforms implementation for OpenSSL.
 </para>
 </refsect1>
 
@@ -678,7 +678,7 @@ The DSA-SHA1 signature transform klass.</para>
 <indexterm><primary>xmlSecOpenSSLHmacGetMinOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLHmacGetMinOutputLength
                                             (void);</programlisting>
 <para>
-</para>
+Gets the value of min HMAC length.</para>
 <para>
 
 </para><variablelist role="params">
@@ -690,17 +690,12 @@ The DSA-SHA1 signature transform klass.</para>
 <indexterm><primary>xmlSecOpenSSLHmacSetMinOutputLength</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecOpenSSLHmacSetMinOutputLength
                                             (<link linkend="int">int</link> min_length);</programlisting>
 <para>
-<parameter>min_length</parameter>: the new min length 
-</para>
-<para>
 Sets the min HMAC output length</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>min_length</parameter>&nbsp;:</term>
-<listitem><simpara>
-
-
+<listitem><simpara> the new min length 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

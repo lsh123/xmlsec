@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keysdata</refname><refpurpose></refpurpose>
+<refname>keysdata</refname><refpurpose>Crypto key data object definition.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -211,7 +211,7 @@ struct      <link linkend="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</lin
 <refsect1>
 <title>Description</title>
 <para>
-
+Crypto key data object definition.
 </para>
 </refsect1>
 
@@ -456,12 +456,12 @@ The key data format (binary, der, pem, etc.).</para>
 </varlistentry>
 <varlistentry>
 <term><literal>xmlSecKeyDataFormatPkcs8Pem</literal></term>
-<listitem><simpara>	the PKCS<link linkend="8-CAPS"><type>8</type></link> PEM private key.
+<listitem><simpara>	the PKCS8 PEM private key.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><literal>xmlSecKeyDataFormatPkcs8Der</literal></term>
-<listitem><simpara>	the PKCS<link linkend="8-CAPS"><type>8</type></link> DER private key. 
+<listitem><simpara>	the PKCS8 DER private key. 
 </simpara></listitem>
 </varlistentry>
 <varlistentry>

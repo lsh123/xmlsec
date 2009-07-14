@@ -1524,7 +1524,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
 }
 
 /**
- * xmlSecTmplX509IssuerSerialAddIssuerName:
+ * xmlSecTmplX509IssuerSerialAddSerialNumber:
  * @x509IssuerSerialNode: 	the pointer to <dsig:X509IssuerSerial/> node.
  * @serial:		the serial number (optional).	
  *

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>x509</refname><refpurpose></refpurpose>
+<refname>x509</refname><refpurpose>X509 certificates support implementation for MS Crypto.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -86,7 +86,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+X509 certificates support implementation for MS Crypto.
 </para>
 </refsect1>
 
@@ -402,7 +402,7 @@ Adds <parameter>keyStore</parameter> to the list of key stores.</para>
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> trustedStore);</programlisting>
 <para>
-Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.</para>
+Adds <parameter>trustedStore</parameter> to the list of trusted certs stores.</para>
 <para>
 
 </para><variablelist role="params">
@@ -410,7 +410,7 @@ Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.
 <listitem><simpara>              the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>trustedStore</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>       the pointer to certs store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -421,17 +421,17 @@ Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> untrustedStore);</programlisting>
 <para>
+Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.</para>
+<para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>              the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>untrustedStore</parameter>&nbsp;:</term>
-<listitem><simpara>
+<listitem><simpara>     the pointer to certs store.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
-
-
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

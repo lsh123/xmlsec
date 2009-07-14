@@ -2,11 +2,11 @@
 crypto
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Crypto transforms implementation for NSS.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Crypto transforms implementation for NSS.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

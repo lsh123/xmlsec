@@ -334,6 +334,7 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @keyDataAesGetKlass:		the method to get pointer to AES key data klass.
  * @keyDataDesGetKlass:		the method to get pointer to DES key data klass.
  * @keyDataDsaGetKlass:		the method to get pointer to DSA key data klass.
+ * @keyDataGost2001GetKlass:	the method to get pointer to GOST 2001 key data klass.
  * @keyDataHmacGetKlass:	the method to get pointer to HMAC key data klass.
  * @keyDataRsaGetKlass:		the method to get pointer to RSA key data klass.
  * @keyDataX509GetKlass:	the method to get pointer to X509 key data klass.
@@ -348,6 +349,7 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @transformDes3CbcGetKlass:	the method to get pointer to Triple DES encryption transform.
  * @transformKWDes3GetKlass:	the method to get pointer to Triple DES key wrapper transform.
  * @transformDsaSha1GetKlass:	the method to get pointer to DSA-SHA1 signature transform.
+ * @transformGost2001GostR3411_94GetKlass: the method to get pointer to GOST2001 transform.
  * @transformHmacMd5GetKlass:	the method to get pointer to HMAC-MD5 transform.
  * @transformHmacRipemd160GetKlass: the method to get pointer to HMAC-RIPEMD160 transform.
  * @transformHmacSha1GetKlass:	the method to get pointer to HMAC-SHA1 transform.
@@ -366,6 +368,7 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
  * @transformRsaSha512GetKlass:	the method to get pointer to RSA-SHA512 signature transform.
  * @transformRsaPkcs1GetKlass:	the method to get pointer to RSA-PKCS1_5 key transport transform.
  * @transformRsaOaepGetKlass:	the method to get pointer to RSA-OAEP key transport transform.
+ * @transformGostR3411_94GetKlass: the method to get pointer to GOST R3411 transform.
  * @transformSha1GetKlass:	the method to get pointer to SHA1 digest transform.
  * @transformSha224GetKlass:	the method to get pointer to SHA224 digest transform.
  * @transformSha256GetKlass:	the method to get pointer to SHA256 digest transform.
@@ -473,7 +476,19 @@ struct _xmlSecCryptoDLFunctions {
 };
 
 #include <libxml/xmlstring.h>
+
+/**
+ * xmlSecStrPrintf:
+ *
+ * Prints a string (see @xmlStrPrintf).
+ */
 #define xmlSecStrPrintf 	xmlStrPrintf
+
+/**
+ * xmlSecStrVPrintf:
+ *
+ * Prints a string (see @xmlStrVPrintf).
+ */
 #define xmlSecStrVPrintf 	xmlStrVPrintf
 
 #ifdef __cplusplus

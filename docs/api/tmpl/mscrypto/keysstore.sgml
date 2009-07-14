@@ -2,11 +2,11 @@
 keysstore
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Keys store implementation for MS Crypto.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Keys store implementation for MS Crypto.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

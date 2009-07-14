@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>errors</refname><refpurpose></refpurpose>
+<refname>errors</refname><refpurpose>Error/log messages support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -111,7 +111,7 @@ const <link linkend="char">char</link>* <link linkend="xmlSecErrorsGetMsg">xmlSe
 <refsect1>
 <title>Description</title>
 <para>
-
+Error/log messages support.
 </para>
 </refsect1>
 

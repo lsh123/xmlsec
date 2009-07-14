@@ -1024,8 +1024,8 @@ static xmlSecTransformKlass xmlSecTransformVisa3DHackKlass = {
  * 
  * The Visa3DHack transform klass. The only reason why we need this 
  * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
- * something like "#12345" in the URI attribute. Since we couldn't evaluate such 
- * expressions thru XPath/XPointer engine, we need to have this hack here.
+ * invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+ * such expressions thru XPath/XPointer engine, we need to have this hack here. 
  *
  * Returns Visa3DHack transform klass.
  */

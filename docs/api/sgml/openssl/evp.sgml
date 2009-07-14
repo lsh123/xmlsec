@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>evp</refname><refpurpose></refpurpose>
+<refname>evp</refname><refpurpose>EVP keys data implementation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -34,7 +34,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+EVP keys data implementation.
 </para>
 </refsect1>
 

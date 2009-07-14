@@ -2,11 +2,11 @@
 app
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Crypto-engine independent application support function.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Crypto-engine application support function used by xmlsec command line utility.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>bn</refname><refpurpose></refpurpose>
+<refname>bn</refname><refpurpose>Big numbers helper functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -34,7 +34,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Big numbers helper functions.
 </para>
 </refsect1>
 

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>dl</refname><refpurpose></refpurpose>
+<refname>dl</refname><refpurpose>Dynamic crypto-engine library loading support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -40,7 +40,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Dynamic crypto-engine library loading support.
 </para>
 </refsect1>
 

@@ -1089,7 +1089,7 @@ xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
 }
 
 /** 
- * xmlSecQName2IntegerGetIntegerFromInteger:
+ * xmlSecQName2IntegerGetIntegerFromString:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @qname:              the qname string.
@@ -1422,6 +1422,7 @@ xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodeP
  * xmlSecQName2IntegerDebugDump:
  * @info:               the qname<->integer mapping information.
  * @intValue:           the integer value.
+ * @name: 		the value name to print.
  * @output:             the pointer to output FILE.
  * 
  * Prints @intValue into @output.
@@ -1447,6 +1448,7 @@ xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
  * xmlSecQName2IntegerDebugXmlDump:
  * @info:               the qname<->integer mapping information.
  * @intValue:           the integer value.
+ * @name: 		the value name to print.
  * @output:             the pointer to output FILE.
  * 
  * Prints @intValue into @output in XML format. 
@@ -1535,7 +1537,7 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
 }
 
 /** 
- * xmlSecQName2BitMaskGetBitMaskFromBitMask:
+ * xmlSecQName2BitMaskGetBitMaskFromString:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @qname:              the qname string.
@@ -1792,6 +1794,7 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
  * xmlSecQName2BitMaskDebugDump:
  * @info:               the qname<->bit mask mapping information.
  * @mask:               the bit mask.
+ * @name: 		the value name to print.
  * @output:             the pointer to output FILE.
  * 
  * Prints debug information about @mask to @output.
@@ -1824,6 +1827,7 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
  * xmlSecQName2BitMaskDebugXmlDump:
  * @info:               the qname<->bit mask mapping information.
  * @mask:               the bit mask.
+ * @name: 		the value name to print.
  * @output:             the pointer to output FILE.
  * 
  * Prints debug information about @mask to @output in XML format.

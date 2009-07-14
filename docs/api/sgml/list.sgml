@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>list</refname><refpurpose></refpurpose>
+<refname>list</refname><refpurpose>Generic list structure implementation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -68,7 +68,7 @@ struct      <link linkend="xmlSecPtrListKlass">xmlSecPtrListKlass</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+Generic list structure implementation.
 </para>
 </refsect1>
 

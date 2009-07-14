@@ -20,7 +20,6 @@
     &xmlsec-transforms;
     &xmlsec-version;
     &xmlsec-x509;
-    &xmlsec-xkms;
     &xmlsec-xmldsig;
     &xmlsec-xmlenc;
     &xmlsec-xmlsec;

@@ -2,11 +2,11 @@
 x509
 
 <!-- ##### SECTION Short_Description ##### -->
-
+X509 certificates support implementation for OpenSSL.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+X509 certificates support implementation for OpenSSL.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

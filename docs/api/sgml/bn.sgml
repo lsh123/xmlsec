@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>bn</refname><refpurpose></refpurpose>
+<refname>bn</refname><refpurpose>Big numbers support functions.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -81,7 +81,7 @@ enum        <link linkend="xmlSecBnFormat">xmlSecBnFormat</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+Big numbers support functions.
 </para>
 </refsect1>
 

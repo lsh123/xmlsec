@@ -2,11 +2,11 @@
 buffer
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Binary buffer implementation.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Binary buffer implementation.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

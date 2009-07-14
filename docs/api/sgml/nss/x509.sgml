@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>x509</refname><refpurpose></refpurpose>
+<refname>x509</refname><refpurpose>X509 certificates support implementation for NSS.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -68,7 +68,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+X509 certificates support implementation for NSS.
 </para>
 </refsect1>
 

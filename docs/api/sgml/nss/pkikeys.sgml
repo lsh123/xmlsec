@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>pkikeys</refname><refpurpose></refpurpose>
+<refname>pkikeys</refname><refpurpose>PKI keys data implementation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -38,7 +38,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+PKI keys data implementation.
 </para>
 </refsect1>
 

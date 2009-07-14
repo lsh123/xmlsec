@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>app</refname><refpurpose></refpurpose>
+<refname>app</refname><refpurpose>Application functions implementation for MS Crypto.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -105,7 +105,7 @@ const <link linkend="char">char</link>* <link linkend="xmlSecMSCryptoAppGetCertS
 <refsect1>
 <title>Description</title>
 <para>
-
+Application functions implementation for MS Crypto.
 </para>
 </refsect1>
 

@@ -122,15 +122,29 @@ XMLSEC_EXPORT xmlChar*		xmlSecGetQName		(xmlNodePtr node,
  * QName <-> Integer mapping
  *
  ************************************************************************/
-typedef struct _xmlSecQName2IntegerInfo			xmlSecQName2IntegerInfo,
-							*xmlSecQName2IntegerInfoPtr;
-typedef const struct _xmlSecQName2IntegerInfo*		xmlSecQName2IntegerInfoConstPtr;
 
+/** 
+ * xmlSecQName2IntegerInfo:
+ * @qnameHref:		the QName href
+ * @qnameLocalPart:	the QName local
+ * @intValue:		the integer value
+ * 
+ * QName <-> Integer conversion definition.
+ */
+typedef struct _xmlSecQName2IntegerInfo  	xmlSecQName2IntegerInfo, *xmlSecQName2IntegerInfoPtr;
 struct _xmlSecQName2IntegerInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
     int       		intValue;
 };
+
+/**
+ * xmlSecQName2IntegerInfoConstPtr:
+ *
+ * Pointer to constant QName <-> Integer conversion definition.
+ */
+typedef const xmlSecQName2IntegerInfo *		xmlSecQName2IntegerInfoConstPtr;
+
 XMLSEC_EXPORT xmlSecQName2IntegerInfoConstPtr xmlSecQName2IntegerGetInfo	
 								(xmlSecQName2IntegerInfoConstPtr info,
 								 int intValue);
@@ -174,19 +188,39 @@ XMLSEC_EXPORT void		xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConst
 
 /*************************************************************************
  *
- * QName <-> Bits mask mapping
+ * QName <-> Bitmask mapping
  *
  ************************************************************************/
+
+/** 
+ * xmlSecBitMask:
+ * 
+ * Bitmask datatype.
+ */
 typedef unsigned int                            	xmlSecBitMask;
-typedef struct _xmlSecQName2BitMaskInfo			xmlSecQName2BitMaskInfo,
-							*xmlSecQName2BitMaskInfoPtr;
-typedef const struct _xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;
+
+/** 
+ * xmlSecQName2BitMaskInfo:
+ * @qnameHref:		the QName href
+ * @qnameLocalPart:	the QName local
+ * @mask:		the bitmask value
+ * 
+ * QName <-> Bitmask conversion definition.
+ */
+typedef struct _xmlSecQName2BitMaskInfo 	xmlSecQName2BitMaskInfo, *xmlSecQName2BitMaskInfoPtr;
 
 struct _xmlSecQName2BitMaskInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
     xmlSecBitMask       mask;
 };
+
+/** 
+ * xmlSecQName2BitMaskInfoConstPtr:
+ * 
+ * Pointer to constant QName <-> Bitmask conversion definition.
+ */
+typedef const xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;
 
 XMLSEC_EXPORT xmlSecQName2BitMaskInfoConstPtr xmlSecQName2BitMaskGetInfo	
 								(xmlSecQName2BitMaskInfoConstPtr info,

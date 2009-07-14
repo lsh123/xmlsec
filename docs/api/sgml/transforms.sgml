@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>transforms</refname><refpurpose></refpurpose>
+<refname>transforms</refname><refpurpose>Transform object definition.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -253,6 +253,12 @@ struct      <link linkend="xmlSecTransformKlass">xmlSecTransformKlass</link>;
 #define     <link linkend="xmlSecTransformInclC14NWithCommentsId">xmlSecTransformInclC14NWithCommentsId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInclC14NWithCommentsGetKlass">xmlSecTransformInclC14NWithCommentsGetKlass</link>
                                             (void);
+#define     <link linkend="xmlSecTransformInclC14N11Id">xmlSecTransformInclC14N11Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInclC14N11GetKlass">xmlSecTransformInclC14N11GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecTransformInclC14N11WithCommentsId">xmlSecTransformInclC14N11WithCommentsId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInclC14N11WithCommentsGetKlass">xmlSecTransformInclC14N11WithCommentsGetKlass</link>
+                                            (void);
 #define     <link linkend="xmlSecTransformExclC14NId">xmlSecTransformExclC14NId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformExclC14NGetKlass">xmlSecTransformExclC14NGetKlass</link>
                                             (void);
@@ -300,7 +306,7 @@ struct      <link linkend="xmlSecTransformKlass">xmlSecTransformKlass</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+Transform object definition.
 </para>
 </refsect1>
 
@@ -2633,6 +2639,46 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecTransformInclC14N11Id">xmlSecTransformInclC14N11Id</title>
+<indexterm><primary>xmlSecTransformInclC14N11Id</primary></indexterm><programlisting>#define     xmlSecTransformInclC14N11Id</programlisting>
+<para>
+The regular (inclusive) C14N 1.1 without comments transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformInclC14N11GetKlass">xmlSecTransformInclC14N11GetKlass ()</title>
+<indexterm><primary>xmlSecTransformInclC14N11GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14N11GetKlass
+                                            (void);</programlisting>
+<para>
+C14N version 1.1 (http://www.w3.org/TR/xml-c14n11)</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>c14n v1.1 transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformInclC14N11WithCommentsId">xmlSecTransformInclC14N11WithCommentsId</title>
+<indexterm><primary>xmlSecTransformInclC14N11WithCommentsId</primary></indexterm><programlisting>#define     xmlSecTransformInclC14N11WithCommentsId</programlisting>
+<para>
+The regular (inclusive) C14N 1.1 with comments transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecTransformInclC14N11WithCommentsGetKlass">xmlSecTransformInclC14N11WithCommentsGetKlass ()</title>
+<indexterm><primary>xmlSecTransformInclC14N11WithCommentsGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInclC14N11WithCommentsGetKlass
+                                            (void);</programlisting>
+<para>
+C14N version 1.1 (http://www.w3.org/TR/xml-c14n11) with comments</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>c14n v1.1 with comments transform id.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecTransformExclC14NId">xmlSecTransformExclC14NId</title>
 <indexterm><primary>xmlSecTransformExclC14NId</primary></indexterm><programlisting>#define     xmlSecTransformExclC14NId</programlisting>
 <para>
@@ -2889,8 +2935,8 @@ processing instructions. The output of this transform is an octet stream.</para>
 <para>
 Selects node subtree by given node id string. The only reason why we need this 
 is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-something like "<link linkend="12345-CAPS"><type>12345</type></link>" in the URI attribute. Since we couldn't evaluate such 
-expressions thru XPath/XPointer engine, we need to have this hack here.</para>
+invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+such expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 
 </para></refsect2>
@@ -2901,8 +2947,8 @@ expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 The Visa3DHack transform klass. The only reason why we need this 
 is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-something like "<link linkend="12345-CAPS"><type>12345</type></link>" in the URI attribute. Since we couldn't evaluate such 
-expressions thru XPath/XPointer engine, we need to have this hack here.</para>
+invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+such expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 
 </para><variablelist role="params">

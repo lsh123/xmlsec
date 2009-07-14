@@ -113,17 +113,20 @@ static int g_xmlsec_base64_default_line_size = XMLSEC_BASE64_LINESIZE;
 
 /**
  * xmlSecBase64GetDefaultLineSize:
+ * 
+ * Gets the current default line size.
  *
  * Returns the current default line size.
  */
 int
-xmlSecBase64GetDefaultLineSize()
+xmlSecBase64GetDefaultLineSize(void)
 {
     return g_xmlsec_base64_default_line_size;
 }
 
 /**
  * xmlSecBase64SetDefaultLineSize:
+ * @columns: number of columns
  *
  * Sets the current default line size.
  */

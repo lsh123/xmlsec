@@ -74,21 +74,7 @@
 <td width="15"></td>
 <td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
 </tr>
-<!--Links - start--><tr>
-<td width="15"></td>
-<td><br><br><br><br><br><hr></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td>
-<font size="-1">
-<h4>Links</h4>
-<p>
-</p>
-</font>
-</td>
-</tr>
-<!--Links - end-->
+<!--Links - start--><!--Links - end-->
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
@@ -102,9 +88,9 @@
 <h1>
 <a name="XMLSEC-XMLSEC"></a>xmlsec</h1>
 <div class="REFNAMEDIV">
-<a name="AEN19716"></a><h2>Name</h2>xmlsec--</div>
+<a name="AEN19768"></a><h2>Name</h2>xmlsec--Utility functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN19719"></a><h2>Synopsis</h2>
+<a name="AEN19771"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 typedef     <font>xmlSecPtr</font>;
@@ -122,13 +108,13 @@ enum        <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE">xmlSecCheckVersi
 #define     <a href="xmlsec-xmlsec.html#ATTRIBUTE-UNUSED-CAPS">ATTRIBUTE_UNUSED</a></pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN19739"></a><h2>Description</h2>
-<p></p>
+<a name="AEN19791"></a><h2>Description</h2>
+<p>Utility functions.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN19742"></a><h2>Details</h2>
+<a name="AEN19794"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN19744"></a><h3>
+<a name="AEN19796"></a><h3>
 <a name="XMLSECPTR"></a>xmlSecPtr</h3>
 <pre class="PROGRAMLISTING">typedef void*					xmlSecPtr;</pre>
 <p>Void pointer.</p>
@@ -136,7 +122,7 @@ enum        <a href="xmlsec-xmlsec.html#XMLSECCHECKVERSIONMODE">xmlSecCheckVersi
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19752"></a><h3>
+<a name="AEN19804"></a><h3>
 <a name="XMLSECSIZE"></a>xmlSecSize</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecSize</pre>
 <p>Size of something. Should be typedef instead of define
@@ -145,7 +131,7 @@ but it will break ABI (todo).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19760"></a><h3>
+<a name="AEN19812"></a><h3>
 <a name="XMLSECBYTE"></a>xmlSecByte</h3>
 <pre class="PROGRAMLISTING">#define xmlSecByte				unsigned char</pre>
 <p>One byte. Should be typedef instead of define
@@ -154,7 +140,7 @@ but it will break ABI (todo).</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19768"></a><h3>
+<a name="AEN19820"></a><h3>
 <a name="XMLSECINIT"></a>xmlSecInit ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>         xmlSecInit                      (void);</pre>
 <p>Initializes XML Security Library. The depended libraries
@@ -162,26 +148,26 @@ but it will break ABI (todo).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19778"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19830"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19783"></a><h3>
+<a name="AEN19835"></a><h3>
 <a name="XMLSECSHUTDOWN"></a>xmlSecShutdown ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>         xmlSecShutdown                  (void);</pre>
 <p>Clean ups the XML Security Library.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19793"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19845"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19798"></a><h3>
+<a name="AEN19850"></a><h3>
 <a name="XMLSECCHECKVERSIONEXACT"></a>xmlSecCheckVersionExact()</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecCheckVersionExact()</pre>
 <p>Macro. Returns 1 if the loaded xmlsec library version exactly matches 
@@ -191,7 +177,7 @@ value if an error occurs.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19806"></a><h3>
+<a name="AEN19858"></a><h3>
 <a name="XMLSECCHECKVERSION"></a>xmlSecCheckVersion()</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecCheckVersion()</pre>
 <p>Macro. Returns 1 if the loaded xmlsec library version ABI compatible with
@@ -201,7 +187,7 @@ value if an error occurs.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19814"></a><h3>
+<a name="AEN19866"></a><h3>
 <a name="XMLSECCHECKVERSIONMODE"></a>enum xmlSecCheckVersionMode</h3>
 <pre class="PROGRAMLISTING">typedef enum {
     xmlSecCheckVersionExact = 0,
@@ -212,18 +198,18 @@ value if an error occurs.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19823"><span style="white-space: nowrap"><var class="LITERAL">xmlSecCheckVersionExact</var></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19875"><span style="white-space: nowrap"><var class="LITERAL">xmlSecCheckVersionExact</var></span></a></td>
 <td align="LEFT" valign="TOP"><p>		the version should match exactly.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19828"><span style="white-space: nowrap"><var class="LITERAL">xmlSecCheckVersionABICompatible</var></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19880"><span style="white-space: nowrap"><var class="LITERAL">xmlSecCheckVersionABICompatible</var></span></a></td>
 <td align="LEFT" valign="TOP"><p>	the version should be ABI compatible.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19833"></a><h3>
+<a name="AEN19885"></a><h3>
 <a name="XMLSECCHECKVERSIONEXT"></a>xmlSecCheckVersionExt ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>         xmlSecCheckVersionExt           (<font>int</font> major,
                                              <font>int</font> minor,
@@ -234,23 +220,23 @@ value if an error occurs.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19847"><span style="white-space: nowrap"><var class="PARAMETER">major</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19899"><span style="white-space: nowrap"><var class="PARAMETER">major</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the major version number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19852"><span style="white-space: nowrap"><var class="PARAMETER">minor</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19904"><span style="white-space: nowrap"><var class="PARAMETER">minor</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the minor version number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19857"><span style="white-space: nowrap"><var class="PARAMETER">subminor</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19909"><span style="white-space: nowrap"><var class="PARAMETER">subminor</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the subminor version number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19862"><span style="white-space: nowrap"><var class="PARAMETER">mode</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19914"><span style="white-space: nowrap"><var class="PARAMETER">mode</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the version check mode.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19867"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19919"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>1 if the loaded xmlsec library version is OK to use
 0 if it is not or a negative value if an error occurs.</p></td>
 </tr>
@@ -258,7 +244,7 @@ value if an error occurs.</p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19872"></a><h3>
+<a name="AEN19924"></a><h3>
 <a name="ATTRIBUTE-UNUSED-CAPS"></a>ATTRIBUTE_UNUSED</h3>
 <pre class="PROGRAMLISTING">#define     ATTRIBUTE_UNUSED</pre>
 <p>Macro used to signal to GCC unused function parameters</p>

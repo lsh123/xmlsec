@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>parser</refname><refpurpose></refpurpose>
+<refname>parser</refname><refpurpose>Parser transform implementation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -42,7 +42,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Parser transform implementation.
 </para>
 </refsect1>
 

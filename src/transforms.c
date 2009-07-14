@@ -940,8 +940,9 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
 	}
     } else {
 	/* Visa3D protocol doesn't follow XML/XPointer/XMLDSig specs
-	 * and allows something like "#12345" in the URI attribute.
-	 * Since we couldn't evaluate such expressions thru XPath/XPointer
+	 * and allows invalid XPointer expressions (e.g. "#12345") in 
+	 * the URI attribute. 
+	 * Since we couldn't evaluate such expressions thru XPath/XPointer 
 	 * engine, we need to have this hack here
 	 */
 	xmlSecTransformPtr transform;

@@ -2,11 +2,11 @@
 xmltree
 
 <!-- ##### SECTION Short_Description ##### -->
-
+XML tree operations.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+XML tree operations.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

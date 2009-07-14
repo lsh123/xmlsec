@@ -74,21 +74,7 @@
 <td width="15"></td>
 <td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
 </tr>
-<!--Links - start--><tr>
-<td width="15"></td>
-<td><br><br><br><br><br><hr></td>
-</tr>
-<tr>
-<td width="15"></td>
-<td>
-<font size="-1">
-<h4>Links</h4>
-<p>
-</p>
-</font>
-</td>
-</tr>
-<!--Links - end-->
+<!--Links - start--><!--Links - end-->
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
@@ -102,13 +88,13 @@
 <h1>
 <a name="XMLSEC-BASE64"></a>base64</h1>
 <div class="REFNAMEDIV">
-<a name="AEN2612"></a><h2>Name</h2>base64--</div>
+<a name="AEN2612"></a><h2>Name</h2>base64--Base64 encoding/decoding functions.</div>
 <div class="REFSYNOPSISDIV">
 <a name="AEN2615"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-base64.html#XMLSEC-BASE64-LINESIZE-CAPS">XMLSEC_BASE64_LINESIZE</a>
-<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64GETDEFAULTLINESIZE">xmlSecBase64GetDefaultLineSize</a>  ();
+<font>int</font>         <a href="xmlsec-base64.html#XMLSECBASE64GETDEFAULTLINESIZE">xmlSecBase64GetDefaultLineSize</a>  (void);
 <font>void</font>        <a href="xmlsec-base64.html#XMLSECBASE64SETDEFAULTLINESIZE">xmlSecBase64SetDefaultLineSize</a>  (<font>int</font> columns);
 <font>xmlSecBase64CtxPtr</font> <a href="xmlsec-base64.html#XMLSECBASE64CTXCREATE">xmlSecBase64CtxCreate</a>    (<font>int</font> encode,
                                              <font>int</font> columns);
@@ -134,7 +120,7 @@
 </div>
 <div class="REFSECT1">
 <a name="AEN2661"></a><h2>Description</h2>
-<p></p>
+<p>Base64 encoding/decoding functions.</p>
 </div>
 <div class="REFSECT1">
 <a name="AEN2664"></a><h2>Details</h2>
@@ -149,8 +135,8 @@
 <div class="REFSECT2">
 <a name="AEN2674"></a><h3>
 <a name="XMLSECBASE64GETDEFAULTLINESIZE"></a>xmlSecBase64GetDefaultLineSize ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64GetDefaultLineSize  ();</pre>
-<p></p>
+<pre class="PROGRAMLISTING"><font>int</font>         xmlSecBase64GetDefaultLineSize  (void);</pre>
+<p>Gets the current default line size.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
@@ -168,8 +154,7 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN2700"><span style="white-space: nowrap"><var class="PARAMETER">columns</var>:</span></a></td>
-<td align="LEFT" valign="TOP"><p>
-</p></td>
+<td align="LEFT" valign="TOP"><p> number of columns</p></td>
 </tr></tbody></table>
 </div>
 <hr>

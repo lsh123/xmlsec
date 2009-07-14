@@ -100,6 +100,8 @@ XMLSEC_EXPORT void	xmlSecKeyUseWithDebugXmlDump		(xmlSecKeyUseWithPtr keyUseWith
  * xmlSecKeyUseWith:
  * @application:        the application.
  * @identifier:         the identifier.
+ * @reserved1:		reserved for future use.
+ * @reserved2:		reserved for future use.
  *
  * Information about application and user of the key.
  */
@@ -132,8 +134,10 @@ typedef struct _xmlSecKeyReq 			xmlSecKeyReq, *xmlSecKeyReqPtr;
  * @keyType:		the desired key type.
  * @keyUsage:		the desired key usage.
  * @keyBitsSize:	the desired key size (in bits!).
- * @keyUseWith:         the desired key use with application/identifier information.
-
+ * @keyUseWithList:     the desired key use with application/identifier information.
+ * @reserved1:		reserved for future use.
+ * @reserved2:		reserved for future use.
+ *
  * The key requirements information.
  */
 struct _xmlSecKeyReq {
@@ -144,7 +148,7 @@ struct _xmlSecKeyReq {
     xmlSecPtrList               keyUseWithList;    
 
     void*                       reserved1;
-    void*                       eserved2;
+    void*                       reserved2;
 };
 
 XMLSEC_EXPORT int	xmlSecKeyReqInitialize			(xmlSecKeyReqPtr keyReq);

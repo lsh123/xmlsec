@@ -2,11 +2,11 @@
 x509
 
 <!-- ##### SECTION Short_Description ##### -->
-
+&lt;dsig:X509Certificate/&gt; node parser.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+&lt;dsig:X509Certificate/&gt; node parser.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

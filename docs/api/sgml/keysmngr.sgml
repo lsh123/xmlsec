@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keysmngr</refname><refpurpose></refpurpose>
+<refname>keysmngr</refname><refpurpose>Keys manager object support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -80,7 +80,7 @@ struct      <link linkend="xmlSecKeyStoreKlass">xmlSecKeyStoreKlass</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+Keys manager object support.
 </para>
 </refsect1>
 
@@ -636,7 +636,7 @@ Writes keys from <parameter>store</parameter> to an XML file.</para>
 <indexterm><primary>xmlSecSimpleKeysStoreGetKeys</primary></indexterm><programlisting><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> xmlSecSimpleKeysStoreGetKeys
                                             (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store);</programlisting>
 <para>
-</para>
+Gets list of keys from simple keys store.</para>
 <para>
 
 </para><variablelist role="params">

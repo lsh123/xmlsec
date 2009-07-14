@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>io</refname><refpurpose></refpurpose>
+<refname>io</refname><refpurpose>Input/output support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -43,7 +43,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Input/output support.
 </para>
 </refsect1>
 

@@ -2,11 +2,11 @@
 xmldsig
 
 <!-- ##### SECTION Short_Description ##### -->
-
+XML Digital Signature support.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+XML Digital Signature support.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

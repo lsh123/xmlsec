@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>keys</refname><refpurpose></refpurpose>
+<refname>keys</refname><refpurpose>Crypto key object definition.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -115,7 +115,7 @@ const <link linkend="xmlChar">xmlChar</link>* <link linkend="xmlSecKeyGetName">x
 <refsect1>
 <title>Description</title>
 <para>
-
+Crypto key object definition.
 </para>
 </refsect1>
 
@@ -370,13 +370,12 @@ Information about application and user of the key.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
-<listitem><simpara>
+<listitem><simpara>		reserved for future use.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link> *<structfield>reserved2</structfield></term>
-<listitem><simpara>
-
+<listitem><simpara>		reserved for future use.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -412,7 +411,7 @@ The key data list klass.</para>
     xmlSecPtrList               keyUseWithList;    
 
     void*                       reserved1;
-    void*                       eserved2;
+    void*                       reserved2;
 };
 </programlisting>
 <para>
@@ -442,18 +441,17 @@ The key requirements information.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrList">xmlSecPtrList</link> <structfield>keyUseWithList</structfield></term>
-<listitem><simpara>
+<listitem><simpara>     the desired key use with application/identifier information.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link> *<structfield>reserved1</structfield></term>
-<listitem><simpara>
+<listitem><simpara>		reserved for future use.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
-<term><link linkend="void">void</link> *<structfield>eserved2</structfield></term>
-<listitem><simpara>
-
+<term><link linkend="void">void</link> *<structfield>reserved2</structfield></term>
+<listitem><simpara>		reserved for future use.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>

@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>app</refname><refpurpose></refpurpose>
+<refname>app</refname><refpurpose>Application functions implementation for OpenSSL.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -111,7 +111,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+Application functions implementation for OpenSSL.
 </para>
 </refsect1>
 

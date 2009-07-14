@@ -213,8 +213,8 @@ typedef unsigned int				xmlSecKeyDataType;
  * @xmlSecKeyDataFormatBinary:		the binary key data.
  * @xmlSecKeyDataFormatPem:		the PEM key data (cert or public/private key).
  * @xmlSecKeyDataFormatDer:		the DER key data (cert or public/private key).
- * @xmlSecKeyDataFormatPkcs8Pem:	the PKCS#8 PEM private key.
- * @xmlSecKeyDataFormatPkcs8Der:	the PKCS#8 DER private key. 
+ * @xmlSecKeyDataFormatPkcs8Pem:	the PKCS8 PEM private key.
+ * @xmlSecKeyDataFormatPkcs8Der:	the PKCS8 DER private key. 
  * @xmlSecKeyDataFormatPkcs12:		the PKCS12 format (bag of keys and certs)
  * @xmlSecKeyDataFormatCertPem:		the PEM cert.
  * @xmlSecKeyDataFormatCertDer:		the DER cert.

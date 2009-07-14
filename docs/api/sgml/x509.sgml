@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>x509</refname><refpurpose></refpurpose>
+<refname>x509</refname><refpurpose><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node parser.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -38,7 +38,7 @@
 <refsect1>
 <title>Description</title>
 <para>
-
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node parser.
 </para>
 </refsect1>
 

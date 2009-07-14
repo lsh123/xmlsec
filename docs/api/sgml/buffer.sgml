@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>buffer</refname><refpurpose></refpurpose>
+<refname>buffer</refname><refpurpose>Binary buffer implementation.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -70,7 +70,7 @@ struct      <link linkend="xmlSecBuffer">xmlSecBuffer</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+Binary buffer implementation.
 </para>
 </refsect1>
 

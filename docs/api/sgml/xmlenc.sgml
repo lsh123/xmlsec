@@ -6,7 +6,7 @@
 </refmeta>
 
 <refnamediv>
-<refname>xmlenc</refname><refpurpose></refpurpose>
+<refname>xmlenc</refname><refpurpose>XML Encryption support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv><title>Synopsis</title>
@@ -58,7 +58,7 @@ struct      <link linkend="xmlSecEncCtx">xmlSecEncCtx</link>;
 <refsect1>
 <title>Description</title>
 <para>
-
+XML Encryption support.
 </para>
 </refsect1>
 

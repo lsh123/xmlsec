@@ -274,10 +274,10 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
 	   Otherwise, an attacker can set this lenght to 0 or very 
 	   small value
 	*/
-	if(ctx->dgstSize < xmlSecOpenSSLHmacGetMinOutputLength()) {
+	if((int)ctx->dgstSize < xmlSecOpenSSLHmacGetMinOutputLength()) {
  	   xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecNodeHMACOutputLength,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),		    
 		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 		    "HMAC output length is too small");
 	   return(-1);

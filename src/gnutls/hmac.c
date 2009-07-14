@@ -212,10 +212,10 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
 	   Otherwise, an attacker can set this lenght to 0 or very 
 	   small value
 	*/
-	if(ctx->dgstSize < xmlSecGnuTLSHmacGetMinOutputLength()) {
+	if((int)ctx->dgstSize < xmlSecGnuTLSHmacGetMinOutputLength()) {
  	   xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecNodeHMACOutputLength,
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
 		    "HMAC output length is too small");
 	   return(-1);
@@ -227,7 +227,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
     if(cur != NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecNodeGetName(cur),
+		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
 		    XMLSEC_ERRORS_R_INVALID_NODE,
 		    "no nodes expected");
 	return(-1);

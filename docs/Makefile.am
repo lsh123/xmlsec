@@ -6,6 +6,7 @@ TARGET_DIR=@XMLSEC_DOCDIR@
 
 EXTRA_DIST=\
 	images \
+	xmlsec.xsl \
 	$(NULL)
 
 # just do nothing

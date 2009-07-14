@@ -46,7 +46,7 @@ static int g_xmlsec_openssl_hmac_min_length = XMLSEC_OPENSSL_MIN_HMAC_SIZE;
  * 
  * Returns the min HMAC output length
  */
-int xmlSecOpenSSLHmacGetMinOutputLength()
+int xmlSecOpenSSLHmacGetMinOutputLength(void)
 {
     return g_xmlsec_openssl_hmac_min_length;
 }

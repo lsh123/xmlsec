@@ -38,7 +38,7 @@ static int g_xmlsec_gnutls_hmac_min_length = XMLSEC_GNUTLS_MIN_HMAC_SIZE;
  * 
  * Returns the min HMAC output length
  */
-int xmlSecGnuTLSHmacGetMinOutputLength()
+int xmlSecGnuTLSHmacGetMinOutputLength(void)
 {
     return g_xmlsec_gnutls_hmac_min_length;
 }

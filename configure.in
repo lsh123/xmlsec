@@ -21,7 +21,7 @@ AC_SUBST(XMLSEC_VERSION_MINOR)
 AC_SUBST(XMLSEC_VERSION_SUBMINOR)
 AC_SUBST(XMLSEC_VERSION_INFO)
 
-AM_INIT_AUTOMAKE([1.9 tar-ustar])
+AM_INIT_AUTOMAKE([1.7])
 AM_MAINTAINER_MODE
 
 dnl
@@ -187,10 +187,29 @@ LIBXML_CONFIG="xml2-config"
 LIBXML_CFLAGS=""
 LIBXML_LIBS=""
 LIBXML_FOUND="no"
-AC_ARG_WITH(libxml, [  --with-libxml=[PFX]       libxml2 location])
-if test "z$with_libxml" = "zno" ; then 
+AC_ARG_WITH(libxml, 
+    [  --with-libxml=[PFX]       libxml2 location]
+)
+AC_ARG_WITH(libxml-src, 
+    [  --with-libxml-src=[PFX]   not installed yet libxml2 location]
+)
+
+if test "z$with_libxml" = "zno" -o test "z$with_libxml_src" = "zno"; then 
     AC_MSG_CHECKING(for libxml2 libraries >= $LIBXML_MIN_VERSION) 
     AC_MSG_ERROR(libxml2 >= $LIBXML_MIN_VERSION is required for $XMLSEC_PACKAGE)
+elif test "z$with_libxml_src" != "z" ; then
+    CWD=`pwd`
+    if cd "$with_libxml_src" ; then 
+	SRC_DIR=`pwd`
+	LIBXML_CONFIG=${SRC_DIR}/xml2-config
+	LIBXML_LIBS="-L${SRC_DIR} -lxml2"
+	LIBXML_CFLAGS="-I${SRC_DIR}/include"
+	LIBXML_FOUND="yes"
+	cd $CWD
+	AC_MSG_RESULT([yes (source)])    
+    else 
+	AC_MSG_ERROR([libxml source dir not found (${with_libxml_src}), typo?])
+    fi 	
 elif test "z$with_libxml" = "z" -a "z$PKG_CONFIG_ENABLED" = "zyes" ; then
     PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= $LIBXML_MIN_VERSION,
 	[LIBXML_FOUND=yes],
@@ -231,11 +250,29 @@ LIBXSLT_CONFIG="xslt-config"
 LIBXSLT_CFLAGS=""
 LIBXSLT_LIBS=""
 LIBXSLT_FOUND="no"
-AC_ARG_WITH(libxslt, [  --with-libxslt=[PFX]      libxslt location])
-if test "z$with_libxslt" = "zno" ; then
+AC_ARG_WITH(libxslt, 
+    [  --with-libxslt=[PFX]      libxslt location]
+)
+AC_ARG_WITH(libxslt-src, 
+    [  --with-libxslt-src=[PFX]  not installed yet libxslt location]
+)
+if test "z$with_libxslt" = "zno" -o "z$with_libxslt_src" = "zno" ; then
     AC_MSG_CHECKING(for libxslt libraries >= $LIBXSLT_MIN_VERSION) 
     AC_MSG_RESULT(no)
     LIBXSLT_FOUND="without"
+elif test "z$with_libxslt_src" != "z" ; then
+    CWD=`pwd`
+    if cd "$with_libxslt_src" ; then 
+	SRC_DIR=`pwd`
+	LIBXSLT_CONFIG=${SRC_DIR}/xslt-config
+	LIBXSLT_LIBS="-L${SRC_DIR} -lxslt"
+	LIBXSLT_CFLAGS="-I${SRC_DIR}/include"
+	LIBXSLT_FOUND="yes"
+	cd $CWD
+	AC_MSG_RESULT([yes (source)])    
+    else 
+	AC_MSG_ERROR([libxslt source dir not found (${with_libxslt_src}), typo?])
+    fi 	
 elif test "z$with_libxslt" = "z" -a  "z$PKG_CONFIG_ENABLED" = "zyes" ; then
     PKG_CHECK_MODULES(LIBXSLT, libxslt >= $LIBXSLT_MIN_VERSION,
 	[LIBXSLT_FOUND=yes],

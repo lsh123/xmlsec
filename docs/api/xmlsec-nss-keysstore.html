@@ -74,7 +74,21 @@
 <td width="15"></td>
 <td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
 </tr>
-<!--Links - start--><!--Links - end-->
+<!--Links - start--><tr>
+<td width="15"></td>
+<td><br><br><br><br><br><hr></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td>
+<font size="-1">
+<h4>Links</h4>
+<p>
+</p>
+</font>
+</td>
+</tr>
+<!--Links - end-->
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
@@ -88,9 +102,9 @@
 <h1>
 <a name="XMLSEC-NSS-KEYSSTORE"></a>keysstore</h1>
 <div class="REFNAMEDIV">
-<a name="AEN26022"></a><h2>Name</h2>keysstore--</div>
+<a name="AEN28088"></a><h2>Name</h2>keysstore--</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN26025"></a><h2>Synopsis</h2>
+<a name="AEN28091"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 #define     <a href="xmlsec-nss-keysstore.html#XMLSECNSSKEYSSTOREID">xmlSecNssKeysStoreId</a>
@@ -105,13 +119,13 @@
                                              <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN26045"></a><h2>Description</h2>
+<a name="AEN28111"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN26048"></a><h2>Details</h2>
+<a name="AEN28114"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN26050"></a><h3>
+<a name="AEN28116"></a><h3>
 <a name="XMLSECNSSKEYSSTOREID"></a>xmlSecNssKeysStoreId</h3>
 <pre class="PROGRAMLISTING">#define xmlSecNssKeysStoreId		xmlSecNssKeysStoreGetKlass()</pre>
 <p>A Nss keys store klass id.</p>
@@ -119,20 +133,20 @@
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN26058"></a><h3>
+<a name="AEN28124"></a><h3>
 <a name="XMLSECNSSKEYSSTOREGETKLASS"></a>xmlSecNssKeysStoreGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecKeyStoreId</font> xmlSecNssKeysStoreGetKlass (void);</pre>
 <p>The Nss list based keys store klass.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN26068"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28134"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>Nss list based keys store klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN26073"></a><h3>
+<a name="AEN28139"></a><h3>
 <a name="XMLSECNSSKEYSSTOREADOPTKEY"></a>xmlSecNssKeysStoreAdoptKey ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>         xmlSecNssKeysStoreAdoptKey      (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
                                              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
@@ -141,22 +155,22 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26087"><span style="white-space: nowrap"><var class="PARAMETER">store</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28153"><span style="white-space: nowrap"><var class="PARAMETER">store</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to Nss keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26092"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28158"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26097"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28163"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN26102"></a><h3>
+<a name="AEN28168"></a><h3>
 <a name="XMLSECNSSKEYSSTORELOAD"></a>xmlSecNssKeysStoreLoad ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>         xmlSecNssKeysStoreLoad          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
                                              const <font>char</font> *uri,
@@ -166,26 +180,26 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26115"><span style="white-space: nowrap"><var class="PARAMETER">store</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28181"><span style="white-space: nowrap"><var class="PARAMETER">store</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to Nss keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26120"><span style="white-space: nowrap"><var class="PARAMETER">uri</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28186"><span style="white-space: nowrap"><var class="PARAMETER">uri</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26125"><span style="white-space: nowrap"><var class="PARAMETER">keysMngr</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28191"><span style="white-space: nowrap"><var class="PARAMETER">keysMngr</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to associated keys manager. </p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26130"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28196"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN26135"></a><h3>
+<a name="AEN28201"></a><h3>
 <a name="XMLSECNSSKEYSSTORESAVE"></a>xmlSecNssKeysStoreSave ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>         xmlSecNssKeysStoreSave          (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
                                              const <font>char</font> *filename,
@@ -195,19 +209,19 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26149"><span style="white-space: nowrap"><var class="PARAMETER">store</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28215"><span style="white-space: nowrap"><var class="PARAMETER">store</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to Nss keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26154"><span style="white-space: nowrap"><var class="PARAMETER">filename</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28220"><span style="white-space: nowrap"><var class="PARAMETER">filename</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26159"><span style="white-space: nowrap"><var class="PARAMETER">type</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28225"><span style="white-space: nowrap"><var class="PARAMETER">type</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the saved keys type (public, private, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN26164"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28230"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>

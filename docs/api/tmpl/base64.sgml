@@ -21,6 +21,22 @@ base64
 
 
 
+<!-- ##### FUNCTION xmlSecBase64GetDefaultLineSize ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecBase64SetDefaultLineSize ##### -->
+<para>
+
+</para>
+
+@columns: 
+
+
 <!-- ##### FUNCTION xmlSecBase64CtxCreate ##### -->
 <para>
 

@@ -14,6 +14,41 @@ crypto
 
 </para>
 
+<!-- ##### MACRO XMLSEC_NO_SHA224 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA256 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA384 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA512 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO XMLSEC_NO_AES ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### FUNCTION xmlSecCryptoGetFunctions_openssl ##### -->
 <para>
 
@@ -314,6 +349,22 @@ crypto
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLHmacGetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLHmacSetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@min_length: 
+
+
 <!-- ##### MACRO xmlSecOpenSSLKeyDataHmacId ##### -->
 <para>
 
@@ -340,14 +391,14 @@ crypto
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecOpenSSLTransformHmacSha1Id ##### -->
+<!-- ##### MACRO xmlSecOpenSSLTransformHmacMd5Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacSha1GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacMd5GetKlass ##### -->
 <para>
 
 </para>
@@ -370,14 +421,89 @@ crypto
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecOpenSSLTransformHmacMd5Id ##### -->
+<!-- ##### MACRO xmlSecOpenSSLTransformHmacSha1Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacMd5GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformHmacSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformHmacSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformHmacSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformHmacSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformHmacSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformMd5GetKlass ##### -->
 <para>
 
 </para>
@@ -453,6 +579,36 @@ crypto
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecOpenSSLTransformRsaMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformRsaMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformRsaRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformRsaRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecOpenSSLTransformRsaSha1Id ##### -->
 <para>
 
@@ -461,6 +617,66 @@ crypto
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLTransformRsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformRsaSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformRsaSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformRsaSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformRsaSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformRsaSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformRsaSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformRsaSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformRsaSha512GetKlass ##### -->
 <para>
 
 </para>
@@ -506,6 +722,66 @@ crypto
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecOpenSSLTransformSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLTransformSha512GetKlass ##### -->
 <para>
 
 </para>

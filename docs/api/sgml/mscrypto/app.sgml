@@ -31,6 +31,24 @@ const <link linkend="char">char</link>* <link linkend="xmlSecMSCryptoAppGetCertS
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link> hKey);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link> hKey);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link> hKey);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> keyStore);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> trustedStore);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> untrustedStore);
 <link linkend="int">int</link>         <link linkend="xmlSecMSCryptoAppKeysMngrCertLoad">xmlSecMSCryptoAppKeysMngrCertLoad</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="char">char</link> *filename,
@@ -211,6 +229,120 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 <listitem><simpara>		the type of keys to save (public/private/symmetric).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad ()</title>
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link> hKey);</programlisting>
+<para>
+Adds private key <parameter>hKey</parameter> to the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hKey</parameter>&nbsp;:</term>
+<listitem><simpara>       the key handle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad ()</title>
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link> hKey);</programlisting>
+<para>
+Adds public key <parameter>hKey</parameter> to the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hKey</parameter>&nbsp;:</term>
+<listitem><simpara>       the key handle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad">xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad ()</title>
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link> hKey);</programlisting>
+<para>
+Adds symmetric key <parameter>hKey</parameter> to the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		the pointer to keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hKey</parameter>&nbsp;:</term>
+<listitem><simpara>       the key handle.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore ()</title>
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> keyStore);</programlisting>
+<para>
+Adds <parameter>keyStore</parameter> to the list of key stores in the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		        the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyStore</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to keys store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore ()</title>
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> trustedStore);</programlisting>
+<para>
+Adds <parameter>trustedStore</parameter> to the list of trusted cert stores in the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		        the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>trustedStore</parameter>&nbsp;:</term>
+<listitem><simpara>       the pointer to certs store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore">xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore ()</title>
+<indexterm><primary>xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> untrustedStore);</programlisting>
+<para>
+Adds <parameter>trustedStore</parameter> to the list of un-trusted cert stores in the keys manager <parameter>mngr</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara> 		        the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>untrustedStore</parameter>&nbsp;:</term>
+<listitem><simpara>     the pointer to certs store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

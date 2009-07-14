@@ -18,6 +18,8 @@
 <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> <link linkend="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 <link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   <link linkend="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</link>     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   <link linkend="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</link>
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
 <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> <link linkend="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</link>        (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert);
 <link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</link>    (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
@@ -73,6 +75,21 @@ returned HKEY must not be destroyed by the caller.</para>
 <listitem><simpara>              type of key requested (public/private)
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>HKEY on success or NULL otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey ()</title>
+<indexterm><primary>xmlSecMSCryptoKeyDataGetDecryptKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   xmlSecMSCryptoKeyDataGetDecryptKey
+                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

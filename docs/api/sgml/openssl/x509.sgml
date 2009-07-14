@@ -60,9 +60,14 @@
 <link linkend="int">int</link>         <link linkend="xmlSecOpenSSLX509StoreAdoptCert">xmlSecOpenSSLX509StoreAdoptCert</link> (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="X509-CAPS">X509</link> *cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLX509StoreAdoptCrl">xmlSecOpenSSLX509StoreAdoptCrl</link>  (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="X509-CRL-CAPS">X509_CRL</link> *crl);
 <link linkend="int">int</link>         <link linkend="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath</link>
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              const <link linkend="char">char</link> *path);
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLX509StoreAddCertsFile">xmlSecOpenSSLX509StoreAddCertsFile</link>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             const <link linkend="char">char</link> *file);
 </synopsis>
 </refsynopsisdiv>
 
@@ -346,7 +351,7 @@ Searches <parameter>store</parameter> for a certificate that matches given crite
 <listitem><simpara>		the desired certificate SKI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to found certificate or NULL if certificate is not found
 or an error occurs.
@@ -373,7 +378,7 @@ Verifies <parameter>certs</parameter> list.</para>
 <listitem><simpara>		the crls stack.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the first verified certificate from <parameter>certs</parameter>.
 </simpara></listitem></varlistentry>
@@ -401,6 +406,24 @@ Adds trusted (root) or untrusted certificate to the store.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecOpenSSLX509StoreAdoptCrl">xmlSecOpenSSLX509StoreAdoptCrl ()</title>
+<indexterm><primary>xmlSecOpenSSLX509StoreAdoptCrl</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLX509StoreAdoptCrl  (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="X509-CRL-CAPS">X509_CRL</link> *crl);</programlisting>
+<para>
+Adds X509 CRL to the store.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>crl</parameter>&nbsp;:</term>
+<listitem><simpara>		the pointer to OpenSSL X509_CRL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecOpenSSLX509StoreAddCertsPath">xmlSecOpenSSLX509StoreAddCertsPath ()</title>
 <indexterm><primary>xmlSecOpenSSLX509StoreAddCertsPath</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLX509StoreAddCertsPath
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
@@ -416,6 +439,26 @@ in <parameter>store</parameter>.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>path</parameter>&nbsp;:</term>
 <listitem><simpara> the path to the certs dir.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLX509StoreAddCertsFile">xmlSecOpenSSLX509StoreAddCertsFile ()</title>
+<indexterm><primary>xmlSecOpenSSLX509StoreAddCertsFile</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLX509StoreAddCertsFile
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             const <link linkend="char">char</link> *file);</programlisting>
+<para>
+Adds all certs in <parameter>file</parameter> to the list of trusted certs
+in <parameter>store</parameter>. It is possible for <parameter>file</parameter> to contain multiple certs.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara> the pointer to OpenSSL x509 store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara> the certs file.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>

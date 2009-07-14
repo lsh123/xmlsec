@@ -191,6 +191,7 @@ private
 @keyDataAesGetKlass: 
 @keyDataDesGetKlass: 
 @keyDataDsaGetKlass: 
+@keyDataGost2001GetKlass: 
 @keyDataHmacGetKlass: 
 @keyDataRsaGetKlass: 
 @keyDataX509GetKlass: 
@@ -205,6 +206,7 @@ private
 @transformDes3CbcGetKlass: 
 @transformKWDes3GetKlass: 
 @transformDsaSha1GetKlass: 
+@transformGost2001GostR3411_94GetKlass: 
 @transformHmacMd5GetKlass: 
 @transformHmacRipemd160GetKlass: 
 @transformHmacSha1GetKlass: 
@@ -223,6 +225,7 @@ private
 @transformRsaSha512GetKlass: 
 @transformRsaPkcs1GetKlass: 
 @transformRsaOaepGetKlass: 
+@transformGostR3411_94GetKlass: 
 @transformSha1GetKlass: 
 @transformSha224GetKlass: 
 @transformSha256GetKlass: 

@@ -284,3 +284,12 @@ keysmngr
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecSimpleKeysStoreGetKeys ##### -->
+<para>
+
+</para>
+
+@store: 
+@Returns: 
+
+

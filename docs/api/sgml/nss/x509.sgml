@@ -316,7 +316,7 @@ Searches <parameter>store</parameter> for a certificate that matches given crite
 <listitem><simpara>		the desired certificate SKI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to found certificate or NULL if certificate is not found
 or an error occurs.
@@ -339,7 +339,7 @@ Verifies <parameter>certs</parameter> list.</para>
 <listitem><simpara>		the untrusted certificates stack.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the first verified certificate from <parameter>certs</parameter>.
 </simpara></listitem></varlistentry>

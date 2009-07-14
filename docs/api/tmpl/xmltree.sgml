@@ -137,6 +137,17 @@ xmltree
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecReplaceNodeAndReturn ##### -->
+<para>
+
+</para>
+
+@node: 
+@newNode: 
+@replaced: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecReplaceContent ##### -->
 <para>
 
@@ -144,6 +155,17 @@ xmltree
 
 @node: 
 @newNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReplaceContentAndReturn ##### -->
+<para>
+
+</para>
+
+@node: 
+@newNode: 
+@replaced: 
 @Returns: 
 
 
@@ -155,6 +177,28 @@ xmltree
 @node: 
 @buffer: 
 @size: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecReplaceNodeBufferAndReturn ##### -->
+<para>
+
+</para>
+
+@node: 
+@buffer: 
+@size: 
+@replaced: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNodeEncodeAndSetContent ##### -->
+<para>
+
+</para>
+
+@node: 
+@buffer: 
 @Returns: 
 
 

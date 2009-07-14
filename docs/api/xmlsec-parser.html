@@ -74,7 +74,21 @@
 <td width="15"></td>
 <td><a href="http://www.openssl.org/"><img src="../images/openssl-logo.png" alt="OpenSSL" border="0"></a></td>
 </tr>
-<!--Links - start--><!--Links - end-->
+<!--Links - start--><tr>
+<td width="15"></td>
+<td><br><br><br><br><br><hr></td>
+</tr>
+<tr>
+<td width="15"></td>
+<td>
+<font size="-1">
+<h4>Links</h4>
+<p>
+</p>
+</font>
+</td>
+</tr>
+<!--Links - end-->
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
@@ -88,9 +102,9 @@
 <h1>
 <a name="XMLSEC-PARSER"></a>parser</h1>
 <div class="REFNAMEDIV">
-<a name="AEN11848"></a><h2>Name</h2>parser--</div>
+<a name="AEN12586"></a><h2>Name</h2>parser--</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN11851"></a><h2>Synopsis</h2>
+<a name="AEN12589"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">
 
 <font>xmlDocPtr</font>   <a href="xmlsec-parser.html#XMLSECPARSEFILE">xmlSecParseFile</a>                 (const <font>char</font> *filename);
@@ -108,13 +122,13 @@
                                             (void);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN11873"></a><h2>Description</h2>
+<a name="AEN12611"></a><h2>Description</h2>
 <p></p>
 </div>
 <div class="REFSECT1">
-<a name="AEN11876"></a><h2>Details</h2>
+<a name="AEN12614"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN11878"></a><h3>
+<a name="AEN12616"></a><h3>
 <a name="XMLSECPARSEFILE"></a>xmlSecParseFile ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseFile                 (const <font>char</font> *filename);</pre>
 <p>Loads XML Doc from file <var class="PARAMETER">filename</var>. We need a special version because of 
@@ -123,18 +137,18 @@ c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseFile
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11892"><span style="white-space: nowrap"><var class="PARAMETER">filename</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12630"><span style="white-space: nowrap"><var class="PARAMETER">filename</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11897"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12635"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the loaded XML document or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11902"></a><h3>
+<a name="AEN12640"></a><h3>
 <a name="XMLSECPARSEMEMORY"></a>xmlSecParseMemory ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseMemory               (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buffer,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size,
@@ -145,26 +159,26 @@ c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseMemo
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11917"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12655"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the input buffer.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11922"><span style="white-space: nowrap"><var class="PARAMETER">size</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12660"><span style="white-space: nowrap"><var class="PARAMETER">size</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the input buffer size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11927"><span style="white-space: nowrap"><var class="PARAMETER">recovery</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12665"><span style="white-space: nowrap"><var class="PARAMETER">recovery</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the flag.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11932"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12670"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the loaded XML document or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11937"></a><h3>
+<a name="AEN12675"></a><h3>
 <a name="XMLSECPARSEMEMORYEXT"></a>xmlSecParseMemoryExt ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlDocPtr</font>   xmlSecParseMemoryExt            (const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *prefix,
                                              <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> prefixSize,
@@ -177,38 +191,38 @@ c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseMemo
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11956"><span style="white-space: nowrap"><var class="PARAMETER">prefix</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12694"><span style="white-space: nowrap"><var class="PARAMETER">prefix</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the first part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11961"><span style="white-space: nowrap"><var class="PARAMETER">prefixSize</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12699"><span style="white-space: nowrap"><var class="PARAMETER">prefixSize</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 	the size of the first part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11966"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12704"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the second part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11971"><span style="white-space: nowrap"><var class="PARAMETER">bufferSize</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12709"><span style="white-space: nowrap"><var class="PARAMETER">bufferSize</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 	the size of the second part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11976"><span style="white-space: nowrap"><var class="PARAMETER">postfix</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12714"><span style="white-space: nowrap"><var class="PARAMETER">postfix</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the third part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11981"><span style="white-space: nowrap"><var class="PARAMETER">postfixSize</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12719"><span style="white-space: nowrap"><var class="PARAMETER">postfixSize</var>:</span></a></td>
 <td align="LEFT" valign="TOP"><p> 	the size of the third part of the input.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN11986"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12724"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>pointer to the loaded XML document or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11991"></a><h3>
+<a name="AEN12729"></a><h3>
 <a name="XMLSECTRANSFORMXMLPARSERID"></a>xmlSecTransformXmlParserId</h3>
 <pre class="PROGRAMLISTING">#define     xmlSecTransformXmlParserId</pre>
 <p>The XML Parser transform klass.</p>
@@ -216,7 +230,7 @@ c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseMemo
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11999"></a><h3>
+<a name="AEN12737"></a><h3>
 <a name="XMLSECTRANSFORMXMLPARSERGETKLASS"></a>xmlSecTransformXmlParserGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformXmlParserGetKlass
                                             (void);</pre>
@@ -224,7 +238,7 @@ c14n issue. The code is copied from <font><code class="FUNCTION">xmlSAXParseMemo
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN12009"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN12747"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>XML parser transform klass.</p></td>
 </tr></tbody></table>
 </div>

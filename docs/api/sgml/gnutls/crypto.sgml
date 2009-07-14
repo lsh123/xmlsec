@@ -46,20 +46,24 @@
 #define     <link linkend="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass</link>
                                             (void);
+<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSHmacGetMinOutputLength">xmlSecGnuTLSHmacGetMinOutputLength</link>
+                                            ();
+<link linkend="void">void</link>        <link linkend="xmlSecGnuTLSHmacSetMinOutputLength">xmlSecGnuTLSHmacSetMinOutputLength</link>
+                                            (<link linkend="int">int</link> min_length);
 #define     <link linkend="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass</link>
                                             (void);
 <link linkend="int">int</link>         <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link>      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
+#define     <link linkend="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass</link>
                                             (void);
-#define     <link linkend="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass</link>
+#define     <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass</link>
@@ -315,6 +319,36 @@ Triple DES CBC encryption transform klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecGnuTLSHmacGetMinOutputLength">xmlSecGnuTLSHmacGetMinOutputLength ()</title>
+<indexterm><primary>xmlSecGnuTLSHmacGetMinOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSHmacGetMinOutputLength
+                                            ();</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the min HMAC output length
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecGnuTLSHmacSetMinOutputLength">xmlSecGnuTLSHmacSetMinOutputLength ()</title>
+<indexterm><primary>xmlSecGnuTLSHmacSetMinOutputLength</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecGnuTLSHmacSetMinOutputLength
+                                            (<link linkend="int">int</link> min_length);</programlisting>
+<para>
+<parameter>min_length</parameter>: the new min length 
+</para>
+<para>
+Sets the min HMAC output length</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>min_length</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</title>
 <indexterm><primary>xmlSecGnuTLSKeyDataHmacId</primary></indexterm><programlisting>#define     xmlSecGnuTLSKeyDataHmacId</programlisting>
 <para>
@@ -357,23 +391,23 @@ Sets the value of HMAC key data.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacSha1Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacSha1Id</programlisting>
+<title><anchor id="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</title>
+<indexterm><primary>xmlSecGnuTLSTransformHmacMd5Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacMd5Id</programlisting>
 <para>
-The HMAC with SHA1 signature transform klass.</para>
+The HMAC with MD5 signature transform klass.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacSha1GetKlass
+<title><anchor id="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass ()</title>
+<indexterm><primary>xmlSecGnuTLSTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacMd5GetKlass
                                             (void);</programlisting>
 <para>
-The HMAC-SHA1 transform klass.</para>
+The HMAC-MD5 transform klass.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -397,23 +431,23 @@ The HMAC-RIPEMD160 transform klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacMd5Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacMd5Id</programlisting>
+<title><anchor id="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</title>
+<indexterm><primary>xmlSecGnuTLSTransformHmacSha1Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacSha1Id</programlisting>
 <para>
-The HMAC with MD5 signature transform klass.</para>
+The HMAC with SHA1 signature transform klass.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacMd5GetKlass
+<title><anchor id="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass ()</title>
+<indexterm><primary>xmlSecGnuTLSTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacSha1GetKlass
                                             (void);</programlisting>
 <para>
-The HMAC-MD5 transform klass.</para>
+The HMAC-SHA1 transform klass.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

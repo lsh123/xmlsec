@@ -83,12 +83,39 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecGnuTLSAppKeyLoad ##### -->
 <para>
 
 </para>
 
 @filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeyLoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
 @format: 
 @pwd: 
 @pwdCallback: 
@@ -108,6 +135,19 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecGnuTLSAppPkcs12LoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoad ##### -->
 <para>
 
@@ -115,6 +155,18 @@ app
 
 @key: 
 @filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
 @format: 
 @Returns: 
 

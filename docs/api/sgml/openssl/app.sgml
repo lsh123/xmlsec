@@ -48,6 +48,9 @@
 <link linkend="int">int</link>         <link linkend="xmlSecOpenSSLAppKeysMngrAddCertsPath">xmlSecOpenSSLAppKeysMngrAddCertsPath</link>
                                             (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                              const <link linkend="char">char</link> *path);
+<link linkend="int">int</link>         <link linkend="xmlSecOpenSSLAppKeysMngrAddCertsFile">xmlSecOpenSSLAppKeysMngrAddCertsFile</link>
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="char">char</link> *file);
 <link linkend="xmlSecKey">xmlSecKeyPtr</link> <link linkend="xmlSecOpenSSLAppKeyLoad">xmlSecOpenSSLAppKeyLoad</link>        (const <link linkend="char">char</link> *filename,
                                              <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
                                              const <link linkend="char">char</link> *pwd,
@@ -326,6 +329,26 @@ Reads cert from <parameter>path</parameter> and adds to the list of trusted cert
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>path</parameter>&nbsp;:</term>
 <listitem><simpara>		the path to trusted certificates.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecOpenSSLAppKeysMngrAddCertsFile">xmlSecOpenSSLAppKeysMngrAddCertsFile ()</title>
+<indexterm><primary>xmlSecOpenSSLAppKeysMngrAddCertsFile</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecOpenSSLAppKeysMngrAddCertsFile
+                                            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
+                                             const <link linkend="char">char</link> *file);</programlisting>
+<para>
+Reads certs from <parameter>file</parameter> and adds to the list of trusted certificates.
+It is possible for <parameter>file</parameter> to contain multiple certs.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<listitem><simpara>               the keys manager.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<listitem><simpara>               the file containing trusted certificates.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>

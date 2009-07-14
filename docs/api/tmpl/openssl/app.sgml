@@ -118,6 +118,16 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLAppKeysMngrAddCertsFile ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@file: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoad ##### -->
 <para>
 
@@ -129,8 +139,6 @@ app
 @pwdCallback: 
 @pwdCallbackCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@wdCallback: 
 
 
 <!-- ##### FUNCTION xmlSecOpenSSLAppKeyLoadMemory ##### -->

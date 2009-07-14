@@ -79,6 +79,66 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@hKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@hKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@hKey: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@keyStore: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@trustedStore: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@untrustedStore: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecMSCryptoAppKeysMngrCertLoad ##### -->
 <para>
 
@@ -129,8 +189,6 @@ app
 @pwdCallback: 
 @pwdCallbackCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@bdata: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoAppPkcs12Load ##### -->
@@ -156,8 +214,6 @@ app
 @pwdCallback: 
 @pwdCallbackCtx: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@bdata: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoAppKeyCertLoad ##### -->

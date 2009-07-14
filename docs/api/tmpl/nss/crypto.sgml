@@ -71,6 +71,14 @@ crypto
 @msg: 
 
 
+<!-- ##### FUNCTION xmlSecNssGetInternalKeySlot ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecNssKeyDataAesId ##### -->
 <para>
 
@@ -273,6 +281,22 @@ crypto
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecNssHmacGetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecNssHmacSetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@min_length: 
+
+
 <!-- ##### MACRO xmlSecNssKeyDataHmacId ##### -->
 <para>
 
@@ -299,14 +323,14 @@ crypto
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecNssTransformHmacSha1Id ##### -->
+<!-- ##### MACRO xmlSecNssTransformHmacMd5Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecNssTransformHmacSha1GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecNssTransformHmacMd5GetKlass ##### -->
 <para>
 
 </para>
@@ -329,14 +353,14 @@ crypto
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecNssTransformHmacMd5Id ##### -->
+<!-- ##### MACRO xmlSecNssTransformHmacSha1Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecNssTransformHmacMd5GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecNssTransformHmacSha1GetKlass ##### -->
 <para>
 
 </para>
@@ -382,6 +406,21 @@ crypto
 
 
 <!-- ##### FUNCTION xmlSecNssTransformRsaPkcs1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecNssTransformRsaOaepId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecNssTransformRsaOaepGetKlass ##### -->
 <para>
 
 </para>

@@ -26,6 +26,19 @@ templates
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecTmplSignatureCreateNsPref ##### -->
+<para>
+
+</para>
+
+@doc: 
+@c14nMethodId: 
+@signMethodId: 
+@id: 
+@nsPrefix: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecTmplSignatureEnsureKeyInfo ##### -->
 <para>
 
@@ -285,6 +298,71 @@ templates
 @id: 
 @type: 
 @recipient: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddIssuerSerial ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509IssuerSerialAddIssuerName ##### -->
+<para>
+
+</para>
+
+@x509IssuerSerialNode: 
+@issuerName: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509IssuerSerialAddSerialNumber ##### -->
+<para>
+
+</para>
+
+@x509IssuerSerialNode: 
+@serial: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddSubjectName ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddSKI ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddCertificate ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTmplX509DataAddCRL ##### -->
+<para>
+
+</para>
+
+@x509DataNode: 
 @Returns: 
 
 

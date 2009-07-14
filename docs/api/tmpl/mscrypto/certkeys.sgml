@@ -33,6 +33,15 @@ certkeys
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetDecryptKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecMSCryptoCertDup ##### -->
 <para>
 

@@ -1,5 +1,5 @@
-    &xmlsec-mscrypto-certkeys;
-    &xmlsec-mscrypto-app;
     &xmlsec-mscrypto-crypto;
     &xmlsec-mscrypto-keysstore;
+    &xmlsec-mscrypto-certkeys;
     &xmlsec-mscrypto-x509;
+    &xmlsec-mscrypto-app;

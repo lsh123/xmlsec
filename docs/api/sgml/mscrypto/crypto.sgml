@@ -40,6 +40,12 @@
 #define     <link linkend="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformDsaSha1GetKlass">xmlSecMSCryptoTransformDsaSha1GetKlass</link>
                                             (void);
+#define     <link linkend="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataGost2001GetKlass">xmlSecMSCryptoKeyDataGost2001GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecMSCryptoTransformGost2001GostR3411-94Id">xmlSecMSCryptoTransformGost2001GostR3411_94Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass">xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass</link>
+                                            (void);
 #define     <link linkend="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataRsaGetKlass">xmlSecMSCryptoKeyDataRsaGetKlass</link>
                                             (void);
@@ -51,6 +57,9 @@
                                             (void);
 #define     <link linkend="xmlSecMSCryptoTransformSha1Id">xmlSecMSCryptoTransformSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformSha1GetKlass">xmlSecMSCryptoTransformSha1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecMSCryptoTransformGostR3411-94Id">xmlSecMSCryptoTransformGostR3411_94Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformGostR3411-94GetKlass">xmlSecMSCryptoTransformGostR3411_94GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecMSCryptoKeyDataAesId">xmlSecMSCryptoKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataAesGetKlass">xmlSecMSCryptoKeyDataAesGetKlass</link>
@@ -264,6 +273,46 @@ The DSA-SHA1 signature transform klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</title>
+<indexterm><primary>xmlSecMSCryptoKeyDataGost2001Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataGost2001Id</programlisting>
+<para>
+The GOST2001 key klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoKeyDataGost2001GetKlass">xmlSecMSCryptoKeyDataGost2001GetKlass ()</title>
+<indexterm><primary>xmlSecMSCryptoKeyDataGost2001GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataGost2001GetKlass
+                                            (void);</programlisting>
+<para>
+The GOST2001 key data klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to GOST2001 key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoTransformGost2001GostR3411-94Id">xmlSecMSCryptoTransformGost2001GostR3411_94Id</title>
+<indexterm><primary>xmlSecMSCryptoTransformGost2001GostR3411_94Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformGost2001GostR3411_94Id</programlisting>
+<para>
+The GOST2001 GOSTR3411_94 signature transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass">xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass ()</title>
+<indexterm><primary>xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass
+                                            (void);</programlisting>
+<para>
+The GOST2001-GOSTR3411_94 signature transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>GOST2001-GOSTR3411_94 signature transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</title>
 <indexterm><primary>xmlSecMSCryptoKeyDataRsaId</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataRsaId</programlisting>
 <para>
@@ -341,6 +390,26 @@ SHA-1 digest transform klass.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SHA-1 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoTransformGostR3411-94Id">xmlSecMSCryptoTransformGostR3411_94Id</title>
+<indexterm><primary>xmlSecMSCryptoTransformGostR3411_94Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformGostR3411_94Id</programlisting>
+<para>
+The GOSTR3411_94 digest transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoTransformGostR3411-94GetKlass">xmlSecMSCryptoTransformGostR3411_94GetKlass ()</title>
+<indexterm><primary>xmlSecMSCryptoTransformGostR3411_94GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformGostR3411_94GetKlass
+                                            (void);</programlisting>
+<para>
+GOSTR3411_94 digest transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to GOSTR3411_94 digest transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>

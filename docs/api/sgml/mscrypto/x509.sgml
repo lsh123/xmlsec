@@ -60,6 +60,18 @@
                                             (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                              <link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> cert,
                                              <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoX509StoreAdoptKeyStore">xmlSecMSCryptoX509StoreAdoptKeyStore</link>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> keyStore);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoX509StoreAdoptTrustedStore">xmlSecMSCryptoX509StoreAdoptTrustedStore</link>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> trustedStore);
+<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoX509StoreAdoptUntrustedStore">xmlSecMSCryptoX509StoreAdoptUntrustedStore</link>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> untrustedStore);
+<link linkend="void">void</link>        <link linkend="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</link>
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="int">int</link> val);
 </synopsis>
 </refsynopsisdiv>
 
@@ -298,22 +310,22 @@ Searches <parameter>store</parameter> for a certificate that matches given crite
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to X509 key data store klass.
+<listitem><simpara>          the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>subjectName</parameter>&nbsp;:</term>
-<listitem><simpara>	the desired certificate name.
+<listitem><simpara>    the desired certificate name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>issuerName</parameter>&nbsp;:</term>
-<listitem><simpara>		the desired certificate issuer name.
+<listitem><simpara>     the desired certificate issuer name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>issuerSerial</parameter>&nbsp;:</term>
-<listitem><simpara>	the desired certificate issuer serial number.
+<listitem><simpara>   the desired certificate issuer serial number.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ski</parameter>&nbsp;:</term>
-<listitem><simpara>		the desired certificate SKI.
+<listitem><simpara>            the desired certificate SKI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>     the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to found certificate or NULL if certificate is not found
 or an error occurs.
@@ -331,13 +343,13 @@ Verifies <parameter>certs</parameter> list.</para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to X509 certificate context store klass.
+<listitem><simpara>        the pointer to X509 certificate context store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>certs</parameter>&nbsp;:</term>
-<listitem><simpara>		the untrusted certificates stack.
+<listitem><simpara>        the untrusted certificates stack.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> element processing context.
+<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the first verified certificate from <parameter>certs</parameter>.
 </simpara></listitem></varlistentry>
@@ -363,6 +375,80 @@ Adds trusted (root) or untrusted certificate to the store.</para>
 <listitem><simpara>               the certificate type (trusted/untrusted).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoX509StoreAdoptKeyStore">xmlSecMSCryptoX509StoreAdoptKeyStore ()</title>
+<indexterm><primary>xmlSecMSCryptoX509StoreAdoptKeyStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoX509StoreAdoptKeyStore
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> keyStore);</programlisting>
+<para>
+Adds <parameter>keyStore</parameter> to the list of key stores.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyStore</parameter>&nbsp;:</term>
+<listitem><simpara>           the pointer to keys store.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoX509StoreAdoptTrustedStore">xmlSecMSCryptoX509StoreAdoptTrustedStore ()</title>
+<indexterm><primary>xmlSecMSCryptoX509StoreAdoptTrustedStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoX509StoreAdoptTrustedStore
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> trustedStore);</programlisting>
+<para>
+Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>trustedStore</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoX509StoreAdoptUntrustedStore">xmlSecMSCryptoX509StoreAdoptUntrustedStore ()</title>
+<indexterm><primary>xmlSecMSCryptoX509StoreAdoptUntrustedStore</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoX509StoreAdoptUntrustedStore
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="HCERTSTORE-CAPS">HCERTSTORE</link> untrustedStore);</programlisting>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>untrustedStore</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()</title>
+<indexterm><primary>xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
+                                            (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
+                                             <link linkend="int">int</link> val);</programlisting>
+<para>
+Enables/disables the system trusted certs.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&nbsp;:</term>
+<listitem><simpara>              the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&nbsp;:</term>
+<listitem><simpara>                the enable/disable flag
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

@@ -49,7 +49,7 @@
 <indexterm><primary>XMLSEC_X509DATA_CERTIFICATE_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CERTIFICATE_NODE			0x00000001
 </programlisting>
 <para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink></ulink></ulink></ulink> node found or would be written back.</para>
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node found or would be written back.</para>
 <para>
 
 </para></refsect2>
@@ -58,7 +58,7 @@
 <indexterm><primary>XMLSEC_X509DATA_SUBJECTNAME_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SUBJECTNAME_NODE			0x00000002
 </programlisting>
 <para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink></ulink></ulink></ulink> node found or would be written back.</para>
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node found or would be written back.</para>
 <para>
 
 </para></refsect2>
@@ -67,7 +67,7 @@
 <indexterm><primary>XMLSEC_X509DATA_ISSUERSERIAL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE			0x00000004
 </programlisting>
 <para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink></ulink></ulink></ulink> node found or would be written back.</para>
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node found or would be written back.</para>
 <para>
 
 </para></refsect2>
@@ -85,7 +85,7 @@
 <indexterm><primary>XMLSEC_X509DATA_CRL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CRL_NODE				0x00000010
 </programlisting>
 <para>
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink></ulink></ulink></ulink> node found or would be written back.</para>
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node found or would be written back.</para>
 <para>
 
 </para></refsect2>
@@ -94,7 +94,7 @@
 <indexterm><primary>XMLSEC_X509DATA_DEFAULT</primary></indexterm><programlisting>#define     XMLSEC_X509DATA_DEFAULT</programlisting>
 <para>
 Default set of nodes to write in case of empty
-<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink></ulink></ulink></ulink> node template.</para>
+<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node template.</para>
 <para>
 
 </para></refsect2>
@@ -104,21 +104,21 @@ Default set of nodes to write in case of empty
                                              <link linkend="int">int</link> deleteChildren,
                                              <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Reads the contents of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink></ulink></ulink></ulink> node and returns it as
+Reads the contents of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node and returns it as
 a bits mask.</para>
 <para>
 
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink></ulink></ulink></ulink> node.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>deleteChildren</parameter>&nbsp;:</term>
 <listitem><simpara>	the flag that indicates whether to remove node children after reading.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&nbsp;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink></ulink></ulink></ulink> node processing context.
+<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the bit mask representing the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data"><ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink></ulink></ulink></ulink> node content
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the bit mask representing the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node content
 or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

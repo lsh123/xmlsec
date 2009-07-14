@@ -46,8 +46,6 @@ x509
 @data: 
 @cert: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@pCertContext: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataX509AdoptCert ##### -->
@@ -58,8 +56,6 @@ x509
 @data: 
 @cert: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@pCertContext: 
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoKeyDataX509GetCert ##### -->
@@ -174,7 +170,44 @@ x509
 @cert: 
 @type: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@pCertContext: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoX509StoreAdoptKeyStore ##### -->
+<para>
+
+</para>
+
+@store: 
+@keyStore: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoX509StoreAdoptTrustedStore ##### -->
+<para>
+
+</para>
+
+@store: 
+@trustedStore: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoX509StoreAdoptUntrustedStore ##### -->
+<para>
+
+</para>
+
+@store: 
+@untrustedStore: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ##### -->
+<para>
+
+</para>
+
+@store: 
+@val: 
 
 

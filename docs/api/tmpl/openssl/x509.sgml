@@ -196,6 +196,16 @@ x509
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAdoptCrl ##### -->
+<para>
+
+</para>
+
+@store: 
+@crl: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsPath ##### -->
 <para>
 
@@ -203,6 +213,16 @@ x509
 
 @store: 
 @path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecOpenSSLX509StoreAddCertsFile ##### -->
+<para>
+
+</para>
+
+@store: 
+@file: 
 @Returns: 
 
 

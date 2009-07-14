@@ -113,6 +113,36 @@ crypto
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecMSCryptoKeyDataGost2001Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGost2001GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformGost2001GostR3411_94Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecMSCryptoKeyDataRsaId ##### -->
 <para>
 
@@ -166,6 +196,21 @@ crypto
 
 
 <!-- ##### FUNCTION xmlSecMSCryptoTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecMSCryptoTransformGostR3411_94Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoTransformGostR3411_94GetKlass ##### -->
 <para>
 
 </para>

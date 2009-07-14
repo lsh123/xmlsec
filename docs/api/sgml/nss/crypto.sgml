@@ -29,6 +29,7 @@
                                              const <link linkend="char">char</link> *errorSubject,
                                              <link linkend="int">int</link> reason,
                                              const <link linkend="char">char</link> *msg);
+<link linkend="PK11SlotInfo">PK11SlotInfo</link>* <link linkend="xmlSecNssGetInternalKeySlot">xmlSecNssGetInternalKeySlot</link>   (void);
 #define     <link linkend="xmlSecNssKeyDataAesId">xmlSecNssKeyDataAesId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataAesGetKlass">xmlSecNssKeyDataAesGetKlass</link> (void);
 <link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataAesSet">xmlSecNssKeyDataAesSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
@@ -68,20 +69,22 @@
 #define     <link linkend="xmlSecNssTransformDsaSha1Id">xmlSecNssTransformDsaSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformDsaSha1GetKlass">xmlSecNssTransformDsaSha1GetKlass</link>
                                             (void);
+<link linkend="int">int</link>         <link linkend="xmlSecNssHmacGetMinOutputLength">xmlSecNssHmacGetMinOutputLength</link> ();
+<link linkend="void">void</link>        <link linkend="xmlSecNssHmacSetMinOutputLength">xmlSecNssHmacSetMinOutputLength</link> (<link linkend="int">int</link> min_length);
 #define     <link linkend="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataHmacGetKlass">xmlSecNssKeyDataHmacGetKlass</link>
                                             (void);
 <link linkend="int">int</link>         <link linkend="xmlSecNssKeyDataHmacSet">xmlSecNssKeyDataHmacSet</link>         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                              const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
                                              <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformHmacSha1GetKlass">xmlSecNssTransformHmacSha1GetKlass</link>
+#define     <link linkend="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecNssTransformHmacRipemd160Id">xmlSecNssTransformHmacRipemd160Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformHmacRipemd160GetKlass">xmlSecNssTransformHmacRipemd160GetKlass</link>
                                             (void);
-#define     <link linkend="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass</link>
+#define     <link linkend="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformHmacSha1GetKlass">xmlSecNssTransformHmacSha1GetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecNssKeyDataRsaId">xmlSecNssKeyDataRsaId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecNssKeyDataRsaGetKlass">xmlSecNssKeyDataRsaGetKlass</link> (void);
@@ -90,6 +93,9 @@
                                             (void);
 #define     <link linkend="xmlSecNssTransformRsaPkcs1Id">xmlSecNssTransformRsaPkcs1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass</link>
+                                            (void);
+#define     <link linkend="xmlSecNssTransformRsaOaepId">xmlSecNssTransformRsaOaepId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformRsaOaepGetKlass">xmlSecNssTransformRsaOaepGetKlass</link>
                                             (void);
 #define     <link linkend="xmlSecNssTransformSha1Id">xmlSecNssTransformSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecNssTransformSha1GetKlass">xmlSecNssTransformSha1GetKlass</link>
@@ -214,6 +220,17 @@ The default errors reporting callback function.</para>
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
 <listitem><simpara>		the additional error message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssGetInternalKeySlot">xmlSecNssGetInternalKeySlot ()</title>
+<indexterm><primary>xmlSecNssGetInternalKeySlot</primary></indexterm><programlisting><link linkend="PK11SlotInfo">PK11SlotInfo</link>* xmlSecNssGetInternalKeySlot   (void);</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>internal key slot and initializes it if needed.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -498,6 +515,34 @@ The DSA-SHA1 signature transform klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
+<title><anchor id="xmlSecNssHmacGetMinOutputLength">xmlSecNssHmacGetMinOutputLength ()</title>
+<indexterm><primary>xmlSecNssHmacGetMinOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecNssHmacGetMinOutputLength ();</programlisting>
+<para>
+</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the min HMAC output length
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssHmacSetMinOutputLength">xmlSecNssHmacSetMinOutputLength ()</title>
+<indexterm><primary>xmlSecNssHmacSetMinOutputLength</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecNssHmacSetMinOutputLength (<link linkend="int">int</link> min_length);</programlisting>
+<para>
+<parameter>min_length</parameter>: the new min length 
+</para>
+<para>
+Sets the min HMAC output length</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>min_length</parameter>&nbsp;:</term>
+<listitem><simpara>
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
 <title><anchor id="xmlSecNssKeyDataHmacId">xmlSecNssKeyDataHmacId</title>
 <indexterm><primary>xmlSecNssKeyDataHmacId</primary></indexterm><programlisting>#define     xmlSecNssKeyDataHmacId</programlisting>
 <para>
@@ -540,23 +585,23 @@ Sets the value of HMAC key data.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</title>
-<indexterm><primary>xmlSecNssTransformHmacSha1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacSha1Id</programlisting>
+<title><anchor id="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</title>
+<indexterm><primary>xmlSecNssTransformHmacMd5Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacMd5Id</programlisting>
 <para>
-The HMAC with SHA1 signature transform klass.</para>
+The HMAC with MD5 signature transform klass.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecNssTransformHmacSha1GetKlass">xmlSecNssTransformHmacSha1GetKlass ()</title>
-<indexterm><primary>xmlSecNssTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacSha1GetKlass
+<title><anchor id="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass ()</title>
+<indexterm><primary>xmlSecNssTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacMd5GetKlass
                                             (void);</programlisting>
 <para>
-The HMAC-SHA1 transform klass.</para>
+The HMAC-MD5 transform klass.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -580,23 +625,23 @@ The HMAC-RIPEMD160 transform klass.</para>
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
-<title><anchor id="xmlSecNssTransformHmacMd5Id">xmlSecNssTransformHmacMd5Id</title>
-<indexterm><primary>xmlSecNssTransformHmacMd5Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacMd5Id</programlisting>
+<title><anchor id="xmlSecNssTransformHmacSha1Id">xmlSecNssTransformHmacSha1Id</title>
+<indexterm><primary>xmlSecNssTransformHmacSha1Id</primary></indexterm><programlisting>#define     xmlSecNssTransformHmacSha1Id</programlisting>
 <para>
-The HMAC with MD5 signature transform klass.</para>
+The HMAC with SHA1 signature transform klass.</para>
 <para>
 
 </para></refsect2>
 <refsect2>
-<title><anchor id="xmlSecNssTransformHmacMd5GetKlass">xmlSecNssTransformHmacMd5GetKlass ()</title>
-<indexterm><primary>xmlSecNssTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacMd5GetKlass
+<title><anchor id="xmlSecNssTransformHmacSha1GetKlass">xmlSecNssTransformHmacSha1GetKlass ()</title>
+<indexterm><primary>xmlSecNssTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformHmacSha1GetKlass
                                             (void);</programlisting>
 <para>
-The HMAC-MD5 transform klass.</para>
+The HMAC-SHA1 transform klass.</para>
 <para>
 
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2>
@@ -649,6 +694,26 @@ The RSA PKCS1 key transport transform klass.</para>
 <refsect2>
 <title><anchor id="xmlSecNssTransformRsaPkcs1GetKlass">xmlSecNssTransformRsaPkcs1GetKlass ()</title>
 <indexterm><primary>xmlSecNssTransformRsaPkcs1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaPkcs1GetKlass
+                                            (void);</programlisting>
+<para>
+The RSA-PKCS1 key transport transform klass.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-PKCS1 key transport transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaOaepId">xmlSecNssTransformRsaOaepId</title>
+<indexterm><primary>xmlSecNssTransformRsaOaepId</primary></indexterm><programlisting>#define     xmlSecNssTransformRsaOaepId</programlisting>
+<para>
+The RSA OAEP key transport transform klass.</para>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="xmlSecNssTransformRsaOaepGetKlass">xmlSecNssTransformRsaOaepGetKlass ()</title>
+<indexterm><primary>xmlSecNssTransformRsaOaepGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecNssTransformRsaOaepGetKlass
                                             (void);</programlisting>
 <para>
 The RSA-PKCS1 key transport transform klass.</para>

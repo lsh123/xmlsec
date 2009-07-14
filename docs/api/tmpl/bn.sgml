@@ -162,8 +162,6 @@ bn
 @bn: 
 @multiplier: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@Param2: 
 
 
 <!-- ##### FUNCTION xmlSecBnDiv ##### -->
@@ -175,8 +173,6 @@ bn
 @divider: 
 @mod: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@Param2: 
 
 
 <!-- ##### FUNCTION xmlSecBnAdd ##### -->
@@ -187,9 +183,6 @@ bn
 @bn: 
 @delta: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@nn: 
-@Param2: 
 
 
 <!-- ##### FUNCTION xmlSecBnReverse ##### -->

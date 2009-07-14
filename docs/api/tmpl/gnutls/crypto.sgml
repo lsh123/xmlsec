@@ -169,6 +169,22 @@ crypto
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecGnuTLSHmacGetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSHmacSetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@min_length: 
+
+
 <!-- ##### MACRO xmlSecGnuTLSKeyDataHmacId ##### -->
 <para>
 
@@ -195,14 +211,14 @@ crypto
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha1Id ##### -->
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacMd5Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha1GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacMd5GetKlass ##### -->
 <para>
 
 </para>
@@ -225,14 +241,14 @@ crypto
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacMd5Id ##### -->
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha1Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacMd5GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha1GetKlass ##### -->
 <para>
 
 </para>

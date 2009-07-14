@@ -84,6 +84,21 @@ app
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecKeyDataGost2001Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecKeyDataGost2001GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecKeyDataHmacId ##### -->
 <para>
 
@@ -294,29 +309,14 @@ app
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecTransformHmacSha1Id ##### -->
+<!-- ##### MACRO xmlSecTransformGost2001GostR3411_94Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecTransformHmacSha1GetKlass ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### MACRO xmlSecTransformHmacRipemd160Id ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION xmlSecTransformHmacRipemd160GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecTransformGost2001GostR3411_94GetKlass ##### -->
 <para>
 
 </para>
@@ -339,6 +339,111 @@ app
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecTransformHmacRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformHmacRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformHmacSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformHmacSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformHmacSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformHmacSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformHmacSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformHmacSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformHmacSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformHmacSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformHmacSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformHmacSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecTransformRipemd160Id ##### -->
 <para>
 
@@ -354,6 +459,36 @@ app
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecTransformRsaMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRsaMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformRsaRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRsaRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecTransformRsaSha1Id ##### -->
 <para>
 
@@ -362,6 +497,66 @@ app
 
 
 <!-- ##### FUNCTION xmlSecTransformRsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformRsaSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRsaSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformRsaSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRsaSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformRsaSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRsaSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformRsaSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformRsaSha512GetKlass ##### -->
 <para>
 
 </para>
@@ -399,6 +594,21 @@ app
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecTransformGostR3411_94Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformGostR3411_94GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecTransformSha1Id ##### -->
 <para>
 
@@ -407,6 +617,66 @@ app
 
 
 <!-- ##### FUNCTION xmlSecTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformSha224Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformSha224GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecTransformSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecTransformSha512GetKlass ##### -->
 <para>
 
 </para>
@@ -483,12 +753,39 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecCryptoAppKeysMngrCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@mngr: 
+@data: 
+@dataSize: 
+@format: 
+@type: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecCryptoAppKeyLoad ##### -->
 <para>
 
 </para>
 
 @filename: 
+@format: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCryptoAppKeyLoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
 @format: 
 @pwd: 
 @pwdCallback: 
@@ -508,6 +805,19 @@ app
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecCryptoAppPkcs12LoadMemory ##### -->
+<para>
+
+</para>
+
+@data: 
+@dataSize: 
+@pwd: 
+@pwdCallback: 
+@pwdCallbackCtx: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecCryptoAppKeyCertLoad ##### -->
 <para>
 
@@ -515,6 +825,18 @@ app
 
 @key: 
 @filename: 
+@format: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecCryptoAppKeyCertLoadMemory ##### -->
+<para>
+
+</para>
+
+@key: 
+@data: 
+@dataSize: 
 @format: 
 @Returns: 
 

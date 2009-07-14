@@ -48,7 +48,6 @@ int xmlSecNssHmacGetMinOutputLength(void)
 
 /**
  * xmlSecNssHmacSetMinOutputLength: 
- *
  * @min_length: the new min length 
  * 
  * Sets the min HMAC output length

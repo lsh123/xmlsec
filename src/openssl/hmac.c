@@ -53,7 +53,6 @@ int xmlSecOpenSSLHmacGetMinOutputLength(void)
 
 /**
  * xmlSecOpenSSLHmacSetMinOutputLength: 
- *
  * @min_length: the new min length 
  * 
  * Sets the min HMAC output length

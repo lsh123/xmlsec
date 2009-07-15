@@ -32,7 +32,9 @@
 
 #include <xmlsec/openssl/crypto.h>
 
-#define XMLSEC_OPENSSL_MIN_HMAC_SIZE		40
+/* sizes in bits */
+#define XMLSEC_OPENSSL_MIN_HMAC_SIZE		80
+#define XMLSEC_OPENSSL_MAX_HMAC_SIZE		(EVP_MAX_MD_SIZE * 8)
 
 /**************************************************************************
  *
@@ -74,7 +76,7 @@ struct _xmlSecOpenSSLHmacCtx {
     const EVP_MD*	hmacDgst;
     HMAC_CTX		hmacCtx;
     int			ctxInitialized;
-    xmlSecByte 		dgst[EVP_MAX_MD_SIZE];
+    xmlSecByte 		dgst[XMLSEC_OPENSSL_MAX_HMAC_SIZE];
     xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 
@@ -380,6 +382,14 @@ xmlSecOpenSSLHmacVerify(xmlSecTransformPtr transform,
     
     /* compare the digest size in bytes */
     if(dataSize != ((ctx->dgstSize + 7) / 8)){
+	/* NO COMMIT */
+	xmlChar* a;
+	mask = last_byte_masks[ctx->dgstSize % 8];
+	ctx->dgst[dataSize - 1] &= mask;
+	a = xmlSecBase64Encode(ctx->dgst, (ctx->dgstSize + 7) / 8, -1);
+	fprintf(stderr, "%s\n", a);
+	xmlFree(a);
+
 	xmlSecError(XMLSEC_ERRORS_HERE, 
 		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
 		    NULL,

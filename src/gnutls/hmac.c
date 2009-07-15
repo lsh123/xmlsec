@@ -23,8 +23,9 @@
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
 
-#define XMLSEC_GNUTLS_MIN_HMAC_SIZE		40
-#define XMLSEC_GNUTLS_MAX_HMAC_SIZE		128
+/* sizes in bits */
+#define XMLSEC_GNUTLS_MIN_HMAC_SIZE		80
+#define XMLSEC_GNUTLS_MAX_HMAC_SIZE		(128 * 8)
 
 /**************************************************************************
  *
@@ -65,7 +66,7 @@ typedef struct _xmlSecGnuTLSHmacCtx		xmlSecGnuTLSHmacCtx, *xmlSecGnuTLSHmacCtxPt
 struct _xmlSecGnuTLSHmacCtx {
     int			digest;
     GcryMDHd		digestCtx;
-    xmlSecByte	 	dgst[XMLSEC_GNUTLS_MAX_HMAC_SIZE];
+    xmlSecByte	 	dgst[XMLSEC_GNUTLS_MAX_HMAC_SIZE / 8];
     xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 

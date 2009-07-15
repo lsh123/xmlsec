@@ -26,8 +26,9 @@
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
-#define XMLSEC_NSS_MIN_HMAC_SIZE		40
-#define XMLSEC_NSS_MAX_HMAC_SIZE		128
+/* sizes in bits */
+#define XMLSEC_NSS_MIN_HMAC_SIZE		80
+#define XMLSEC_NSS_MAX_HMAC_SIZE		(128 * 8)
 
 /**************************************************************************
  *
@@ -68,7 +69,7 @@ typedef struct _xmlSecNssHmacCtx		xmlSecNssHmacCtx, *xmlSecNssHmacCtxPtr;
 struct _xmlSecNssHmacCtx {
     CK_MECHANISM_TYPE	digestType;
     PK11Context*	digestCtx;
-    xmlSecByte 		dgst[XMLSEC_NSS_MAX_HMAC_SIZE];
+    xmlSecByte 		dgst[XMLSEC_NSS_MAX_HMAC_SIZE / 8];
     xmlSecSize		dgstSize;	/* dgst size in bits */
 };	    
 

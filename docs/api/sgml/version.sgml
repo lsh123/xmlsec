@@ -70,7 +70,7 @@ The library minor version number.</para>
 </para></refsect2>
 <refsect2>
 <title><anchor id="XMLSEC-VERSION-SUBMINOR-CAPS">XMLSEC_VERSION_SUBMINOR</title>
-<indexterm><primary>XMLSEC_VERSION_SUBMINOR</primary></indexterm><programlisting>#define XMLSEC_VERSION_SUBMINOR		12
+<indexterm><primary>XMLSEC_VERSION_SUBMINOR</primary></indexterm><programlisting>#define XMLSEC_VERSION_SUBMINOR		13
 </programlisting>
 <para>
 The library sub-minor version number.</para>

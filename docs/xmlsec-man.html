@@ -44,12 +44,12 @@
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
 <h1>XMLSEC1</h1>
-<p> Section: User Commands (1)<br>Updated: July 2005<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a></p>
+<p> Section: User Commands (1)<br>Updated: July 2009<br><a href="#index">Index</a> <a href="http://localhost/cgi-bin/man/man2html">Return to Main Contents</a></p>
 <hr>
 <a name="lbAB"></a><h2>NAME</h2>
 <p>  xmlsec1 - sign, verify, encrypt and decrypt XML documents <a name="lbAC"></a> </p>
 <h2>SYNOPSIS</h2>
-<b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;file&gt;</i>] <a name="lbAD"></a> </p>
+<b>xmlsec</b><i>&lt;command&gt; </i><p>[<i>&lt;options&gt;</i>] [<i>&lt;files&gt;</i>] <a name="lbAD"></a> </p>
 <h2>DESCRIPTION</h2>
 <p>  xmlsec is a command line tool for signing, verifying, encrypting and decrypting XML documents. The allowed &lt;command&gt; values are: </p>
 <dl compact>
@@ -169,7 +169,7 @@
 </dt>
 <dd> <dd>load private key from DER file and certificates that verify this key </dd>
 </dd>
-<dt> <b>--pkcs-pem[</b>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <dt></dt>
+<dt> <b>--pkcs8-pem[</b>:&lt;name&gt;] &lt;file&gt;[,&lt;cafile&gt;[,&lt;cafile&gt;[...]]] <dt></dt>
 </dt>
 <dd> <dd>load private key from PKCS8 PEM file and PEM certificates that verify this key </dd>
 </dd>
@@ -241,10 +241,6 @@
 </dt>
 <dd> <dd>skip strict checking of X509 data </dd>
 </dd>
-<dt> <b>--crypto</b> &lt;name&gt; <dt></dt>
-</dt>
-<dd> <dd>the name of the crypto engine to use from the following list: openssl, gnutls, nss, mscrypto (if no crypto engine is specified then the default one is used) </dd>
-</dd>
 <dt> <b>--crypto-config</b> &lt;path&gt; <dt></dt>
 </dt>
 <dd> <dd>path to crypto engine configuration </dd>
@@ -292,7 +288,7 @@
 <dd> </dd>
 </dl>
 <hr>
-<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 01:42:30 GMT, July 13, 2005 </p>
+<p> This document was created by <a href="http://localhost/cgi-bin/man/man2html">man2html</a>, using the manual pages.<br> Time: 18:00:42 GMT, July 17, 2009 </p>
 </td></tr></table></td>
 </tr></table></body>
 </html>

@@ -729,6 +729,22 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
 	goto done;	
     }
+
+    /* starting from openssl 1.0.0 the PKCS12_parse() call will not create certs 
+       chain object if there is no certificates in the pkcs12 file and it will be null
+     */
+    if(chain == NULL) {
+	chain = sk_X509_new_null();
+	if(chain == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			"sk_X509_new_null",
+			XMLSEC_ERRORS_R_CRYPTO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	    return(-1);
+	}    
+    } 
+        
     ret = sk_X509_push(chain, tmpcert);
     if(ret < 1) {
 	xmlSecError(XMLSEC_ERRORS_HERE,

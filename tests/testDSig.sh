@@ -12,6 +12,8 @@ fi
 crypto=$1
 file_format=$4
 
+echo "top -> $topfolder"
+
 pub_key_format=$file_format
 cert_format=$file_format
 priv_key_option="--pkcs12"

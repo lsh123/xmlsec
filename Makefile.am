@@ -69,6 +69,7 @@ CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CRYPTO_LIST) \
 	$(NULL)
 endif
+ABS_SRCDIR=$(shell pwd)
 
 docs: docs-man
 	@(cd docs && $(MAKE) docs)
@@ -85,9 +86,9 @@ check-all: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	for i in $(CHECK_CRYPTO_LIST) ; do \
 	    echo "=================== Checking xmlsec-$$i =================================" && \
-	    $(SHELL) ./tests/testKeys.sh $$i ./tests $$ABS_BUILDDIR/$(TEST_APP) der && \
-	    $(SHELL) ./tests/testDSig.sh $$i ./tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der && \
-	    $(SHELL) ./tests/testEnc.sh $$i ./tests $$ABS_BUILDDIR/$(TEST_APP) der ; \
+	    $(SHELL) ./tests/testKeys.sh $$i $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der && \
+	    $(SHELL) ./tests/testDSig.sh $$i $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der && \
+	    $(SHELL) ./tests/testEnc.sh  $$i $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der ; \
 	done; )
 
 check-info:
@@ -102,19 +103,19 @@ check-info:
 
 check-km: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testKeys.sh default tests $$ABS_BUILDDIR/$(TEST_APP) der)
+	$(SHELL) ./tests/testKeys.sh default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
 
 check-dsig: $(TEST_APP) 	
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testDSig.sh default tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
+	$(SHELL) ./tests/testDSig.sh default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
 
 check-xkms: $(TEST_APP) 	
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testXKMS.sh default tests $$ABS_BUILDDIR/$(top_builddir)/$(TEST_APP) der)
+	$(SHELL) ./tests/testXKMS.sh default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
 
 check-enc: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testEnc.sh default tests $$ABS_BUILDDIR/$(TEST_APP) der)
+	$(SHELL) ./tests/testEnc.sh  default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

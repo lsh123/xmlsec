@@ -741,7 +741,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
 			"sk_X509_new_null",
 			XMLSEC_ERRORS_R_CRYPTO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
+	    goto done;
 	}    
     } 
         

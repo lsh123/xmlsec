@@ -15,6 +15,8 @@
 extern "C" {
 #endif /* __cplusplus */ 
 
+#include <stdio.h>
+
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 #include <xmlsec/xmlsec.h>
@@ -94,6 +96,10 @@ XMLSEC_EXPORT int		xmlSecIsEmptyString	(const xmlChar* str);
 XMLSEC_EXPORT xmlChar*		xmlSecGetQName		(xmlNodePtr node,
 							 const xmlChar* href,
 							 const xmlChar* local);
+
+
+XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
+                                                         const xmlChar * str);
 
 /**
  * xmlSecIsHex:

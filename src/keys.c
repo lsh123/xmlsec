@@ -279,10 +279,15 @@ xmlSecKeyUseWithDebugXmlDump(xmlSecKeyUseWithPtr keyUseWith, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<KeyUseWith>\n");
-    fprintf(output, "<Application>%s</Application>", 
-        (keyUseWith->application) ? keyUseWith->application : BAD_CAST "");
-    fprintf(output, "<Identifier>%s</Identifier>", 
-        (keyUseWith->identifier) ? keyUseWith->identifier : BAD_CAST "");
+
+    fprintf(output, "<Application>");
+    xmlSecPrintXmlString(output, keyUseWith->application);
+    fprintf(output, "</Application>");
+
+    fprintf(output, "<Identifier>");
+    xmlSecPrintXmlString(output, keyUseWith->identifier);
+    fprintf(output, "</Identifier>");
+    
     fprintf(output, "</KeyUseWith>\n");
 }
 
@@ -504,10 +509,11 @@ xmlSecKeyReqDebugXmlDump(xmlSecKeyReqPtr keyReq, FILE* output) {
     xmlSecAssert(output != NULL);
 
     fprintf(output, "<KeyReq>\n");
-    fprintf(output, "<KeyId>%s</KeyId>\n", 
-	    (xmlSecKeyDataKlassGetName(keyReq->keyId)) ? 
-		xmlSecKeyDataKlassGetName(keyReq->keyId) : 
-		BAD_CAST "NULL");
+
+    fprintf(output, "<KeyId>");
+    xmlSecPrintXmlString(output, xmlSecKeyDataKlassGetName(keyReq->keyId));
+    fprintf(output, "</KeyId>\n");
+
     fprintf(output, "<KeyType>0x%08x</KeyType>\n", keyReq->keyType);
     fprintf(output, "<KeyUsage>0x%08x</KeyUsage>\n", keyReq->keyUsage);
     fprintf(output, "<KeyBitsSize>%d</KeyBitsSize>\n", keyReq->keyBitsSize);
@@ -1004,10 +1010,10 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     xmlSecAssert(output != NULL);
     
     fprintf(output, "<KeyInfo>\n");
-    if(key->value->id->dataNodeName != NULL) {
-        fprintf(output, "<KeyMethod>%s</KeyMethod>\n", 
-		key->value->id->dataNodeName); 
-    }
+
+    fprintf(output, "<KeyMethod>");
+    xmlSecPrintXmlString(output, key->value->id->dataNodeName); 
+    fprintf(output, "</KeyMethod>\n");
 
     fprintf(output, "<KeyType>");
     if((xmlSecKeyGetType(key) & xmlSecKeyDataTypeSymmetric) != 0) {
@@ -1021,9 +1027,10 @@ xmlSecKeyDebugXmlDump(xmlSecKeyPtr key, FILE *output) {
     } 
     fprintf(output, "</KeyType>\n");
 
-    if(key->name != NULL) {
-	fprintf(output, "<KeyName>%s</KeyName>\n", key->name);
-    }
+    fprintf(output, "<KeyName>");
+    xmlSecPrintXmlString(output, key->name);
+    fprintf(output, "</KeyName>\n");
+
     if(key->notValidBefore < key->notValidAfter) {
         fprintf(output, "<KeyValidity notValidBefore=\"%ld\" notValidAfter=\"%ld\"/>\n",
 		(unsigned long)key->notValidBefore, 

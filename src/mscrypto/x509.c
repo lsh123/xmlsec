@@ -2111,20 +2111,31 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(output != NULL);
 
     /* todo: add error checks */
+    
+    /* subject */
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
     subject = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
+
+    fprintf(output, "<SubjectName>");
+    xmlSecPrintXmlString(output, BAD_CAST subject);
+    fprintf(output, "</SubjectName>\n");
+    xmlFree(subject);
+    
+    
+    /* issuer */
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, NULL, 0);
     issuer = (LPSTR)xmlMalloc(dwSize);
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, issuer, dwSize);
 
-    fprintf(output, "=== X509 Certificate\n");
-    fprintf(output, "==== Subject Name: %s\n", subject);
-    fprintf(output, "==== Issuer Name: %s\n", issuer);
-    if (subject) xmlFree(subject);
-    if (issuer) xmlFree(issuer);
+    fprintf(output, "<IssuerName>");
+    xmlSecPrintXmlString(output, BAD_CAST issuer);
+    fprintf(output, "</IssuerName>\n");
+    xmlFree(issuer);
+    
+    /* serial */
+    fprintf(output, "<SerialNumber>");
     sn = &(cert->pCertInfo->SerialNumber);
-
     for (i = 0; i < sn->cbData; i++) {
 	if (i != sn->cbData - 1) {
 	    fprintf(output, "%02x:", sn->pbData[i]);
@@ -2132,7 +2143,7 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
 	    fprintf(output, "%02x", sn->pbData[i]);
 	}
     }
-    fprintf(output, "\n");
+    fprintf(output, "</SerialNumber>\n");
 }
 
 

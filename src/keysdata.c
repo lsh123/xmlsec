@@ -1281,7 +1281,9 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
 	xmlSecAssert(dataId != NULL);
 	xmlSecAssert(dataId->name != NULL);
 	    
-	fprintf(output, "<DataId name=\"%s\" />", dataId->name);
+	fprintf(output, "<DataId name=\"");
+        xmlSecPrintXmlString(output, dataId->name);
+        fprintf(output, "\"/>");
     }
     fprintf(output, "</KeyDataIdsList>\n");
 }

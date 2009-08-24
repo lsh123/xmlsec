@@ -1,3 +1,6 @@
+2009-08-24 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fix XML dump format
+
 2009-08-06 Aleksey Sanin  <aleksey@aleksey.com>
 	* fix build for openssl 1.0 (based on patch from Roumen Petrov)
 	* cleanup test invocation scripts 

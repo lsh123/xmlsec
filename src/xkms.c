@@ -1419,33 +1419,43 @@ xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<XkmsServerRequestContext name=\"%s\">\n",
-	    (ctx->requestId != xmlSecXkmsServerRequestIdUnknown && 
-	     xmlSecXkmsServerRequestKlassGetName(ctx->requestId)) ? 
+    fprintf(output, "<XkmsServerRequestContext name=\"");
+    xmlSecPrintXmlString(output, 
+	    (ctx->requestId != xmlSecXkmsServerRequestIdUnknown) ?
 		xmlSecXkmsServerRequestKlassGetName(ctx->requestId) :
-		BAD_CAST "NULL");
+		BAD_CAST "NULL"
+    );
+    fprintf(output, "\">\n");
 
     xmlSecQName2IntegerDebugXmlDump(gXmlSecXkmsResultMajorInfo, 
 		ctx->resultMajor, BAD_CAST "MajorError", output);    
     xmlSecQName2IntegerDebugXmlDump(gXmlSecXkmsMinorErrorInfo, 
 		ctx->resultMinor, BAD_CAST "MinorError", output);    
 
-    fprintf(output, "<Id>%s</Id>\n", 
-		(ctx->id) ? ctx->id : BAD_CAST "");
-    fprintf(output, "<Service>%s</Service>\n", 
-		(ctx->service) ? ctx->service : BAD_CAST "");
-    fprintf(output, "<Nonce>%s</Nonce>\n", 
-		(ctx->nonce) ? ctx->nonce : BAD_CAST "");
-    fprintf(output, "<OriginalRequestId>%s</OriginalRequestId>\n", 
-		(ctx->originalRequestId) ? ctx->originalRequestId : BAD_CAST "");
-    fprintf(output, "<PendingNotificationMechanism>%s</PendingNotificationMechanism>\n", 
-		(ctx->pendingNotificationMechanism) ? 
-		    ctx->pendingNotificationMechanism : 
-		    BAD_CAST "");
-    fprintf(output, "<PendingNotificationIdentifier>%s</PendingNotificationIdentifier>\n", 
-		(ctx->pendingNotificationIdentifier) ? 
-		    ctx->pendingNotificationIdentifier : 
-		    BAD_CAST "");
+    fprintf(output, "<Id>");
+    xmlSecPrintXmlString(output, ctx->id);
+    fprintf(output, "</Id>\n");
+
+    fprintf(output, "<Service>");
+    xmlSecPrintXmlString(output, ctx->service);
+    fprintf(output, "</Service>\n");
+
+    fprintf(output, "<Nonce>");
+    xmlSecPrintXmlString(output, ctx->nonce);
+    fprintf(output, "</Nonce>\n");
+
+    fprintf(output, "<OriginalRequestId>");
+    xmlSecPrintXmlString(output, ctx->originalRequestId);
+    fprintf(output, "</OriginalRequestId>\n");
+    
+    fprintf(output, "<PendingNotificationMechanism>");
+    xmlSecPrintXmlString(output, ctx->pendingNotificationMechanism);
+    fprintf(output, "</PendingNotificationMechanism>\n");
+
+    fprintf(output, "<PendingNotificationIdentifier>");
+    xmlSecPrintXmlString(output, ctx->pendingNotificationIdentifier);
+    fprintf(output, "</PendingNotificationIdentifier>\n");
+
     if(ctx->responseLimit != XMLSEC_XKMS_NO_RESPONSE_LIMIT) {
         fprintf(output, "<ResponseLimit>%d</ResponseLimit>\n", ctx->responseLimit);
     }
@@ -1453,9 +1463,10 @@ xmlSecXkmsServerCtxDebugXmlDump(xmlSecXkmsServerCtxPtr ctx, FILE* output) {
 		ctx->responseMechanismMask, BAD_CAST "ResponseMechanism", output);    
 
 
-    if(ctx->expectedService != NULL) {    
-        fprintf(output, "<ExpectedService>%s</ExpectedService>\n", ctx->expectedService);
-    }
+    fprintf(output, "<ExpectedService>");
+    xmlSecPrintXmlString(output, ctx->expectedService);
+    fprintf(output, "</ExpectedService>\n");
+    
     fprintf(output, "<Flags>%08x</Flags>\n", ctx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", ctx->flags2);
 
@@ -2920,9 +2931,11 @@ xmlSecXkmsRespondWithDebugXmlDump(xmlSecXkmsRespondWithId id, FILE* output) {
     xmlSecAssert(id != xmlSecXkmsRespondWithIdUnknown);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<RespondWith href=\"%s\">%s</RespondWith>\n", 
-        xmlSecErrorsSafeString(id->valueNs),
-        xmlSecErrorsSafeString(id->valueName));
+    fprintf(output, "<RespondWith href=\"");
+    xmlSecPrintXmlString(output, id->valueNs);
+    fprintf(output, "\">");
+    xmlSecPrintXmlString(output, id->valueName);
+    fprintf(output, "</RespondWith>\n");
 }
 
 int 
@@ -3781,7 +3794,9 @@ xmlSecXkmsServerRequestDebugXmlDump(xmlSecXkmsServerRequestId id, FILE* output) 
     xmlSecAssert(id != xmlSecXkmsServerRequestIdUnknown);
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<ServerRequest>%s</ServerRequest>\n", xmlSecErrorsSafeString(id->name));
+    fprintf(output, "<ServerRequest>");
+    xmlSecPrintXmlString(output, id->name);
+    fprintf(output, "</ServerRequest>\n");
 }
 
 /************************************************************************

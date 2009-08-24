@@ -1258,24 +1258,29 @@ xmlSecEncCtxDebugXmlDump(xmlSecEncCtxPtr encCtx, FILE* output) {
     fprintf(output, "<Flags>%08x</Flags>\n", encCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", encCtx->flags2);
 
-    if(encCtx->id != NULL) {
-	fprintf(output, "<Id>%s</Id>\n", encCtx->id);
-    }
-    if(encCtx->type != NULL) {
-	fprintf(output, "<Type>%s</Type>\n", encCtx->type);
-    }
-    if(encCtx->mimeType != NULL) {
-	fprintf(output, "<MimeType>%s</MimeType>\n", encCtx->mimeType);
-    }
-    if(encCtx->encoding != NULL) {
-	fprintf(output, "<Encoding>%s</Encoding>\n", encCtx->encoding);
-    }
-    if(encCtx->recipient != NULL) {
-	fprintf(output, "<Recipient>%s</Recipient>\n", encCtx->recipient);
-    }
-    if(encCtx->carriedKeyName != NULL) {
-	fprintf(output, "<CarriedKeyName>%s</CarriedKeyName>\n", encCtx->carriedKeyName);
-    }
+    fprintf(output, "<Id>");
+    xmlSecPrintXmlString(output, encCtx->id);
+    fprintf(output, "</Id>");
+
+    fprintf(output, "<Type>");
+    xmlSecPrintXmlString(output, encCtx->type);
+    fprintf(output, "</Type>");
+    
+    fprintf(output, "<MimeType>");
+    xmlSecPrintXmlString(output, encCtx->mimeType);
+    fprintf(output, "</MimeType>");
+
+    fprintf(output, "<Encoding>");
+    xmlSecPrintXmlString(output, encCtx->encoding);
+    fprintf(output, "</Encoding>");
+
+    fprintf(output, "<Recipient>");
+    xmlSecPrintXmlString(output, encCtx->recipient);
+    fprintf(output, "</Recipient>");
+
+    fprintf(output, "<CarriedKeyName>");
+    xmlSecPrintXmlString(output, encCtx->carriedKeyName);
+    fprintf(output, "</CarriedKeyName>");
 
     fprintf(output, "<KeyInfoReadCtx>\n");
     xmlSecKeyInfoCtxDebugXmlDump(&(encCtx->keyInfoReadCtx), output);

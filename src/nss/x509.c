@@ -2060,10 +2060,16 @@ xmlSecNssX509CertDebugXmlDump(CERTCertificate* cert, FILE* output) {
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
-    
-    fprintf(output, "=== X509 Certificate\n");
-    fprintf(output, "==== Subject Name: %s\n", cert->subjectName);
-    fprintf(output, "==== Issuer Name: %s\n", cert->issuerName);
+
+    fprintf(output, "<SubjectName>");
+    xmlSecPrintXmlString(output, BAD_CAST cert->subjectName);
+    fprintf(output, "</SubjectName>\n");
+
+    fprintf(output, "<IssuerName>");
+    xmlSecPrintXmlString(output, BAD_CAST cert->issuerName);
+    fprintf(output, "</IssuerName>\n");
+
+    fprintf(output, "<SerialNumber>");
     sn = &cert->serialNumber;
     for (i = 0; i < sn->len; i++) {
 	if (i != sn->len - 1) {
@@ -2072,7 +2078,7 @@ xmlSecNssX509CertDebugXmlDump(CERTCertificate* cert, FILE* output) {
 	    fprintf(output, "%02x", sn->data[i]);
 	}
     }
-    fprintf(output, "\n");
+    fprintf(output, "</SerialNumber>\n");
 }
 
 

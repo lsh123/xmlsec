@@ -1167,9 +1167,9 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     fprintf(output, "<Flags>%08x</Flags>\n", dsigCtx->flags);
     fprintf(output, "<Flags2>%08x</Flags2>\n", dsigCtx->flags2);
 
-    if(dsigCtx->id != NULL) {
-	fprintf(output, "<Id>%s</Id>\n", dsigCtx->id);
-    }
+    fprintf(output, "<Id>");
+    xmlSecPrintXmlString(output, dsigCtx->id);
+    fprintf(output, "</Id>\n");
 
     fprintf(output, "<KeyInfoReadCtx>\n");
     xmlSecKeyInfoCtxDebugXmlDump(&(dsigCtx->keyInfoReadCtx), output);
@@ -1716,15 +1716,17 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
 	    break;
     }
 
-    if(dsigRefCtx->id != NULL) {
-	fprintf(output, "<Id>%s</Id>\n", dsigRefCtx->id);
-    }
-    if(dsigRefCtx->uri != NULL) {
-	fprintf(output, "<URI>%s</URI>\n", dsigRefCtx->uri);
-    }
-    if(dsigRefCtx->type != NULL) {
-	fprintf(output, "<Type>%s</Type>\n", dsigRefCtx->type);
-    }
+    fprintf(output, "<Id>");
+    xmlSecPrintXmlString(output, dsigRefCtx->id);
+    fprintf(output, "</Id>\n");
+
+    fprintf(output, "<URI>");
+    xmlSecPrintXmlString(output, dsigRefCtx->uri);
+    fprintf(output, "</URI>\n");
+
+    fprintf(output, "<Type>");
+    xmlSecPrintXmlString(output, dsigRefCtx->type);
+    fprintf(output, "</Type>\n");
 
     fprintf(output, "<ReferenceTransformCtx>\n");
     xmlSecTransformCtxDebugXmlDump(&(dsigRefCtx->transformCtx), output);

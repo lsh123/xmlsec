@@ -1369,10 +1369,13 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
     }
 
 
-    fprintf(output, "<Uri>%s</Uri>\n", 
-		(ctx->uri != NULL) ? ctx->uri : BAD_CAST "NULL");
-    fprintf(output, "<UriXPointer>%s</UriXPointer>\n", 
-		(ctx->xptrExpr != NULL) ? ctx->xptrExpr : BAD_CAST "NULL");    
+    fprintf(output, "<Uri>");
+    xmlSecPrintXmlString(output, ctx->uri);
+    fprintf(output, "</Uri>\n");
+    
+    fprintf(output, "<UriXPointer>");
+    xmlSecPrintXmlString(output, ctx->xptrExpr);
+    fprintf(output, "</UriXPointer>\n");
 
     for(transform = ctx->first; transform != NULL; transform = transform->next) {
 	xmlSecTransformDebugXmlDump(transform, output);
@@ -1953,9 +1956,11 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
     xmlSecAssert(xmlSecTransformIsValid(transform));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "<Transform name=\"%s\" href=\"%s\" />\n",
-		xmlSecErrorsSafeString(transform->id->name),
-		xmlSecErrorsSafeString(transform->id->href));
+    fprintf(output, "<Transform name=\"");
+    xmlSecPrintXmlString(output,transform->id->name);
+    fprintf(output, "\" href=\"");
+    xmlSecPrintXmlString(output, transform->id->href);
+    fprintf(output, "\" />\n");
 }
 
 /************************************************************************
@@ -2631,7 +2636,9 @@ xmlSecTransformIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
 	xmlSecAssert(transformId != NULL);
 	xmlSecAssert(transformId->name != NULL);
 	    
-	fprintf(output, "<TransformId name=\"%s\" />", transformId->name);
+	fprintf(output, "<TransformId name=\"");
+        xmlSecPrintXmlString(output, transformId->name);
+        fprintf(output, "\" />");
     }
     fprintf(output, "</TransformIdsList>\n");
 }

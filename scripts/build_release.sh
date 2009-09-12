@@ -13,7 +13,7 @@ rm -rf "$build_root"
 mkdir -p "$build_root"
 cd "$build_root"
 
-echo "Checking out the module $svn_module"
+echo "Checking out the module '$git_url'"
 git clone $git_uri
 cd xmlsec
 find . -name ".git" | xargs rm -r
@@ -27,5 +27,5 @@ mv $tar_file $rpm_root/SOURCES
 
 echo "Cleanup"
 cd "$cur_pwd"
-rm -rf "$build_root"
+#rm -rf "$build_root"
 

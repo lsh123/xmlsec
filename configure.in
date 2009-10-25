@@ -270,8 +270,8 @@ elif test "z$with_libxslt_src" != "z" ; then
     if cd "$with_libxslt_src" ; then 
 	SRC_DIR=`pwd`
 	LIBXSLT_CONFIG=${SRC_DIR}/xslt-config
-	LIBXSLT_LIBS="-L${SRC_DIR}/.libs -lxslt"
-	LIBXSLT_CFLAGS="-I${SRC_DIR}/include"
+	LIBXSLT_LIBS="-L${SRC_DIR}/libxslt/.libs -lxslt"
+	LIBXSLT_CFLAGS="-I${SRC_DIR}"
 	LIBXSLT_FOUND="yes"
 	cd $CWD
 	AC_MSG_RESULT([yes (source)])    

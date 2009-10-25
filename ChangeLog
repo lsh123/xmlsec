@@ -1,3 +1,6 @@
+2009-10-25 Aleksey Sanin  <aleksey@aleksey.com>
+	* Fix --with-libxslt-src (patch from Roumen)
+
 2009-09-12 Aleksey Sanin  <aleksey@aleksey.com>
 	* Preparation for 1.2.13 release
 

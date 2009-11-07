@@ -36,6 +36,9 @@
 #include <ltdl.h>
 #endif /* XMLSEC_DL_LIBLTDL */
 
+#ifdef XMLSEC_DL_WIN32
+#include <windows.h>
+#endif /* XMLSEC_DL_WIN32 */
 
 /***********************************************************************
  *
@@ -53,6 +56,10 @@ struct _xmlSecCryptoDLLibrary {
 #ifdef XMLSEC_DL_LIBLTDL
     lt_dlhandle handle;
 #endif /* XMLSEC_DL_LIBLTDL */
+
+#ifdef XMLSEC_DL_WIN32
+    HINSTANCE   handle;
+#endif /* XMLSEC_DL_WIN32 */
 };
 
 static xmlSecCryptoDLLibraryPtr	xmlSecCryptoDLLibraryCreate		(const xmlChar* name);
@@ -155,6 +162,32 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     }
 #endif /* XMLSEC_DL_LIBLTDL */
 
+#ifdef XMLSEC_DL_WIN32
+    lib->handle = LoadLibraryA((char*)lib->filename);
+    if(lib->handle == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "LoadLibraryA",
+		    NULL,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "filename=%s",
+		    xmlSecErrorsSafeString(lib->filename));
+	xmlSecCryptoDLLibraryDestroy(lib);
+	return(NULL);
+    }
+
+    getFunctions = (xmlSecCryptoGetFunctionsCallback)GetProcAddress(lib->handle, (char*)lib->getFunctionsName);
+    if(getFunctions == NULL) {
+	xmlSecError(XMLSEC_ERRORS_HERE,
+		    "GetProcAddressA",
+		    NULL,
+		    XMLSEC_ERRORS_R_IO_FAILED,
+		    "function=%s",
+		    xmlSecErrorsSafeString(lib->getFunctionsName));
+	xmlSecCryptoDLLibraryDestroy(lib);
+	return(NULL);
+    }
+#endif /* XMLSEC_DL_WIN32 */
+
     if(getFunctions == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
@@ -197,8 +230,8 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 	xmlFree(lib->getFunctionsName);
     }
 
-    if(lib->handle != NULL) {	
 #ifdef XMLSEC_DL_LIBLTDL
+    if(lib->handle != NULL) {	
 	int ret;
 	
 	ret = lt_dlclose(lib->handle);
@@ -209,9 +242,23 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
 			XMLSEC_ERRORS_R_IO_FAILED,
 			XMLSEC_ERRORS_NO_MESSAGE);
 	}
+    }
 #endif /* XMLSEC_DL_LIBLTDL */
 
-    }
+#ifdef XMLSEC_DL_WIN32
+    if(lib->handle != NULL) {	
+	BOOL res;
+
+	res = FreeLibrary(lib->handle);
+	if(!res) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			"FreeLibrary",
+			NULL,
+			XMLSEC_ERRORS_R_IO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
+	}
+	}
+#endif /* XMLSEC_DL_WIN32*/
 
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
     xmlFree(lib);

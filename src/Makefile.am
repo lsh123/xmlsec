@@ -13,8 +13,6 @@ INCLUDES = \
 
 EXTRA_DIST = \
 	globals.h \
-	ltdl.h ltdl.c \
-	xmlsec-ltdl.h xmlsec-ltdl.c xmlsec-ltdl.patch \
 	skeleton \
 	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
@@ -68,25 +66,3 @@ libxmlsec1_la_LDFLAGS = \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	$(NULL)
 
-if XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
-LTDL_SOURCE_FILES = \
-	$(NULL)
-else 
-LTDL_SOURCE_FILES = \
-	xmlsec-ltdl.c \
-	$(NULL)
-
-LTDL_PARSE = \
-	sed s/ltdl.h/xmlsec-ltdl.h/g | \
-	sed s/lt_/xmlsec_lt_/g | \
-	sed s/ltdl_/xmlsec_ltdl_/g \
-	$(NULL)	
-
-xmlsec-ltdl.c: xmlsec-ltdl.h 
-
-xmlsec-ltdl.h: ltdl.c ltdl.h xmlsec-ltdl.patch
-	@(cat ltdl.c | $(LTDL_PARSE) > xmlsec-ltdl.c && \
-	  cat ltdl.h | $(LTDL_PARSE) > xmlsec-ltdl.h && \
-	  patch -p0 < xmlsec-ltdl.patch)
-
-endif

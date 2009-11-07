@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmlsec1], 1.2.13, [http://www.aleksey.com/xmlsec])
+AC_INIT([xmlsec1],[1.2.13],[http://www.aleksey.com/xmlsec])
 
 XMLSEC_PACKAGE=xmlsec1
 XMLSEC_VERSION_MAJOR=1
@@ -9,8 +9,7 @@ XMLSEC_VERSION="$XMLSEC_VERSION_MAJOR.$XMLSEC_VERSION_MINOR.$XMLSEC_VERSION_SUBM
 XMLSEC_VERSION_INFO=`echo $XMLSEC_VERSION | awk -F. '{ printf "%d:%d:%d", $1+$2, $3, $2 }'`
 XMLSEC_VERSION_SAFE=`echo $XMLSEC_VERSION | sed 's/\./_/g'`
 
-AC_PREREQ(2.2)
-AM_CONFIG_HEADER(config.h)
+AC_PREREQ(2.64)
 AC_CANONICAL_HOST
 
 AC_SUBST(XMLSEC_VERSION)
@@ -21,18 +20,26 @@ AC_SUBST(XMLSEC_VERSION_MINOR)
 AC_SUBST(XMLSEC_VERSION_SUBMINOR)
 AC_SUBST(XMLSEC_VERSION_INFO)
 
+AC_CONFIG_MACRO_DIR(m4)
 AM_INIT_AUTOMAKE([1.7])
+AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 
 dnl
 dnl Check the environment
 dnl
 AC_PROG_CC
-AC_LIBTOOL_DLOPEN
-AC_PROG_LIBTOOL
 AC_PROG_INSTALL
-AC_STDC_HEADERS
-AC_PATH_PROG(RM, rm, /bin/rm)
+AC_HEADER_STDC
+
+LT_INIT
+
+dnl
+dnl Find programs
+dnl
+if test "z$RM" == "z" ; then 
+    AC_PATH_PROG(RM, rm, /bin/rm)
+fi
 AC_PATH_PROG(CP, cp, /bin/cp)
 AC_PATH_PROG(MV, mv, /bin/mv)
 AC_PATH_PROG(TAR, tar, /bin/tar)
@@ -53,9 +60,7 @@ AC_CHECK_HEADERS([ctype.h])
 AC_CHECK_HEADERS([errno.h])
 AC_CHECK_HEADERS([ansidecl.h])
 AC_CHECK_HEADERS([time.h])
-AC_CHECK_FUNCS(printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf timegm)
-
-AC_LIB_LTDL
+AC_CHECK_FUNCS(strchr strrchr printf sprintf fprintf snprintf vfprintf vsprintf vsnprintf sscanf timegm)
 
 XMLSEC_DEFINES=""
 
@@ -1235,12 +1240,24 @@ if test "z$enable_crypto_dl" = "zno" ; then
     XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_NO_CRYPTO_DYNAMIC_LOADING=1"
     XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="1"
     AC_MSG_RESULT(no)
-else 
+else
+    AC_CHECK_HEADER([ltdl.h], 
+	[
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1",
+	AC_CHECK_LIB(
+	    [ltdl], 
+	    [lt_dlopenext],
+	    [LIBLTDL=-lltdl], 
+	    [LIBLTDL=]
+	)],
+	[LIBLTDL=]
+    )
+
     XMLSEC_DL_INCLUDES="$INCLTDL"
-    XMLSEC_DL_LIBS="$LIBLTDL $LIBADD_DL"
+    XMLSEC_DL_LIBS="$LIBLTDL"
     XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
     AC_MSG_RESULT(yes)
-fi    
+fi
 AM_CONDITIONAL(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING, test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1")
 AC_SUBST(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING)
 AC_SUBST(XMLSEC_DL_INCLUDES)
@@ -1444,7 +1461,7 @@ else
 AC_CONFIG_FILES([xmlsec1.pc:xmlsec.pc.in])
 fi
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 include/xmlsec/version.h
 Makefile
 include/Makefile
@@ -1455,14 +1472,15 @@ apps/Makefile
 docs/Makefile
 docs/api/Makefile
 man/Makefile
-]
-[xmlsec1Conf.sh:xmlsecConf.sh.in]
-[xmlsec1-config:xmlsec-config.in]
-[xmlsec1-openssl.pc:xmlsec-openssl.pc.in]
-[xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in]
-[xmlsec1-nss.pc:xmlsec-nss.pc.in]
-[xmlsec1.spec:xmlsec.spec.in]
-)
+
+xmlsec1Conf.sh:xmlsecConf.sh.in
+xmlsec1-config:xmlsec-config.in
+xmlsec1-openssl.pc:xmlsec-openssl.pc.in
+xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in
+xmlsec1-nss.pc:xmlsec-nss.pc.in
+xmlsec1.spec:xmlsec.spec.in
+])
+AC_OUTPUT
 
 
 dnl COPYING should be in "srcdir" not in "builddir"

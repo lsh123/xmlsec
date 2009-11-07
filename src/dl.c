@@ -9,12 +9,13 @@
  */
 #include "globals.h"
 
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <time.h>  
+#include <time.h>
 
 #include <libxml/tree.h>
 
@@ -30,9 +31,11 @@
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
 
-#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
-#include "xmlsec-ltdl.h"
+#ifdef XMLSEC_DL_LIBLTDL
+#include <ltdl.h>
+#endif /* XMLSEC_DL_LIBLTDL */
+
 
 /***********************************************************************
  *
@@ -47,7 +50,9 @@ struct _xmlSecCryptoDLLibrary {
     xmlChar* 	getFunctionsName;
     xmlSecCryptoDLFunctionsPtr functions;
 
-    xmlsec_lt_dlhandle handle;
+#ifdef XMLSEC_DL_LIBLTDL
+    lt_dlhandle handle;
+#endif /* XMLSEC_DL_LIBLTDL */
 };
 
 static xmlSecCryptoDLLibraryPtr	xmlSecCryptoDLLibraryCreate		(const xmlChar* name);
@@ -124,11 +129,11 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 	return(NULL);
     }
 
-
-    lib->handle = xmlsec_lt_dlopen((char*)lib->filename);
+#ifdef XMLSEC_DL_LIBLTDL
+    lib->handle = lt_dlopenext((char*)lib->filename);
     if(lib->handle == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlsec_lt_dlopen",
+		    "lt_dlopenext",
 		    NULL,
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    "filename=%s",
@@ -137,11 +142,10 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 	return(NULL);
     }
 
-    
-    getFunctions = (xmlSecCryptoGetFunctionsCallback)xmlsec_lt_dlsym(lib->handle, (char*)lib->getFunctionsName);
+    getFunctions = (xmlSecCryptoGetFunctionsCallback)lt_dlsym(lib->handle, (char*)lib->getFunctionsName);
     if(getFunctions == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
-		    "xmlsec_lt_dlsym",
+		    "lt_dlsym",
 		    NULL,
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    "function=%s",
@@ -149,6 +153,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
 	xmlSecCryptoDLLibraryDestroy(lib);
 	return(NULL);
     }
+#endif /* XMLSEC_DL_LIBLTDL */
 
     if(getFunctions == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
@@ -193,16 +198,19 @@ xmlSecCryptoDLLibraryDestroy(xmlSecCryptoDLLibraryPtr lib) {
     }
 
     if(lib->handle != NULL) {	
+#ifdef XMLSEC_DL_LIBLTDL
 	int ret;
-
-	ret = xmlsec_lt_dlclose(lib->handle);
+	
+	ret = lt_dlclose(lib->handle);
 	if(ret != 0) {
 	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        "xmlsec_lt_dlclose",
+			"lt_dlclose",
 			NULL,
-		        XMLSEC_ERRORS_R_IO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+			XMLSEC_ERRORS_R_IO_FAILED,
+			XMLSEC_ERRORS_NO_MESSAGE);
 	}
+#endif /* XMLSEC_DL_LIBLTDL */
+
     }
 
     memset(lib, 0, sizeof(xmlSecCryptoDLLibrary));
@@ -219,12 +227,12 @@ xmlSecCryptoDLLibraryDuplicate(xmlSecCryptoDLLibraryPtr lib) {
 
 static xmlChar*	
 xmlSecCryptoDLLibraryConstructFilename(const xmlChar* name) {
-    static xmlChar tmpl[] = "lib%s-%s" LTDL_SHLIB_EXT;
+    static xmlChar tmpl[] = "lib%s-%s";
     xmlChar* res;
     int len;
-    
+
     xmlSecAssert2(name != NULL, NULL);
-    
+
     /* TODO */
     len = xmlStrlen(BAD_CAST PACKAGE) + xmlStrlen(name) + xmlStrlen(tmpl) + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
@@ -295,28 +303,6 @@ xmlSecCryptoDLLibrariesListFindByName(xmlSecPtrListPtr list, const xmlChar* name
 static xmlSecCryptoDLFunctionsPtr gXmlSecCryptoDLFunctions = NULL;
 static xmlSecPtrList gXmlSecCryptoDLLibraries;
 
-static xmlsec_lt_ptr xmlSecCryptoDLMalloc(size_t size) {
-    xmlsec_lt_ptr res;
-
-    res = (xmlsec_lt_ptr)xmlMalloc(size);
-    if(res == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "size=%d", size);
-        return(NULL);
-    }
-    memset(res, 0, size);
-    return(res);
-}
-
-static void xmlSecCryptoDLFree(xmlsec_lt_ptr ptr) {
-    if(ptr != NULL) {
-	xmlFree(ptr);
-    }
-}
-
 /**
  * xmlSecCryptoDLInit:
  * 
@@ -339,20 +325,18 @@ xmlSecCryptoDLInit(void) {
         return(-1);
     }
 
-    /* use xmlMalloc/xmlFree */
-    xmlsec_lt_dlmalloc	= xmlSecCryptoDLMalloc;
-    xmlsec_lt_dlfree	= xmlSecCryptoDLFree;
-    ret = xmlsec_lt_dlinit ();
+#ifdef XMLSEC_DL_LIBLTDL
+    ret = lt_dlinit ();
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlsec_lt_dlinit",
+		    "lt_dlinit",
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    /* TODO: LTDL_SET_PRELOADED_SYMBOLS(); */
-    
+#endif /* XMLSEC_DL_LIBLTDL */
+
     return(0);
 }
 
@@ -368,17 +352,20 @@ xmlSecCryptoDLInit(void) {
 int 
 xmlSecCryptoDLShutdown(void) {
     int ret;
-    
+
     xmlSecPtrListFinalize(&gXmlSecCryptoDLLibraries);
 
-    ret = xmlsec_lt_dlexit ();
+#ifdef XMLSEC_DL_LIBLTDL
+    ret = lt_dlexit ();
     if(ret != 0) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "xmlsec_lt_dlexit",
+		    "lt_dlexit",
 		    XMLSEC_ERRORS_R_IO_FAILED,
 		    XMLSEC_ERRORS_NO_MESSAGE);
     }
+#endif /* XMLSEC_DL_LIBLTDL */
+
     return(0);
 }
 

@@ -13,6 +13,8 @@ confexec_DATA 	= xmlsec1Conf.sh
 m4datadir	= $(datadir)/aclocal
 m4data_DATA	= xmlsec1.m4
 
+ACLOCAL_AMFLAGS	= -I m4
+
 DISTCLEANFILES = \
 	xmlsec1Conf.sh \
 	xmlsec1.pc xmlsec1-openssl.pc xmlsec1-gnutls.pc xmlsec1-nss.pc \
@@ -25,6 +27,7 @@ DISTCLEANFILES = \
 	$NULL
 
 EXTRA_DIST = \
+	m4 \
 	examples \
 	scripts \
 	tests \

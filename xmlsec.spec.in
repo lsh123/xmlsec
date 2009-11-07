@@ -12,6 +12,7 @@ BuildRoot: %{_tmppath}/@PACKAGE@-%{version}-root
 URL: http://www.aleksey.com/xmlsec
 Requires: libxml2 >= @LIBXML_MIN_VERSION@
 Requires: libxslt >= @LIBXSLT_MIN_VERSION@
+Requires: ltdl
 BuildRequires: libxml2-devel >= @LIBXML_MIN_VERSION@
 BuildRequires: libxslt-devel >= @LIBXSLT_MIN_VERSION@
 Prefix: %{_prefix}

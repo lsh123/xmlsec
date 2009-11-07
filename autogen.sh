@@ -16,7 +16,7 @@ DIE=0
 	DIE=1
 }
 
-(libtoolize --version) < /dev/null > /dev/null 2>&1 || {
+(libtool --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "You must have libtool installed to compile xmlsec."
 	echo "Get ftp://alpha.gnu.org/gnu/libtool-1.0h.tar.gz"
@@ -51,7 +51,7 @@ libtoolize --copy --force
 echo "Running aclocal..."
 aclocal $ACLOCAL_FLAGS
 echo "Running automake..."
-automake --add-missing
+automake --gnu --add-missing
 echo "Running autoconf..."
 autoconf
 
@@ -62,8 +62,7 @@ if test x$OBJ_DIR != x; then
     cd "$OBJ_DIR"
 fi
 
-conf_flags="--enable-maintainer-mode --enable-compile-warnings" #--enable-iso-c
-
+conf_flags="--enable-maintainer-mode" #--enable-iso-c
 echo Running configure $conf_flags "$@" ...
 $srcdir/configure $conf_flags "$@"
 

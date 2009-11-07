@@ -51,28 +51,26 @@ EXTRA_CLEAN = \
 	examples \
 	$(NULL)
 
-ABS_BUILDDIR=$(shell pwd)
+ABS_SRCDIR=@abs_srcdir@
+ABS_BUILDDIR=@abs_builddir@
 if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 PRECHECK_COMMANDS = \
-	ABS_BUILDDIR=$(ABS_BUILDDIR) && \
-	cd $(top_srcdir) \
+	cd $(ABS_SRCDIR) \
 	$(NULL)
 CHECK_CRYPTO_LIST = \
 	"default" \
 	$(NULL)
 else
 PRECHECK_COMMANDS= \
-	ABS_BUILDDIR=$(ABS_BUILDDIR) && \
 	for i in $(XMLSEC_CRYPTO_LIST) ; do \
 	    export LD_LIBRARY_PATH="$(ABS_BUILDDIR)/src/$$i/.libs:$$LD_LIBRARY_PATH" ; \
 	done && \
-	cd $(top_srcdir) \
+	cd $(ABS_SRCDIR) \
 	$(NULL)	
 CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CRYPTO_LIST) \
 	$(NULL)
 endif
-ABS_SRCDIR=$(shell pwd)
 
 docs: docs-man
 	@(cd docs && $(MAKE) docs)

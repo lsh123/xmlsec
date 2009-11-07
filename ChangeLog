@@ -1,3 +1,6 @@
+2009-11-05 Aleksey Sanin  <aleksey@aleksey.com>
+	* Use installed ltdl on *nix and native code on Windows
+
 2009-10-25 Aleksey Sanin  <aleksey@aleksey.com>
 	* Fix --with-libxslt-src (patch from Roumen)
 

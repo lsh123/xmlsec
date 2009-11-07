@@ -9,8 +9,6 @@
  */
 #include "globals.h"
 
-#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -30,6 +28,8 @@
 #include <xmlsec/xmltree.h>
 #include <xmlsec/errors.h>
 #include <xmlsec/dl.h>
+
+#ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 
 #ifdef XMLSEC_DL_LIBLTDL

@@ -8,7 +8,6 @@
     <shortdesc xml:lang="en">XML Security Library</shortdesc>
     <homepage rdf:resource="http://www.aleksey.com/xmlsec" />
     <mailing-list rdf:resource="http://www.aleksey.com/pipermail/xmlsec/" />
-    <category rdf:resource="http://api.gnome.org/doap-extensions#other" />
 
     <maintainer>
         <foaf:Person>

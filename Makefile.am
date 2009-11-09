@@ -2,7 +2,7 @@ NULL =
 
 SAFE_VERSION	= @XMLSEC_VERSION_SAFE@
 SUBDIRS 	= include src apps man docs
-TEST_APP 	= apps/xmlsec1
+TEST_APP 	= apps/xmlsec1$(EXEEXT)
 DEFAULT_CRYPTO	= @XMLSEC_CRYPTO@
 
 bin_SCRIPTS 	= xmlsec1-config

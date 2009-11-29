@@ -1245,18 +1245,22 @@ else
 	[
 	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1",
 	AC_CHECK_LIB(
-	    [ltdl], 
+	    [ltdl],
 	    [lt_dlopenext],
-	    [LIBLTDL=-lltdl], 
+	    [LIBLTDL=-lltdl],
 	    [LIBLTDL=]
 	)],
 	[LIBLTDL=]
     )
 
-    XMLSEC_DL_INCLUDES="$INCLTDL"
-    XMLSEC_DL_LIBS="$LIBLTDL"
-    XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
-    AC_MSG_RESULT(yes)
+    if test "z$LIBLTDL" != "z" ; then
+        XMLSEC_DL_INCLUDES="$INCLTDL"
+        XMLSEC_DL_LIBS="$LIBLTDL"
+        XMLSEC_NO_CRYPTO_DYNAMIC_LOADING="0"
+	AC_MSG_RESULT(yes)
+    else
+	AC_MSG_ERROR([libltdl is required for xmlsec-crypto dynamic loading])
+    fi
 fi
 AM_CONDITIONAL(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING, test "z$XMLSEC_NO_CRYPTO_DYNAMIC_LOADING" = "z1")
 AC_SUBST(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING)

@@ -7,6 +7,7 @@ INCLUDES = \
 	-I../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
+	$(XMLSEC_DL_INCLUDES) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)

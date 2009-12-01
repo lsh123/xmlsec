@@ -361,6 +361,7 @@ elif test "z$with_openssl" != "z" ; then
 	*-*-mingw*) openssl_exlibs=;;
 	*-*-osf5*) openssl_exlibs=;;
 	*-*-openbsd*) openssl_exlibs=;;
+	*-*-netbsd*) openssl_exlibs=;;
 	#FIXME: check if lib "dl" is required
 	*)          openssl_exlibs=-ldl;;
     esac

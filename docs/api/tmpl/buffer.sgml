@@ -14,6 +14,9 @@ Binary buffer implementation.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### ENUM xmlSecAllocMode ##### -->
 <para>
 

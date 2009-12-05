@@ -1,3 +1,6 @@
+2009-09-05  Aleksey Sanin  <aleksey@aleksey.com>
+	* preparation for 1.2.14 release
+
 2009-11-05 Aleksey Sanin  <aleksey@aleksey.com>
 	* Use installed ltdl on *nix and native code on Windows
 

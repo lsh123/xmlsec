@@ -2,12 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>xmlenc</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="xmldsig" href="xmlsec-xmldsig.html">
 <link rel="NEXT" title="xmlsec" href="xmlsec-xmlsec.html">
-<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,50 +87,47 @@
 <h1>
 <a name="XMLSEC-XMLENC"></a>xmlenc</h1>
 <div class="REFNAMEDIV">
-<a name="AEN19108"></a><h2>Name</h2>xmlenc--XML Encryption support.</div>
+<a name="AEN18395"></a><h2>Name</h2>xmlenc -- XML Encryption support.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN19111"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-enum        <a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a>;
-#define     <a href="xmlsec-xmlenc.html#XMLSEC-ENC-RETURN-REPLACED-NODE-CAPS">XMLSEC_ENC_RETURN_REPLACED_NODE</a>
-struct      <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>;
-<font>xmlSecEncCtxPtr</font> <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a>          (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
-<font>void</font>        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a>             (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);
-<font>int</font>         <a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
-<font>void</font>        <a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);
-<font>int</font>         <a href="xmlsec-xmlenc.html#XMLSECENCCTXCOPYUSERPREF">xmlSecEncCtxCopyUserPref</a>        (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> dst,
-                                             <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> src);
-<font>void</font>        <a href="xmlsec-xmlenc.html#XMLSECENCCTXRESET">xmlSecEncCtxReset</a>               (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);
-<font>int</font>         <a href="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT">xmlSecEncCtxBinaryEncrypt</a>       (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> tmpl,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);
-<font>int</font>         <a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a>          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> tmpl,
-                                             <font>xmlNodePtr</font> node);
-<font>int</font>         <a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> tmpl,
-                                             const <font>xmlChar</font> *uri);
-<font>int</font>         <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPT">xmlSecEncCtxDecrypt</a>             (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> node);
-<font>xmlSecBufferPtr</font> <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPTTOBUFFER">xmlSecEncCtxDecryptToBuffer</a> (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> node);
-<font>void</font>        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGDUMP">xmlSecEncCtxDebugDump</a>           (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>FILE</font> *output);
-<font>void</font>        <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDebugXmlDump</a>        (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>FILE</font> *output);</pre>
+<a name="XMLSEC-XMLENC.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">enum                <a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a>;
+#define             <a href="xmlsec-xmlenc.html#XMLSEC-ENC-RETURN-REPLACED-NODE--CAPS">XMLSEC_ENC_RETURN_REPLACED_NODE</a>
+struct              <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>;
+<font>xmlSecEncCtxPtr</font>     <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE">xmlSecEncCtxCreate</a>                  (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
+<font>void</font>                <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY">xmlSecEncCtxDestroy</a>                 (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);
+<font>int</font>                 <a href="xmlsec-xmlenc.html#XMLSECENCCTXINITIALIZE">xmlSecEncCtxInitialize</a>              (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
+<font>void</font>                <a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE">xmlSecEncCtxFinalize</a>                (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);
+<font>int</font>                 <a href="xmlsec-xmlenc.html#XMLSECENCCTXCOPYUSERPREF">xmlSecEncCtxCopyUserPref</a>            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> dst,
+                                                         <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> src);
+<font>void</font>                <a href="xmlsec-xmlenc.html#XMLSECENCCTXRESET">xmlSecEncCtxReset</a>                   (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);
+<font>int</font>                 <a href="xmlsec-xmlenc.html#XMLSECENCCTXBINARYENCRYPT">xmlSecEncCtxBinaryEncrypt</a>           (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> tmpl,
+                                                         const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);
+<font>int</font>                 <a href="xmlsec-xmlenc.html#XMLSECENCCTXXMLENCRYPT">xmlSecEncCtxXmlEncrypt</a>              (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> tmpl,
+                                                         <font>xmlNodePtr</font> node);
+<font>int</font>                 <a href="xmlsec-xmlenc.html#XMLSECENCCTXURIENCRYPT">xmlSecEncCtxUriEncrypt</a>              (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> tmpl,
+                                                         const <font>xmlChar</font> *uri);
+<font>int</font>                 <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPT">xmlSecEncCtxDecrypt</a>                 (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> node);
+<font>xmlSecBufferPtr</font>     <a href="xmlsec-xmlenc.html#XMLSECENCCTXDECRYPTTOBUFFER">xmlSecEncCtxDecryptToBuffer</a>         (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> node);
+<font>void</font>                <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGDUMP">xmlSecEncCtxDebugDump</a>               (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>FILE</font> *output);
+<font>void</font>                <a href="xmlsec-xmlenc.html#XMLSECENCCTXDEBUGXMLDUMP">xmlSecEncCtxDebugXmlDump</a>            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>FILE</font> *output);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN19169"></a><h2>Description</h2>
+<a name="XMLSEC-XMLENC.DESCRIPTION"></a><h2>Description</h2>
 <p>XML Encryption support.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN19172"></a><h2>Details</h2>
+<a name="XMLSEC-XMLENC.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN19174"></a><h3>
-<a name="XMLENCCTXMODE"></a>enum xmlEncCtxMode</h3>
+<a name="XMLENCCTXMODE"></a><h3>enum xmlEncCtxMode</h3>
 <pre class="PROGRAMLISTING">typedef enum {
     xmlEncCtxModeEncryptedData = 0,
     xmlEncCtxModeEncryptedKey
@@ -141,29 +137,26 @@ struct      <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>;
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19185"><span style="white-space: nowrap"><var class="LITERAL">xmlEncCtxModeEncryptedData</var></span></a></td>
+<td align="LEFT" valign="TOP"><a name="XMLENCCTXMODEENCRYPTEDDATA"><span style="white-space: nowrap"><tt class="LITERAL">xmlEncCtxModeEncryptedData</tt></span></a></td>
 <td align="LEFT" valign="TOP"><p>	the <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element procesing.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19191"><span style="white-space: nowrap"><var class="LITERAL">xmlEncCtxModeEncryptedKey</var></span></a></td>
+<td align="LEFT" valign="TOP"><a name="XMLENCCTXMODEENCRYPTEDKEY"><span style="white-space: nowrap"><tt class="LITERAL">xmlEncCtxModeEncryptedKey</tt></span></a></td>
 <td align="LEFT" valign="TOP"><p>	the <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> element processing.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19197"></a><h3>
-<a name="XMLSEC-ENC-RETURN-REPLACED-NODE-CAPS"></a>XMLSEC_ENC_RETURN_REPLACED_NODE</h3>
+<a name="XMLSEC-ENC-RETURN-REPLACED-NODE--CAPS"></a><h3>XMLSEC_ENC_RETURN_REPLACED_NODE</h3>
 <pre class="PROGRAMLISTING">#define XMLSEC_ENC_RETURN_REPLACED_NODE			0x00000001</pre>
 <p>If this flag is set, then the replaced node will be returned in the replacedNodeList</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19205"></a><h3>
-<a name="XMLSECENCCTX"></a>struct xmlSecEncCtx</h3>
+<a name="XMLSECENCCTX"></a><h3>struct xmlSecEncCtx</h3>
 <pre class="PROGRAMLISTING">struct xmlSecEncCtx {
-
     /* these data user can set before performing the operation */
     void*			userData;
     unsigned int		flags;
@@ -204,125 +197,124 @@ struct      <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtx</a>;
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19214"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">userData</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18498"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">userData</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the pointer to user data (xmlsec and xmlsec-crypto libraries
 			never touches this).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19220"><span style="white-space: nowrap">unsigned <font>int</font> <code class="STRUCTFIELD">flags</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18504"><span style="white-space: nowrap">unsigned <font>int</font> <code class="STRUCTFIELD">flags</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the XML Encryption processing flags.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19226"><span style="white-space: nowrap">unsigned <font>int</font> <code class="STRUCTFIELD">flags2</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18510"><span style="white-space: nowrap">unsigned <font>int</font> <code class="STRUCTFIELD">flags2</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the XML Encryption processing flags.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19232"><span style="white-space: nowrap"><a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a> <code class="STRUCTFIELD">mode</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18516"><span style="white-space: nowrap"><a href="xmlsec-xmlenc.html#XMLENCCTXMODE">xmlEncCtxMode</a> <code class="STRUCTFIELD">mode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the mode.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19238"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> <code class="STRUCTFIELD">keyInfoReadCtx</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18522"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> <code class="STRUCTFIELD">keyInfoReadCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the reading key context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19244"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> <code class="STRUCTFIELD">keyInfoWriteCtx</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18528"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX">xmlSecKeyInfoCtx</a> <code class="STRUCTFIELD">keyInfoWriteCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the writing key context (not used for signature verification).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19250"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a> <code class="STRUCTFIELD">transformCtx</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18534"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtx</a> <code class="STRUCTFIELD">transformCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the transforms processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19256"><span style="white-space: nowrap"><font>xmlSecTransformId</font> <code class="STRUCTFIELD">defEncMethodId</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18540"><span style="white-space: nowrap"><font>xmlSecTransformId</font> <code class="STRUCTFIELD">defEncMethodId</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the default encryption method (used if
 			<a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node is not present).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19263"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <code class="STRUCTFIELD">encKey</code></span></a></td>
-<td align="LEFT" valign="TOP"><p>			the signature key; application may set <font><span class="TYPE">encKey</span></font>
+<td align="LEFT" valign="TOP"><a name="AEN18547"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <code class="STRUCTFIELD">encKey</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>			the signature key; application may set <gtkdoclink href="ENCKEY"><span class="TYPE">encKey</span></gtkdoclink>
 			before calling encryption/decryption functions.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19271"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMOPERATION">xmlSecTransformOperation</a> <code class="STRUCTFIELD">operation</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18555"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMOPERATION">xmlSecTransformOperation</a> <code class="STRUCTFIELD">operation</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the operation: encrypt or decrypt.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19277"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <code class="STRUCTFIELD">result</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18561"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <code class="STRUCTFIELD">result</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the pointer to signature (not valid for signature verificaction).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19283"><span style="white-space: nowrap"><font>int</font> <code class="STRUCTFIELD">resultBase64Encoded</code></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the flag: if set then result in <font><span class="TYPE">result</span></font> is base64 encoded.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18567"><span style="white-space: nowrap"><font>int</font> <code class="STRUCTFIELD">resultBase64Encoded</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><p>	the flag: if set then result in <gtkdoclink href="RESULT"><span class="TYPE">result</span></gtkdoclink> is base64 encoded.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19291"><span style="white-space: nowrap"><font>int</font> <code class="STRUCTFIELD">resultReplaced</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18575"><span style="white-space: nowrap"><font>int</font> <code class="STRUCTFIELD">resultReplaced</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the flag: if set then resulted <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
 			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node is added to the document.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19299"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <code class="STRUCTFIELD">encMethod</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18583"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <code class="STRUCTFIELD">encMethod</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the pointer to encryption transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19305"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">id</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18589"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">id</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>				the ID attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
 			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19313"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">type</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18597"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">type</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the Type attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
 			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19321"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">mimeType</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18605"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">mimeType</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the MimeType attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
 			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19329"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">encoding</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18613"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">encoding</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the Encoding attributeof <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
 			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node. </p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19337"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">recipient</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18621"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">recipient</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			the Recipient attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node..</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19344"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">carriedKeyName</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18628"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">carriedKeyName</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the CarriedKeyName attribute of <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19351"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">encDataNode</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18635"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">encDataNode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a>
 			or <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey" target="_top">&lt;enc:EncryptedKey/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19359"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">encMethodNode</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18643"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">encMethodNode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod" target="_top">&lt;enc:EncryptionMethod/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19366"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">keyInfoNode</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18650"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">keyInfoNode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-KeyInfo" target="_top">&lt;enc:KeyInfo/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19373"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">cipherValueNode</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18657"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">cipherValueNode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue" target="_top">&lt;enc:CipherValue/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19380"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">replacedNodeList</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18664"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">replacedNodeList</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p> the first node of the list of replaced nodes depending on the nodeReplacementMode</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19386"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18670"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>			reserved for the future.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19392"></a><h3>
-<a name="XMLSECENCCTXCREATE"></a>xmlSecEncCtxCreate ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecEncCtxPtr</font> xmlSecEncCtxCreate          (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
+<a name="XMLSECENCCTXCREATE"></a><h3>xmlSecEncCtxCreate ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecEncCtxPtr</font>     xmlSecEncCtxCreate                  (<a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
 <p>Creates <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
 The caller is responsible for destroying returend object by calling 
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXDESTROY"><span class="TYPE">xmlSecEncCtxDestroy</span></a> function.</p>
@@ -330,35 +322,33 @@ The caller is responsible for destroying returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19406"><span style="white-space: nowrap"><var class="PARAMETER">keysMngr</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18689"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19411"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly allocated context object or NULL if an error
+<td align="LEFT" valign="TOP"><a name="AEN18694"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly allocated context object or NULL if an error
 occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19416"></a><h3>
-<a name="XMLSECENCCTXDESTROY"></a>xmlSecEncCtxDestroy ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecEncCtxDestroy             (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre>
+<a name="XMLSECENCCTXDESTROY"></a><h3>xmlSecEncCtxDestroy ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecEncCtxDestroy                 (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre>
 <p>Destroy context object created with <a href="xmlsec-xmlenc.html#XMLSECENCCTXCREATE"><span class="TYPE">xmlSecEncCtxCreate</span></a> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19429"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18711"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19435"></a><h3>
-<a name="XMLSECENCCTXINITIALIZE"></a>xmlSecEncCtxInitialize ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecEncCtxInitialize          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
+<a name="XMLSECENCCTXINITIALIZE"></a><h3>xmlSecEncCtxInitialize ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecEncCtxInitialize              (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
 <p>Initializes <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> element processing context.
 The caller is responsible for cleaing up returend object by calling 
 <a href="xmlsec-xmlenc.html#XMLSECENCCTXFINALIZE"><span class="TYPE">xmlSecEncCtxFinalize</span></a> function.</p>
@@ -366,254 +356,244 @@ The caller is responsible for cleaing up returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19450"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18731"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19456"><span style="white-space: nowrap"><var class="PARAMETER">keysMngr</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18737"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19461"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18742"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19466"></a><h3>
-<a name="XMLSECENCCTXFINALIZE"></a>xmlSecEncCtxFinalize ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecEncCtxFinalize            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre>
-<p>Cleans up <var class="PARAMETER">encCtx</var> object.</p>
+<a name="XMLSECENCCTXFINALIZE"></a><h3>xmlSecEncCtxFinalize ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecEncCtxFinalize                (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre>
+<p>Cleans up <code class="PARAMETER">encCtx</code> object.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19478"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18758"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19484"></a><h3>
-<a name="XMLSECENCCTXCOPYUSERPREF"></a>xmlSecEncCtxCopyUserPref ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecEncCtxCopyUserPref        (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> dst,
-                                             <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> src);</pre>
-<p>Copies user preference from <var class="PARAMETER">src</var> context to <var class="PARAMETER">dst</var>.</p>
+<a name="XMLSECENCCTXCOPYUSERPREF"></a><h3>xmlSecEncCtxCopyUserPref ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecEncCtxCopyUserPref            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> dst,
+                                                         <a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> src);</pre>
+<p>Copies user preference from <code class="PARAMETER">src</code> context to <code class="PARAMETER">dst</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19498"><span style="white-space: nowrap"><var class="PARAMETER">dst</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18777"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to destination context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19503"><span style="white-space: nowrap"><var class="PARAMETER">src</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18782"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to source context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19508"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18787"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19513"></a><h3>
-<a name="XMLSECENCCTXRESET"></a>xmlSecEncCtxReset ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecEncCtxReset               (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre>
-<p>Resets <var class="PARAMETER">encCtx</var> object, user settings are not touched.</p>
+<a name="XMLSECENCCTXRESET"></a><h3>xmlSecEncCtxReset ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecEncCtxReset                   (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx);</pre>
+<p>Resets <code class="PARAMETER">encCtx</code> object, user settings are not touched.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19525"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18803"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19531"></a><h3>
-<a name="XMLSECENCCTXBINARYENCRYPT"></a>xmlSecEncCtxBinaryEncrypt ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecEncCtxBinaryEncrypt       (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> tmpl,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);</pre>
-<p>Encrypts <var class="PARAMETER">data</var> according to template <var class="PARAMETER">tmpl</var>.</p>
+<a name="XMLSECENCCTXBINARYENCRYPT"></a><h3>xmlSecEncCtxBinaryEncrypt ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecEncCtxBinaryEncrypt           (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> tmpl,
+                                                         const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);</pre>
+<p>Encrypts <code class="PARAMETER">data</code> according to template <code class="PARAMETER">tmpl</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19547"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18824"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19553"><span style="white-space: nowrap"><var class="PARAMETER">tmpl</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18830"><span style="white-space: nowrap"><code class="PARAMETER">tmpl</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19559"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18836"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer for binary buffer.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19564"><span style="white-space: nowrap"><var class="PARAMETER">dataSize</var>:</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the <var class="PARAMETER">data</var> buffer size.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18841"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>		the <code class="PARAMETER">data</code> buffer size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19570"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18847"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19575"></a><h3>
-<a name="XMLSECENCCTXXMLENCRYPT"></a>xmlSecEncCtxXmlEncrypt ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecEncCtxXmlEncrypt          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> tmpl,
-                                             <font>xmlNodePtr</font> node);</pre>
-<p>Encrypts <var class="PARAMETER">node</var> according to template <var class="PARAMETER">tmpl</var>. If requested, <var class="PARAMETER">node</var> is replaced
+<a name="XMLSECENCCTXXMLENCRYPT"></a><h3>xmlSecEncCtxXmlEncrypt ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecEncCtxXmlEncrypt              (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> tmpl,
+                                                         <font>xmlNodePtr</font> node);</pre>
+<p>Encrypts <code class="PARAMETER">node</code> according to template <code class="PARAMETER">tmpl</code>. If requested, <code class="PARAMETER">node</code> is replaced
 with result <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19592"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18868"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19598"><span style="white-space: nowrap"><var class="PARAMETER">tmpl</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18874"><span style="white-space: nowrap"><code class="PARAMETER">tmpl</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19604"><span style="white-space: nowrap"><var class="PARAMETER">node</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18880"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to node for encryption.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19609"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18885"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19614"></a><h3>
-<a name="XMLSECENCCTXURIENCRYPT"></a>xmlSecEncCtxUriEncrypt ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecEncCtxUriEncrypt          (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> tmpl,
-                                             const <font>xmlChar</font> *uri);</pre>
-<p>Encrypts data from <var class="PARAMETER">uri</var> according to template <var class="PARAMETER">tmpl</var>.</p>
+<a name="XMLSECENCCTXURIENCRYPT"></a><h3>xmlSecEncCtxUriEncrypt ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecEncCtxUriEncrypt              (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> tmpl,
+                                                         const <font>xmlChar</font> *uri);</pre>
+<p>Encrypts data from <code class="PARAMETER">uri</code> according to template <code class="PARAMETER">tmpl</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19629"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18904"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19635"><span style="white-space: nowrap"><var class="PARAMETER">tmpl</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18910"><span style="white-space: nowrap"><code class="PARAMETER">tmpl</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> template node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19641"><span style="white-space: nowrap"><var class="PARAMETER">uri</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18916"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the URI.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19646"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18921"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19651"></a><h3>
-<a name="XMLSECENCCTXDECRYPT"></a>xmlSecEncCtxDecrypt ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecEncCtxDecrypt             (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> node);</pre>
-<p>Decrypts <var class="PARAMETER">node</var> and if necessary replaces <var class="PARAMETER">node</var> with decrypted data.</p>
+<a name="XMLSECENCCTXDECRYPT"></a><h3>xmlSecEncCtxDecrypt ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecEncCtxDecrypt                 (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> node);</pre>
+<p>Decrypts <code class="PARAMETER">node</code> and if necessary replaces <code class="PARAMETER">node</code> with decrypted data.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19665"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18939"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19671"><span style="white-space: nowrap"><var class="PARAMETER">node</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18945"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19677"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18951"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19682"></a><h3>
-<a name="XMLSECENCCTXDECRYPTTOBUFFER"></a>xmlSecEncCtxDecryptToBuffer ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font> xmlSecEncCtxDecryptToBuffer (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>xmlNodePtr</font> node);</pre>
-<p>Decrypts <var class="PARAMETER">node</var> data to the <var class="PARAMETER">encCtx</var> buffer.</p>
+<a name="XMLSECENCCTXDECRYPTTOBUFFER"></a><h3>xmlSecEncCtxDecryptToBuffer ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font>     xmlSecEncCtxDecryptToBuffer         (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>xmlNodePtr</font> node);</pre>
+<p>Decrypts <code class="PARAMETER">node</code> data to the <code class="PARAMETER">encCtx</code> buffer.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19696"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18969"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19702"><span style="white-space: nowrap"><var class="PARAMETER">node</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18975"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19708"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN18981"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19713"></a><h3>
-<a name="XMLSECENCCTXDEBUGDUMP"></a>xmlSecEncCtxDebugDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecEncCtxDebugDump           (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints the debug information about <var class="PARAMETER">encCtx</var> to <var class="PARAMETER">output</var>.</p>
+<a name="XMLSECENCCTXDEBUGDUMP"></a><h3>xmlSecEncCtxDebugDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecEncCtxDebugDump               (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints the debug information about <code class="PARAMETER">encCtx</code> to <code class="PARAMETER">output</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19727"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN18999"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19733"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19005"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN19738"></a><h3>
-<a name="XMLSECENCCTXDEBUGXMLDUMP"></a>xmlSecEncCtxDebugXmlDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecEncCtxDebugXmlDump        (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints the debug information about <var class="PARAMETER">encCtx</var> to <var class="PARAMETER">output</var> in XML format.</p>
+<a name="XMLSECENCCTXDEBUGXMLDUMP"></a><h3>xmlSecEncCtxDebugXmlDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecEncCtxDebugXmlDump            (<a href="xmlsec-xmlenc.html#XMLSECENCCTX">xmlSecEncCtxPtr</a> encCtx,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints the debug information about <code class="PARAMETER">encCtx</code> to <code class="PARAMETER">output</code> in XML format.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19752"><span style="white-space: nowrap"><var class="PARAMETER">encCtx</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19023"><span style="white-space: nowrap"><code class="PARAMETER">encCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData" target="_top">&lt;enc:EncryptedData/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19758"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19029"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-xmldsig.html"><b>&lt;&lt;&lt;xmldsig</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-xmlsec.html"><b>xmlsec&gt;&gt;&gt;</b></a></td>
+<td align="left"><a accesskey="p" href="xmlsec-xmldsig.html"><b>&lt;&lt;&lt; xmldsig</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-xmlsec.html"><b>xmlsec &gt;&gt;&gt;</b></a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table></body>

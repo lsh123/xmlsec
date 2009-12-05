@@ -1,28 +1,26 @@
 <refentry id="xmlsec-mscrypto-certkeys">
 <refmeta>
-<refentrytitle>certkeys</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-mscrypto-certkeys.top_of_page">certkeys</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC-MSCRYPTO Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>certkeys</refname><refpurpose>MS Crypto certificates helper functions.</refpurpose>
+<refname>certkeys</refname>
+<refpurpose>MS Crypto certificates helper functions.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="xmlsec-mscrypto-certkeys.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
-<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> <link linkend="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   <link linkend="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</link>     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   <link linkend="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</link>
-                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> <link linkend="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</link>        (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert);
-<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> <link linkend="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</link>    (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</link>        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           <link linkend="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</link>         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           <link linkend="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</link>               (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert);
+<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    <link linkend="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</link>             (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert,
+                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
 </synopsis>
 </refsynopsisdiv>
 
@@ -34,96 +32,90 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="xmlsec-mscrypto-certkeys.description" role="desc">
+<title role="desc.title">Description</title>
 <para>
 MS Crypto certificates helper functions.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataGetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoKeyDataGetCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<refsect1 id="xmlsec-mscrypto-certkeys.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="xmlSecMSCryptoKeyDataGetCert" role="function">
+<title>xmlSecMSCryptoKeyDataGetCert ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetCert"><primary sortas="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoKeyDataGetCert        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Native MSCrypto certificate retrieval from xmlsec keydata. The 
 returned PCCERT_CONTEXT must not be released by the caller.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>		the key data to retrieve certificate from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>PCCERT_CONTEXT on success or NULL otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> PCCERT_CONTEXT on success or NULL otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataGetKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   xmlSecMSCryptoKeyDataGetKey     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataGetKey" role="function">
+<title>xmlSecMSCryptoKeyDataGetKey ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetKey"><primary sortas="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           xmlSecMSCryptoKeyDataGetKey         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Native MSCrypto key retrieval from xmlsec keydata. The 
 returned HKEY must not be destroyed by the caller.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>		the key data to retrieve certificate from.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
 <listitem><simpara>              type of key requested (public/private)
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>HKEY on success or NULL otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HKEY on success or NULL otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataGetDecryptKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY-CAPS">HCRYPTKEY</link>   xmlSecMSCryptoKeyDataGetDecryptKey
-                                            (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataGetDecryptKey" role="function">
+<title>xmlSecMSCryptoKeyDataGetDecryptKey ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGetDecryptKey"><primary sortas="xmlSecMSCryptoKeyDataGetDecryptKey">xmlSecMSCryptoKeyDataGetDecryptKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           xmlSecMSCryptoKeyDataGetDecryptKey  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
 Native MSCrypto decrypt key retrieval from xmlsec keydata. The
 returned HKEY must not be destroyed by the caller.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara> 	the key data pointer
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>HKEY on success or NULL otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HKEY on success or NULL otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup ()</title>
-<indexterm><primary>xmlSecMSCryptoCertDup</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> xmlSecMSCryptoCertDup        (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert);</programlisting>
+<refsect2 id="xmlSecMSCryptoCertDup" role="function">
+<title>xmlSecMSCryptoCertDup ()</title>
+<indexterm zone="xmlSecMSCryptoCertDup"><primary sortas="xmlSecMSCryptoCertDup">xmlSecMSCryptoCertDup</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoCertDup               (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert);</programlisting>
 <para>
 Duplicates the <parameter>pCert</parameter>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>pCert</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pCert</parameter>&#160;:</term>
 <listitem><simpara> 		the pointer to cert.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created PCCERT_CONTEXT object or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created PCCERT_CONTEXT object or 
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt ()</title>
-<indexterm><primary>xmlSecMSCryptoCertAdopt</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> xmlSecMSCryptoCertAdopt    (<link linkend="PCCERT-CONTEXT-CAPS">PCCERT_CONTEXT</link> pCert,
-                                             <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<refsect2 id="xmlSecMSCryptoCertAdopt" role="function">
+<title>xmlSecMSCryptoCertAdopt ()</title>
+<indexterm zone="xmlSecMSCryptoCertAdopt"><primary sortas="xmlSecMSCryptoCertAdopt">xmlSecMSCryptoCertAdopt</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    xmlSecMSCryptoCertAdopt             (<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> pCert,
+                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
 Creates key data value from the cert.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>pCert</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pCert</parameter>&#160;:</term>
 <listitem><simpara> 		the pointer to cert.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>type</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
 <listitem><simpara>		the expected key type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to newly created xmlsec key or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created xmlsec key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

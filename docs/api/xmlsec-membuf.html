@@ -2,12 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>membuf</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="list" href="xmlsec-list.html">
 <link rel="NEXT" title="nodeset" href="xmlsec-nodeset.html">
-<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,68 +87,59 @@
 <h1>
 <a name="XMLSEC-MEMBUF"></a>membuf</h1>
 <div class="REFNAMEDIV">
-<a name="AEN11953"></a><h2>Name</h2>membuf--Memory buffer transform implementation.</div>
+<a name="AEN11475"></a><h2>Name</h2>membuf -- Memory buffer transform implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN11956"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-#define     <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID">xmlSecTransformMemBufId</a>
-<font>xmlSecTransformId</font> <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS">xmlSecTransformMemBufGetKlass</a>
-                                            (void);
-<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER">xmlSecTransformMemBufGetBuffer</a>
-                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
+<a name="XMLSEC-MEMBUF.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">#define             <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFID">xmlSecTransformMemBufId</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETKLASS">xmlSecTransformMemBufGetKlass</a>       (void);
+<font>xmlSecBufferPtr</font>     <a href="xmlsec-membuf.html#XMLSECTRANSFORMMEMBUFGETBUFFER">xmlSecTransformMemBufGetBuffer</a>      (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN11965"></a><h2>Description</h2>
+<a name="XMLSEC-MEMBUF.DESCRIPTION"></a><h2>Description</h2>
 <p>Memory buffer transform implementation.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN11968"></a><h2>Details</h2>
+<a name="XMLSEC-MEMBUF.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN11970"></a><h3>
-<a name="XMLSECTRANSFORMMEMBUFID"></a>xmlSecTransformMemBufId</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecTransformMemBufId</pre>
+<a name="XMLSECTRANSFORMMEMBUFID"></a><h3>xmlSecTransformMemBufId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecTransformMemBufId</pre>
 <p>The Memory Buffer transform klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11978"></a><h3>
-<a name="XMLSECTRANSFORMMEMBUFGETKLASS"></a>xmlSecTransformMemBufGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font> xmlSecTransformMemBufGetKlass
-                                            (void);</pre>
+<a name="XMLSECTRANSFORMMEMBUFGETKLASS"></a><h3>xmlSecTransformMemBufGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformMemBufGetKlass       (void);</pre>
 <p>The memory buffer transorm (used to store the data that go through it).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN11988"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>memory buffer transform klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN11508"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> memory buffer transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN11993"></a><h3>
-<a name="XMLSECTRANSFORMMEMBUFGETBUFFER"></a>xmlSecTransformMemBufGetBuffer ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> xmlSecTransformMemBufGetBuffer
-                                            (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
+<a name="XMLSECTRANSFORMMEMBUFGETBUFFER"></a><h3>xmlSecTransformMemBufGetBuffer ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecBufferPtr</font>     xmlSecTransformMemBufGetBuffer      (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
 <p>Gets the pointer to memory buffer transform buffer.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN12004"><span style="white-space: nowrap"><var class="PARAMETER">transform</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN11523"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to memory buffer transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN12009"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to the transform's <a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBuffer</span></a>. </p></td>
+<td align="LEFT" valign="TOP"><a name="AEN11528"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to the transform's <a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBuffer</span></a>. </p></td>
 </tr>
 </tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-list.html"><b>&lt;&lt;&lt;list</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-nodeset.html"><b>nodeset&gt;&gt;&gt;</b></a></td>
+<td align="left"><a accesskey="p" href="xmlsec-list.html"><b>&lt;&lt;&lt; list</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-nodeset.html"><b>nodeset &gt;&gt;&gt;</b></a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table></body>

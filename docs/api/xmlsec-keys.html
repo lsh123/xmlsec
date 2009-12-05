@@ -2,12 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>keys</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="keysdata" href="xmlsec-keysdata.html">
 <link rel="NEXT" title="keysmngr" href="xmlsec-keysmngr.html">
-<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,363 +87,339 @@
 <h1>
 <a name="XMLSEC-KEYS"></a>keys</h1>
 <div class="REFNAMEDIV">
-<a name="AEN8968"></a><h2>Name</h2>keys--Crypto key object definition.</div>
+<a name="AEN8602"></a><h2>Name</h2>keys -- Crypto key object definition.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN8971"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-typedef     <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a>;
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSAGESIGN">xmlSecKeyUsageSign</a>
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSAGEVERIFY">xmlSecKeyUsageVerify</a>
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSAGEENCRYPT">xmlSecKeyUsageEncrypt</a>
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSAGEDECRYPT">xmlSecKeyUsageDecrypt</a>
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSAGEKEYEXCHANGE">xmlSecKeyUsageKeyExchange</a>
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSAGEANY">xmlSecKeyUsageAny</a>
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYUSEWITHINITIALIZE">xmlSecKeyUseWithInitialize</a>      (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYUSEWITHFINALIZE">xmlSecKeyUseWithFinalize</a>        (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYUSEWITHRESET">xmlSecKeyUseWithReset</a>           (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYUSEWITHCOPY">xmlSecKeyUseWithCopy</a>            (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> dst,
-                                             <a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> src);
-<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> <a href="xmlsec-keys.html#XMLSECKEYUSEWITHCREATE">xmlSecKeyUseWithCreate</a>  (const <font>xmlChar</font> *application,
-                                             const <font>xmlChar</font> *identifier);
-<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDUPLICATE">xmlSecKeyUseWithDuplicate</a>
-                                            (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDESTROY">xmlSecKeyUseWithDestroy</a>         (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYUSEWITHSET">xmlSecKeyUseWithSet</a>             (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
-                                             const <font>xmlChar</font> *application,
-                                             const <font>xmlChar</font> *identifier);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDEBUGDUMP">xmlSecKeyUseWithDebugDump</a>       (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
-                                             <font>FILE</font> *output);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDEBUGXMLDUMP">xmlSecKeyUseWithDebugXmlDump</a>    (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
-                                             <font>FILE</font> *output);
-struct      <a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWith</a>;
-#define     <a href="xmlsec-keys.html#XMLSECKEYUSEWITHPTRLISTID">xmlSecKeyUseWithPtrListId</a>
-<font>xmlSecPtrListId</font> <a href="xmlsec-keys.html#XMLSECKEYUSEWITHPTRLISTGETKLASS">xmlSecKeyUseWithPtrListGetKlass</a>
-                                            (void);
-struct      <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReq</a>;
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYREQINITIALIZE">xmlSecKeyReqInitialize</a>          (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE">xmlSecKeyReqFinalize</a>            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYREQRESET">xmlSecKeyReqReset</a>               (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYREQCOPY">xmlSecKeyReqCopy</a>                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> dst,
-                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> src);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYREQMATCHKEY">xmlSecKeyReqMatchKey</a>            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYREQMATCHKEYVALUE">xmlSecKeyReqMatchKeyValue</a>       (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYREQDEBUGDUMP">xmlSecKeyReqDebugDump</a>           (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <font>FILE</font> *output);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYREQDEBUGXMLDUMP">xmlSecKeyReqDebugXmlDump</a>        (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <font>FILE</font> *output);
-struct      <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a>;
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-keys.html#XMLSECKEYCREATE">xmlSecKeyCreate</a>                (void);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYDESTROY">xmlSecKeyDestroy</a>                (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYEMPTY">xmlSecKeyEmpty</a>                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>xmlSecKeyPtr</font> <a href="xmlsec-keys.html#XMLSECKEYDUPLICATE">xmlSecKeyDuplicate</a>             (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYCOPY">xmlSecKeyCopy</a>                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keyDst,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keySrc);
-const <font>xmlChar</font>* <a href="xmlsec-keys.html#XMLSECKEYGETNAME">xmlSecKeyGetName</a>             (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYSETNAME">xmlSecKeySetName</a>                (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const <font>xmlChar</font> *name);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <a href="xmlsec-keys.html#XMLSECKEYGETTYPE">xmlSecKeyGetType</a>          (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>xmlSecKeyDataPtr</font> <a href="xmlsec-keys.html#XMLSECKEYGETVALUE">xmlSecKeyGetValue</a>          (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYSETVALUE">xmlSecKeySetValue</a>               (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);
-<font>xmlSecKeyDataPtr</font> <a href="xmlsec-keys.html#XMLSECKEYGETDATA">xmlSecKeyGetData</a>           (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>xmlSecKeyDataId</font> dataId);
-<font>xmlSecKeyDataPtr</font> <a href="xmlsec-keys.html#XMLSECKEYENSUREDATA">xmlSecKeyEnsureData</a>        (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>xmlSecKeyDataId</font> dataId);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYADOPTDATA">xmlSecKeyAdoptData</a>              (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYDEBUGDUMP">xmlSecKeyDebugDump</a>              (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>FILE</font> *output);
-<font>void</font>        <a href="xmlsec-keys.html#XMLSECKEYDEBUGXMLDUMP">xmlSecKeyDebugXmlDump</a>           (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>FILE</font> *output);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-keys.html#XMLSECKEYGENERATE">xmlSecKeyGenerate</a>              (<font>xmlSecKeyDataId</font> dataId,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-keys.html#XMLSECKEYGENERATEBYNAME">xmlSecKeyGenerateByName</a>        (const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-<font>int</font>         <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-keys.html#XMLSECKEYREADBUFFER">xmlSecKeyReadBuffer</a>            (<font>xmlSecKeyDataId</font> dataId,
-                                             <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a> *buffer);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-keys.html#XMLSECKEYREADBINARYFILE">xmlSecKeyReadBinaryFile</a>        (<font>xmlSecKeyDataId</font> dataId,
-                                             const <font>char</font> *filename);
-<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> <a href="xmlsec-keys.html#XMLSECKEYREADMEMORY">xmlSecKeyReadMemory</a>            (<font>xmlSecKeyDataId</font> dataId,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);
-#define     <a href="xmlsec-keys.html#XMLSECKEYISVALID">xmlSecKeyIsValid</a>                (key)
-#define     <a href="xmlsec-keys.html#XMLSECKEYCHECKID">xmlSecKeyCheckId</a>                (key, keyId)
-#define     <a href="xmlsec-keys.html#XMLSECKEYPTRLISTID">xmlSecKeyPtrListId</a>
-<font>xmlSecPtrListId</font> <a href="xmlsec-keys.html#XMLSECKEYPTRLISTGETKLASS">xmlSecKeyPtrListGetKlass</a>    (void);</pre>
+<a name="XMLSEC-KEYS.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS">typedef             <a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a>;
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSAGESIGN">xmlSecKeyUsageSign</a>
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSAGEVERIFY">xmlSecKeyUsageVerify</a>
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSAGEENCRYPT">xmlSecKeyUsageEncrypt</a>
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSAGEDECRYPT">xmlSecKeyUsageDecrypt</a>
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSAGEKEYEXCHANGE">xmlSecKeyUsageKeyExchange</a>
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSAGEANY">xmlSecKeyUsageAny</a>
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYUSEWITHINITIALIZE">xmlSecKeyUseWithInitialize</a>          (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYUSEWITHFINALIZE">xmlSecKeyUseWithFinalize</a>            (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYUSEWITHRESET">xmlSecKeyUseWithReset</a>               (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYUSEWITHCOPY">xmlSecKeyUseWithCopy</a>                (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> dst,
+                                                         <a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> src);
+<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a>  <a href="xmlsec-keys.html#XMLSECKEYUSEWITHCREATE">xmlSecKeyUseWithCreate</a>             (const <font>xmlChar</font> *application,
+                                                         const <font>xmlChar</font> *identifier);
+<font>xmlSecKeyUseWithPtr</font>  <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDUPLICATE">xmlSecKeyUseWithDuplicate</a>          (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDESTROY">xmlSecKeyUseWithDestroy</a>             (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYUSEWITHSET">xmlSecKeyUseWithSet</a>                 (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
+                                                         const <font>xmlChar</font> *application,
+                                                         const <font>xmlChar</font> *identifier);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDEBUGDUMP">xmlSecKeyUseWithDebugDump</a>           (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
+                                                         <font>FILE</font> *output);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYUSEWITHDEBUGXMLDUMP">xmlSecKeyUseWithDebugXmlDump</a>        (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
+                                                         <font>FILE</font> *output);
+struct              <a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWith</a>;
+#define             <a href="xmlsec-keys.html#XMLSECKEYUSEWITHPTRLISTID">xmlSecKeyUseWithPtrListId</a>
+<font>xmlSecPtrListId</font>     <a href="xmlsec-keys.html#XMLSECKEYUSEWITHPTRLISTGETKLASS">xmlSecKeyUseWithPtrListGetKlass</a>     (void);
+struct              <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReq</a>;
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYREQINITIALIZE">xmlSecKeyReqInitialize</a>              (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE">xmlSecKeyReqFinalize</a>                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYREQRESET">xmlSecKeyReqReset</a>                   (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYREQCOPY">xmlSecKeyReqCopy</a>                    (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> dst,
+                                                         <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> src);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYREQMATCHKEY">xmlSecKeyReqMatchKey</a>                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYREQMATCHKEYVALUE">xmlSecKeyReqMatchKeyValue</a>           (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYREQDEBUGDUMP">xmlSecKeyReqDebugDump</a>               (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <font>FILE</font> *output);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYREQDEBUGXMLDUMP">xmlSecKeyReqDebugXmlDump</a>            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <font>FILE</font> *output);
+struct              <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKey</a>;
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        <a href="xmlsec-keys.html#XMLSECKEYCREATE">xmlSecKeyCreate</a>                     (void);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYDESTROY">xmlSecKeyDestroy</a>                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYEMPTY">xmlSecKeyEmpty</a>                      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>xmlSecKeyPtr</font>        <a href="xmlsec-keys.html#XMLSECKEYDUPLICATE">xmlSecKeyDuplicate</a>                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYCOPY">xmlSecKeyCopy</a>                       (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keyDst,
+                                                         <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keySrc);
+const <font>xmlChar</font>*      <a href="xmlsec-keys.html#XMLSECKEYGETNAME">xmlSecKeyGetName</a>                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYSETNAME">xmlSecKeySetName</a>                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         const <font>xmlChar</font> *name);
+<a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a>   <a href="xmlsec-keys.html#XMLSECKEYGETTYPE">xmlSecKeyGetType</a>                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>xmlSecKeyDataPtr</font>    <a href="xmlsec-keys.html#XMLSECKEYGETVALUE">xmlSecKeyGetValue</a>                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYSETVALUE">xmlSecKeySetValue</a>                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);
+<font>xmlSecKeyDataPtr</font>    <a href="xmlsec-keys.html#XMLSECKEYGETDATA">xmlSecKeyGetData</a>                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>xmlSecKeyDataId</font> dataId);
+<font>xmlSecKeyDataPtr</font>    <a href="xmlsec-keys.html#XMLSECKEYENSUREDATA">xmlSecKeyEnsureData</a>                 (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>xmlSecKeyDataId</font> dataId);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYADOPTDATA">xmlSecKeyAdoptData</a>                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYDEBUGDUMP">xmlSecKeyDebugDump</a>                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>FILE</font> *output);
+<font>void</font>                <a href="xmlsec-keys.html#XMLSECKEYDEBUGXMLDUMP">xmlSecKeyDebugXmlDump</a>               (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>FILE</font> *output);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        <a href="xmlsec-keys.html#XMLSECKEYGENERATE">xmlSecKeyGenerate</a>                   (<font>xmlSecKeyDataId</font> dataId,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        <a href="xmlsec-keys.html#XMLSECKEYGENERATEBYNAME">xmlSecKeyGenerateByName</a>             (const <font>xmlChar</font> *name,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+<font>int</font>                 <a href="xmlsec-keys.html#XMLSECKEYMATCH">xmlSecKeyMatch</a>                      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         const <font>xmlChar</font> *name,
+                                                         <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        <a href="xmlsec-keys.html#XMLSECKEYREADBUFFER">xmlSecKeyReadBuffer</a>                 (<font>xmlSecKeyDataId</font> dataId,
+                                                         <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a> *buffer);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        <a href="xmlsec-keys.html#XMLSECKEYREADBINARYFILE">xmlSecKeyReadBinaryFile</a>             (<font>xmlSecKeyDataId</font> dataId,
+                                                         const <font>char</font> *filename);
+<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        <a href="xmlsec-keys.html#XMLSECKEYREADMEMORY">xmlSecKeyReadMemory</a>                 (<font>xmlSecKeyDataId</font> dataId,
+                                                         const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);
+#define             <a href="xmlsec-keys.html#XMLSECKEYISVALID">xmlSecKeyIsValid</a>                    (key)
+#define             <a href="xmlsec-keys.html#XMLSECKEYCHECKID">xmlSecKeyCheckId</a>                    (key, keyId)
+#define             <a href="xmlsec-keys.html#XMLSECKEYPTRLISTID">xmlSecKeyPtrListId</a>
+<font>xmlSecPtrListId</font>     <a href="xmlsec-keys.html#XMLSECKEYPTRLISTGETKLASS">xmlSecKeyPtrListGetKlass</a>            (void);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN9137"></a><h2>Description</h2>
+<a name="XMLSEC-KEYS.DESCRIPTION"></a><h2>Description</h2>
 <p>Crypto key object definition.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN9140"></a><h2>Details</h2>
+<a name="XMLSEC-KEYS.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN9142"></a><h3>
-<a name="XMLSECKEYUSAGE"></a>xmlSecKeyUsage</h3>
+<a name="XMLSECKEYUSAGE"></a><h3>xmlSecKeyUsage</h3>
 <pre class="PROGRAMLISTING">typedef unsigned int 			xmlSecKeyUsage;</pre>
 <p>The key usage.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9150"></a><h3>
-<a name="XMLSECKEYUSAGESIGN"></a>xmlSecKeyUsageSign</h3>
+<a name="XMLSECKEYUSAGESIGN"></a><h3>xmlSecKeyUsageSign</h3>
 <pre class="PROGRAMLISTING">#define	xmlSecKeyUsageSign		0x00000001</pre>
 <p>Key can be used in any way.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9158"></a><h3>
-<a name="XMLSECKEYUSAGEVERIFY"></a>xmlSecKeyUsageVerify</h3>
+<a name="XMLSECKEYUSAGEVERIFY"></a><h3>xmlSecKeyUsageVerify</h3>
 <pre class="PROGRAMLISTING">#define	xmlSecKeyUsageVerify		0x00000002</pre>
 <p>Key for signing.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9166"></a><h3>
-<a name="XMLSECKEYUSAGEENCRYPT"></a>xmlSecKeyUsageEncrypt</h3>
+<a name="XMLSECKEYUSAGEENCRYPT"></a><h3>xmlSecKeyUsageEncrypt</h3>
 <pre class="PROGRAMLISTING">#define	xmlSecKeyUsageEncrypt		0x00000004</pre>
 <p>Key for signature verification.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9174"></a><h3>
-<a name="XMLSECKEYUSAGEDECRYPT"></a>xmlSecKeyUsageDecrypt</h3>
+<a name="XMLSECKEYUSAGEDECRYPT"></a><h3>xmlSecKeyUsageDecrypt</h3>
 <pre class="PROGRAMLISTING">#define	xmlSecKeyUsageDecrypt		0x00000008</pre>
 <p>An encryption key.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9182"></a><h3>
-<a name="XMLSECKEYUSAGEKEYEXCHANGE"></a>xmlSecKeyUsageKeyExchange</h3>
+<a name="XMLSECKEYUSAGEKEYEXCHANGE"></a><h3>xmlSecKeyUsageKeyExchange</h3>
 <pre class="PROGRAMLISTING">#define	xmlSecKeyUsageKeyExchange	0x00000010</pre>
 <p>The key is used for key exchange.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9190"></a><h3>
-<a name="XMLSECKEYUSAGEANY"></a>xmlSecKeyUsageAny</h3>
+<a name="XMLSECKEYUSAGEANY"></a><h3>xmlSecKeyUsageAny</h3>
 <pre class="PROGRAMLISTING">#define	xmlSecKeyUsageAny		0xFFFFFFFF</pre>
 <p>A decryption key.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9198"></a><h3>
-<a name="XMLSECKEYUSEWITHINITIALIZE"></a>xmlSecKeyUseWithInitialize ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyUseWithInitialize      (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
-<p>Initializes <var class="PARAMETER">keyUseWith</var> object.</p>
+<a name="XMLSECKEYUSEWITHINITIALIZE"></a><h3>xmlSecKeyUseWithInitialize ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyUseWithInitialize          (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
+<p>Initializes <code class="PARAMETER">keyUseWith</code> object.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9210"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8836"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9215"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN8841"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9220"></a><h3>
-<a name="XMLSECKEYUSEWITHFINALIZE"></a>xmlSecKeyUseWithFinalize ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyUseWithFinalize        (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
-<p>Finalizes <var class="PARAMETER">keyUseWith</var> object.</p>
+<a name="XMLSECKEYUSEWITHFINALIZE"></a><h3>xmlSecKeyUseWithFinalize ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyUseWithFinalize            (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
+<p>Finalizes <code class="PARAMETER">keyUseWith</code> object.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9232"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8857"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9237"></a><h3>
-<a name="XMLSECKEYUSEWITHRESET"></a>xmlSecKeyUseWithReset ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyUseWithReset           (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
-<p>Resets the <var class="PARAMETER">keyUseWith</var> to its state after initialization.</p>
+<a name="XMLSECKEYUSEWITHRESET"></a><h3>xmlSecKeyUseWithReset ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyUseWithReset               (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
+<p>Resets the <code class="PARAMETER">keyUseWith</code> to its state after initialization.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9249"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8873"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9254"></a><h3>
-<a name="XMLSECKEYUSEWITHCOPY"></a>xmlSecKeyUseWithCopy ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyUseWithCopy            (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> dst,
-                                             <a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> src);</pre>
-<p>Copies information from <var class="PARAMETER">dst</var> to <var class="PARAMETER">src</var>.</p>
+<a name="XMLSECKEYUSEWITHCOPY"></a><h3>xmlSecKeyUseWithCopy ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyUseWithCopy                (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> dst,
+                                                         <a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> src);</pre>
+<p>Copies information from <code class="PARAMETER">dst</code> to <code class="PARAMETER">src</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9268"><span style="white-space: nowrap"><var class="PARAMETER">dst</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8891"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to destination object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9273"><span style="white-space: nowrap"><var class="PARAMETER">src</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8896"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to source object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9278"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN8901"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9283"></a><h3>
-<a name="XMLSECKEYUSEWITHCREATE"></a>xmlSecKeyUseWithCreate ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> xmlSecKeyUseWithCreate  (const <font>xmlChar</font> *application,
-                                             const <font>xmlChar</font> *identifier);</pre>
+<a name="XMLSECKEYUSEWITHCREATE"></a><h3>xmlSecKeyUseWithCreate ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a>  xmlSecKeyUseWithCreate             (const <font>xmlChar</font> *application,
+                                                         const <font>xmlChar</font> *identifier);</pre>
 <p>Creates new xmlSecKeyUseWith object. The caller is responsible for destroying
-returned object with <var class="PARAMETER">xmlSecKeyUseWithDestroy</var> function.</p>
+returned object with <code class="PARAMETER">xmlSecKeyUseWithDestroy</code> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9296"><span style="white-space: nowrap"><var class="PARAMETER">application</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8918"><span style="white-space: nowrap"><code class="PARAMETER">application</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>        the application value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9301"><span style="white-space: nowrap"><var class="PARAMETER">identifier</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8923"><span style="white-space: nowrap"><code class="PARAMETER">identifier</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the identifier value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9306"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created object or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN8928"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created object or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9311"></a><h3>
-<a name="XMLSECKEYUSEWITHDUPLICATE"></a>xmlSecKeyUseWithDuplicate ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> xmlSecKeyUseWithDuplicate
-                                            (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
-<p>Duplicates <var class="PARAMETER">keyUseWith</var> object. The caller is responsible for destroying
-returned object with <var class="PARAMETER">xmlSecKeyUseWithDestroy</var> function.</p>
+<a name="XMLSECKEYUSEWITHDUPLICATE"></a><h3>xmlSecKeyUseWithDuplicate ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyUseWithPtr</font>  xmlSecKeyUseWithDuplicate          (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
+<p>Duplicates <code class="PARAMETER">keyUseWith</code> object. The caller is responsible for destroying
+returned object with <code class="PARAMETER">xmlSecKeyUseWithDestroy</code> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9324"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8945"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9329"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created object or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN8950"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created object or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9334"></a><h3>
-<a name="XMLSECKEYUSEWITHDESTROY"></a>xmlSecKeyUseWithDestroy ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyUseWithDestroy         (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
-<p>Destroys <var class="PARAMETER">keyUseWith</var> created with <var class="PARAMETER">xmlSecKeyUseWithCreate</var> or <var class="PARAMETER">xmlSecKeyUseWithDuplicate</var>
+<a name="XMLSECKEYUSEWITHDESTROY"></a><h3>xmlSecKeyUseWithDestroy ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyUseWithDestroy             (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith);</pre>
+<p>Destroys <code class="PARAMETER">keyUseWith</code> created with <code class="PARAMETER">xmlSecKeyUseWithCreate</code> or <code class="PARAMETER">xmlSecKeyUseWithDuplicate</code>
 functions.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9348"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8968"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9353"></a><h3>
-<a name="XMLSECKEYUSEWITHSET"></a>xmlSecKeyUseWithSet ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyUseWithSet             (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
-                                             const <font>xmlChar</font> *application,
-                                             const <font>xmlChar</font> *identifier);</pre>
-<p>Sets <var class="PARAMETER">application</var> and <var class="PARAMETER">identifier</var> in the <var class="PARAMETER">keyUseWith</var>.</p>
+<a name="XMLSECKEYUSEWITHSET"></a><h3>xmlSecKeyUseWithSet ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyUseWithSet                 (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
+                                                         const <font>xmlChar</font> *application,
+                                                         const <font>xmlChar</font> *identifier);</pre>
+<p>Sets <code class="PARAMETER">application</code> and <code class="PARAMETER">identifier</code> in the <code class="PARAMETER">keyUseWith</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9369"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8988"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9374"><span style="white-space: nowrap"><var class="PARAMETER">application</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8993"><span style="white-space: nowrap"><code class="PARAMETER">application</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>        the new application value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9379"><span style="white-space: nowrap"><var class="PARAMETER">identifier</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN8998"><span style="white-space: nowrap"><code class="PARAMETER">identifier</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the new identifier value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9384"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9003"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9389"></a><h3>
-<a name="XMLSECKEYUSEWITHDEBUGDUMP"></a>xmlSecKeyUseWithDebugDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyUseWithDebugDump       (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints xmlSecKeyUseWith debug information to a file <var class="PARAMETER">output</var>.</p>
+<a name="XMLSECKEYUSEWITHDEBUGDUMP"></a><h3>xmlSecKeyUseWithDebugDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyUseWithDebugDump           (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints xmlSecKeyUseWith debug information to a file <code class="PARAMETER">output</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9402"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9020"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9407"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9025"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9412"></a><h3>
-<a name="XMLSECKEYUSEWITHDEBUGXMLDUMP"></a>xmlSecKeyUseWithDebugXmlDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyUseWithDebugXmlDump    (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints xmlSecKeyUseWith debug information to a file <var class="PARAMETER">output</var> in XML format.</p>
+<a name="XMLSECKEYUSEWITHDEBUGXMLDUMP"></a><h3>xmlSecKeyUseWithDebugXmlDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyUseWithDebugXmlDump        (<a href="xmlsec-keys.html#XMLSECKEYUSEWITH">xmlSecKeyUseWithPtr</a> keyUseWith,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints xmlSecKeyUseWith debug information to a file <code class="PARAMETER">output</code> in XML format.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9425"><span style="white-space: nowrap"><var class="PARAMETER">keyUseWith</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9042"><span style="white-space: nowrap"><code class="PARAMETER">keyUseWith</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the pointer to information about key application/user.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9430"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9047"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9435"></a><h3>
-<a name="XMLSECKEYUSEWITH"></a>struct xmlSecKeyUseWith</h3>
+<a name="XMLSECKEYUSEWITH"></a><h3>struct xmlSecKeyUseWith</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKeyUseWith {
-
     xmlChar*                    application;
     xmlChar*                    identifier;
 
@@ -456,51 +431,46 @@ functions.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9444"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">application</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9060"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">application</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>        the application.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9450"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">identifier</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9066"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">identifier</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>         the identifier.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9456"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9072"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9462"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved2</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9078"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved2</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9468"></a><h3>
-<a name="XMLSECKEYUSEWITHPTRLISTID"></a>xmlSecKeyUseWithPtrListId</h3>
+<a name="XMLSECKEYUSEWITHPTRLISTID"></a><h3>xmlSecKeyUseWithPtrListId</h3>
 <pre class="PROGRAMLISTING">#define xmlSecKeyUseWithPtrListId	xmlSecKeyUseWithPtrListGetKlass()</pre>
 <p>The keys list klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9476"></a><h3>
-<a name="XMLSECKEYUSEWITHPTRLISTGETKLASS"></a>xmlSecKeyUseWithPtrListGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecKeyUseWithPtrListGetKlass
-                                            (void);</pre>
+<a name="XMLSECKEYUSEWITHPTRLISTGETKLASS"></a><h3>xmlSecKeyUseWithPtrListGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font>     xmlSecKeyUseWithPtrListGetKlass     (void);</pre>
 <p>The key data list klass.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9486"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to the key data list klass.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9100"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to the key data list klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9491"></a><h3>
-<a name="XMLSECKEYREQ"></a>struct xmlSecKeyReq</h3>
+<a name="XMLSECKEYREQ"></a><h3>struct xmlSecKeyReq</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKeyReq {
-
     xmlSecKeyDataId	        keyId;
     xmlSecKeyDataType		keyType;
     xmlSecKeyUsage		keyUsage;
@@ -515,202 +485,192 @@ functions.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9500"><span style="white-space: nowrap"><font>xmlSecKeyDataId</font> <code class="STRUCTFIELD">keyId</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9113"><span style="white-space: nowrap"><font>xmlSecKeyDataId</font> <code class="STRUCTFIELD">keyId</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the desired key value klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9506"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <code class="STRUCTFIELD">keyType</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9119"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <code class="STRUCTFIELD">keyType</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the desired key type.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9512"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <code class="STRUCTFIELD">keyUsage</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9125"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <code class="STRUCTFIELD">keyUsage</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the desired key usage.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9518"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">keyBitsSize</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9131"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">keyBitsSize</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>	the desired key size (in bits!).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9524"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <code class="STRUCTFIELD">keyUseWithList</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9137"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <code class="STRUCTFIELD">keyUseWithList</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>     the desired key use with application/identifier information.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9530"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9143"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9536"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved2</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9149"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved2</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9542"></a><h3>
-<a name="XMLSECKEYREQINITIALIZE"></a>xmlSecKeyReqInitialize ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyReqInitialize          (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
+<a name="XMLSECKEYREQINITIALIZE"></a><h3>xmlSecKeyReqInitialize ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyReqInitialize              (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
 <p>Initialize key requirements object. Caller is responsible for
 cleaning it with <a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE"><span class="TYPE">xmlSecKeyReqFinalize</span></a> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9555"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9167"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9560"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9172"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9565"></a><h3>
-<a name="XMLSECKEYREQFINALIZE"></a>xmlSecKeyReqFinalize ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyReqFinalize            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
+<a name="XMLSECKEYREQFINALIZE"></a><h3>xmlSecKeyReqFinalize ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyReqFinalize                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
 <p>Cleans the key requirements object initialized with <a href="xmlsec-keys.html#XMLSECKEYREQINITIALIZE"><span class="TYPE">xmlSecKeyReqInitialize</span></a>
 function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9578"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9189"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9583"></a><h3>
-<a name="XMLSECKEYREQRESET"></a>xmlSecKeyReqReset ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyReqReset               (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
+<a name="XMLSECKEYREQRESET"></a><h3>xmlSecKeyReqReset ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyReqReset                   (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
 <p>Resets key requirements object for new key search.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9594"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9204"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9599"></a><h3>
-<a name="XMLSECKEYREQCOPY"></a>xmlSecKeyReqCopy ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyReqCopy                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> dst,
-                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> src);</pre>
-<p>Copies key requirements from <var class="PARAMETER">src</var> object to <var class="PARAMETER">dst</var> object.</p>
+<a name="XMLSECKEYREQCOPY"></a><h3>xmlSecKeyReqCopy ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyReqCopy                    (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> dst,
+                                                         <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> src);</pre>
+<p>Copies key requirements from <code class="PARAMETER">src</code> object to <code class="PARAMETER">dst</code> object.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9613"><span style="white-space: nowrap"><var class="PARAMETER">dst</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9222"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to destination object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9618"><span style="white-space: nowrap"><var class="PARAMETER">src</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9227"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to source object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9623"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success and a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9232"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success and a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9628"></a><h3>
-<a name="XMLSECKEYREQMATCHKEY"></a>xmlSecKeyReqMatchKey ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyReqMatchKey            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
-<p>Checks whether <var class="PARAMETER">key</var> matches key requirements <var class="PARAMETER">keyReq</var>.</p>
+<a name="XMLSECKEYREQMATCHKEY"></a><h3>xmlSecKeyReqMatchKey ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyReqMatchKey                (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<p>Checks whether <code class="PARAMETER">key</code> matches key requirements <code class="PARAMETER">keyReq</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9642"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9250"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9647"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9255"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9652"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>1 if key matches requirements, 0 if not and a negative value
+<td align="LEFT" valign="TOP"><a name="AEN9260"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 1 if key matches requirements, 0 if not and a negative value
 if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9657"></a><h3>
-<a name="XMLSECKEYREQMATCHKEYVALUE"></a>xmlSecKeyReqMatchKeyValue ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyReqMatchKeyValue       (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);</pre>
-<p>Checks whether <var class="PARAMETER">keyValue</var> matches key requirements <var class="PARAMETER">keyReq</var>.</p>
+<a name="XMLSECKEYREQMATCHKEYVALUE"></a><h3>xmlSecKeyReqMatchKeyValue ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyReqMatchKeyValue           (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);</pre>
+<p>Checks whether <code class="PARAMETER">keyValue</code> matches key requirements <code class="PARAMETER">keyReq</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9671"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9278"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9676"><span style="white-space: nowrap"><var class="PARAMETER">value</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9283"><span style="white-space: nowrap"><code class="PARAMETER">value</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9681"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>1 if key value matches requirements, 0 if not and a negative value
+<td align="LEFT" valign="TOP"><a name="AEN9288"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 1 if key value matches requirements, 0 if not and a negative value
 if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9686"></a><h3>
-<a name="XMLSECKEYREQDEBUGDUMP"></a>xmlSecKeyReqDebugDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyReqDebugDump           (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints debug information about <var class="PARAMETER">keyReq</var> into <var class="PARAMETER">output</var>.</p>
+<a name="XMLSECKEYREQDEBUGDUMP"></a><h3>xmlSecKeyReqDebugDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyReqDebugDump               (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints debug information about <code class="PARAMETER">keyReq</code> into <code class="PARAMETER">output</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9700"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9306"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9705"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9311"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9710"></a><h3>
-<a name="XMLSECKEYREQDEBUGXMLDUMP"></a>xmlSecKeyReqDebugXmlDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyReqDebugXmlDump        (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints debug information about <var class="PARAMETER">keyReq</var> into <var class="PARAMETER">output</var> in XML format.</p>
+<a name="XMLSECKEYREQDEBUGXMLDUMP"></a><h3>xmlSecKeyReqDebugXmlDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyReqDebugXmlDump            (<a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints debug information about <code class="PARAMETER">keyReq</code> into <code class="PARAMETER">output</code> in XML format.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9724"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9329"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9729"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9334"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9734"></a><h3>
-<a name="XMLSECKEY"></a>struct xmlSecKey</h3>
+<a name="XMLSECKEY"></a><h3>struct xmlSecKey</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKey {
-
     xmlChar*				name;
     xmlSecKeyDataPtr			value;
     xmlSecPtrListPtr			dataList;
@@ -723,557 +683,532 @@ if an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9743"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">name</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9347"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">name</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the key name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9749"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <code class="STRUCTFIELD">value</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9353"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <code class="STRUCTFIELD">value</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9755"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <code class="STRUCTFIELD">dataList</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9359"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <code class="STRUCTFIELD">dataList</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key data list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9761"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <code class="STRUCTFIELD">usage</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9365"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <code class="STRUCTFIELD">usage</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key usage.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9767"><span style="white-space: nowrap"><font>time_t</font> <code class="STRUCTFIELD">notValidBefore</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9371"><span style="white-space: nowrap"><font>time_t</font> <code class="STRUCTFIELD">notValidBefore</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>	the start key validity interval.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9773"><span style="white-space: nowrap"><font>time_t</font> <code class="STRUCTFIELD">notValidAfter</code></span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9377"><span style="white-space: nowrap"><font>time_t</font> <code class="STRUCTFIELD">notValidAfter</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>	the end key validity interval.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9779"></a><h3>
-<a name="XMLSECKEYCREATE"></a>xmlSecKeyCreate ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyCreate                (void);</pre>
+<a name="XMLSECKEYCREATE"></a><h3>xmlSecKeyCreate ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyCreate                     (void);</pre>
 <p>Allocates and initializes new key. Caller is responsible for 
 freeing returned object with <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="TYPE">xmlSecKeyDestroy</span></a> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9791"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to newly allocated <var class="PARAMETER">xmlSecKey</var> structure
+<td align="LEFT" valign="TOP"><a name="AEN9394"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the pointer to newly allocated <code class="PARAMETER">xmlSecKey</code> structure
 or NULL if an error occurs.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9797"></a><h3>
-<a name="XMLSECKEYDESTROY"></a>xmlSecKeyDestroy ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyDestroy                (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<a name="XMLSECKEYDESTROY"></a><h3>xmlSecKeyDestroy ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyDestroy                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
 <p>Destroys the key created using <a href="xmlsec-keys.html#XMLSECKEYCREATE"><span class="TYPE">xmlSecKeyCreate</span></a> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9810"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9412"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to key.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9815"></a><h3>
-<a name="XMLSECKEYEMPTY"></a>xmlSecKeyEmpty ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyEmpty                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
-<p>Clears the <var class="PARAMETER">key</var> data.</p>
+<a name="XMLSECKEYEMPTY"></a><h3>xmlSecKeyEmpty ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyEmpty                      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<p>Clears the <code class="PARAMETER">key</code> data.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN9827"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9428"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9832"></a><h3>
-<a name="XMLSECKEYDUPLICATE"></a>xmlSecKeyDuplicate ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font> xmlSecKeyDuplicate             (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
-<p>Creates a duplicate of the given <var class="PARAMETER">key</var>.</p>
+<a name="XMLSECKEYDUPLICATE"></a><h3>xmlSecKeyDuplicate ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyPtr</font>        xmlSecKeyDuplicate                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<p>Creates a duplicate of the given <code class="PARAMETER">key</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9844"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9444"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to the <a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKey</span></a> structure.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9851"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the pointer to newly allocated <a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKey</span></a> structure
+<td align="LEFT" valign="TOP"><a name="AEN9451"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the pointer to newly allocated <a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKey</span></a> structure
 or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9858"></a><h3>
-<a name="XMLSECKEYCOPY"></a>xmlSecKeyCopy ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyCopy                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keyDst,
-                                             <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keySrc);</pre>
-<p>Copies key data from <var class="PARAMETER">keySrc</var> to <var class="PARAMETER">keyDst</var>.</p>
+<a name="XMLSECKEYCOPY"></a><h3>xmlSecKeyCopy ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyCopy                       (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keyDst,
+                                                         <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> keySrc);</pre>
+<p>Copies key data from <code class="PARAMETER">keySrc</code> to <code class="PARAMETER">keyDst</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9872"><span style="white-space: nowrap"><var class="PARAMETER">keyDst</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9471"><span style="white-space: nowrap"><code class="PARAMETER">keyDst</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the destination key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9877"><span style="white-space: nowrap"><var class="PARAMETER">keySrc</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9476"><span style="white-space: nowrap"><code class="PARAMETER">keySrc</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the source key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9882"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9481"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9887"></a><h3>
-<a name="XMLSECKEYGETNAME"></a>xmlSecKeyGetName ()</h3>
-<pre class="PROGRAMLISTING">const <font>xmlChar</font>* xmlSecKeyGetName             (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<a name="XMLSECKEYGETNAME"></a><h3>xmlSecKeyGetName ()</h3>
+<pre class="PROGRAMLISTING">const <font>xmlChar</font>*      xmlSecKeyGetName                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
 <p>Gets key name (see also <a href="xmlsec-keys.html#XMLSECKEYSETNAME"><span class="TYPE">xmlSecKeySetName</span></a> function).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9900"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9498"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9905"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>key name.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9503"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> key name.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9910"></a><h3>
-<a name="XMLSECKEYSETNAME"></a>xmlSecKeySetName ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeySetName                (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const <font>xmlChar</font> *name);</pre>
+<a name="XMLSECKEYSETNAME"></a><h3>xmlSecKeySetName ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeySetName                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         const <font>xmlChar</font> *name);</pre>
 <p>Sets key name (see also <a href="xmlsec-keys.html#XMLSECKEYGETNAME"><span class="TYPE">xmlSecKeyGetName</span></a> function).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9924"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9521"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9929"><span style="white-space: nowrap"><var class="PARAMETER">name</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9526"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new key name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9934"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9531"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9939"></a><h3>
-<a name="XMLSECKEYGETTYPE"></a>xmlSecKeyGetType ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> xmlSecKeyGetType          (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
-<p>Gets <var class="PARAMETER">key</var> type.</p>
+<a name="XMLSECKEYGETTYPE"></a><h3>xmlSecKeyGetType ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a>   xmlSecKeyGetType                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<p>Gets <code class="PARAMETER">key</code> type.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9951"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9547"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9956"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>key type.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9552"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> key type.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9961"></a><h3>
-<a name="XMLSECKEYGETVALUE"></a>xmlSecKeyGetValue ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyGetValue          (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<a name="XMLSECKEYGETVALUE"></a><h3>xmlSecKeyGetValue ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font>    xmlSecKeyGetValue                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
 <p>Gets key value (see also <a href="xmlsec-keys.html#XMLSECKEYSETVALUE"><span class="TYPE">xmlSecKeySetValue</span></a> function).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9974"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9569"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9979"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>key value (crypto material).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9574"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> key value (crypto material).</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN9984"></a><h3>
-<a name="XMLSECKEYSETVALUE"></a>xmlSecKeySetValue ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeySetValue               (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);</pre>
+<a name="XMLSECKEYSETVALUE"></a><h3>xmlSecKeySetValue ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeySetValue                   (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> value);</pre>
 <p>Sets key value (see also <a href="xmlsec-keys.html#XMLSECKEYGETVALUE"><span class="TYPE">xmlSecKeyGetValue</span></a> function).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN9998"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9592"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10003"><span style="white-space: nowrap"><var class="PARAMETER">value</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9597"><span style="white-space: nowrap"><code class="PARAMETER">value</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10008"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9602"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10013"></a><h3>
-<a name="XMLSECKEYGETDATA"></a>xmlSecKeyGetData ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyGetData           (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>xmlSecKeyDataId</font> dataId);</pre>
+<a name="XMLSECKEYGETDATA"></a><h3>xmlSecKeyGetData ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font>    xmlSecKeyGetData                    (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>xmlSecKeyDataId</font> dataId);</pre>
 <p>Gets key's data.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10025"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9618"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10030"><span style="white-space: nowrap"><var class="PARAMETER">dataId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9623"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the requested data klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10035"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>additional data associated with the <var class="PARAMETER">key</var> (see also 
+<td align="LEFT" valign="TOP"><a name="AEN9628"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> additional data associated with the <code class="PARAMETER">key</code> (see also 
 <a href="xmlsec-keys.html#XMLSECKEYADOPTDATA"><span class="TYPE">xmlSecKeyAdoptData</span></a> function).</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10043"></a><h3>
-<a name="XMLSECKEYENSUREDATA"></a>xmlSecKeyEnsureData ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font> xmlSecKeyEnsureData        (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>xmlSecKeyDataId</font> dataId);</pre>
-<p>If necessary, creates key data of <var class="PARAMETER">dataId</var> klass and adds to <var class="PARAMETER">key</var>.</p>
+<a name="XMLSECKEYENSUREDATA"></a><h3>xmlSecKeyEnsureData ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataPtr</font>    xmlSecKeyEnsureData                 (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>xmlSecKeyDataId</font> dataId);</pre>
+<p>If necessary, creates key data of <code class="PARAMETER">dataId</code> klass and adds to <code class="PARAMETER">key</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10057"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9649"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10062"><span style="white-space: nowrap"><var class="PARAMETER">dataId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9654"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the requested data klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10067"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to key data or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9659"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to key data or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10072"></a><h3>
-<a name="XMLSECKEYADOPTDATA"></a>xmlSecKeyAdoptData ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyAdoptData              (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
-<p>Adds <var class="PARAMETER">data</var> to the <var class="PARAMETER">key</var>. The <var class="PARAMETER">data</var> object will be destroyed
-by <var class="PARAMETER">key</var>.</p>
+<a name="XMLSECKEYADOPTDATA"></a><h3>xmlSecKeyAdoptData ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyAdoptData                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
+<p>Adds <code class="PARAMETER">data</code> to the <code class="PARAMETER">key</code>. The <code class="PARAMETER">data</code> object will be destroyed
+by <code class="PARAMETER">key</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10088"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9679"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10093"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9684"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10098"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9689"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10103"></a><h3>
-<a name="XMLSECKEYDEBUGDUMP"></a>xmlSecKeyDebugDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyDebugDump              (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints the information about the <var class="PARAMETER">key</var> to the <var class="PARAMETER">output</var>.</p>
+<a name="XMLSECKEYDEBUGDUMP"></a><h3>xmlSecKeyDebugDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyDebugDump                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints the information about the <code class="PARAMETER">key</code> to the <code class="PARAMETER">output</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10117"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9707"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10122"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9712"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10127"></a><h3>
-<a name="XMLSECKEYDEBUGXMLDUMP"></a>xmlSecKeyDebugXmlDump ()</h3>
-<pre class="PROGRAMLISTING"><font>void</font>        xmlSecKeyDebugXmlDump           (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             <font>FILE</font> *output);</pre>
-<p>Prints the information about the <var class="PARAMETER">key</var> to the <var class="PARAMETER">output</var> in XML format.</p>
+<a name="XMLSECKEYDEBUGXMLDUMP"></a><h3>xmlSecKeyDebugXmlDump ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecKeyDebugXmlDump               (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         <font>FILE</font> *output);</pre>
+<p>Prints the information about the <code class="PARAMETER">key</code> to the <code class="PARAMETER">output</code> in XML format.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10141"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9730"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10146"><span style="white-space: nowrap"><var class="PARAMETER">output</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9735"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10151"></a><h3>
-<a name="XMLSECKEYGENERATE"></a>xmlSecKeyGenerate ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyGenerate              (<font>xmlSecKeyDataId</font> dataId,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
-<p>Generates new key of requested klass <var class="PARAMETER">dataId</var> and <var class="PARAMETER">type</var>.</p>
+<a name="XMLSECKEYGENERATE"></a><h3>xmlSecKeyGenerate ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyGenerate                   (<font>xmlSecKeyDataId</font> dataId,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<p>Generates new key of requested klass <code class="PARAMETER">dataId</code> and <code class="PARAMETER">type</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10166"><span style="white-space: nowrap"><var class="PARAMETER">dataId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9754"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the requested key klass (rsa, dsa, aes, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10171"><span style="white-space: nowrap"><var class="PARAMETER">sizeBits</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9759"><span style="white-space: nowrap"><code class="PARAMETER">sizeBits</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new key size (in bits!).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10176"><span style="white-space: nowrap"><var class="PARAMETER">type</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9764"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new key type (session, permanent, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10181"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9769"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10186"></a><h3>
-<a name="XMLSECKEYGENERATEBYNAME"></a>xmlSecKeyGenerateByName ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyGenerateByName        (const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
-<p>Generates new key of requested <var class="PARAMETER">klass</var> and <var class="PARAMETER">type</var>.</p>
+<a name="XMLSECKEYGENERATEBYNAME"></a><h3>xmlSecKeyGenerateByName ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyGenerateByName             (const <font>xmlChar</font> *name,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> sizeBits,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<p>Generates new key of requested <code class="PARAMETER">klass</code> and <code class="PARAMETER">type</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10201"><span style="white-space: nowrap"><var class="PARAMETER">name</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9788"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the requested key klass name (rsa, dsa, aes, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10206"><span style="white-space: nowrap"><var class="PARAMETER">sizeBits</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9793"><span style="white-space: nowrap"><code class="PARAMETER">sizeBits</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new key size (in bits!).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10211"><span style="white-space: nowrap"><var class="PARAMETER">type</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9798"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new key type (session, permanent, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10216"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9803"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10221"></a><h3>
-<a name="XMLSECKEYMATCH"></a>xmlSecKeyMatch ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecKeyMatch                  (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
-                                             const <font>xmlChar</font> *name,
-                                             <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
-<p>Checks whether the <var class="PARAMETER">key</var> matches the given criteria.</p>
+<a name="XMLSECKEYMATCH"></a><h3>xmlSecKeyMatch ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecKeyMatch                      (<a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key,
+                                                         const <font>xmlChar</font> *name,
+                                                         <a href="xmlsec-keys.html#XMLSECKEYREQ">xmlSecKeyReqPtr</a> keyReq);</pre>
+<p>Checks whether the <code class="PARAMETER">key</code> matches the given criteria.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10235"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9821"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10240"><span style="white-space: nowrap"><var class="PARAMETER">name</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9826"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to key name (may be NULL).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10245"><span style="white-space: nowrap"><var class="PARAMETER">keyReq</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9831"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to key requirements.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10250"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>1 if the key satisfies the given criteria or 0 otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9836"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 1 if the key satisfies the given criteria or 0 otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10255"></a><h3>
-<a name="XMLSECKEYREADBUFFER"></a>xmlSecKeyReadBuffer ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyReadBuffer            (<font>xmlSecKeyDataId</font> dataId,
-                                             <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a> *buffer);</pre>
-<p>Reads the key value of klass <var class="PARAMETER">dataId</var> from a buffer.</p>
+<a name="XMLSECKEYREADBUFFER"></a><h3>xmlSecKeyReadBuffer ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyReadBuffer                 (<font>xmlSecKeyDataId</font> dataId,
+                                                         <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a> *buffer);</pre>
+<p>Reads the key value of klass <code class="PARAMETER">dataId</code> from a buffer.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10268"><span style="white-space: nowrap"><var class="PARAMETER">dataId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9853"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key value data klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10273"><span style="white-space: nowrap"><var class="PARAMETER">buffer</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9858"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the buffer that contains the binary data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10278"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9863"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10283"></a><h3>
-<a name="XMLSECKEYREADBINARYFILE"></a>xmlSecKeyReadBinaryFile ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyReadBinaryFile        (<font>xmlSecKeyDataId</font> dataId,
-                                             const <font>char</font> *filename);</pre>
-<p>Reads the key value of klass <var class="PARAMETER">dataId</var> from a binary file <var class="PARAMETER">filename</var>.</p>
+<a name="XMLSECKEYREADBINARYFILE"></a><h3>xmlSecKeyReadBinaryFile ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyReadBinaryFile             (<font>xmlSecKeyDataId</font> dataId,
+                                                         const <font>char</font> *filename);</pre>
+<p>Reads the key value of klass <code class="PARAMETER">dataId</code> from a binary file <code class="PARAMETER">filename</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10297"><span style="white-space: nowrap"><var class="PARAMETER">dataId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9881"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key value data klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10302"><span style="white-space: nowrap"><var class="PARAMETER">filename</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9886"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key binary filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10307"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9891"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10312"></a><h3>
-<a name="XMLSECKEYREADMEMORY"></a>xmlSecKeyReadMemory ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> xmlSecKeyReadMemory            (<font>xmlSecKeyDataId</font> dataId,
-                                             const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
-                                             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);</pre>
-<p>Reads the key value of klass <var class="PARAMETER">dataId</var> from a memory block <var class="PARAMETER">data</var>.</p>
+<a name="XMLSECKEYREADMEMORY"></a><h3>xmlSecKeyReadMemory ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyReadMemory                 (<font>xmlSecKeyDataId</font> dataId,
+                                                         const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *data,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize);</pre>
+<p>Reads the key value of klass <code class="PARAMETER">dataId</code> from a memory block <code class="PARAMETER">data</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10327"><span style="white-space: nowrap"><var class="PARAMETER">dataId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9910"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key value data klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10332"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9915"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the memory containing the key</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10337"><span style="white-space: nowrap"><var class="PARAMETER">dataSize</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9920"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the size of the memory block</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9925"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10347"></a><h3>
-<a name="XMLSECKEYISVALID"></a>xmlSecKeyIsValid()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyIsValid(key)</pre>
-<p>Macro. Returns 1 if <var class="PARAMETER">key</var> is not NULL and <var class="PARAMETER">key</var>-&gt;id is not NULL
+<a name="XMLSECKEYISVALID"></a><h3>xmlSecKeyIsValid()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyIsValid(key)</pre>
+<p>Macro. Returns 1 if <code class="PARAMETER">key</code> is not NULL and <code class="PARAMETER">key</code>-&gt;id is not NULL
 or 0 otherwise.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN10358"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9940"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the pointer to key.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10363"></a><h3>
-<a name="XMLSECKEYCHECKID"></a>xmlSecKeyCheckId()</h3>
-<pre class="PROGRAMLISTING">#define     xmlSecKeyCheckId(key, keyId)</pre>
-<p>Macro. Returns 1 if <var class="PARAMETER">key</var> is valid and <var class="PARAMETER">key</var>'s id is equal to <var class="PARAMETER">keyId</var>.</p>
+<a name="XMLSECKEYCHECKID"></a><h3>xmlSecKeyCheckId()</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecKeyCheckId(key, keyId)</pre>
+<p>Macro. Returns 1 if <code class="PARAMETER">key</code> is valid and <code class="PARAMETER">key</code>'s id is equal to <code class="PARAMETER">keyId</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10375"><span style="white-space: nowrap"><var class="PARAMETER">key</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9956"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN10380"><span style="white-space: nowrap"><var class="PARAMETER">keyId</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN9961"><span style="white-space: nowrap"><code class="PARAMETER">keyId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the key Id.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10385"></a><h3>
-<a name="XMLSECKEYPTRLISTID"></a>xmlSecKeyPtrListId</h3>
+<a name="XMLSECKEYPTRLISTID"></a><h3>xmlSecKeyPtrListId</h3>
 <pre class="PROGRAMLISTING">#define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()</pre>
 <p>The keys list klass.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN10393"></a><h3>
-<a name="XMLSECKEYPTRLISTGETKLASS"></a>xmlSecKeyPtrListGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font> xmlSecKeyPtrListGetKlass    (void);</pre>
+<a name="XMLSECKEYPTRLISTGETKLASS"></a><h3>xmlSecKeyPtrListGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecPtrListId</font>     xmlSecKeyPtrListGetKlass            (void);</pre>
 <p>The keys list klass.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN10403"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>keys list id.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN9982"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> keys list id.</p></td>
 </tr></tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-keysdata.html"><b>&lt;&lt;&lt;keysdata</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-keysmngr.html"><b>keysmngr&gt;&gt;&gt;</b></a></td>
+<td align="left"><a accesskey="p" href="xmlsec-keysdata.html"><b>&lt;&lt;&lt; keysdata</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-keysmngr.html"><b>keysmngr &gt;&gt;&gt;</b></a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table></body>

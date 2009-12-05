@@ -1,3 +1,12 @@
+#
+# To remove "bad" chars, run the following command
+#
+# for i in `grep -l $'\xA0' *` ; do \
+#	echo $i ;  \
+#	sed 's/\xA0/ /g' $i > $i.tmp ; \
+#	mv $i.tmp $i ; \
+# done
+#
 NULL=
 TOP=../..
 MODULE=xmlsec

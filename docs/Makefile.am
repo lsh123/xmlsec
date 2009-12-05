@@ -28,9 +28,9 @@ docs-format:
 	@(echo "Formatting html documents"; \
 	for i in `find . -name "*.html" -print`; \
 	do \
-	    echo "Processing $$i"; \
 	    top_folder=`echo $$i | sed 's#/[^/]*$$#/#' | sed 's#\./##' | \
 			sed 's#[^/]*/#../#g'`; \
+	    echo "Processing $$i ($$top_folder)"; \
 	    xsltproc --html --stringparam topfolder "$$top_folder" \
 		     --output $$i.tmp ./xmlsec.xsl $$i; \
 	    if [ $$? != 0 ]; \

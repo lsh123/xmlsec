@@ -2,12 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>certkeys</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library for MSCrypto API Reference." href="xmlsec-mscrypto-ref.html">
 <link rel="PREVIOUS" title="app" href="xmlsec-mscrypto-app.html">
 <link rel="NEXT" title="crypto" href="xmlsec-mscrypto-crypto.html">
-<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,139 +87,130 @@
 <h1>
 <a name="XMLSEC-MSCRYPTO-CERTKEYS"></a>certkeys</h1>
 <div class="REFNAMEDIV">
-<a name="AEN29805"></a><h2>Name</h2>certkeys--MS Crypto certificates helper functions.</div>
+<a name="AEN28739"></a><h2>Name</h2>certkeys -- MS Crypto certificates helper functions.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN29808"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-<font>PCCERT_CONTEXT</font> <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETCERT">xmlSecMSCryptoKeyDataGetCert</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<font>HCRYPTKEY</font>   <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETKEY">xmlSecMSCryptoKeyDataGetKey</a>     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
-<font>HCRYPTKEY</font>   <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY">xmlSecMSCryptoKeyDataGetDecryptKey</a>
-                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<font>PCCERT_CONTEXT</font> <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTDUP">xmlSecMSCryptoCertDup</a>        (<font>PCCERT_CONTEXT</font> pCert);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTADOPT">xmlSecMSCryptoCertAdopt</a>    (<font>PCCERT_CONTEXT</font> pCert,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<a name="XMLSEC-MSCRYPTO-CERTKEYS.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS"><font>PCCERT_CONTEXT</font>      <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETCERT">xmlSecMSCryptoKeyDataGetCert</a>        (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>HCRYPTKEY</font>           <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETKEY">xmlSecMSCryptoKeyDataGetKey</a>         (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);
+<font>HCRYPTKEY</font>           <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY">xmlSecMSCryptoKeyDataGetDecryptKey</a>  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>PCCERT_CONTEXT</font>      <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTDUP">xmlSecMSCryptoCertDup</a>               (<font>PCCERT_CONTEXT</font> pCert);
+<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a>    <a href="xmlsec-mscrypto-certkeys.html#XMLSECMSCRYPTOCERTADOPT">xmlSecMSCryptoCertAdopt</a>             (<font>PCCERT_CONTEXT</font> pCert,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN29828"></a><h2>Description</h2>
+<a name="XMLSEC-MSCRYPTO-CERTKEYS.DESCRIPTION"></a><h2>Description</h2>
 <p>MS Crypto certificates helper functions.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN29831"></a><h2>Details</h2>
+<a name="XMLSEC-MSCRYPTO-CERTKEYS.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN29833"></a><h3>
-<a name="XMLSECMSCRYPTOKEYDATAGETCERT"></a>xmlSecMSCryptoKeyDataGetCert ()</h3>
-<pre class="PROGRAMLISTING"><font>PCCERT_CONTEXT</font> xmlSecMSCryptoKeyDataGetCert (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
+<a name="XMLSECMSCRYPTOKEYDATAGETCERT"></a><h3>xmlSecMSCryptoKeyDataGetCert ()</h3>
+<pre class="PROGRAMLISTING"><font>PCCERT_CONTEXT</font>      xmlSecMSCryptoKeyDataGetCert        (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Native MSCrypto certificate retrieval from xmlsec keydata. The 
 returned PCCERT_CONTEXT must not be released by the caller.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29844"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28777"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key data to retrieve certificate from.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29849"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>PCCERT_CONTEXT on success or NULL otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN28782"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> PCCERT_CONTEXT on success or NULL otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN29854"></a><h3>
-<a name="XMLSECMSCRYPTOKEYDATAGETKEY"></a>xmlSecMSCryptoKeyDataGetKey ()</h3>
-<pre class="PROGRAMLISTING"><font>HCRYPTKEY</font>   xmlSecMSCryptoKeyDataGetKey     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<a name="XMLSECMSCRYPTOKEYDATAGETKEY"></a><h3>xmlSecMSCryptoKeyDataGetKey ()</h3>
+<pre class="PROGRAMLISTING"><font>HCRYPTKEY</font>           xmlSecMSCryptoKeyDataGetKey         (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
 <p>Native MSCrypto key retrieval from xmlsec keydata. The 
 returned HKEY must not be destroyed by the caller.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29866"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28798"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the key data to retrieve certificate from.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29871"><span style="white-space: nowrap"><var class="PARAMETER">type</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28803"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>              type of key requested (public/private)</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29876"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>HKEY on success or NULL otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN28808"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> HKEY on success or NULL otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN29881"></a><h3>
-<a name="XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY"></a>xmlSecMSCryptoKeyDataGetDecryptKey ()</h3>
-<pre class="PROGRAMLISTING"><font>HCRYPTKEY</font>   xmlSecMSCryptoKeyDataGetDecryptKey
-                                            (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
+<a name="XMLSECMSCRYPTOKEYDATAGETDECRYPTKEY"></a><h3>xmlSecMSCryptoKeyDataGetDecryptKey ()</h3>
+<pre class="PROGRAMLISTING"><font>HCRYPTKEY</font>           xmlSecMSCryptoKeyDataGetDecryptKey  (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Native MSCrypto decrypt key retrieval from xmlsec keydata. The
 returned HKEY must not be destroyed by the caller.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29892"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28823"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 	the key data pointer</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29897"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>HKEY on success or NULL otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN28828"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> HKEY on success or NULL otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN29902"></a><h3>
-<a name="XMLSECMSCRYPTOCERTDUP"></a>xmlSecMSCryptoCertDup ()</h3>
-<pre class="PROGRAMLISTING"><font>PCCERT_CONTEXT</font> xmlSecMSCryptoCertDup        (<font>PCCERT_CONTEXT</font> pCert);</pre>
-<p>Duplicates the <var class="PARAMETER">pCert</var>.</p>
+<a name="XMLSECMSCRYPTOCERTDUP"></a><h3>xmlSecMSCryptoCertDup ()</h3>
+<pre class="PROGRAMLISTING"><font>PCCERT_CONTEXT</font>      xmlSecMSCryptoCertDup               (<font>PCCERT_CONTEXT</font> pCert);</pre>
+<p>Duplicates the <code class="PARAMETER">pCert</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29914"><span style="white-space: nowrap"><var class="PARAMETER">pCert</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28844"><span style="white-space: nowrap"><code class="PARAMETER">pCert</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to cert.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29919"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created PCCERT_CONTEXT object or 
+<td align="LEFT" valign="TOP"><a name="AEN28849"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created PCCERT_CONTEXT object or 
 NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN29924"></a><h3>
-<a name="XMLSECMSCRYPTOCERTADOPT"></a>xmlSecMSCryptoCertAdopt ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecMSCryptoCertAdopt    (<font>PCCERT_CONTEXT</font> pCert,
-                                             <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<a name="XMLSECMSCRYPTOCERTADOPT"></a><h3>xmlSecMSCryptoCertAdopt ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a>    xmlSecMSCryptoCertAdopt             (<font>PCCERT_CONTEXT</font> pCert,
+                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
 <p>Creates key data value from the cert.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29936"><span style="white-space: nowrap"><var class="PARAMETER">pCert</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28865"><span style="white-space: nowrap"><code class="PARAMETER">pCert</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the pointer to cert.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29941"><span style="white-space: nowrap"><var class="PARAMETER">type</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN28870"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the expected key type.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29946"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created xmlsec key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN28875"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created xmlsec key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-mscrypto-app.html"><b>&lt;&lt;&lt;app</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-mscrypto-crypto.html"><b>crypto&gt;&gt;&gt;</b></a></td>
+<td align="left"><a accesskey="p" href="xmlsec-mscrypto-app.html"><b>&lt;&lt;&lt; app</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-mscrypto-crypto.html"><b>crypto &gt;&gt;&gt;</b></a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table></body>

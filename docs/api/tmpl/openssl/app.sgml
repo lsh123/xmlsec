@@ -14,6 +14,9 @@ Application functions implementation for OpenSSL.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION xmlSecOpenSSLAppInit ##### -->
 <para>
 
@@ -254,5 +257,6 @@ Application functions implementation for OpenSSL.
 
 </para>
 
+@Returns: 
 
 

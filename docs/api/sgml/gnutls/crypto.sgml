@@ -1,73 +1,66 @@
 <refentry id="xmlsec-gnutls-crypto">
 <refmeta>
-<refentrytitle>crypto</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-gnutls-crypto.top_of_page">crypto</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC-GNUTLS Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>crypto</refname><refpurpose>Crypto transforms implementation for GnuTLS.</refpurpose>
+<refname>crypto</refname>
+<refpurpose>Crypto transforms implementation for GnuTLS.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="xmlsec-gnutls-crypto.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
-<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoGetFunctions-gnutls">xmlSecCryptoGetFunctions_gnutls</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link>                (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link>            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link>        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</link>      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> size);
-#define     <link linkend="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecGnuTLSTransformAes192CbcId">xmlSecGnuTLSTransformAes192CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes192CbcGetKlass">xmlSecGnuTLSTransformAes192CbcGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecGnuTLSTransformAes256CbcId">xmlSecGnuTLSTransformAes256CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformAes256CbcGetKlass">xmlSecGnuTLSTransformAes256CbcGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecGnuTLSKeyDataDesId">xmlSecGnuTLSKeyDataDesId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet</link>       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSHmacGetMinOutputLength">xmlSecGnuTLSHmacGetMinOutputLength</link>
-                                            (void);
-<link linkend="void">void</link>        <link linkend="xmlSecGnuTLSHmacSetMinOutputLength">xmlSecGnuTLSHmacSetMinOutputLength</link>
-                                            (<link linkend="int">int</link> min_length);
-#define     <link linkend="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link>      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass</link>
-                                            (void);
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  <link linkend="xmlSecCryptoGetFunctions-gnutls">xmlSecCryptoGetFunctions_gnutls</link>
+                                                        (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSInit">xmlSecGnuTLSInit</link>                    (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</link>                (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</link>            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</link>          (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);
+#define             <link linkend="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass</link>      (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet</link>           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
+#define             <link linkend="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformAes192CbcId">xmlSecGnuTLSTransformAes192CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformAes192CbcGetKlass">xmlSecGnuTLSTransformAes192CbcGetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformAes256CbcId">xmlSecGnuTLSTransformAes256CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformAes256CbcGetKlass">xmlSecGnuTLSTransformAes256CbcGetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSKeyDataDesId">xmlSecGnuTLSKeyDataDesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass</link>      (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet</link>           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
+#define             <link linkend="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass</link>
+                                                        (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSHmacGetMinOutputLength">xmlSecGnuTLSHmacGetMinOutputLength</link>  (void);
+<link linkend="void">void</link>                <link linkend="xmlSecGnuTLSHmacSetMinOutputLength">xmlSecGnuTLSHmacSetMinOutputLength</link>  (<link linkend="int">int</link> min_length);
+#define             <link linkend="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass</link>     (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</link>          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
+#define             <link linkend="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass</link>   (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -79,390 +72,352 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="xmlsec-gnutls-crypto.description" role="desc">
+<title role="desc.title">Description</title>
 <para>
 Crypto transforms implementation for GnuTLS.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
-<refsect2>
-<title><anchor id="xmlSecCryptoGetFunctions-gnutls">xmlSecCryptoGetFunctions_gnutls ()</title>
-<indexterm><primary>xmlSecCryptoGetFunctions_gnutls</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_gnutls
-                                            (void);</programlisting>
+<refsect1 id="xmlsec-gnutls-crypto.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="xmlSecCryptoGetFunctions-gnutls" role="function">
+<title>xmlSecCryptoGetFunctions_gnutls ()</title>
+<indexterm zone="xmlSecCryptoGetFunctions-gnutls"><primary sortas="xmlSecCryptoGetFunctions_gnutls">xmlSecCryptoGetFunctions_gnutls</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoGetFunctions_gnutls
+                                                        (void);</programlisting>
 <para>
 Gets the pointer to xmlsec-gnutls functions table.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the xmlsec-gnutls functions table or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the xmlsec-gnutls functions table or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSInit">xmlSecGnuTLSInit ()</title>
-<indexterm><primary>xmlSecGnuTLSInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSInit                (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSInit" role="function">
+<title>xmlSecGnuTLSInit ()</title>
+<indexterm zone="xmlSecGnuTLSInit"><primary sortas="xmlSecGnuTLSInit">xmlSecGnuTLSInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSInit                    (void);</programlisting>
 <para>
 XMLSec library specific crypto engine initialization.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown ()</title>
-<indexterm><primary>xmlSecGnuTLSShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSShutdown            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSShutdown" role="function">
+<title>xmlSecGnuTLSShutdown ()</title>
+<indexterm zone="xmlSecGnuTLSShutdown"><primary sortas="xmlSecGnuTLSShutdown">xmlSecGnuTLSShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSShutdown                (void);</programlisting>
 <para>
 XMLSec library specific crypto engine shutdown.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit ()</title>
-<indexterm><primary>xmlSecGnuTLSKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSKeysMngrInit        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeysMngrInit" role="function">
+<title>xmlSecGnuTLSKeysMngrInit ()</title>
+<indexterm zone="xmlSecGnuTLSKeysMngrInit"><primary sortas="xmlSecGnuTLSKeysMngrInit">xmlSecGnuTLSKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSKeysMngrInit            (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Adds GnuTLS specific key data stores in keys manager.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom ()</title>
-<indexterm><primary>xmlSecGnuTLSGenerateRandom</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSGenerateRandom      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
+<refsect2 id="xmlSecGnuTLSGenerateRandom" role="function">
+<title>xmlSecGnuTLSGenerateRandom ()</title>
+<indexterm zone="xmlSecGnuTLSGenerateRandom"><primary sortas="xmlSecGnuTLSGenerateRandom">xmlSecGnuTLSGenerateRandom</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSGenerateRandom          (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
 Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
 <listitem><simpara>		the destination buffer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
 <listitem><simpara>		the numer of bytes to generate.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataAesId</primary></indexterm><programlisting>#define     xmlSecGnuTLSKeyDataAesId</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataAesId" role="macro">
+<title>xmlSecGnuTLSKeyDataAesId</title>
+<indexterm zone="xmlSecGnuTLSKeyDataAesId"><primary sortas="xmlSecGnuTLSKeyDataAesId">xmlSecGnuTLSKeyDataAesId</primary></indexterm><programlisting>#define             xmlSecGnuTLSKeyDataAesId</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecGnuTLSKeyDataAesGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataAesGetKlass" role="function">
+<title>xmlSecGnuTLSKeyDataAesGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataAesGetKlass"><primary sortas="xmlSecGnuTLSKeyDataAesGetKlass">xmlSecGnuTLSKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGnuTLSKeyDataAesGetKlass      (void);</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> AES key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet ()</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataAesSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSKeyDataAesSet       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataAesSet" role="function">
+<title>xmlSecGnuTLSKeyDataAesSet ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataAesSet"><primary sortas="xmlSecGnuTLSKeyDataAesSet">xmlSecGnuTLSKeyDataAesSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSKeyDataAesSet           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of AES key data.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to AES key data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to key value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
 <listitem><simpara>		the key value size (in bytes).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</title>
-<indexterm><primary>xmlSecGnuTLSTransformAes128CbcId</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformAes128CbcId</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformAes128CbcId" role="macro">
+<title>xmlSecGnuTLSTransformAes128CbcId</title>
+<indexterm zone="xmlSecGnuTLSTransformAes128CbcId"><primary sortas="xmlSecGnuTLSTransformAes128CbcId">xmlSecGnuTLSTransformAes128CbcId</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformAes128CbcId</programlisting>
 <para>
 The AES128 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformAes128CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformAes128CbcGetKlass" role="function">
+<title>xmlSecGnuTLSTransformAes128CbcGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformAes128CbcGetKlass"><primary sortas="xmlSecGnuTLSTransformAes128CbcGetKlass">xmlSecGnuTLSTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformAes128CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 AES 128 CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 128 CBC encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 128 CBC encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformAes192CbcId">xmlSecGnuTLSTransformAes192CbcId</title>
-<indexterm><primary>xmlSecGnuTLSTransformAes192CbcId</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformAes192CbcId</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformAes192CbcId" role="macro">
+<title>xmlSecGnuTLSTransformAes192CbcId</title>
+<indexterm zone="xmlSecGnuTLSTransformAes192CbcId"><primary sortas="xmlSecGnuTLSTransformAes192CbcId">xmlSecGnuTLSTransformAes192CbcId</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformAes192CbcId</programlisting>
 <para>
 The AES192 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformAes192CbcGetKlass">xmlSecGnuTLSTransformAes192CbcGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformAes192CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformAes192CbcGetKlass" role="function">
+<title>xmlSecGnuTLSTransformAes192CbcGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformAes192CbcGetKlass"><primary sortas="xmlSecGnuTLSTransformAes192CbcGetKlass">xmlSecGnuTLSTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformAes192CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 AES 192 CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 192 CBC encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 192 CBC encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformAes256CbcId">xmlSecGnuTLSTransformAes256CbcId</title>
-<indexterm><primary>xmlSecGnuTLSTransformAes256CbcId</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformAes256CbcId</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformAes256CbcId" role="macro">
+<title>xmlSecGnuTLSTransformAes256CbcId</title>
+<indexterm zone="xmlSecGnuTLSTransformAes256CbcId"><primary sortas="xmlSecGnuTLSTransformAes256CbcId">xmlSecGnuTLSTransformAes256CbcId</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformAes256CbcId</programlisting>
 <para>
 The AES256 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformAes256CbcGetKlass">xmlSecGnuTLSTransformAes256CbcGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformAes256CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformAes256CbcGetKlass" role="function">
+<title>xmlSecGnuTLSTransformAes256CbcGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformAes256CbcGetKlass"><primary sortas="xmlSecGnuTLSTransformAes256CbcGetKlass">xmlSecGnuTLSTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformAes256CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 AES 256 CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 256 CBC encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 256 CBC encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataDesId">xmlSecGnuTLSKeyDataDesId</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataDesId</primary></indexterm><programlisting>#define     xmlSecGnuTLSKeyDataDesId</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataDesId" role="macro">
+<title>xmlSecGnuTLSKeyDataDesId</title>
+<indexterm zone="xmlSecGnuTLSKeyDataDesId"><primary sortas="xmlSecGnuTLSKeyDataDesId">xmlSecGnuTLSKeyDataDesId</primary></indexterm><programlisting>#define             xmlSecGnuTLSKeyDataDesId</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecGnuTLSKeyDataDesGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataDesGetKlass" role="function">
+<title>xmlSecGnuTLSKeyDataDesGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataDesGetKlass"><primary sortas="xmlSecGnuTLSKeyDataDesGetKlass">xmlSecGnuTLSKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGnuTLSKeyDataDesGetKlass      (void);</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DES key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> DES key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet ()</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataDesSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSKeyDataDesSet       (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataDesSet" role="function">
+<title>xmlSecGnuTLSKeyDataDesSet ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataDesSet"><primary sortas="xmlSecGnuTLSKeyDataDesSet">xmlSecGnuTLSKeyDataDesSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSKeyDataDesSet           (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of DES key data.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to DES key data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to key value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
 <listitem><simpara>		the key value size (in bytes).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</title>
-<indexterm><primary>xmlSecGnuTLSTransformDes3CbcId</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformDes3CbcId</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformDes3CbcId" role="macro">
+<title>xmlSecGnuTLSTransformDes3CbcId</title>
+<indexterm zone="xmlSecGnuTLSTransformDes3CbcId"><primary sortas="xmlSecGnuTLSTransformDes3CbcId">xmlSecGnuTLSTransformDes3CbcId</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformDes3CbcId</programlisting>
 <para>
 The DES3 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformDes3CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformDes3CbcGetKlass" role="function">
+<title>xmlSecGnuTLSTransformDes3CbcGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformDes3CbcGetKlass"><primary sortas="xmlSecGnuTLSTransformDes3CbcGetKlass">xmlSecGnuTLSTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformDes3CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 Triple DES CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to Triple DES encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to Triple DES encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSHmacGetMinOutputLength">xmlSecGnuTLSHmacGetMinOutputLength ()</title>
-<indexterm><primary>xmlSecGnuTLSHmacGetMinOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSHmacGetMinOutputLength
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSHmacGetMinOutputLength" role="function">
+<title>xmlSecGnuTLSHmacGetMinOutputLength ()</title>
+<indexterm zone="xmlSecGnuTLSHmacGetMinOutputLength"><primary sortas="xmlSecGnuTLSHmacGetMinOutputLength">xmlSecGnuTLSHmacGetMinOutputLength</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSHmacGetMinOutputLength  (void);</programlisting>
 <para>
 Gets the value of min HMAC length.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the min HMAC output length
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the min HMAC output length
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSHmacSetMinOutputLength">xmlSecGnuTLSHmacSetMinOutputLength ()</title>
-<indexterm><primary>xmlSecGnuTLSHmacSetMinOutputLength</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecGnuTLSHmacSetMinOutputLength
-                                            (<link linkend="int">int</link> min_length);</programlisting>
+<refsect2 id="xmlSecGnuTLSHmacSetMinOutputLength" role="function">
+<title>xmlSecGnuTLSHmacSetMinOutputLength ()</title>
+<indexterm zone="xmlSecGnuTLSHmacSetMinOutputLength"><primary sortas="xmlSecGnuTLSHmacSetMinOutputLength">xmlSecGnuTLSHmacSetMinOutputLength</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecGnuTLSHmacSetMinOutputLength  (<link linkend="int">int</link> min_length);</programlisting>
 <para>
 Sets the min HMAC output length</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>min_length</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>min_length</parameter>&#160;:</term>
 <listitem><simpara> the new min length 
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataHmacId</primary></indexterm><programlisting>#define     xmlSecGnuTLSKeyDataHmacId</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataHmacId" role="macro">
+<title>xmlSecGnuTLSKeyDataHmacId</title>
+<indexterm zone="xmlSecGnuTLSKeyDataHmacId"><primary sortas="xmlSecGnuTLSKeyDataHmacId">xmlSecGnuTLSKeyDataHmacId</primary></indexterm><programlisting>#define             xmlSecGnuTLSKeyDataHmacId</programlisting>
 <para>
 The HMAC key klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataHmacGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecGnuTLSKeyDataHmacGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataHmacGetKlass" role="function">
+<title>xmlSecGnuTLSKeyDataHmacGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataHmacGetKlass"><primary sortas="xmlSecGnuTLSKeyDataHmacGetKlass">xmlSecGnuTLSKeyDataHmacGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecGnuTLSKeyDataHmacGetKlass     (void);</programlisting>
 <para>
 The HMAC key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>HMAC key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HMAC key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet ()</title>
-<indexterm><primary>xmlSecGnuTLSKeyDataHmacSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecGnuTLSKeyDataHmacSet      (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<refsect2 id="xmlSecGnuTLSKeyDataHmacSet" role="function">
+<title>xmlSecGnuTLSKeyDataHmacSet ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataHmacSet"><primary sortas="xmlSecGnuTLSKeyDataHmacSet">xmlSecGnuTLSKeyDataHmacSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecGnuTLSKeyDataHmacSet          (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of HMAC key data.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to HMAC key data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to key value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
 <listitem><simpara>		the key value size (in bytes).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacMd5Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacMd5Id</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformHmacMd5Id" role="macro">
+<title>xmlSecGnuTLSTransformHmacMd5Id</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacMd5Id"><primary sortas="xmlSecGnuTLSTransformHmacMd5Id">xmlSecGnuTLSTransformHmacMd5Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformHmacMd5Id</programlisting>
 <para>
 The HMAC with MD5 signature transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacMd5GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformHmacMd5GetKlass" role="function">
+<title>xmlSecGnuTLSTransformHmacMd5GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacMd5GetKlass"><primary sortas="xmlSecGnuTLSTransformHmacMd5GetKlass">xmlSecGnuTLSTransformHmacMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformHmacMd5GetKlass
+                                                        (void);</programlisting>
 <para>
 The HMAC-MD5 transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-MD5 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-MD5 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacRipemd160Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacRipemd160Id</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformHmacRipemd160Id" role="macro">
+<title>xmlSecGnuTLSTransformHmacRipemd160Id</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacRipemd160Id"><primary sortas="xmlSecGnuTLSTransformHmacRipemd160Id">xmlSecGnuTLSTransformHmacRipemd160Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformHmacRipemd160Id</programlisting>
 <para>
 The HMAC with RipeMD160 signature transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacRipemd160GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformHmacRipemd160GetKlass" role="function">
+<title>xmlSecGnuTLSTransformHmacRipemd160GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacRipemd160GetKlass"><primary sortas="xmlSecGnuTLSTransformHmacRipemd160GetKlass">xmlSecGnuTLSTransformHmacRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformHmacRipemd160GetKlass
+                                                        (void);</programlisting>
 <para>
 The HMAC-RIPEMD160 transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-RIPEMD160 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-RIPEMD160 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacSha1Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformHmacSha1Id</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha1Id" role="macro">
+<title>xmlSecGnuTLSTransformHmacSha1Id</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha1Id"><primary sortas="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformHmacSha1Id</programlisting>
 <para>
 The HMAC with SHA1 signature transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformHmacSha1GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha1GetKlass" role="function">
+<title>xmlSecGnuTLSTransformHmacSha1GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha1GetKlass"><primary sortas="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformHmacSha1GetKlass
+                                                        (void);</programlisting>
 <para>
 The HMAC-SHA1 transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the HMAC-SHA1 transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA1 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</title>
-<indexterm><primary>xmlSecGnuTLSTransformSha1Id</primary></indexterm><programlisting>#define     xmlSecGnuTLSTransformSha1Id</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformSha1Id" role="macro">
+<title>xmlSecGnuTLSTransformSha1Id</title>
+<indexterm zone="xmlSecGnuTLSTransformSha1Id"><primary sortas="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformSha1Id</programlisting>
 <para>
 The SHA1 digest transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass ()</title>
-<indexterm><primary>xmlSecGnuTLSTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecGnuTLSTransformSha1GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecGnuTLSTransformSha1GetKlass" role="function">
+<title>xmlSecGnuTLSTransformSha1GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformSha1GetKlass"><primary sortas="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformSha1GetKlass   (void);</programlisting>
 <para>
 SHA-1 digest transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SHA-1 digest transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA-1 digest transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

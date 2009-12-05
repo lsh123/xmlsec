@@ -878,6 +878,7 @@
 <listitem><para><link linkend="xmlSecParseFile">xmlSecParseFile</link></para></listitem>
 <listitem><para><link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link></para></listitem>
 <listitem><para><link linkend="xmlSecParseMemory">xmlSecParseMemory</link></para></listitem>
+<listitem><para><link linkend="xmlSecPrintXmlString">xmlSecPrintXmlString</link></para></listitem>
 <listitem><para><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link></para></listitem>
 <listitem><para><link linkend="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod</link></para></listitem>
 <listitem><para><link linkend="xmlSecPtrDuplicateItemMethod">xmlSecPtrDuplicateItemMethod</link></para></listitem>

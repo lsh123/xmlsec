@@ -3,6 +3,8 @@
     <xsl:param name="topfolder"></xsl:param>
 
     <xsl:template name="linkto">
+	<xsl:param name="href"/>
+	<xsl:param name="text"/>
 	<xsl:element name="a"> 
 	    <xsl:attribute name="href">
 		<xsl:value-of select="$topfolder"/>
@@ -13,6 +15,8 @@
     </xsl:template>
 
     <xsl:template name="myimg">
+	<xsl:param name="src"/>
+	<xsl:param name="alt"/>
 	<xsl:element name="img"> 
 	    <xsl:attribute name="src">
 		<xsl:value-of select="$topfolder"/>
@@ -24,7 +28,7 @@
 	    <xsl:attribute name="border">0</xsl:attribute>
 	</xsl:element>
     </xsl:template>
-    
+
     <xsl:template match="/">
 
 <html>

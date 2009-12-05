@@ -14,6 +14,9 @@ x509
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO XMLSEC_X509DATA_CERTIFICATE_NODE ##### -->
 <para>
 

@@ -72,12 +72,25 @@
      	    see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
+<li>December 5 2009<br>
+	Changes in <a href="download.html">XML Security Library 1.2.14</a> release:
+	<ul>
+<li>XMLSec library is switched from built-in LTDL library to the system 
+	LTDL library on Linux/Unix and native calls on Windows to fix 
+	<a href="https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2009-3736">security 
+	issue</a> in LTDL.</li>
+	<li>Fixed minor bugs (see <a href="http://git.gnome.org/cgit/xmlsec/log/">log</a> 
+	for complete list).</li>
+	</ul>
+</li>
+
 <li>September 12 2009<br>
 	Changes in <a href="download.html">XML Security Library 1.2.13</a> release:
 	<ul>
 <li>
-<a href="http://xmlsoft.org/">LibXML2</a> version 2.7.4 is now required</li>
-	<li>Implemented support for <a href="http://www.w3.org/TR/xml-c14n11/">C14N version 1.1</a></li>
+	<a href="http://xmlsoft.org/">LibXML2</a> version 2.7.4 is now required</li>
+	<li>Implemented support for <a href="http://www.w3.org/TR/xml-c14n11/">C14N version 1.1</a>
+</li>
 	<li>Increase default minimum hmac size to 80 bits</li>
 	<li>Added support for --with-libxml-src and --with-libxslt-src ./configure options</li>
 	<li>Fixed XML dump output</li>
@@ -97,30 +110,6 @@
 	special chars in the node content.</li>
 	<li>Added configurable Base64 line length.</li>
 	<li>Bug fixes.</li>
-	</ul>
-</li>
-<li>November 6 2007<br>
-	The new <a href="download.html">XML Security Library 1.2.11</a> release
-	includes the following changes:
-	<ul>
-<li>Mingw port (Roumen Petrov).</li>
-	<li>Better support for non micorsoft CSP's (Wouter and Ed Shallow).</li>
-	<li>Bug fixes.</li>
-	</ul>
-</li>
-<li>June 12 2006<br>
-	The new <a href="download.html">XML Security Library 1.2.10</a> release
-	includes the following changes:
-	<ul>
-<li>GOST algorithms support (Dmitry Belyavsky)</li>
-	<li>Ability to disable system trusted certs in xmlsec-mscrypto 
-	(Dmitry Belyavsky)</li>
-	<li>New functions for adding X509IssuerName and X509SerialNumber 
-	nodes to the template (Dmitry Belyavsky)
-	</li>
-<li>Better packaging support for Fedora and Debian (Daniel Veillard, John Belmonte)</li>
-	<li>Cleanups from Coverity tool reports</li>
-	<li>Bug fixes</li>
 	</ul>
 </li>
 

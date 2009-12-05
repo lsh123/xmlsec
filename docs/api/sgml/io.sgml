@@ -1,34 +1,31 @@
 <refentry id="xmlsec-io">
 <refmeta>
-<refentrytitle>io</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-io.top_of_page">io</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>io</refname><refpurpose>Input/output support.</refpurpose>
+<refname>io</refname>
+<refpurpose>Input/output support.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="xmlsec-io.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
-<link linkend="int">int</link>         <link linkend="xmlSecIOInit">xmlSecIOInit</link>                    (void);
-<link linkend="void">void</link>        <link linkend="xmlSecIOShutdown">xmlSecIOShutdown</link>                (void);
-<link linkend="void">void</link>        <link linkend="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks</link>        (void);
-<link linkend="int">int</link>         <link linkend="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks</link>       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
-                                             <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
-                                             <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
-                                             <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);
-#define     <link linkend="xmlSecTransformInputURIId">xmlSecTransformInputURIId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             const <link linkend="xmlChar">xmlChar</link> *uri);
+<link linkend="int">int</link>                 <link linkend="xmlSecIOInit">xmlSecIOInit</link>                        (void);
+<link linkend="void">void</link>                <link linkend="xmlSecIOShutdown">xmlSecIOShutdown</link>                    (void);
+<link linkend="void">void</link>                <link linkend="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks</link>            (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</link>    (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks</link>           (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
+                                                         <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
+                                                         <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
+                                                         <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);
+#define             <link linkend="xmlSecTransformInputURIId">xmlSecTransformInputURIId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass</link>     (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</link>         (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+                                                         const <link linkend="xmlChar">xmlChar</link> *uri);
 </synopsis>
 </refsynopsisdiv>
 
@@ -40,119 +37,109 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="xmlsec-io.description" role="desc">
+<title role="desc.title">Description</title>
 <para>
 Input/output support.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
-<refsect2>
-<title><anchor id="xmlSecIOInit">xmlSecIOInit ()</title>
-<indexterm><primary>xmlSecIOInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIOInit                    (void);</programlisting>
+<refsect1 id="xmlsec-io.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="xmlSecIOInit" role="function">
+<title>xmlSecIOInit ()</title>
+<indexterm zone="xmlSecIOInit"><primary sortas="xmlSecIOInit">xmlSecIOInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecIOInit                        (void);</programlisting>
 <para>
 The IO initialization (called from <link linkend="xmlSecInit"><type>xmlSecInit</type></link> function).
 Applications should not call this function directly.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecIOShutdown">xmlSecIOShutdown ()</title>
-<indexterm><primary>xmlSecIOShutdown</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecIOShutdown                (void);</programlisting>
+<refsect2 id="xmlSecIOShutdown" role="function">
+<title>xmlSecIOShutdown ()</title>
+<indexterm zone="xmlSecIOShutdown"><primary sortas="xmlSecIOShutdown">xmlSecIOShutdown</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecIOShutdown                    (void);</programlisting>
 <para>
 The IO clenaup (called from <link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function).
 Applications should not call this function directly.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks ()</title>
-<indexterm><primary>xmlSecIOCleanupCallbacks</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecIOCleanupCallbacks        (void);</programlisting>
+<refsect2 id="xmlSecIOCleanupCallbacks" role="function">
+<title>xmlSecIOCleanupCallbacks ()</title>
+<indexterm zone="xmlSecIOCleanupCallbacks"><primary sortas="xmlSecIOCleanupCallbacks">xmlSecIOCleanupCallbacks</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecIOCleanupCallbacks            (void);</programlisting>
 <para>
 Clears the entire input callback table. this includes the
 compiled-in I/O.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks ()</title>
-<indexterm><primary>xmlSecIORegisterDefaultCallbacks</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIORegisterDefaultCallbacks
-                                            (void);</programlisting>
+<refsect2 id="xmlSecIORegisterDefaultCallbacks" role="function">
+<title>xmlSecIORegisterDefaultCallbacks ()</title>
+<indexterm zone="xmlSecIORegisterDefaultCallbacks"><primary sortas="xmlSecIORegisterDefaultCallbacks">xmlSecIORegisterDefaultCallbacks</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecIORegisterDefaultCallbacks    (void);</programlisting>
 <para>
 Registers the default compiled-in I/O handlers.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks ()</title>
-<indexterm><primary>xmlSecIORegisterCallbacks</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecIORegisterCallbacks       (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
-                                             <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
-                                             <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
-                                             <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);</programlisting>
+<refsect2 id="xmlSecIORegisterCallbacks" role="function">
+<title>xmlSecIORegisterCallbacks ()</title>
+<indexterm zone="xmlSecIORegisterCallbacks"><primary sortas="xmlSecIORegisterCallbacks">xmlSecIORegisterCallbacks</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecIORegisterCallbacks           (<link linkend="xmlInputMatchCallback">xmlInputMatchCallback</link> matchFunc,
+                                                         <link linkend="xmlInputOpenCallback">xmlInputOpenCallback</link> openFunc,
+                                                         <link linkend="xmlInputReadCallback">xmlInputReadCallback</link> readFunc,
+                                                         <link linkend="xmlInputCloseCallback">xmlInputCloseCallback</link> closeFunc);</programlisting>
 <para>
 Register a new set of I/O callback for handling parser input.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>matchFunc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>matchFunc</parameter>&#160;:</term>
 <listitem><simpara>  	the protocol match callback.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>openFunc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>openFunc</parameter>&#160;:</term>
 <listitem><simpara>  		the open stream callback.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>readFunc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>readFunc</parameter>&#160;:</term>
 <listitem><simpara>  		the read from stream callback.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>closeFunc</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>closeFunc</parameter>&#160;:</term>
 <listitem><simpara>  	the close stream callback.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>the 0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecTransformInputURIId">xmlSecTransformInputURIId</title>
-<indexterm><primary>xmlSecTransformInputURIId</primary></indexterm><programlisting>#define     xmlSecTransformInputURIId</programlisting>
+<refsect2 id="xmlSecTransformInputURIId" role="macro">
+<title>xmlSecTransformInputURIId</title>
+<indexterm zone="xmlSecTransformInputURIId"><primary sortas="xmlSecTransformInputURIId">xmlSecTransformInputURIId</primary></indexterm><programlisting>#define             xmlSecTransformInputURIId</programlisting>
 <para>
 The Input URI transform id.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass ()</title>
-<indexterm><primary>xmlSecTransformInputURIGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformInputURIGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecTransformInputURIGetKlass" role="function">
+<title>xmlSecTransformInputURIGetKlass ()</title>
+<indexterm zone="xmlSecTransformInputURIGetKlass"><primary sortas="xmlSecTransformInputURIGetKlass">xmlSecTransformInputURIGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformInputURIGetKlass     (void);</programlisting>
 <para>
 The input uri transform klass. Reads binary data from an uri.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>input URI transform id.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> input URI transform id.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen ()</title>
-<indexterm><primary>xmlSecTransformInputURIOpen</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecTransformInputURIOpen     (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
-                                             const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
+<refsect2 id="xmlSecTransformInputURIOpen" role="function">
+<title>xmlSecTransformInputURIOpen ()</title>
+<indexterm zone="xmlSecTransformInputURIOpen"><primary sortas="xmlSecTransformInputURIOpen">xmlSecTransformInputURIOpen</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecTransformInputURIOpen         (<link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform,
+                                                         const <link linkend="xmlChar">xmlChar</link> *uri);</programlisting>
 <para>
 Opens the given <parameter>uri</parameter> for reading.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>transform</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>transform</parameter>&#160;:</term>
 <listitem><simpara> 		the pointer to IO transform.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>uri</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>uri</parameter>&#160;:</term>
 <listitem><simpara> 		the URL to open.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

@@ -2,12 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>dl</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Core Library API Reference." href="xmlsec-ref.html">
 <link rel="PREVIOUS" title="buffer" href="xmlsec-buffer.html">
 <link rel="NEXT" title="errors" href="xmlsec-errors.html">
-<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,81 +87,74 @@
 <h1>
 <a name="XMLSEC-DL"></a>dl</h1>
 <div class="REFNAMEDIV">
-<a name="AEN4450"></a><h2>Name</h2>dl--Dynamic crypto-engine library loading support.</div>
+<a name="AEN4295"></a><h2>Name</h2>dl -- Dynamic crypto-engine library loading support.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN4453"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-<font>int</font>         <a href="xmlsec-dl.html#XMLSECCRYPTODLFUNCTIONSREGISTERKEYDATAANDTRANSFORMS">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</a>
-                                            (<font>xmlSecCryptoDLFunctionsPtr</font> functions);
-<font>int</font>         <a href="xmlsec-dl.html#XMLSECCRYPTODLINIT">xmlSecCryptoDLInit</a>              (void);
-<font>int</font>         <a href="xmlsec-dl.html#XMLSECCRYPTODLSHUTDOWN">xmlSecCryptoDLShutdown</a>          (void);
-<font>int</font>         <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY">xmlSecCryptoDLLoadLibrary</a>       (const <font>xmlChar</font> *crypto);
-<font>xmlSecCryptoDLFunctionsPtr</font> <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS">xmlSecCryptoDLGetLibraryFunctions</a>
-                                            (const <font>xmlChar</font> *crypto);
-<font>int</font>         <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY">xmlSecCryptoDLUnloadLibrary</a>     (const <font>xmlChar</font> *crypto);
-<font>int</font>         <a href="xmlsec-dl.html#XMLSECCRYPTODLSETFUNCTIONS">xmlSecCryptoDLSetFunctions</a>      (<font>xmlSecCryptoDLFunctionsPtr</font> functions);
-<font>xmlSecCryptoDLFunctionsPtr</font> <a href="xmlsec-dl.html#XMLSECCRYPTODLGETFUNCTIONS">xmlSecCryptoDLGetFunctions</a>
-                                            (void);</pre>
+<a name="XMLSEC-DL.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS"><font>int</font>                 <a href="xmlsec-dl.html#XMLSECCRYPTODLFUNCTIONSREGISTERKEYDATAANDTRANSFORMS">xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms</a>
+                                                        (<font>xmlSecCryptoDLFunctionsPtr</font> functions);
+<font>int</font>                 <a href="xmlsec-dl.html#XMLSECCRYPTODLINIT">xmlSecCryptoDLInit</a>                  (void);
+<font>int</font>                 <a href="xmlsec-dl.html#XMLSECCRYPTODLSHUTDOWN">xmlSecCryptoDLShutdown</a>              (void);
+<font>int</font>                 <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY">xmlSecCryptoDLLoadLibrary</a>           (const <font>xmlChar</font> *crypto);
+<font>xmlSecCryptoDLFunctionsPtr</font>  <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS">xmlSecCryptoDLGetLibraryFunctions</a>
+                                                        (const <font>xmlChar</font> *crypto);
+<font>int</font>                 <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY">xmlSecCryptoDLUnloadLibrary</a>         (const <font>xmlChar</font> *crypto);
+<font>int</font>                 <a href="xmlsec-dl.html#XMLSECCRYPTODLSETFUNCTIONS">xmlSecCryptoDLSetFunctions</a>          (<font>xmlSecCryptoDLFunctionsPtr</font> functions);
+<font>xmlSecCryptoDLFunctionsPtr</font>  <a href="xmlsec-dl.html#XMLSECCRYPTODLGETFUNCTIONS">xmlSecCryptoDLGetFunctions</a>  (void);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN4477"></a><h2>Description</h2>
+<a name="XMLSEC-DL.DESCRIPTION"></a><h2>Description</h2>
 <p>Dynamic crypto-engine library loading support.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN4480"></a><h2>Details</h2>
+<a name="XMLSEC-DL.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN4482"></a><h3>
-<a name="XMLSECCRYPTODLFUNCTIONSREGISTERKEYDATAANDTRANSFORMS"></a>xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
-                                            (<font>xmlSecCryptoDLFunctionsPtr</font> functions);</pre>
-<p>Registers the key data and transforms klasses from <var class="PARAMETER">functions</var> table in xmlsec.</p>
+<a name="XMLSECCRYPTODLFUNCTIONSREGISTERKEYDATAANDTRANSFORMS"></a><h3>xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
+                                                        (<font>xmlSecCryptoDLFunctionsPtr</font> functions);</pre>
+<p>Registers the key data and transforms klasses from <code class="PARAMETER">functions</code> table in xmlsec.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4494"><span style="white-space: nowrap"><var class="PARAMETER">functions</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN4338"><span style="white-space: nowrap"><code class="PARAMETER">functions</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 		the functions table.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4499"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4343"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4504"></a><h3>
-<a name="XMLSECCRYPTODLINIT"></a>xmlSecCryptoDLInit ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCryptoDLInit              (void);</pre>
+<a name="XMLSECCRYPTODLINIT"></a><h3>xmlSecCryptoDLInit ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLInit                  (void);</pre>
 <p>Initializes dynamic loading engine. This is an internal function
 and should not be called by application directly.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN4514"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4357"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4519"></a><h3>
-<a name="XMLSECCRYPTODLSHUTDOWN"></a>xmlSecCryptoDLShutdown ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCryptoDLShutdown          (void);</pre>
+<a name="XMLSECCRYPTODLSHUTDOWN"></a><h3>xmlSecCryptoDLShutdown ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLShutdown              (void);</pre>
 <p>Shutdowns dynamic loading engine. This is an internal function
 and should not be called by application directly.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN4529"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4371"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4534"></a><h3>
-<a name="XMLSECCRYPTODLLOADLIBRARY"></a>xmlSecCryptoDLLoadLibrary ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCryptoDLLoadLibrary       (const <font>xmlChar</font> *crypto);</pre>
+<a name="XMLSECCRYPTODLLOADLIBRARY"></a><h3>xmlSecCryptoDLLoadLibrary ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLLoadLibrary           (const <font>xmlChar</font> *crypto);</pre>
 <p>Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe, 
 application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>,
 and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
@@ -170,21 +162,20 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4551"><span style="white-space: nowrap"><var class="PARAMETER">crypto</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN4392"><span style="white-space: nowrap"><code class="PARAMETER">crypto</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the desired crypto library name ("openssl", "nss", ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4556"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4397"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4561"></a><h3>
-<a name="XMLSECCRYPTODLGETLIBRARYFUNCTIONS"></a>xmlSecCryptoDLGetLibraryFunctions ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font> xmlSecCryptoDLGetLibraryFunctions
-                                            (const <font>xmlChar</font> *crypto);</pre>
+<a name="XMLSECCRYPTODLGETLIBRARYFUNCTIONS"></a><h3>xmlSecCryptoDLGetLibraryFunctions ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font>  xmlSecCryptoDLGetLibraryFunctions
+                                                        (const <font>xmlChar</font> *crypto);</pre>
 <p>Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store 
 table. This function is NOT thread safe, application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, 
 <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>, and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
@@ -192,20 +183,19 @@ table. This function is NOT thread safe, application MUST NOT call <a href="xmls
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4578"><span style="white-space: nowrap"><var class="PARAMETER">crypto</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN4418"><span style="white-space: nowrap"><code class="PARAMETER">crypto</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the desired crypto library name ("openssl", "nss", ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4583"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the table or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4423"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the table or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4588"></a><h3>
-<a name="XMLSECCRYPTODLUNLOADLIBRARY"></a>xmlSecCryptoDLUnloadLibrary ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCryptoDLUnloadLibrary     (const <font>xmlChar</font> *crypto);</pre>
+<a name="XMLSECCRYPTODLUNLOADLIBRARY"></a><h3>xmlSecCryptoDLUnloadLibrary ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLUnloadLibrary         (const <font>xmlChar</font> *crypto);</pre>
 <p>Unloads the xmlsec-&lt;crypto&gt; library. All pointers to this library
 functions tables became invalid. This function is NOT thread safe, 
 application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>,
@@ -214,52 +204,49 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4605"><span style="white-space: nowrap"><var class="PARAMETER">crypto</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN4444"><span style="white-space: nowrap"><code class="PARAMETER">crypto</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the desired crypto library name ("openssl", "nss", ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4610"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4449"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4615"></a><h3>
-<a name="XMLSECCRYPTODLSETFUNCTIONS"></a>xmlSecCryptoDLSetFunctions ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecCryptoDLSetFunctions      (<font>xmlSecCryptoDLFunctionsPtr</font> functions);</pre>
+<a name="XMLSECCRYPTODLSETFUNCTIONS"></a><h3>xmlSecCryptoDLSetFunctions ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLSetFunctions          (<font>xmlSecCryptoDLFunctionsPtr</font> functions);</pre>
 <p>Sets global crypto functions/transforms/keys data/keys store table.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4626"><span style="white-space: nowrap"><var class="PARAMETER">functions</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN4464"><span style="white-space: nowrap"><code class="PARAMETER">functions</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the new table</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN4631"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4469"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN4636"></a><h3>
-<a name="XMLSECCRYPTODLGETFUNCTIONS"></a>xmlSecCryptoDLGetFunctions ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font> xmlSecCryptoDLGetFunctions
-                                            (void);</pre>
+<a name="XMLSECCRYPTODLGETFUNCTIONS"></a><h3>xmlSecCryptoDLGetFunctions ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font>  xmlSecCryptoDLGetFunctions  (void);</pre>
 <p>Gets global crypto functions/transforms/keys data/keys store table.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN4646"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>the table.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN4483"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the table.</p></td>
 </tr></tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-buffer.html"><b>&lt;&lt;&lt;buffer</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-errors.html"><b>errors&gt;&gt;&gt;</b></a></td>
+<td align="left"><a accesskey="p" href="xmlsec-buffer.html"><b>&lt;&lt;&lt; buffer</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-errors.html"><b>errors &gt;&gt;&gt;</b></a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table></body>

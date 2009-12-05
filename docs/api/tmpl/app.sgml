@@ -14,6 +14,9 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoInit ##### -->
 <para>
 
@@ -846,5 +849,6 @@ Crypto-engine application support function used by xmlsec command line utility.
 
 </para>
 
+@Returns: 
 
 

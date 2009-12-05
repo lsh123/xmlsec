@@ -2,12 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>evp</title>
-<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7">
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79">
 <link rel="HOME" title="XML Security Library Reference Manual" href="index.html">
 <link rel="UP" title="XML Security Library for OpenSLL API Reference." href="xmlsec-openssl-ref.html">
 <link rel="PREVIOUS" title="crypto" href="xmlsec-openssl-crypto.html">
 <link rel="NEXT" title="x509" href="xmlsec-openssl-x509.html">
-<meta name="GENERATOR" content="GTK-Doc V1.2 (SGML mode)">
 <style type="text/css">.synopsis, .classsynopsis {
     background: #eeeeee;
     border: solid 1px #aaaaaa;
@@ -88,107 +87,101 @@
 <h1>
 <a name="XMLSEC-OPENSSL-EVP"></a>evp</h1>
 <div class="REFNAMEDIV">
-<a name="AEN24468"></a><h2>Name</h2>evp--EVP keys data implementation.</div>
+<a name="AEN23584"></a><h2>Name</h2>evp -- EVP keys data implementation.</div>
 <div class="REFSYNOPSISDIV">
-<a name="AEN24471"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">
-
-<font>int</font>         <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAADOPTEVP">xmlSecOpenSSLEvpKeyDataAdoptEvp</a> (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                             <font>EVP_PKEY</font> *pKey);
-<font>EVP_PKEY</font>*   <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAGETEVP">xmlSecOpenSSLEvpKeyDataGetEvp</a>   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
-<font>EVP_PKEY</font>*   <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDUP">xmlSecOpenSSLEvpKeyDup</a>          (<font>EVP_PKEY</font> *pKey);
-<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYADOPT">xmlSecOpenSSLEvpKeyAdopt</a>   (<font>EVP_PKEY</font> *pKey);</pre>
+<a name="XMLSEC-OPENSSL-EVP.SYNOPSIS"></a><h2>Synopsis</h2>
+<pre class="SYNOPSIS"><font>int</font>                 <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAADOPTEVP">xmlSecOpenSSLEvpKeyDataAdoptEvp</a>     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                                         <font>EVP_PKEY</font> *pKey);
+<font>EVP_PKEY</font>*           <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDATAGETEVP">xmlSecOpenSSLEvpKeyDataGetEvp</a>       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);
+<font>EVP_PKEY</font>*           <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYDUP">xmlSecOpenSSLEvpKeyDup</a>              (<font>EVP_PKEY</font> *pKey);
+<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a>    <a href="xmlsec-openssl-evp.html#XMLSECOPENSSLEVPKEYADOPT">xmlSecOpenSSLEvpKeyAdopt</a>            (<font>EVP_PKEY</font> *pKey);</pre>
 </div>
 <div class="REFSECT1">
-<a name="AEN24487"></a><h2>Description</h2>
+<a name="XMLSEC-OPENSSL-EVP.DESCRIPTION"></a><h2>Description</h2>
 <p>EVP keys data implementation.</p>
 </div>
 <div class="REFSECT1">
-<a name="AEN24490"></a><h2>Details</h2>
+<a name="XMLSEC-OPENSSL-EVP.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="AEN24492"></a><h3>
-<a name="XMLSECOPENSSLEVPKEYDATAADOPTEVP"></a>xmlSecOpenSSLEvpKeyDataAdoptEvp ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>         xmlSecOpenSSLEvpKeyDataAdoptEvp (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
-                                             <font>EVP_PKEY</font> *pKey);</pre>
+<a name="XMLSECOPENSSLEVPKEYDATAADOPTEVP"></a><h3>xmlSecOpenSSLEvpKeyDataAdoptEvp ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecOpenSSLEvpKeyDataAdoptEvp     (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                                         <font>EVP_PKEY</font> *pKey);</pre>
 <p>Sets the value of key data.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24504"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23619"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to OpenSSL EVP key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24509"><span style="white-space: nowrap"><var class="PARAMETER">pKey</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23624"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to EVP key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24514"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>0 on success or a negative value otherwise.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN23629"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN24519"></a><h3>
-<a name="XMLSECOPENSSLEVPKEYDATAGETEVP"></a>xmlSecOpenSSLEvpKeyDataGetEvp ()</h3>
-<pre class="PROGRAMLISTING"><font>EVP_PKEY</font>*   xmlSecOpenSSLEvpKeyDataGetEvp   (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
+<a name="XMLSECOPENSSLEVPKEYDATAGETEVP"></a><h3>xmlSecOpenSSLEvpKeyDataGetEvp ()</h3>
+<pre class="PROGRAMLISTING"><font>EVP_PKEY</font>*           xmlSecOpenSSLEvpKeyDataGetEvp       (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data);</pre>
 <p>Gets the EVP_PKEY from the key data.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24530"><span style="white-space: nowrap"><var class="PARAMETER">data</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23644"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to OpenSSL EVP data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24535"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to EVP_PKEY or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN23649"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to EVP_PKEY or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN24540"></a><h3>
-<a name="XMLSECOPENSSLEVPKEYDUP"></a>xmlSecOpenSSLEvpKeyDup ()</h3>
-<pre class="PROGRAMLISTING"><font>EVP_PKEY</font>*   xmlSecOpenSSLEvpKeyDup          (<font>EVP_PKEY</font> *pKey);</pre>
-<p>Duplicates <var class="PARAMETER">pKey</var>.</p>
+<a name="XMLSECOPENSSLEVPKEYDUP"></a><h3>xmlSecOpenSSLEvpKeyDup ()</h3>
+<pre class="PROGRAMLISTING"><font>EVP_PKEY</font>*           xmlSecOpenSSLEvpKeyDup              (<font>EVP_PKEY</font> *pKey);</pre>
+<p>Duplicates <code class="PARAMETER">pKey</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24552"><span style="white-space: nowrap"><var class="PARAMETER">pKey</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23665"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to EVP_PKEY.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24557"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created EVP_PKEY object or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN23670"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created EVP_PKEY object or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
-<a name="AEN24562"></a><h3>
-<a name="XMLSECOPENSSLEVPKEYADOPT"></a>xmlSecOpenSSLEvpKeyAdopt ()</h3>
-<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> xmlSecOpenSSLEvpKeyAdopt   (<font>EVP_PKEY</font> *pKey);</pre>
+<a name="XMLSECOPENSSLEVPKEYADOPT"></a><h3>xmlSecOpenSSLEvpKeyAdopt ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a>    xmlSecOpenSSLEvpKeyAdopt            (<font>EVP_PKEY</font> *pKey);</pre>
 <p>Creates xmlsec key object from OpenSSL key object.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24573"><span style="white-space: nowrap"><var class="PARAMETER">pKey</var>:</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23685"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>		the pointer to EVP_PKEY.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN24578"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>pointer to newly created xmlsec key or NULL if an error occurs.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN23690"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to newly created xmlsec key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
 </div>
 <table class="navigation" width="100%" summary="Navigation footer" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td align="left"><a accesskey="p" href="xmlsec-openssl-crypto.html"><b>&lt;&lt;&lt;crypto</b></a></td>
-<td align="right"><a accesskey="n" href="xmlsec-openssl-x509.html"><b>x509&gt;&gt;&gt;</b></a></td>
+<td align="left"><a accesskey="p" href="xmlsec-openssl-crypto.html"><b>&lt;&lt;&lt; crypto</b></a></td>
+<td align="right"><a accesskey="n" href="xmlsec-openssl-x509.html"><b>x509 &gt;&gt;&gt;</b></a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table></body>

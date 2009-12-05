@@ -14,6 +14,9 @@ Big numbers helper functions.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### FUNCTION xmlSecNssNodeGetBigNumValue ##### -->
 <para>
 

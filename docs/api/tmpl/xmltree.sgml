@@ -14,6 +14,9 @@ XML tree operations.
 
 </para>
 
+<!-- ##### SECTION Stability_Level ##### -->
+
+
 <!-- ##### MACRO xmlSecNodeGetName ##### -->
 <para>
 
@@ -273,6 +276,16 @@ XML tree operations.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecPrintXmlString ##### -->
+<para>
+
+</para>
+
+@fd: 
+@str: 
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecIsHex ##### -->
 <para>
 
@@ -289,12 +302,6 @@ XML tree operations.
 @c: 
 
 
-<!-- ##### TYPEDEF xmlSecQName2IntegerInfoConstPtr ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### STRUCT xmlSecQName2IntegerInfo ##### -->
 <para>
 
@@ -303,6 +310,12 @@ XML tree operations.
 @qnameHref: 
 @qnameLocalPart: 
 @intValue: 
+
+<!-- ##### TYPEDEF xmlSecQName2IntegerInfoConstPtr ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### FUNCTION xmlSecQName2IntegerGetInfo ##### -->
 <para>
@@ -425,12 +438,6 @@ XML tree operations.
 </para>
 
 
-<!-- ##### TYPEDEF xmlSecQName2BitMaskInfoConstPtr ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### STRUCT xmlSecQName2BitMaskInfo ##### -->
 <para>
 
@@ -439,6 +446,12 @@ XML tree operations.
 @qnameHref: 
 @qnameLocalPart: 
 @mask: 
+
+<!-- ##### TYPEDEF xmlSecQName2BitMaskInfoConstPtr ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### FUNCTION xmlSecQName2BitMaskGetInfo ##### -->
 <para>

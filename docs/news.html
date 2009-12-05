@@ -47,12 +47,25 @@
       <h1>XML Security Library News</h1>
       </div>
 <ul>
+<li>December 5 2009<br>
+	Changes in <a href="download.html">XML Security Library 1.2.14</a> release:
+	<ul>
+<li>XMLSec library is switched from built-in LTDL library to the system 
+	LTDL library on Linux/Unix and native calls on Windows to fix 
+	<a href="https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2009-3736">security 
+	issue</a> in LTDL.</li>
+	<li>Fixed minor bugs (see <a href="http://git.gnome.org/cgit/xmlsec/log/">log</a> 
+	for complete list).</li>
+	</ul>
+</li>
+
 <li>September 12 2009<br>
 	Changes in <a href="download.html">XML Security Library 1.2.13</a> release:
 	<ul>
 <li>
 <a href="http://xmlsoft.org/">LibXML2</a> version 2.7.4 is now required</li>
-	<li>Implemented support for <a href="http://www.w3.org/TR/xml-c14n11/">C14N version 1.1</a></li>
+	<li>Implemented support for <a href="http://www.w3.org/TR/xml-c14n11/">C14N version 1.1</a>
+</li>
 	<li>Increase default minimum hmac size to 80 bits</li>
 	<li>Added support for --with-libxml-src and --with-libxslt-src ./configure options</li>
 	<li>Fixed XML dump output</li>

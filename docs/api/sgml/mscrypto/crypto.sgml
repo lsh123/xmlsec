@@ -1,87 +1,80 @@
 <refentry id="xmlsec-mscrypto-crypto">
 <refmeta>
-<refentrytitle>crypto</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-mscrypto-crypto.top_of_page">crypto</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC-MSCRYPTO Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>crypto</refname><refpurpose>Crypto transforms implementation for MS Crypto.</refpurpose>
+<refname>crypto</refname>
+<refpurpose>Crypto transforms implementation for MS Crypto.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="xmlsec-mscrypto-crypto.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
-<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> <link linkend="xmlSecCryptoGetFunctions-mscrypto">xmlSecCryptoGetFunctions_mscrypto</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoInit">xmlSecMSCryptoInit</link>              (void);
-<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoShutdown">xmlSecMSCryptoShutdown</link>          (void);
-<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeysMngrInit">xmlSecMSCryptoKeysMngrInit</link>      (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoGenerateRandom">xmlSecMSCryptoGenerateRandom</link>    (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> size);
-<link linkend="void">void</link>        <link linkend="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoErrorsDefaultCallback</link>
-                                            (const <link linkend="char">char</link> *file,
-                                             <link linkend="int">int</link> line,
-                                             const <link linkend="char">char</link> *func,
-                                             const <link linkend="char">char</link> *errorObject,
-                                             const <link linkend="char">char</link> *errorSubject,
-                                             <link linkend="int">int</link> reason,
-                                             const <link linkend="char">char</link> *msg);
-<link linkend="BYTE-CAPS">BYTE</link>*       <link linkend="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</link>     (<link linkend="DWORD-CAPS">DWORD</link> dwCertEncodingType,
-                                             <link linkend="LPCTSTR-CAPS">LPCTSTR</link> pszX500,
-                                             <link linkend="DWORD-CAPS">DWORD</link> dwStrType,
-                                             <link linkend="DWORD-CAPS">DWORD</link> *len);
-#define     <link linkend="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformDsaSha1GetKlass">xmlSecMSCryptoTransformDsaSha1GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataGost2001GetKlass">xmlSecMSCryptoKeyDataGost2001GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformGost2001GostR3411-94Id">xmlSecMSCryptoTransformGost2001GostR3411_94Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass">xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataRsaGetKlass">xmlSecMSCryptoKeyDataRsaGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformRsaSha1Id">xmlSecMSCryptoTransformRsaSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformRsaSha1GetKlass">xmlSecMSCryptoTransformRsaSha1GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformRsaPkcs1Id">xmlSecMSCryptoTransformRsaPkcs1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformRsaPkcs1GetKlass">xmlSecMSCryptoTransformRsaPkcs1GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformSha1Id">xmlSecMSCryptoTransformSha1Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformSha1GetKlass">xmlSecMSCryptoTransformSha1GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformGostR3411-94Id">xmlSecMSCryptoTransformGostR3411_94Id</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformGostR3411-94GetKlass">xmlSecMSCryptoTransformGostR3411_94GetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoKeyDataAesId">xmlSecMSCryptoKeyDataAesId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataAesGetKlass">xmlSecMSCryptoKeyDataAesGetKlass</link>
-                                            (void);
-<link linkend="int">int</link>         <link linkend="xmlSecMSCryptoKeyDataAesSet">xmlSecMSCryptoKeyDataAesSet</link>     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
-#define     <link linkend="xmlSecMSCryptoTransformAes128CbcId">xmlSecMSCryptoTransformAes128CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformAes128CbcGetKlass">xmlSecMSCryptoTransformAes128CbcGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformAes192CbcId">xmlSecMSCryptoTransformAes192CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformAes192CbcGetKlass">xmlSecMSCryptoTransformAes192CbcGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformAes256CbcId">xmlSecMSCryptoTransformAes256CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformAes256CbcGetKlass">xmlSecMSCryptoTransformAes256CbcGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> <link linkend="xmlSecMSCryptoKeyDataDesGetKlass">xmlSecMSCryptoKeyDataDesGetKlass</link>
-                                            (void);
-#define     <link linkend="xmlSecMSCryptoTransformDes3CbcId">xmlSecMSCryptoTransformDes3CbcId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecMSCryptoTransformDes3CbcGetKlass">xmlSecMSCryptoTransformDes3CbcGetKlass</link>
-                                            (void);
+<link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  <link linkend="xmlSecCryptoGetFunctions-mscrypto">xmlSecCryptoGetFunctions_mscrypto</link>
+                                                        (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoInit">xmlSecMSCryptoInit</link>                  (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoShutdown">xmlSecMSCryptoShutdown</link>              (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoKeysMngrInit">xmlSecMSCryptoKeysMngrInit</link>          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
+<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoGenerateRandom">xmlSecMSCryptoGenerateRandom</link>        (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+                                                         <link linkend="size-t">size_t</link> size);
+<link linkend="void">void</link>                <link linkend="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoErrorsDefaultCallback</link> (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg);
+<link linkend="BYTE--CAPS">BYTE</link>*               <link linkend="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</link>         (<link linkend="DWORD--CAPS">DWORD</link> dwCertEncodingType,
+                                                         <link linkend="LPCTSTR--CAPS">LPCTSTR</link> pszX500,
+                                                         <link linkend="DWORD--CAPS">DWORD</link> dwStrType,
+                                                         <link linkend="DWORD--CAPS">DWORD</link> *len);
+#define             <link linkend="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</link>    (void);
+#define             <link linkend="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformDsaSha1GetKlass">xmlSecMSCryptoTransformDsaSha1GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataGost2001GetKlass">xmlSecMSCryptoKeyDataGost2001GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoTransformGost2001GostR3411-94Id">xmlSecMSCryptoTransformGost2001GostR3411_94Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass">xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataRsaGetKlass">xmlSecMSCryptoKeyDataRsaGetKlass</link>    (void);
+#define             <link linkend="xmlSecMSCryptoTransformRsaSha1Id">xmlSecMSCryptoTransformRsaSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformRsaSha1GetKlass">xmlSecMSCryptoTransformRsaSha1GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoTransformRsaPkcs1Id">xmlSecMSCryptoTransformRsaPkcs1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformRsaPkcs1GetKlass">xmlSecMSCryptoTransformRsaPkcs1GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoTransformSha1Id">xmlSecMSCryptoTransformSha1Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformSha1GetKlass">xmlSecMSCryptoTransformSha1GetKlass</link> (void);
+#define             <link linkend="xmlSecMSCryptoTransformGostR3411-94Id">xmlSecMSCryptoTransformGostR3411_94Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformGostR3411-94GetKlass">xmlSecMSCryptoTransformGostR3411_94GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoKeyDataAesId">xmlSecMSCryptoKeyDataAesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataAesGetKlass">xmlSecMSCryptoKeyDataAesGetKlass</link>    (void);
+<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoKeyDataAesSet">xmlSecMSCryptoKeyDataAesSet</link>         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);
+#define             <link linkend="xmlSecMSCryptoTransformAes128CbcId">xmlSecMSCryptoTransformAes128CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformAes128CbcGetKlass">xmlSecMSCryptoTransformAes128CbcGetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoTransformAes192CbcId">xmlSecMSCryptoTransformAes192CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformAes192CbcGetKlass">xmlSecMSCryptoTransformAes192CbcGetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoTransformAes256CbcId">xmlSecMSCryptoTransformAes256CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformAes256CbcGetKlass">xmlSecMSCryptoTransformAes256CbcGetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</link>
+<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataDesGetKlass">xmlSecMSCryptoKeyDataDesGetKlass</link>    (void);
+#define             <link linkend="xmlSecMSCryptoTransformDes3CbcId">xmlSecMSCryptoTransformDes3CbcId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecMSCryptoTransformDes3CbcGetKlass">xmlSecMSCryptoTransformDes3CbcGetKlass</link>
+                                                        (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -93,465 +86,421 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="xmlsec-mscrypto-crypto.description" role="desc">
+<title role="desc.title">Description</title>
 <para>
 Crypto transforms implementation for MS Crypto.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
-<refsect2>
-<title><anchor id="xmlSecCryptoGetFunctions-mscrypto">xmlSecCryptoGetFunctions_mscrypto ()</title>
-<indexterm><primary>xmlSecCryptoGetFunctions_mscrypto</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link> xmlSecCryptoGetFunctions_mscrypto
-                                            (void);</programlisting>
+<refsect1 id="xmlsec-mscrypto-crypto.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="xmlSecCryptoGetFunctions-mscrypto" role="function">
+<title>xmlSecCryptoGetFunctions_mscrypto ()</title>
+<indexterm zone="xmlSecCryptoGetFunctions-mscrypto"><primary sortas="xmlSecCryptoGetFunctions_mscrypto">xmlSecCryptoGetFunctions_mscrypto</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoGetFunctions_mscrypto
+                                                        (void);</programlisting>
 <para>
 Gets MSCrypto specific functions table.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>xmlsec-mscrypto functions table.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> xmlsec-mscrypto functions table.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoInit">xmlSecMSCryptoInit ()</title>
-<indexterm><primary>xmlSecMSCryptoInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoInit              (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoInit" role="function">
+<title>xmlSecMSCryptoInit ()</title>
+<indexterm zone="xmlSecMSCryptoInit"><primary sortas="xmlSecMSCryptoInit">xmlSecMSCryptoInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoInit                  (void);</programlisting>
 <para>
 XMLSec library specific crypto engine initialization.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoShutdown">xmlSecMSCryptoShutdown ()</title>
-<indexterm><primary>xmlSecMSCryptoShutdown</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoShutdown          (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoShutdown" role="function">
+<title>xmlSecMSCryptoShutdown ()</title>
+<indexterm zone="xmlSecMSCryptoShutdown"><primary sortas="xmlSecMSCryptoShutdown">xmlSecMSCryptoShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoShutdown              (void);</programlisting>
 <para>
 XMLSec library specific crypto engine shutdown.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeysMngrInit">xmlSecMSCryptoKeysMngrInit ()</title>
-<indexterm><primary>xmlSecMSCryptoKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeysMngrInit      (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeysMngrInit" role="function">
+<title>xmlSecMSCryptoKeysMngrInit ()</title>
+<indexterm zone="xmlSecMSCryptoKeysMngrInit"><primary sortas="xmlSecMSCryptoKeysMngrInit">xmlSecMSCryptoKeysMngrInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoKeysMngrInit          (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
 <para>
 Adds MSCrypto specific key data stores in keys manager.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>mngr</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>mngr</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to keys manager.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoGenerateRandom">xmlSecMSCryptoGenerateRandom ()</title>
-<indexterm><primary>xmlSecMSCryptoGenerateRandom</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoGenerateRandom    (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
-                                             <link linkend="size-t">size_t</link> size);</programlisting>
+<refsect2 id="xmlSecMSCryptoGenerateRandom" role="function">
+<title>xmlSecMSCryptoGenerateRandom ()</title>
+<indexterm zone="xmlSecMSCryptoGenerateRandom"><primary sortas="xmlSecMSCryptoGenerateRandom">xmlSecMSCryptoGenerateRandom</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoGenerateRandom        (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buffer,
+                                                         <link linkend="size-t">size_t</link> size);</programlisting>
 <para>
 Generates <parameter>size</parameter> random bytes and puts result in <parameter>buffer</parameter>
 (not implemented yet).</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
 <listitem><simpara>		the destination buffer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
 <listitem><simpara>		the numer of bytes to generate.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value otherwise.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoErrorsDefaultCallback ()</title>
-<indexterm><primary>xmlSecMSCryptoErrorsDefaultCallback</primary></indexterm><programlisting><link linkend="void">void</link>        xmlSecMSCryptoErrorsDefaultCallback
-                                            (const <link linkend="char">char</link> *file,
-                                             <link linkend="int">int</link> line,
-                                             const <link linkend="char">char</link> *func,
-                                             const <link linkend="char">char</link> *errorObject,
-                                             const <link linkend="char">char</link> *errorSubject,
-                                             <link linkend="int">int</link> reason,
-                                             const <link linkend="char">char</link> *msg);</programlisting>
+<refsect2 id="xmlSecMSCryptoErrorsDefaultCallback" role="function">
+<title>xmlSecMSCryptoErrorsDefaultCallback ()</title>
+<indexterm zone="xmlSecMSCryptoErrorsDefaultCallback"><primary sortas="xmlSecMSCryptoErrorsDefaultCallback">xmlSecMSCryptoErrorsDefaultCallback</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecMSCryptoErrorsDefaultCallback (const <link linkend="char">char</link> *file,
+                                                         <link linkend="int">int</link> line,
+                                                         const <link linkend="char">char</link> *func,
+                                                         const <link linkend="char">char</link> *errorObject,
+                                                         const <link linkend="char">char</link> *errorSubject,
+                                                         <link linkend="int">int</link> reason,
+                                                         const <link linkend="char">char</link> *msg);</programlisting>
 <para>
 The default errors reporting callback function.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>file</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
 <listitem><simpara>		the error location file name (__FILE__ macro).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>line</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>line</parameter>&#160;:</term>
 <listitem><simpara>		the error location line number (__LINE__ macro).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>func</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>func</parameter>&#160;:</term>
 <listitem><simpara>		the error location function name (__FUNCTION__ macro).
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>errorObject</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
 <listitem><simpara>	the error specific error object 
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>errorSubject</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
 <listitem><simpara>	the error specific error subject.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>reason</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>reason</parameter>&#160;:</term>
 <listitem><simpara>		the error code.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>msg</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
 <listitem><simpara>		the additional error message.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName ()</title>
-<indexterm><primary>xmlSecMSCryptoCertStrToName</primary></indexterm><programlisting><link linkend="BYTE-CAPS">BYTE</link>*       xmlSecMSCryptoCertStrToName     (<link linkend="DWORD-CAPS">DWORD</link> dwCertEncodingType,
-                                             <link linkend="LPCTSTR-CAPS">LPCTSTR</link> pszX500,
-                                             <link linkend="DWORD-CAPS">DWORD</link> dwStrType,
-                                             <link linkend="DWORD-CAPS">DWORD</link> *len);</programlisting>
+<refsect2 id="xmlSecMSCryptoCertStrToName" role="function">
+<title>xmlSecMSCryptoCertStrToName ()</title>
+<indexterm zone="xmlSecMSCryptoCertStrToName"><primary sortas="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</primary></indexterm><programlisting><link linkend="BYTE--CAPS">BYTE</link>*               xmlSecMSCryptoCertStrToName         (<link linkend="DWORD--CAPS">DWORD</link> dwCertEncodingType,
+                                                         <link linkend="LPCTSTR--CAPS">LPCTSTR</link> pszX500,
+                                                         <link linkend="DWORD--CAPS">DWORD</link> dwStrType,
+                                                         <link linkend="DWORD--CAPS">DWORD</link> *len);</programlisting>
 <para>
 Converts input string to name by calling <parameter>CertStrToName</parameter> function.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>dwCertEncodingType</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>dwCertEncodingType</parameter>&#160;:</term>
 <listitem><simpara>		the encoding used.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pszX500</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>pszX500</parameter>&#160;:</term>
 <listitem><simpara>			the string to convert.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dwStrType</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>dwStrType</parameter>&#160;:</term>
 <listitem><simpara>			the string type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>len</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
 <listitem><simpara>			the result len.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>a pointer to newly allocated string or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a pointer to newly allocated string or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataDsaId</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataDsaId</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataDsaId" role="macro">
+<title>xmlSecMSCryptoKeyDataDsaId</title>
+<indexterm zone="xmlSecMSCryptoKeyDataDsaId"><primary sortas="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataDsaId</programlisting>
 <para>
 The DSA key klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataDsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataDsaGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataDsaGetKlass" role="function">
+<title>xmlSecMSCryptoKeyDataDsaGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataDsaGetKlass"><primary sortas="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataDsaGetKlass    (void);</programlisting>
 <para>
 The DSA key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to DSA key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to DSA key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</title>
-<indexterm><primary>xmlSecMSCryptoTransformDsaSha1Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformDsaSha1Id</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformDsaSha1Id" role="macro">
+<title>xmlSecMSCryptoTransformDsaSha1Id</title>
+<indexterm zone="xmlSecMSCryptoTransformDsaSha1Id"><primary sortas="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformDsaSha1Id</programlisting>
 <para>
 The DSA SHA1 signature transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformDsaSha1GetKlass">xmlSecMSCryptoTransformDsaSha1GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformDsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformDsaSha1GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformDsaSha1GetKlass" role="function">
+<title>xmlSecMSCryptoTransformDsaSha1GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformDsaSha1GetKlass"><primary sortas="xmlSecMSCryptoTransformDsaSha1GetKlass">xmlSecMSCryptoTransformDsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformDsaSha1GetKlass
+                                                        (void);</programlisting>
 <para>
 The DSA-SHA1 signature transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DSA-SHA1 signature transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> DSA-SHA1 signature transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataGost2001Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataGost2001Id</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataGost2001Id" role="macro">
+<title>xmlSecMSCryptoKeyDataGost2001Id</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGost2001Id"><primary sortas="xmlSecMSCryptoKeyDataGost2001Id">xmlSecMSCryptoKeyDataGost2001Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataGost2001Id</programlisting>
 <para>
 The GOST2001 key klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataGost2001GetKlass">xmlSecMSCryptoKeyDataGost2001GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataGost2001GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataGost2001GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataGost2001GetKlass" role="function">
+<title>xmlSecMSCryptoKeyDataGost2001GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataGost2001GetKlass"><primary sortas="xmlSecMSCryptoKeyDataGost2001GetKlass">xmlSecMSCryptoKeyDataGost2001GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataGost2001GetKlass
+                                                        (void);</programlisting>
 <para>
 The GOST2001 key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to GOST2001 key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GOST2001 key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformGost2001GostR3411-94Id">xmlSecMSCryptoTransformGost2001GostR3411_94Id</title>
-<indexterm><primary>xmlSecMSCryptoTransformGost2001GostR3411_94Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformGost2001GostR3411_94Id</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformGost2001GostR3411-94Id" role="macro">
+<title>xmlSecMSCryptoTransformGost2001GostR3411_94Id</title>
+<indexterm zone="xmlSecMSCryptoTransformGost2001GostR3411-94Id"><primary sortas="xmlSecMSCryptoTransformGost2001GostR3411_94Id">xmlSecMSCryptoTransformGost2001GostR3411_94Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformGost2001GostR3411_94Id</programlisting>
 <para>
 The GOST2001 GOSTR3411_94 signature transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass">xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass" role="function">
+<title>xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformGost2001GostR3411-94GetKlass"><primary sortas="xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass">xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass
+                                                        (void);</programlisting>
 <para>
 The GOST2001-GOSTR3411_94 signature transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>GOST2001-GOSTR3411_94 signature transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> GOST2001-GOSTR3411_94 signature transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataRsaId</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataRsaId</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataRsaId" role="macro">
+<title>xmlSecMSCryptoKeyDataRsaId</title>
+<indexterm zone="xmlSecMSCryptoKeyDataRsaId"><primary sortas="xmlSecMSCryptoKeyDataRsaId">xmlSecMSCryptoKeyDataRsaId</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataRsaId</programlisting>
 <para>
 The RSA key klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataRsaGetKlass">xmlSecMSCryptoKeyDataRsaGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataRsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataRsaGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataRsaGetKlass" role="function">
+<title>xmlSecMSCryptoKeyDataRsaGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataRsaGetKlass"><primary sortas="xmlSecMSCryptoKeyDataRsaGetKlass">xmlSecMSCryptoKeyDataRsaGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataRsaGetKlass    (void);</programlisting>
 <para>
 The MSCrypto RSA CertKey data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to MSCrypto RSA key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to MSCrypto RSA key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformRsaSha1Id">xmlSecMSCryptoTransformRsaSha1Id</title>
-<indexterm><primary>xmlSecMSCryptoTransformRsaSha1Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformRsaSha1Id</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformRsaSha1Id" role="macro">
+<title>xmlSecMSCryptoTransformRsaSha1Id</title>
+<indexterm zone="xmlSecMSCryptoTransformRsaSha1Id"><primary sortas="xmlSecMSCryptoTransformRsaSha1Id">xmlSecMSCryptoTransformRsaSha1Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformRsaSha1Id</programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformRsaSha1GetKlass">xmlSecMSCryptoTransformRsaSha1GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformRsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformRsaSha1GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformRsaSha1GetKlass" role="function">
+<title>xmlSecMSCryptoTransformRsaSha1GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformRsaSha1GetKlass"><primary sortas="xmlSecMSCryptoTransformRsaSha1GetKlass">xmlSecMSCryptoTransformRsaSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformRsaSha1GetKlass
+                                                        (void);</programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-SHA1 signature transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-SHA1 signature transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformRsaPkcs1Id">xmlSecMSCryptoTransformRsaPkcs1Id</title>
-<indexterm><primary>xmlSecMSCryptoTransformRsaPkcs1Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformRsaPkcs1Id</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformRsaPkcs1Id" role="macro">
+<title>xmlSecMSCryptoTransformRsaPkcs1Id</title>
+<indexterm zone="xmlSecMSCryptoTransformRsaPkcs1Id"><primary sortas="xmlSecMSCryptoTransformRsaPkcs1Id">xmlSecMSCryptoTransformRsaPkcs1Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformRsaPkcs1Id</programlisting>
 <para>
 The RSA PKCS1 key transport transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformRsaPkcs1GetKlass">xmlSecMSCryptoTransformRsaPkcs1GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformRsaPkcs1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformRsaPkcs1GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformRsaPkcs1GetKlass" role="function">
+<title>xmlSecMSCryptoTransformRsaPkcs1GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformRsaPkcs1GetKlass"><primary sortas="xmlSecMSCryptoTransformRsaPkcs1GetKlass">xmlSecMSCryptoTransformRsaPkcs1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformRsaPkcs1GetKlass
+                                                        (void);</programlisting>
 <para>
 The RSA-PKCS1 key transport transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>RSA-PKCS1 key transport transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> RSA-PKCS1 key transport transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformSha1Id">xmlSecMSCryptoTransformSha1Id</title>
-<indexterm><primary>xmlSecMSCryptoTransformSha1Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformSha1Id</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformSha1Id" role="macro">
+<title>xmlSecMSCryptoTransformSha1Id</title>
+<indexterm zone="xmlSecMSCryptoTransformSha1Id"><primary sortas="xmlSecMSCryptoTransformSha1Id">xmlSecMSCryptoTransformSha1Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformSha1Id</programlisting>
 <para>
 The SHA1 digest transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformSha1GetKlass">xmlSecMSCryptoTransformSha1GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformSha1GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformSha1GetKlass" role="function">
+<title>xmlSecMSCryptoTransformSha1GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformSha1GetKlass"><primary sortas="xmlSecMSCryptoTransformSha1GetKlass">xmlSecMSCryptoTransformSha1GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformSha1GetKlass (void);</programlisting>
 <para>
 SHA-1 digest transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to SHA-1 digest transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA-1 digest transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformGostR3411-94Id">xmlSecMSCryptoTransformGostR3411_94Id</title>
-<indexterm><primary>xmlSecMSCryptoTransformGostR3411_94Id</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformGostR3411_94Id</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformGostR3411-94Id" role="macro">
+<title>xmlSecMSCryptoTransformGostR3411_94Id</title>
+<indexterm zone="xmlSecMSCryptoTransformGostR3411-94Id"><primary sortas="xmlSecMSCryptoTransformGostR3411_94Id">xmlSecMSCryptoTransformGostR3411_94Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformGostR3411_94Id</programlisting>
 <para>
 The GOSTR3411_94 digest transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformGostR3411-94GetKlass">xmlSecMSCryptoTransformGostR3411_94GetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformGostR3411_94GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformGostR3411_94GetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformGostR3411-94GetKlass" role="function">
+<title>xmlSecMSCryptoTransformGostR3411_94GetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformGostR3411-94GetKlass"><primary sortas="xmlSecMSCryptoTransformGostR3411_94GetKlass">xmlSecMSCryptoTransformGostR3411_94GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformGostR3411_94GetKlass
+                                                        (void);</programlisting>
 <para>
 GOSTR3411_94 digest transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to GOSTR3411_94 digest transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GOSTR3411_94 digest transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataAesId">xmlSecMSCryptoKeyDataAesId</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataAesId</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataAesId</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataAesId" role="macro">
+<title>xmlSecMSCryptoKeyDataAesId</title>
+<indexterm zone="xmlSecMSCryptoKeyDataAesId"><primary sortas="xmlSecMSCryptoKeyDataAesId">xmlSecMSCryptoKeyDataAesId</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataAesId</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataAesGetKlass">xmlSecMSCryptoKeyDataAesGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataAesGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataAesGetKlass" role="function">
+<title>xmlSecMSCryptoKeyDataAesGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataAesGetKlass"><primary sortas="xmlSecMSCryptoKeyDataAesGetKlass">xmlSecMSCryptoKeyDataAesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataAesGetKlass    (void);</programlisting>
 <para>
 The AES key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>AES key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> AES key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataAesSet">xmlSecMSCryptoKeyDataAesSet ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataAesSet</primary></indexterm><programlisting><link linkend="int">int</link>         xmlSecMSCryptoKeyDataAesSet     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataAesSet" role="function">
+<title>xmlSecMSCryptoKeyDataAesSet ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataAesSet"><primary sortas="xmlSecMSCryptoKeyDataAesSet">xmlSecMSCryptoKeyDataAesSet</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoKeyDataAesSet         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufSize);</programlisting>
 <para>
 Sets the value of AES key data.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>data</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to AES key data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buf</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
 <listitem><simpara>		the pointer to key value.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
 <listitem><simpara>		the key value size (in bytes).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>0 on success or a negative value if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformAes128CbcId">xmlSecMSCryptoTransformAes128CbcId</title>
-<indexterm><primary>xmlSecMSCryptoTransformAes128CbcId</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformAes128CbcId</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformAes128CbcId" role="macro">
+<title>xmlSecMSCryptoTransformAes128CbcId</title>
+<indexterm zone="xmlSecMSCryptoTransformAes128CbcId"><primary sortas="xmlSecMSCryptoTransformAes128CbcId">xmlSecMSCryptoTransformAes128CbcId</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformAes128CbcId</programlisting>
 <para>
 The AES128 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformAes128CbcGetKlass">xmlSecMSCryptoTransformAes128CbcGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformAes128CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformAes128CbcGetKlass" role="function">
+<title>xmlSecMSCryptoTransformAes128CbcGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformAes128CbcGetKlass"><primary sortas="xmlSecMSCryptoTransformAes128CbcGetKlass">xmlSecMSCryptoTransformAes128CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformAes128CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 AES 128 CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 128 CBC encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 128 CBC encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformAes192CbcId">xmlSecMSCryptoTransformAes192CbcId</title>
-<indexterm><primary>xmlSecMSCryptoTransformAes192CbcId</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformAes192CbcId</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformAes192CbcId" role="macro">
+<title>xmlSecMSCryptoTransformAes192CbcId</title>
+<indexterm zone="xmlSecMSCryptoTransformAes192CbcId"><primary sortas="xmlSecMSCryptoTransformAes192CbcId">xmlSecMSCryptoTransformAes192CbcId</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformAes192CbcId</programlisting>
 <para>
 The AES192 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformAes192CbcGetKlass">xmlSecMSCryptoTransformAes192CbcGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformAes192CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformAes192CbcGetKlass" role="function">
+<title>xmlSecMSCryptoTransformAes192CbcGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformAes192CbcGetKlass"><primary sortas="xmlSecMSCryptoTransformAes192CbcGetKlass">xmlSecMSCryptoTransformAes192CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformAes192CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 AES 192 CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 192 CBC encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 192 CBC encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformAes256CbcId">xmlSecMSCryptoTransformAes256CbcId</title>
-<indexterm><primary>xmlSecMSCryptoTransformAes256CbcId</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformAes256CbcId</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformAes256CbcId" role="macro">
+<title>xmlSecMSCryptoTransformAes256CbcId</title>
+<indexterm zone="xmlSecMSCryptoTransformAes256CbcId"><primary sortas="xmlSecMSCryptoTransformAes256CbcId">xmlSecMSCryptoTransformAes256CbcId</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformAes256CbcId</programlisting>
 <para>
 The AES256 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformAes256CbcGetKlass">xmlSecMSCryptoTransformAes256CbcGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformAes256CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformAes256CbcGetKlass" role="function">
+<title>xmlSecMSCryptoTransformAes256CbcGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformAes256CbcGetKlass"><primary sortas="xmlSecMSCryptoTransformAes256CbcGetKlass">xmlSecMSCryptoTransformAes256CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformAes256CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 AES 256 CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to AES 256 CBC encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to AES 256 CBC encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataDesId</primary></indexterm><programlisting>#define     xmlSecMSCryptoKeyDataDesId</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataDesId" role="macro">
+<title>xmlSecMSCryptoKeyDataDesId</title>
+<indexterm zone="xmlSecMSCryptoKeyDataDesId"><primary sortas="xmlSecMSCryptoKeyDataDesId">xmlSecMSCryptoKeyDataDesId</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataDesId</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoKeyDataDesGetKlass">xmlSecMSCryptoKeyDataDesGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> xmlSecMSCryptoKeyDataDesGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoKeyDataDesGetKlass" role="function">
+<title>xmlSecMSCryptoKeyDataDesGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoKeyDataDesGetKlass"><primary sortas="xmlSecMSCryptoKeyDataDesGetKlass">xmlSecMSCryptoKeyDataDesGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataDesGetKlass    (void);</programlisting>
 <para>
 The DES key data klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>DES key data klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> DES key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformDes3CbcId">xmlSecMSCryptoTransformDes3CbcId</title>
-<indexterm><primary>xmlSecMSCryptoTransformDes3CbcId</primary></indexterm><programlisting>#define     xmlSecMSCryptoTransformDes3CbcId</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformDes3CbcId" role="macro">
+<title>xmlSecMSCryptoTransformDes3CbcId</title>
+<indexterm zone="xmlSecMSCryptoTransformDes3CbcId"><primary sortas="xmlSecMSCryptoTransformDes3CbcId">xmlSecMSCryptoTransformDes3CbcId</primary></indexterm><programlisting>#define             xmlSecMSCryptoTransformDes3CbcId</programlisting>
 <para>
 The DES3 CBC cipher transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecMSCryptoTransformDes3CbcGetKlass">xmlSecMSCryptoTransformDes3CbcGetKlass ()</title>
-<indexterm><primary>xmlSecMSCryptoTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecMSCryptoTransformDes3CbcGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecMSCryptoTransformDes3CbcGetKlass" role="function">
+<title>xmlSecMSCryptoTransformDes3CbcGetKlass ()</title>
+<indexterm zone="xmlSecMSCryptoTransformDes3CbcGetKlass"><primary sortas="xmlSecMSCryptoTransformDes3CbcGetKlass">xmlSecMSCryptoTransformDes3CbcGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecMSCryptoTransformDes3CbcGetKlass
+                                                        (void);</programlisting>
 <para>
 Triple DES CBC encryption transform klass.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to Triple DES encryption transform.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to Triple DES encryption transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

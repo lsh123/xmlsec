@@ -1,33 +1,31 @@
 <refentry id="xmlsec-parser">
 <refmeta>
-<refentrytitle>parser</refentrytitle>
+<refentrytitle role="top_of_page" id="xmlsec-parser.top_of_page">parser</refentrytitle>
 <manvolnum>3</manvolnum>
 <refmiscinfo>XMLSEC Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>parser</refname><refpurpose>Parser transform implementation.</refpurpose>
+<refname>parser</refname>
+<refpurpose>Parser transform implementation.</refpurpose>
 </refnamediv>
 
-<refsynopsisdiv><title>Synopsis</title>
+<refsynopsisdiv id="xmlsec-parser.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-
-
-
-<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseFile">xmlSecParseFile</link>                 (const <link linkend="char">char</link> *filename);
-<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>               (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> size,
-                                             <link linkend="int">int</link> recovery);
-<link linkend="xmlDoc">xmlDocPtr</link>   <link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>            (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *postfix,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> postfixSize);
-#define     <link linkend="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</link>
-<link linkend="xmlSecTransformId">xmlSecTransformId</link> <link linkend="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</link>
-                                            (void);
+<link linkend="xmlDoc">xmlDocPtr</link>           <link linkend="xmlSecParseFile">xmlSecParseFile</link>                     (const <link linkend="char">char</link> *filename);
+<link linkend="xmlDoc">xmlDocPtr</link>           <link linkend="xmlSecParseMemory">xmlSecParseMemory</link>                   (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> size,
+                                                         <link linkend="int">int</link> recovery);
+<link linkend="xmlDoc">xmlDocPtr</link>           <link linkend="xmlSecParseMemoryExt">xmlSecParseMemoryExt</link>                (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *postfix,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> postfixSize);
+#define             <link linkend="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</link>    (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -39,105 +37,99 @@
 
 
 
-<refsect1>
-<title>Description</title>
+<refsect1 id="xmlsec-parser.description" role="desc">
+<title role="desc.title">Description</title>
 <para>
 Parser transform implementation.
 </para>
 </refsect1>
 
-<refsect1>
-<title>Details</title>
-<refsect2>
-<title><anchor id="xmlSecParseFile">xmlSecParseFile ()</title>
-<indexterm><primary>xmlSecParseFile</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseFile                 (const <link linkend="char">char</link> *filename);</programlisting>
+<refsect1 id="xmlsec-parser.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="xmlSecParseFile" role="function">
+<title>xmlSecParseFile ()</title>
+<indexterm zone="xmlSecParseFile"><primary sortas="xmlSecParseFile">xmlSecParseFile</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseFile                     (const <link linkend="char">char</link> *filename);</programlisting>
 <para>
 Loads XML Doc from file <parameter>filename</parameter>. We need a special version because of 
 c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData"><function>xmlSAXParseFileWithData()</function></link> function.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>filename</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>filename</parameter>&#160;:</term>
 <listitem><simpara> 		the filename.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the loaded XML document or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecParseMemory">xmlSecParseMemory ()</title>
-<indexterm><primary>xmlSecParseMemory</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemory               (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> size,
-                                             <link linkend="int">int</link> recovery);</programlisting>
+<refsect2 id="xmlSecParseMemory" role="function">
+<title>xmlSecParseMemory ()</title>
+<indexterm zone="xmlSecParseMemory"><primary sortas="xmlSecParseMemory">xmlSecParseMemory</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseMemory                   (const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> size,
+                                                         <link linkend="int">int</link> recovery);</programlisting>
 <para>
 Loads XML Doc from memory. We need a special version because of 
 c14n issue. The code is copied from <link linkend="xmlSAXParseMemory"><function>xmlSAXParseMemory()</function></link> function.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
 <listitem><simpara> 		the input buffer.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
 <listitem><simpara> 		the input buffer size.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>recovery</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>recovery</parameter>&#160;:</term>
 <listitem><simpara> 		the flag.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the loaded XML document or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecParseMemoryExt">xmlSecParseMemoryExt ()</title>
-<indexterm><primary>xmlSecParseMemoryExt</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>   xmlSecParseMemoryExt            (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
-                                             const <link linkend="xmlSecByte">xmlSecByte</link> *postfix,
-                                             <link linkend="xmlSecSize">xmlSecSize</link> postfixSize);</programlisting>
+<refsect2 id="xmlSecParseMemoryExt" role="function">
+<title>xmlSecParseMemoryExt ()</title>
+<indexterm zone="xmlSecParseMemoryExt"><primary sortas="xmlSecParseMemoryExt">xmlSecParseMemoryExt</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseMemoryExt                (const <link linkend="xmlSecByte">xmlSecByte</link> *prefix,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> prefixSize,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *buffer,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> bufferSize,
+                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *postfix,
+                                                         <link linkend="xmlSecSize">xmlSecSize</link> postfixSize);</programlisting>
 <para>
 Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter>buffer</parameter> and <parameter>postfix</parameter>.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><parameter>prefix</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>prefix</parameter>&#160;:</term>
 <listitem><simpara> 		the first part of the input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>prefixSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>prefixSize</parameter>&#160;:</term>
 <listitem><simpara> 	the size of the first part of the input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>buffer</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
 <listitem><simpara> 		the second part of the input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>bufferSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>bufferSize</parameter>&#160;:</term>
 <listitem><simpara> 	the size of the second part of the input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>postfix</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>postfix</parameter>&#160;:</term>
 <listitem><simpara> 		the third part of the input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><parameter>postfixSize</parameter>&nbsp;:</term>
+<varlistentry><term><parameter>postfixSize</parameter>&#160;:</term>
 <listitem><simpara> 	the size of the third part of the input.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>pointer to the loaded XML document or NULL if an error occurs.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
-<refsect2>
-<title><anchor id="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</title>
-<indexterm><primary>xmlSecTransformXmlParserId</primary></indexterm><programlisting>#define     xmlSecTransformXmlParserId</programlisting>
+<refsect2 id="xmlSecTransformXmlParserId" role="macro">
+<title>xmlSecTransformXmlParserId</title>
+<indexterm zone="xmlSecTransformXmlParserId"><primary sortas="xmlSecTransformXmlParserId">xmlSecTransformXmlParserId</primary></indexterm><programlisting>#define             xmlSecTransformXmlParserId</programlisting>
 <para>
 The XML Parser transform klass.</para>
 <para>
-
 </para></refsect2>
-<refsect2>
-<title><anchor id="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass ()</title>
-<indexterm><primary>xmlSecTransformXmlParserGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link> xmlSecTransformXmlParserGetKlass
-                                            (void);</programlisting>
+<refsect2 id="xmlSecTransformXmlParserGetKlass" role="function">
+<title>xmlSecTransformXmlParserGetKlass ()</title>
+<indexterm zone="xmlSecTransformXmlParserGetKlass"><primary sortas="xmlSecTransformXmlParserGetKlass">xmlSecTransformXmlParserGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformXmlParserGetKlass    (void);</programlisting>
 <para>
 The XML parser transform.</para>
 <para>
-
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis> :</term><listitem><simpara>XML parser transform klass.
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> XML parser transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

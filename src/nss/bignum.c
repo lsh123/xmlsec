@@ -37,7 +37,7 @@
  * to a SECItem. If no SECItem object provided then a new
  * one is created (caller is responsible for freeing it).
  *
- * Returns a pointer to SECItem produced from CryptoBinary string
+ * Returns: a pointer to SECItem produced from CryptoBinary string
  * or NULL if an error occurs.
  */
 SECItem *
@@ -103,7 +103,7 @@ xmlSecNssNodeGetBigNumValue(PRArenaPool *arena, const xmlNodePtr cur,
  * addLineBreaks is set then line breaks are added 
  * before and after the CryptoBinary string.
  * 
- * Returns 0 on success or -1 otherwise.
+ * Returns: 0 on success or -1 otherwise.
  */
 int
 xmlSecNssNodeSetBigNumValue(xmlNodePtr cur, const SECItem *a, int addLineBreaks) {

@@ -50,7 +50,7 @@ static const xmlChar*		xmlSecEncIds[] = { BAD_CAST "Id", NULL };
  * The caller is responsible for destroying returend object by calling 
  * #xmlSecEncCtxDestroy function.
  *
- * Returns pointer to newly allocated context object or NULL if an error
+ * Returns: pointer to newly allocated context object or NULL if an error
  * occurs.
  */
 xmlSecEncCtxPtr	
@@ -105,7 +105,7 @@ xmlSecEncCtxDestroy(xmlSecEncCtxPtr encCtx) {
  * The caller is responsible for cleaing up returend object by calling 
  * #xmlSecEncCtxFinalize function.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecEncCtxInitialize(xmlSecEncCtxPtr encCtx, xmlSecKeysMngrPtr keysMngr) {
@@ -244,7 +244,7 @@ xmlSecEncCtxReset(xmlSecEncCtxPtr encCtx) {
  * 
  * Copies user preference from @src context to @dst.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
@@ -301,7 +301,7 @@ xmlSecEncCtxCopyUserPref(xmlSecEncCtxPtr dst, xmlSecEncCtxPtr src) {
  *
  * Encrypts @data according to template @tmpl.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, 
@@ -363,7 +363,7 @@ xmlSecEncCtxBinaryEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl,
  * Encrypts @node according to template @tmpl. If requested, @node is replaced
  * with result <enc:EncryptedData/> node.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node) {
@@ -535,7 +535,7 @@ xmlSecEncCtxXmlEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, xmlNodePtr node)
  *
  * Encrypts data from @uri according to template @tmpl.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *uri) {
@@ -607,7 +607,7 @@ xmlSecEncCtxUriEncrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr tmpl, const xmlChar *u
  *
  * Decrypts @node and if necessary replaces @node with decrypted data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
@@ -696,7 +696,7 @@ xmlSecEncCtxDecrypt(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {
  * 
  * Decrypts @node data to the @encCtx buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 xmlSecBufferPtr
 xmlSecEncCtxDecryptToBuffer(xmlSecEncCtxPtr encCtx, xmlNodePtr node) {

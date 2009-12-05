@@ -97,7 +97,7 @@ struct _xmlSecNodeSet {
  *
  * The callback function called once per each node in the nodes set.
  *
- * Returns 0 on success or a negative value if an error occurs
+ * Returns: 0 on success or a negative value if an error occurs
  * an walk procedure should be interrupted.
  */
 typedef int (*xmlSecNodeSetWalkCallback)		(xmlSecNodeSetPtr nset,

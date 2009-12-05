@@ -30,7 +30,7 @@
  * Initializes XML Security Library. The depended libraries
  * (LibXML and LibXSLT) must be initialized before.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecInit(void) {
@@ -95,7 +95,7 @@ xmlSecInit(void) {
  *
  * Clean ups the XML Security Library.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecShutdown(void) {
@@ -134,7 +134,7 @@ xmlSecShutdown(void) {
  *
  * Checks if the loaded version of xmlsec library could be used.
  *
- * Returns 1 if the loaded xmlsec library version is OK to use
+ * Returns: 1 if the loaded xmlsec library version is OK to use
  * 0 if it is not or a negative value if an error occurs.
  */
 int 
@@ -151,7 +151,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
     }
     
     switch(mode) {
-    case xmlSecCheckVersionExact:
+    case xmlSecCheckVersionExactMatch:
 	if((minor != XMLSEC_VERSION_MINOR) || (subminor != XMLSEC_VERSION_SUBMINOR)) {
 	    xmlSecError(XMLSEC_ERRORS_HERE, 
 			NULL,

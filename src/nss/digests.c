@@ -319,7 +319,7 @@ static xmlSecTransformKlass xmlSecNssSha1Klass = {
  *
  * SHA-1 digest transform klass.
  *
- * Returns pointer to SHA-1 digest transform klass.
+ * Returns: pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformSha1GetKlass(void) {

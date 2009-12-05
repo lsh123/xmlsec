@@ -45,7 +45,7 @@ static int      xmlSecOpenSSLDummyPasswordCallback  (char *buf, int bufsize, int
  * by XMLSec command line utility and called before 
  * @xmlSecInit function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppInit(const char* config) {
@@ -81,7 +81,7 @@ xmlSecOpenSSLAppInit(const char* config) {
  * by XMLSec command line utility and called after 
  * @xmlSecShutdown function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppShutdown(void) {
@@ -114,7 +114,7 @@ xmlSecOpenSSLAppShutdown(void) {
  *
  * Reads key from the a file.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
@@ -166,7 +166,7 @@ xmlSecOpenSSLAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  *
  * Reads key from the memory buffer.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
@@ -216,7 +216,7 @@ xmlSecOpenSSLAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  *
  * Reads key from the an OpenSSL BIO object.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
@@ -378,7 +378,7 @@ static X509*		xmlSecOpenSSLAppCertLoadBIO		(BIO* bio,
  *
  * Reads the certificate from $@filename and adds it to key.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
@@ -427,7 +427,7 @@ xmlSecOpenSSLAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDat
  *
  * Reads the certificate from memory buffer and adds it to key.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, 
@@ -474,7 +474,7 @@ xmlSecOpenSSLAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlS
  *
  * Reads the certificate from memory buffer and adds it to key.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat format) {
@@ -547,7 +547,7 @@ xmlSecOpenSSLAppKeyCertLoadBIO(xmlSecKeyPtr key, BIO* bio, xmlSecKeyDataFormat f
  * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
@@ -598,7 +598,7 @@ xmlSecOpenSSLAppPkcs12Load(const char *filename, const char *pwd,
  * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
@@ -647,7 +647,7 @@ xmlSecOpenSSLAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * For uniformity, call xmlSecOpenSSLAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
@@ -860,7 +860,7 @@ done:
  *
  * Loads public key from cert.
  *
- * Returns pointer to key or NULL if an error occurs.
+ * Returns: pointer to key or NULL if an error occurs.
  */
 xmlSecKeyPtr 
 xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
@@ -964,7 +964,7 @@ xmlSecOpenSSLAppKeyFromCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
  * Reads cert from @filename and adds to the list of trusted or known
  * untrusted certs in @store.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
@@ -1016,7 +1016,7 @@ xmlSecOpenSSLAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * Reads cert from binary buffer @data and adds to the list of trusted or known
  * untrusted certs in @store.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
@@ -1066,7 +1066,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte*
  * Reads cert from an OpenSSL BIO object and adds to the list of trusted or known
  * untrusted certs in @store.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio, 
@@ -1120,7 +1120,7 @@ xmlSecOpenSSLAppKeysMngrCertLoadBIO(xmlSecKeysMngrPtr mngr, BIO* bio,
  * 
  * Reads cert from @path and adds to the list of trusted certificates.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
@@ -1161,7 +1161,7 @@ xmlSecOpenSSLAppKeysMngrAddCertsPath(xmlSecKeysMngrPtr mngr, const char *path) {
  * Reads certs from @file and adds to the list of trusted certificates.
  * It is possible for @file to contain multiple certs.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLAppKeysMngrAddCertsFile(xmlSecKeysMngrPtr mngr, const char *file) {
@@ -1247,7 +1247,7 @@ xmlSecOpenSSLAppCertLoadBIO(BIO* bio, xmlSecKeyDataFormat format) {
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
  * and a default OpenSSL crypto key data stores.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int
 xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -1304,7 +1304,7 @@ xmlSecOpenSSLAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Adds @key to the keys manager @mngr created with #xmlSecOpenSSLAppDefaultKeysMngrInit
  * function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -1345,7 +1345,7 @@ xmlSecOpenSSLAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key
  * Loads XML keys file from @uri to the keys manager @mngr created 
  * with #xmlSecOpenSSLAppDefaultKeysMngrInit function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -1386,7 +1386,7 @@ xmlSecOpenSSLAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  *
  * Saves keys from @mngr to  XML keys file.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, 
@@ -1487,7 +1487,7 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
  *
  * Gets default password callback.
  *
- * Returns default password callback.
+ * Returns: default password callback.
  */
 void*
 xmlSecOpenSSLAppGetDefaultPwdCallback(void) {

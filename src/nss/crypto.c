@@ -36,7 +36,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
  *
  * Gets the pointer to xmlsec-nss functions table.
  *
- * Returns the xmlsec-nss functions table or NULL if an error occurs.
+ * Returns: the xmlsec-nss functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_nss(void) {
@@ -162,7 +162,7 @@ xmlSecCryptoGetFunctions_nss(void) {
  * 
  * XMLSec library specific crypto engine initialization. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecNssInit (void)  {
@@ -197,7 +197,7 @@ xmlSecNssInit (void)  {
  * 
  * XMLSec library specific crypto engine shutdown. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecNssShutdown(void) {
@@ -210,7 +210,7 @@ xmlSecNssShutdown(void) {
  *
  * Adds NSS specific key data stores in keys manager.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -254,7 +254,7 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * 
  * Gets internal NSS key slot.
  * 
- * Returns internal key slot and initializes it if needed.
+ * Returns: internal key slot and initializes it if needed.
  */
 PK11SlotInfo * 
 xmlSecNssGetInternalKeySlot()
@@ -306,7 +306,7 @@ xmlSecNssGetInternalKeySlot()
  *
  * Generates @size random bytes and puts result in @buffer.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {	

@@ -92,7 +92,7 @@ static xmlSecTransformKlass xmlSecParserKlass = {
  *
  * The XML parser transform.
  *
- * Returns XML parser transform klass.
+ * Returns: XML parser transform klass.
  */
 xmlSecTransformId 
 xmlSecTransformXmlParserGetKlass(void) {
@@ -389,7 +389,7 @@ typedef struct _xmlSecExtMemoryParserCtx {
  * Loads XML Doc from file @filename. We need a special version because of 
  * c14n issue. The code is copied from xmlSAXParseFileWithData() function.
  *
- * Returns pointer to the loaded XML document or NULL if an error occurs.
+ * Returns: pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseFile(const char *filename) {
@@ -440,7 +440,7 @@ xmlSecParseFile(const char *filename) {
  *
  * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix. 
  *
- * Returns pointer to the loaded XML document or NULL if an error occurs.
+ * Returns: pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
@@ -533,7 +533,7 @@ done:
  * Loads XML Doc from memory. We need a special version because of 
  * c14n issue. The code is copied from xmlSAXParseMemory() function.
  *
- * Returns pointer to the loaded XML document or NULL if an error occurs.
+ * Returns: pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {

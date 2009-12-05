@@ -30,7 +30,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
  *
  * Gets the pointer to xmlsec-gnutls functions table.
  *
- * Returns the xmlsec-gnutls functions table or NULL if an error occurs.
+ * Returns: the xmlsec-gnutls functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gnutls(void) {
@@ -118,7 +118,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
  * 
  * XMLSec library specific crypto engine initialization. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecGnuTLSInit (void)  {
@@ -150,7 +150,7 @@ xmlSecGnuTLSInit (void)  {
  * 
  * XMLSec library specific crypto engine shutdown. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecGnuTLSShutdown(void) {
@@ -163,7 +163,7 @@ xmlSecGnuTLSShutdown(void) {
  *
  * Adds GnuTLS specific key data stores in keys manager.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -180,7 +180,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  *
  * Generates @size random bytes and puts result in @buffer.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {	

@@ -115,7 +115,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataAesKlass = {
  * 
  * The AES key data klass.
  *
- * Returns AES key data klass.
+ * Returns: AES key data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataAesGetKlass(void) {
@@ -130,7 +130,7 @@ xmlSecMSCryptoKeyDataAesGetKlass(void) {
  *
  * Sets the value of AES key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -196,7 +196,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
  * 
  * The DES key data klass.
  *
- * Returns DES key data klass.
+ * Returns: DES key data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataDesGetKlass(void) {

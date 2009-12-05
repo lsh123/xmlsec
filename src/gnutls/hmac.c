@@ -39,7 +39,7 @@ static int g_xmlsec_gnutls_hmac_min_length = XMLSEC_GNUTLS_MIN_HMAC_SIZE;
  * 
  * Gets the value of min HMAC length.
  * 
- * Returns the min HMAC output length
+ * Returns: the min HMAC output length
  */
 int xmlSecGnuTLSHmacGetMinOutputLength(void)
 {
@@ -506,7 +506,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacSha1Klass = {
  *
  * The HMAC-SHA1 transform klass.
  *
- * Returns the HMAC-SHA1 transform klass.
+ * Returns: the HMAC-SHA1 transform klass.
  */
 xmlSecTransformId 
 xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
@@ -548,7 +548,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacRipemd160Klass = {
  *
  * The HMAC-RIPEMD160 transform klass.
  *
- * Returns the HMAC-RIPEMD160 transform klass.
+ * Returns: the HMAC-RIPEMD160 transform klass.
  */
 xmlSecTransformId 
 xmlSecGnuTLSTransformHmacRipemd160GetKlass(void) {
@@ -590,7 +590,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacMd5Klass = {
  *
  * The HMAC-MD5 transform klass.
  *
- * Returns the HMAC-MD5 transform klass.
+ * Returns: the HMAC-MD5 transform klass.
  */
 xmlSecTransformId 
 xmlSecGnuTLSTransformHmacMd5GetKlass(void) {

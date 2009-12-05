@@ -110,7 +110,7 @@ static xmlSecIOCallbackPtr		xmlSecIOCallbackPtrListFind	(xmlSecPtrListPtr list,
  *
  * The keys list klass.
  *
- * Returns keys list id.
+ * Returns: keys list id.
  */
 static xmlSecPtrListId 
 xmlSecIOCallbackPtrListGetKlass(void) {
@@ -146,7 +146,7 @@ static xmlSecPtrList xmlSecAllIOCallbacks;
  * The IO initialization (called from #xmlSecInit function).
  * Applications should not call this function directly.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int
 xmlSecIOInit(void) {    
@@ -213,7 +213,7 @@ xmlSecIOCleanupCallbacks(void) {
  *
  * Register a new set of I/O callback for handling parser input.
  *
- * Returns the 0 on success or a negative value if an error occurs.
+ * Returns: the 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
@@ -253,7 +253,7 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
  *
  * Registers the default compiled-in I/O handlers.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecIORegisterDefaultCallbacks(void) {
@@ -362,7 +362,7 @@ static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
  *
  * The input uri transform klass. Reads binary data from an uri.
  *
- * Returns input URI transform id.
+ * Returns: input URI transform id.
  */
 xmlSecTransformId 
 xmlSecTransformInputURIGetKlass(void) {
@@ -376,7 +376,7 @@ xmlSecTransformInputURIGetKlass(void) {
  *
  * Opens the given @uri for reading.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {

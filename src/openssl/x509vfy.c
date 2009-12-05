@@ -117,7 +117,7 @@ static int 		xmlSecOpenSSLX509_NAME_ENTRY_cmp		(const X509_NAME_ENTRY **a,
  * 
  * The OpenSSL X509 certificates key data store klass.
  *
- * Returns pointer to OpenSSL X509 certificates key data store klass.
+ * Returns: pointer to OpenSSL X509 certificates key data store klass.
  */
 xmlSecKeyDataStoreId 
 xmlSecOpenSSLX509StoreGetKlass(void) {
@@ -135,7 +135,7 @@ xmlSecOpenSSLX509StoreGetKlass(void) {
  *
  * Searches @store for a certificate that matches given criteria.
  *
- * Returns pointer to found certificate or NULL if certificate is not found
+ * Returns: pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
 X509* 
@@ -166,7 +166,7 @@ xmlSecOpenSSLX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName
  *
  * Verifies @certs list.
  *
- * Returns pointer to the first verified certificate from @certs.
+ * Returns: pointer to the first verified certificate from @certs.
  */ 
 X509* 	
 xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* certs,
@@ -432,7 +432,7 @@ done:
  *
  * Adds trusted (root) or untrusted certificate to the store.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecKeyDataType type) {
@@ -482,7 +482,7 @@ xmlSecOpenSSLX509StoreAdoptCert(xmlSecKeyDataStorePtr store, X509* cert, xmlSecK
  *
  * Adds X509 CRL to the store.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
@@ -517,7 +517,7 @@ xmlSecOpenSSLX509StoreAdoptCrl(xmlSecKeyDataStorePtr store, X509_CRL* crl) {
  * Adds all certs in the @path to the list of trusted certs
  * in @store.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path) {
@@ -561,7 +561,7 @@ xmlSecOpenSSLX509StoreAddCertsPath(xmlSecKeyDataStorePtr store, const char *path
  * Adds all certs in @file to the list of trusted certs
  * in @store. It is possible for @file to contain multiple certs.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLX509StoreAddCertsFile(xmlSecKeyDataStorePtr store, const char *file) {
@@ -781,9 +781,6 @@ xmlSecOpenSSLX509VerifyCRL(X509_STORE* xst, X509_CRL *crl ) {
     return((ret == 1) ? 1 : 0);
 }
 
-/**
- * xmlSecOpenSSLX509FindCert:
- */
 static X509*		
 xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
 			xmlChar *issuerName, xmlChar *issuerSerial,
@@ -920,9 +917,6 @@ xmlSecOpenSSLX509FindCert(STACK_OF(X509) *certs, xmlChar *subjectName,
     return(NULL);
 }
 
-/** 
- * xmlSecOpenSSLX509FindNextChainCert:
- */
 static X509*
 xmlSecOpenSSLX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
     unsigned long certSubjHash;
@@ -942,9 +936,6 @@ xmlSecOpenSSLX509FindNextChainCert(STACK_OF(X509) *chain, X509 *cert) {
     return(NULL);
 }
 
-/**
- * xmlSecOpenSSLX509VerifyCertAgainstCrls:
- */
 static int
 xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
     X509_NAME *issuer;
@@ -1004,10 +995,6 @@ xmlSecOpenSSLX509VerifyCertAgainstCrls(STACK_OF(X509_CRL) *crls, X509* cert) {
     return(1);    
 }
 
-
-/**
- * xmlSecOpenSSLX509NameRead:
- */       
 static X509_NAME *
 xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
     xmlSecByte name[256];
@@ -1128,11 +1115,6 @@ xmlSecOpenSSLX509NameRead(xmlSecByte *str, int len) {
     return(nm);
 }
 
-
-
-/**
- * xmlSecOpenSSLX509NameStringRead:
- */
 static int 
 xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen, 
 			xmlSecByte *res, int resLen,
@@ -1218,7 +1200,7 @@ int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b) {
 /** 
  * xmlSecOpenSSLX509NamesCompare:
  *
- * we have to sort X509_NAME entries to get correct results.
+ * We have to sort X509_NAME entries to get correct results.
  * This is ugly but OpenSSL does not support it
  */
 static int		
@@ -1263,11 +1245,7 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     X509_NAME_free(b1);
     return(ret);
 }
-			
 
-/**
- * xmlSecOpenSSLX509_NAME_ENTRY_cmp:
- */
 static int 
 xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, const X509_NAME_ENTRY **b) {
     int ret;

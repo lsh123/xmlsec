@@ -95,7 +95,7 @@ static PCCERT_CONTEXT xmlSecMSCryptoX509FindCert(HCERTSTORE store,
  * 
  * The MSCrypto X509 certificates key data store klass.
  *
- * Returns pointer to MSCrypto X509 certificates key data store klass.
+ * Returns: pointer to MSCrypto X509 certificates key data store klass.
  */
 xmlSecKeyDataStoreId 
 xmlSecMSCryptoX509StoreGetKlass(void) {
@@ -113,10 +113,9 @@ xmlSecMSCryptoX509StoreGetKlass(void) {
  *
  * Searches @store for a certificate that matches given criteria.
  *
- * Returns pointer to found certificate or NULL if certificate is not found
+ * Returns: pointer to found certificate or NULL if certificate is not found
  * or an error occurs.
  */
-
 PCCERT_CONTEXT
 xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                 xmlChar *issuerName, xmlChar *issuerSerial,
@@ -269,7 +268,7 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
  * 
  * Builds certificates chain using Windows API.
  * 
- * Returns TRUE on success or FALSE otherwise.
+ * Returns: TRUE on success or FALSE otherwise.
  */
 static BOOL 
 xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
@@ -372,7 +371,7 @@ end:
  * 
  * Builds certificates chain manually.
  * 
- * Returns TRUE on success or FALSE otherwise.
+ * Returns: TRUE on success or FALSE otherwise.
  */
 static BOOL
 xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
@@ -533,7 +532,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
  *
  * Verifies @certs list.
  *
- * Returns pointer to the first verified certificate from @certs.
+ * Returns: pointer to the first verified certificate from @certs.
  */ 
 PCCERT_CONTEXT
 xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
@@ -584,7 +583,7 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
  *
  * Adds trusted (root) or untrusted certificate to the store.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -637,7 +636,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
  *
  * Adds @keyStore to the list of key stores.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int    
 xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
@@ -669,7 +668,7 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
  *
  * Adds @trustedStore to the list of trusted certs stores.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE trustedStore) {
@@ -701,7 +700,7 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
  *
  * Adds @trustedStore to the list of un-trusted certs stores.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTSTORE untrustedStore) {
@@ -885,10 +884,7 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
-/**
- * xmlSecMSCryptoX509FindCert:
- */
-static PCCERT_CONTEXT        
+static PCCERT_CONTEXT
 xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issuerName, 
                xmlChar *issuerSerial, xmlChar *ski) {
     PCCERT_CONTEXT pCert = NULL;

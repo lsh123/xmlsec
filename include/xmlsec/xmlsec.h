@@ -97,7 +97,7 @@ XMLSEC_EXPORT int	xmlSecShutdown		(void);
  * value if an error occurs.
  */
 #define xmlSecCheckVersionExact()	\
-    xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExact)
+    xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch)
 
 /** 
  * xmlSecCheckVersion:
@@ -111,13 +111,13 @@ XMLSEC_EXPORT int	xmlSecShutdown		(void);
 
 /**
  * xmlSecCheckVersionMode:
- * @xmlSecCheckVersionExact:		the version should match exactly.
+ * @xmlSecCheckVersionExactMatch:	the version should match exactly.
  * @xmlSecCheckVersionABICompatible:	the version should be ABI compatible.
  *
  * The xmlsec library version mode.
  */
 typedef enum {
-    xmlSecCheckVersionExact = 0,
+    xmlSecCheckVersionExactMatch = 0,
     xmlSecCheckVersionABICompatible
 } xmlSecCheckVersionMode;
 

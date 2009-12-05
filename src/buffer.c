@@ -54,7 +54,7 @@ xmlSecBufferSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInit
  * Caller is responsible for calling #xmlSecBufferDestroy function
  * to free the buffer.
  *
- * Returns pointer to newly allocated buffer or NULL if an error occurs.
+ * Returns: pointer to newly allocated buffer or NULL if an error occurs.
  */
 xmlSecBufferPtr 
 xmlSecBufferCreate(xmlSecSize size) {
@@ -106,7 +106,7 @@ xmlSecBufferDestroy(xmlSecBufferPtr buf) {
  * Initializes buffer object @buf. Caller is responsible for calling
  * #xmlSecBufferFinalize function to free allocated resources.
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferInitialize(xmlSecBufferPtr buf, xmlSecSize size) {
@@ -162,7 +162,7 @@ xmlSecBufferEmpty(xmlSecBufferPtr buf) {
  *
  * Gets pointer to buffer's data.
  *
- * Returns pointer to buffer's data.
+ * Returns: pointer to buffer's data.
  */
 xmlSecByte* 
 xmlSecBufferGetData(xmlSecBufferPtr buf) {
@@ -179,7 +179,7 @@ xmlSecBufferGetData(xmlSecBufferPtr buf) {
  *
  * Sets the value of the buffer to @data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferSetData(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size) {
@@ -214,7 +214,7 @@ xmlSecBufferSetData(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
  *
  * Gets the current buffer data size.
  *
- * Returns the current data size.
+ * Returns: the current data size.
  */
 xmlSecSize 
 xmlSecBufferGetSize(xmlSecBufferPtr buf) {
@@ -231,7 +231,7 @@ xmlSecBufferGetSize(xmlSecBufferPtr buf) {
  * Sets new buffer data size. If necessary, buffer grows to 
  * have at least @size bytes. 
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
@@ -260,7 +260,7 @@ xmlSecBufferSetSize(xmlSecBufferPtr buf, xmlSecSize size) {
  *
  * Gets the maximum (allocated) buffer size.
  *
- * Returns the maximum (allocated) buffer size.
+ * Returns: the maximum (allocated) buffer size.
  */
 xmlSecSize 
 xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
@@ -277,7 +277,7 @@ xmlSecBufferGetMaxSize(xmlSecBufferPtr buf) {
  * Sets new buffer maximum size. If necessary, buffer grows to 
  * have at least @size bytes. 
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
@@ -336,7 +336,7 @@ xmlSecBufferSetMaxSize(xmlSecBufferPtr buf, xmlSecSize size) {
  *
  * Appends the @data after the current data stored in the buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferAppend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size) {
@@ -372,7 +372,7 @@ xmlSecBufferAppend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size)
  *
  * Prepends the @data before the current data stored in the buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecBufferPrepend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size) {
@@ -408,7 +408,7 @@ xmlSecBufferPrepend(xmlSecBufferPtr buf, const xmlSecByte* data, xmlSecSize size
  *
  * Removes @size bytes from the beginning of the current buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
@@ -436,7 +436,7 @@ xmlSecBufferRemoveHead(xmlSecBufferPtr buf, xmlSecSize size) {
  *
  * Removes @size bytes from the end of current buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
@@ -461,7 +461,7 @@ xmlSecBufferRemoveTail(xmlSecBufferPtr buf, xmlSecSize size) {
  *
  * Reads the content of the file @filename in the buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
@@ -525,7 +525,7 @@ xmlSecBufferReadFile(xmlSecBufferPtr buf, const char* filename) {
  * Reads the content of the @node, base64 decodes it and stores the
  * result in the buffer.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
@@ -593,7 +593,7 @@ xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf, xmlNodePtr node) {
  *
  * Sets the content of the @node to the base64 encoded buffer data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf, xmlNodePtr node, int columns) {
@@ -634,7 +634,7 @@ static int	xmlSecBufferIOClose				(xmlSecBufferPtr buf);
  * Creates new LibXML output buffer to store data in the @buf. Caller is 
  * responsible for destroying @buf when processing is done. 
  *
- * Returns pointer to newly allocated output buffer or NULL if an error
+ * Returns: pointer to newly allocated output buffer or NULL if an error
  * occurs.
  */
 xmlOutputBufferPtr 

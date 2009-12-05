@@ -55,7 +55,7 @@ XMLSEC_EXPORT xmlSecKeyDataStorePtr	xmlSecKeysMngrGetDataStore	(xmlSecKeysMngrPt
  *
  * Reads the <dsig:KeyInfo/> node @keyInfoNode and extracts the key.
  *
- * Returns the pointer to key or NULL if the key is not found or 
+ * Returns: the pointer to key or NULL if the key is not found or 
  * an error occurs.
  */
 typedef xmlSecKeyPtr 	(*xmlSecGetKeyCallback)		(xmlNodePtr keyInfoNode,
@@ -166,7 +166,7 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyStoreFindKey		(xmlSecKeyStorePtr store,
  *
  * Keys store specific initialization method.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyStoreInitializeMethod)	(xmlSecKeyStorePtr store);
 
@@ -187,7 +187,7 @@ typedef void			(*xmlSecKeyStoreFinalizeMethod)		(xmlSecKeyStorePtr store);
  * Keys store specific find method. The caller is responsible for destroying 
  * the returned key using #xmlSecKeyDestroy method.
  *
- * Returns the pointer to a key or NULL if key is not found or an error occurs.
+ * Returns: the pointer to a key or NULL if key is not found or an error occurs.
  */
 typedef xmlSecKeyPtr		(*xmlSecKeyStoreFindKeyMethod)	(xmlSecKeyStorePtr store,
 								 const xmlChar* name,

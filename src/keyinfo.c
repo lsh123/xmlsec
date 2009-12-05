@@ -73,7 +73,7 @@
  * Parses the <dsig:KeyInfo/> element @keyInfoNode, extracts the key data
  * and stores into @key.
  *
- * Returns 0 on success or -1 if an error occurs.
+ * Returns: 0 on success or -1 if an error occurs.
  */
 int
 xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -142,7 +142,7 @@ xmlSecKeyInfoNodeRead(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtx
  *
  * Writes the @key into the <dsig:KeyInfo/> element template @keyInfoNode.
  *
- * Returns 0 on success or -1 if an error occurs.
+ * Returns: 0 on success or -1 if an error occurs.
  */
 int 
 xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -213,7 +213,7 @@ xmlSecKeyInfoNodeWrite(xmlNodePtr keyInfoNode, xmlSecKeyPtr key, xmlSecKeyInfoCt
  * Caller is responsible for freeing it by calling #xmlSecKeyInfoCtxDestroy 
  * function.
  *
- * Returns pointer to newly allocated object or NULL if an error occurs.
+ * Returns: pointer to newly allocated object or NULL if an error occurs.
  */
 xmlSecKeyInfoCtxPtr 
 xmlSecKeyInfoCtxCreate(xmlSecKeysMngrPtr keysMngr) {
@@ -267,7 +267,7 @@ xmlSecKeyInfoCtxDestroy(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * Initializes <dsig:KeyInfo/> element processing context. Caller is 
  * responsible for cleaning it up by #xmlSecKeyInfoCtxFinalize function.
  * 
- * Returns 0 on success and a negative value if an error occurs.
+ * Returns: 0 on success and a negative value if an error occurs.
  */
 int 
 xmlSecKeyInfoCtxInitialize(xmlSecKeyInfoCtxPtr keyInfoCtx, xmlSecKeysMngrPtr keysMngr) {
@@ -374,7 +374,7 @@ xmlSecKeyInfoCtxReset(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  * Creates encryption context form processing <enc:EncryptedKey/> child
  * of <dsig:KeyInfo/> element.
  * 
- * Returns 0 on success and a negative value if an error occurs.
+ * Returns: 0 on success and a negative value if an error occurs.
  */
 int 
 xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
@@ -444,7 +444,7 @@ xmlSecKeyInfoCtxCreateEncCtx(xmlSecKeyInfoCtxPtr keyInfoCtx) {
  *
  * Copies user preferences from @src context to @dst context.
  *  
- * Returns 0 on success and a negative value if an error occurs.
+ * Returns: 0 on success and a negative value if an error occurs.
  */
 int 
 xmlSecKeyInfoCtxCopyUserPref(xmlSecKeyInfoCtxPtr dst, xmlSecKeyInfoCtxPtr src) {
@@ -687,7 +687,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataNameKlass = {
  * (Common uses of KeyName include simple string names for keys, a key index, 
  * a distinguished name (DN), an email address, etc.) 
  *
- * Returns the <dsig:KeyName/> element processing key data klass.
+ * Returns: the <dsig:KeyName/> element processing key data klass.
  */
 xmlSecKeyDataId 
 xmlSecKeyDataNameGetKlass(void) {
@@ -844,7 +844,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataValueKlass = {
  * The KeyValue element contains a single public key that may be useful in 
  * validating the signature. 
  * 
- * Returns the <dsig:KeyValue/> element processing key data klass.
+ * Returns: the <dsig:KeyValue/> element processing key data klass.
  */
 xmlSecKeyDataId 
 xmlSecKeyDataValueGetKlass(void) {
@@ -1056,7 +1056,7 @@ static int			xmlSecKeyDataRetrievalMethodReadXmlResult(xmlSecKeyDataId typeId,
  * RetrievalMethod uses the same syntax and dereferencing behavior as 
  * Reference's URI and The Reference Processing Model.
  * 
- * Returns the <dsig:RetrievalMethod/> element processing key data klass.
+ * Returns: the <dsig:RetrievalMethod/> element processing key data klass.
  */
 xmlSecKeyDataId 
 xmlSecKeyDataRetrievalMethodGetKlass(void) {
@@ -1391,7 +1391,7 @@ static xmlSecKeyDataKlass xmlSecKeyDataEncryptedKeyKlass = {
  * resulting octets are made available to the EncryptionMethod algorithm 
  * without any additional processing.
  * 
- * Returns the <enc:EncryptedKey/> element processing key data klass.
+ * Returns: the <enc:EncryptedKey/> element processing key data klass.
  */
 xmlSecKeyDataId 
 xmlSecKeyDataEncryptedKeyGetKlass(void) {

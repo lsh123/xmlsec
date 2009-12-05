@@ -116,7 +116,7 @@ static int g_xmlsec_base64_default_line_size = XMLSEC_BASE64_LINESIZE;
  * 
  * Gets the current default line size.
  *
- * Returns the current default line size.
+ * Returns: the current default line size.
  */
 int
 xmlSecBase64GetDefaultLineSize(void)
@@ -143,7 +143,7 @@ xmlSecBase64SetDefaultLineSize(int columns)
  *
  * Allocates and initializes new base64 context.
  *
- * Returns a pointer to newly created #xmlSecBase64Ctx structure
+ * Returns: a pointer to newly created #xmlSecBase64Ctx structure
  * or NULL if an error occurs.
  */
 xmlSecBase64CtxPtr	
@@ -200,7 +200,7 @@ xmlSecBase64CtxDestroy(xmlSecBase64CtxPtr ctx) {
  *
  * Initializes new base64 context.
  *
- * Returns 0 on success and a negative value otherwise.
+ * Returns: 0 on success and a negative value otherwise.
  */
 int 
 xmlSecBase64CtxInitialize(xmlSecBase64CtxPtr ctx, int encode, int columns) {    
@@ -236,7 +236,7 @@ xmlSecBase64CtxFinalize(xmlSecBase64CtxPtr ctx) {
  *
  * Encodes or decodes the next piece of data from input buffer.
  * 
- * Returns the number of bytes written to output buffer or 
+ * Returns: the number of bytes written to output buffer or 
  * -1 if an error occurs.
  */
 int
@@ -286,7 +286,7 @@ xmlSecBase64CtxUpdate(xmlSecBase64CtxPtr ctx,
  * Encodes or decodes the last piece of data stored in the context
  * and finalizes the result.
  *
- * Returns the number of bytes written to output buffer or 
+ * Returns: the number of bytes written to output buffer or 
  * -1 if an error occurs.
  */
 int
@@ -647,7 +647,7 @@ xmlSecBase64CtxDecodeIsFinished(xmlSecBase64CtxPtr ctx) {
  * The caller is responsible for freeing returned buffer using
  * xmlFree() function.
  *
- * Returns newly allocated string with base64 encoded data 
+ * Returns: newly allocated string with base64 encoded data 
  * or NULL if an error occurs.
  */
 xmlChar*
@@ -726,7 +726,7 @@ xmlSecBase64Encode(const xmlSecByte *buf, xmlSecSize len, int columns) {
  * Decodes input base64 encoded string and puts result into
  * the output buffer.
  *
- * Returns the number of bytes written to the output buffer or 
+ * Returns: the number of bytes written to the output buffer or 
  * a negative value if an error occurs 
  */
 int
@@ -834,7 +834,7 @@ static xmlSecTransformKlass xmlSecBase64Klass = {
  * useful if an application needs to sign the raw data associated with 
  * the encoded content of an element.
  *
- * Returns base64 transform id.
+ * Returns: base64 transform id.
  */
 xmlSecTransformId 
 xmlSecTransformBase64GetKlass(void) {

@@ -505,7 +505,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NKlass = {
  * (http://www.w3.org/TR/xmldsig-core/#sec-c14nAlg and 
  * http://www.w3.org/TR/2001/REC-xml-c14n-20010315).
  *
- * Returns c14n transform id.
+ * Returns: c14n transform id.
  */
 xmlSecTransformId 
 xmlSecTransformInclC14NGetKlass(void) {
@@ -553,7 +553,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14NWithCommentsKlass = {
  * (http://www.w3.org/TR/xmldsig-core/#sec-c14nAlg and 
  * http://www.w3.org/TR/2001/REC-xml-c14n-20010315).
  *
- * Returns c14n with comments transform id.
+ * Returns: c14n with comments transform id.
  */
 xmlSecTransformId 
 xmlSecTransformInclC14NWithCommentsGetKlass(void) {
@@ -598,7 +598,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11Klass = {
  *
  * C14N version 1.1 (http://www.w3.org/TR/xml-c14n11)
  *
- * Returns c14n v1.1 transform id.
+ * Returns: c14n v1.1 transform id.
  */
 xmlSecTransformId 
 xmlSecTransformInclC14N11GetKlass(void) {
@@ -644,7 +644,7 @@ static xmlSecTransformKlass xmlSecTransformInclC14N11WithCommentsKlass = {
  *
  * C14N version 1.1 (http://www.w3.org/TR/xml-c14n11) with comments
  *
- * Returns c14n v1.1 with comments transform id.
+ * Returns: c14n v1.1 with comments transform id.
  */
 xmlSecTransformId 
 xmlSecTransformInclC14N11WithCommentsGetKlass(void) {
@@ -691,7 +691,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NKlass = {
  * Exclusive canoncicalization that ommits comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
  * 
- * Returns exclusive c14n transform id.
+ * Returns: exclusive c14n transform id.
  */
 xmlSecTransformId 
 xmlSecTransformExclC14NGetKlass(void) {
@@ -737,7 +737,7 @@ static xmlSecTransformKlass xmlSecTransformExclC14NWithCommentsKlass = {
  * Exclusive canoncicalization that includes comments transform klass
  * (http://www.w3.org/TR/xml-exc-c14n/).
  * 
- * Returns exclusive c14n with comments transform id.
+ * Returns: exclusive c14n with comments transform id.
  */
 xmlSecTransformId 
 xmlSecTransformExclC14NWithCommentsGetKlass(void) {
@@ -792,7 +792,7 @@ static xmlSecTransformKlass xmlSecTransformRemoveXmlTagsC14NKlass = {
  * and any of its descendant elements as well as any descendant comments and 
  * processing instructions. The output of this transform is an octet stream.
  *
- * Returns "remove xml tags" transform id.
+ * Returns: "remove xml tags" transform id.
  */
 xmlSecTransformId 
 xmlSecTransformRemoveXmlTagsC14NGetKlass(void) {

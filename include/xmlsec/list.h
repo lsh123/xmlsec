@@ -120,7 +120,7 @@ XMLSEC_EXPORT void		xmlSecPtrListDebugXmlDump	(xmlSecPtrListPtr list,
  *
  * Duplicates item @ptr.
  *
- * Returns pointer to new item copy or NULL if an error occurs.
+ * Returns: pointer to new item copy or NULL if an error occurs.
  */
 typedef xmlSecPtr		(*xmlSecPtrDuplicateItemMethod)	(xmlSecPtr ptr);
 

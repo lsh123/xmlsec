@@ -47,7 +47,7 @@
  *         <xs:anyAttribute namespace="##other" processContents="lax"/>
  *     </xs:complexType>
  *
- * Returns pointer to newly created <soap:Envelope> node or NULL
+ * Returns: pointer to newly created <soap:Envelope> node or NULL
  * if an error occurs.
  */
 xmlNodePtr 
@@ -115,7 +115,7 @@ xmlSecSoap11CreateEnvelope(xmlDocPtr doc) {
  *         <xs:anyAttribute namespace="##other" processContents="lax"/>
  *     </xs:complexType>
  *
- * Returns pointer to <soap:Header> node or NULL if an error occurs.
+ * Returns: pointer to <soap:Header> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap11EnsureHeader(xmlNodePtr envNode) {
@@ -161,7 +161,7 @@ xmlSecSoap11EnsureHeader(xmlNodePtr envNode) {
  * 
  * Adds a new entry to <soap:Body> node.
  *
- * Returns pointer to the added entry (@contentNode) or NULL if an error occurs.
+ * Returns: pointer to the added entry (@contentNode) or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecSoap11AddBodyEntry(xmlNodePtr envNode, xmlNodePtr entryNode) {
@@ -214,7 +214,7 @@ xmlSecSoap11AddBodyEntry(xmlNodePtr envNode, xmlNodePtr entryNode) {
  *         <xs:anyAttribute namespace="##any" processContents="lax"/>
  *     </xs:complexType>
  * 
- * Returns pointer to the added entry or NULL if an error occurs.
+ * Returns: pointer to the added entry or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref, 
@@ -340,7 +340,7 @@ xmlSecSoap11AddFaultEntry(xmlNodePtr envNode, const xmlChar* faultCodeHref,
  *
  * Validates <soap:Envelope> node structure.
  *
- * Returns 1 if @envNode has a valid <soap:Envelope> element, 0 if it is
+ * Returns: 1 if @envNode has a valid <soap:Envelope> element, 0 if it is
  * not valid or a negative value if an error occurs.
  */
 int 
@@ -384,7 +384,7 @@ xmlSecSoap11CheckEnvelope(xmlNodePtr envNode) {
  * 
  * Gets pointer to the <soap:Header> node.
  *
- * Returns pointer to <soap:Header> node or NULL if an error occurs.
+ * Returns: pointer to <soap:Header> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap11GetHeader(xmlNodePtr envNode) {
@@ -407,7 +407,7 @@ xmlSecSoap11GetHeader(xmlNodePtr envNode) {
  * 
  * Gets pointer to the <soap:Body> node.
  *
- * Returns pointer to <soap:Body> node or NULL if an error occurs.
+ * Returns: pointer to <soap:Body> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap11GetBody(xmlNodePtr envNode) {
@@ -440,7 +440,7 @@ xmlSecSoap11GetBody(xmlNodePtr envNode) {
  *
  * Gets the number of body entries.
  *
- * Returns the number of body entries.
+ * Returns: the number of body entries.
  */
 xmlSecSize 
 xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode) {
@@ -477,7 +477,7 @@ xmlSecSoap11GetBodyEntriesNumber(xmlNodePtr envNode) {
  * 
  * Gets the body entry number @pos.
  *
- * Returns pointer to body entry node or NULL if an error occurs.
+ * Returns: pointer to body entry node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap11GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
@@ -512,7 +512,7 @@ xmlSecSoap11GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
  * 
  * Gets the Fault entry (if any).
  *
- * Returns pointer to Fault entry or NULL if it does not exist.
+ * Returns: pointer to Fault entry or NULL if it does not exist.
  */
 xmlNodePtr 
 xmlSecSoap11GetFaultEntry(xmlNodePtr envNode) {
@@ -573,7 +573,7 @@ static const xmlSecQName2IntegerInfo gXmlSecSoap12FaultCodeInfo[] =
  *         <xs:anyAttribute namespace="##other" processContents="lax"/>
  *     </xs:complexType>
  *
- * Returns pointer to newly created <soap:Envelope> node or NULL
+ * Returns: pointer to newly created <soap:Envelope> node or NULL
  * if an error occurs.
  */
 xmlNodePtr 
@@ -641,7 +641,7 @@ xmlSecSoap12CreateEnvelope(xmlDocPtr doc) {
  *         <xs:anyAttribute namespace="##other" processContents="lax"/>
  *     </xs:complexType>
  *
- * Returns pointer to <soap:Header> node or NULL if an error occurs.
+ * Returns: pointer to <soap:Header> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap12EnsureHeader(xmlNodePtr envNode) {
@@ -698,7 +698,7 @@ xmlSecSoap12EnsureHeader(xmlNodePtr envNode) {
  *         <xs:anyAttribute namespace="##other" processContents="lax"/>
  *     </xs:complexType>
  *
- * Returns pointer to the added entry (@contentNode) or NULL if an error occurs.
+ * Returns: pointer to the added entry (@contentNode) or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecSoap12AddBodyEntry(xmlNodePtr envNode, xmlNodePtr entryNode) {
@@ -794,7 +794,7 @@ xmlSecSoap12AddBodyEntry(xmlNodePtr envNode, xmlNodePtr entryNode) {
  *         <xs:anyAttribute namespace="##other" processContents="lax"/>
  *     </xs:complexType>
  *     
- * Returns pointer to the added entry or NULL if an error occurs.
+ * Returns: pointer to the added entry or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
@@ -946,7 +946,7 @@ xmlSecSoap12AddFaultEntry(xmlNodePtr envNode, xmlSecSoap12FaultCode faultCode,
  *
  * Adds a new <Subcode> node to the <Code> node or the last <Subcode> node.
  *
- * Returns a pointer to the newly created <Subcode> node or NULL if an error
+ * Returns: a pointer to the newly created <Subcode> node or NULL if an error
  * occurs.
  */
 xmlNodePtr 
@@ -1040,7 +1040,7 @@ xmlSecSoap12AddFaultSubcode(xmlNodePtr faultNode, const xmlChar* subCodeHref, co
  *
  * Adds a new Text node to the Fault/Reason node.
  *
- * Returns a pointer to the newly created <Text> node or NULL if an error
+ * Returns: a pointer to the newly created <Text> node or NULL if an error
  * occurs.
  */
 xmlNodePtr 
@@ -1089,7 +1089,7 @@ xmlSecSoap12AddFaultReasonText(xmlNodePtr faultNode, const xmlChar* faultReasonT
  * 
  * Adds a new child to the Detail child element of @faultNode.
  *
- * Returns pointer to the added child (@detailEntryNode) or NULL if an error 
+ * Returns: pointer to the added child (@detailEntryNode) or NULL if an error 
  * occurs.
  */
 xmlNodePtr 
@@ -1123,7 +1123,7 @@ xmlSecSoap12AddFaultDetailEntry(xmlNodePtr faultNode, xmlNodePtr detailEntryNode
  *
  * Validates <soap:Envelope> node structure.
  *
- * Returns 1 if @envNode has a valid <soap:Envelope> element, 0 if it is
+ * Returns: 1 if @envNode has a valid <soap:Envelope> element, 0 if it is
  * not valid or a negative value if an error occurs.
  */
 int 
@@ -1167,7 +1167,7 @@ xmlSecSoap12CheckEnvelope(xmlNodePtr envNode) {
  * 
  * Gets pointer to the <soap:Header> node.
  *
- * Returns pointer to <soap:Header> node or NULL if an error occurs.
+ * Returns: pointer to <soap:Header> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap12GetHeader(xmlNodePtr envNode) {
@@ -1190,7 +1190,7 @@ xmlSecSoap12GetHeader(xmlNodePtr envNode) {
  * 
  * Gets pointer to the <soap:Body> node.
  *
- * Returns pointer to <soap:Body> node or NULL if an error occurs.
+ * Returns: pointer to <soap:Body> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap12GetBody(xmlNodePtr envNode) {
@@ -1223,7 +1223,7 @@ xmlSecSoap12GetBody(xmlNodePtr envNode) {
  *
  * Gets the number of body entries.
  *
- * Returns the number of body entries.
+ * Returns: the number of body entries.
  */
 xmlSecSize 
 xmlSecSoap12GetBodyEntriesNumber(xmlNodePtr envNode) {
@@ -1260,7 +1260,7 @@ xmlSecSoap12GetBodyEntriesNumber(xmlNodePtr envNode) {
  * 
  * Gets the body entry number @pos.
  *
- * Returns pointer to body entry node or NULL if an error occurs.
+ * Returns: pointer to body entry node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecSoap12GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
@@ -1295,7 +1295,7 @@ xmlSecSoap12GetBodyEntry(xmlNodePtr envNode, xmlSecSize pos) {
  * 
  * Gets the Fault entry (if any).
  *
- * Returns pointer to Fault entry or NULL if it does not exist.
+ * Returns: pointer to Fault entry or NULL if it does not exist.
  */
 xmlNodePtr 
 xmlSecSoap12GetFaultEntry(xmlNodePtr envNode) {

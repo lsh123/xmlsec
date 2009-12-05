@@ -286,7 +286,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataX509Klass = {
  * 
  * The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
  *
- * Returns the X509 data klass.
+ * Returns: the X509 data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataX509GetKlass(void) {
@@ -299,7 +299,7 @@ xmlSecMSCryptoKeyDataX509GetKlass(void) {
  *
  * Gets the certificate from which the key was extracted. 
  *
- * Returns the key's certificate or NULL if key data was not used for key
+ * Returns: the key's certificate or NULL if key data was not used for key
  * extraction or an error occurs.
  */
 PCCERT_CONTEXT
@@ -321,7 +321,7 @@ xmlSecMSCryptoKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
  *
  * Sets the key's certificate in @data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
@@ -349,7 +349,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
  *
  * Adds certificate to the X509 key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
@@ -383,7 +383,7 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
  * 
  * Gets a certificate from X509 key data.
  *
- * Returns the pointer to certificate or NULL if @pos is larger than the 
+ * Returns: the pointer to certificate or NULL if @pos is larger than the 
  * number of certificates in @data or an error occurs.
  */
 PCCERT_CONTEXT 
@@ -411,7 +411,7 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
  *
  * Gets the number of certificates in @data.
  *
- * Returns te number of certificates in @data.
+ * Returns: te number of certificates in @data.
  */
 xmlSecSize 	
 xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
@@ -432,7 +432,7 @@ xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
  *
  * Adds CRL to the X509 key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
@@ -465,7 +465,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
  *
  * Gets a CRL from X509 key data.
  *
- * Returns the pointer to CRL or NULL if @pos is larger than the
+ * Returns: the pointer to CRL or NULL if @pos is larger than the
  * number of CRLs in @data or an error occurs.
  */
 PCCRL_CONTEXT
@@ -492,7 +492,7 @@ xmlSecMSCryptoKeyDataX509GetCrl(xmlSecKeyDataPtr data, xmlSecSize pos) {
  *
  * Gets the number of CRLs in @data.
  *
- * Returns te number of CRLs in @data.
+ * Returns: te number of CRLs in @data.
  */
 xmlSecSize
 xmlSecMSCryptoKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
@@ -2202,7 +2202,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRawX509CertKlass = {
  * 
  * The raw X509 certificates key data klass.
  *
- * Returns raw X509 certificates key data klass.
+ * Returns: raw X509 certificates key data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataRawX509CertGetKlass(void) {

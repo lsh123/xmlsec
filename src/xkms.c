@@ -199,7 +199,7 @@ static const xmlSecQName2IntegerInfo gXmlSecXkmsFormatInfo[] =
  *  
  * Gets xmlSecXkmsServerFormat from string @str.
  * 
- * Returns corresponding format or xmlSecXkmsServerFormatUnknown
+ * Returns: corresponding format or xmlSecXkmsServerFormatUnknown
  * if format could not be recognized.
  */ 
 xmlSecXkmsServerFormat 
@@ -228,7 +228,7 @@ xmlSecXkmsServerFormatFromString(const xmlChar* str) {
  *
  * Gets string from @format.
  *
- * Returns string corresponding to @format or NULL if an error occurs.
+ * Returns: string corresponding to @format or NULL if an error occurs.
  */
 const xmlChar* 
 xmlSecXkmsServerFormatToString (xmlSecXkmsServerFormat format) {
@@ -256,7 +256,7 @@ xmlSecXkmsServerFormatToString (xmlSecXkmsServerFormat format) {
  * The caller is responsible for destroying returend object by calling 
  * #xmlSecXkmsServerCtxDestroy function.
  *
- * Returns pointer to newly allocated context object or NULL if an error
+ * Returns: pointer to newly allocated context object or NULL if an error
  * occurs.
  */
 xmlSecXkmsServerCtxPtr	
@@ -311,7 +311,7 @@ xmlSecXkmsServerCtxDestroy(xmlSecXkmsServerCtxPtr ctx) {
  * The caller is responsible for cleaing up returend object by calling 
  * #xmlSecXkmsServerCtxFinalize function.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsServerCtxInitialize(xmlSecXkmsServerCtxPtr ctx, xmlSecKeysMngrPtr keysMngr) {
@@ -485,7 +485,7 @@ xmlSecXkmsServerCtxReset(xmlSecXkmsServerCtxPtr ctx) {
  * 
  * Copies user preference from @src context to @dst.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst, xmlSecXkmsServerCtxPtr src) {
@@ -577,7 +577,7 @@ xmlSecXkmsServerCtxCopyUserPref(xmlSecXkmsServerCtxPtr dst, xmlSecXkmsServerCtxP
  * Reads XKMS request from @node and creates response to a newly created node. 
  * Caller is responsible for adding the returned node to the XML document.
  *
- * Returns pointer to newly created XKMS response node or NULL
+ * Returns: pointer to newly created XKMS response node or NULL
  * if an error occurs.
  */
 xmlNodePtr 
@@ -673,7 +673,7 @@ error:
  *
  * Reads XKMS request from @node and stores data in @ctx.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsServerCtxRequestRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
@@ -724,7 +724,7 @@ xmlSecXkmsServerCtxRequestRead(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node) {
  * Writes XKMS response from context to a newly created node. Caller is 
  * responsible for adding the returned node to the XML document.
  *
- * Returns pointer to newly created XKMS response node or NULL
+ * Returns: pointer to newly created XKMS response node or NULL
  * if an error occurs.
  */
 xmlNodePtr
@@ -758,7 +758,7 @@ xmlSecXkmsServerCtxResponseWrite(xmlSecXkmsServerCtxPtr ctx, xmlDocPtr doc) {
  * 
  * Removes SOAP or other envelope from XKMS request.
  *
- * Returns pointer to "real" XKMS request node or NULL if an error occurs. 
+ * Returns: pointer to "real" XKMS request node or NULL if an error occurs. 
  */
 xmlNodePtr 
 xmlSecXkmsServerCtxRequestUnwrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node,  xmlSecXkmsServerFormat format) {
@@ -869,7 +869,7 @@ xmlSecXkmsServerCtxRequestUnwrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node,  x
  * Creates SOAP or other envelope around XKMS response.
  * Caller is responsible for adding the returned node to the XML document.
  *
- * Returns pointer to newly created response envelope node or NULL
+ * Returns: pointer to newly created response envelope node or NULL
  * if an error occurs.
  */
 xmlNodePtr 
@@ -952,7 +952,7 @@ xmlSecXkmsServerCtxResponseWrap(xmlSecXkmsServerCtxPtr ctx, xmlNodePtr node, xml
  * Creates a "fatal error" SOAP or other envelope respons. Caller is 
  * responsible for adding the returned node to the XML document.
  *
- * Returns pointer to newly created fatal error response (it might be NULL).
+ * Returns: pointer to newly created fatal error response (it might be NULL).
  */
 xmlNodePtr 
 xmlSecXkmsServerCtxFatalErrorResponseCreate(xmlSecXkmsServerCtxPtr ctx, xmlSecXkmsServerFormat format, xmlDocPtr doc) {
@@ -2664,7 +2664,7 @@ static xmlSecPtrList xmlSecAllXkmsRespondWithIds;
  *
  * Gets global registered RespondWith klasses list.
  * 
- * Returns the pointer to list of all registered RespondWith klasses.
+ * Returns: the pointer to list of all registered RespondWith klasses.
  */
 xmlSecPtrListPtr
 xmlSecXkmsRespondWithIdsGet(void) {
@@ -2677,7 +2677,7 @@ xmlSecXkmsRespondWithIdsGet(void) {
  * Initializes the RespondWith klasses. This function is called from the 
  * #xmlSecInit function and the application should not call it directly.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsRespondWithIdsInit(void) {
@@ -2723,7 +2723,7 @@ xmlSecXkmsRespondWithIdsShutdown(void) {
  *
  * Registers @id in the global list of RespondWith klasses.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id) {
@@ -2751,7 +2751,7 @@ xmlSecXkmsRespondWithIdsRegister(xmlSecXkmsRespondWithId id) {
  * Registers default (implemented by XML Security Library)
  * RespondWith klasses: KeyName, KeyValue,...
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsRespondWithIdsRegisterDefault(void) {
@@ -2864,7 +2864,7 @@ xmlSecXkmsRespondWithIdsRegisterDefault(void) {
  *
  * Reads the content of the <xkms:RespondWith/> @node.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int  
 xmlSecXkmsRespondWithNodeRead(xmlSecXkmsRespondWithId id, xmlSecXkmsServerCtxPtr ctx,
@@ -2887,7 +2887,7 @@ xmlSecXkmsRespondWithNodeRead(xmlSecXkmsRespondWithId id, xmlSecXkmsServerCtxPtr
  *
  * Writes the content of the <xkms:RespondWith/> @node.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsRespondWithNodeWrite(xmlSecXkmsRespondWithId id, xmlSecXkmsServerCtxPtr ctx,
@@ -3145,7 +3145,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithKeyNameKlass = {
  *
  * The respond with KeyName klass.
  *
- * Returns respond with KeyName klass.
+ * Returns: respond with KeyName klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithKeyNameGetKlass(void) {
@@ -3173,7 +3173,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithKeyValueKlass = {
  *
  * The respond with KeyValue klass.
  *
- * Returns respond with KeyValue klass.
+ * Returns: respond with KeyValue klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithKeyValueGetKlass(void) {
@@ -3228,7 +3228,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithPrivateKeyKlass = {
  *
  * The respond with PrivateKey klass.
  *
- * Returns respond with PrivateKey klass.
+ * Returns: respond with PrivateKey klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithPrivateKeyGetKlass(void) {
@@ -3280,7 +3280,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithRetrievalMethodKlass = {
  *
  * The respond with RetrievalMethod klass.
  *
- * Returns respond with RetrievalMethod klass.
+ * Returns: respond with RetrievalMethod klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithRetrievalMethodGetKlass(void) {
@@ -3308,7 +3308,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithX509CertKlass = {
  *
  * The respond with X509Cert klass.
  *
- * Returns respond with X509Cert klass.
+ * Returns: respond with X509Cert klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithX509CertGetKlass(void) {
@@ -3357,7 +3357,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithX509ChainKlass = {
  *
  * The respond with X509Chain klass.
  *
- * Returns respond with X509Chain klass.
+ * Returns: respond with X509Chain klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithX509ChainGetKlass(void) {
@@ -3406,7 +3406,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithX509CRLKlass = {
  *
  * The respond with X509CRL klass.
  *
- * Returns respond with X509CRL klass.
+ * Returns: respond with X509CRL klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithX509CRLGetKlass(void) {
@@ -3452,7 +3452,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithPGPKlass = {
  *
  * The respond with PGP klass.
  *
- * Returns respond with PGP klass.
+ * Returns: respond with PGP klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithPGPGetKlass(void) {
@@ -3475,7 +3475,7 @@ static xmlSecXkmsRespondWithKlass xmlSecXkmsRespondWithSPKIKlass = {
  *
  * The respond with SPKI klass.
  *
- * Returns respond with SPKI klass.
+ * Returns: respond with SPKI klass.
  */ 
 xmlSecXkmsRespondWithId	
 xmlSecXkmsRespondWithSPKIGetKlass(void) {
@@ -3495,7 +3495,7 @@ static xmlSecPtrList xmlSecAllXkmsServerRequestIds;
  *
  * Gets global registered ServerRequest klasses list.
  * 
- * Returns the pointer to list of all registered ServerRequest klasses.
+ * Returns: the pointer to list of all registered ServerRequest klasses.
  */
 xmlSecPtrListPtr
 xmlSecXkmsServerRequestIdsGet(void) {
@@ -3508,7 +3508,7 @@ xmlSecXkmsServerRequestIdsGet(void) {
  * Initializes the ServerRequest klasses. This function is called from the 
  * #xmlSecInit function and the application should not call it directly.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsServerRequestIdsInit(void) {
@@ -3554,7 +3554,7 @@ xmlSecXkmsServerRequestIdsShutdown(void) {
  *
  * Registers @id in the global list of ServerRequest klasses.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsServerRequestIdsRegister(xmlSecXkmsServerRequestId id) {
@@ -3582,7 +3582,7 @@ xmlSecXkmsServerRequestIdsRegister(xmlSecXkmsServerRequestId id) {
  * Registers default (implemented by XML Security Library)
  * ServerRequest klasses: KeyName, KeyValue,...
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecXkmsServerRequestIdsRegisterDefault(void) {
@@ -3653,7 +3653,7 @@ xmlSecXkmsServerRequestIdsRegisterDefault(void) {
  *
  * Reads the content of the <xkms:ServerRequest/> @node.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int  
 xmlSecXkmsServerRequestNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx,
@@ -3675,7 +3675,7 @@ xmlSecXkmsServerRequestNodeRead(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCt
  *
  * Executes XKMS server request.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int  
 xmlSecXkmsServerRequestExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtxPtr ctx) {
@@ -3699,7 +3699,7 @@ xmlSecXkmsServerRequestExecute(xmlSecXkmsServerRequestId id, xmlSecXkmsServerCtx
  * Writes XKMS response from context to a newly created node. Caller is 
  * responsible for adding the returned node to the XML document.
  *
- * Returns pointer to newly created XKMS response node or NULL
+ * Returns: pointer to newly created XKMS response node or NULL
  * if an error occurs.
  */
 xmlNodePtr 
@@ -3906,7 +3906,7 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestResultKlass = {
  *
  * The Result response klass.
  *
- * Returns Result response klass.
+ * Returns: Result response klass.
  */ 
 xmlSecXkmsServerRequestId	
 xmlSecXkmsServerRequestResultGetKlass(void) {
@@ -3979,7 +3979,7 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestStatusKlass = {
  *
  * The StatusRequest klass.
  *
- * Returns StatusRequest klass.
+ * Returns: StatusRequest klass.
  */ 
 xmlSecXkmsServerRequestId	
 xmlSecXkmsServerRequestStatusGetKlass(void) {
@@ -4124,7 +4124,7 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestCompoundKlass = {
  *
  * The CompoundRequest klass.
  *
- * Returns CompoundRequest klass.
+ * Returns: CompoundRequest klass.
  */ 
 xmlSecXkmsServerRequestId	
 xmlSecXkmsServerRequestCompoundGetKlass(void) {
@@ -4492,7 +4492,7 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestLocateKlass = {
  *
  * The LocateRequest klass.
  *
- * Returns LocateRequest klass.
+ * Returns: LocateRequest klass.
  */ 
 xmlSecXkmsServerRequestId	
 xmlSecXkmsServerRequestLocateGetKlass(void) {
@@ -4749,7 +4749,7 @@ static xmlSecXkmsServerRequestKlass xmlSecXkmsServerRequestValidateKlass = {
  *
  * The ValidateRequest klass.
  *
- * Returns ValidateRequest klass.
+ * Returns: ValidateRequest klass.
  */ 
 xmlSecXkmsServerRequestId	
 xmlSecXkmsServerRequestValidateGetKlass(void) {

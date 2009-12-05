@@ -36,7 +36,7 @@
  * Searches a direct child of the @parent node having given name and 
  * namespace href.
  * 
- * Returns the pointer to the found node or NULL if an error occurs or 
+ * Returns: the pointer to the found node or NULL if an error occurs or 
  * node is not found.
  */
 xmlNodePtr
@@ -67,7 +67,7 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
  * Searches the ancestors axis of the @cur node for a node having given name 
  * and namespace href.
  * 
- * Returns the pointer to the found node or NULL if an error occurs or 
+ * Returns: the pointer to the found node or NULL if an error occurs or 
  * node is not found.
  */
 xmlNodePtr
@@ -92,7 +92,7 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
  * Searches all children of the @parent node having given name and 
  * namespace href.
  * 
- * Returns the pointer to the found node or NULL if an error occurs or 
+ * Returns: the pointer to the found node or NULL if an error occurs or 
  * node is not found.
  */
 xmlNodePtr		
@@ -124,7 +124,7 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
  *
  * Get's node's namespace href.
  *
- * Returns node's namespace href.
+ * Returns: node's namespace href.
  */
 const xmlChar* 
 xmlSecGetNodeNsHref(const xmlNodePtr cur) {
@@ -154,7 +154,7 @@ xmlSecGetNodeNsHref(const xmlNodePtr cur) {
  *
  * Checks that the node has a given name and a given namespace href.
  *
- * Returns 1 if the node matches or 0 otherwise.
+ * Returns: 1 if the node matches or 0 otherwise.
  */
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
@@ -172,7 +172,7 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
  *
  * Adds a child to the node @parent with given @name and namespace @ns.
  *
- * Returns pointer to the new node or NULL if an error occurs.
+ * Returns: pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr		
 xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
@@ -240,7 +240,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
  *
  * Adds @child node to the @parent node.
  *
- * Returns pointer to the new node or NULL if an error occurs.
+ * Returns: pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr		
 xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
@@ -288,7 +288,7 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
  *
  * Adds next sibling to the node @node with given @name and namespace @ns.
  *
- * Returns pointer to the new node or NULL if an error occurs.
+ * Returns: pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
@@ -344,7 +344,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
  *
  * Adds prev sibling to the node @node with given @name and namespace @ns.
  *
- * Returns pointer to the new node or NULL if an error occurs.
+ * Returns: pointer to the new node or NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
@@ -398,7 +398,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
  *
  * Seraches for the next element node.
  *
- * Returns the pointer to next element node or NULL if it is not found.
+ * Returns: the pointer to next element node or NULL if it is not found.
  */
 xmlNodePtr
 xmlSecGetNextElementNode(xmlNodePtr cur) {
@@ -416,7 +416,7 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
  * 
  * Swaps the @node and @newNode in the XML tree.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
@@ -431,7 +431,7 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
  * 
  * Swaps the @node and @newNode in the XML tree.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
@@ -481,7 +481,7 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
  * 
  * Swaps the content of @node and @newNode.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
@@ -496,7 +496,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  * 
  * Swaps the content of @node and @newNode.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *replaced) {
@@ -542,7 +542,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
  * 
  * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size) {
@@ -558,7 +558,7 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
  * 
  * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize size, xmlNodePtr *replaced) {
@@ -606,7 +606,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
  * Encodes "special" characters in the @buffer and sets the result
  * as the node content.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
@@ -702,7 +702,7 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
  * Generates a unique ID in the format <@prefix>base64-encoded(@len random bytes)
  * and puts it in the attribute @attrName.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* prefix, xmlSecSize len) {
@@ -753,7 +753,7 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
  * Generates a unique ID in the format <@prefix>base64-encoded(@len random bytes).
  * The caller is responsible for freeing returned string using @xmlFree function.
  *
- * Returns pointer to generated ID string or NULL if an error occurs.
+ * Returns: pointer to generated ID string or NULL if an error occurs.
  */
 xmlChar*
 xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
@@ -861,7 +861,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
  *
  * Creates a new XML tree with one root node @rootNodeName.
  *
- * Returns pointer to the newly created tree or NULL if an error occurs.
+ * Returns: pointer to the newly created tree or NULL if an error occurs.
  */
 xmlDocPtr 
 xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
@@ -918,7 +918,7 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
  *
  * Checks whethere the @node is empty (i.e. has only whitespaces children).
  *
- * Returns 1 if @node is empty, 0 otherwise or a negative value if an error occurs.
+ * Returns: 1 if @node is empty, 0 otherwise or a negative value if an error occurs.
  */
 int 
 xmlSecIsEmptyNode(xmlNodePtr node) {
@@ -947,7 +947,7 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
  *
  * Checks whethere the @str is empty (i.e. has only whitespaces children).
  *
- * Returns 1 if @str is empty, 0 otherwise or a negative value if an error occurs.
+ * Returns: 1 if @str is empty, 0 otherwise or a negative value if an error occurs.
  */
 int 
 xmlSecIsEmptyString(const xmlChar* str) {
@@ -968,7 +968,7 @@ xmlSecIsEmptyString(const xmlChar* str) {
  *
  * Encodes the @str (e.g. replaces '&' with '&amp;') and writes it to @fd.
  *
- * Returns he number of bytes transmitted or a negative value if an error occurs.
+ * Returns: he number of bytes transmitted or a negative value if an error occurs.
  */
 int 
 xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
@@ -1015,7 +1015,7 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
  * Creates QName (prefix:local) from @href and @local in the context of the @node.
  * Caller is responsible for freeing returned string with xmlFree.
  *
- * Returns qname or NULL if an error occurs.
+ * Returns: qname or NULL if an error occurs.
  */
 xmlChar* 
 xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
@@ -1084,7 +1084,7 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
  *
  * Maps integer @intValue to a QName prefix.
  * 
- * Returns the QName info that is mapped to @intValue or NULL if such value
+ * Returns: the QName info that is mapped to @intValue or NULL if such value
  * is not found.
  */
 xmlSecQName2IntegerInfoConstPtr 
@@ -1111,7 +1111,7 @@ xmlSecQName2IntegerGetInfo(xmlSecQName2IntegerInfoConstPtr info, int intValue) {
  * 
  * Maps qname qname to an integer and returns it in @intValue.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info, 
@@ -1143,7 +1143,7 @@ xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
  * 
  * Converts @qname into integer in context of @node.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
@@ -1229,7 +1229,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
  * Creates qname string for @intValue in context of given @node. Caller
  * is responsible for freeing returned string with @xmlFree.
  * 
- * Returns pointer to newly allocated string on success or NULL if an error occurs,
+ * Returns: pointer to newly allocated string on success or NULL if an error occurs,
  */
 xmlChar* 
 xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
@@ -1263,7 +1263,7 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
  * Reads the content of @node and converts it to an integer using mapping 
  * from @info.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node, int* intValue) {
@@ -1313,7 +1313,7 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
  * 
  * Creates new child node in @node and sets its value to @intValue.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1366,7 +1366,7 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
  * Gets the value of @attrName atrtibute from @node and converts it to integer
  * according to @info.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1420,7 +1420,7 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
  * Converts @intValue to a qname and sets it to the value of 
  * attribute @attrName in @node.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int
 xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
@@ -1530,7 +1530,7 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
  * 
  * Converts @mask to qname.
  *
- * Returns pointer to the qname info for @mask or NULL if mask is unknown.
+ * Returns: pointer to the qname info for @mask or NULL if mask is unknown.
  */
 xmlSecQName2BitMaskInfoConstPtr
 xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask mask) {
@@ -1557,7 +1557,7 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
  * 
  * Converts @qnameLocalPart to @mask.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info, 
@@ -1591,7 +1591,7 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * 
  * Converts @qname into integer in context of @node.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1677,7 +1677,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
  * Creates qname string for @mask in context of given @node. Caller
  * is responsible for freeing returned string with @xmlFree.
  * 
- * Returns pointer to newly allocated string on success or NULL if an error occurs,
+ * Returns: pointer to newly allocated string on success or NULL if an error occurs,
  */
 xmlChar* 
 xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
@@ -1716,7 +1716,7 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * into @mask. When function exits, @node points to the first element node
  * after all the <@nodeNs:@nodeName> elements.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* node,
@@ -1787,7 +1787,7 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
  * 
  * Writes <@nodeNs:@nodeName> elemnts with values from @mask to @node.
  * 
- * Returns 0 on success or a negative value if an error occurs,
+ * Returns: 0 on success or a negative value if an error occurs,
  */
 int 
 xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr node,

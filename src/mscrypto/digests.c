@@ -359,7 +359,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha1Klass = {
  *
  * SHA-1 digest transform klass.
  *
- * Returns pointer to SHA-1 digest transform klass.
+ * Returns: pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecMSCryptoTransformSha1GetKlass(void) {
@@ -403,7 +403,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
  *
  * GOSTR3411_94 digest transform klass.
  *
- * Returns pointer to GOSTR3411_94 digest transform klass.
+ * Returns: pointer to GOSTR3411_94 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {

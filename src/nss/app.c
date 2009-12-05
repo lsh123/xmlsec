@@ -64,7 +64,7 @@ static xmlSecKeyPtr	xmlSecNssAppDerKeyLoadSECItem		(SECItem* secItem);
  * by XMLSec command line utility and called before 
  * @xmlSecInit function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssAppInit(const char* config) {
@@ -120,7 +120,7 @@ xmlSecNssAppInit(const char* config) {
  * by XMLSec command line utility and called after 
  * @xmlSecShutdown function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssAppShutdown(void) {
@@ -270,7 +270,7 @@ xmlSecNssAppNicknameCollisionCallback(SECItem *old_nick ATTRIBUTE_UNUSED,
  *
  * Reads key from a file
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
@@ -320,7 +320,7 @@ xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  *
  * Reads key from a binary @data.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
@@ -368,7 +368,7 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
  *
  * Reads key from a file
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
@@ -558,7 +558,7 @@ done:
  *
  * Reads the certificate from $@filename and adds it to key 
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
@@ -605,7 +605,7 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
  *
  * Reads the certificate from @data and adds it to key 
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
@@ -651,7 +651,7 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
  *
  * Reads the certificate from @secItem and adds it to key 
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
@@ -724,7 +724,7 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
  * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
@@ -775,7 +775,7 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
  * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
@@ -825,7 +825,7 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
  * For uniformity, call xmlSecNssAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
@@ -1129,7 +1129,7 @@ done:
  *
  * Loads public key from cert.
  *
- * Returns pointer to key or NULL if an error occurs.
+ * Returns: pointer to key or NULL if an error occurs.
  */
 xmlSecKeyPtr 
 xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format) {
@@ -1244,7 +1244,7 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
  * Reads cert from @filename and adds to the list of trusted or known
  * untrusted certs in @store
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
@@ -1295,7 +1295,7 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * Reads cert from @data and adds to the list of trusted or known
  * untrusted certs in @store
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, 
@@ -1344,7 +1344,7 @@ xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* dat
  * Reads cert from @secItem and adds to the list of trusted or known
  * untrusted certs in @store
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem, 
@@ -1413,7 +1413,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
  * Initializes @mngr with NSS keys store #xmlSecNssKeysStoreId
  * and a default NSS crypto key data stores.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int
 xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -1469,7 +1469,7 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Adds @key to the keys manager @mngr created with #xmlSecNssAppDefaultKeysMngrInit
  * function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -1510,7 +1510,7 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
  * Loads XML keys file from @uri to the keys manager @mngr created 
  * with #xmlSecNssAppDefaultKeysMngrInit function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -1551,7 +1551,7 @@ xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  *
  * Saves keys from @mngr to  XML keys file.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
@@ -1589,7 +1589,7 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
  *
  * Gets default password callback.
  *
- * Returns default password callback.
+ * Returns: default password callback.
  */
 void*
 xmlSecNssAppGetDefaultPwdCallback(void) {

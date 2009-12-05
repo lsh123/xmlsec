@@ -125,7 +125,7 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
  * that support the XSLT transform. Note that if the output is actually HTML, 
  * then the result of these steps is logically equivalent [XHTML].
  *
- * Returns pointer to XSLT transform klass.
+ * Returns: pointer to XSLT transform klass.
  */
 xmlSecTransformId 
 xmlSecTransformXsltGetKlass(void) {
@@ -166,9 +166,6 @@ xmlSecXsltFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecXsltCtx));
 }
 
-/**
- * xmlSecXsltReadNode:
- */
 static int
 xmlSecXsltReadNode(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecXsltCtxPtr ctx;

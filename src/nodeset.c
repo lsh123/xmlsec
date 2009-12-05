@@ -44,7 +44,7 @@ static int	xmlSecNodeSetWalkRecursive		(xmlSecNodeSetPtr nset,
  * Creates new nodes set. Caller is responsible for freeng returend object
  * by calling #xmlSecNodeSetDestroy function.
  *
- * Returns pointer to newly allocated node set or NULL if an error occurs.
+ * Returns: pointer to newly allocated node set or NULL if an error occurs.
  */
 xmlSecNodeSetPtr
 xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) {
@@ -203,7 +203,7 @@ xmlSecNodeSetOneContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr pare
  *
  * Checks whether the @node is in the nodes set or not.
  *
- * Returns 1 if the @node is in the nodes set @nset, 0 if it is not
+ * Returns: 1 if the @node is in the nodes set @nset, 0 if it is not
  * and a negative value if an error occurs.
  */
 int
@@ -259,7 +259,7 @@ xmlSecNodeSetContains(xmlSecNodeSetPtr nset, xmlNodePtr node, xmlNodePtr parent)
  *
  * Adds @newNSet to the @nset using operation @op. 
  *
- * Returns the pointer to combined nodes set or NULL if an error 
+ * Returns: the pointer to combined nodes set or NULL if an error 
  * occurs.
  */
 xmlSecNodeSetPtr	
@@ -288,7 +288,7 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet,
  *
  * Adds @newNSet to the @nset as child using operation @op. 
  *
- * Returns the pointer to combined nodes set or NULL if an error 
+ * Returns: the pointer to combined nodes set or NULL if an error 
  * occurs.
  */
 xmlSecNodeSetPtr	
@@ -332,7 +332,7 @@ xmlSecNodeSetAddList(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet, xmlSecNode
  * If the @walkFunc returns a negative value, then the walk procedure 
  * is interrupted.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecNodeSetWalk(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walkFunc, void* data) {
@@ -454,7 +454,7 @@ xmlSecNodeSetWalkRecursive(xmlSecNodeSetPtr nset, xmlSecNodeSetWalkCallback walk
  *    all nodes in the @doc except nodes in the @parent subtree 
  *    and comment nodes.
  *
- * Returns pointer to the newly created #xmlSecNodeSet structure
+ * Returns: pointer to the newly created #xmlSecNodeSet structure
  * or NULL if an error occurs.
  */
 xmlSecNodeSetPtr	
@@ -519,7 +519,7 @@ xmlSecNodeSetDumpTextNodesWalkCallback(xmlSecNodeSetPtr nset, xmlNodePtr cur,
  *
  * Dumps content of all the text nodes from @nset to @out.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset, xmlOutputBufferPtr out) {

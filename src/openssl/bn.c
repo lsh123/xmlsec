@@ -33,7 +33,7 @@
  * to a BIGNUM. If no BIGNUM buffer provided then a new
  * BIGNUM is created (caller is responsible for freeing it).
  *
- * Returns a pointer to BIGNUM produced from CryptoBinary string
+ * Returns: a pointer to BIGNUM produced from CryptoBinary string
  * or NULL if an error occurs.
  */
 BIGNUM*
@@ -92,7 +92,7 @@ xmlSecOpenSSLNodeGetBNValue(const xmlNodePtr cur, BIGNUM **a) {
  * addLineBreaks is set then line breaks are added 
  * before and after the CryptoBinary string.
  * 
- * Returns 0 on success or -1 otherwise.
+ * Returns: 0 on success or -1 otherwise.
  */
 int
 xmlSecOpenSSLNodeSetBNValue(xmlNodePtr cur, const BIGNUM *a, int addLineBreaks) {

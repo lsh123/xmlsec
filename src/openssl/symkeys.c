@@ -247,7 +247,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataAesKlass = {
  * 
  * The AES key data klass.
  *
- * Returns AES key data klass.
+ * Returns: AES key data klass.
  */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataAesGetKlass(void) {
@@ -262,7 +262,7 @@ xmlSecOpenSSLKeyDataAesGetKlass(void) {
  *
  * Sets the value of AES key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -330,7 +330,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDesKlass = {
  * 
  * The DES key data klass.
  *
- * Returns DES key data klass.
+ * Returns: DES key data klass.
  */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataDesGetKlass(void) {
@@ -345,7 +345,7 @@ xmlSecOpenSSLKeyDataDesGetKlass(void) {
  *
  * Sets the value of DES key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
@@ -412,7 +412,7 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataHmacKlass = {
  * 
  * The HMAC key data klass.
  *
- * Returns HMAC key data klass.
+ * Returns: HMAC key data klass.
  */
 xmlSecKeyDataId 
 xmlSecOpenSSLKeyDataHmacGetKlass(void) {
@@ -427,7 +427,7 @@ xmlSecOpenSSLKeyDataHmacGetKlass(void) {
  *
  * Sets the value of HMAC key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecOpenSSLKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {

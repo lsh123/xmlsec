@@ -414,7 +414,7 @@ static int		xmlSecMSCryptoKeyDataGetSize	(xmlSecKeyDataPtr data);
  *
  * Sets the value of key data.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 static int 
 xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -541,7 +541,7 @@ xmlSecMSCryptoKeyDataAdoptKey(xmlSecKeyDataPtr data,
  * Native MSCrypto key retrieval from xmlsec keydata. The 
  * returned HKEY must not be destroyed by the caller.
  * 
- * Returns HKEY on success or NULL otherwise.
+ * Returns: HKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
@@ -563,7 +563,7 @@ xmlSecMSCryptoKeyDataGetKey(xmlSecKeyDataPtr data, xmlSecKeyDataType type) {
  * Native MSCrypto decrypt key retrieval from xmlsec keydata. The
  * returned HKEY must not be destroyed by the caller.
  *
- * Returns HKEY on success or NULL otherwise.
+ * Returns: HKEY on success or NULL otherwise.
  */
 HCRYPTKEY
 xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
@@ -594,7 +594,7 @@ xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data) {
  * Native MSCrypto certificate retrieval from xmlsec keydata. The 
  * returned PCCERT_CONTEXT must not be released by the caller.
  * 
- * Returns PCCERT_CONTEXT on success or NULL otherwise.
+ * Returns: PCCERT_CONTEXT on success or NULL otherwise.
  */
 PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
@@ -776,7 +776,7 @@ xmlSecMSCryptoKeyDataGetType(xmlSecKeyDataPtr data) {
  * 
  * Duplicates the @pCert.
  *
- * Returns pointer to newly created PCCERT_CONTEXT object or 
+ * Returns: pointer to newly created PCCERT_CONTEXT object or 
  * NULL if an error occurs.
  */
 PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
@@ -805,7 +805,7 @@ PCCERT_CONTEXT xmlSecMSCryptoCertDup(PCCERT_CONTEXT pCert) {
  *
  * Creates key data value from the cert.
  *
- * Returns pointer to newly created xmlsec key or NULL if an error occurs.
+ * Returns: pointer to newly created xmlsec key or NULL if an error occurs.
  */
 xmlSecKeyDataPtr 
 xmlSecMSCryptoCertAdopt(PCCERT_CONTEXT pCert, xmlSecKeyDataType type) {
@@ -990,7 +990,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
  *
  * The MSCrypto RSA CertKey data klass.
  *
- * Returns pointer to MSCrypto RSA key data klass.
+ * Returns: pointer to MSCrypto RSA key data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataRsaGetKlass(void) {
@@ -1701,7 +1701,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDsaKlass = {
  * 
  * The DSA key data klass.
  *
- * Returns pointer to DSA key data klass.
+ * Returns: pointer to DSA key data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataDsaGetKlass(void) {
@@ -2544,7 +2544,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
  * 
  * The GOST2001 key data klass.
  *
- * Returns pointer to GOST2001 key data klass.
+ * Returns: pointer to GOST2001 key data klass.
  */
 xmlSecKeyDataId 
 xmlSecMSCryptoKeyDataGost2001GetKlass(void) {

@@ -165,7 +165,7 @@ static xmlSecTransformKlass xmlSecNssKWAes256Klass = {
  *
  * The AES-128 key wrapper transform klass.
  *
- * Returns AES-128 key wrapper transform klass.
+ * Returns: AES-128 key wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformKWAes128GetKlass(void) {
@@ -177,7 +177,7 @@ xmlSecNssTransformKWAes128GetKlass(void) {
  *
  * The AES-192 key wrapper transform klass.
  *
- * Returns AES-192 key wrapper transform klass.
+ * Returns: AES-192 key wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformKWAes192GetKlass(void) {
@@ -189,7 +189,7 @@ xmlSecNssTransformKWAes192GetKlass(void) {
  *
  * The AES-256 key wrapper transform klass.
  *
- * Returns AES-256 key wrapper transform klass.
+ * Returns: AES-256 key wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformKWAes256GetKlass(void) {

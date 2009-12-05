@@ -88,7 +88,7 @@ static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
  * 
  * The MSCrypto list based keys store klass.
  *
- * Returns MSCrypto list based keys store klass.
+ * Returns: MSCrypto list based keys store klass.
  */
 xmlSecKeyStoreId 
 xmlSecMSCryptoKeysStoreGetKlass(void) {
@@ -102,7 +102,7 @@ xmlSecMSCryptoKeysStoreGetKlass(void) {
  * 
  * Adds @key to the @store. 
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
@@ -126,7 +126,7 @@ xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
  * 
  * Reads keys from an XML file.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, 
@@ -252,7 +252,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
  * 
  * Writes keys from @store to an XML file.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecMSCryptoKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyDataType type) {

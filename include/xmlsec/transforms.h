@@ -264,7 +264,7 @@ typedef unsigned int				xmlSecTransformUsage;
  * do additional transforms chain verification or modification and
  * aborting transforms execution (if necessary).
  *
- * Returns 0 on success and a negative value otherwise (in this case,
+ * Returns: 0 on success and a negative value otherwise (in this case,
  * transforms chain will not be executed and xmlsec processing stops).
  */
 typedef int  		(*xmlSecTransformCtxPreExecuteCallback)		(xmlSecTransformCtxPtr transformCtx); 
@@ -574,7 +574,7 @@ XMLSEC_EXPORT xmlParserInputBufferPtr 	xmlSecTransformCreateInputBuffer(xmlSecTr
  *
  * The transform specific initialization method.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformInitializeMethod) 	(xmlSecTransformPtr transform);
 
@@ -595,7 +595,7 @@ typedef void 		(*xmlSecTransformFinalizeMethod)	(xmlSecTransformPtr transform);
  * The transform specific method to query information about transform
  * data type in specified mode @mode.
  *
- * Returns transform data type.
+ * Returns: transform data type.
  */
 typedef xmlSecTransformDataType	(*xmlSecTransformGetDataTypeMethod)(xmlSecTransformPtr transform,
 								 xmlSecTransformMode mode,
@@ -610,7 +610,7 @@ typedef xmlSecTransformDataType	(*xmlSecTransformGetDataTypeMethod)(xmlSecTransf
  * The transform specific method to read the transform data from 
  * the @node.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int 		(*xmlSecTransformNodeReadMethod)	(xmlSecTransformPtr transform,
 								 xmlNodePtr node,
@@ -624,7 +624,7 @@ typedef int 		(*xmlSecTransformNodeReadMethod)	(xmlSecTransformPtr transform,
  *
  * The transform specific method to write transform information to an XML node @node.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int 		(*xmlSecTransformNodeWriteMethod)	(xmlSecTransformPtr transform,
 								 xmlNodePtr node,
@@ -637,7 +637,7 @@ typedef int 		(*xmlSecTransformNodeWriteMethod)	(xmlSecTransformPtr transform,
  *
  * Transform specific method to set transform's key requirements.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int  		(*xmlSecTransformSetKeyRequirementsMethod)(xmlSecTransformPtr transform, 
 								 xmlSecKeyReqPtr keyReq);
@@ -649,7 +649,7 @@ typedef int  		(*xmlSecTransformSetKeyRequirementsMethod)(xmlSecTransformPtr tra
  *
  * The transform specific method to set the key for use.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecKeyPtr key);
@@ -666,7 +666,7 @@ typedef int  		(*xmlSecTransformSetKeyMethod)		(xmlSecTransformPtr transform,
  * member of the #xmlSecTransform structure to either #xmlSecTransformStatusOk
  * if verification succeeded or #xmlSecTransformStatusFail otherwise.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform, 
 								 const xmlSecByte* data,
@@ -684,7 +684,7 @@ typedef int  		(*xmlSecTransformVerifyMethod)		(xmlSecTransformPtr transform,
  * The transform specific method to process data from @data and push
  * result to the next transform in the chain.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform, 
 								 const xmlSecByte* data,
@@ -703,7 +703,7 @@ typedef int		(*xmlSecTransformPushBinMethod)		(xmlSecTransformPtr transform,
  * in the chain and return result in the @data buffer. The size of returned
  * data is placed in the @dataSize.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformPopBinMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecByte* data,
@@ -719,7 +719,7 @@ typedef int		(*xmlSecTransformPopBinMethod)		(xmlSecTransformPtr transform,
  * The transform specific method to process @nodes and push result to the next 
  * transform in the chain.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformPushXmlMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr nodes,
@@ -733,7 +733,7 @@ typedef int		(*xmlSecTransformPushXmlMethod)		(xmlSecTransformPtr transform,
  * The transform specific method to pop data from previous transform in the chain,
  * process the data and return result in @nodes.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int		(*xmlSecTransformPopXmlMethod)		(xmlSecTransformPtr transform, 
 								 xmlSecNodeSetPtr* nodes,
@@ -746,7 +746,7 @@ typedef int		(*xmlSecTransformPopXmlMethod)		(xmlSecTransformPtr transform,
  *
  * Transform specific method to process a chunk of data.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int  		(*xmlSecTransformExecuteMethod)		(xmlSecTransformPtr transform, 
 								 int last,

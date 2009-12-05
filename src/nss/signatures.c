@@ -491,7 +491,7 @@ static xmlSecTransformKlass xmlSecNssDsaSha1Klass = {
  * 
  * The DSA-SHA1 signature transform klass.
  *
- * Returns DSA-SHA1 signature transform klass.
+ * Returns: DSA-SHA1 signature transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformDsaSha1GetKlass(void) {
@@ -538,7 +538,7 @@ static xmlSecTransformKlass xmlSecNssRsaSha1Klass = {
  * 
  * The RSA-SHA1 signature transform klass.
  *
- * Returns RSA-SHA1 signature transform klass.
+ * Returns: RSA-SHA1 signature transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformRsaSha1GetKlass(void) {

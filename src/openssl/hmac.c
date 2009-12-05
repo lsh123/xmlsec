@@ -49,7 +49,7 @@ static int g_xmlsec_openssl_hmac_min_length = XMLSEC_OPENSSL_MIN_HMAC_SIZE;
  * 
  * Gets the value of min HMAC length.
  * 
- * Returns the min HMAC output length
+ * Returns: the min HMAC output length
  */
 int xmlSecOpenSSLHmacGetMinOutputLength(void)
 {
@@ -557,7 +557,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacMd5Klass = {
  *
  * The HMAC-MD5 transform klass.
  *
- * Returns the HMAC-MD5 transform klass.
+ * Returns: the HMAC-MD5 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacMd5GetKlass(void) {
@@ -603,7 +603,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacRipemd160Klass = {
  *
  * The HMAC-RIPEMD160 transform klass.
  *
- * Returns the HMAC-RIPEMD160 transform klass.
+ * Returns: the HMAC-RIPEMD160 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacRipemd160GetKlass(void) {
@@ -647,7 +647,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha1Klass = {
  *
  * The HMAC-SHA1 transform klass.
  *
- * Returns the HMAC-SHA1 transform klass.
+ * Returns: the HMAC-SHA1 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacSha1GetKlass(void) {
@@ -692,7 +692,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha224Klass = {
  *
  * The HMAC-SHA224 transform klass.
  *
- * Returns the HMAC-SHA224 transform klass.
+ * Returns: the HMAC-SHA224 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacSha224GetKlass(void) {
@@ -737,7 +737,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha256Klass = {
  *
  * The HMAC-SHA256 transform klass.
  *
- * Returns the HMAC-SHA256 transform klass.
+ * Returns: the HMAC-SHA256 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacSha256GetKlass(void) {
@@ -782,7 +782,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha384Klass = {
  *
  * The HMAC-SHA384 transform klass.
  *
- * Returns the HMAC-SHA384 transform klass.
+ * Returns: the HMAC-SHA384 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacSha384GetKlass(void) {
@@ -827,7 +827,7 @@ static xmlSecTransformKlass xmlSecOpenSSLHmacSha512Klass = {
  *
  * The HMAC-SHA512 transform klass.
  *
- * Returns the HMAC-SHA512 transform klass.
+ * Returns: the HMAC-SHA512 transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformHmacSha512GetKlass(void) {

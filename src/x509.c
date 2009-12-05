@@ -36,7 +36,7 @@
  * Reads the contents of <dsig:X509Data/> node and returns it as
  * a bits mask.
  *
- * Returns the bit mask representing the <dsig:X509Data/> node content
+ * Returns: the bit mask representing the <dsig:X509Data/> node content
  * or a negative value if an error occurs.
  */
 int

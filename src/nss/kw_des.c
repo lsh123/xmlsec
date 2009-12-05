@@ -116,7 +116,7 @@ static xmlSecTransformKlass xmlSecNssKWDes3Klass = {
  * 
  * The Triple DES key wrapper transform klass.
  *
- * Returns Triple DES key wrapper transform klass.
+ * Returns: Triple DES key wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformKWDes3GetKlass(void) {

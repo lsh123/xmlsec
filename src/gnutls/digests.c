@@ -307,7 +307,7 @@ static xmlSecTransformKlass xmlSecGnuTLSSha1Klass = {
  *
  * SHA-1 digest transform klass.
  *
- * Returns pointer to SHA-1 digest transform klass.
+ * Returns: pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecGnuTLSTransformSha1GetKlass(void) {

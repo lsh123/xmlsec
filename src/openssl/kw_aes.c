@@ -163,7 +163,7 @@ static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
  *
  * The AES-128 kew wrapper transform klass.
  *
- * Returns AES-128 kew wrapper transform klass.
+ * Returns: AES-128 kew wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformKWAes128GetKlass(void) {
@@ -175,7 +175,7 @@ xmlSecOpenSSLTransformKWAes128GetKlass(void) {
  *
  * The AES-192 kew wrapper transform klass.
  *
- * Returns AES-192 kew wrapper transform klass.
+ * Returns: AES-192 kew wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformKWAes192GetKlass(void) {
@@ -187,7 +187,7 @@ xmlSecOpenSSLTransformKWAes192GetKlass(void) {
  *
  * The AES-256 kew wrapper transform klass.
  *
- * Returns AES-256 kew wrapper transform klass.
+ * Returns: AES-256 kew wrapper transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformKWAes256GetKlass(void) {

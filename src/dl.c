@@ -356,7 +356,7 @@ static xmlSecPtrList gXmlSecCryptoDLLibraries;
  * Initializes dynamic loading engine. This is an internal function
  * and should not be called by application directly.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecCryptoDLInit(void) {
@@ -394,7 +394,7 @@ xmlSecCryptoDLInit(void) {
  * Shutdowns dynamic loading engine. This is an internal function
  * and should not be called by application directly.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecCryptoDLShutdown(void) {
@@ -424,7 +424,7 @@ xmlSecCryptoDLShutdown(void) {
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
@@ -463,7 +463,7 @@ xmlSecCryptoDLLoadLibrary(const xmlChar* crypto) {
  * table. This function is NOT thread safe, application MUST NOT call #xmlSecCryptoDLLoadLibrary, 
  * #xmlSecCryptoDLGetLibraryFunctions, and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
  *
- * Returns the table or NULL if an error occurs.
+ * Returns: the table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr 
 xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
@@ -517,7 +517,7 @@ xmlSecCryptoDLGetLibraryFunctions(const xmlChar* crypto) {
  * application MUST NOT call #xmlSecCryptoDLLoadLibrary, #xmlSecCryptoDLGetLibraryFunctions,
  * and #xmlSecCryptoDLUnloadLibrary functions from multiple threads.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
@@ -557,7 +557,7 @@ xmlSecCryptoDLUnloadLibrary(const xmlChar* crypto) {
  *
  * Sets global crypto functions/transforms/keys data/keys store table.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecCryptoDLSetFunctions(xmlSecCryptoDLFunctionsPtr functions) {
@@ -573,7 +573,7 @@ xmlSecCryptoDLSetFunctions(xmlSecCryptoDLFunctionsPtr functions) {
  *
  * Gets global crypto functions/transforms/keys data/keys store table.
  *
- * Returns the table.
+ * Returns: the table.
  */
 xmlSecCryptoDLFunctionsPtr 
 xmlSecCryptoDLGetFunctions(void) {
@@ -588,7 +588,7 @@ xmlSecCryptoDLGetFunctions(void) {
  * 
  * Registers the key data and transforms klasses from @functions table in xmlsec. 
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFunctions* functions) {

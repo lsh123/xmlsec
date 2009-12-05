@@ -35,7 +35,7 @@ static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
  *
  * Gets the pointer to xmlsec-openssl functions table.
  *
- * Returns the xmlsec-openssl functions table or NULL if an error occurs.
+ * Returns: the xmlsec-openssl functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_openssl(void) {
@@ -240,7 +240,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
  * 
  * XMLSec library specific crypto engine initialization. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecOpenSSLInit (void)  {
@@ -281,7 +281,7 @@ xmlSecOpenSSLInit (void)  {
  * 
  * XMLSec library specific crypto engine shutdown. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecOpenSSLShutdown(void) {
@@ -295,7 +295,7 @@ xmlSecOpenSSLShutdown(void) {
  *
  * Adds OpenSSL specific key data stores in keys manager.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -340,7 +340,7 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  *
  * Generates @size random bytes and puts result in @buffer.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {	
@@ -434,7 +434,7 @@ xmlSecOpenSSLErrorsInit(void) {
  *
  * Sets the default trusted certs folder.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
@@ -463,7 +463,7 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
  * 
  * Gets the default trusted certs folder.
  *
- * Returns the default trusted cert folder.
+ * Returns: the default trusted cert folder.
  */
 const xmlChar*	
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {

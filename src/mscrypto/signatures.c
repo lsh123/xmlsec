@@ -556,7 +556,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha1Klass = {
  * 
  * The RSA-SHA1 signature transform klass.
  *
- * Returns RSA-SHA1 signature transform klass.
+ * Returns: RSA-SHA1 signature transform klass.
  */
 xmlSecTransformId 
 xmlSecMSCryptoTransformRsaSha1GetKlass(void) {
@@ -604,7 +604,7 @@ static xmlSecTransformKlass xmlSecMSCryptoDsaSha1Klass = {
  * 
  * The DSA-SHA1 signature transform klass.
  *
- * Returns DSA-SHA1 signature transform klass.
+ * Returns: DSA-SHA1 signature transform klass.
  */
 xmlSecTransformId 
 xmlSecMSCryptoTransformDsaSha1GetKlass(void) {
@@ -652,7 +652,7 @@ static xmlSecTransformKlass xmlSecMSCryptoGost2001GostR3411_94Klass = {
  * 
  * The GOST2001-GOSTR3411_94 signature transform klass.
  *
- * Returns GOST2001-GOSTR3411_94 signature transform klass.
+ * Returns: GOST2001-GOSTR3411_94 signature transform klass.
  */
 xmlSecTransformId 
 xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void) {

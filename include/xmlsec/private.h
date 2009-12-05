@@ -40,7 +40,7 @@ extern "C" {
  *
  * xmlsec-crypto libraryinitialization method. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int 			(*xmlSecCryptoInitMethod)		(void);
 /**
@@ -48,7 +48,7 @@ typedef int 			(*xmlSecCryptoInitMethod)		(void);
  * 
  * xmlsec-crypto library shutdown method. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int 			(*xmlSecCryptoShutdownMethod)		(void);
 /**
@@ -57,7 +57,7 @@ typedef int 			(*xmlSecCryptoShutdownMethod)		(void);
  *
  * Initializes @mngr with xmlsec-crypto library specific data.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 typedef int			(*xmlSecCryptoKeysMngrInitMethod)	(xmlSecKeysMngrPtr mngr);
 
@@ -71,7 +71,7 @@ typedef int			(*xmlSecCryptoKeysMngrInitMethod)	(xmlSecKeysMngrPtr mngr);
  *
  * Gets the key data klass.
  *
- * Returns pointer to key data klass or NULL if an error occurs 
+ * Returns: pointer to key data klass or NULL if an error occurs 
  * (the xmlsec-crypto library is not loaded or this key data klass is not
  * implemented).
  */ 
@@ -87,7 +87,7 @@ typedef xmlSecKeyDataId		(*xmlSecCryptoKeyDataGetKlassMethod)	(void);
  *
  * Gets the key data store klass.
  *
- * Returns pointer to key data store klass or NULL if an error occurs 
+ * Returns: pointer to key data store klass or NULL if an error occurs 
  * (the xmlsec-crypto library is not loaded or this key data store klass is not
  * implemented).
  */ 
@@ -103,7 +103,7 @@ typedef xmlSecKeyDataStoreId	(*xmlSecCryptoKeyDataStoreGetKlassMethod)(void);
  *
  * Gets the transform klass.
  *
- * Returns pointer to transform klass or NULL if an error occurs 
+ * Returns: pointer to transform klass or NULL if an error occurs 
  * (the xmlsec-crypto library is not loaded or this transform is not
  * implemented).
  */ 
@@ -122,7 +122,7 @@ typedef xmlSecTransformId	(*xmlSecCryptoTransformGetKlassMethod)	(void);
  * by XMLSec command line utility and called before 
  * @xmlSecInit function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int			(*xmlSecCryptoAppInitMethod)		(const char* config);
 /**
@@ -132,7 +132,7 @@ typedef int			(*xmlSecCryptoAppInitMethod)		(const char* config);
  * by XMLSec command line utility and called after 
  * @xmlSecShutdown function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int			(*xmlSecCryptoAppShutdownMethod)	(void);
 /**
@@ -142,7 +142,7 @@ typedef int			(*xmlSecCryptoAppShutdownMethod)	(void);
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
  * and a default crypto key data stores.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 typedef int			(*xmlSecCryptoAppDefaultKeysMngrInitMethod)	
 									(xmlSecKeysMngrPtr mngr);
@@ -154,7 +154,7 @@ typedef int			(*xmlSecCryptoAppDefaultKeysMngrInitMethod)
  * Adds @key to the keys manager @mngr created with #xmlSecCryptoAppDefaultKeysMngrInit
  * function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 typedef int			(*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)	
 									(xmlSecKeysMngrPtr mngr,
@@ -167,7 +167,7 @@ typedef int			(*xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod)
  * Loads XML keys file from @uri to the keys manager @mngr created 
  * with #xmlSecCryptoAppDefaultKeysMngrInit function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 typedef int			(*xmlSecCryptoAppDefaultKeysMngrLoadMethod)
 									(xmlSecKeysMngrPtr mngr,
@@ -180,7 +180,7 @@ typedef int			(*xmlSecCryptoAppDefaultKeysMngrLoadMethod)
  *
  * Saves keys from @mngr to  XML keys file.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 typedef int			(*xmlSecCryptoAppDefaultKeysMngrSaveMethod)
 									(xmlSecKeysMngrPtr mngr,
@@ -197,7 +197,7 @@ typedef int			(*xmlSecCryptoAppDefaultKeysMngrSaveMethod)
  * Reads cert from @filename and adds to the list of trusted or known
  * untrusted certs in @store.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int			(*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecKeysMngrPtr mngr,
     									 const char *filename, 
@@ -215,7 +215,7 @@ typedef int			(*xmlSecCryptoAppKeysMngrCertLoadMethod)(xmlSecKeysMngrPtr mngr,
  * Reads cert from @data and adds to the list of trusted or known
  * untrusted certs in @store.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int			(*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(xmlSecKeysMngrPtr mngr,
 									 const xmlSecByte* data,
@@ -232,7 +232,7 @@ typedef int			(*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)(xmlSecKeysMngrPtr m
  *
  * Reads key from the a file.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 typedef xmlSecKeyPtr		(*xmlSecCryptoAppKeyLoadMethod)		(const char *filename, 
 									 xmlSecKeyDataFormat format,
@@ -251,7 +251,7 @@ typedef xmlSecKeyPtr		(*xmlSecCryptoAppKeyLoadMethod)		(const char *filename,
  *
  * Reads key from the binary data buffer.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 typedef xmlSecKeyPtr		(*xmlSecCryptoAppKeyLoadMemoryMethod)	(const xmlSecByte* data,
 									 xmlSecSize dataSize, 
@@ -272,7 +272,7 @@ typedef xmlSecKeyPtr		(*xmlSecCryptoAppKeyLoadMemoryMethod)	(const xmlSecByte* d
  * For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 typedef xmlSecKeyPtr		(*xmlSecCryptoAppPkcs12LoadMethod)	(const char* filename, 
 									 const char* pwd,
@@ -290,7 +290,7 @@ typedef xmlSecKeyPtr		(*xmlSecCryptoAppPkcs12LoadMethod)	(const char* filename,
  * For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 typedef xmlSecKeyPtr		(*xmlSecCryptoAppPkcs12LoadMemoryMethod)(const xmlSecByte* data,
 									 xmlSecSize dataSize, 
@@ -305,7 +305,7 @@ typedef xmlSecKeyPtr		(*xmlSecCryptoAppPkcs12LoadMemoryMethod)(const xmlSecByte*
  *
  * Reads the certificate from $@filename and adds it to key.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int			(*xmlSecCryptoAppKeyCertLoadMethod)	(xmlSecKeyPtr key,
 									 const char* filename,
@@ -320,7 +320,7 @@ typedef int			(*xmlSecCryptoAppKeyCertLoadMethod)	(xmlSecKeyPtr key,
  *
  * Reads the certificate from binary @data buffer and adds it to key.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 typedef int			(*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSecKeyPtr key,
 									 const xmlSecByte* data,

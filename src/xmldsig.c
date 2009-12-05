@@ -58,7 +58,7 @@ static const xmlChar*		xmlSecDSigIds[] = { xmlSecAttrId, NULL };
  * The caller is responsible for destroying returend object by calling 
  * #xmlSecDSigCtxDestroy function.
  *
- * Returns pointer to newly allocated context object or NULL if an error
+ * Returns: pointer to newly allocated context object or NULL if an error
  * occurs.
  */
 xmlSecDSigCtxPtr	
@@ -113,7 +113,7 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
  * The caller is responsible for cleaing up returend object by calling 
  * #xmlSecDSigCtxFinalize function.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
@@ -204,7 +204,7 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
  *
  * Enables @transformId for <dsig:Reference/> elements processing.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformId transformId) {
@@ -245,7 +245,7 @@ xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
  *
  * Enables @transformId for <dsig:SignedInfo/> element processing.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformId transformId) {
@@ -264,7 +264,7 @@ xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
  * just before signature claculation (valid if and only if 
  * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 xmlSecBufferPtr 
 xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
@@ -281,7 +281,7 @@ xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
  *
  * Signs the data as described in @tmpl node.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
@@ -344,7 +344,7 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
  * Vaidates signature in the @node. The verification result is returned
  * in #status member of the @dsigCtx object.
  *
- * Returns 0 on success (check #status member of @dsigCtx to get 
+ * Returns: 0 on success (check #status member of @dsigCtx to get 
  * signature verification result) or a negative value if an error occurs.
  */
 int 
@@ -1244,7 +1244,7 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
  * for destroying the returned context by calling #xmlSecDSigReferenceCtxDestroy
  * function.
  *
- * Returns pointer to newly created context or NULL if an error occurs.
+ * Returns: pointer to newly created context or NULL if an error occurs.
  */
 xmlSecDSigReferenceCtxPtr	
 xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin origin) {
@@ -1301,7 +1301,7 @@ xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * for cleaning up the returned context by calling #xmlSecDSigReferenceCtxFinalize
  * function.
  *
- * Returns 0 on succes or aa negative value otherwise.
+ * Returns: 0 on succes or aa negative value otherwise.
  */
 int 
 xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSigCtxPtr dsigCtx,
@@ -1381,7 +1381,7 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flas of signature context
  * is set).
  *
- * Returns pointer to the buffer or NULL if an error occurs.
+ * Returns: pointer to the buffer or NULL if an error occurs.
  */
 xmlSecBufferPtr 
 xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
@@ -1409,7 +1409,7 @@ xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * Manifest. An optional ID attribute permits a Reference to be referenced 
  * from elsewhere.
  *
- * Returns 0 on succes or aa negative value otherwise.
+ * Returns: 0 on succes or aa negative value otherwise.
  */
 int 
 xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr node) {
@@ -1783,7 +1783,7 @@ static xmlSecPtrListKlass xmlSecDSigReferenceCtxListKlass = {
  *
  * The <dsig:Reference/> element processing contexts list klass.
  *
- * Returns <dsig:Reference/> element processing context list klass.
+ * Returns: <dsig:Reference/> element processing context list klass.
  */
 xmlSecPtrListId 
 xmlSecDSigReferenceCtxListGetKlass(void) {

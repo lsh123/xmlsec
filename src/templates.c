@@ -54,7 +54,7 @@ static int 		xmlSecTmplNodeWriteNsList	(xmlNodePtr parentNode,
  * The application is responsible for inserting the returned node
  * in the XML document. 
  *
- * Returns the pointer to newly created <dsig:Signature/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:Signature/> node or NULL if an 
  * error occurs.
  */
 xmlNodePtr
@@ -83,7 +83,7 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * appropriate child nodes.  The application is responsible for
  * inserting the returned node in the XML document.
  *
- * Returns the pointer to newly created <dsig:Signature/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:Signature/> node or NULL if an 
  * error occurs.
  */
 xmlNodePtr
@@ -214,7 +214,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * Adds (if necessary) <dsig:KeyInfo/> node to the <dsig:Signature/> 
  * node @signNode. 
  *
- * Returns the pointer to newly created <dsig:KeyInfo/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:KeyInfo/> node or NULL if an 
  * error occurs.
  */
 xmlNodePtr
@@ -266,7 +266,7 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
  * Type (@type) attributes and the required children <dsig:DigestMethod/> and
  * <dsig:DigestValue/> to the <dsig:SignedInfo/> child of @signNode. 
  *
- * Returns the pointer to newly created <dsig:Reference/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Reference/> node or NULL 
  * if an error occurs.
  */
 xmlNodePtr	
@@ -376,7 +376,7 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
  *
  * Adds <dsig:Object/> node to the <dsig:Signature/> node @signNode. 
  *
- * Returns the pointer to newly created <dsig:Object/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Object/> node or NULL 
  * if an error occurs.
  */
 xmlNodePtr
@@ -414,7 +414,7 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
  *
  * Gets pointer to <dsig:SignatureMethod/> child of <dsig:KeyInfo/> node.
  *
- * Returns pointer to <dsig:SignatureMethod /> node or NULL if an error occurs.
+ * Returns: pointer to <dsig:SignatureMethod /> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
@@ -440,7 +440,7 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
  *
  * Gets pointer to <dsig:CanonicalizationMethod/> child of <dsig:KeyInfo/> node.
  *
- * Returns pointer to <dsig:CanonicalizationMethod /> node or NULL if an error occurs.
+ * Returns: pointer to <dsig:CanonicalizationMethod /> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
@@ -467,7 +467,7 @@ xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
  *
  * Adds <dsig:Transform/> node to the <dsig:Reference/> node @referenceNode.
  * 
- * Returns the pointer to newly created <dsig:Transform/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:Transform/> node or NULL if an 
  * error occurs.
  */
 xmlNodePtr
@@ -536,7 +536,7 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
  *
  * Adds <dsig:SignatureProperties/> node to the <dsig:Object/> node @objectNode.
  *
- * Returns the pointer to newly created <dsig:SignatureProperties/> node or NULL 
+ * Returns: the pointer to newly created <dsig:SignatureProperties/> node or NULL 
  * if an error occurs.
  */
 xmlNodePtr		
@@ -571,7 +571,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
  *
  * Adds <dsig:Manifest/> node to the <dsig:Object/> node @objectNode.
  *
- * Returns the pointer to newly created <dsig:Manifest/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Manifest/> node or NULL 
  * if an error occurs.
  */
 xmlNodePtr
@@ -608,7 +608,7 @@ xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
  * Type (@type) attributes and the required children <dsig:DigestMethod/> and
  * <dsig:DigestValue/> to the <dsig:Manifest/> node @manifestNode.
  *
- * Returns the pointer to newly created <dsig:Reference/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Reference/> node or NULL 
  * if an error occurs.
  */
 xmlNodePtr 
@@ -635,7 +635,7 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  *
  * Creates new <enc:EncryptedData /> node for encryption template. 
  *
- * Returns the pointer newly created  <enc:EncryptedData/> node or NULL 
+ * Returns: the pointer newly created  <enc:EncryptedData/> node or NULL 
  * if an error occurs.
  */
 xmlNodePtr		
@@ -742,7 +742,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
  *
  * Adds <dsig:KeyInfo/> to the  <enc:EncryptedData/> node @encNode.
  *
- * Returns the pointer to newly created <dsig:KeyInfo/> node or 
+ * Returns: the pointer to newly created <dsig:KeyInfo/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -790,7 +790,7 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
  * Adds <enc:EncryptionProperties/> node to the <enc:EncryptedData/> 
  * node @encNode.
  *
- * Returns the pointer to newly created <enc:EncryptionProperties/> node or 
+ * Returns: the pointer to newly created <enc:EncryptionProperties/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -830,7 +830,7 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
  * <enc:EncryptionProperties/> node if required) to the 
  * <enc:EncryptedData/> node @encNode.
  *
- * Returns the pointer to newly created <enc:EncryptionProperty/> node or 
+ * Returns: the pointer to newly created <enc:EncryptionProperty/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr	
@@ -876,7 +876,7 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
  *
  * Adds <enc:CipherValue/> to the <enc:EncryptedData/> node @encNode.
  *
- * Returns the pointer to newly created <enc:CipherValue/> node or 
+ * Returns: the pointer to newly created <enc:CipherValue/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -932,7 +932,7 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
  * Adds <enc:CipherReference/> node with specified URI attribute @uri
  * to the <enc:EncryptedData/> node @encNode.
  *
- * Returns the pointer to newly created <enc:CipherReference/> node or 
+ * Returns: the pointer to newly created <enc:CipherReference/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -990,7 +990,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  *
  * Gets pointer to <enc:EncrytpionMethod/> node.
  *
- * Returns pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
+ * Returns: pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
  */
 xmlNodePtr 
 xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
@@ -1008,7 +1008,7 @@ xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
  * with specified transform methods @transform to the <enc:CipherReference/>
  * child node of the <enc:EncryptedData/> node @encNode.
  *
- * Returns the pointer to newly created <dsig:Transform/> node or 
+ * Returns: the pointer to newly created <dsig:Transform/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1076,7 +1076,7 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
  *
  * Adds <enc:DataReference/> and the parent <enc:ReferenceList/> node (if needed).
  *
- * Returns the pointer to newly created <enc:DataReference/> node or 
+ * Returns: the pointer to newly created <enc:DataReference/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1135,7 +1135,7 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
  *
  * Adds <enc:KeyReference/> and the parent <enc:ReferenceList/> node (if needed).
  *
- * Returns the pointer to newly created <enc:KeyReference/> node or 
+ * Returns: the pointer to newly created <enc:KeyReference/> node or 
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1201,7 +1201,7 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
  *
  * Adds <dsig:KeyName/> node to the <dsig:KeyInfo/> node @keyInfoNode.
  *
- * Returns the pointer to the newly created <dsig:KeyName/> node or
+ * Returns: the pointer to the newly created <dsig:KeyName/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr	
@@ -1232,7 +1232,7 @@ xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
  *
  * Adds <dsig:KeyValue/> node to the <dsig:KeyInfo/> node @keyInfoNode.
  *
- * Returns the pointer to the newly created <dsig:KeyValue/> node or
+ * Returns: the pointer to the newly created <dsig:KeyValue/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1261,7 +1261,7 @@ xmlSecTmplKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
  *
  * Adds <dsig:X509Data/> node to the <dsig:KeyInfo/> node @keyInfoNode.
  *
- * Returns the pointer to the newly created <dsig:X509Data/> node or
+ * Returns: the pointer to the newly created <dsig:X509Data/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1292,7 +1292,7 @@ xmlSecTmplKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
  *
  * Adds <dsig:RetrievalMethod/> node to the <dsig:KeyInfo/> node @keyInfoNode.
  *
- * Returns the pointer to the newly created <dsig:RetrievalMethod/> node or
+ * Returns: the pointer to the newly created <dsig:RetrievalMethod/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1330,7 +1330,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
  * Adds <dsig:Transform/> node (and the parent <dsig:Transforms/> node
  * if required) to the <dsig:RetrievalMethod/> node @retrMethod.
  *
- * Returns the pointer to the newly created <dsig:Transforms/> node or
+ * Returns: the pointer to the newly created <dsig:Transforms/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1395,7 +1395,7 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
  * Adds <enc:EncryptedKey/> node with given attributes to 
  * the <dsig:KeyInfo/> node @keyInfoNode.
  *
- * Returns the pointer to the newly created <enc:EncryptedKey/> node or
+ * Returns: the pointer to the newly created <enc:EncryptedKey/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr 
@@ -1446,7 +1446,7 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
  * 
  * Adds <dsig:X509IssuerSerial/> node to the given <dsig:X509Data/> node.
  *
- * Returns the pointer to the newly created <dsig:X509IssuerSerial/> node or
+ * Returns: the pointer to the newly created <dsig:X509IssuerSerial/> node or
  * NULL if an error occurs.
  */
 
@@ -1487,7 +1487,7 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
  *
  * Adds <dsig:X509IssuerName/> node to the <dsig:X509IssuerSerial/> node @x509IssuerSerialNode.
  *
- * Returns the pointer to the newly created <dsig:X509IssuerName/> node or
+ * Returns: the pointer to the newly created <dsig:X509IssuerName/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1530,7 +1530,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
  *
  * Adds <dsig:X509SerialNumber/> node to the <dsig:X509IssuerSerial/> node @x509IssuerSerialNode.
  *
- * Returns the pointer to the newly created <dsig:X509SerialNumber/> node or
+ * Returns: the pointer to the newly created <dsig:X509SerialNumber/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1572,7 +1572,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
  * 
  * Adds <dsig:X509SubjectName/> node to the given <dsig:X509Data/> node.
  *
- * Returns the pointer to the newly created <dsig:X509SubjectName/> node or
+ * Returns: the pointer to the newly created <dsig:X509SubjectName/> node or
  * NULL if an error occurs.
  */
 
@@ -1612,7 +1612,7 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
  * 
  * Adds <dsig:X509SKI/> node to the given <dsig:X509Data/> node.
  *
- * Returns the pointer to the newly created <dsig:X509SKI/> node or
+ * Returns: the pointer to the newly created <dsig:X509SKI/> node or
  * NULL if an error occurs.
  */
 
@@ -1653,7 +1653,7 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
  * 
  * Adds <dsig:X509Certificate/> node to the given <dsig:X509Data/> node.
  *
- * Returns the pointer to the newly created <dsig:X509Certificate/> node or
+ * Returns: the pointer to the newly created <dsig:X509Certificate/> node or
  * NULL if an error occurs.
  */
 
@@ -1693,7 +1693,7 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
  * 
  * Adds <dsig:X509CRL/> node to the given <dsig:X509Data/> node.
  *
- * Returns the pointer to the newly created <dsig:X509CRL/> node or
+ * Returns: the pointer to the newly created <dsig:X509CRL/> node or
  * NULL if an error occurs.
  */
 
@@ -1741,7 +1741,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
  * Creates <dsig:HMACOutputLength/> child for the HMAC transform 
  * node @node.
  *
- * Returns 0 on success and a negatie value otherwise.
+ * Returns: 0 on success and a negatie value otherwise.
  */
 int
 xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bitsLen) {
@@ -1785,7 +1785,7 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
  * 
  * Creates <enc:OAEPParam/> child node in the @node.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int  	
 xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, 
@@ -1840,7 +1840,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
  * 
  * Writes the XSLT transform expression to the @node.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xslt) {
@@ -1884,7 +1884,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
  *
  * Adds "inclusive" namespaces to the ExcC14N transform node @node.
  *
- * Returns 0 if success or a negative value otherwise.
+ * Returns: 0 if success or a negative value otherwise.
  */
 int		
 xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode, 
@@ -1929,7 +1929,7 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
  * Writes XPath transform infromation to the <dsig:Transform/> node 
  * @node.
  *
- * Returns 0 for success or a negative value otherwise.
+ * Returns: 0 for success or a negative value otherwise.
  */
 int 	
 xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
@@ -1975,7 +1975,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
  * Writes XPath2 transform infromation to the <dsig:Transform/> node 
  * @node.
  *
- * Returns 0 for success or a negative value otherwise.
+ * Returns: 0 for success or a negative value otherwise.
  */
 int
 xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
@@ -2012,7 +2012,7 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
  * Writes XPoniter transform infromation to the <dsig:Transform/> node 
  * @node.
  *
- * Returns 0 for success or a negative value otherwise.
+ * Returns: 0 for success or a negative value otherwise.
  */
 int 	
 xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expression,

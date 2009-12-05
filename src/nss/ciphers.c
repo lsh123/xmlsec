@@ -708,7 +708,7 @@ static xmlSecTransformKlass xmlSecNssAes128CbcKlass = {
  * 
  * AES 128 CBC encryption transform klass.
  * 
- * Returns pointer to AES 128 CBC encryption transform.
+ * Returns: pointer to AES 128 CBC encryption transform.
  */ 
 xmlSecTransformId 
 xmlSecNssTransformAes128CbcGetKlass(void) {
@@ -747,7 +747,7 @@ static xmlSecTransformKlass xmlSecNssAes192CbcKlass = {
  * 
  * AES 192 CBC encryption transform klass.
  * 
- * Returns pointer to AES 192 CBC encryption transform.
+ * Returns: pointer to AES 192 CBC encryption transform.
  */ 
 xmlSecTransformId 
 xmlSecNssTransformAes192CbcGetKlass(void) {
@@ -786,7 +786,7 @@ static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
  * 
  * AES 256 CBC encryption transform klass.
  * 
- * Returns pointer to AES 256 CBC encryption transform.
+ * Returns: pointer to AES 256 CBC encryption transform.
  */ 
 xmlSecTransformId 
 xmlSecNssTransformAes256CbcGetKlass(void) {
@@ -828,7 +828,7 @@ static xmlSecTransformKlass xmlSecNssDes3CbcKlass = {
  *
  * Triple DES CBC encryption transform klass.
  * 
- * Returns pointer to Triple DES encryption transform.
+ * Returns: pointer to Triple DES encryption transform.
  */
 xmlSecTransformId 
 xmlSecNssTransformDes3CbcGetKlass(void) {

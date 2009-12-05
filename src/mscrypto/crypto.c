@@ -35,7 +35,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
  *
  * Gets MSCrypto specific functions table.
  *
- * Returns xmlsec-mscrypto functions table.
+ * Returns: xmlsec-mscrypto functions table.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscrypto(void) {
@@ -153,7 +153,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
  * 
  * XMLSec library specific crypto engine initialization. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecMSCryptoInit (void)  {
@@ -187,7 +187,7 @@ xmlSecMSCryptoInit (void)  {
  * 
  * XMLSec library specific crypto engine shutdown. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecMSCryptoShutdown(void) {
@@ -201,7 +201,7 @@ xmlSecMSCryptoShutdown(void) {
  *
  * Adds MSCrypto specific key data stores in keys manager.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -249,7 +249,7 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Generates @size random bytes and puts result in @buffer
  * (not implemented yet).
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {	
@@ -342,7 +342,7 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  *
  * Converts input string to name by calling @CertStrToName function.
  *
- * Returns a pointer to newly allocated string or NULL if an error occurs.
+ * Returns: a pointer to newly allocated string or NULL if an error occurs.
  */
 BYTE* 
 xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwStrType, DWORD* len) {

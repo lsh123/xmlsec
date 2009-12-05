@@ -392,7 +392,7 @@ static xmlSecTransformKlass xmlSecOpenSSLMd5Klass = {
  *
  * MD5 digest transform klass.
  *
- * Returns pointer to MD5 digest transform klass.
+ * Returns: pointer to MD5 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformMd5GetKlass(void) {
@@ -438,7 +438,7 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
  *
  * RIPEMD-160 digest transform klass.
  *
- * Returns pointer to RIPEMD-160 digest transform klass.
+ * Returns: pointer to RIPEMD-160 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformRipemd160GetKlass(void) {
@@ -485,7 +485,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
  *
  * SHA-1 digest transform klass.
  *
- * Returns pointer to SHA-1 digest transform klass.
+ * Returns: pointer to SHA-1 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformSha1GetKlass(void) {
@@ -531,7 +531,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha224Klass = {
  *
  * SHA-224 digest transform klass.
  *
- * Returns pointer to SHA-224 digest transform klass.
+ * Returns: pointer to SHA-224 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformSha224GetKlass(void) {
@@ -577,7 +577,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha256Klass = {
  *
  * SHA-256 digest transform klass.
  *
- * Returns pointer to SHA-256 digest transform klass.
+ * Returns: pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformSha256GetKlass(void) {
@@ -623,7 +623,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha384Klass = {
  *
  * SHA-384 digest transform klass.
  *
- * Returns pointer to SHA-384 digest transform klass.
+ * Returns: pointer to SHA-384 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformSha384GetKlass(void) {
@@ -669,7 +669,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha512Klass = {
  *
  * SHA-512 digest transform klass.
  *
- * Returns pointer to SHA-512 digest transform klass.
+ * Returns: pointer to SHA-512 digest transform klass.
  */
 xmlSecTransformId 
 xmlSecOpenSSLTransformSha512GetKlass(void) {

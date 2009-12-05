@@ -29,7 +29,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecSkeletonFunctions = NULL;
  *
  * Gets the pointer to xmlsec-skeleton functions table.
  *
- * Returns the xmlsec-skeleton functions table or NULL if an error occurs.
+ * Returns: the xmlsec-skeleton functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_skeleton(void) {
@@ -167,7 +167,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
  * 
  * XMLSec library specific crypto engine initialization. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecSkeletonInit (void)  {
@@ -200,7 +200,7 @@ xmlSecSkeletonInit (void)  {
  * 
  * XMLSec library specific crypto engine shutdown. 
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecSkeletonShutdown(void) {
@@ -214,7 +214,7 @@ xmlSecSkeletonShutdown(void) {
  *
  * Adds Skeleton specific key data stores in keys manager.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecSkeletonKeysMngrInit(xmlSecKeysMngrPtr mngr) {

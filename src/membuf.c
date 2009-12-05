@@ -76,7 +76,7 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
  * 
  * The memory buffer transorm (used to store the data that go through it).
  *
- * Returns memory buffer transform klass.
+ * Returns: memory buffer transform klass.
  */
 xmlSecTransformId 
 xmlSecTransformMemBufGetKlass(void) {
@@ -89,7 +89,7 @@ xmlSecTransformMemBufGetKlass(void) {
  * 
  * Gets the pointer to memory buffer transform buffer. 
  *
- * Returns pointer to the transform's #xmlSecBuffer. 
+ * Returns: pointer to the transform's #xmlSecBuffer. 
  */
 xmlSecBufferPtr
 xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {

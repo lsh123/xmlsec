@@ -174,7 +174,7 @@ xmlSecErrorsDefaultCallbackEnableOutput(int enabled) {
  * 
  * Gets the known error code at position @pos.
  *
- * Returns the known error code or 0 if @pos is greater than 
+ * Returns: the known error code or 0 if @pos is greater than 
  * total number of known error codes.
  */
 int 
@@ -192,7 +192,7 @@ xmlSecErrorsGetCode(xmlSecSize pos) {
  *
  * Gets the known error message at position @pos.
  *
- * Returns the known error message or NULL if @pos is greater than 
+ * Returns: the known error message or NULL if @pos is greater than 
  * total number of known error codes.
  */
 const char* 

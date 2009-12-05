@@ -28,7 +28,7 @@
  * by XMLSec command line utility and called before 
  * @xmlSecInit function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecSkeletonAppInit(const char* config ATTRIBUTE_UNUSED) {
@@ -43,7 +43,7 @@ xmlSecSkeletonAppInit(const char* config ATTRIBUTE_UNUSED) {
  * by XMLSec command line utility and called after 
  * @xmlSecShutdown function.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecSkeletonAppShutdown(void) {
@@ -62,7 +62,7 @@ xmlSecSkeletonAppShutdown(void) {
  *
  * Reads key from the a file (not implemented yet).
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
@@ -92,7 +92,7 @@ xmlSecSkeletonAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  *
  * Reads key from a binary @data.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
 xmlSecSkeletonAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format,
@@ -120,7 +120,7 @@ xmlSecSkeletonAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlS
  * Reads the certificate from $@filename and adds it to key
  * (not implemented yet).
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecSkeletonAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, 
@@ -147,7 +147,7 @@ xmlSecSkeletonAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  *
  * Reads the certificate from memory buffer and adds it to key.
  * 
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int		
 xmlSecSkeletonAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, 
@@ -178,7 +178,7 @@ xmlSecSkeletonAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xml
  * in format=xmlSecKeyDataFormatPkcs12.
  *
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecSkeletonAppPkcs12Load(const char *filename, 
@@ -208,7 +208,7 @@ xmlSecSkeletonAppPkcs12Load(const char *filename,
  * For uniformity, call xmlSecSkeletonAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
- * Returns pointer to the key or NULL if an error occurs.
+ * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr	
 xmlSecSkeletonAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
@@ -238,7 +238,7 @@ xmlSecSkeletonAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, c
  * Reads cert from @filename and adds to the list of trusted or known
  * untrusted certs in @store (not implemented yet).
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecSkeletonAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
@@ -268,7 +268,7 @@ xmlSecSkeletonAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * Reads cert from @data and adds to the list of trusted or known
  * untrusted certs in @store
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecSkeletonAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, 
@@ -296,7 +296,7 @@ xmlSecSkeletonAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte
  * Initializes @mngr with simple keys store #xmlSecSimpleKeysStoreId
  * and a default Skeleton crypto key data stores.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int
 xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
@@ -356,7 +356,7 @@ xmlSecSkeletonAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Adds @key to the keys manager @mngr created with #xmlSecSkeletonAppDefaultKeysMngrInit
  * function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
@@ -401,7 +401,7 @@ xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr ke
  * Loads XML keys file from @uri to the keys manager @mngr created 
  * with #xmlSecSkeletonAppDefaultKeysMngrInit function.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecSkeletonAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
@@ -446,7 +446,7 @@ xmlSecSkeletonAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  *
  * Saves keys from @mngr to  XML keys file.
  *  
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */ 
 int 
 xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
@@ -489,7 +489,7 @@ xmlSecSkeletonAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filenam
  *
  * Gets default password callback.
  *
- * Returns default password callback.
+ * Returns: default password callback.
  */
 void*
 xmlSecSkeletonAppGetDefaultPwdCallback(void) {

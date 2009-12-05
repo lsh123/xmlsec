@@ -85,7 +85,7 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  * MUST produce output in exactly the same manner as the XPath transform 
  * parameterized by the XPath expression above.
  *
- * Returns enveloped transform id.
+ * Returns: enveloped transform id.
  */
 xmlSecTransformId 
 xmlSecTransformEnvelopedGetKlass(void) {

@@ -196,7 +196,7 @@ xmlSecNssPKIKeyDataAdoptKey(xmlSecKeyDataPtr data,
  * Build a KeyData object from the given Private Key and Public
  * Key handles.
  *
- * Returns pointer to KeyData object or NULL if an error occurs.
+ * Returns: pointer to KeyData object or NULL if an error occurs.
  */
 xmlSecKeyDataPtr
 xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,                        
@@ -283,7 +283,7 @@ xmlSecNssPKIAdoptKey(SECKEYPrivateKey *privkey,
  *
  * Gets the Public Key from the key data.
  *
- * Returns pointer to SECKEYPublicKey or NULL if an error occurs.
+ * Returns: pointer to SECKEYPublicKey or NULL if an error occurs.
  * Caller is responsible for freeing the key when done
  */
 SECKEYPublicKey *
@@ -308,7 +308,7 @@ xmlSecNssPKIKeyDataGetPubKey(xmlSecKeyDataPtr data) {
  *
  * Gets the Private Key from the key data.
  *
- * Returns pointer to SECKEYPrivateKey or NULL if an error occurs.
+ * Returns: pointer to SECKEYPrivateKey or NULL if an error occurs.
  * Caller is responsible for freeing the key when done
  */
 SECKEYPrivateKey*
@@ -333,7 +333,7 @@ xmlSecNssPKIKeyDataGetPrivKey(xmlSecKeyDataPtr data) {
  *
  * Gets the Key Type from the key data.
  *
- * Returns Key Type 
+ * Returns: Key Type 
  */
 KeyType
 xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
@@ -361,7 +361,7 @@ xmlSecNssPKIKeyDataGetKeyType(xmlSecKeyDataPtr data) {
  *
  * Duplicates the keydata from src to dst
  *
- * Returns -1 on error, 0 on success
+ * Returns: -1 on error, 0 on success
  */
 int
 xmlSecNssPKIKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
@@ -531,7 +531,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataDsaKlass = {
  * 
  * The DSA key data klass.
  *
- * Returns pointer to DSA key data klass.
+ * Returns: pointer to DSA key data klass.
  */
 xmlSecKeyDataId 
 xmlSecNssKeyDataDsaGetKlass(void) {
@@ -1162,7 +1162,7 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataRsaKlass = {
  *
  * The RSA key data klass.
  *
- * Returns pointer to RSA key data klass.
+ * Returns: pointer to RSA key data klass.
  */
 xmlSecKeyDataId 
 xmlSecNssKeyDataRsaGetKlass(void) {

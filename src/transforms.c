@@ -74,7 +74,7 @@ static xmlSecPtrList xmlSecAllTransformIds;
  *
  * Gets global registered transform klasses list.
  * 
- * Returns the pointer to list of all registered transform klasses.
+ * Returns: the pointer to list of all registered transform klasses.
  */
 xmlSecPtrListPtr
 xmlSecTransformIdsGet(void) {
@@ -87,7 +87,7 @@ xmlSecTransformIdsGet(void) {
  * Initializes the transform klasses. This function is called from the 
  * #xmlSecInit function and the application should not call it directly.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformIdsInit(void) {
@@ -133,7 +133,7 @@ xmlSecTransformIdsShutdown(void) {
  *
  * Registers @id in the global list of transform klasses.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformIdsRegister(xmlSecTransformId id) {
@@ -161,7 +161,7 @@ xmlSecTransformIdsRegister(xmlSecTransformId id) {
  * Registers default (implemented by XML Security Library)
  * transform klasses: XPath transform, Base64 transform, ...
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformIdsRegisterDefault(void) {
@@ -298,7 +298,7 @@ xmlSecTransformIdsRegisterDefault(void) {
  *
  * Checks if @uri matches expected type @type.
  *
- * Returns 1 if @uri matches @type, 0 if not or a negative value
+ * Returns: 1 if @uri matches @type, 0 if not or a negative value
  * if an error occurs.
  */
 int 
@@ -330,7 +330,7 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  * The caller is responsible for destroying returend object by calling 
  * #xmlSecTransformCtxDestroy function.
  *
- * Returns pointer to newly allocated context object or NULL if an error
+ * Returns: pointer to newly allocated context object or NULL if an error
  * occurs.
  */
 xmlSecTransformCtxPtr 
@@ -385,7 +385,7 @@ xmlSecTransformCtxDestroy(xmlSecTransformCtxPtr ctx) {
  * The caller is responsible for cleaing up returend object by calling 
  * #xmlSecTransformCtxFinalize function.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformCtxInitialize(xmlSecTransformCtxPtr ctx) {
@@ -464,7 +464,7 @@ xmlSecTransformCtxReset(xmlSecTransformCtxPtr ctx) {
  *
  * Copies user settings from @src context to @dst.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr src) {
@@ -500,7 +500,7 @@ xmlSecTransformCtxCopyUserPref(xmlSecTransformCtxPtr dst, xmlSecTransformCtxPtr 
  * Connects the @transform to the end of the chain of transforms in the @ctx 
  * (see #xmlSecTransformConnect function for details).
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
@@ -538,7 +538,7 @@ xmlSecTransformCtxAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform
  * Connects the @transform to the beggining of the chain of transforms in the @ctx 
  * (see #xmlSecTransformConnect function for details).
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transform) {
@@ -576,7 +576,7 @@ xmlSecTransformCtxPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformPtr transfor
  * Creaeates new transform and connects it to the end of the chain of 
  * transforms in the @ctx (see #xmlSecTransformConnect function for details).
  *
- * Returns pointer to newly created transform or NULL if an error occurs.
+ * Returns: pointer to newly created transform or NULL if an error occurs.
  */
 xmlSecTransformPtr 
 xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId id) {
@@ -621,7 +621,7 @@ xmlSecTransformCtxCreateAndAppend(xmlSecTransformCtxPtr ctx, xmlSecTransformId i
  * Creaeates new transform and connects it to the end of the chain of 
  * transforms in the @ctx (see #xmlSecTransformConnect function for details).
  *
- * Returns pointer to newly created transform or NULL if an error occurs.
+ * Returns: pointer to newly created transform or NULL if an error occurs.
  */
 xmlSecTransformPtr 
 xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformId id) {
@@ -667,7 +667,7 @@ xmlSecTransformCtxCreateAndPrepend(xmlSecTransformCtxPtr ctx, xmlSecTransformId 
  * Reads the transform from the @node and appends it to the current chain 
  * of transforms in @ctx.
  *
- * Returns pointer to newly created transform or NULL if an error occurs.
+ * Returns: pointer to newly created transform or NULL if an error occurs.
  */
 xmlSecTransformPtr
 xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, 
@@ -714,7 +714,7 @@ xmlSecTransformCtxNodeRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node,
  * Reads transforms from the <dsig:Transform/> children of the @node and 
  * appends them to the current transforms chain in @ctx object.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlSecTransformUsage usage) {
@@ -800,7 +800,7 @@ xmlSecTransformCtxNodesListRead(xmlSecTransformCtxPtr ctx, xmlNodePtr node, xmlS
  * (and its applications) modify this node-set to include the element plus 
  * all descendents including namespaces and attributes -- but not comments.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodePtr hereNode) {
@@ -986,7 +986,7 @@ xmlSecTransformCtxSetUri(xmlSecTransformCtxPtr ctx, const xmlChar* uri, xmlNodeP
  *
  * Prepares the transform context for processing data of @inputDataType.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inputDataType) {
@@ -1077,7 +1077,7 @@ xmlSecTransformCtxPrepare(xmlSecTransformCtxPtr ctx, xmlSecTransformDataType inp
  *
  * Processes binary data using transforms chain in the @ctx.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx, 
@@ -1124,7 +1124,7 @@ xmlSecTransformCtxBinaryExecute(xmlSecTransformCtxPtr ctx,
  *
  * Process binary data from the URI using transforms chain in @ctx.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int 
 xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
@@ -1196,7 +1196,7 @@ xmlSecTransformCtxUriExecute(xmlSecTransformCtxPtr ctx, const xmlChar* uri) {
  *
  * Process @nodes using transforms in the transforms chain in @ctx.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) {
@@ -1243,7 +1243,7 @@ xmlSecTransformCtxXmlExecute(xmlSecTransformCtxPtr ctx, xmlSecNodeSetPtr nodes) 
  *
  * Executes transforms chain in @ctx.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformCtxExecute(xmlSecTransformCtxPtr ctx, xmlDocPtr doc) {
@@ -1395,7 +1395,7 @@ xmlSecTransformCtxDebugXmlDump(xmlSecTransformCtxPtr ctx, FILE* output) {
  * Creates new transform of the @id klass. The caller is responsible for
  * destroying returned tansform using #xmlSecTransformDestroy function.
  *
- * Returns pointer to newly created transform or NULL if an error occurs.
+ * Returns: pointer to newly created transform or NULL if an error occurs.
  */ 
 xmlSecTransformPtr	
 xmlSecTransformCreate(xmlSecTransformId id) {
@@ -1505,7 +1505,7 @@ xmlSecTransformDestroy(xmlSecTransformPtr transform) {
  *
  *    4) calls transform's read transform node method.
  *
- * Returns pointer to newly created transform or NULL if an error occurs.
+ * Returns: pointer to newly created transform or NULL if an error occurs.
  */
 xmlSecTransformPtr
 xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTransformCtxPtr transformCtx) {
@@ -1595,7 +1595,7 @@ xmlSecTransformNodeRead(xmlNodePtr node, xmlSecTransformUsage usage, xmlSecTrans
  * Pops data from @left transform and pushes to @right transform until
  * no more data is available.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTransformCtxPtr transformCtx) {
@@ -1679,7 +1679,7 @@ xmlSecTransformPump(xmlSecTransformPtr left, xmlSecTransformPtr right, xmlSecTra
  *
  * Sets the transform's key.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
@@ -1699,7 +1699,7 @@ xmlSecTransformSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
  *
  * Sets the key requirements for @transform in the @keyReq.
  *
- * Returns 0 on success or a negative value otherwise.
+ * Returns: 0 on success or a negative value otherwise.
  */
 int
 xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
@@ -1728,7 +1728,7 @@ xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, xmlSecKeyReqPtr keyReq) {
  * (for digest, HMAC and signature transforms). The verification
  * result is stored in the #status member of #xmlSecTransform object.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
@@ -1749,7 +1749,7 @@ xmlSecTransformVerify(xmlSecTransformPtr transform, const xmlSecByte* data,
  * Gets the @node content, base64 decodes it and calls #xmlSecTransformVerify
  * function to verify binary results.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, xmlNodePtr node,
@@ -1807,7 +1807,7 @@ xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, xmlNodePtr node,
  * Gets transform input (@mode is "push") or output (@mode is "pop") data 
  * type (binary or XML).
  *
- * Returns the transform's data type for the @mode operation.
+ * Returns: the transform's data type for the @mode operation.
  */
 xmlSecTransformDataType	
 xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode, 
@@ -1829,7 +1829,7 @@ xmlSecTransformGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mod
  *
  * Process binary @data and pushes results to next transform.
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
@@ -1853,7 +1853,7 @@ xmlSecTransformPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
  * returns result in the @data buffer. The size of returned data is 
  * placed in the @dataSize.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
@@ -1875,7 +1875,7 @@ xmlSecTransformPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
  *
  * Processes @nodes and pushes result to the next transform in the chain.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
@@ -1896,7 +1896,7 @@ xmlSecTransformPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes,
  * Pops data from previous transform in the chain, processes the data and 
  * returns result in @nodes.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
@@ -1916,7 +1916,7 @@ xmlSecTransformPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
  *
  * Executes transform (used by default popBin/pushBin/popXml/pushXml methods).
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
@@ -1992,7 +1992,7 @@ xmlSecTransformDebugXmlDump(xmlSecTransformPtr transform, FILE* output) {
  * and any of its descendant elements as well as any descendant comments and 
  * processing instructions. The output of this transform is an octet stream.
  *
- * Returns 0 on success or a negative value if an error occurs. 
+ * Returns: 0 on success or a negative value if an error occurs. 
  */
 int 
 xmlSecTransformConnect(xmlSecTransformPtr left, xmlSecTransformPtr right, 
@@ -2097,7 +2097,7 @@ xmlSecTransformRemove(xmlSecTransformPtr transform) {
  * type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
  * methods.
  *
- * Returns the transform's data type for the @mode operation.
+ * Returns: the transform's data type for the @mode operation.
  */
 xmlSecTransformDataType 
 xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformMode mode,
@@ -2149,7 +2149,7 @@ xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform, xmlSecTransformM
  * Process binary @data by calling transform's execute method and pushes 
  * results to next transform.
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
@@ -2259,7 +2259,7 @@ xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, const xmlSecByte* da
  * transform's execute method and returns result in the @data buffer. The 
  * size of returned data is placed in the @dataSize.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
@@ -2376,7 +2376,7 @@ xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
  * Processes @nodes by calling transform's execute method and pushes 
  * result to the next transform in the chain.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nodes, 
@@ -2424,7 +2424,7 @@ xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr nod
  * Pops data from previous transform in the chain, processes the data 
  * by calling transform's execute method and returns result in @nodes.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes, 
@@ -2486,7 +2486,7 @@ static xmlSecPtrListKlass xmlSecTransformIdListKlass = {
  * 
  * The transform id list klass.
  *
- * Returns pointer to the transform id list klass.
+ * Returns: pointer to the transform id list klass.
  */
 xmlSecPtrListId 
 xmlSecTransformIdListGetKlass(void) {
@@ -2500,7 +2500,7 @@ xmlSecTransformIdListGetKlass(void) {
  *
  * Lookups @dataId in @list.
  *
- * Returns 1 if @dataId is found in the @list, 0 if not and a negative
+ * Returns: 1 if @dataId is found in the @list, 0 if not and a negative
  * value if an error occurs.
  */
 int 
@@ -2527,7 +2527,7 @@ xmlSecTransformIdListFind(xmlSecPtrListPtr list, xmlSecTransformId transformId) 
  *
  * Lookups data klass in the list with given @href and @usage in @list.
  *
- * Returns transform klass is found and NULL otherwise.
+ * Returns: transform klass is found and NULL otherwise.
  */ 
 xmlSecTransformId	
 xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
@@ -2559,7 +2559,7 @@ xmlSecTransformIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
  *
  * Lookups data klass in the list with given @name and @usage in @list.
  *
- * Returns transform klass is found and NULL otherwise.
+ * Returns: transform klass is found and NULL otherwise.
  */ 
 xmlSecTransformId	
 xmlSecTransformIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name, 
@@ -2681,7 +2681,7 @@ static int	xmlSecTransformIOBufferClose			(xmlSecTransformIOBufferPtr buffer);
  *
  * Creates output buffer to write data to @transform.
  *
- * Returns pointer to new output buffer or NULL if an error occurs.
+ * Returns: pointer to new output buffer or NULL if an error occurs.
  */
 xmlOutputBufferPtr 
 xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
@@ -2737,7 +2737,7 @@ xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, xmlSecTransformC
  *
  * Creates input buffer to read data from @transform.
  *
- * Returns pointer to new input buffer or NULL if an error occurs.
+ * Returns: pointer to new input buffer or NULL if an error occurs.
  */
 xmlParserInputBufferPtr 
 xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {

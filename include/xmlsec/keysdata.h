@@ -369,7 +369,7 @@ XMLSEC_EXPORT int		xmlSecKeyDataBinWrite		(xmlSecKeyDataId id,
  *
  * Key data specific initialization method.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataInitMethod)	(xmlSecKeyDataPtr data);
 
@@ -380,7 +380,7 @@ typedef int			(*xmlSecKeyDataInitMethod)	(xmlSecKeyDataPtr data);
  *
  * Key data specific duplication (copy) method.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataDuplicateMethod)	(xmlSecKeyDataPtr dst,
 								 xmlSecKeyDataPtr src);
@@ -403,7 +403,7 @@ typedef void			(*xmlSecKeyDataFinalizeMethod)	(xmlSecKeyDataPtr data);
  *
  * Key data specific method for reading XML node. 
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataXmlReadMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
@@ -418,7 +418,7 @@ typedef int			(*xmlSecKeyDataXmlReadMethod)	(xmlSecKeyDataId id,
  *
  * Key data specific method for writing XML node.
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataXmlWriteMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
@@ -434,7 +434,7 @@ typedef int			(*xmlSecKeyDataXmlWriteMethod)	(xmlSecKeyDataId id,
  *
  * Key data specific method for reading binary buffer.
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
@@ -451,7 +451,7 @@ typedef int			(*xmlSecKeyDataBinReadMethod)	(xmlSecKeyDataId id,
  *
  * Key data specific method for reading binary buffer. 
  * 
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
 								 xmlSecKeyPtr key,
@@ -467,7 +467,7 @@ typedef int			(*xmlSecKeyDataBinWriteMethod)	(xmlSecKeyDataId id,
  *
  * Key data specific method for generating new key data.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataGenerateMethod)	(xmlSecKeyDataPtr data,
 								 xmlSecSize sizeBits,
@@ -479,7 +479,7 @@ typedef int			(*xmlSecKeyDataGenerateMethod)	(xmlSecKeyDataPtr data,
  *
  * Key data specific method to get the key type.
  *
- * Returns the key type.
+ * Returns: the key type.
  */
 typedef xmlSecKeyDataType	(*xmlSecKeyDataGetTypeMethod)	(xmlSecKeyDataPtr data);
 
@@ -489,7 +489,7 @@ typedef xmlSecKeyDataType	(*xmlSecKeyDataGetTypeMethod)	(xmlSecKeyDataPtr data);
  *
  * Key data specific method to get the key size.
  *
- * Returns the key size in bits.
+ * Returns: the key size in bits.
  */
 typedef xmlSecSize		(*xmlSecKeyDataGetSizeMethod)	(xmlSecKeyDataPtr data);
 
@@ -500,7 +500,7 @@ typedef xmlSecSize		(*xmlSecKeyDataGetSizeMethod)	(xmlSecKeyDataPtr data);
  * Key data specific method to get the key data identifier string (for example,
  * X509 data identifier is the subject of the verified cert).
  *
- * Returns the identifier string or NULL if an error occurs.
+ * Returns: the identifier string or NULL if an error occurs.
  */
 typedef const xmlChar*		(*xmlSecKeyDataGetIdentifierMethod) (xmlSecKeyDataPtr data);
 
@@ -765,7 +765,7 @@ XMLSEC_EXPORT void		xmlSecKeyDataStoreDestroy	(xmlSecKeyDataStorePtr store);
  *
  * Key data store specific initialization method.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 typedef int			(*xmlSecKeyDataStoreInitializeMethod)	(xmlSecKeyDataStorePtr store);
 

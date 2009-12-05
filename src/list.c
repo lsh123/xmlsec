@@ -48,7 +48,7 @@ xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defIni
  * Creates new list object. Caller is responsible for freeing returned list
  * by calling #xmlSecPtrListDestroy function.
  *
- * Returns pointer to newly allocated list or NULL if an error occurs.
+ * Returns: pointer to newly allocated list or NULL if an error occurs.
  */
 xmlSecPtrListPtr 
 xmlSecPtrListCreate(xmlSecPtrListId id) {
@@ -104,7 +104,7 @@ xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
  * Initializes the list of given klass. Caller is responsible 
  * for cleaning up by calling #xmlSecPtrListFinalize function.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
@@ -172,7 +172,7 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
  * of the list klass. If #duplicateItem method is NULL then 
  * we jsut copy pointers to items.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int
 xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
@@ -223,7 +223,7 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
  *  
  * Creates a new copy of @list and all its items.
  *
- * Returns pointer to newly allocated list or NULL if an error occurs.
+ * Returns: pointer to newly allocated list or NULL if an error occurs.
  */
 xmlSecPtrListPtr 
 xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
@@ -261,7 +261,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
  *
  * Gets list size.
  * 
- * Returns the number of itmes in @list.
+ * Returns: the number of itmes in @list.
  */
 xmlSecSize	
 xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
@@ -277,7 +277,7 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
  *
  * Gets item from the list.
  *
- * Returns the list item at position @pos or NULL if @pos is greater
+ * Returns: the list item at position @pos or NULL if @pos is greater
  * than the number of items in the list or an error occurs.
  */
 xmlSecPtr 
@@ -296,7 +296,7 @@ xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
  *
  * Adds @item to the end of the @list.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
@@ -327,7 +327,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
  * Sets the value of list item at position @pos. The old value
  * is destroyed.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
@@ -349,7 +349,7 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
  *
  * Destroys list item at the position @pos and sets it value to NULL.
  *
- * Returns 0 on success or a negative value if an error occurs.
+ * Returns: 0 on success or a negative value if an error occurs.
  */
 int 
 xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
@@ -484,7 +484,7 @@ static xmlSecPtrListKlass xmlSecStringListKlass = {
  * 
  * The strins list class.
  *
- * Returns strings list klass.
+ * Returns: strings list klass.
  */
 xmlSecPtrListId 
 xmlSecStringListGetKlass(void) {

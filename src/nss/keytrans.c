@@ -689,7 +689,7 @@ static xmlSecTransformKlass xmlSecNssRsaPkcs1Klass = {
  *
  * The RSA-PKCS1 key transport transform klass.
  *
- * Returns RSA-PKCS1 key transport transform klass.
+ * Returns: RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformRsaPkcs1GetKlass(void) {
@@ -732,7 +732,7 @@ static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
  *
  * The RSA-PKCS1 key transport transform klass.
  *
- * Returns RSA-PKCS1 key transport transform klass.
+ * Returns: RSA-PKCS1 key transport transform klass.
  */
 xmlSecTransformId 
 xmlSecNssTransformRsaOaepGetKlass(void) {

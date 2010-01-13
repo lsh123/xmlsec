@@ -1,3 +1,7 @@
+2010-01-13  Aleksey Sanin  <aleksey@aleksey.com>
+	* Fix valgrind's invalid read with chained XPath transforms (based
+	on patch from Frank Gross).
+
 2009-09-05  Aleksey Sanin  <aleksey@aleksey.com>
 	* preparation for 1.2.14 release
 

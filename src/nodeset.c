@@ -78,29 +78,37 @@ xmlSecNodeSetCreate(xmlDocPtr doc, xmlNodeSetPtr nodes, xmlSecNodeSetType type) 
 void
 xmlSecNodeSetDestroy(xmlSecNodeSetPtr nset) {
     xmlSecNodeSetPtr tmp;
+    xmlDocPtr destroyDoc = NULL;
 
     xmlSecAssert(nset != NULL);
-    	
+
     while((tmp = nset) != NULL) {
 	if((nset->next != NULL) && (nset->next != nset)) {
 	    nset->next->prev = nset->prev;
-	    nset->prev->next = nset->next;	    
+	    nset->prev->next = nset->next;
 	    nset = nset->next;
 	} else {
 	    nset = NULL;
 	}
 	
 	if(tmp->nodes != NULL) {
-    	    xmlXPathFreeNodeSet(tmp->nodes);
+	    xmlXPathFreeNodeSet(tmp->nodes);
 	}
 	if(tmp->children != NULL) {
 	    xmlSecNodeSetDestroy(tmp->children);
 	}
 	if((tmp->doc != NULL) && (tmp->destroyDoc != 0)) {
-	    xmlFreeDoc(tmp->doc);
+	    /* all nodesets should belong to the same doc */
+	    xmlSecAssert((destroyDoc == NULL) || (tmp->doc == destroyDoc));
+	    destroyDoc = tmp->doc; /* can't destroy here because other node sets can refer to it */
 	}
 	memset(tmp, 0,  sizeof(xmlSecNodeSet));
-        xmlFree(tmp);
+	xmlFree(tmp);
+    }
+
+    /* finally, destroy the doc if needed */
+    if(destroyDoc != NULL) {
+	xmlFreeDoc(destroyDoc);
     }
 }
 
@@ -272,11 +280,14 @@ xmlSecNodeSetAdd(xmlSecNodeSetPtr nset, xmlSecNodeSetPtr newNSet,
     if(nset == NULL) {
 	return(newNSet);
     }
-        
+
+    /* all nodesets should belong to the same doc */
+    xmlSecAssert2(nset->doc == newNSet->doc, NULL);
+
     newNSet->next = nset;
     newNSet->prev = nset->prev;
     nset->prev->next = newNSet;
-    nset->prev 	     = newNSet;
+    nset->prev       = newNSet;
     return(nset);
 }
 

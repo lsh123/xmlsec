@@ -749,7 +749,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     for(i = 0; i < sk_X509_num(chain); ++i) {
 		xmlSecAssert2(sk_X509_value(chain, i), NULL);
 
-		if(X509_cmp(sk_X509_value(chain, i), cert) == 0) {
+		if(X509_cmp(sk_X509_value(chain, i), cert) != 0) {
 			has_cert = 1;
 			break;
 		}

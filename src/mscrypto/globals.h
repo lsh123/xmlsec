@@ -6,7 +6,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyrigth (C) 2003 Cordys R&D BV, All rights reserved.
+ * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #ifndef __XMLSEC_GLOBALS_H__
 #define __XMLSEC_GLOBALS_H__

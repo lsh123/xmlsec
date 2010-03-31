@@ -7,7 +7,7 @@
  * distribution for preciese wording.
  * 
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
- * Copyrigth (C) 2003 Cordys R&D BV, All rights reserved.
+ * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #include "globals.h"
 

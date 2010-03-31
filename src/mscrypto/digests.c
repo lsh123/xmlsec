@@ -4,7 +4,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  * 
- * Copyrigth (C) 2003 Cordys R&D BV, All rights reserved.
+ * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).  
  */
 #include "globals.h"

@@ -603,13 +603,13 @@ xmlSecOpenSSLDsaSha1EvpInit(EVP_MD_CTX *ctx)
 }
 
 static int 
-xmlSecOpenSSLDsaSha1EvpUpdate(EVP_MD_CTX *ctx,const void *data,unsigned long count)
+xmlSecOpenSSLDsaSha1EvpUpdate(EVP_MD_CTX *ctx, const void *data, size_t count)
 { 
     return SHA1_Update(ctx->md_data,data,count); 
 }
 
 static int 
-xmlSecOpenSSLDsaSha1EvpFinal(EVP_MD_CTX *ctx,xmlSecByte *md)
+xmlSecOpenSSLDsaSha1EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 { 
     return SHA1_Final(md,ctx->md_data); 
 }
@@ -617,8 +617,8 @@ xmlSecOpenSSLDsaSha1EvpFinal(EVP_MD_CTX *ctx,xmlSecByte *md)
 
 static int 	
 xmlSecOpenSSLDsaSha1EvpSign(int type ATTRIBUTE_UNUSED, 
-			const xmlSecByte *dgst, int dlen,
-			xmlSecByte *sig, unsigned int *siglen, DSA *dsa) {
+			const unsigned char *dgst, unsigned int dlen,
+			unsigned char *sig, unsigned int *siglen, void *dsa) {
     DSA_SIG *s;
     int rSize, sSize;
 
@@ -654,8 +654,9 @@ xmlSecOpenSSLDsaSha1EvpSign(int type ATTRIBUTE_UNUSED,
 
 static int 
 xmlSecOpenSSLDsaSha1EvpVerify(int type ATTRIBUTE_UNUSED, 
-			const xmlSecByte *dgst, int dgst_len,
-			const xmlSecByte *sigbuf, int siglen, DSA *dsa) {
+			const unsigned char *dgst, unsigned int dgst_len,
+			const unsigned char *sigbuf, unsigned int siglen, 
+			void *dsa) {
     DSA_SIG *s;    
     int ret = -1;
 
@@ -710,7 +711,7 @@ static const EVP_MD xmlSecOpenSSLDsaMdEvp = {
     SHA1_Final,
 #endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLDsaSha1EvpSign,
-    xmlSecOpenSSLDsaSha1EvpVerify, 
+    xmlSecOpenSSLDsaSha1EvpVerify,
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
     SHA_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA_CTX),

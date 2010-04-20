@@ -107,10 +107,10 @@ static int 		xmlSecOpenSSLX509NameStringRead			(xmlSecByte **str,
 									 int ingoreTrailingSpaces);
 static int		xmlSecOpenSSLX509NamesCompare			(X509_NAME *a,
 									 X509_NAME *b);
-static int 		xmlSecOpenSSLX509_NAME_cmp			(const X509_NAME *a, 
-									 const X509_NAME *b);
-static int 		xmlSecOpenSSLX509_NAME_ENTRY_cmp		(const X509_NAME_ENTRY **a, 
-									 const X509_NAME_ENTRY **b);
+static int 		xmlSecOpenSSLX509_NAME_cmp			(const X509_NAME * a, 
+									 const X509_NAME * b);
+static int 		xmlSecOpenSSLX509_NAME_ENTRY_cmp		(const X509_NAME_ENTRY * const *a, 
+									 const X509_NAME_ENTRY * const *b);
 
 /** 
  * xmlSecOpenSSLX509StoreGetKlass:
@@ -1172,7 +1172,7 @@ xmlSecOpenSSLX509NameStringRead(xmlSecByte **str, int *strLen,
 }
 
 static
-int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b) {
+int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME * a, const X509_NAME * b) {
     int i,ret;
     const X509_NAME_ENTRY *na,*nb;
 
@@ -1203,7 +1203,7 @@ int xmlSecOpenSSLX509_NAME_cmp(const X509_NAME *a, const X509_NAME *b) {
  * We have to sort X509_NAME entries to get correct results.
  * This is ugly but OpenSSL does not support it
  */
-static int		
+static int
 xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     X509_NAME *a1 = NULL;
     X509_NAME *b1 = NULL;
@@ -1239,7 +1239,7 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
 
     /* actually compare */
     ret = xmlSecOpenSSLX509_NAME_cmp(a1, b1);
-    
+
     /* cleanup */
     X509_NAME_free(a1);
     X509_NAME_free(b1);
@@ -1247,7 +1247,7 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
 }
 
 static int 
-xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY **a, const X509_NAME_ENTRY **b) {
+xmlSecOpenSSLX509_NAME_ENTRY_cmp(const X509_NAME_ENTRY * const *a, const X509_NAME_ENTRY * const *b) {
     int ret;
     
     xmlSecAssert2(a != NULL, -1);

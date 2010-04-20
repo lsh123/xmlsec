@@ -9,7 +9,7 @@
 	* Add references to licenses
 
 2010-03-18  Aleksey Sanin  <aleksey@aleksey.com>
-	* Ensure we have only one copy of key's cert after reading pkcs12 
+	* Ensure we have only one copy of key's cert after reading pkcs12
 	from openssl
 
 2010-01-13  Aleksey Sanin  <aleksey@aleksey.com>

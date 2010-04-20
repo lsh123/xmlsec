@@ -655,7 +655,7 @@ xmlSecOpenSSLDsaSha1EvpSign(int type ATTRIBUTE_UNUSED,
 static int 
 xmlSecOpenSSLDsaSha1EvpVerify(int type ATTRIBUTE_UNUSED, 
 			const unsigned char *dgst, unsigned int dgst_len,
-			const unsigned char *sigbuf, unsigned int siglen, 
+			const unsigned char *sigbuf, unsigned int siglen,
 			void *dsa) {
     DSA_SIG *s;    
     int ret = -1;

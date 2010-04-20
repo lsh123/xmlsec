@@ -1,4 +1,4 @@
-/** 
+/**
  * XMLSec library
  *
  * X509 support
@@ -107,9 +107,9 @@ static int 		xmlSecOpenSSLX509NameStringRead			(xmlSecByte **str,
 									 int ingoreTrailingSpaces);
 static int		xmlSecOpenSSLX509NamesCompare			(X509_NAME *a,
 									 X509_NAME *b);
-static int 		xmlSecOpenSSLX509_NAME_cmp			(const X509_NAME * a, 
+static int 		xmlSecOpenSSLX509_NAME_cmp			(const X509_NAME * a,
 									 const X509_NAME * b);
-static int 		xmlSecOpenSSLX509_NAME_ENTRY_cmp		(const X509_NAME_ENTRY * const *a, 
+static int 		xmlSecOpenSSLX509_NAME_ENTRY_cmp		(const X509_NAME_ENTRY * const *a,
 									 const X509_NAME_ENTRY * const *b);
 
 /** 

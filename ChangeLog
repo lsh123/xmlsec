@@ -1,3 +1,17 @@
+2010-04-20  Aleksey Sanin  <aleksey@aleksey.com>
+	* Fix compile warnings in xmlsec-openssl
+	* Fix linking order issue (based on patch from Roumen)
+
+2010-03-30  Aleksey Sanin  <aleksey@aleksey.com>
+	* Fix typo Copyrigth -> Copyright
+	* Add xmlsec-mscrypto to the top level 	copyright file
+	* Refresh the copyright date to 2010
+	* Add references to licenses
+
+2010-03-18  Aleksey Sanin  <aleksey@aleksey.com>
+	* Ensure we have only one copy of key's cert after reading pkcs12 
+	from openssl
+
 2010-01-13  Aleksey Sanin  <aleksey@aleksey.com>
 	* Fix valgrind's invalid read with chained XPath transforms (based
 	on patch from Frank Gross).

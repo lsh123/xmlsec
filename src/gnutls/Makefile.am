@@ -33,10 +33,10 @@ libxmlsec1_gnutls_la_SOURCES += ../strings.c
 endif
 
 libxmlsec1_gnutls_la_LIBADD = \
-	../libxmlsec1.la \
 	$(GNUTLS_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
+	../libxmlsec1.la \
 	$(NULL)
 
 libxmlsec1_gnutls_la_DEPENDENCIES = \

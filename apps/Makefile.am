@@ -2,12 +2,14 @@ NULL =
 
 bin_PROGRAMS = xmlsec1
 
+XMLSEC_LIBS = $(top_builddir)/src/libxmlsec1.la
+
+
 # check if we use dynamic loading for xmlsec-crypto or not
 if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 
 CRYPTO_DEPS = \
 	$(top_builddir)/src/$(XMLSEC_CRYPTO)/lib$(XMLSEC_CRYPTO_LIB).la \
-	$(top_builddir)/src/libxmlsec1.la \
 	$(NULL)    
 
 CRYPTO_INCLUDES = \
@@ -18,14 +20,13 @@ CRYPTO_LD_FLAGS = \
 	$(NULL)
 
 CRYPTO_LD_ADD = \
-	$(CRYPTO_DEPS) \
 	$(XMLSEC_CRYPTO_LIBS) \
+	$(CRYPTO_DEPS) \
 	$(NULL)
 
 else
 
 CRYPTO_DEPS =  \
-	$(top_builddir)/src/libxmlsec1.la \
 	$(NULL)
 
 CRYPTO_INCLUDES = \
@@ -69,13 +70,15 @@ xmlsec1_LDFLAGS = \
 	$(NULL)
 
 xmlsec1_LDADD = \
-	$(CRYPTO_LD_ADD) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
+	$(CRYPTO_LD_ADD) \
+	$(XMLSEC_LIBS) \
 	$(XMLSEC_DL_LIBS) \
 	$(NULL)
 
 xmlsec1_DEPENDENCIES = \
 	$(CRYPTO_DEPS) \
+	$(XMLSEC_LIBS) \
 	$(NULL)
 

@@ -29,6 +29,45 @@
 #  include "xmlsec-mingw.h"
 #endif
 
+
+static LPWSTR 
+xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
+	LPWSTR res = NULL;
+	int len;
+	int ret;
+
+    xmlSecAssert2(str != NULL, NULL);
+
+	/* call MultiByteToWideChar first to get the buffer size */
+	ret = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
+	if(ret <= 0) {
+	    return(NULL);
+	}
+	len = ret;
+
+	/* allocate buffer */
+	res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+	if(res == NULL) {
+	    xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+			NULL,
+			XMLSEC_ERRORS_R_MALLOC_FAILED,
+		    XMLSEC_ERRORS_NO_MESSAGE);
+	    return(NULL);
+	}
+
+	/* convert */
+	ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
+	if(ret <= 0) {
+		xmlFree(res);
+		return(NULL);
+	}
+
+	/* done */
+	return(res);
+}
+
+
 /* I don't see any other way then to use a global var to get the 
  * config info to the mscrypto keysstore :(  WK 
  */
@@ -554,7 +593,6 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 				  const char *pwd,
 				  void* pwdCallback ATTRIBUTE_UNUSED, 
 				  void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
-    int ret, len;
     CRYPT_DATA_BLOB pfx;
     HCERTSTORE hCertStore = NULL;
     PCCERT_CONTEXT tmpcert = NULL;
@@ -563,6 +601,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
     xmlSecKeyDataPtr x509Data = NULL;
     xmlSecKeyDataPtr keyData = NULL;
     xmlSecKeyPtr key = NULL;
+	int ret;
 
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 1, NULL);
@@ -582,33 +621,13 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
 	goto done;
     }
 
-    len = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pwd, -1, NULL, 0);
-    if(len <= 0) {
+	wcPwd = xmlSecMSCryptoConvertLocaleToUnicode(pwd);
+    if (wcPwd == NULL) {
 	xmlSecError(XMLSEC_ERRORS_HERE,
 		    NULL,
-		    "MultiByteToWideChar",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	goto done;
-    }
-
-    wcPwd = (WCHAR *)xmlMalloc((len + 1) * sizeof(WCHAR));
-    if(wcPwd == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "len=%d", len);
-	goto done;
-    }
-
-    ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pwd, -1, wcPwd, len);
-    if (ret <= 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "MultiByteToWideChar",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+		    "xmlSecMSCryptoConvertLocaleToUnicode",
+			XMLSEC_ERRORS_R_XMLSEC_FAILED,
+			"wcPwd");
 	goto done;
     }
 

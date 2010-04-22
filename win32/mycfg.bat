@@ -11,7 +11,7 @@ REM
 SET PREFIX=C:\cygwin\home\local
 SET XMLSEC_INCLUDE=%PREFIX%\include;%PREFIX%\include\mozilla;%PREFIX%\include\mozilla\nspr;%PREFIX%\include\mozilla\nss;%MSSDK_INCLUDE%
 SET XMLSEC_LIB=%PREFIX%\lib;%MSSDK_LIB%
-SET XMLSEC_OPTIONS=static=no iconv=no nt4=yes debug=yes xslt=yes crypto=openssl=098,mscrypto
+SET XMLSEC_OPTIONS=static=no iconv=no nt4=yes debug=yes xslt=yes crypto=mscrypto
 
 del /F Makefile configure.txt
 cscript configure.js prefix=%PREFIX% %XMLSEC_OPTIONS% include=%XMLSEC_INCLUDE% lib=%XMLSEC_LIB% 

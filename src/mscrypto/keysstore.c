@@ -302,50 +302,13 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecKeyStoreDestroy(*ss);
 }
 
-static LPWSTR 
-xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
-        LPWSTR res = NULL;
-        int len;
-        int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-        /* call MultiByteToWideChar first to get the buffer size */
-        ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
-        if(ret <= 0) {
-            return(NULL);
-        }
-        len = ret;
-
-        /* allocate buffer */
-        res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
-        if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);
-        }
-
-        /* convert */
-        ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, res, len);
-        if(ret <= 0) {
-                xmlFree(res);
-                return(NULL);
-        }
-
-        /* done */
-        return(res);
-}
-
 static PCCERT_CONTEXT
 xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, 
-                               xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                                xmlSecKeyInfoCtxPtr keyInfoCtx) {
     const char* storeName;
     HCERTSTORE hStoreHandle = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
-        LPWSTR wcName = NULL;
+    LPWSTR wcName = NULL;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -367,18 +330,18 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         return(NULL);
     }
 
-        wcName = xmlSecMSCryptoConvertUtf8ToUnicode(name);
-        if(wcName == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                            "xmlSecMSCryptoConvertUtf8ToUnicode",
-                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                "wcName");
-            CertCloseStore(hStoreHandle, 0);
-            return(NULL);
-        }
+    wcName = xmlSecMSCryptoConvertUtf8ToUnicode(name);
+    if(wcName == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+                        "xmlSecMSCryptoConvertUtf8ToUnicode",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "wcName");
+        CertCloseStore(hStoreHandle, 0);
+        return(NULL);
+    }
 
-        /* first attempt: search by cert id == name */
+    /* first attempt: search by cert id == name */
     if(pCertContext == NULL) {
         pCertContext = CertFindCertificateInStore(
             hStoreHandle,
@@ -396,8 +359,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         BYTE* bdata;
         DWORD len;
         
-        bdata = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                            name, 
+        bdata = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                                            wcName, 
                                             CERT_OID_NAME_STR,
                                             &len);
         if(bdata != NULL) {
@@ -423,8 +386,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         BYTE* bdata;
         DWORD len;
         
-        bdata = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                            name, 
+        bdata = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                                            wcName, 
                                             CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                                             &len);
         if(bdata != NULL) {
@@ -447,46 +410,47 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
      * Try ro find certificate with name="Friendly Name"
      */
     if (NULL == pCertContext) {
-          DWORD dwPropSize;
-      PBYTE pbFriendlyName;
-      PCCERT_CONTEXT pCertCtxIter = NULL;
+        DWORD dwPropSize;
+        PBYTE pbFriendlyName;
+        PCCERT_CONTEXT pCertCtxIter = NULL;
         
             
-      while (pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter)) {
-        if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
+        while (pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter)) {
+            if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       NULL,
                                                       &dwPropSize)) {
-          continue;
-        }
+                continue;
+            }
 
-        pbFriendlyName = xmlMalloc(dwPropSize);
-        if(pbFriendlyName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            xmlFree(wcName);
-            CertCloseStore(hStoreHandle, 0);
-            return(NULL);
-        }
-        if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
+            pbFriendlyName = xmlMalloc(dwPropSize);
+            if(pbFriendlyName == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
+                            NULL,
+                            XMLSEC_ERRORS_R_MALLOC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                xmlFree(wcName);
+                CertCloseStore(hStoreHandle, 0);
+                return(NULL);
+            }
+        
+            if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       pbFriendlyName,
                                                       &dwPropSize)) {
-          xmlFree(pbFriendlyName);
-          continue;
-        }
+                xmlFree(pbFriendlyName);
+                continue;
+            }
 
-        /* Compare FriendlyName to name */
-        if (!wcscmp(wcName, (const wchar_t *)pbFriendlyName)) {
-          pCertContext = pCertCtxIter;
-          xmlFree(pbFriendlyName);
-          break;
+            /* Compare FriendlyName to name */
+            if (!wcscmp(wcName, (const wchar_t *)pbFriendlyName)) {
+              pCertContext = pCertCtxIter;
+              xmlFree(pbFriendlyName);
+              break;
+            }
+            xmlFree(pbFriendlyName);
         }
-        xmlFree(pbFriendlyName);
-      }
     }
 
     /* We could do the following here: 
@@ -501,7 +465,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     
     /* aleksey todo: is it a right idea to close store if we have a handle to 
      * a cert in this store? */
-        xmlFree(wcName);
+    xmlFree(wcName);
     CertCloseStore(hStoreHandle, 0);
     return(pCertContext);
 }

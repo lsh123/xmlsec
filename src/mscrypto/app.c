@@ -30,44 +30,6 @@
 #endif
 
 
-static LPWSTR 
-xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
-        LPWSTR res = NULL;
-        int len;
-        int ret;
-
-    xmlSecAssert2(str != NULL, NULL);
-
-        /* call MultiByteToWideChar first to get the buffer size */
-        ret = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
-        if(ret <= 0) {
-            return(NULL);
-        }
-        len = ret;
-
-        /* allocate buffer */
-        res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
-        if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);
-        }
-
-        /* convert */
-        ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
-        if(ret <= 0) {
-                xmlFree(res);
-                return(NULL);
-        }
-
-        /* done */
-        return(res);
-}
-
-
 /* I don't see any other way then to use a global var to get the 
  * config info to the mscrypto keysstore :(  WK 
  */

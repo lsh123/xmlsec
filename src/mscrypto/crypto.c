@@ -384,4 +384,147 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
     return(str);
 }
 
+/**
+ * xmlSecMSCryptoCertStrToNameW:
+ * @dwCertEncodingType:         the encoding used.
+ * @pszX500:                    the string to convert.
+ * @dwStrType:                  the string type.
+ * @len:                        the result len.
+ *
+ * Converts input string to name by calling @CertStrToName function.
+ *
+ * Returns: a pointer to newly allocated string or NULL if an error occurs.
+ */
+BYTE* 
+xmlSecMSCryptoCertStrToNameW(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwStrType, DWORD* len) {
+    BYTE* str = NULL; 
+    LPCWSTR ppszError = NULL;
+
+    xmlSecAssert2(pszX500 != NULL, NULL);
+    xmlSecAssert2(len != NULL, NULL);
+
+    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType, 
+                        NULL, NULL, len, &ppszError)) {
+        /* this might not be an error, string might just not exist */
+                DWORD dw = GetLastError();
+        return(NULL);
+    }
+        
+    str = (BYTE *)xmlMalloc((*len) + 1);
+    if(str == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "len=%ld", (*len));
+        return(NULL);
+    }
+    memset(str, 0, (*len) + 1);
+        
+    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType, 
+                        NULL, str, len, NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "CertStrToName",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(str);
+        return(NULL);
+    }
+
+    return(str);
+}
+
+/**
+ * xmlSecMSCryptoConvertUtf8ToUnicode:
+ * @str:         the string to convert.
+ *
+ * Converts input string from UTF8 to Unicode.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+LPWSTR 
+xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
+    LPWSTR res = NULL;
+    int len;
+    int ret;
+
+    xmlSecAssert2(str != NULL, NULL);
+
+    /* call MultiByteToWideChar first to get the buffer size */
+    ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+    if(ret <= 0) {
+        return(NULL);
+    }
+    len = ret;
+
+    /* allocate buffer */
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+
+    /* convert */
+    ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, res, len);
+    if(ret <= 0) {
+            xmlFree(res);
+            return(NULL);
+    }
+
+    /* done */
+    return(res);
+}
+
+/**
+ * xmlSecMSCryptoConvertLocaleToUnicode:
+ * @str:         the string to convert.
+ *
+ * Converts input string from current system locale to Unicode.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+LPWSTR 
+xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
+        LPWSTR res = NULL;
+        int len;
+        int ret;
+
+    xmlSecAssert2(str != NULL, NULL);
+
+        /* call MultiByteToWideChar first to get the buffer size */
+        ret = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
+        if(ret <= 0) {
+            return(NULL);
+        }
+        len = ret;
+
+        /* allocate buffer */
+        res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+        if(res == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+            return(NULL);
+        }
+
+        /* convert */
+        ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
+        if(ret <= 0) {
+                xmlFree(res);
+                return(NULL);
+        }
+
+        /* done */
+        return(res);
+}
+
+
+
 

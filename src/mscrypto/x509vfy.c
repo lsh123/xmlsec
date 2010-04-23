@@ -84,10 +84,10 @@ static xmlSecKeyDataStoreKlass xmlSecMSCryptoX509StoreKlass = {
 };
 
 static PCCERT_CONTEXT xmlSecMSCryptoX509FindCert(HCERTSTORE store,
-                         xmlChar *subjectName,
-                         xmlChar *issuerName,
-                         xmlChar *issuerSerial,
-                         xmlChar *ski);
+                         const xmlChar *subjectName,
+                         const xmlChar *issuerName,
+                         const xmlChar *issuerSerial,
+                         const xmlChar *ski);
 
 
 /** 
@@ -885,8 +885,11 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  *
  *****************************************************************************/
 static PCCERT_CONTEXT
-xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issuerName, 
-               xmlChar *issuerSerial, xmlChar *ski) {
+xmlSecMSCryptoX509FindCert(HCERTSTORE store, 
+                const xmlChar *subjectName, 
+                const xmlChar *issuerName, 
+                const xmlChar *issuerSerial, 
+                const xmlChar *ski) {
     PCCERT_CONTEXT pCert = NULL;
     int ret;
 
@@ -894,30 +897,49 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
 
     if((pCert == NULL) && (NULL != subjectName)) {
         CERT_NAME_BLOB cnb;
-        BYTE *cName; 
+        LPWSTR wcSubjectName = NULL;
+        BYTE *cName = NULL; 
         DWORD cNameLen;
 
-        cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                        subjectName,
+        /* get subject name */
+        wcSubjectName = xmlSecMSCryptoConvertUtf8ToUnicode(subjectName);
+        if(wcSubjectName == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecMSCryptoConvertUtf8ToUnicode",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "wcSubjectName");
+            return(NULL);
+        }
+
+
+        cName = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                        wcSubjectName,
                         CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                         &cNameLen);
         if(cName == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecMSCryptoCertStrToName",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+                        NULL,
+                        "xmlSecMSCryptoCertStrToName",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(wcSubjectName);
             return (NULL);
         }
         cnb.pbData = cName;
         cnb.cbData = cNameLen;
+
+        /* search */
         pCert = CertFindCertificateInStore(store, 
                         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
                         0,
                         CERT_FIND_SUBJECT_NAME,
                         &cnb,
                         NULL);
+        
+        /* cleanup */
         xmlFree(cName);
+        xmlFree(wcSubjectName);
     }
 
     if((pCert == NULL) && (NULL != issuerName) && (NULL != issuerSerial)) {
@@ -925,6 +947,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
         xmlChar * p;
         CERT_INFO certInfo;
         CERT_NAME_BLOB cnb;
+        LPWSTR wcIssuerName = NULL;
         BYTE *cName = NULL; 
         DWORD cNameLen = 0;    
 
@@ -938,11 +961,19 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
             memcpy(p, "       Email=", 13);
         }
 
-
-
         /* get issuer name */
-        cName = xmlSecMSCryptoCertStrToName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                        issuerName,
+        wcIssuerName = xmlSecMSCryptoConvertUtf8ToUnicode(issuerName);
+        if(wcIssuerName == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecMSCryptoConvertUtf8ToUnicode",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "wcIssuerName");
+            return(NULL);
+        }
+
+        cName = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+                        wcIssuerName,
                         CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                         &cNameLen);
         if(cName == NULL) {
@@ -951,6 +982,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
                 "xmlSecMSCryptoCertStrToName",
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(wcIssuerName);
             return (NULL);
         }
         cnb.pbData = cName;
@@ -965,6 +997,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
             xmlFree(cName);
+            xmlFree(wcIssuerName);
             return(NULL);
         }
 
@@ -977,6 +1010,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
                 XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecBnFinalize(&issuerSerialBn);
             xmlFree(cName);
+            xmlFree(wcIssuerName);
             return(NULL);
         }
 
@@ -993,6 +1027,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
                 XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecBnFinalize(&issuerSerialBn);
             xmlFree(cName);
+            xmlFree(wcIssuerName);
             return(NULL);
         }
 
@@ -1010,8 +1045,9 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store, xmlChar *subjectName, xmlChar *issu
                         NULL
                 ) ;
 
-        xmlFree(cName);
         xmlSecBnFinalize(&issuerSerialBn);
+        xmlFree(cName);
+        xmlFree(wcIssuerName);
     }
 
     if((pCert == NULL) && (ski != NULL)) {

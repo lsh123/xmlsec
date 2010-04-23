@@ -16,15 +16,15 @@ extern "C" {
 
 #include <time.h>
 
-typedef struct _xmlSecAppCmdLineParam		xmlSecAppCmdLineParam,
-						*xmlSecAppCmdLineParamPtr;
-typedef struct _xmlSecAppCmdLineValue		xmlSecAppCmdLineValue,
-						*xmlSecAppCmdLineValuePtr;
-typedef unsigned int 				xmlSecAppCmdLineParamTopic;
+typedef struct _xmlSecAppCmdLineParam           xmlSecAppCmdLineParam,
+                                                *xmlSecAppCmdLineParamPtr;
+typedef struct _xmlSecAppCmdLineValue           xmlSecAppCmdLineValue,
+                                                *xmlSecAppCmdLineValuePtr;
+typedef unsigned int                            xmlSecAppCmdLineParamTopic;
 
-#define xmlSecAppCmdLineParamFlagNone			0x0000
-#define	xmlSecAppCmdLineParamFlagParamNameValue		0x0001
-#define	xmlSecAppCmdLineParamFlagMultipleValues		0x0002
+#define xmlSecAppCmdLineParamFlagNone                   0x0000
+#define xmlSecAppCmdLineParamFlagParamNameValue         0x0001
+#define xmlSecAppCmdLineParamFlagMultipleValues         0x0002
 
 typedef enum {
     xmlSecAppCmdLineParamTypeFlag,
@@ -35,48 +35,48 @@ typedef enum {
 } xmlSecAppCmdLineParamType;
 
 struct _xmlSecAppCmdLineParam {
-    xmlSecAppCmdLineParamTopic	topics;
-    const char* 		fullName;
-    const char* 		shortName;
-    const char*			help;
-    xmlSecAppCmdLineParamType	type;
-    int				flags;
-    xmlSecAppCmdLineValuePtr	value;
+    xmlSecAppCmdLineParamTopic  topics;
+    const char*                 fullName;
+    const char*                 shortName;
+    const char*                 help;
+    xmlSecAppCmdLineParamType   type;
+    int                         flags;
+    xmlSecAppCmdLineValuePtr    value;
 };
 
-int		xmlSecAppCmdLineParamIsSet		(xmlSecAppCmdLineParamPtr param);
-const char*	xmlSecAppCmdLineParamGetString		(xmlSecAppCmdLineParamPtr param);
-const char*	xmlSecAppCmdLineParamGetStringList	(xmlSecAppCmdLineParamPtr param);
-int		xmlSecAppCmdLineParamGetInt		(xmlSecAppCmdLineParamPtr param,
-							 int def);
-time_t		xmlSecAppCmdLineParamGetTime		(xmlSecAppCmdLineParamPtr param,
-							 time_t def);
+int             xmlSecAppCmdLineParamIsSet              (xmlSecAppCmdLineParamPtr param);
+const char*     xmlSecAppCmdLineParamGetString          (xmlSecAppCmdLineParamPtr param);
+const char*     xmlSecAppCmdLineParamGetStringList      (xmlSecAppCmdLineParamPtr param);
+int             xmlSecAppCmdLineParamGetInt             (xmlSecAppCmdLineParamPtr param,
+                                                         int def);
+time_t          xmlSecAppCmdLineParamGetTime            (xmlSecAppCmdLineParamPtr param,
+                                                         time_t def);
 
-int		xmlSecAppCmdLineParamsListParse		(xmlSecAppCmdLineParamPtr* params,
-							 xmlSecAppCmdLineParamTopic topcis,
-							 const char** argv,
-							 int argc,
-							 int pos);
-void		xmlSecAppCmdLineParamsListClean		(xmlSecAppCmdLineParamPtr* params);
-void		xmlSecAppCmdLineParamsListPrint		(xmlSecAppCmdLineParamPtr* params,
-							 xmlSecAppCmdLineParamTopic topic,
-							 FILE* output);
+int             xmlSecAppCmdLineParamsListParse         (xmlSecAppCmdLineParamPtr* params,
+                                                         xmlSecAppCmdLineParamTopic topcis,
+                                                         const char** argv,
+                                                         int argc,
+                                                         int pos);
+void            xmlSecAppCmdLineParamsListClean         (xmlSecAppCmdLineParamPtr* params);
+void            xmlSecAppCmdLineParamsListPrint         (xmlSecAppCmdLineParamPtr* params,
+                                                         xmlSecAppCmdLineParamTopic topic,
+                                                         FILE* output);
 
 struct _xmlSecAppCmdLineValue {
-    xmlSecAppCmdLineParamPtr	param;
-    int				pos;
-    const char*			paramNameValue;
-    const char*			strValue;
-    const char*			strListValue;
-    int				intValue;
-    time_t			timeValue;
-    xmlSecAppCmdLineValuePtr	next;
+    xmlSecAppCmdLineParamPtr    param;
+    int                         pos;
+    const char*                 paramNameValue;
+    const char*                 strValue;
+    const char*                 strListValue;
+    int                         intValue;
+    time_t                      timeValue;
+    xmlSecAppCmdLineValuePtr    next;
 };
 
 
-xmlSecAppCmdLineValuePtr xmlSecAppCmdLineValueCreate	(xmlSecAppCmdLineParamPtr param,
-							 int pos);
-void			 xmlSecAppCmdLineValueDestroy	(xmlSecAppCmdLineValuePtr value);								 
+xmlSecAppCmdLineValuePtr xmlSecAppCmdLineValueCreate    (xmlSecAppCmdLineParamPtr param,
+                                                         int pos);
+void                     xmlSecAppCmdLineValueDestroy   (xmlSecAppCmdLineValuePtr value);                                                                
 
 
 #ifdef __cplusplus

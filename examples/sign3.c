@@ -10,13 +10,13 @@
  * certificates management policies for another crypto library may break it.
  * 
  * Usage: 
- *	sign3 <xml-doc> <pem-key> 
+ *      sign3 <xml-doc> <pem-key> 
  *
  * Example:
- *	./sign3 sign3-doc.xml rsakey.pem rsacert.pem > sign3-res.xml
+ *      ./sign3 sign3-doc.xml rsakey.pem rsacert.pem > sign3-res.xml
  *
  * The result signature could be validated using verify3 example:
- *	./verify3 sign3-res.xml rootcert.pem
+ *      ./verify3 sign3-res.xml rootcert.pem
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -48,9 +48,9 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 4) {
-	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <xml-file> <key-file> <cert-file>\n", argv[0]);
-	return(1);
+        fprintf(stderr, "Error: wrong number of arguments.\n");
+        fprintf(stderr, "Usage: %s <xml-file> <key-file> <cert-file>\n", argv[0]);
+        return(1);
     }
 
     /* Init libxml and libxslt libraries */
@@ -61,17 +61,17 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1; 
 #endif /* XMLSEC_NO_XSLT */
-        	
+                
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec initialization failed.\n");
+        return(-1);
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
-	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-	return(-1);
+        fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+        return(-1);
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -81,27 +81,27 @@ main(int argc, char **argv) {
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) < 0) {
-	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
-			"that you have it installed and check shared libraries path\n"
-			"(LD_LIBRARY_PATH) envornment variable.\n");
-	return(-1);	
+        fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+                        "that you have it installed and check shared libraries path\n"
+                        "(LD_LIBRARY_PATH) envornment variable.\n");
+        return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: crypto initialization failed.\n");
+        return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+        return(-1);
     }
 
     if(sign_file(argv[1], argv[2], argv[3]) < 0) {
-	return(-1);
+        return(-1);
     }    
     
     /* Shutdown xmlsec-crypto library */
@@ -124,9 +124,9 @@ main(int argc, char **argv) {
 
 /** 
  * sign_file:
- * @xml_file:		the XML file name.
- * @key_file:		the PEM private key file name.
- * @cert_file:		the x509 certificate PEM file.
+ * @xml_file:           the XML file name.
+ * @key_file:           the PEM private key file name.
+ * @cert_file:          the x509 certificate PEM file.
  *
  * Signs the @xml_file using private key from @key_file and dynamicaly
  * created enveloped signature template. The certificate from @cert_file
@@ -150,16 +150,16 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     /* load doc file */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+        goto done;      
     }
     
     /* create signature template for RSA-SHA1 enveloped signature */
     signNode = xmlSecTmplSignatureCreate(doc, xmlSecTransformExclC14NId,
-				         xmlSecTransformRsaSha1Id, NULL);
+                                         xmlSecTransformRsaSha1Id, NULL);
     if(signNode == NULL) {
-	fprintf(stderr, "Error: failed to create signature template\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to create signature template\n");
+        goto done;              
     }
 
     /* add <dsig:Signature/> node to the doc */
@@ -167,60 +167,60 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
     
     /* add reference */
     refNode = xmlSecTmplSignatureAddReference(signNode, xmlSecTransformSha1Id,
-					NULL, NULL, NULL);
+                                        NULL, NULL, NULL);
     if(refNode == NULL) {
-	fprintf(stderr, "Error: failed to add reference to signature template\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add reference to signature template\n");
+        goto done;              
     }
 
     /* add enveloped transform */
     if(xmlSecTmplReferenceAddTransform(refNode, xmlSecTransformEnvelopedId) == NULL) {
-	fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add enveloped transform to reference\n");
+        goto done;              
     }
     
     /* add <dsig:KeyInfo/> and <dsig:X509Data/> */
     keyInfoNode = xmlSecTmplSignatureEnsureKeyInfo(signNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add key info\n");
+        goto done;              
     }
     
     if(xmlSecTmplKeyInfoAddX509Data(keyInfoNode) == NULL) {
-	fprintf(stderr, "Error: failed to add X509Data node\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add X509Data node\n");
+        goto done;              
     }
 
     /* create signature context, we don't need keys manager in this example */
     dsigCtx = xmlSecDSigCtxCreate(NULL);
     if(dsigCtx == NULL) {
         fprintf(stderr,"Error: failed to create signature context\n");
-	goto done;
+        goto done;
     }
 
     /* load private key, assuming that there is not password */
     dsigCtx->signKey = xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
     if(dsigCtx->signKey == NULL) {
         fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
-	goto done;
+        goto done;
     }
     
     /* load certificate and add to the key */
     if(xmlSecCryptoAppKeyCertLoad(dsigCtx->signKey, cert_file, xmlSecKeyDataFormatPem) < 0) {
         fprintf(stderr,"Error: failed to load pem certificate \"%s\"\n", cert_file);
-	goto done;
+        goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(dsigCtx->signKey, key_file) < 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-	goto done;
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        goto done;
     }
 
     /* sign the template */
     if(xmlSecDSigCtxSign(dsigCtx, signNode) < 0) {
         fprintf(stderr,"Error: signature failed\n");
-	goto done;
+        goto done;
     }
         
     /* print signed document to stdout */
@@ -232,11 +232,11 @@ sign_file(const char* xml_file, const char* key_file, const char* cert_file) {
 done:    
     /* cleanup */
     if(dsigCtx != NULL) {
-	xmlSecDSigCtxDestroy(dsigCtx);
+        xmlSecDSigCtxDestroy(dsigCtx);
     }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+        xmlFreeDoc(doc); 
     }
     return(res);
 }

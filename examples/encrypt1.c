@@ -4,13 +4,13 @@
  * Encrypts binary data using a template file and a DES key from a binary file
  * 
  * Usage: 
- *	./encrypt1 <xml-tmpl> <des-key-file> 
+ *      ./encrypt1 <xml-tmpl> <des-key-file> 
  *
  * Example:
- *	./encrypt1 encrypt1-tmpl.xml deskey.bin > encrypt1-res.xml
+ *      ./encrypt1 encrypt1-tmpl.xml deskey.bin > encrypt1-res.xml
  *
  * The result could be decrypted with decrypt1 example:
- *	./decrypt1 encrypt1-res.xml deskey.bin
+ *      ./decrypt1 encrypt1-res.xml deskey.bin
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -35,7 +35,7 @@
 #include <xmlsec/crypto.h>
 
 int encrypt_file(const char* tmpl_file, const char* key_file, 
-		 const unsigned char* data, size_t dataSize);
+                 const unsigned char* data, size_t dataSize);
 int 
 main(int argc, char **argv) {
     static const char secret_data[] = "Big secret";
@@ -43,9 +43,9 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 3) {
-	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <tmpl-file> <key-file>\n", argv[0]);
-	return(1);
+        fprintf(stderr, "Error: wrong number of arguments.\n");
+        fprintf(stderr, "Usage: %s <tmpl-file> <key-file>\n", argv[0]);
+        return(1);
     }
 
     /* Init libxml and libxslt libraries */
@@ -56,17 +56,17 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1; 
 #endif /* XMLSEC_NO_XSLT */
-        	
+                
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec initialization failed.\n");
+        return(-1);
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
-	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-	return(-1);
+        fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+        return(-1);
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -76,27 +76,27 @@ main(int argc, char **argv) {
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) < 0) {
-	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
-			"that you have it installed and check shared libraries path\n"
-			"(LD_LIBRARY_PATH) envornment variable.\n");
-	return(-1);	
+        fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+                        "that you have it installed and check shared libraries path\n"
+                        "(LD_LIBRARY_PATH) envornment variable.\n");
+        return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: crypto initialization failed.\n");
+        return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+        return(-1);
     }
 
     if(encrypt_file(argv[1], argv[2], secret_data, strlen(secret_data)) < 0) {
-	return(-1);
+        return(-1);
     }    
     
     /* Shutdown xmlsec-crypto library */
@@ -119,10 +119,10 @@ main(int argc, char **argv) {
 
 /**
  * encrypt_file:
- * @tmpl_file:		the encryption template file name.
- * @key_file:		the Triple DES key file.
- * @data:		the binary data to encrypt.
- * @dataSize:		the binary data size.
+ * @tmpl_file:          the encryption template file name.
+ * @key_file:           the Triple DES key file.
+ * @data:               the binary data to encrypt.
+ * @dataSize:           the binary data size.
  *
  * Encrypts binary #data using template from #tmpl_file and DES key from
  * #key_file.
@@ -131,7 +131,7 @@ main(int argc, char **argv) {
  */
 int 
 encrypt_file(const char* tmpl_file, const char* key_file, 
-	     const unsigned char* data, size_t dataSize) {
+             const unsigned char* data, size_t dataSize) {
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecEncCtxPtr encCtx = NULL;
@@ -144,41 +144,41 @@ encrypt_file(const char* tmpl_file, const char* key_file,
     /* load template */
     doc = xmlParseFile(tmpl_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-	goto done;	
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
+        goto done;      
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-	goto done;	
+        fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
+        goto done;      
     }
 
     /* create encryption context, we don't need keys manager in this example */
     encCtx = xmlSecEncCtxCreate(NULL);
     if(encCtx == NULL) {
         fprintf(stderr,"Error: failed to create encryption context\n");
-	goto done;
+        goto done;
     }
 
     /* load DES key, assuming that there is not password */
     encCtx->encKey = xmlSecKeyReadBinaryFile(xmlSecKeyDataDesId, key_file);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to load des key from binary file \"%s\"\n", key_file);
-	goto done;
+        goto done;
     }
 
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(encCtx->encKey, key_file) < 0) {
-    	fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-	goto done;
+        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
+        goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxBinaryEncrypt(encCtx, node, data, dataSize) < 0) {
         fprintf(stderr,"Error: encryption failed\n");
-	goto done;
+        goto done;
     }
         
     /* print encrypted data with document to stdout */
@@ -191,11 +191,11 @@ done:
 
     /* cleanup */
     if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
+        xmlSecEncCtxDestroy(encCtx);
     }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+        xmlFreeDoc(doc); 
     }
     return(res);
 }

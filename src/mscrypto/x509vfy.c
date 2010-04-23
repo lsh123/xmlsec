@@ -272,92 +272,92 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
  */
 static BOOL 
 xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
-		HCERTSTORE store_untrusted, HCERTSTORE store_doc)
+                HCERTSTORE store_untrusted, HCERTSTORE store_doc)
 {
-	PCCERT_CHAIN_CONTEXT     pChainContext = NULL;
-	CERT_CHAIN_PARA          chainPara;
-	BOOL rc = FALSE;
-	HCERTSTORE store_add = NULL;
+        PCCERT_CHAIN_CONTEXT     pChainContext = NULL;
+        CERT_CHAIN_PARA          chainPara;
+        BOOL rc = FALSE;
+        HCERTSTORE store_add = NULL;
 
     /* Initialize data structures. */
 
-	memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
-	chainPara.cbSize = sizeof(CERT_CHAIN_PARA);
+        memset(&chainPara, 0, sizeof(CERT_CHAIN_PARA));
+        chainPara.cbSize = sizeof(CERT_CHAIN_PARA);
 
-	/* Create additional store for CertGetCertificateChain() */
-	store_add = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
-	if (!store_add) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-					"chain additional collection store",
-					"CertOpenStore",
-					XMLSEC_ERRORS_R_CRYPTO_FAILED,
-					XMLSEC_ERRORS_NO_MESSAGE);
-		goto end;
-	}
-	if (!CertAddStoreToCollection(store_add, store_doc, 0, 0)) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-					"adding document store",
-					"CertAddStoreToCollection",
-					XMLSEC_ERRORS_R_CRYPTO_FAILED,
-					XMLSEC_ERRORS_NO_MESSAGE);
-		goto end;
-	}
-	if (!CertAddStoreToCollection(store_add, store_untrusted, 0, 0)) {
-		xmlSecError(XMLSEC_ERRORS_HERE,
-					"adding untrusted store",
-					"CertAddStoreToCollection",
-					XMLSEC_ERRORS_R_CRYPTO_FAILED,
-					XMLSEC_ERRORS_NO_MESSAGE);
-		goto end;
-	}
+        /* Create additional store for CertGetCertificateChain() */
+        store_add = CertOpenStore(CERT_STORE_PROV_COLLECTION, 0, 0, 0, NULL);
+        if (!store_add) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                                        "chain additional collection store",
+                                        "CertOpenStore",
+                                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                                        XMLSEC_ERRORS_NO_MESSAGE);
+                goto end;
+        }
+        if (!CertAddStoreToCollection(store_add, store_doc, 0, 0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                                        "adding document store",
+                                        "CertAddStoreToCollection",
+                                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                                        XMLSEC_ERRORS_NO_MESSAGE);
+                goto end;
+        }
+        if (!CertAddStoreToCollection(store_add, store_untrusted, 0, 0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                                        "adding untrusted store",
+                                        "CertAddStoreToCollection",
+                                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                                        XMLSEC_ERRORS_NO_MESSAGE);
+                goto end;
+        }
 
     /* Build a chain using CertGetCertificateChain
      and the certificate retrieved. */
     if(!CertGetCertificateChain(
                 NULL,                  /* use the default chain engine */
-				cert,
+                                cert,
                 pfTime,
-				store_add,
-				&chainPara,
-				CERT_CHAIN_REVOCATION_CHECK_CHAIN,
+                                store_add,
+                                &chainPara,
+                                CERT_CHAIN_REVOCATION_CHECK_CHAIN,
                 NULL,
                 &pChainContext))
     {
         xmlSecError(XMLSEC_ERRORS_HERE,
-		    "building certificate chain, checking root",
-		    "CertGetCertificateChain",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-		goto end;
-	}
-	if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
-		CertFreeCertificateChain(pChainContext); pChainContext = NULL;
-		if(!CertGetCertificateChain(
-			   NULL,                  /* use the default chain engine */
-			   cert,
-			   pfTime,
-			   store_add,
-			   &chainPara,
-			   CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
+                    "building certificate chain, checking root",
+                    "CertGetCertificateChain",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+                goto end;
+        }
+        if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_REVOCATION_STATUS_UNKNOWN) {
+                CertFreeCertificateChain(pChainContext); pChainContext = NULL;
+                if(!CertGetCertificateChain(
+                           NULL,                  /* use the default chain engine */
+                           cert,
+                           pfTime,
+                           store_add,
+                           &chainPara,
+                           CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT,
             NULL,
-			   &pChainContext))
-		{
-			xmlSecError(XMLSEC_ERRORS_HERE,
-						"building certificate chain, excluding root",
-						"CertGetCertificateChain",
-						XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                           &pChainContext))
+                {
+                        xmlSecError(XMLSEC_ERRORS_HERE,
+                                                "building certificate chain, excluding root",
+                                                "CertGetCertificateChain",
+                                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
             XMLSEC_ERRORS_NO_MESSAGE);
-			goto end;
-		}
+                        goto end;
+                }
     }
 
-	if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR)
-		rc = TRUE;
+        if (pChainContext->TrustStatus.dwErrorStatus == CERT_TRUST_NO_ERROR)
+                rc = TRUE;
 
 end:
-	if (pChainContext) CertFreeCertificateChain(pChainContext);
-	if (store_add) CertCloseStore(store_add, 0);
-	return (rc);
+        if (pChainContext) CertFreeCertificateChain(pChainContext);
+        if (store_add) CertCloseStore(store_add, 0);
+        return (rc);
 }
 
 /**
@@ -375,8 +375,8 @@ end:
  */
 static BOOL
 xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
-	HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
-	xmlSecKeyDataStorePtr store) {
+        HCERTSTORE store_trusted, HCERTSTORE store_untrusted, HCERTSTORE certs,
+        xmlSecKeyDataStorePtr store) {
     PCCERT_CONTEXT issuerCert = NULL;
     DWORD flags;
 
@@ -401,7 +401,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 NULL);
     if( issuerCert != NULL) {
         /* We have found the trusted cert, so return true */
-	/* todo: do we want to verify the trusted cert's revocation? we must, I think */
+        /* todo: do we want to verify the trusted cert's revocation? we must, I think */
         CertFreeCertificateContext( issuerCert ) ;
         return( TRUE ) ;
     }
@@ -425,8 +425,8 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-	    /* todo: do we want to verify the trusted cert? we must check
-		 * revocation, I think */
+            /* todo: do we want to verify the trusted cert? we must check
+                 * revocation, I think */
         CertFreeCertificateContext(issuerCert);
         return(TRUE);
     }
@@ -445,7 +445,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-    	if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
+        if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
             xmlSecMSCryptoX509StoreCertError(store, issuerCert, flags);
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
@@ -468,7 +468,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
-    	if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
+        if(!xmlSecMSCryptoBuildCertChainManually(issuerCert, pfTime, store_trusted, store_untrusted, certs, store)) {
             CertFreeCertificateContext(issuerCert);
             return(FALSE);
         }
@@ -481,7 +481,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
 
 static BOOL
 xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, HCERTSTORE certs, 
-			      xmlSecKeyInfoCtx* keyInfoCtx) {
+                              xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT tempCert = NULL;
     FILETIME fTime;
@@ -499,26 +499,26 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
     xmlSecAssert2(ctx->untrusted != NULL, FALSE);
 
     if(keyInfoCtx->certsVerificationTime > 0) {
-	    /* convert the time to FILETIME */
-    	xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
+            /* convert the time to FILETIME */
+        xmlSecMSCryptoUnixTimeToFileTime(keyInfoCtx->certsVerificationTime, &fTime);
     } else {
-	    /* Defaults to current time */
-	    GetSystemTimeAsFileTime(&fTime);
+            /* Defaults to current time */
+            GetSystemTimeAsFileTime(&fTime);
     }
 
     /* try the certificates in the keys manager */
     if(!res) {
-    	tempCert = CertEnumCertificatesInStore(ctx->trusted, NULL);
-	    if(tempCert) {
-		    CertFreeCertificateContext(tempCert);
+        tempCert = CertEnumCertificatesInStore(ctx->trusted, NULL);
+            if(tempCert) {
+                    CertFreeCertificateContext(tempCert);
             res = xmlSecMSCryptoBuildCertChainManually(cert, &fTime, ctx->trusted, ctx->untrusted, certs, store);
         }
     }
 
     /* try the certificates in the system */
     if(!res && !ctx->dont_use_system_trusted_certs) {
-		res = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->untrusted, certs);
-	}
+                res = xmlSecBuildChainUsingWinapi(cert, &fTime, ctx->untrusted, certs);
+        }
 
     /* done */
     return res;

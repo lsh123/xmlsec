@@ -25,79 +25,79 @@ extern "C" {
 /**  
  * Crypto Init/shutdown
  */
-#define xmlSecCryptoInit			xmlSecSkeletonInit
-#define xmlSecCryptoShutdown			xmlSecSkeletonShutdown
+#define xmlSecCryptoInit                        xmlSecSkeletonInit
+#define xmlSecCryptoShutdown                    xmlSecSkeletonShutdown
 
-#define xmlSecCryptoKeysMngrInit		xmlSecSkeletonKeysMngrInit
+#define xmlSecCryptoKeysMngrInit                xmlSecSkeletonKeysMngrInit
 
 /**
  * Key data ids
  */
-#define xmlSecKeyDataAesId			xmlSecSkeletonKeyDataAesId
-#define xmlSecKeyDataDesId			xmlSecSkeletonKeyDataDesId
-#define xmlSecKeyDataDsaId			xmlSecSkeletonKeyDataDsaId
-#define xmlSecKeyDataHmacId			xmlSecSkeletonKeyDataHmacId
-#define xmlSecKeyDataRsaId			xmlSecSkeletonKeyDataRsaId
-#define xmlSecKeyDataX509Id			xmlSecSkeletonKeyDataX509Id
-#define xmlSecKeyDataRawX509CertId		xmlSecSkeletonKeyDataRawX509CertId
+#define xmlSecKeyDataAesId                      xmlSecSkeletonKeyDataAesId
+#define xmlSecKeyDataDesId                      xmlSecSkeletonKeyDataDesId
+#define xmlSecKeyDataDsaId                      xmlSecSkeletonKeyDataDsaId
+#define xmlSecKeyDataHmacId                     xmlSecSkeletonKeyDataHmacId
+#define xmlSecKeyDataRsaId                      xmlSecSkeletonKeyDataRsaId
+#define xmlSecKeyDataX509Id                     xmlSecSkeletonKeyDataX509Id
+#define xmlSecKeyDataRawX509CertId              xmlSecSkeletonKeyDataRawX509CertId
 
 /**
  * Key data store ids
  */
-#define xmlSecX509StoreId			xmlSecSkeletonX509StoreId
+#define xmlSecX509StoreId                       xmlSecSkeletonX509StoreId
 
 /**
  * Crypto transforms ids
  */
-#define xmlSecTransformAes128CbcId		xmlSecSkeletonTransformAes128CbcId
-#define xmlSecTransformAes192CbcId		xmlSecSkeletonTransformAes192CbcId
-#define xmlSecTransformAes256CbcId		xmlSecSkeletonTransformAes256CbcId
-#define xmlSecTransformKWAes128Id		xmlSecSkeletonTransformKWAes128Id
-#define xmlSecTransformKWAes192Id		xmlSecSkeletonTransformKWAes192Id
-#define xmlSecTransformKWAes256Id		xmlSecSkeletonTransformKWAes256Id
-#define xmlSecTransformDes3CbcId		xmlSecSkeletonTransformDes3CbcId
-#define xmlSecTransformKWDes3Id			xmlSecSkeletonTransformKWDes3Id
-#define xmlSecTransformDsaSha1Id		xmlSecSkeletonTransformDsaSha1Id
-#define xmlSecTransformHmacMd5Id		xmlSecSkeletonTransformHmacMd5Id
-#define xmlSecTransformHmacRipemd160Id		xmlSecSkeletonTransformHmacRipemd160Id
-#define xmlSecTransformHmacSha1Id		xmlSecSkeletonTransformHmacSha1Id
-#define xmlSecTransformHmacSha224Id		xmlSecSkeletonTransformHmacSha224Id
-#define xmlSecTransformHmacSha256Id		xmlSecSkeletonTransformHmacSha256Id
-#define xmlSecTransformHmacSha384Id		xmlSecSkeletonTransformHmacSha384Id
-#define xmlSecTransformHmacSha512Id		xmlSecSkeletonTransformHmacSha512Id
-#define xmlSecTransformMd5Id			xmlSecSkeletonTransformMd5Id
-#define xmlSecTransformRipemd160Id		xmlSecSkeletonTransformRipemd160Id
-#define xmlSecTransformRsaSha1Id		xmlSecSkeletonTransformRsaSha1Id
-#define xmlSecTransformRsaSha224Id		xmlSecSkeletonTransformRsaSha224Id
-#define xmlSecTransformRsaSha256Id		xmlSecSkeletonTransformRsaSha256Id
-#define xmlSecTransformRsaSha384Id		xmlSecSkeletonTransformRsaSha384Id
-#define xmlSecTransformRsaSha512Id		xmlSecSkeletonTransformRsaSha512Id
-#define xmlSecTransformRsaPkcs1Id		xmlSecSkeletonTransformRsaPkcs1Id
-#define xmlSecTransformRsaOaepId		xmlSecSkeletonTransformRsaOaepId
-#define xmlSecTransformSha1Id			xmlSecSkeletonTransformSha1Id
-#define xmlSecTransformSha224Id			xmlSecSkeletonTransformSha224Id
-#define xmlSecTransformSha256Id			xmlSecSkeletonTransformSha256Id
-#define xmlSecTransformSha384Id			xmlSecSkeletonTransformSha384Id
-#define xmlSecTransformSha512Id			xmlSecSkeletonTransformSha512Id
+#define xmlSecTransformAes128CbcId              xmlSecSkeletonTransformAes128CbcId
+#define xmlSecTransformAes192CbcId              xmlSecSkeletonTransformAes192CbcId
+#define xmlSecTransformAes256CbcId              xmlSecSkeletonTransformAes256CbcId
+#define xmlSecTransformKWAes128Id               xmlSecSkeletonTransformKWAes128Id
+#define xmlSecTransformKWAes192Id               xmlSecSkeletonTransformKWAes192Id
+#define xmlSecTransformKWAes256Id               xmlSecSkeletonTransformKWAes256Id
+#define xmlSecTransformDes3CbcId                xmlSecSkeletonTransformDes3CbcId
+#define xmlSecTransformKWDes3Id                 xmlSecSkeletonTransformKWDes3Id
+#define xmlSecTransformDsaSha1Id                xmlSecSkeletonTransformDsaSha1Id
+#define xmlSecTransformHmacMd5Id                xmlSecSkeletonTransformHmacMd5Id
+#define xmlSecTransformHmacRipemd160Id          xmlSecSkeletonTransformHmacRipemd160Id
+#define xmlSecTransformHmacSha1Id               xmlSecSkeletonTransformHmacSha1Id
+#define xmlSecTransformHmacSha224Id             xmlSecSkeletonTransformHmacSha224Id
+#define xmlSecTransformHmacSha256Id             xmlSecSkeletonTransformHmacSha256Id
+#define xmlSecTransformHmacSha384Id             xmlSecSkeletonTransformHmacSha384Id
+#define xmlSecTransformHmacSha512Id             xmlSecSkeletonTransformHmacSha512Id
+#define xmlSecTransformMd5Id                    xmlSecSkeletonTransformMd5Id
+#define xmlSecTransformRipemd160Id              xmlSecSkeletonTransformRipemd160Id
+#define xmlSecTransformRsaSha1Id                xmlSecSkeletonTransformRsaSha1Id
+#define xmlSecTransformRsaSha224Id              xmlSecSkeletonTransformRsaSha224Id
+#define xmlSecTransformRsaSha256Id              xmlSecSkeletonTransformRsaSha256Id
+#define xmlSecTransformRsaSha384Id              xmlSecSkeletonTransformRsaSha384Id
+#define xmlSecTransformRsaSha512Id              xmlSecSkeletonTransformRsaSha512Id
+#define xmlSecTransformRsaPkcs1Id               xmlSecSkeletonTransformRsaPkcs1Id
+#define xmlSecTransformRsaOaepId                xmlSecSkeletonTransformRsaOaepId
+#define xmlSecTransformSha1Id                   xmlSecSkeletonTransformSha1Id
+#define xmlSecTransformSha224Id                 xmlSecSkeletonTransformSha224Id
+#define xmlSecTransformSha256Id                 xmlSecSkeletonTransformSha256Id
+#define xmlSecTransformSha384Id                 xmlSecSkeletonTransformSha384Id
+#define xmlSecTransformSha512Id                 xmlSecSkeletonTransformSha512Id
 
 /**
  * High level routines form xmlsec command line utility
  */ 
-#define xmlSecCryptoAppInit			xmlSecSkeletonAppInit
-#define xmlSecCryptoAppShutdown			xmlSecSkeletonAppShutdown
-#define xmlSecCryptoAppDefaultKeysMngrInit	xmlSecSkeletonAppDefaultKeysMngrInit
-#define xmlSecCryptoAppDefaultKeysMngrAdoptKey	xmlSecSkeletonAppDefaultKeysMngrAdoptKey
-#define xmlSecCryptoAppDefaultKeysMngrLoad	xmlSecSkeletonAppDefaultKeysMngrLoad
-#define xmlSecCryptoAppDefaultKeysMngrSave	xmlSecSkeletonAppDefaultKeysMngrSave
-#define xmlSecCryptoAppKeysMngrCertLoad		xmlSecSkeletonAppKeysMngrCertLoad
-#define xmlSecCryptoAppKeysMngrCertLoadMemory	xmlSecSkeletonAppKeysMngrCertLoadMemory
-#define xmlSecCryptoAppKeyLoad			xmlSecSkeletonAppKeyLoad
-#define xmlSecCryptoAppPkcs12Load		xmlSecSkeletonAppPkcs12Load
-#define xmlSecCryptoAppKeyCertLoad		xmlSecSkeletonAppKeyCertLoad
-#define xmlSecCryptoAppKeyLoadMemory		xmlSecSkeletonAppKeyLoadMemory
-#define xmlSecCryptoAppPkcs12LoadMemory		xmlSecSkeletonAppPkcs12LoadMemory
-#define xmlSecCryptoAppKeyCertLoadMemory	xmlSecSkeletonAppKeyCertLoadMemory
-#define xmlSecCryptoAppGetDefaultPwdCallback	xmlSecSkeletonAppGetDefaultPwdCallback
+#define xmlSecCryptoAppInit                     xmlSecSkeletonAppInit
+#define xmlSecCryptoAppShutdown                 xmlSecSkeletonAppShutdown
+#define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecSkeletonAppDefaultKeysMngrInit
+#define xmlSecCryptoAppDefaultKeysMngrAdoptKey  xmlSecSkeletonAppDefaultKeysMngrAdoptKey
+#define xmlSecCryptoAppDefaultKeysMngrLoad      xmlSecSkeletonAppDefaultKeysMngrLoad
+#define xmlSecCryptoAppDefaultKeysMngrSave      xmlSecSkeletonAppDefaultKeysMngrSave
+#define xmlSecCryptoAppKeysMngrCertLoad         xmlSecSkeletonAppKeysMngrCertLoad
+#define xmlSecCryptoAppKeysMngrCertLoadMemory   xmlSecSkeletonAppKeysMngrCertLoadMemory
+#define xmlSecCryptoAppKeyLoad                  xmlSecSkeletonAppKeyLoad
+#define xmlSecCryptoAppPkcs12Load               xmlSecSkeletonAppPkcs12Load
+#define xmlSecCryptoAppKeyCertLoad              xmlSecSkeletonAppKeyCertLoad
+#define xmlSecCryptoAppKeyLoadMemory            xmlSecSkeletonAppKeyLoadMemory
+#define xmlSecCryptoAppPkcs12LoadMemory         xmlSecSkeletonAppPkcs12LoadMemory
+#define xmlSecCryptoAppKeyCertLoadMemory        xmlSecSkeletonAppKeyCertLoadMemory
+#define xmlSecCryptoAppGetDefaultPwdCallback    xmlSecSkeletonAppGetDefaultPwdCallback
 
 #endif /* XMLSEC_CRYPTO_SKELETON */
 

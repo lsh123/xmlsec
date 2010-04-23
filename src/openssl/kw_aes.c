@@ -28,11 +28,11 @@
 
 #include <xmlsec/openssl/crypto.h>
 
-#define XMLSEC_OPENSSL_AES128_KEY_SIZE			16
-#define XMLSEC_OPENSSL_AES192_KEY_SIZE			24
-#define XMLSEC_OPENSSL_AES256_KEY_SIZE			32
-#define XMLSEC_OPENSSL_AES_IV_SIZE			16
-#define XMLSEC_OPENSSL_AES_BLOCK_SIZE			16
+#define XMLSEC_OPENSSL_AES128_KEY_SIZE                  16
+#define XMLSEC_OPENSSL_AES192_KEY_SIZE                  24
+#define XMLSEC_OPENSSL_AES256_KEY_SIZE                  32
+#define XMLSEC_OPENSSL_AES_IV_SIZE                      16
+#define XMLSEC_OPENSSL_AES_BLOCK_SIZE                   16
 
 
 /*********************************************************************
@@ -44,114 +44,114 @@
  ********************************************************************/
 #define xmlSecOpenSSLKWAesGetKey(transform) \
     ((xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecOpenSSLKWAesSize	\
+#define xmlSecOpenSSLKWAesSize  \
     (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
 
-static int 	xmlSecOpenSSLKWAesInitialize			(xmlSecTransformPtr transform);
-static void 	xmlSecOpenSSLKWAesFinalize			(xmlSecTransformPtr transform);
-static int  	xmlSecOpenSSLKWAesSetKeyReq			(xmlSecTransformPtr transform, 
-								 xmlSecKeyReqPtr keyReq);
-static int  	xmlSecOpenSSLKWAesSetKey			(xmlSecTransformPtr transform, 
-								 xmlSecKeyPtr key);
-static int  	xmlSecOpenSSLKWAesExecute			(xmlSecTransformPtr transform, 
-								 int last,
-								 xmlSecTransformCtxPtr transformCtx);
-static xmlSecSize  	xmlSecOpenSSLKWAesGetKeySize			(xmlSecTransformPtr transform);
-static int  	xmlSecOpenSSLKWAesEncode			(const xmlSecByte *key,
-								 xmlSecSize keySize,
-								 const xmlSecByte* in,
-								 xmlSecSize inSize,
-								 xmlSecByte* out,
-								 xmlSecSize outSize);
-static int  	xmlSecOpenSSLKWAesDecode			(const xmlSecByte *key,
-								 xmlSecSize keySize,
-								 const xmlSecByte* in,
-								 xmlSecSize inSize,
-								 xmlSecByte* out,
-								 xmlSecSize outSize);
+static int      xmlSecOpenSSLKWAesInitialize                    (xmlSecTransformPtr transform);
+static void     xmlSecOpenSSLKWAesFinalize                      (xmlSecTransformPtr transform);
+static int      xmlSecOpenSSLKWAesSetKeyReq                     (xmlSecTransformPtr transform, 
+                                                                 xmlSecKeyReqPtr keyReq);
+static int      xmlSecOpenSSLKWAesSetKey                        (xmlSecTransformPtr transform, 
+                                                                 xmlSecKeyPtr key);
+static int      xmlSecOpenSSLKWAesExecute                       (xmlSecTransformPtr transform, 
+                                                                 int last,
+                                                                 xmlSecTransformCtxPtr transformCtx);
+static xmlSecSize       xmlSecOpenSSLKWAesGetKeySize                    (xmlSecTransformPtr transform);
+static int      xmlSecOpenSSLKWAesEncode                        (const xmlSecByte *key,
+                                                                 xmlSecSize keySize,
+                                                                 const xmlSecByte* in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize);
+static int      xmlSecOpenSSLKWAesDecode                        (const xmlSecByte *key,
+                                                                 xmlSecSize keySize,
+                                                                 const xmlSecByte* in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte* out,
+                                                                 xmlSecSize outSize);
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecOpenSSLKWAesSize,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLKWAesSize,                     /* xmlSecSize objSize */
 
-    xmlSecNameKWAes128,				/* const xmlChar* name; */
-    xmlSecHrefKWAes128,				/* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
+    xmlSecNameKWAes128,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLKWAesInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWAesFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLKWAesSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLKWAesSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLKWAesExecute,                  /* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes192Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecOpenSSLKWAesSize,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLKWAesSize,                     /* xmlSecSize objSize */
 
-    xmlSecNameKWAes192,				/* const xmlChar* name; */
-    xmlSecHrefKWAes192,				/* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
+    xmlSecNameKWAes192,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes192,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLKWAesInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWAesFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLKWAesSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLKWAesSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLKWAesExecute,                  /* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 static xmlSecTransformKlass xmlSecOpenSSLKWAes256Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecOpenSSLKWAesSize,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLKWAesSize,                     /* xmlSecSize objSize */
 
-    xmlSecNameKWAes256,				/* const xmlChar* name; */
-    xmlSecHrefKWAes256,				/* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
+    xmlSecNameKWAes256,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes256,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecOpenSSLKWAesInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKWAesFinalize,			/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKWAesSetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecOpenSSLKWAesSetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKWAesExecute,			/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLKWAesInitialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWAesFinalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLKWAesSetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLKWAesSetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLKWAesExecute,                  /* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
-#define XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE		8
+#define XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE          8
 
 #define xmlSecOpenSSLKWAesCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecOpenSSLTransformKWAes128Id) || \
@@ -203,12 +203,12 @@ xmlSecOpenSSLKWAesInitialize(xmlSecTransformPtr transform) {
     
     ret = xmlSecBufferInitialize(xmlSecOpenSSLKWAesGetKey(transform), 0);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecOpenSSLKWAesGetKey",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecOpenSSLKWAesGetKey",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
         
     return(0);
@@ -220,7 +220,7 @@ xmlSecOpenSSLKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize));
     
     if(xmlSecOpenSSLKWAesGetKey(transform) != NULL) {
-	xmlSecBufferFinalize(xmlSecOpenSSLKWAesGetKey(transform));
+        xmlSecBufferFinalize(xmlSecOpenSSLKWAesGetKey(transform));
     }
 }
 
@@ -231,19 +231,19 @@ xmlSecOpenSSLKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWAesSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId 	 = xmlSecOpenSSLKeyDataAesId;
+    keyReq->keyId        = xmlSecOpenSSLKeyDataAesId;
     keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-	keyReq->keyUsage = xmlSecKeyUsageEncrypt;
+        keyReq->keyUsage = xmlSecKeyUsageEncrypt;
     } else {
-	keyReq->keyUsage = xmlSecKeyUsageDecrypt;
+        keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
     keyReq->keyBitsSize = 8 * xmlSecOpenSSLKWAesGetKeySize(transform);
     
     return(0);
 }
 
-static int  	
+static int      
 xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     xmlSecSize keySize;
@@ -263,25 +263,25 @@ xmlSecOpenSSLKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     keySize = xmlSecBufferGetSize(buffer);
     expectedKeySize = xmlSecOpenSSLKWAesGetKeySize(transform);
     if(keySize < expectedKeySize) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
-		    "key=%d;expected=%d",
-		    keySize, expectedKeySize);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
+                    "key=%d;expected=%d",
+                    keySize, expectedKeySize);
+        return(-1);
     }
         
     ret = xmlSecBufferSetData(xmlSecOpenSSLKWAesGetKey(transform),
-			    xmlSecBufferGetData(buffer), 
-			    expectedKeySize);
+                            xmlSecBufferGetData(buffer), 
+                            expectedKeySize);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecBufferSetData",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "expected-size=%d", expectedKeySize);
-	return(-1);    
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecBufferSetData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "expected-size=%d", expectedKeySize);
+        return(-1);    
     }
 
     return(0);
@@ -312,98 +312,98 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     xmlSecAssert2(outSize == 0, -1);
     
     if(transform->status == xmlSecTransformStatusNone) {
-	transform->status = xmlSecTransformStatusWorking;
+        transform->status = xmlSecTransformStatusWorking;
     }
     
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-	/* just do nothing */
+        /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-	if((inSize % 8) != 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			NULL,
-			XMLSEC_ERRORS_R_INVALID_SIZE,
-			"size=%d(not 8 bytes aligned)", inSize);
-	    return(-1);
-	}	
-	
-	if(transform->operation == xmlSecTransformOperationEncrypt) {
-	    /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
-	    outSize = inSize + XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE + 
-			       XMLSEC_OPENSSL_AES_BLOCK_SIZE;
-	} else {
-	    outSize = inSize + XMLSEC_OPENSSL_AES_BLOCK_SIZE;
-	}
+        if((inSize % 8) != 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        NULL,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
+                        "size=%d(not 8 bytes aligned)", inSize);
+            return(-1);
+        }       
+        
+        if(transform->operation == xmlSecTransformOperationEncrypt) {
+            /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
+            outSize = inSize + XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE + 
+                               XMLSEC_OPENSSL_AES_BLOCK_SIZE;
+        } else {
+            outSize = inSize + XMLSEC_OPENSSL_AES_BLOCK_SIZE;
+        }
 
-	ret = xmlSecBufferSetMaxSize(out, outSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferSetMaxSize",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"outSize=%d", outSize);
-	    return(-1);
-	}
+        ret = xmlSecBufferSetMaxSize(out, outSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE, 
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferSetMaxSize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "outSize=%d", outSize);
+            return(-1);
+        }
 
-	if(transform->operation == xmlSecTransformOperationEncrypt) {
-	    ret = xmlSecOpenSSLKWAesEncode(xmlSecBufferGetData(key), keySize,
-					    xmlSecBufferGetData(in), inSize,
-					    xmlSecBufferGetData(out), outSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "xmlSecOpenSSLKWAesEncode",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
-	    }
-	    outSize = ret;
-	} else {
-	    ret = xmlSecOpenSSLKWAesDecode(xmlSecBufferGetData(key), keySize,
-					    xmlSecBufferGetData(in), inSize,
-					    xmlSecBufferGetData(out), outSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "xmlSecOpenSSLKWAesDecode",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    XMLSEC_ERRORS_NO_MESSAGE);
-		return(-1);
-	    }
-	    outSize = ret;
-	}
+        if(transform->operation == xmlSecTransformOperationEncrypt) {
+            ret = xmlSecOpenSSLKWAesEncode(xmlSecBufferGetData(key), keySize,
+                                            xmlSecBufferGetData(in), inSize,
+                                            xmlSecBufferGetData(out), outSize);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE, 
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecOpenSSLKWAesEncode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+            outSize = ret;
+        } else {
+            ret = xmlSecOpenSSLKWAesDecode(xmlSecBufferGetData(key), keySize,
+                                            xmlSecBufferGetData(in), inSize,
+                                            xmlSecBufferGetData(out), outSize);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE, 
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecOpenSSLKWAesDecode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+            outSize = ret;
+        }
 
-	ret = xmlSecBufferSetSize(out, outSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferSetSize", 
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"outSize=%d", outSize);
-	    return(-1);
-	}
-	
-	ret = xmlSecBufferRemoveHead(in, inSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferRemoveHead",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"inSize%d", inSize);
-	    return(-1);
-	}
-	
-	transform->status = xmlSecTransformStatusFinished;
+        ret = xmlSecBufferSetSize(out, outSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE, 
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferSetSize", 
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "outSize=%d", outSize);
+            return(-1);
+        }
+        
+        ret = xmlSecBufferRemoveHead(in, inSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE, 
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferRemoveHead",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "inSize%d", inSize);
+            return(-1);
+        }
+        
+        transform->status = xmlSecTransformStatusFinished;
     } else if(transform->status == xmlSecTransformStatusFinished) {
-	/* the only way we can get here is if there is no input */
-	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+        /* the only way we can get here is if there is no input */
+        xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "status=%d", transform->status);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_STATUS,
+                    "status=%d", transform->status);
+        return(-1);
     }
     return(0);
 }
@@ -411,11 +411,11 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 static xmlSecSize  
 xmlSecOpenSSLKWAesGetKeySize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes128Id)) {
-	return(XMLSEC_OPENSSL_AES128_KEY_SIZE);
+        return(XMLSEC_OPENSSL_AES128_KEY_SIZE);
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes192Id)) {
-	return(XMLSEC_OPENSSL_AES192_KEY_SIZE);
+        return(XMLSEC_OPENSSL_AES192_KEY_SIZE);
     } else if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformKWAes256Id)) {
-	return(XMLSEC_OPENSSL_AES256_KEY_SIZE);
+        return(XMLSEC_OPENSSL_AES256_KEY_SIZE);
     }
     return(0);
 }
@@ -492,11 +492,11 @@ xmlSecOpenSSLKWAesGetKeySize(xmlSecTransformPtr transform) {
 static const xmlSecByte xmlSecOpenSSLKWAesMagicBlock[XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE] = { 
     0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
 };
-					    	
-static int  	
+                                                
+static int      
 xmlSecOpenSSLKWAesEncode(const xmlSecByte *key, xmlSecSize keySize,
-			 const xmlSecByte *in, xmlSecSize inSize,
-			 xmlSecByte *out, xmlSecSize outSize) {
+                         const xmlSecByte *in, xmlSecSize inSize,
+                         xmlSecByte *out, xmlSecSize outSize) {
     AES_KEY aesKey;
     xmlSecByte block[XMLSEC_OPENSSL_AES_BLOCK_SIZE];
     xmlSecByte *p;
@@ -512,12 +512,12 @@ xmlSecOpenSSLKWAesEncode(const xmlSecByte *key, xmlSecSize keySize,
 
     ret = AES_set_encrypt_key(key, 8 * keySize, &aesKey);
     if(ret != 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    NULL,
-		    "AES_set_encrypt_key",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    NULL,
+                    "AES_set_encrypt_key",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);     
     }
 
     /* prepend magic block */
@@ -530,31 +530,31 @@ xmlSecOpenSSLKWAesEncode(const xmlSecByte *key, xmlSecSize keySize,
     
     N = (inSize / 8);
     if(N == 1) {
-	AES_encrypt(out, out, &aesKey); 
+        AES_encrypt(out, out, &aesKey); 
     } else {
-	for(j = 0; j <= 5; ++j) {
-	    for(i = 1; i <= N; ++i) {
-		t = i + (j * N);
-		p = out + i * 8;
+        for(j = 0; j <= 5; ++j) {
+            for(i = 1; i <= N; ++i) {
+                t = i + (j * N);
+                p = out + i * 8;
 
-		memcpy(block, out, 8);
-		memcpy(block + 8, p, 8);
-		
-		AES_encrypt(block, block, &aesKey);
-		block[7] ^=  t;
-		memcpy(out, block, 8);
-		memcpy(p, block + 8, 8);
-	    }
-	}
+                memcpy(block, out, 8);
+                memcpy(block + 8, p, 8);
+                
+                AES_encrypt(block, block, &aesKey);
+                block[7] ^=  t;
+                memcpy(out, block, 8);
+                memcpy(p, block + 8, 8);
+            }
+        }
     }
     
     return(inSize + 8);
 }
 
-static int  	
+static int      
 xmlSecOpenSSLKWAesDecode(const xmlSecByte *key, xmlSecSize keySize,
-			 const xmlSecByte *in, xmlSecSize inSize,
-			 xmlSecByte *out, xmlSecSize outSize) {
+                         const xmlSecByte *in, xmlSecSize inSize,
+                         xmlSecByte *out, xmlSecSize outSize) {
     AES_KEY aesKey;
     xmlSecByte block[XMLSEC_OPENSSL_AES_BLOCK_SIZE];
     xmlSecByte *p;
@@ -570,12 +570,12 @@ xmlSecOpenSSLKWAesDecode(const xmlSecByte *key, xmlSecSize keySize,
     
     ret = AES_set_decrypt_key(key, 8 * keySize, &aesKey);
     if(ret != 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    NULL,
-		    "AES_set_decrypt_key",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    NULL,
+                    "AES_set_decrypt_key",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);     
     }
     
     /* copy input */
@@ -585,35 +585,35 @@ xmlSecOpenSSLKWAesDecode(const xmlSecByte *key, xmlSecSize keySize,
         
     N = (inSize / 8) - 1;
     if(N == 1) {
-	AES_decrypt(out, out, &aesKey);
+        AES_decrypt(out, out, &aesKey);
     } else {
-	for(j = 5; j >= 0; --j) {
-	    for(i = N; i > 0; --i) {
-		t = i + (j * N);
-		p = out + i * 8;
+        for(j = 5; j >= 0; --j) {
+            for(i = N; i > 0; --i) {
+                t = i + (j * N);
+                p = out + i * 8;
 
-		memcpy(block, out, 8);
-		memcpy(block + 8, p, 8);
-		block[7] ^= t;
-		
-		AES_decrypt(block, block, &aesKey);
-		memcpy(out, block, 8);
-		memcpy(p, block + 8, 8);
-	    }
-	}
+                memcpy(block, out, 8);
+                memcpy(block + 8, p, 8);
+                block[7] ^= t;
+                
+                AES_decrypt(block, block, &aesKey);
+                memcpy(out, block, 8);
+                memcpy(p, block + 8, 8);
+            }
+        }
     }
     /* do not left data in memory */
     memset(block, 0, sizeof(block));
     
     if(memcmp(xmlSecOpenSSLKWAesMagicBlock, out, XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE) != 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_DATA,
-		    "bad magic block");
-	return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_DATA,
+                    "bad magic block");
+        return(-1);     
     }
-	
+        
     memmove(out, out + XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE, inSize - XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE);
     return(inSize - XMLSEC_OPENSSL_KW_AES_MAGIC_BLOCK_SIZE);
 }

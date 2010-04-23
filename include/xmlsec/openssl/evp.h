@@ -22,17 +22,17 @@ extern "C" {
 #include <xmlsec/openssl/crypto.h>
 
 
-XMLSEC_CRYPTO_EXPORT int 		xmlSecOpenSSLEvpKeyDataAdoptEvp	(xmlSecKeyDataPtr data, 
-									 EVP_PKEY* pKey);
-XMLSEC_CRYPTO_EXPORT EVP_PKEY* 		xmlSecOpenSSLEvpKeyDataGetEvp	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLEvpKeyDataAdoptEvp (xmlSecKeyDataPtr data, 
+                                                                         EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDataGetEvp   (xmlSecKeyDataPtr data);
 
 /******************************************************************************
  *
  * EVP helper functions
  *
  *****************************************************************************/
-XMLSEC_CRYPTO_EXPORT EVP_PKEY*		xmlSecOpenSSLEvpKeyDup		(EVP_PKEY* pKey);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecOpenSSLEvpKeyAdopt	(EVP_PKEY *pKey);
+XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDup          (EVP_PKEY* pKey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLEvpKeyAdopt        (EVP_PKEY *pKey);
 
 
 #ifdef __cplusplus

@@ -59,21 +59,21 @@ xmlSecKeyDataIdsInit(void) {
     
     ret = xmlSecPtrListInitialize(xmlSecKeyDataIdsGet(), xmlSecKeyDataIdListId);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecPtrListPtrInitialize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataIdListId");
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListPtrInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecKeyDataIdListId");
         return(-1);
     }
     
     ret = xmlSecKeyDataIdsRegisterDefault();
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataIdsRegisterDefault",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyDataIdsRegisterDefault",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
     
@@ -93,7 +93,7 @@ xmlSecKeyDataIdsShutdown(void) {
 
 /** 
  * xmlSecKeyDataIdsRegister:
- * @id:			the key data klass.
+ * @id:                 the key data klass.
  *
  * Registers @id in the global list of key data klasses.
  *
@@ -107,12 +107,12 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
     
     ret = xmlSecPtrListAdd(xmlSecKeyDataIdsGet(), (xmlSecPtr)id);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecPtrListAdd",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "dataId=%s",
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListAdd",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "dataId=%s",
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)));
         return(-1);
     }
     
@@ -131,40 +131,40 @@ xmlSecKeyDataIdsRegister(xmlSecKeyDataId id) {
 int 
 xmlSecKeyDataIdsRegisterDefault(void) {
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataNameId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataNameId");
-        return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyDataIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecKeyDataNameId");
+        return(-1);     
     }
 
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataValueId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataValueId");
-        return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyDataIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecKeyDataValueId");
+        return(-1);     
     }
 
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataRetrievalMethodId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataRetrievalMethodId");
-        return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyDataIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecKeyDataRetrievalMethodId");
+        return(-1);     
     }
 
 #ifndef XMLSEC_NO_XMLENC
     if(xmlSecKeyDataIdsRegister(xmlSecKeyDataEncryptedKeyId) < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecKeyDataIdsRegister",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "xmlSecKeyDataEncryptedKeyId");
-        return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyDataIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecKeyDataEncryptedKeyId");
+        return(-1);     
     }
 #endif /* XMLSEC_NO_XMLENC */
     
@@ -178,7 +178,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
  *************************************************************************/
 /**
  * xmlSecKeyDataCreate:
- * @id: 		the data id.
+ * @id:                 the data id.
  *
  * Allocates and initializes new key data of the specified type @id.
  * Caller is responsible for destroing returend object with 
@@ -187,7 +187,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
  * Returns: the pointer to newly allocated key data structure
  * or NULL if an error occurs.
  */
-xmlSecKeyDataPtr	
+xmlSecKeyDataPtr        
 xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
     xmlSecKeyDataPtr data;
     int ret;
@@ -200,27 +200,27 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
     /* Allocate a new xmlSecKeyData and fill the fields. */
     data = (xmlSecKeyDataPtr)xmlMalloc(id->objSize);
     if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "size=%d", id->objSize); 
-	return(NULL);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", id->objSize); 
+        return(NULL);
     }
     memset(data, 0, id->objSize);    
     data->id = id;
 
     if(id->initialize != NULL) {
-	ret = (id->initialize)(data);
+        ret = (id->initialize)(data);
         if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			"id->initialize",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecKeyDataDestroy(data);
-	    return(NULL);
-	}
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        "id->initialize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecKeyDataDestroy(data);
+            return(NULL);
+        }
     }
     
     return(data);
@@ -228,7 +228,7 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
 
 /**
  * xmlSecKeyDataDuplicate:
- * @data: 		the pointer to the key data.
+ * @data:               the pointer to the key data.
  *
  * Creates a duplicate of the given @data. Caller is responsible for 
  * destroing returend object with #xmlSecKeyDataDestroy function.
@@ -236,7 +236,7 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
  * Returns: the pointer to newly allocated key data structure
  * or NULL if an error occurs.
  */
-xmlSecKeyDataPtr	
+xmlSecKeyDataPtr        
 xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
     xmlSecKeyDataPtr newData;
     int ret;
@@ -246,23 +246,23 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
 
     newData = xmlSecKeyDataCreate(data->id);
     if(newData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "xmlSecKeyDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE); 
-	return(NULL);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecKeyDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE); 
+        return(NULL);
     }
 
     ret = (data->id->duplicate)(newData, data);
     if(newData == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "id->duplicate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDataDestroy(newData);
-	return(NULL);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "id->duplicate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyDataDestroy(newData);
+        return(NULL);   
     }
     
     return(newData);
@@ -270,7 +270,7 @@ xmlSecKeyDataDuplicate(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecKeyDataDestroy:
- * @data: 		the pointer to the key data.
+ * @data:               the pointer to the key data.
  *
  * Destroys the data and frees all allocated memory. 
  */
@@ -280,7 +280,7 @@ xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
     xmlSecAssert(data->id->objSize > 0);
     
     if(data->id->finalize != NULL) { 
-	(data->id->finalize)(data);
+        (data->id->finalize)(data);
     }
     memset(data, 0, data->id->objSize);
     xmlFree(data);
@@ -289,10 +289,10 @@ xmlSecKeyDataDestroy(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecKeyDataXmlRead:
- * @id: 		the data klass.
- * @key: 		the destination key.
- * @node: 		the pointer to an XML node.
- * @keyInfoCtx: 	the pointer to <dsig:KeyInfo/> element processing context.
+ * @id:                 the data klass.
+ * @key:                the destination key.
+ * @node:               the pointer to an XML node.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  * 
  * Reads the key data of klass @id from XML @node and adds them to @key.
  *
@@ -310,10 +310,10 @@ xmlSecKeyDataXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xmlS
 
 /**
  * xmlSecKeyDataXmlWrite:
- * @id: 		the data klass.
- * @key: 		the source key.
- * @node: 		the pointer to an XML node.
- * @keyInfoCtx: 	the pointer to <dsig:KeyInfo/> element processing context.
+ * @id:                 the data klass.
+ * @key:                the source key.
+ * @node:               the pointer to an XML node.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  * 
  * Writes the key data of klass @id from @key to an XML @node.
  *
@@ -331,11 +331,11 @@ xmlSecKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xml
 
 /** 
  * xmlSecKeyDataBinRead:
- * @id: 		the data klass.
- * @key: 		the destination key.
- * @buf: 		the input binary buffer.
- * @bufSize: 		the input buffer size.
- * @keyInfoCtx: 	the <dsig:KeyInfo/> node processing context.
+ * @id:                 the data klass.
+ * @key:                the destination key.
+ * @buf:                the input binary buffer.
+ * @bufSize:            the input buffer size.
+ * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
  *
  * Reads the key data of klass @id from binary buffer @buf to @key.
  * 
@@ -343,8 +343,8 @@ xmlSecKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, xmlNodePtr node, xml
  */
 int
 xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-		    const xmlSecByte* buf, xmlSecSize bufSize, 
-		    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                    const xmlSecByte* buf, xmlSecSize bufSize, 
+                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(id != NULL, -1);
     xmlSecAssert2(id->binRead != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -355,11 +355,11 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /** 
  * xmlSecKeyDataBinWrite:
- * @id: 		the data klass.
- * @key: 		the source key.
- * @buf: 		the output binary buffer.
- * @bufSize: 		the output buffer size.
- * @keyInfoCtx: 	the <dsig:KeyInfo/> node processing context.
+ * @id:                 the data klass.
+ * @key:                the source key.
+ * @buf:                the output binary buffer.
+ * @bufSize:            the output buffer size.
+ * @keyInfoCtx:         the <dsig:KeyInfo/> node processing context.
  *
  * Writes the key data of klass @id from the @key to a binary buffer @buf. 
  * 
@@ -367,8 +367,8 @@ xmlSecKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int
 xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-		    xmlSecByte** buf, xmlSecSize* bufSize, 
-		    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                    xmlSecByte** buf, xmlSecSize* bufSize, 
+                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(id != NULL, -1);
     xmlSecAssert2(id->binWrite != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
@@ -379,9 +379,9 @@ xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /** 
  * xmlSecKeyDataGenerate:
- * @data: 		the pointer to key data.
- * @sizeBits: 		the desired key data size (in bits).
- * @type:		the desired key data type.
+ * @data:               the pointer to key data.
+ * @sizeBits:           the desired key data size (in bits).
+ * @type:               the desired key data type.
  *
  * Generates new key data of given size and type.
  *
@@ -389,7 +389,7 @@ xmlSecKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int
 xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, 
-		      xmlSecKeyDataType type) {
+                      xmlSecKeyDataType type) {
     int ret;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
@@ -398,25 +398,25 @@ xmlSecKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     /* write data */
     ret = data->id->generate(data, sizeBits, type);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "id->generate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", sizeBits);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "id->generate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", sizeBits);
+        return(-1);         
     }
     return(0);    
 }
 
 /** 
  * xmlSecKeyDataGetType:
- * @data: 		the pointer to key data.
+ * @data:               the pointer to key data.
  *
  * Gets key data type.
  *
  * Returns: key data type.
  */  
-xmlSecKeyDataType	
+xmlSecKeyDataType       
 xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataIsValid(data), xmlSecKeyDataTypeUnknown);
     xmlSecAssert2(data->id->getType != NULL, xmlSecKeyDataTypeUnknown);
@@ -426,7 +426,7 @@ xmlSecKeyDataGetType(xmlSecKeyDataPtr data) {
 
 /** 
  * xmlSecKeyDataGetSize:
- * @data: 		the pointer to key data.
+ * @data:               the pointer to key data.
  *
  * Gets key data size.
  *
@@ -442,7 +442,7 @@ xmlSecKeyDataGetSize(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecKeyDataGetIdentifier:
- * @data: 		the pointer to key data.
+ * @data:               the pointer to key data.
  * 
  * Gets key data identifier string.
  *
@@ -458,8 +458,8 @@ xmlSecKeyDataGetIdentifier(xmlSecKeyDataPtr data) {
 
 /** 
  * xmlSecKeyDataDebugDump:
- * @data: 		the pointer to key data.
- * @output: 		the pointer to output FILE.
+ * @data:               the pointer to key data.
+ * @output:             the pointer to output FILE.
  *
  * Prints key data debug info.
  */
@@ -474,8 +474,8 @@ xmlSecKeyDataDebugDump(xmlSecKeyDataPtr data, FILE *output) {
 
 /** 
  * xmlSecKeyDataDebugXmlDump:
- * @data: 		the pointer to key data.
- * @output: 		the pointer to output FILE.
+ * @data:               the pointer to key data.
+ * @output:             the pointer to output FILE.
  *
  * Prints key data debug info in XML format.
  */ 
@@ -497,7 +497,7 @@ xmlSecKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE *output) {
  *************************************************************************/
 /** 
  * xmlSecKeyDataBinaryValueInitialize:
- * @data: 		the pointer to binary key data.
+ * @data:               the pointer to binary key data.
  *
  * Initializes key data.
  * 
@@ -517,12 +517,12 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
     
     ret = xmlSecBufferInitialize(buffer, 0);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-		    "xmlSecBufferInitialize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
     return(0);    
@@ -530,8 +530,8 @@ xmlSecKeyDataBinaryValueInitialize(xmlSecKeyDataPtr data) {
 
 /** 
  * xmlSecKeyDataBinaryValueDuplicate:
- * @dst: 		the pointer to destination binary key data.
- * @src: 		the pointer to source binary key data.
+ * @dst:                the pointer to destination binary key data.
+ * @src:                the pointer to source binary key data.
  *
  * Copies binary key data from @src to @dst.
  * 
@@ -552,15 +552,15 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     
     /* copy data */
     ret = xmlSecKeyDataBinaryValueSetBuffer(dst,
-		    xmlSecBufferGetData(buffer),
-		    xmlSecBufferGetSize(buffer));
+                    xmlSecBufferGetData(buffer),
+                    xmlSecBufferGetSize(buffer));
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
-		    "xmlSecKeyDataBinaryValueSetBuffer",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),
+                    "xmlSecKeyDataBinaryValueSetBuffer",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     return(0);
@@ -568,7 +568,7 @@ xmlSecKeyDataBinaryValueDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 
 /** 
  * xmlSecKeyDataBinaryValueFinalize:
- * @data: 		the pointer to binary key data.
+ * @data:               the pointer to binary key data.
  *
  * Cleans up binary key data.
  */
@@ -588,10 +588,10 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
 
 /** 
  * xmlSecKeyDataBinaryValueXmlRead:
- * @id: 		the data klass.
- * @key:		the pointer to destination key.
- * @node: 		the pointer to an XML node.
- * @keyInfoCtx: 	the pointer to <dsig:KeyInfo/> element processing context.
+ * @id:                 the data klass.
+ * @key:                the pointer to destination key.
+ * @node:               the pointer to an XML node.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
  * Reads binary key data from @node to the key by base64 decoding the @node content.
  * 
@@ -599,7 +599,7 @@ xmlSecKeyDataBinaryValueFinalize(xmlSecKeyDataPtr data) {
  */
 int 
 xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-				xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* str;
     xmlSecSize len;
     xmlSecKeyDataPtr data;
@@ -612,115 +612,115 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     str = xmlNodeGetContent(node);
     if(str == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
+                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     /* usual trick: decode into the same buffer */
     ret = xmlSecBase64Decode(str, (xmlSecByte*)str, xmlStrlen(str));
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecBase64Decode",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlFree(str);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecBase64Decode",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(str);
+        return(-1);
     }
     len = ret;
 
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);
     if(data != NULL) {
-	xmlSecBufferPtr buffer;
-	
-	if(!xmlSecKeyDataCheckId(data, id)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFree(str);
-	    return(-1);	
-	}
-	
-	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
-	if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != len)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-			"cur-data-size=%d;new-data-size=%d",
-			xmlSecBufferGetSize(buffer), len);
-	    xmlFree(str);
-	    return(-1);		
-	}
-	if((buffer != NULL) && (len > 0) && (memcmp(xmlSecBufferGetData(buffer), str, len) != 0)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-			"key already has a different value");
-	    xmlFree(str);
-	    return(-1);		
-	}
-	if(buffer != NULL) {
-	    /* we already have exactly the same key */
-    	    xmlFree(str);
-	    return(0);
-	}
-	
-	/* we have binary key value with empty buffer */
+        xmlSecBufferPtr buffer;
+        
+        if(!xmlSecKeyDataCheckId(data, id)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(str);
+            return(-1); 
+        }
+        
+        buffer = xmlSecKeyDataBinaryValueGetBuffer(data);       
+        if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != len)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        "cur-data-size=%d;new-data-size=%d",
+                        xmlSecBufferGetSize(buffer), len);
+            xmlFree(str);
+            return(-1);         
+        }
+        if((buffer != NULL) && (len > 0) && (memcmp(xmlSecBufferGetData(buffer), str, len) != 0)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        "key already has a different value");
+            xmlFree(str);
+            return(-1);         
+        }
+        if(buffer != NULL) {
+            /* we already have exactly the same key */
+            xmlFree(str);
+            return(0);
+        }
+        
+        /* we have binary key value with empty buffer */
     }
 
     
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlFree(str);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(str);
+        return(-1);
     }
         
     ret = xmlSecKeyDataBinaryValueSetBuffer(data, (xmlSecByte*)str, len);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyDataBinaryValueSetBuffer",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", len);
-	xmlSecKeyDataDestroy(data);
-	xmlFree(str);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyDataBinaryValueSetBuffer",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", len);
+        xmlSecKeyDataDestroy(data);
+        xmlFree(str);
+        return(-1);
     }
     xmlFree(str);
 
     if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), data) != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyReqMatchKeyValue",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDataDestroy(data);
-	return(0);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyReqMatchKeyValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
     
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeySetValue",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeySetValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyDataDestroy(data);
+        return(-1);
     }
 
     return(0);
@@ -728,10 +728,10 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /** 
  * xmlSecKeyDataBinaryValueXmlWrite:
- * @id: 		the data klass.
- * @key:		the pointer to source key.
- * @node: 		the pointer to an XML node.
- * @keyInfoCtx: 	the pointer to <dsig:KeyInfo/> element processing context.
+ * @id:                 the data klass.
+ * @key:                the pointer to source key.
+ * @node:               the pointer to an XML node.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
  * Base64 encodes binary key data of klass @id from the @key and 
  * sets to the @node content. 
@@ -740,7 +740,7 @@ xmlSecKeyDataBinaryValueXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int 
 xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-			    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                            xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecBufferPtr buffer;
     xmlSecKeyDataPtr value;
     xmlChar* str;
@@ -751,8 +751,8 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if((xmlSecKeyDataTypeSymmetric & keyInfoCtx->keyReq.keyType) == 0) {
-	/* we can have only symmetric key */
-	return(0);
+        /* we can have only symmetric key */
+        return(0);
     }    
 
     value = xmlSecKeyGetValue(key);
@@ -762,15 +762,15 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(buffer != NULL, -1);
 
     str = xmlSecBase64Encode(xmlSecBufferGetData(buffer),
-			     xmlSecBufferGetSize(buffer),
-			     keyInfoCtx->base64LineSize);
+                             xmlSecBufferGetSize(buffer),
+                             keyInfoCtx->base64LineSize);
     if(str == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecBase64Encode",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecBase64Encode",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }    
     xmlNodeSetContent(node, str);
     xmlFree(str);
@@ -779,11 +779,11 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /** 
  * xmlSecKeyDataBinaryValueBinRead:
- * @id: 		the data klass.
- * @key:		the pointer to destination key.
- * @buf:		the source binary buffer.
- * @bufSize:		the source binary buffer size.
- * @keyInfoCtx: 	the pointer to <dsig:KeyInfo/> element processing context.
+ * @id:                 the data klass.
+ * @key:                the pointer to destination key.
+ * @buf:                the source binary buffer.
+ * @bufSize:            the source binary buffer size.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
  * Reads binary key data of the klass @id from @buf to the @key.
  * 
@@ -791,8 +791,8 @@ xmlSecKeyDataBinaryValueXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int 
 xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-				const xmlSecByte* buf, xmlSecSize bufSize, 
-				xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                                const xmlSecByte* buf, xmlSecSize bufSize, 
+                                xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data;
     int ret;
     
@@ -805,83 +805,83 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     /* check do we have a key already */
     data = xmlSecKeyGetValue(key);
     if(data != NULL) {
-	xmlSecBufferPtr buffer;
-	
-	if(!xmlSecKeyDataCheckId(data, id)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-    			XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);	
-	}
-	
-	buffer = xmlSecKeyDataBinaryValueGetBuffer(data);	
-	if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != bufSize)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-			"cur-data-size=%d;new-data-size=%d",
-			xmlSecBufferGetSize(buffer), bufSize);
-	    return(-1);		
-	}
-	if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-			xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-			XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
-			"key already has a different value");
-	    return(-1);		
-	}
-	if(buffer != NULL) {
-	    /* we already have exactly the same key */
-	    return(0);
-	}
-	
-	/* we have binary key value with empty buffer */
+        xmlSecBufferPtr buffer;
+        
+        if(!xmlSecKeyDataCheckId(data, id)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1); 
+        }
+        
+        buffer = xmlSecKeyDataBinaryValueGetBuffer(data);       
+        if((buffer != NULL) && ((xmlSecSize)xmlSecBufferGetSize(buffer) != bufSize)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        "cur-data-size=%d;new-data-size=%d",
+                        xmlSecBufferGetSize(buffer), bufSize);
+            return(-1);         
+        }
+        if((buffer != NULL) && (bufSize > 0) && (memcmp(xmlSecBufferGetData(buffer), buf, bufSize) != 0)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        XMLSEC_ERRORS_R_KEY_DATA_ALREADY_EXIST,
+                        "key already has a different value");
+            return(-1);         
+        }
+        if(buffer != NULL) {
+            /* we already have exactly the same key */
+            return(0);
+        }
+        
+        /* we have binary key value with empty buffer */
     }
     
     data = xmlSecKeyDataCreate(id);
     if(data == NULL ) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
         
     ret = xmlSecKeyDataBinaryValueSetBuffer(data, buf, bufSize);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyDataBinaryValueSetBuffer",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", bufSize);
-	xmlSecKeyDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyDataBinaryValueSetBuffer",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", bufSize);
+        xmlSecKeyDataDestroy(data);
+        return(-1);
     }
 
     if(xmlSecKeyReqMatchKeyValue(&(keyInfoCtx->keyReq), data) != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeyReqMatchKeyValue",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDataDestroy(data);
-	return(0);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyReqMatchKeyValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyDataDestroy(data);
+        return(0);
     }
     
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    "xmlSecKeySetValue",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecKeyDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeySetValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecKeyDataDestroy(data);
+        return(-1);
     }
 
     return(0);
@@ -889,11 +889,11 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /** 
  * xmlSecKeyDataBinaryValueBinWrite:
- * @id: 		the data klass.
- * @key:		the pointer to source key.
- * @buf:		the destination binary buffer.
- * @bufSize:		the destination binary buffer size.
- * @keyInfoCtx: 	the pointer to <dsig:KeyInfo/> element processing context.
+ * @id:                 the data klass.
+ * @key:                the pointer to source key.
+ * @buf:                the destination binary buffer.
+ * @bufSize:            the destination binary buffer size.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
  * Writes binary key data of klass @id from the @key to @buf.
  * 
@@ -901,8 +901,8 @@ xmlSecKeyDataBinaryValueBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
  */
 int 
 xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key, 
-				xmlSecByte** buf, xmlSecSize* bufSize, 
-				xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                                xmlSecByte** buf, xmlSecSize* bufSize, 
+                                xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
 
@@ -913,8 +913,8 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     if((xmlSecKeyDataTypeSymmetric & keyInfoCtx->keyReq.keyType) == 0) {
-	/* we can have only symmetric key */
-	return(0);
+        /* we can have only symmetric key */
+        return(0);
     }    
 
     value = xmlSecKeyGetValue(key);
@@ -926,12 +926,12 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     (*bufSize) = xmlSecBufferGetSize(buffer);
     (*buf) = (xmlSecByte*) xmlMalloc((*bufSize));
     if((*buf) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     memcpy((*buf), xmlSecBufferGetData(buffer), (*bufSize));    
     return(0);
@@ -939,8 +939,8 @@ xmlSecKeyDataBinaryValueBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
 /** 
  * xmlSecKeyDataBinaryValueDebugDump:
- * @data: 		the pointer to binary key data.
- * @output:		the pointer to output FILE.
+ * @data:               the pointer to binary key data.
+ * @output:             the pointer to output FILE.
  * 
  * Prints binary key data debug information to @output.
  */
@@ -958,13 +958,13 @@ xmlSecKeyDataBinaryValueDebugDump(xmlSecKeyDataPtr data, FILE* output) {
 
     /* print only size, everything else is sensitive */    
     fprintf(output, "=== %s: size=%d\n", data->id->dataNodeName, 
-					 xmlSecKeyDataGetSize(data));
+                                         xmlSecKeyDataGetSize(data));
 }
 
 /** 
  * xmlSecKeyDataBinaryValueDebugXmlDump:
- * @data: 		the pointer to binary key data.
- * @output:		the pointer to output FILE.
+ * @data:               the pointer to binary key data.
+ * @output:             the pointer to output FILE.
  * 
  * Prints binary key data debug information to @output in XML format.
  */
@@ -982,12 +982,12 @@ xmlSecKeyDataBinaryValueDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     
     /* print only size, everything else is sensitive */    
     fprintf(output, "<%s size=\"%d\" />\n", data->id->dataNodeName, 
-					    xmlSecKeyDataGetSize(data));
+                                            xmlSecKeyDataGetSize(data));
 }
 
 /** 
  * xmlSecKeyDataBinaryValueGetSize:
- * @data: 		the pointer to binary key data.
+ * @data:               the pointer to binary key data.
  *
  * Gets the binary key data size.
  *
@@ -1009,7 +1009,7 @@ xmlSecKeyDataBinaryValueGetSize(xmlSecKeyDataPtr data) {
 
 /** 
  * xmlSecKeyDataBinaryValueGetBuffer:
- * @data: 		the pointer to binary key data.
+ * @data:               the pointer to binary key data.
  *
  * Gets the binary key data buffer.
  *
@@ -1026,9 +1026,9 @@ xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
 
 /** 
  * xmlSecKeyDataBinaryValueSetBuffer:
- * @data: 		the pointer to binary key data.
- * @buf: 		the pointer to binary buffer.
- * @bufSize:		the binary buffer size.
+ * @data:               the pointer to binary key data.
+ * @buf:                the pointer to binary buffer.
+ * @bufSize:            the binary buffer size.
  *
  * Sets the value of @data to @buf.
  * 
@@ -1036,7 +1036,7 @@ xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyDataPtr data) {
  */
 int
 xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data, 
-			const xmlSecByte* buf, xmlSecSize bufSize) {
+                        const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
@@ -1057,10 +1057,10 @@ xmlSecKeyDataBinaryValueSetBuffer(xmlSecKeyDataPtr data,
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataListKlass = {
     BAD_CAST "key-data-list",
-    (xmlSecPtrDuplicateItemMethod)xmlSecKeyDataDuplicate, 	/* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecKeyDataDestroy,		/* xmlSecPtrDestroyItemMethod destroyItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDataDebugDump,	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDataDebugXmlDump,	/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    (xmlSecPtrDuplicateItemMethod)xmlSecKeyDataDuplicate,       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    (xmlSecPtrDestroyItemMethod)xmlSecKeyDataDestroy,           /* xmlSecPtrDestroyItemMethod destroyItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDataDebugDump,       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    (xmlSecPtrDebugDumpItemMethod)xmlSecKeyDataDebugXmlDump,    /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 /**
@@ -1083,10 +1083,10 @@ xmlSecKeyDataListGetKlass(void) {
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataIdListKlass = {
     BAD_CAST "key-data-ids-list",
-    NULL, 							/* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    NULL,							/* xmlSecPtrDestroyItemMethod destroyItem; */
-    NULL,							/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    NULL,							/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    NULL,                                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    NULL,                                                       /* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 /**
@@ -1103,8 +1103,8 @@ xmlSecKeyDataIdListGetKlass(void) {
 
 /**
  * xmlSecKeyDataIdListFind:
- * @list:		the pointer to key data ids list.
- * @dataId:		the key data klass.
+ * @list:               the pointer to key data ids list.
+ * @dataId:             the key data klass.
  *
  * Lookups @dataId in @list.
  *
@@ -1120,28 +1120,28 @@ xmlSecKeyDataIdListFind(xmlSecPtrListPtr list, xmlSecKeyDataId dataId) {
     
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	if((xmlSecKeyDataId)xmlSecPtrListGetItem(list, i) == dataId) {
-	    return(1);
-	}
+        if((xmlSecKeyDataId)xmlSecPtrListGetItem(list, i) == dataId) {
+            return(1);
+        }
     }
     return(0);
 }
 
 /** 
  * xmlSecKeyDataIdListFindByNode:
- * @list:		the pointer to key data ids list.
- * @nodeName:		the desired key data klass XML node name.
- * @nodeNs:		the desired key data klass XML node namespace.
- * @usage:		the desired key data usage.
+ * @list:               the pointer to key data ids list.
+ * @nodeName:           the desired key data klass XML node name.
+ * @nodeNs:             the desired key data klass XML node namespace.
+ * @usage:              the desired key data usage.
  *
  * Lookups data klass in the list with given @nodeName, @nodeNs and 
  * @usage in the @list.
  *
  * Returns: key data klass is found and NULL otherwise.
  */ 
-xmlSecKeyDataId	
+xmlSecKeyDataId 
 xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
-			    const xmlChar* nodeNs, xmlSecKeyDataUsage usage) {
+                            const xmlChar* nodeNs, xmlSecKeyDataUsage usage) {
     xmlSecKeyDataId dataId;
     xmlSecSize i, size;
     
@@ -1150,32 +1150,32 @@ xmlSecKeyDataIdListFindByNode(xmlSecPtrListPtr list, const xmlChar* nodeName,
     
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
-	xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+        xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
 
-	if(((usage & dataId->usage) != 0) &&
-	   xmlStrEqual(nodeName, dataId->dataNodeName) &&
-	   xmlStrEqual(nodeNs, dataId->dataNodeNs)) {
-	    
-	   return(dataId);	   
-	}
+        if(((usage & dataId->usage) != 0) &&
+           xmlStrEqual(nodeName, dataId->dataNodeName) &&
+           xmlStrEqual(nodeNs, dataId->dataNodeNs)) {
+            
+           return(dataId);         
+        }
     }
     return(xmlSecKeyDataIdUnknown);
 }
 
 /** 
  * xmlSecKeyDataIdListFindByHref:
- * @list:		the pointer to key data ids list.
- * @href:		the desired key data klass href.
- * @usage:		the desired key data usage.
+ * @list:               the pointer to key data ids list.
+ * @href:               the desired key data klass href.
+ * @usage:              the desired key data usage.
  *
  * Lookups data klass in the list with given @href and @usage in @list.
  *
  * Returns: key data klass is found and NULL otherwise.
  */ 
-xmlSecKeyDataId	
+xmlSecKeyDataId 
 xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
-			    xmlSecKeyDataUsage usage) {
+                            xmlSecKeyDataUsage usage) {
     xmlSecKeyDataId dataId;
     xmlSecSize i, size;
     
@@ -1184,31 +1184,31 @@ xmlSecKeyDataIdListFindByHref(xmlSecPtrListPtr list, const xmlChar* href,
     
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
-	xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+        xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
 
-	if(((usage & dataId->usage) != 0) && (dataId->href != NULL) &&
-	   xmlStrEqual(href, dataId->href)) {
-	   
-	   return(dataId);	   
-	}
+        if(((usage & dataId->usage) != 0) && (dataId->href != NULL) &&
+           xmlStrEqual(href, dataId->href)) {
+           
+           return(dataId);         
+        }
     }
     return(xmlSecKeyDataIdUnknown);
 }
 
 /** 
  * xmlSecKeyDataIdListFindByName:
- * @list:		the pointer to key data ids list.
- * @name:		the desired key data klass name.
- * @usage:		the desired key data usage.
+ * @list:               the pointer to key data ids list.
+ * @name:               the desired key data klass name.
+ * @usage:              the desired key data usage.
  *
  * Lookups data klass in the list with given @name and @usage in @list.
  *
  * Returns: key data klass is found and NULL otherwise.
  */ 
-xmlSecKeyDataId	
+xmlSecKeyDataId 
 xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name, 
-			    xmlSecKeyDataUsage usage) {
+                            xmlSecKeyDataUsage usage) {
     xmlSecKeyDataId dataId;
     xmlSecSize i, size;
     
@@ -1217,22 +1217,22 @@ xmlSecKeyDataIdListFindByName(xmlSecPtrListPtr list, const xmlChar* name,
     
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
-	xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+        xmlSecAssert2(dataId != xmlSecKeyDataIdUnknown, xmlSecKeyDataIdUnknown);
 
-	if(((usage & dataId->usage) != 0) && (dataId->name != NULL) && 
-	   xmlStrEqual(name, BAD_CAST dataId->name)) {
-	   
-	   return(dataId);	   
-	}
+        if(((usage & dataId->usage) != 0) && (dataId->name != NULL) && 
+           xmlStrEqual(name, BAD_CAST dataId->name)) {
+           
+           return(dataId);         
+        }
     }
     return(xmlSecKeyDataIdUnknown);
 }
 
 /** 
  * xmlSecKeyDataIdListDebugDump:
- * @list:		the pointer to key data ids list.
- * @output:		the pointer to output FILE.
+ * @list:               the pointer to key data ids list.
+ * @output:             the pointer to output FILE.
  * 
  * Prints binary key data debug information to @output.
  */
@@ -1246,23 +1246,23 @@ xmlSecKeyDataIdListDebugDump(xmlSecPtrListPtr list, FILE* output) {
 
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
-	xmlSecAssert(dataId != NULL);
-	xmlSecAssert(dataId->name != NULL);
-	    
-	if(i > 0) {
-	    fprintf(output, ",\"%s\"", dataId->name);
-	} else {
-	    fprintf(output, "\"%s\"", dataId->name);
-	}	    
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+        xmlSecAssert(dataId != NULL);
+        xmlSecAssert(dataId->name != NULL);
+            
+        if(i > 0) {
+            fprintf(output, ",\"%s\"", dataId->name);
+        } else {
+            fprintf(output, "\"%s\"", dataId->name);
+        }           
     }
     fprintf(output, "\n");
 }
 
 /** 
  * xmlSecKeyDataIdListDebugXmlDump:
- * @list:		the pointer to key data ids list.
- * @output:		the pointer to output FILE.
+ * @list:               the pointer to key data ids list.
+ * @output:             the pointer to output FILE.
  * 
  * Prints binary key data debug information to @output in XML format.
  */
@@ -1277,11 +1277,11 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     fprintf(output, "<KeyDataIdsList>\n");
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
-	xmlSecAssert(dataId != NULL);
-	xmlSecAssert(dataId->name != NULL);
-	    
-	fprintf(output, "<DataId name=\"");
+        dataId = (xmlSecKeyDataId)xmlSecPtrListGetItem(list, i);
+        xmlSecAssert(dataId != NULL);
+        xmlSecAssert(dataId->name != NULL);
+            
+        fprintf(output, "<DataId name=\"");
         xmlSecPrintXmlString(output, dataId->name);
         fprintf(output, "\"/>");
     }
@@ -1295,7 +1295,7 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
  *************************************************************************/
 /**
  * xmlSecKeyDataStoreCreate:
- * @id: 		the store id.
+ * @id:                 the store id.
  *
  * Creates new key data store of the specified klass @id. Caller is responsible
  * for freeng returned object with #xmlSecKeyDataStoreDestroy function.
@@ -1303,7 +1303,7 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
  * Returns: the pointer to newly allocated key data store structure
  * or NULL if an error occurs.
  */
-xmlSecKeyDataStorePtr	
+xmlSecKeyDataStorePtr   
 xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     xmlSecKeyDataStorePtr store;
     int ret;
@@ -1314,27 +1314,27 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
     /* Allocate a new xmlSecKeyDataStore and fill the fields. */
     store = (xmlSecKeyDataStorePtr)xmlMalloc(id->objSize);
     if(store == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "size=%d", id->objSize); 
-	return(NULL);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", id->objSize); 
+        return(NULL);
     }
     memset(store, 0, id->objSize);    
     store->id = id;
 
     if(id->initialize != NULL) {
-	ret = (id->initialize)(store);
+        ret = (id->initialize)(store);
         if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
-			"id->initialize",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecKeyDataStoreDestroy(store);
-	    return(NULL);
-	}
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataStoreKlassGetName(id)),
+                        "id->initialize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecKeyDataStoreDestroy(store);
+            return(NULL);
+        }
     }
     
     return(store);
@@ -1342,7 +1342,7 @@ xmlSecKeyDataStoreCreate(xmlSecKeyDataStoreId id)  {
 
 /**
  * xmlSecKeyDataStoreDestroy:
- * @store: 		the pointer to the key data store..
+ * @store:              the pointer to the key data store..
  *
  * Destroys the key data store created with #xmlSecKeyDataStoreCreate
  * function.
@@ -1366,10 +1366,10 @@ xmlSecKeyDataStoreDestroy(xmlSecKeyDataStorePtr store) {
  **********************************************************************/
 static xmlSecPtrListKlass xmlSecKeyDataStorePtrListKlass = {
     BAD_CAST "keys-data-store-list",
-    NULL, 							/* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecKeyDataStoreDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
-    NULL,							/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    NULL,							/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    NULL,                                                       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    (xmlSecPtrDestroyItemMethod)xmlSecKeyDataStoreDestroy,      /* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,                                                       /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 /**

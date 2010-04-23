@@ -22,12 +22,12 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-XMLSEC_CRYPTO_EXPORT SECItem*	xmlSecNssNodeGetBigNumValue	(PRArenaPool *arena, 
-								 const xmlNodePtr cur, 
-								 SECItem *a);
-XMLSEC_CRYPTO_EXPORT int 	xmlSecNssNodeSetBigNumValue	(xmlNodePtr cur,
-								 const SECItem *a, 
-								 int addLineBreaks);
+XMLSEC_CRYPTO_EXPORT SECItem*   xmlSecNssNodeGetBigNumValue     (PRArenaPool *arena, 
+                                                                 const xmlNodePtr cur, 
+                                                                 SECItem *a);
+XMLSEC_CRYPTO_EXPORT int        xmlSecNssNodeSetBigNumValue     (xmlNodePtr cur,
+                                                                 const SECItem *a, 
+                                                                 int addLineBreaks);
 
 #ifdef __cplusplus
 }

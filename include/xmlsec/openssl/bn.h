@@ -21,11 +21,11 @@ extern "C" {
 
 #include <xmlsec/xmlsec.h>
 
-XMLSEC_CRYPTO_EXPORT BIGNUM*	xmlSecOpenSSLNodeGetBNValue	(const xmlNodePtr cur,
-								 BIGNUM **a);
-XMLSEC_CRYPTO_EXPORT int	xmlSecOpenSSLNodeSetBNValue	(xmlNodePtr cur, 
-								 const BIGNUM *a,
-								 int addLineBreaks);
+XMLSEC_CRYPTO_EXPORT BIGNUM*    xmlSecOpenSSLNodeGetBNValue     (const xmlNodePtr cur,
+                                                                 BIGNUM **a);
+XMLSEC_CRYPTO_EXPORT int        xmlSecOpenSSLNodeSetBNValue     (xmlNodePtr cur, 
+                                                                 const BIGNUM *a,
+                                                                 int addLineBreaks);
 
 #ifdef __cplusplus
 }

@@ -18,16 +18,16 @@ extern "C" {
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 
-typedef struct _xmlSecBuffer					xmlSecBuffer, 
-								*xmlSecBufferPtr;
+typedef struct _xmlSecBuffer                                    xmlSecBuffer, 
+                                                                *xmlSecBufferPtr;
 
 
 /** 
  * xmlSecAllocMode:
- * @xmlSecAllocModeExact: 	the memory allocation mode that minimizes total 
- *				allocated memory size.
- * @xmlSecAllocModeDouble:	the memory allocation mode that tries to minimize
- *				the number of malloc calls.
+ * @xmlSecAllocModeExact:       the memory allocation mode that minimizes total 
+ *                              allocated memory size.
+ * @xmlSecAllocModeDouble:      the memory allocation mode that tries to minimize
+ *                              the number of malloc calls.
  *
  * The memory allocation mode (used by @xmlSecBuffer and @xmlSecList).
  */
@@ -52,52 +52,52 @@ typedef enum {
  * Binary data buffer.
  */
 struct _xmlSecBuffer {
-    xmlSecByte* 	data;
-    xmlSecSize 		size;
-    xmlSecSize		maxSize;
-    xmlSecAllocMode 	allocMode;
+    xmlSecByte*         data;
+    xmlSecSize          size;
+    xmlSecSize          maxSize;
+    xmlSecAllocMode     allocMode;
 };
 
-XMLSEC_EXPORT void		xmlSecBufferSetDefaultAllocMode	(xmlSecAllocMode defAllocMode,
-								 xmlSecSize defInitialSize);
+XMLSEC_EXPORT void              xmlSecBufferSetDefaultAllocMode (xmlSecAllocMode defAllocMode,
+                                                                 xmlSecSize defInitialSize);
 
-XMLSEC_EXPORT xmlSecBufferPtr	xmlSecBufferCreate		(xmlSecSize size);
-XMLSEC_EXPORT void		xmlSecBufferDestroy		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT int		xmlSecBufferInitialize		(xmlSecBufferPtr buf,
-								 xmlSecSize size);
-XMLSEC_EXPORT void		xmlSecBufferFinalize		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT xmlSecByte*	xmlSecBufferGetData		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT int		xmlSecBufferSetData		(xmlSecBufferPtr buf,
-								 const xmlSecByte* data,
-								 xmlSecSize size);
-XMLSEC_EXPORT xmlSecSize	xmlSecBufferGetSize		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT int		xmlSecBufferSetSize		(xmlSecBufferPtr buf,
-								 xmlSecSize size);
-XMLSEC_EXPORT xmlSecSize	xmlSecBufferGetMaxSize		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT int		xmlSecBufferSetMaxSize		(xmlSecBufferPtr buf,
-								 xmlSecSize size);
-XMLSEC_EXPORT void		xmlSecBufferEmpty		(xmlSecBufferPtr buf);
-XMLSEC_EXPORT int		xmlSecBufferAppend		(xmlSecBufferPtr buf,
-								 const xmlSecByte* data,
-								 xmlSecSize size);
-XMLSEC_EXPORT int		xmlSecBufferPrepend		(xmlSecBufferPtr buf,
-								 const xmlSecByte* data,
-								 xmlSecSize size);
-XMLSEC_EXPORT int		xmlSecBufferRemoveHead		(xmlSecBufferPtr buf,
-								 xmlSecSize size);
-XMLSEC_EXPORT int		xmlSecBufferRemoveTail		(xmlSecBufferPtr buf,
-								 xmlSecSize size);
+XMLSEC_EXPORT xmlSecBufferPtr   xmlSecBufferCreate              (xmlSecSize size);
+XMLSEC_EXPORT void              xmlSecBufferDestroy             (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferInitialize          (xmlSecBufferPtr buf,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT void              xmlSecBufferFinalize            (xmlSecBufferPtr buf);
+XMLSEC_EXPORT xmlSecByte*       xmlSecBufferGetData             (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferSetData             (xmlSecBufferPtr buf,
+                                                                 const xmlSecByte* data,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT xmlSecSize        xmlSecBufferGetSize             (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferSetSize             (xmlSecBufferPtr buf,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT xmlSecSize        xmlSecBufferGetMaxSize          (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferSetMaxSize          (xmlSecBufferPtr buf,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT void              xmlSecBufferEmpty               (xmlSecBufferPtr buf);
+XMLSEC_EXPORT int               xmlSecBufferAppend              (xmlSecBufferPtr buf,
+                                                                 const xmlSecByte* data,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT int               xmlSecBufferPrepend             (xmlSecBufferPtr buf,
+                                                                 const xmlSecByte* data,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT int               xmlSecBufferRemoveHead          (xmlSecBufferPtr buf,
+                                                                 xmlSecSize size);
+XMLSEC_EXPORT int               xmlSecBufferRemoveTail          (xmlSecBufferPtr buf,
+                                                                 xmlSecSize size);
 
-XMLSEC_EXPORT int		xmlSecBufferReadFile		(xmlSecBufferPtr buf,
-								 const char* filename);
+XMLSEC_EXPORT int               xmlSecBufferReadFile            (xmlSecBufferPtr buf,
+                                                                 const char* filename);
 
-XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
-								 xmlNodePtr node);
-XMLSEC_EXPORT int		xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,
-								 xmlNodePtr node,
-								 int columns);
+XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentRead(xmlSecBufferPtr buf,
+                                                                 xmlNodePtr node);
+XMLSEC_EXPORT int               xmlSecBufferBase64NodeContentWrite(xmlSecBufferPtr buf,
+                                                                 xmlNodePtr node,
+                                                                 int columns);
 
-XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer	(xmlSecBufferPtr buf);
+XMLSEC_EXPORT xmlOutputBufferPtr xmlSecBufferCreateOutputBuffer (xmlSecBufferPtr buf);
 
 
 #ifdef __cplusplus

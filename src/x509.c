@@ -29,9 +29,9 @@
 
 /**
  * xmlSecX509DataGetNodeContent:
- * @node:		the pointer to <dsig:X509Data/> node.
- * @deleteChildren:	the flag that indicates whether to remove node children after reading.
- * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> node processing context.
+ * @node:               the pointer to <dsig:X509Data/> node.
+ * @deleteChildren:     the flag that indicates whether to remove node children after reading.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
  *
  * Reads the contents of <dsig:X509Data/> node and returns it as
  * a bits mask.
@@ -41,7 +41,7 @@
  */
 int
 xmlSecX509DataGetNodeContent (xmlNodePtr node, int deleteChildren,
-			    xmlSecKeyInfoCtxPtr keyInfoCtx) {
+                            xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur, next;
     int deleteCurNode;
     int content = 0;
@@ -52,42 +52,42 @@ xmlSecX509DataGetNodeContent (xmlNodePtr node, int deleteChildren,
     /* determine the current node content */
     cur = xmlSecGetNextElementNode(node->children); 
     while(cur != NULL) {
-	deleteCurNode = 0;
-	if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
-	    if(xmlSecIsEmptyNode(cur) == 1) {
-		content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
-		deleteCurNode = 1;
-	    }
-	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
-	    if(xmlSecIsEmptyNode(cur) == 1) {
-    	        content |= XMLSEC_X509DATA_SUBJECTNAME_NODE;
-		deleteCurNode = 1;
-	    }
-	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
-	    if(xmlSecIsEmptyNode(cur) == 1) {
-		content |= XMLSEC_X509DATA_ISSUERSERIAL_NODE;
-		deleteCurNode = 1;
-	    }
-	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
-	    if(xmlSecIsEmptyNode(cur) == 1) {
-		content |= XMLSEC_X509DATA_SKI_NODE;
-		deleteCurNode = 1;
-	    }
-	} else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
-	    if(xmlSecIsEmptyNode(cur) == 1) {
-		content |= XMLSEC_X509DATA_CRL_NODE;
-		deleteCurNode = 1;
-	    }
-	} else {
-	    /* todo: fail on unknown child node? */
-	}
-	next = xmlSecGetNextElementNode(cur->next);
-	if((deleteCurNode != 0) && (deleteChildren != 0)) {
-	    /* remove "template" nodes */
-	    xmlUnlinkNode(cur);
-	    xmlFreeNode(cur);
-	}
-	cur = next;
+        deleteCurNode = 0;
+        if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {
+            if(xmlSecIsEmptyNode(cur) == 1) {
+                content |= XMLSEC_X509DATA_CERTIFICATE_NODE;
+                deleteCurNode = 1;
+            }
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SubjectName, xmlSecDSigNs)) {
+            if(xmlSecIsEmptyNode(cur) == 1) {
+                content |= XMLSEC_X509DATA_SUBJECTNAME_NODE;
+                deleteCurNode = 1;
+            }
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509IssuerSerial, xmlSecDSigNs)) {
+            if(xmlSecIsEmptyNode(cur) == 1) {
+                content |= XMLSEC_X509DATA_ISSUERSERIAL_NODE;
+                deleteCurNode = 1;
+            }
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509SKI, xmlSecDSigNs)) {
+            if(xmlSecIsEmptyNode(cur) == 1) {
+                content |= XMLSEC_X509DATA_SKI_NODE;
+                deleteCurNode = 1;
+            }
+        } else if(xmlSecCheckNodeName(cur, xmlSecNodeX509CRL, xmlSecDSigNs)) {
+            if(xmlSecIsEmptyNode(cur) == 1) {
+                content |= XMLSEC_X509DATA_CRL_NODE;
+                deleteCurNode = 1;
+            }
+        } else {
+            /* todo: fail on unknown child node? */
+        }
+        next = xmlSecGetNextElementNode(cur->next);
+        if((deleteCurNode != 0) && (deleteChildren != 0)) {
+            /* remove "template" nodes */
+            xmlUnlinkNode(cur);
+            xmlFreeNode(cur);
+        }
+        cur = next;
     }
 
     return (content);

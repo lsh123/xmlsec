@@ -18,15 +18,15 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
-XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr	xmlSecCryptoGetFunctions_skeleton(void);
+XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_skeleton(void);
 
 /**
  * Init shutdown
  */
-XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonInit		(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonShutdown		(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecSkeletonInit              (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecSkeletonShutdown          (void);
 
-XMLSEC_CRYPTO_EXPORT int		xmlSecSkeletonKeysMngrInit	(xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecSkeletonKeysMngrInit      (xmlSecKeysMngrPtr mngr);
 
 
 #ifdef __cplusplus

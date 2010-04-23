@@ -17,11 +17,11 @@
 #endif /* XMLSEC_PRIVATE */
 
 #ifndef XMLSEC_NO_XKMS
-	
+        
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-#include <stdio.h>		
+#include <stdio.h>              
 
 #include <libxml/tree.h>
 #include <libxml/parser.h> 
@@ -40,63 +40,63 @@ extern "C" {
  * XKMS RespondWith Klass
  *
  ************************************************************************/ 
-typedef int  		(*xmlSecXkmsRespondWithNodeReadMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-typedef int  		(*xmlSecXkmsRespondWithNodeWriteMethod)	(xmlSecXkmsRespondWithId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
+typedef int             (*xmlSecXkmsRespondWithNodeReadMethod)  (xmlSecXkmsRespondWithId id,
+                                                                 xmlSecXkmsServerCtxPtr ctx,
+                                                                 xmlNodePtr node);
+typedef int             (*xmlSecXkmsRespondWithNodeWriteMethod) (xmlSecXkmsRespondWithId id,
+                                                                 xmlSecXkmsServerCtxPtr ctx,
+                                                                 xmlNodePtr node);
 struct _xmlSecXkmsRespondWithKlass {
-    const xmlChar*				valueName;
-    const xmlChar*				valueNs;
+    const xmlChar*                              valueName;
+    const xmlChar*                              valueNs;
     
-    const xmlChar*				nodeName;
-    const xmlChar*				nodeNs;
+    const xmlChar*                              nodeName;
+    const xmlChar*                              nodeNs;
     
-    xmlSecXkmsRespondWithNodeReadMethod		readNode;
-    xmlSecXkmsRespondWithNodeWriteMethod	writeNode;
+    xmlSecXkmsRespondWithNodeReadMethod         readNode;
+    xmlSecXkmsRespondWithNodeWriteMethod        writeNode;
 
-    void*					reserved1;
-    void*					reserved2;
+    void*                                       reserved1;
+    void*                                       reserved2;
 };
 
 #define xmlSecXkmsRespondWithKlassGetName(id) \
-	((((id) != NULL) && ((id)->valueName != NULL)) ? (id)->valueName : NULL)
+        ((((id) != NULL) && ((id)->valueName != NULL)) ? (id)->valueName : NULL)
 
 /************************************************************************
  *
  * XKMS ServerRequest Klass
  *
  ************************************************************************/ 
-typedef int  			(*xmlSecXkmsServerRequestNodeReadMethod)
-								(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
-typedef int  			(*xmlSecXkmsServerRequestExecuteMethod)
-								(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx);
-typedef int  			(*xmlSecXkmsServerRequestNodeWriteMethod)
-								(xmlSecXkmsServerRequestId id,
-								 xmlSecXkmsServerCtxPtr ctx,
-								 xmlNodePtr node);
+typedef int                     (*xmlSecXkmsServerRequestNodeReadMethod)
+                                                                (xmlSecXkmsServerRequestId id,
+                                                                 xmlSecXkmsServerCtxPtr ctx,
+                                                                 xmlNodePtr node);
+typedef int                     (*xmlSecXkmsServerRequestExecuteMethod)
+                                                                (xmlSecXkmsServerRequestId id,
+                                                                 xmlSecXkmsServerCtxPtr ctx);
+typedef int                     (*xmlSecXkmsServerRequestNodeWriteMethod)
+                                                                (xmlSecXkmsServerRequestId id,
+                                                                 xmlSecXkmsServerCtxPtr ctx,
+                                                                 xmlNodePtr node);
 struct _xmlSecXkmsServerRequestKlass {
-    const xmlChar*				name;
-    const xmlChar*				requestNodeName;
-    const xmlChar*				requestNodeNs;
-    const xmlChar*				resultNodeName;
-    const xmlChar*				resultNodeNs;
-    xmlSecBitMask				flags;
+    const xmlChar*                              name;
+    const xmlChar*                              requestNodeName;
+    const xmlChar*                              requestNodeNs;
+    const xmlChar*                              resultNodeName;
+    const xmlChar*                              resultNodeNs;
+    xmlSecBitMask                               flags;
     
-    xmlSecXkmsServerRequestNodeReadMethod	readNode;
-    xmlSecXkmsServerRequestNodeWriteMethod	writeNode;
-    xmlSecXkmsServerRequestExecuteMethod	execute;
+    xmlSecXkmsServerRequestNodeReadMethod       readNode;
+    xmlSecXkmsServerRequestNodeWriteMethod      writeNode;
+    xmlSecXkmsServerRequestExecuteMethod        execute;
     
-    void*					reserved1;
-    void*					reserved2;
+    void*                                       reserved1;
+    void*                                       reserved2;
 };
 
 #define xmlSecXkmsServerRequestKlassGetName(id) \
-	((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
+        ((((id) != NULL) && ((id)->name != NULL)) ? (id)->name : NULL)
 
 
 /************************************************************************

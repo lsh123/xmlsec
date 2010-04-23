@@ -21,17 +21,17 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr 	xmlSecNssPKIAdoptKey           (SECKEYPrivateKey *privkey,
-									SECKEYPublicKey  *pubkey);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecNssPKIAdoptKey           (SECKEYPrivateKey *privkey,
+                                                                        SECKEYPublicKey  *pubkey);
 
-XMLSEC_CRYPTO_EXPORT SECKEYPublicKey*   xmlSecNssPKIKeyDataGetPubKey	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT SECKEYPublicKey*   xmlSecNssPKIKeyDataGetPubKey    (xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT SECKEYPrivateKey*  xmlSecNssPKIKeyDataGetPrivKey	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT SECKEYPrivateKey*  xmlSecNssPKIKeyDataGetPrivKey   (xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT KeyType  		xmlSecNssPKIKeyDataGetKeyType	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT KeyType            xmlSecNssPKIKeyDataGetKeyType   (xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT int              	xmlSecNssPKIKeyDataDuplicate    (xmlSecKeyDataPtr dst,
-		                                                         xmlSecKeyDataPtr src);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssPKIKeyDataDuplicate    (xmlSecKeyDataPtr dst,
+                                                                         xmlSecKeyDataPtr src);
 
 
 

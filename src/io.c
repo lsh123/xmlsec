@@ -45,15 +45,15 @@ typedef struct _xmlSecIOCallback {
     xmlInputCloseCallback closecallback;
 } xmlSecIOCallback, *xmlSecIOCallbackPtr;
 
-static xmlSecIOCallbackPtr	xmlSecIOCallbackCreate	(xmlInputMatchCallback matchFunc,
-							 xmlInputOpenCallback openFunc, 
-							 xmlInputReadCallback readFunc,
-							 xmlInputCloseCallback closeFunc);
-static void			xmlSecIOCallbackDestroy	(xmlSecIOCallbackPtr callbacks);
+static xmlSecIOCallbackPtr      xmlSecIOCallbackCreate  (xmlInputMatchCallback matchFunc,
+                                                         xmlInputOpenCallback openFunc, 
+                                                         xmlInputReadCallback readFunc,
+                                                         xmlInputCloseCallback closeFunc);
+static void                     xmlSecIOCallbackDestroy (xmlSecIOCallbackPtr callbacks);
 
 static xmlSecIOCallbackPtr 
 xmlSecIOCallbackCreate(xmlInputMatchCallback matchFunc, xmlInputOpenCallback openFunc, 
-		       xmlInputReadCallback readFunc, xmlInputCloseCallback closeFunc) {
+                       xmlInputReadCallback readFunc, xmlInputCloseCallback closeFunc) {
     xmlSecIOCallbackPtr callbacks;
     
     xmlSecAssert2(matchFunc != NULL, NULL);
@@ -61,13 +61,13 @@ xmlSecIOCallbackCreate(xmlInputMatchCallback matchFunc, xmlInputOpenCallback ope
     /* Allocate a new xmlSecIOCallback and fill the fields. */
     callbacks = (xmlSecIOCallbackPtr)xmlMalloc(sizeof(xmlSecIOCallback));
     if(callbacks == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecIOCallback)=%d", 
-		    sizeof(xmlSecIOCallback));
-	return(NULL);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "sizeof(xmlSecIOCallback)=%d", 
+                    sizeof(xmlSecIOCallback));
+        return(NULL);
     }
     memset(callbacks, 0, sizeof(xmlSecIOCallback));    
 
@@ -94,16 +94,16 @@ xmlSecIOCallbackDestroy(xmlSecIOCallbackPtr callbacks) {
  ******************************************************************/
 static xmlSecPtrListKlass xmlSecIOCallbackPtrListKlass = {
     BAD_CAST "io-callbacks-list",
-    NULL, 						/* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    NULL,                                               /* xmlSecPtrDuplicateItemMethod duplicateItem; */
     (xmlSecPtrDestroyItemMethod)xmlSecIOCallbackDestroy,/* xmlSecPtrDestroyItemMethod destroyItem; */
-    NULL,  					  	/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    NULL						/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    NULL,                                               /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL                                                /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
-#define xmlSecIOCallbackPtrListId	xmlSecIOCallbackPtrListGetKlass	()
-static xmlSecPtrListId 			xmlSecIOCallbackPtrListGetKlass	(void);
-static xmlSecIOCallbackPtr		xmlSecIOCallbackPtrListFind	(xmlSecPtrListPtr list,
-									 const char* uri);
+#define xmlSecIOCallbackPtrListId       xmlSecIOCallbackPtrListGetKlass ()
+static xmlSecPtrListId                  xmlSecIOCallbackPtrListGetKlass (void);
+static xmlSecIOCallbackPtr              xmlSecIOCallbackPtrListFind     (xmlSecPtrListPtr list,
+                                                                         const char* uri);
 
 /**
  * xmlSecIOCallbackPtrListGetKlass: 
@@ -127,13 +127,13 @@ xmlSecIOCallbackPtrListFind(xmlSecPtrListPtr list, const char* uri) {
 
     size = xmlSecPtrListGetSize(list);
     for(i = 0; i < size; ++i) {
-	callbacks = (xmlSecIOCallbackPtr)xmlSecPtrListGetItem(list, i);
-	xmlSecAssert2(callbacks != NULL, NULL);	
-	xmlSecAssert2(callbacks->matchcallback != NULL, NULL);	
-	
-	if((callbacks->matchcallback(uri)) != 0) {
-	    return(callbacks);
-	}
+        callbacks = (xmlSecIOCallbackPtr)xmlSecPtrListGetItem(list, i);
+        xmlSecAssert2(callbacks != NULL, NULL); 
+        xmlSecAssert2(callbacks->matchcallback != NULL, NULL);  
+        
+        if((callbacks->matchcallback(uri)) != 0) {
+            return(callbacks);
+        }
     }
     return(NULL);
 }
@@ -154,11 +154,11 @@ xmlSecIOInit(void) {
     
     ret = xmlSecPtrListInitialize(&xmlSecAllIOCallbacks, xmlSecIOCallbackPtrListId);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecPtrListPtrInitialize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListPtrInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
 
@@ -206,10 +206,10 @@ xmlSecIOCleanupCallbacks(void) {
 
 /**
  * xmlSecIORegisterCallbacks:
- * @matchFunc:  	the protocol match callback.
- * @openFunc:  		the open stream callback.
- * @readFunc:  		the read from stream callback.
- * @closeFunc:  	the close stream callback.
+ * @matchFunc:          the protocol match callback.
+ * @openFunc:           the open stream callback.
+ * @readFunc:           the read from stream callback.
+ * @closeFunc:          the close stream callback.
  *
  * Register a new set of I/O callback for handling parser input.
  *
@@ -217,8 +217,8 @@ xmlSecIOCleanupCallbacks(void) {
  */
 int
 xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
-	xmlInputOpenCallback openFunc, xmlInputReadCallback readFunc,
-	xmlInputCloseCallback closeFunc) {
+        xmlInputOpenCallback openFunc, xmlInputReadCallback readFunc,
+        xmlInputCloseCallback closeFunc) {
     xmlSecIOCallbackPtr callbacks;
     int ret;
     
@@ -226,23 +226,23 @@ xmlSecIORegisterCallbacks(xmlInputMatchCallback matchFunc,
     
     callbacks = xmlSecIOCallbackCreate(matchFunc, openFunc, readFunc, closeFunc);
     if(callbacks == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecIOCallbackCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecIOCallbackCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
     ret = xmlSecPtrListAdd(&xmlSecAllIOCallbacks, callbacks);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecPtrListAdd",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecIOCallbackDestroy(callbacks);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListAdd",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecIOCallbackDestroy(callbacks);
+        return(-1);
     }
     return(0);
 }
@@ -261,39 +261,39 @@ xmlSecIORegisterDefaultCallbacks(void) {
     
 #ifdef LIBXML_HTTP_ENABLED
     ret = xmlSecIORegisterCallbacks(xmlIOHTTPMatch, xmlIOHTTPOpen,
-	                      xmlIOHTTPRead, xmlIOHTTPClose);
+                              xmlIOHTTPRead, xmlIOHTTPClose);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecIORegisterCallbacks",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "http");
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecIORegisterCallbacks",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "http");
+        return(-1);
     }
 #endif /* LIBXML_HTTP_ENABLED */
 
 #ifdef LIBXML_FTP_ENABLED
     ret = xmlSecIORegisterCallbacks(xmlIOFTPMatch, xmlIOFTPOpen,
-	                      xmlIOFTPRead, xmlIOFTPClose);
+                              xmlIOFTPRead, xmlIOFTPClose);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecIORegisterCallbacks",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "ftp");
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecIORegisterCallbacks",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "ftp");
+        return(-1);
     }
 #endif /* LIBXML_FTP_ENABLED */
 
     ret = xmlSecIORegisterCallbacks(xmlFileMatch, xmlFileOpen,
-	                      xmlFileRead, xmlFileClose);
+                              xmlFileRead, xmlFileClose);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecIORegisterCallbacks",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "file");
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecIORegisterCallbacks",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "file");
+        return(-1);
     }
 
     return(0);
@@ -301,7 +301,7 @@ xmlSecIORegisterDefaultCallbacks(void) {
 
 
 
-								
+                                                                
 /**************************************************************
  *
  * Input URI Transform
@@ -309,52 +309,52 @@ xmlSecIORegisterDefaultCallbacks(void) {
  * xmlSecInputURICtx is located after xmlSecTransform
  * 
  **************************************************************/
-typedef struct _xmlSecInputURICtx				xmlSecInputURICtx,
-								*xmlSecInputURICtxPtr;
+typedef struct _xmlSecInputURICtx                               xmlSecInputURICtx,
+                                                                *xmlSecInputURICtxPtr;
 struct _xmlSecInputURICtx {
-    xmlSecIOCallbackPtr		clbks;
-    void*			clbksCtx;
+    xmlSecIOCallbackPtr         clbks;
+    void*                       clbksCtx;
 };
 #define xmlSecTransformInputUriSize \
-	(sizeof(xmlSecTransform) + sizeof(xmlSecInputURICtx))
+        (sizeof(xmlSecTransform) + sizeof(xmlSecInputURICtx))
 #define xmlSecTransformInputUriGetCtx(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecTransformInputUriSize)) ? \
-	(xmlSecInputURICtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-	(xmlSecInputURICtxPtr)NULL)
+        (xmlSecInputURICtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
+        (xmlSecInputURICtxPtr)NULL)
 
-static int		xmlSecTransformInputURIInitialize	(xmlSecTransformPtr transform);
-static void		xmlSecTransformInputURIFinalize		(xmlSecTransformPtr transform);
-static int		xmlSecTransformInputURIPopBin		(xmlSecTransformPtr transform, 
-								 xmlSecByte* data,
-								 xmlSecSize maxDataSize,
-								 xmlSecSize* dataSize,
-								 xmlSecTransformCtxPtr transformCtx);
+static int              xmlSecTransformInputURIInitialize       (xmlSecTransformPtr transform);
+static void             xmlSecTransformInputURIFinalize         (xmlSecTransformPtr transform);
+static int              xmlSecTransformInputURIPopBin           (xmlSecTransformPtr transform, 
+                                                                 xmlSecByte* data,
+                                                                 xmlSecSize maxDataSize,
+                                                                 xmlSecSize* dataSize,
+                                                                 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecTransformInputURIKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecTransformInputUriSize,		/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecTransformInputUriSize,                /* xmlSecSize objSize */
 
-    BAD_CAST "input-uri",			/* const xmlChar* name; */
-    NULL,					/* const xmlChar* href; */
-    0,						/* xmlSecAlgorithmUsage usage; */
+    BAD_CAST "input-uri",                       /* const xmlChar* name; */
+    NULL,                                       /* const xmlChar* href; */
+    0,                                          /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecTransformInputURIInitialize, 		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformInputURIFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformInputURIPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    NULL,					/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformInputURIInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformInputURIFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformInputURIPopBin,              /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    NULL,                                       /* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -371,8 +371,8 @@ xmlSecTransformInputURIGetKlass(void) {
 
 /** 
  * xmlSecTransformInputURIOpen:
- * @transform: 		the pointer to IO transform.
- * @uri: 		the URL to open.
+ * @transform:          the pointer to IO transform.
+ * @uri:                the URL to open.
  *
  * Opens the given @uri for reading.
  *
@@ -396,16 +396,16 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
      * try with an unescaped version of the uri
      */
     if(ctx->clbks == NULL) {
-	char *unescaped;
+        char *unescaped;
     
         unescaped = xmlURIUnescapeString((char*)uri, 0, NULL);
-	if (unescaped != NULL) {
-	    ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, unescaped);
-	    if(ctx->clbks != NULL) {
-		ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
-	    }
-	    xmlFree(unescaped);
-	}
+        if (unescaped != NULL) {
+            ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, unescaped);
+            if(ctx->clbks != NULL) {
+                ctx->clbksCtx = ctx->clbks->opencallback(unescaped);
+            }
+            xmlFree(unescaped);
+        }
     }
 
     /*
@@ -413,21 +413,21 @@ xmlSecTransformInputURIOpen(xmlSecTransformPtr transform, const xmlChar *uri) {
      * filename
      */
     if (ctx->clbks == NULL) {
-	ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
-	if(ctx->clbks != NULL) {
-	    ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
-	}
+        ctx->clbks = xmlSecIOCallbackPtrListFind(&xmlSecAllIOCallbacks, (char*)uri);
+        if(ctx->clbks != NULL) {
+            ctx->clbksCtx = ctx->clbks->opencallback((char*)uri);
+        }
     }
 
     if((ctx->clbks == NULL) || (ctx->clbksCtx == NULL)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "opencallback",
-		    XMLSEC_ERRORS_R_IO_FAILED,
-		    "uri=%s;errno=%d", 
-		    xmlSecErrorsSafeString(uri),
-		    errno);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "opencallback",
+                    XMLSEC_ERRORS_R_IO_FAILED,
+                    "uri=%s;errno=%d", 
+                    xmlSecErrorsSafeString(uri),
+                    errno);
+        return(-1);
     }
     
     return(0);
@@ -456,19 +456,19 @@ xmlSecTransformInputURIFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(ctx != NULL);
 
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->closecallback != NULL)) {
-	(ctx->clbks->closecallback)(ctx->clbksCtx);
+        (ctx->clbks->closecallback)(ctx->clbksCtx);
     }
     memset(ctx, 0, sizeof(xmlSecInputURICtx));
 }
 
 static int 
 xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
-			      xmlSecSize maxDataSize, xmlSecSize* dataSize, 
-			      xmlSecTransformCtxPtr transformCtx) {
+                              xmlSecSize maxDataSize, xmlSecSize* dataSize, 
+                              xmlSecTransformCtxPtr transformCtx) {
     xmlSecInputURICtxPtr ctx;
 
     int ret;
-    			    
+                            
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformInputURIId), -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize != NULL, -1);
@@ -479,17 +479,17 @@ xmlSecTransformInputURIPopBin(xmlSecTransformPtr transform, xmlSecByte* data,
     
     if((ctx->clbksCtx != NULL) && (ctx->clbks != NULL) && (ctx->clbks->readcallback != NULL)) {
         ret = (ctx->clbks->readcallback)(ctx->clbksCtx, (char*)data, (int)maxDataSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"readcallback",
-			XMLSEC_ERRORS_R_IO_FAILED,
-			"errno=%d", errno);
-	    return(-1);
-	}
-	(*dataSize) = ret;
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "readcallback",
+                        XMLSEC_ERRORS_R_IO_FAILED,
+                        "errno=%d", errno);
+            return(-1);
+        }
+        (*dataSize) = ret;
     } else {
-	(*dataSize) = 0;
+        (*dataSize) = 0;
     }
     return(0);
 }

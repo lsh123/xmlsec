@@ -28,36 +28,36 @@
  *  Enveloped transform 
  *
  *************************************************************************/
-static int 	xmlSecTransformEnvelopedExecute		(xmlSecTransformPtr transform,
-							 int last, 
-							 xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecTransformEnvelopedExecute         (xmlSecTransformPtr transform,
+                                                         int last, 
+                                                         xmlSecTransformCtxPtr transformCtx);
 
 
 static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    sizeof(xmlSecTransform),			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    sizeof(xmlSecTransform),                    /* xmlSecSize objSize */
 
-    xmlSecNameEnveloped,			/* const xmlChar* name; */
-    xmlSecHrefEnveloped,			/* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    xmlSecNameEnveloped,                        /* const xmlChar* name; */
+    xmlSecHrefEnveloped,                        /* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
     
-    NULL,					/* xmlSecTransformInitializeMethod initialize; */
-    NULL,					/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */    
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformEnvelopedExecute,		/* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* xmlSecTransformInitializeMethod initialize; */
+    NULL,                                       /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */    
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,              /* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,               /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformEnvelopedExecute,            /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -94,7 +94,7 @@ xmlSecTransformEnvelopedGetKlass(void) {
 
 static int
 xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, 
-				 xmlSecTransformCtxPtr transformCtx) {
+                                 xmlSecTransformCtxPtr transformCtx) {
     xmlNodePtr node;
     xmlSecNodeSetPtr children;
 
@@ -105,46 +105,46 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(transformCtx != NULL, -1);
     
     if((transform->inNodes != NULL) && (transform->inNodes->doc != transform->hereNode->doc)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_TRANSFORM_SAME_DOCUMENT_REQUIRED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
     /* find signature node and get all its children in the nodes set */
     node = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(xmlSecNodeSignature),
-		    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    xmlSecErrorsSafeString(xmlSecNodeSignature),
+                    XMLSEC_ERRORS_R_NODE_NOT_FOUND,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
     children = xmlSecNodeSetGetChildren(node->doc, node, 1, 1);
     if(children == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecNodeSetGetChildren",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "node=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecNodeSetGetChildren",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)));
+        return(-1);
     }
 
     /* intersect <dsig:Signature/> node children with input nodes (if exist) */
     transform->outNodes = xmlSecNodeSetAdd(transform->inNodes, children, xmlSecNodeSetIntersection);
     if(transform->outNodes == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecNodeSetAdd",		    
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecNodeSetDestroy(children);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecNodeSetAdd",             
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecNodeSetDestroy(children);
+        return(-1);
     }
     
     return(0);

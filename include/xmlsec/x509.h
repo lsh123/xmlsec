@@ -10,11 +10,11 @@
 #define __XMLSEC_X509_H__    
 
 #ifndef XMLSEC_NO_X509
-	
+        
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */ 
-#include <stdio.h>		
+#include <stdio.h>              
 
 #include <libxml/tree.h>
 #include <libxml/parser.h> 
@@ -32,43 +32,43 @@ extern "C" {
  *
  * <dsig:X509Certificate/> node found or would be written back.
  */
-#define XMLSEC_X509DATA_CERTIFICATE_NODE			0x00000001
+#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
 /**
  * XMLSEC_X509DATA_SUBJECTNAME_NODE:
  *
  * <dsig:X509SubjectName/> node found or would be written back.
  */
-#define XMLSEC_X509DATA_SUBJECTNAME_NODE			0x00000002
+#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
 /**
  * XMLSEC_X509DATA_ISSUERSERIAL_NODE:
  *
  * <dsig:X509IssuerSerial/> node found or would be written back.
  */
-#define XMLSEC_X509DATA_ISSUERSERIAL_NODE			0x00000004
+#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
 /**
  * XMLSEC_X509DATA_SKI_NODE:
  *
  * <dsig:/X509SKI> node found or would be written back.
  */
-#define XMLSEC_X509DATA_SKI_NODE				0x00000008
+#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
 /**
  * XMLSEC_X509DATA_CRL_NODE:
  *
  * <dsig:X509CRL/> node found or would be written back.
  */
-#define XMLSEC_X509DATA_CRL_NODE				0x00000010
+#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
 /**
  * XMLSEC_X509DATA_DEFAULT:
  *
  * Default set of nodes to write in case of empty
  * <dsig:X509Data/> node template.
  */
-#define XMLSEC_X509DATA_DEFAULT	\
-	(XMLSEC_X509DATA_CERTIFICATE_NODE | XMLSEC_X509DATA_CRL_NODE)
-	    
-XMLSEC_EXPORT int		xmlSecX509DataGetNodeContent 	(xmlNodePtr node, 
-								 int deleteChildren,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+#define XMLSEC_X509DATA_DEFAULT \
+        (XMLSEC_X509DATA_CERTIFICATE_NODE | XMLSEC_X509DATA_CRL_NODE)
+            
+XMLSEC_EXPORT int               xmlSecX509DataGetNodeContent    (xmlNodePtr node, 
+                                                                 int deleteChildren,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 #ifdef __cplusplus
 }

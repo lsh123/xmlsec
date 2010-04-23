@@ -6,11 +6,11 @@
  * key's file name in the current folder.
  * 
  * Usage: 
- *	./decrypt3 <xml-enc> 
+ *      ./decrypt3 <xml-enc> 
  *
  * Example:
- *	./decrypt3 encrypt1-res.xml
- *	./decrypt3 encrypt2-res.xml
+ *      ./decrypt3 encrypt1-res.xml
+ *      ./decrypt3 encrypt2-res.xml
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -46,9 +46,9 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 2) {
-	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <enc-file>\n", argv[0]);
-	return(1);
+        fprintf(stderr, "Error: wrong number of arguments.\n");
+        fprintf(stderr, "Usage: %s <enc-file>\n", argv[0]);
+        return(1);
     }
 
     /* Init libxml and libxslt libraries */
@@ -59,17 +59,17 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1; 
 #endif /* XMLSEC_NO_XSLT */
-        	
+                
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec initialization failed.\n");
+        return(-1);
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
-	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-	return(-1);
+        fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+        return(-1);
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -79,34 +79,34 @@ main(int argc, char **argv) {
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) < 0) {
-	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
-			"that you have it installed and check shared libraries path\n"
-			"(LD_LIBRARY_PATH) envornment variable.\n");
-	return(-1);	
+        fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+                        "that you have it installed and check shared libraries path\n"
+                        "(LD_LIBRARY_PATH) envornment variable.\n");
+        return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: crypto initialization failed.\n");
+        return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+        return(-1);
     }
 
     /* create keys manager and load keys */
     mngr = create_files_keys_mngr();
     if(mngr == NULL) {
-	return(-1);
+        return(-1);
     }
 
     if(decrypt_file(mngr, argv[1]) < 0) {
-	xmlSecKeysMngrDestroy(mngr);	
-	return(-1);
+        xmlSecKeysMngrDestroy(mngr);    
+        return(-1);
     }    
 
     /* destroy keys manager */
@@ -132,8 +132,8 @@ main(int argc, char **argv) {
 
 /**
  * decrypt_file:
- * @mngr:		the pointer to keys manager.
- * @enc_file:		the encrypted XML  file name.
+ * @mngr:               the pointer to keys manager.
+ * @enc_file:           the encrypted XML  file name.
  *
  * Decrypts the XML file #enc_file using DES key from #key_file and 
  * prints results to stdout.
@@ -153,42 +153,42 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
     /* load template */
     doc = xmlParseFile(enc_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
-	goto done;	
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", enc_file);
+        goto done;      
     }
     
     /* find start node */
     node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeEncryptedData, xmlSecEncNs);
     if(node == NULL) {
-	fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
-	goto done;	
+        fprintf(stderr, "Error: start node not found in \"%s\"\n", enc_file);
+        goto done;      
     }
 
     /* create encryption context */
     encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
         fprintf(stderr,"Error: failed to create encryption context\n");
-	goto done;
+        goto done;
     }
 
     /* decrypt the data */
     if((xmlSecEncCtxDecrypt(encCtx, node) < 0) || (encCtx->result == NULL)) {
         fprintf(stderr,"Error: decryption failed\n");
-	goto done;
+        goto done;
     }
         
     /* print decrypted data to stdout */
     if(encCtx->resultReplaced != 0) {
-	fprintf(stdout, "Decrypted XML data:\n");
-	xmlDocDump(stdout, doc);
+        fprintf(stdout, "Decrypted XML data:\n");
+        xmlDocDump(stdout, doc);
     } else {
-	fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
-	if(xmlSecBufferGetData(encCtx->result) != NULL) {
-	    fwrite(xmlSecBufferGetData(encCtx->result), 
-	          1, 
-	          xmlSecBufferGetSize(encCtx->result),
-	          stdout);
-	}
+        fprintf(stdout, "Decrypted binary data (%d bytes):\n", xmlSecBufferGetSize(encCtx->result));
+        if(xmlSecBufferGetData(encCtx->result) != NULL) {
+            fwrite(xmlSecBufferGetData(encCtx->result), 
+                  1, 
+                  xmlSecBufferGetSize(encCtx->result),
+                  stdout);
+        }
     }
     fprintf(stdout, "\n");
         
@@ -198,11 +198,11 @@ decrypt_file(xmlSecKeysMngrPtr mngr, const char* enc_file) {
 done:    
     /* cleanup */
     if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
+        xmlSecEncCtxDestroy(encCtx);
     }
     
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+        xmlFreeDoc(doc); 
     }
     return(res);
 }
@@ -223,31 +223,31 @@ create_files_keys_mngr(void) {
     /* create files based keys store */
     keysStore = xmlSecKeyStoreCreate(files_keys_store_get_klass());
     if(keysStore == NULL) {
-	fprintf(stderr, "Error: failed to create keys store.\n");
-	return(NULL);
+        fprintf(stderr, "Error: failed to create keys store.\n");
+        return(NULL);
     }
     
     /* create keys manager */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
-	xmlSecKeyStoreDestroy(keysStore);
-	return(NULL);
+        fprintf(stderr, "Error: failed to create keys manager.\n");
+        xmlSecKeyStoreDestroy(keysStore);
+        return(NULL);
     }
 
     /* add store to keys manager, from now on keys manager destroys the store if needed */
     if(xmlSecKeysMngrAdoptKeysStore(mngr, keysStore) < 0) {
-	fprintf(stderr, "Error: failed to add keys store to keys manager.\n");
-	xmlSecKeyStoreDestroy(keysStore);
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
+        fprintf(stderr, "Error: failed to add keys store to keys manager.\n");
+        xmlSecKeyStoreDestroy(keysStore);
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
     }
     
     /* initialize crypto library specific data in keys manager */
     if(xmlSecCryptoKeysMngrInit(mngr) < 0) {
-	fprintf(stderr, "Error: failed to initialize crypto data in keys manager.\n");
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
+        fprintf(stderr, "Error: failed to initialize crypto data in keys manager.\n");
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
     }
 
     /* set the get key callback */
@@ -263,20 +263,20 @@ create_files_keys_mngr(void) {
  * Attention: this probably not a good solution for high traffic systems.
  * 
  ***************************************************************************/
-static xmlSecKeyPtr		files_keys_store_find_key	(xmlSecKeyStorePtr store,
-								 const xmlChar* name,
-								 xmlSecKeyInfoCtxPtr keyInfoCtx);
+static xmlSecKeyPtr             files_keys_store_find_key       (xmlSecKeyStorePtr store,
+                                                                 const xmlChar* name,
+                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 static xmlSecKeyStoreKlass files_keys_store_klass = {
     sizeof(xmlSecKeyStoreKlass),
     sizeof(xmlSecKeyStore),
-    BAD_CAST "files-based-keys-store",	/* const xmlChar* name; */         
-    NULL,				/* xmlSecKeyStoreInitializeMethod initialize; */
-    NULL,				/* xmlSecKeyStoreFinalizeMethod finalize; */
-    files_keys_store_find_key,		/* xmlSecKeyStoreFindKeyMethod findKey; */
+    BAD_CAST "files-based-keys-store",  /* const xmlChar* name; */         
+    NULL,                               /* xmlSecKeyStoreInitializeMethod initialize; */
+    NULL,                               /* xmlSecKeyStoreFinalizeMethod finalize; */
+    files_keys_store_find_key,          /* xmlSecKeyStoreFindKeyMethod findKey; */
 
     /* reserved for the future */
-    NULL,				/* void* reserved0; */
-    NULL,				/* void* reserved1; */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
 };
 
 /**
@@ -294,9 +294,9 @@ files_keys_store_get_klass(void) {
 
 /**
  * files_keys_store_find_key:
- * @store:		the pointer to simple keys store.
- * @name:		the desired key name.
- * @keyInfoCtx:		the pointer to <dsig:KeyInfo/> node processing context.
+ * @store:              the pointer to simple keys store.
+ * @name:               the desired key name.
+ * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> node processing context.
  *  
  * Lookups key in the @store. The caller is responsible for destroying
  * returned key with #xmlSecKeyDestroy function.
@@ -314,7 +314,7 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
     /* it's possible to do not have the key name or desired key type 
      * but we could do nothing in this case */
     if((name == NULL) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataIdUnknown)){
-	return(NULL);
+        return(NULL);
     }
     
     /* we don't want to open files in a folder other than "current";
@@ -322,32 +322,32 @@ files_keys_store_find_key(xmlSecKeyStorePtr store, const xmlChar* name, xmlSecKe
      * '.', '-' or '_'.
      */
     for(p = name; (*p) != '\0'; ++p) {
-	if(!isalnum((*p)) && ((*p) != '.') && ((*p) != '-') && ((*p) != '_')) {
-	    return(NULL);
-	}
+        if(!isalnum((*p)) && ((*p) != '.') && ((*p) != '-') && ((*p) != '_')) {
+            return(NULL);
+        }
     }
     
     if((keyInfoCtx->keyReq.keyId == xmlSecKeyDataDsaId) || (keyInfoCtx->keyReq.keyId == xmlSecKeyDataRsaId)) {
-	/* load key from a pem file, if key is not found then it's an error (is it?) */
-	key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
-	    return(NULL);
-	}
+        /* load key from a pem file, if key is not found then it's an error (is it?) */
+        key = xmlSecCryptoAppKeyLoad(name, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
+        if(key == NULL) {
+            fprintf(stderr,"Error: failed to load public pem key from \"%s\"\n", name);
+            return(NULL);
+        }
     } else {
-	/* otherwise it's a binary key, if key is not found then it's an error (is it?) */
-	key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
-	if(key == NULL) {
-    	    fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
-	    return(NULL);
-	}
+        /* otherwise it's a binary key, if key is not found then it's an error (is it?) */
+        key = xmlSecKeyReadBinaryFile(keyInfoCtx->keyReq.keyId, name);
+        if(key == NULL) {
+            fprintf(stderr,"Error: failed to load key from binary file \"%s\"\n", name);
+            return(NULL);
+        }
     }
 
     /* set key name */
     if(xmlSecKeySetName(key, name) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", name);
         xmlSecKeyDestroy(key);
-        return(NULL);	
+        return(NULL);   
     }
 
     return(key);

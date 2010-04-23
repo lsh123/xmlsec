@@ -21,16 +21,16 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 
-XMLSEC_EXPORT xmlDocPtr		xmlSecParseFile		(const char *filename);
-XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemory	(const xmlSecByte *buffer, 
-							 xmlSecSize size,
-							 int recovery);
-XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const xmlSecByte *prefix, 
-							 xmlSecSize prefixSize,
-							 const xmlSecByte *buffer, 
-							 xmlSecSize bufferSize, 
-							 const xmlSecByte *postfix, 
-							 xmlSecSize postfixSize);
+XMLSEC_EXPORT xmlDocPtr         xmlSecParseFile         (const char *filename);
+XMLSEC_EXPORT xmlDocPtr         xmlSecParseMemory       (const xmlSecByte *buffer, 
+                                                         xmlSecSize size,
+                                                         int recovery);
+XMLSEC_EXPORT xmlDocPtr         xmlSecParseMemoryExt    (const xmlSecByte *prefix, 
+                                                         xmlSecSize prefixSize,
+                                                         const xmlSecByte *buffer, 
+                                                         xmlSecSize bufferSize, 
+                                                         const xmlSecByte *postfix, 
+                                                         xmlSecSize postfixSize);
 
 
 /**
@@ -39,8 +39,8 @@ XMLSEC_EXPORT xmlDocPtr		xmlSecParseMemoryExt	(const xmlSecByte *prefix,
  * The XML Parser transform klass.
  */
 #define xmlSecTransformXmlParserId \
-	xmlSecTransformXmlParserGetKlass()
-XMLSEC_EXPORT xmlSecTransformId	xmlSecTransformXmlParserGetKlass	(void);
+        xmlSecTransformXmlParserGetKlass()
+XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXmlParserGetKlass        (void);
 
 
 #ifdef __cplusplus

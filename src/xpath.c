@@ -29,8 +29,8 @@
 /**************************************************************************
  *
  * xmlSecXPathHereFunction:
- * @ctxt:		the ponter to XPath context.
- * @nargs:		the arguments nubmer.
+ * @ctxt:               the ponter to XPath context.
+ * @nargs:              the arguments nubmer.
  *
  * The implementation of XPath "here()" function.
  * See xmlXPtrHereFunction() in xpointer.c. the only change is that 
@@ -42,7 +42,7 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
     CHECK_ARITY(0);
 
     if((ctxt == NULL) || (ctxt->context == NULL) || (ctxt->context->here == NULL)) {
-	XP_ERROR(XPTR_SYNTAX_ERROR);
+        XP_ERROR(XPTR_SYNTAX_ERROR);
     }
     valuePush(ctxt, xmlXPathNewNodeSet(ctxt->context->here));
 }
@@ -52,8 +52,8 @@ xmlSecXPathHereFunction(xmlXPathParserContextPtr ctxt, int nargs) {
  * XPath/XPointer data
  *
  *****************************************************************************/
-typedef struct _xmlSecXPathData			xmlSecXPathData,
-						*xmlSecXPathDataPtr;
+typedef struct _xmlSecXPathData                 xmlSecXPathData,
+                                                *xmlSecXPathDataPtr;
 typedef enum {
     xmlSecXPathDataTypeXPath,
     xmlSecXPathDataTypeXPath2,
@@ -61,24 +61,24 @@ typedef enum {
 } xmlSecXPathDataType;
 
 struct _xmlSecXPathData {
-    xmlSecXPathDataType			type;
-    xmlXPathContextPtr			ctx;
-    xmlChar*				expr;
-    xmlSecNodeSetOp			nodeSetOp;
-    xmlSecNodeSetType			nodeSetType;    
+    xmlSecXPathDataType                 type;
+    xmlXPathContextPtr                  ctx;
+    xmlChar*                            expr;
+    xmlSecNodeSetOp                     nodeSetOp;
+    xmlSecNodeSetType                   nodeSetType;    
 };
 
-static xmlSecXPathDataPtr 	xmlSecXPathDataCreate		(xmlSecXPathDataType type);
-static void		  	xmlSecXPathDataDestroy		(xmlSecXPathDataPtr data);
-static int		  	xmlSecXPathDataSetExpr		(xmlSecXPathDataPtr data,
-								 const xmlChar* expr);
-static int 			xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, 
-								 xmlNodePtr node);
-static int		  	xmlSecXPathDataNodeRead		(xmlSecXPathDataPtr data,
-								 xmlNodePtr node);
-static xmlSecNodeSetPtr		xmlSecXPathDataExecute		(xmlSecXPathDataPtr data,
-								 xmlDocPtr doc,
-								 xmlNodePtr hereNode);
+static xmlSecXPathDataPtr       xmlSecXPathDataCreate           (xmlSecXPathDataType type);
+static void                     xmlSecXPathDataDestroy          (xmlSecXPathDataPtr data);
+static int                      xmlSecXPathDataSetExpr          (xmlSecXPathDataPtr data,
+                                                                 const xmlChar* expr);
+static int                      xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, 
+                                                                 xmlNodePtr node);
+static int                      xmlSecXPathDataNodeRead         (xmlSecXPathDataPtr data,
+                                                                 xmlNodePtr node);
+static xmlSecNodeSetPtr         xmlSecXPathDataExecute          (xmlSecXPathDataPtr data,
+                                                                 xmlDocPtr doc,
+                                                                 xmlNodePtr hereNode);
 
 static xmlSecXPathDataPtr  
 xmlSecXPathDataCreate(xmlSecXPathDataType type) {
@@ -86,13 +86,13 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
 
     data = (xmlSecXPathDataPtr) xmlMalloc(sizeof(xmlSecXPathData));
     if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "sizeof(xmlSecXPathData)=%d",
-		    sizeof(xmlSecXPathData));
-	return(NULL);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "sizeof(xmlSecXPathData)=%d",
+                    sizeof(xmlSecXPathData));
+        return(NULL);
     }
     memset(data, 0, sizeof(xmlSecXPathData)); 
 
@@ -103,43 +103,43 @@ xmlSecXPathDataCreate(xmlSecXPathDataType type) {
     switch(data->type) {
     case xmlSecXPathDataTypeXPath:    
     case xmlSecXPathDataTypeXPath2:    
-	data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
-	if(data->ctx == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlXPathNewContext",
-			XMLSEC_ERRORS_R_XML_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecXPathDataDestroy(data);
-	    return(NULL);
-	}
-	break;
+        data->ctx = xmlXPathNewContext(NULL); /* we'll set doc in the context later */
+        if(data->ctx == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlXPathNewContext",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXPathDataDestroy(data);
+            return(NULL);
+        }
+        break;
     case xmlSecXPathDataTypeXPointer:    
-	data->ctx = xmlXPtrNewContext(NULL, NULL, NULL); /* we'll set doc in the context later */
-	if(data->ctx == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlXPtrNewContext",
-			XMLSEC_ERRORS_R_XML_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecXPathDataDestroy(data);
-	    return(NULL);
-	}
-	break;
+        data->ctx = xmlXPtrNewContext(NULL, NULL, NULL); /* we'll set doc in the context later */
+        if(data->ctx == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlXPtrNewContext",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXPathDataDestroy(data);
+            return(NULL);
+        }
+        break;
     }
 
     return(data);
 }
 
-static void				
+static void                             
 xmlSecXPathDataDestroy(xmlSecXPathDataPtr data) {
     xmlSecAssert(data != NULL);    
 
     if(data->expr != NULL) {
-	xmlFree(data->expr);
+        xmlFree(data->expr);
     }
     if(data->ctx != NULL) {
-	xmlXPathFreeContext(data->ctx);
+        xmlXPathFreeContext(data->ctx);
     }
     memset(data, 0, sizeof(xmlSecXPathData));  
     xmlFree(data);
@@ -154,11 +154,11 @@ xmlSecXPathDataSetExpr(xmlSecXPathDataPtr data, const xmlChar* expr) {
             
     data->expr = xmlStrdup(expr);
     if(data->expr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_STRDUP_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_STRDUP_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
     return(0);
@@ -177,22 +177,22 @@ xmlSecXPathDataRegisterNamespaces(xmlSecXPathDataPtr data, xmlNodePtr node) {
 
     /* register namespaces */
     for(cur = node; cur != NULL; cur = cur->parent) {
-	for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
-	    /* check that we have no other namespace with same prefix already */
-	    if((ns->prefix != NULL) && (xmlXPathNsLookup(data->ctx, ns->prefix) == NULL)){
-	        ret = xmlXPathRegisterNs(data->ctx, ns->prefix, ns->href);
-		if(ret != 0) {
-		    xmlSecError(XMLSEC_ERRORS_HERE,
-				NULL,
-			        "xmlXPathRegisterNs",
-				XMLSEC_ERRORS_R_XML_FAILED,
-			        "href=%s;prefix=%s",
-			        xmlSecErrorsSafeString(ns->href),
-				xmlSecErrorsSafeString(ns->prefix)); 
-		    return(-1);
-		}
-	    }
-	}
+        for(ns = cur->nsDef; ns != NULL; ns = ns->next) {
+            /* check that we have no other namespace with same prefix already */
+            if((ns->prefix != NULL) && (xmlXPathNsLookup(data->ctx, ns->prefix) == NULL)){
+                ret = xmlXPathRegisterNs(data->ctx, ns->prefix, ns->href);
+                if(ret != 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlXPathRegisterNs",
+                                XMLSEC_ERRORS_R_XML_FAILED,
+                                "href=%s;prefix=%s",
+                                xmlSecErrorsSafeString(ns->href),
+                                xmlSecErrorsSafeString(ns->prefix)); 
+                    return(-1);
+                }
+            }
+        }
     }
     
     return(0);
@@ -209,22 +209,22 @@ xmlSecXPathDataNodeRead(xmlSecXPathDataPtr data, xmlNodePtr node) {
 
     ret = xmlSecXPathDataRegisterNamespaces (data, node);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecXPathDataRegisterNamespaces",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecXPathDataRegisterNamespaces",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
     
     /* read node content and set expr */
     data->expr = xmlNodeGetContent(node);
     if(data->expr == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
-		    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
-		    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(node)),
+                    XMLSEC_ERRORS_R_INVALID_NODE_CONTENT,
+                    XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
     
@@ -247,49 +247,49 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
     
     /* here function works only on the same document */
     if(hereNode->doc == doc) {
-	xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
-	data->ctx->here = hereNode;
-	data->ctx->xptr = 1;
+        xmlXPathRegisterFunc(data->ctx, (xmlChar *)"here", xmlSecXPathHereFunction);
+        data->ctx->here = hereNode;
+        data->ctx->xptr = 1;
     }
 
     /* execute xpath or xpointer expression */
     switch(data->type) {
     case xmlSecXPathDataTypeXPath:    
     case xmlSecXPathDataTypeXPath2:    
-	xpathObj = xmlXPathEvalExpression(data->expr, data->ctx);
-	if(xpathObj == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlXPathEvalExpression",
-			XMLSEC_ERRORS_R_XML_FAILED,
-			"expr=%s", 
-			xmlSecErrorsSafeString(data->expr));
-	    return(NULL);
-	}
-	break;
+        xpathObj = xmlXPathEvalExpression(data->expr, data->ctx);
+        if(xpathObj == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlXPathEvalExpression",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        "expr=%s", 
+                        xmlSecErrorsSafeString(data->expr));
+            return(NULL);
+        }
+        break;
     case xmlSecXPathDataTypeXPointer:    
-	xpathObj = xmlXPtrEval(data->expr, data->ctx);
-	if(xpathObj == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlXPtrEval",
-			XMLSEC_ERRORS_R_XML_FAILED,
-			"expr=%s", 
-			xmlSecErrorsSafeString(data->expr));
-	    return(NULL);
-	}
-	break;
+        xpathObj = xmlXPtrEval(data->expr, data->ctx);
+        if(xpathObj == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlXPtrEval",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        "expr=%s", 
+                        xmlSecErrorsSafeString(data->expr));
+            return(NULL);
+        }
+        break;
     }
     
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);
     if(nodes == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecNodeSetCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "type=%d", data->nodeSetType);
-	xmlXPathFreeObject(xpathObj);     
-	return(NULL);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecNodeSetCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "type=%d", data->nodeSetType);
+        xmlXPathFreeObject(xpathObj);     
+        return(NULL);
     }
     xpathObj->nodesetval = NULL;
     xmlXPathFreeObject(xpathObj); 
@@ -303,20 +303,20 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
  * XPath data list
  *
  *****************************************************************************/
-#define xmlSecXPathDataListId	\
-	xmlSecXPathDataListGetKlass()
-static xmlSecPtrListId 	xmlSecXPathDataListGetKlass		(void);
-static xmlSecNodeSetPtr	xmlSecXPathDataListExecute		(xmlSecPtrListPtr dataList,
-								 xmlDocPtr doc,
-								 xmlNodePtr hereNode,
-								 xmlSecNodeSetPtr nodes);
+#define xmlSecXPathDataListId   \
+        xmlSecXPathDataListGetKlass()
+static xmlSecPtrListId  xmlSecXPathDataListGetKlass             (void);
+static xmlSecNodeSetPtr xmlSecXPathDataListExecute              (xmlSecPtrListPtr dataList,
+                                                                 xmlDocPtr doc,
+                                                                 xmlNodePtr hereNode,
+                                                                 xmlSecNodeSetPtr nodes);
 
 static xmlSecPtrListKlass xmlSecXPathDataListKlass = {
     BAD_CAST "xpath-data-list",
-    NULL,						/* xmlSecPtrDuplicateItemMethod duplicateItem; */
-    (xmlSecPtrDestroyItemMethod)xmlSecXPathDataDestroy,	/* xmlSecPtrDestroyItemMethod destroyItem; */
-    NULL,						/* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
-    NULL,						/* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+    NULL,                                               /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    (xmlSecPtrDestroyItemMethod)xmlSecXPathDataDestroy, /* xmlSecPtrDestroyItemMethod destroyItem; */
+    NULL,                                               /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    NULL,                                               /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
 };
 
 static xmlSecPtrListId 
@@ -324,9 +324,9 @@ xmlSecXPathDataListGetKlass(void) {
     return(&xmlSecXPathDataListKlass);
 }
 
-static xmlSecNodeSetPtr	
+static xmlSecNodeSetPtr 
 xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc, 
-		    	   xmlNodePtr hereNode, xmlSecNodeSetPtr nodes) {
+                           xmlNodePtr hereNode, xmlSecNodeSetPtr nodes) {
     xmlSecXPathDataPtr data;
     xmlSecNodeSetPtr res, tmp, tmp2;
     xmlSecSize pos;
@@ -339,45 +339,45 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
     res = nodes;
     for(pos = 0; pos < xmlSecPtrListGetSize(dataList); ++pos) {
         data = (xmlSecXPathDataPtr)xmlSecPtrListGetItem(dataList, pos);
-	if(data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
-			"xmlSecPtrListGetItem",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"pos=%d", pos);
-	    if((res != NULL) && (res != nodes)) {
-		xmlSecNodeSetDestroy(res);
-	    }
-	    return(NULL);
-	}
+        if(data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecPtrListGetItem",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "pos=%d", pos);
+            if((res != NULL) && (res != nodes)) {
+                xmlSecNodeSetDestroy(res);
+            }
+            return(NULL);
+        }
 
-	tmp = xmlSecXPathDataExecute(data, doc, hereNode);
-	if(tmp == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecXPathDataExecute",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    if((res != NULL) && (res != nodes)) {
-		xmlSecNodeSetDestroy(res);
-	    }
-	    return(NULL);
-	}    
+        tmp = xmlSecXPathDataExecute(data, doc, hereNode);
+        if(tmp == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecXPathDataExecute",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            if((res != NULL) && (res != nodes)) {
+                xmlSecNodeSetDestroy(res);
+            }
+            return(NULL);
+        }    
 
-	tmp2 = xmlSecNodeSetAdd(res, tmp, data->nodeSetOp);
-	if(tmp2 == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecNodeSetAdd",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"xmlSecNodeSetIntersection");
-	    if((res != NULL) && (res != nodes)) {
-		xmlSecNodeSetDestroy(res);
-	    }
-	    xmlSecNodeSetDestroy(tmp);
-	    return(NULL);
-	}
-	res = tmp2;
+        tmp2 = xmlSecNodeSetAdd(res, tmp, data->nodeSetOp);
+        if(tmp2 == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecNodeSetAdd",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecNodeSetIntersection");
+            if((res != NULL) && (res != nodes)) {
+                xmlSecNodeSetDestroy(res);
+            }
+            xmlSecNodeSetDestroy(tmp);
+            return(NULL);
+        }
+        res = tmp2;
     }
 
     return(res);
@@ -390,25 +390,25 @@ xmlSecXPathDataListExecute(xmlSecPtrListPtr dataList, xmlDocPtr doc,
  * xmlSecXPathDataList is located after xmlSecTransform structure
  * 
  *****************************************************************************/
-#define xmlSecXPathTransformSize	\
+#define xmlSecXPathTransformSize        \
     (sizeof(xmlSecTransform) + sizeof(xmlSecPtrList))
 #define xmlSecXPathTransformGetDataList(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecXPathTransformSize)) ? \
-	(xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-	(xmlSecPtrListPtr)NULL)
+        (xmlSecPtrListPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
+        (xmlSecPtrListPtr)NULL)
 #define xmlSecTransformXPathCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformXPathId) || \
      xmlSecTransformCheckId((transform), xmlSecTransformXPath2Id) || \
      xmlSecTransformCheckId((transform), xmlSecTransformXPointerId))
 
-static int 		xmlSecTransformXPathInitialize	(xmlSecTransformPtr transform);
-static void		xmlSecTransformXPathFinalize	(xmlSecTransformPtr transform);
-static int 		xmlSecTransformXPathExecute	(xmlSecTransformPtr transform,
-							 int last, 
-							 xmlSecTransformCtxPtr transformCtx);
+static int              xmlSecTransformXPathInitialize  (xmlSecTransformPtr transform);
+static void             xmlSecTransformXPathFinalize    (xmlSecTransformPtr transform);
+static int              xmlSecTransformXPathExecute     (xmlSecTransformPtr transform,
+                                                         int last, 
+                                                         xmlSecTransformCtxPtr transformCtx);
 
 static int
-xmlSecTransformXPathInitialize(xmlSecTransformPtr transform) {	
+xmlSecTransformXPathInitialize(xmlSecTransformPtr transform) {  
     xmlSecPtrListPtr dataList;
     int ret;
         
@@ -419,12 +419,12 @@ xmlSecTransformXPathInitialize(xmlSecTransformPtr transform) {
     
     ret = xmlSecPtrListInitialize(dataList, xmlSecXPathDataListId);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecPtrListInitialize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecPtrListInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     return(0);
 }
@@ -443,7 +443,7 @@ xmlSecTransformXPathFinalize(xmlSecTransformPtr transform) {
 
 static int
 xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
-			    xmlSecTransformCtxPtr transformCtx) {
+                            xmlSecTransformCtxPtr transformCtx) {
     xmlSecPtrListPtr dataList;
     xmlDocPtr doc;
     
@@ -461,14 +461,14 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(doc != NULL, -1);
 
     transform->outNodes = xmlSecXPathDataListExecute(dataList, doc, 
-				transform->hereNode, transform->inNodes);
+                                transform->hereNode, transform->inNodes);
     if(transform->outNodes == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataExecute",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataExecute",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }    
     return(0);
 }
@@ -478,35 +478,35 @@ xmlSecTransformXPathExecute(xmlSecTransformPtr transform, int last,
  * XPath transform
  * 
  *****************************************************************************/
-static int 		xmlSecTransformXPathNodeRead	(xmlSecTransformPtr transform,
-							 xmlNodePtr node,
-							 xmlSecTransformCtxPtr transformCtx);
+static int              xmlSecTransformXPathNodeRead    (xmlSecTransformPtr transform,
+                                                         xmlNodePtr node,
+                                                         xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecTransformXPathKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecXPathTransformSize,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecXPathTransformSize,                   /* xmlSecSize objSize */
 
-    xmlSecNameXPath,				/* const xmlChar* name; */
-    xmlSecXPathNs, 				/* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    xmlSecNameXPath,                            /* const xmlChar* name; */
+    xmlSecXPathNs,                              /* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
 
-    xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPathNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformXPathInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPathNodeRead,               /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,              /* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,               /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformXPathExecute,                /* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -543,79 +543,79 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     /* there is only one required node */
     cur = xmlSecGetNextElementNode(node->children);  
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeXPath, xmlSecDSigNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "expected=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeXPath));
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_INVALID_NODE,
+                    "expected=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeXPath));
+        return(-1);
     }
     
     /* read information from the node */
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath);
     if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     
     ret = xmlSecXPathDataNodeRead(data, cur);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataNodeRead",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataNodeRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }
         
     /* append it to the list */
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecPtrListAdd",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecPtrListAdd",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }
     
     /* create full XPath expression */
     xmlSecAssert2(data->expr != NULL, -1);
     tmp = (xmlChar*) xmlMalloc(sizeof(xmlChar) * (xmlStrlen(data->expr) + 
-						  strlen(xpathPattern) + 1));
+                                                  strlen(xpathPattern) + 1));
     if(tmp == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    "size=%d",
-		    xmlStrlen(data->expr) + strlen(xpathPattern) + 1);
-    	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d",
+                    xmlStrlen(data->expr) + strlen(xpathPattern) + 1);
+        return(-1);
     }
-    sprintf((char*)tmp, xpathPattern, (char*)data->expr);	
+    sprintf((char*)tmp, xpathPattern, (char*)data->expr);       
     xmlFree(data->expr);
     data->expr = tmp;
 
     /* set correct node set type and operation */
-    data->nodeSetOp 	= xmlSecNodeSetIntersection;
-    data->nodeSetType 	= xmlSecNodeSetNormal;
+    data->nodeSetOp     = xmlSecNodeSetIntersection;
+    data->nodeSetType   = xmlSecNodeSetNormal;
     
     /* check that we have nothing else */
     cur = xmlSecGetNextElementNode(cur->next);        
     if(cur != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     return(0);
 }
@@ -625,34 +625,34 @@ xmlSecTransformXPathNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
  * XPath2 transform
  * 
  *****************************************************************************/
-static int 		xmlSecTransformXPath2NodeRead	(xmlSecTransformPtr transform,
-							 xmlNodePtr node,
-							 xmlSecTransformCtxPtr transformCtx);
+static int              xmlSecTransformXPath2NodeRead   (xmlSecTransformPtr transform,
+                                                         xmlNodePtr node,
+                                                         xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformXPath2Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecXPathTransformSize,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecXPathTransformSize,                   /* xmlSecSize objSize */
 
-    xmlSecNameXPath2,				/* const xmlChar* name; */
-    xmlSecXPath2Ns, 				/* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    xmlSecNameXPath2,                           /* const xmlChar* name; */
+    xmlSecXPath2Ns,                             /* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
 
-    xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPath2NodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformXPathInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPath2NodeRead,              /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,              /* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,               /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformXPathExecute,                /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -687,80 +687,80 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
     cur = xmlSecGetNextElementNode(node->children);  
     while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeXPath2, xmlSecXPath2Ns)) {
         /* read information from the node */
-	data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath2);
-	if(data == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecXPathDataCreate",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
+        data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPath2);
+        if(data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecXPathDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
 
         ret = xmlSecXPathDataNodeRead(data, cur);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-		        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecXPathDataNodeRead",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecXPathDataDestroy(data);
-	    return(-1);
-	}
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecXPathDataNodeRead",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXPathDataDestroy(data);
+            return(-1);
+        }
     
         /* append it to the list */
-	ret = xmlSecPtrListAdd(dataList, data);
+        ret = xmlSecPtrListAdd(dataList, data);
         if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		        "xmlSecPtrListAdd",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		        XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlSecXPathDataDestroy(data);
-	    return(-1);
-	}
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecPtrListAdd",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecXPathDataDestroy(data);
+            return(-1);
+        }
 
-	/* set correct node set type and operation */
-	data->nodeSetType = xmlSecNodeSetTree;
-	op = xmlGetProp(cur, xmlSecAttrFilter);
-	if(op == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			xmlSecErrorsSafeString(xmlSecAttrFilter),
-			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"node=%s",
-			xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-	    return(-1);
-	}
+        /* set correct node set type and operation */
+        data->nodeSetType = xmlSecNodeSetTree;
+        op = xmlGetProp(cur, xmlSecAttrFilter);
+        if(op == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        xmlSecErrorsSafeString(xmlSecAttrFilter),
+                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+                        "node=%s",
+                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+            return(-1);
+        }
         if(xmlStrEqual(op, xmlSecXPath2FilterIntersect)) {
-    	    data->nodeSetOp = xmlSecNodeSetIntersection;
-	} else if(xmlStrEqual(op, xmlSecXPath2FilterSubtract)) {
-	    data->nodeSetOp = xmlSecNodeSetSubtraction;
-	} else if(xmlStrEqual(op, xmlSecXPath2FilterUnion)) {
-	    data->nodeSetOp = xmlSecNodeSetUnion;
-	} else {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			xmlSecErrorsSafeString(xmlSecAttrFilter),
-			XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-			"filter=%s", 
-			xmlSecErrorsSafeString(op));
-	    xmlFree(op);
-	    return(-1);
-	}
-	xmlFree(op);
+            data->nodeSetOp = xmlSecNodeSetIntersection;
+        } else if(xmlStrEqual(op, xmlSecXPath2FilterSubtract)) {
+            data->nodeSetOp = xmlSecNodeSetSubtraction;
+        } else if(xmlStrEqual(op, xmlSecXPath2FilterUnion)) {
+            data->nodeSetOp = xmlSecNodeSetUnion;
+        } else {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        xmlSecErrorsSafeString(xmlSecAttrFilter),
+                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+                        "filter=%s", 
+                        xmlSecErrorsSafeString(op));
+            xmlFree(op);
+            return(-1);
+        }
+        xmlFree(op);
 
         cur = xmlSecGetNextElementNode(cur->next);  
     }
 
     /* check that we have nothing else */
     if(cur != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     return(0);
 }
@@ -770,34 +770,34 @@ xmlSecTransformXPath2NodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xml
  * XPointer transform
  * 
  *****************************************************************************/
-static int 		xmlSecTransformXPointerNodeRead	(xmlSecTransformPtr transform,
-							 xmlNodePtr node,
-							 xmlSecTransformCtxPtr transformCtx);
+static int              xmlSecTransformXPointerNodeRead (xmlSecTransformPtr transform,
+                                                         xmlNodePtr node,
+                                                         xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformXPointerKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecXPathTransformSize,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecXPathTransformSize,                   /* xmlSecSize objSize */
 
-    xmlSecNameXPointer,				/* const xmlChar* name; */
-    xmlSecXPointerNs, 				/* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    xmlSecNameXPointer,                         /* const xmlChar* name; */
+    xmlSecXPointerNs,                           /* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
 
-    xmlSecTransformXPathInitialize,		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformXPathFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    xmlSecTransformXPointerNodeRead,		/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformXPathExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformXPathInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformXPathFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecTransformXPointerNodeRead,            /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,              /* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,               /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformXPathExecute,                /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -815,10 +815,10 @@ xmlSecTransformXPointerGetKlass(void) {
 
 /**
  * xmlSecTransformXPointerSetExpr: 
- * @transform:		the pointer to XPointer transform.
- * @expr:		the XPointer expression.
- * @nodeSetType:	the type of evaluated XPointer expression.
- * @hereNode:		the pointer to "here" node.
+ * @transform:          the pointer to XPointer transform.
+ * @expr:               the XPointer expression.
+ * @nodeSetType:        the type of evaluated XPointer expression.
+ * @hereNode:           the pointer to "here" node.
  *
  * Sets the XPointer expression for an XPointer @transform.
  *
@@ -826,7 +826,7 @@ xmlSecTransformXPointerGetKlass(void) {
  */
 int 
 xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr, 
-			    xmlSecNodeSetType  nodeSetType, xmlNodePtr hereNode) {
+                            xmlSecNodeSetType  nodeSetType, xmlNodePtr hereNode) {
     xmlSecPtrListPtr dataList;
     xmlSecXPathDataPtr data;
     int ret;
@@ -844,51 +844,51 @@ xmlSecTransformXPointerSetExpr(xmlSecTransformPtr transform, const xmlChar* expr
 
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     ret = xmlSecXPathDataRegisterNamespaces(data, hereNode);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataRegisterNamespaces",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataRegisterNamespaces",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }    
 
     ret = xmlSecXPathDataSetExpr(data, expr);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataSetExpr",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataSetExpr",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }
     
     /* append it to the list */
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecPtrListAdd",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecPtrListAdd",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }
 
     /* set correct node set type and operation */
-    data->nodeSetOp 	= xmlSecNodeSetIntersection;
-    data->nodeSetType 	= nodeSetType;
+    data->nodeSetOp     = xmlSecNodeSetIntersection;
+    data->nodeSetType   = nodeSetType;
     
     return(0);
 }
@@ -911,62 +911,62 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
     /* there is only one required node */
     cur = xmlSecGetNextElementNode(node->children);  
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeXPointer, xmlSecXPointerNs))) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_INVALID_NODE,
-		    "expected=%s",
-		    xmlSecErrorsSafeString(xmlSecNodeXPath));
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_INVALID_NODE,
+                    "expected=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeXPath));
+        return(-1);
     }
     
     /* read information from the node */
     data = xmlSecXPathDataCreate(xmlSecXPathDataTypeXPointer);
     if(data == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     ret = xmlSecXPathDataNodeRead(data, cur);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecXPathDataNodeRead",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecXPathDataNodeRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }
     
     /* append it to the list */
     ret = xmlSecPtrListAdd(dataList, data);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecPtrListAdd",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecXPathDataDestroy(data);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecPtrListAdd",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecXPathDataDestroy(data);
+        return(-1);
     }
 
     /* set correct node set type and operation */
-    data->nodeSetOp 	= xmlSecNodeSetIntersection;
-    data->nodeSetType 	= xmlSecNodeSetTree;
+    data->nodeSetOp     = xmlSecNodeSetIntersection;
+    data->nodeSetType   = xmlSecNodeSetTree;
     
     /* check that we have nothing else */
     cur = xmlSecGetNextElementNode(cur->next);        
     if(cur != NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-		    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
     return(0);
 }
@@ -977,46 +977,46 @@ xmlSecTransformXPointerNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, x
  * Visa3DHack transform
  * 
  *****************************************************************************/
-#define xmlSecVisa3DHackTransformSize	\
+#define xmlSecVisa3DHackTransformSize   \
     (sizeof(xmlSecTransform) + sizeof(xmlChar*))
 #define xmlSecVisa3DHackTransformGetIDPtr(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecVisa3DHackTransformSize)) ? \
-	(xmlChar**)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
-	(xmlChar**)NULL)
+        (xmlChar**)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)) : \
+        (xmlChar**)NULL)
 #define xmlSecTransformVisa3DHackCheckId(transform) \
     (xmlSecTransformCheckId((transform), xmlSecTransformVisa3DHackId))
 
-static int 		xmlSecTransformVisa3DHackInitialize	(xmlSecTransformPtr transform);
-static void		xmlSecTransformVisa3DHackFinalize	(xmlSecTransformPtr transform);
-static int 		xmlSecTransformVisa3DHackExecute	(xmlSecTransformPtr transform,
-								 int last, 
-								 xmlSecTransformCtxPtr transformCtx);
+static int              xmlSecTransformVisa3DHackInitialize     (xmlSecTransformPtr transform);
+static void             xmlSecTransformVisa3DHackFinalize       (xmlSecTransformPtr transform);
+static int              xmlSecTransformVisa3DHackExecute        (xmlSecTransformPtr transform,
+                                                                 int last, 
+                                                                 xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecTransformVisa3DHackKlass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecVisa3DHackTransformSize,		/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecVisa3DHackTransformSize,              /* xmlSecSize objSize */
 
-    BAD_CAST "Visa3DHackTransform",		/* const xmlChar* name; */
-    NULL,					/* const xmlChar* href; */
-    xmlSecTransformUsageDSigTransform,		/* xmlSecTransformUsage	usage; */
+    BAD_CAST "Visa3DHackTransform",             /* const xmlChar* name; */
+    NULL,                                       /* const xmlChar* href; */
+    xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
 
-    xmlSecTransformVisa3DHackInitialize,	/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecTransformVisa3DHackFinalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    NULL,					/* xmlSecTransformSetKeyReqMethod setKeyReq; */
-    NULL,					/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    NULL,					/* xmlSecTransformPushBinMethod pushBin; */
-    NULL,					/* xmlSecTransformPopBinMethod popBin; */
-    xmlSecTransformDefaultPushXml,		/* xmlSecTransformPushXmlMethod pushXml; */
-    xmlSecTransformDefaultPopXml,		/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecTransformVisa3DHackExecute,		/* xmlSecTransformExecuteMethod execute; */
+    xmlSecTransformVisa3DHackInitialize,        /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecTransformVisa3DHackFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    NULL,                                       /* xmlSecTransformPushBinMethod pushBin; */
+    NULL,                                       /* xmlSecTransformPopBinMethod popBin; */
+    xmlSecTransformDefaultPushXml,              /* xmlSecTransformPushXmlMethod pushXml; */
+    xmlSecTransformDefaultPopXml,               /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecTransformVisa3DHackExecute,           /* xmlSecTransformExecuteMethod execute; */
 
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /**
@@ -1036,8 +1036,8 @@ xmlSecTransformVisa3DHackGetKlass(void) {
 
 /**
  * xmlSecTransformVisa3DHackSetID:
- * @transform:		the pointer to Visa3DHack transform.
- * @id:			the ID value.
+ * @transform:          the pointer to Visa3DHack transform.
+ * @id:                 the ID value.
  *
  * Sets the ID value for an Visa3DHack @transform.
  *
@@ -1056,19 +1056,19 @@ xmlSecTransformVisa3DHackSetID(xmlSecTransformPtr transform, const xmlChar* id) 
 
     (*idPtr) = xmlStrdup(id);
     if((*idPtr) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlStrdup",
-		    XMLSEC_ERRORS_R_MALLOC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlStrdup",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     return(0);
 }
 
 static int
-xmlSecTransformVisa3DHackInitialize(xmlSecTransformPtr transform) {	
+xmlSecTransformVisa3DHackInitialize(xmlSecTransformPtr transform) {     
     xmlSecAssert2(xmlSecTransformVisa3DHackCheckId(transform), -1);
 
     return(0);
@@ -1084,14 +1084,14 @@ xmlSecTransformVisa3DHackFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(idPtr != NULL);
     
     if((*idPtr) != NULL) {
-	xmlFree((*idPtr));
+        xmlFree((*idPtr));
     }
     (*idPtr) = NULL;
 }
 
 static int
 xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
-			    xmlSecTransformCtxPtr transformCtx) {
+                            xmlSecTransformCtxPtr transformCtx) {
     xmlChar** idPtr;
     xmlDocPtr doc;
     xmlAttrPtr attr;
@@ -1111,35 +1111,35 @@ xmlSecTransformVisa3DHackExecute(xmlSecTransformPtr transform, int last,
 
     attr = xmlGetID(doc, (*idPtr));
     if((attr == NULL) || (attr->parent == NULL)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlGetID",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "id=\"%s\"",
-		    xmlSecErrorsSafeString((*idPtr)));
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlGetID",
+                    XMLSEC_ERRORS_R_XML_FAILED,
+                    "id=\"%s\"",
+                    xmlSecErrorsSafeString((*idPtr)));
+        return(-1);
     }    
 
     nodeSet = xmlXPathNodeSetCreate(attr->parent);
     if(nodeSet == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlXPathNodeSetCreate",
-		    XMLSEC_ERRORS_R_XML_FAILED,
-		    "id=\"%s\"",
-		    xmlSecErrorsSafeString((*idPtr)));
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlXPathNodeSetCreate",
+                    XMLSEC_ERRORS_R_XML_FAILED,
+                    "id=\"%s\"",
+                    xmlSecErrorsSafeString((*idPtr)));
+        return(-1);
     }    
 
     transform->outNodes = xmlSecNodeSetCreate(doc, nodeSet, xmlSecNodeSetTreeWithoutComments);
     if(transform->outNodes == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecNodeSetCreate",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlXPathFreeNodeSet(nodeSet);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecNodeSetCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlXPathFreeNodeSet(nodeSet);
+        return(-1);
     }    
     return(0);
 }

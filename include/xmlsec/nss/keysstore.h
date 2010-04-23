@@ -27,16 +27,16 @@ extern "C" {
  *
  * A Nss keys store klass id.
  */
-#define xmlSecNssKeysStoreId		xmlSecNssKeysStoreGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId	xmlSecNssKeysStoreGetKlass	(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeysStoreAdoptKey	(xmlSecKeyStorePtr store,
-									 xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeysStoreLoad 	(xmlSecKeyStorePtr store,
-								 const char *uri,
-								 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_CRYPTO_EXPORT int		xmlSecNssKeysStoreSave	(xmlSecKeyStorePtr store, 
-								 const char *filename,
-								 xmlSecKeyDataType type);
+#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecNssKeysStoreGetKlass      (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeysStoreAdoptKey      (xmlSecKeyStorePtr store,
+                                                                         xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeysStoreLoad  (xmlSecKeyStorePtr store,
+                                                                 const char *uri,
+                                                                 xmlSecKeysMngrPtr keysMngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeysStoreSave  (xmlSecKeyStorePtr store, 
+                                                                 const char *filename,
+                                                                 xmlSecKeyDataType type);
 
 #ifdef __cplusplus
 }

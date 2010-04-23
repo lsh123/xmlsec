@@ -57,7 +57,7 @@ static const char xmlSecBnRevLookupTable[] =
  ****************************************************************************/
 /**
  * xmlSecBnCreate:
- * @size:	the initial allocated BN size.
+ * @size:       the initial allocated BN size.
  *
  * Creates a new BN object. Caller is responsible for destroying it
  * by calling @xmlSecBnDestroy function.
@@ -71,7 +71,7 @@ xmlSecBnCreate(xmlSecSize size) {
 
 /**
  * xmlSecBnDestroy:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Destroys @bn object created with @xmlSecBnCreate function.
  */
@@ -82,8 +82,8 @@ xmlSecBnDestroy(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnInitialize:
- * @bn:		the pointer to BN.
- * @size:	the initial allocated BN size.
+ * @bn:         the pointer to BN.
+ * @size:       the initial allocated BN size.
  *
  * Initializes a BN object. Caller is responsible for destroying it
  * by calling @xmlSecBnFinalize function.
@@ -97,7 +97,7 @@ xmlSecBnInitialize(xmlSecBnPtr bn, xmlSecSize size) {
 
 /**
  * xmlSecBnFinalize:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Destroys @bn object created with @xmlSecBnInitialize function.
  */
@@ -108,7 +108,7 @@ xmlSecBnFinalize(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnGetData:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Gets pointer to the binary @bn representation.
  * 
@@ -121,9 +121,9 @@ xmlSecBnGetData(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnSetData:
- * @bn:		the pointer to BN.
- * @data:	the pointer to new BN binary data.
- * @size:	the size of new BN data.
+ * @bn:         the pointer to BN.
+ * @data:       the pointer to new BN binary data.
+ * @size:       the size of new BN data.
  *
  * Sets the value of @bn to @data.
  *
@@ -136,7 +136,7 @@ xmlSecBnSetData(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize size) {
 
 /**
  * xmlSecBnGetSize:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Gets the size of binary data in @bn.
  *
@@ -149,7 +149,7 @@ xmlSecBnGetSize(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnZero:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Sets the value of @bn to zero.
  */
@@ -160,9 +160,9 @@ xmlSecBnZero(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnFromString:
- * @bn:		the pointer to BN.
- * @str:	the string with BN.
- * @base:	the base for @str.
+ * @bn:         the pointer to BN.
+ * @str:        the string with BN.
+ * @base:       the base for @str.
  *
  * Reads @bn from string @str assuming it has base @base.
  *
@@ -198,10 +198,10 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     ret = xmlSecBufferSetMaxSize(bn, xmlSecBufferGetSize(bn) + len / 2 + 1 + 1);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
-		        "xmlSecBnRevLookupTable",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		        "size=%d", len / 2 + 1);
+                        NULL,
+                        "xmlSecBnRevLookupTable",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", len / 2 + 1);
         return (-1);
     }
 
@@ -213,7 +213,7 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
         /* skip spaces */
         if(isspace(ch)) {
-	        continue;
+                continue;
         } 
         
         /* check if it is + or - */
@@ -235,13 +235,13 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
             --i; /* make sure that we will look at this character in next loop */
             break;
         } else {
-	        xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
-		        NULL,
-		        XMLSEC_ERRORS_R_INVALID_DATA,
-		        "char=%c;base=%d", 
-		        ch, base);
-    	        return (-1);
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_INVALID_DATA,
+                        "char=%c;base=%d", 
+                        ch, base);
+                return (-1);
         }
     }
 
@@ -249,40 +249,40 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
     while(i < len) {
         ch = str[i++];
         if(isspace(ch)) {
-	        continue;
+                continue;
         }
 
         xmlSecAssert2(ch <= sizeof(xmlSecBnLookupTable), -1);
         nn = xmlSecBnLookupTable[ch];
         if((nn < 0) || ((xmlSecSize)nn > base)) {
-	        xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
-		        NULL,
-		        XMLSEC_ERRORS_R_INVALID_DATA,
-		        "char=%c;base=%d", 
-		        ch, base);
-    	        return (-1);
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_INVALID_DATA,
+                        "char=%c;base=%d", 
+                        ch, base);
+                return (-1);
         }
 
         ret = xmlSecBnMul(bn, base);
         if(ret < 0) {
-	        xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
-		        "xmlSecBnMul",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		        "base=%d", base);
-	        return (-1);
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnMul",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "base=%d", base);
+                return (-1);
         }
 
         ret = xmlSecBnAdd(bn, nn);
         if(ret < 0) {
-	        xmlSecError(XMLSEC_ERRORS_HERE,
-		        NULL,
-		        "xmlSecBnAdd",
-		        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		        "base=%d", base);
-	        return (-1);
-}	
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnAdd",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "base=%d", base);
+                return (-1);
+}       
     }
 
     /* check if we need to add 00 prefix, do this for empty bn too */
@@ -325,8 +325,8 @@ xmlSecBnFromString(xmlSecBnPtr bn, const xmlChar* str, xmlSecSize base) {
 
 /**
  * xmlSecBnToString:
- * @bn:		the pointer to BN.
- * @base:	the base for returned string.
+ * @bn:         the pointer to BN.
+ * @base:       the base for returned string.
  *
  * Writes @bn to string with base @base. Caller is responsible for 
  * freeing returned string with @xmlFree.
@@ -398,18 +398,18 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
     }
 
     /* Result string len is
-     *	    len = log base (256) * <bn size>
+     *      len = log base (256) * <bn size>
      * Since the smallest base == 2 then we can get away with 
-     *	    len = 8 * <bn size>
+     *      len = 8 * <bn size>
      */
     len = 8 * size + 1 + 1;
     res = (xmlChar*)xmlMalloc(len + 1);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
-		            NULL,
-		            NULL,
-		            XMLSEC_ERRORS_R_MALLOC_FAILED,
-		            "len=%d", len);
+                            NULL,
+                            NULL,
+                            XMLSEC_ERRORS_R_MALLOC_FAILED,
+                            "len=%d", len);
         xmlSecBnFinalize(&bn2);
         return (NULL);
     }
@@ -454,8 +454,8 @@ xmlSecBnToString(xmlSecBnPtr bn, xmlSecSize base) {
 
 /**
  * xmlSecBnFromHexString:
- * @bn:		the pointer to BN.
- * @str:	the string with BN.
+ * @bn:         the pointer to BN.
+ * @str:        the string with BN.
  *
  * Reads @bn from hex string @str.
  *
@@ -468,7 +468,7 @@ xmlSecBnFromHexString(xmlSecBnPtr bn, const xmlChar* str) {
 
 /**
  * xmlSecBnToHexString:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Writes @bn to hex string. Caller is responsible for 
  * freeing returned string with @xmlFree.
@@ -482,8 +482,8 @@ xmlSecBnToHexString(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnFromDecString:
- * @bn:		the pointer to BN.
- * @str:	the string with BN.
+ * @bn:         the pointer to BN.
+ * @str:        the string with BN.
  *
  * Reads @bn from decimal string @str.
  *
@@ -496,7 +496,7 @@ xmlSecBnFromDecString(xmlSecBnPtr bn, const xmlChar* str) {
 
 /**
  * xmlSecBnToDecString:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Writes @bn to decimal string. Caller is responsible for 
  * freeing returned string with @xmlFree.
@@ -510,8 +510,8 @@ xmlSecBnToDecString(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnMul:
- * @bn:			the pointer to BN.
- * @multiplier:		the multiplier.
+ * @bn:                 the pointer to BN.
+ * @multiplier:         the multiplier.
  *
  * Multiplies @bn with @multiplier.
  *
@@ -529,33 +529,33 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
     xmlSecAssert2(multiplier > 0, -1);
 
     if(multiplier == 1) {
-	return(0);
+        return(0);
     }
 
     data = xmlSecBufferGetData(bn);
     i = xmlSecBufferGetSize(bn);
     over = 0; 
     while(i > 0) {
-	xmlSecAssert2(data != NULL, -1);
+        xmlSecAssert2(data != NULL, -1);
 
-	over	= over + multiplier * data[--i];
-	data[i]	= over % 256;
-	over	= over / 256;
+        over    = over + multiplier * data[--i];
+        data[i] = over % 256;
+        over    = over / 256;
     }
     
     while(over > 0) {
-	ch	= over % 256;
-	over	= over / 256;
-	
-	ret = xmlSecBufferPrepend(bn, &ch, 1);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBufferPrepend",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"size=1");
-	    return (-1);
-	}
+        ch      = over % 256;
+        over    = over / 256;
+        
+        ret = xmlSecBufferPrepend(bn, &ch, 1);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBufferPrepend",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=1");
+            return (-1);
+        }
     }
     
     return(0);
@@ -563,9 +563,9 @@ xmlSecBnMul(xmlSecBnPtr bn, int multiplier) {
 
 /**
  * xmlSecBnDiv:
- * @bn:		the pointer to BN.
- * @divider:	the divider
- * @mod:	the pointer for modulus result.
+ * @bn:         the pointer to BN.
+ * @divider:    the divider
+ * @mod:        the pointer for modulus result.
  *
  * Divides @bn by @divider and places modulus into @mod.
  *
@@ -583,46 +583,46 @@ xmlSecBnDiv(xmlSecBnPtr bn, int divider, int* mod) {
     xmlSecAssert2(mod != NULL, -1);
 
     if(divider == 1) {
-	return(0);
+        return(0);
     }
 
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
     for(over = 0, i = 0; i < size; i++) {
-	xmlSecAssert2(data != NULL, -1);
+        xmlSecAssert2(data != NULL, -1);
 
-	over	= over * 256 + data[i];
-	data[i]	= over / divider;
-	over	= over % divider;
+        over    = over * 256 + data[i];
+        data[i] = over / divider;
+        over    = over % divider;
     }
     (*mod) = over;
     
     /* remove leading zeros */
     for(i = 0; i < size; i++) {
-	xmlSecAssert2(data != NULL, -1);
+        xmlSecAssert2(data != NULL, -1);
 
-	if(data[i] != 0) {
-	    break;
-	}
+        if(data[i] != 0) {
+            break;
+        }
     }
     if(i > 0) {
-	ret = xmlSecBufferRemoveHead(bn, i);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBufferRemoveHead",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"size=%d", i);
-	    return (-1);
-	}
+        ret = xmlSecBufferRemoveHead(bn, i);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBufferRemoveHead",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", i);
+            return (-1);
+        }
     }
     return(0);
 }
 
 /**
  * xmlSecBnAdd:
- * @bn:		the pointer to BN.
- * @delta:	the delta.
+ * @bn:         the pointer to BN.
+ * @delta:      the delta.
  *
  * Adds @delta to @bn.
  *
@@ -639,41 +639,41 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
     xmlSecAssert2(bn != NULL, -1);
 
     if(delta == 0) {
-    	return(0);
+        return(0);
     }
 
     data = xmlSecBufferGetData(bn);
     if(delta > 0) {
         for(over = delta, i = xmlSecBufferGetSize(bn); (i > 0) && (over > 0) ;) {
-	        xmlSecAssert2(data != NULL, -1);
-	
+                xmlSecAssert2(data != NULL, -1);
+        
             tmp     = data[--i];
-        	over   += tmp;
-	        data[i]	= over % 256;
-	        over	= over / 256;
+                over   += tmp;
+                data[i] = over % 256;
+                over    = over / 256;
         }
     
         while(over > 0) {
-	        ch	= over % 256;
-	        over	= over / 256;
-	
-        	ret = xmlSecBufferPrepend(bn, &ch, 1);
-	        if(ret < 0) {
-	            xmlSecError(XMLSEC_ERRORS_HERE,
-			        NULL,
-			        "xmlSecBufferPrepend",
-			        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			        "size=1");
-	            return (-1);
-	        }
+                ch      = over % 256;
+                over    = over / 256;
+        
+                ret = xmlSecBufferPrepend(bn, &ch, 1);
+                if(ret < 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlSecBufferPrepend",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                "size=1");
+                    return (-1);
+                }
         }
     } else {
         for(over = -delta, i = xmlSecBufferGetSize(bn); (i > 0) && (over > 0);) {
-	        xmlSecAssert2(data != NULL, -1);
-	
+                xmlSecAssert2(data != NULL, -1);
+        
             tmp     = data[--i];
             if(tmp < over) {
-                data[i]	= 0;
+                data[i] = 0;
                 over = (over - tmp) / 256;
             } else {
                 data[i] = tmp - over;
@@ -686,7 +686,7 @@ xmlSecBnAdd(xmlSecBnPtr bn, int delta) {
 
 /**
  * xmlSecBnReverse:
- * @bn:		the pointer to BN.
+ * @bn:         the pointer to BN.
  *
  * Reverses bytes order in @bn.
  *
@@ -703,11 +703,11 @@ xmlSecBnReverse(xmlSecBnPtr bn) {
     data = xmlSecBufferGetData(bn);
     size = xmlSecBufferGetSize(bn);
     for(i = 0, j = size - 1; i < size / 2; ++i, --j) {
-	xmlSecAssert2(data != NULL, -1);
+        xmlSecAssert2(data != NULL, -1);
 
-	ch	 = data[i];
-	data[i]	 = data[j];
-	data[j]  = ch;
+        ch       = data[i];
+        data[i]  = data[j];
+        data[j]  = ch;
     }    
 
     return(0);
@@ -715,9 +715,9 @@ xmlSecBnReverse(xmlSecBnPtr bn) {
 
 /**
  * xmlSecBnCompare:
- * @bn:		the pointer to BN.
- * @data:	the data to compare BN to.
- * @dataSize:	the @data size.
+ * @bn:         the pointer to BN.
+ * @data:       the data to compare BN to.
+ * @dataSize:   the @data size.
  *
  * Compares the @bn with @data.
  *
@@ -736,24 +736,24 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
 
     /* skip zeros in the beggining */
     while((dataSize > 0) && (data != 0) && (data[0] == 0)) {
-	++data;
-	--dataSize;
+        ++data;
+        --dataSize;
     }
     while((bnSize > 0) && (bnData != 0) && (bnData[0] == 0)) {
-	++bnData;
-	--bnSize;
+        ++bnData;
+        --bnSize;
     }
 
     if(((bnData == NULL) || (bnSize == 0)) && ((data == NULL) || (dataSize == 0))) {
-	return(0);
+        return(0);
     } else if((bnData == NULL) || (bnSize == 0)) {
-	return(-1);
+        return(-1);
     } else if((data == NULL) || (dataSize == 0)) {
-	return(1);
+        return(1);
     } else if(bnSize < dataSize) {
-	return(-1);
+        return(-1);
     } else if(bnSize > dataSize) {
-	return(-1);
+        return(-1);
     } 
 
     xmlSecAssert2(bnData != NULL, -1);
@@ -765,9 +765,9 @@ xmlSecBnCompare(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSize) {
 
 /**
  * xmlSecBnCompareReverse:
- * @bn:		the pointer to BN.
- * @data:	the data to compare BN to.
- * @dataSize:	the @data size.
+ * @bn:         the pointer to BN.
+ * @data:       the data to compare BN to.
+ * @dataSize:   the @data size.
  *
  * Compares the @bn with reverse @data.
  *
@@ -787,34 +787,34 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
 
     /* skip zeros in the beggining */
     while((dataSize > 0) && (data != 0) && (data[dataSize - 1] == 0)) {
-	--dataSize;
+        --dataSize;
     }
     while((bnSize > 0) && (bnData != 0) && (bnData[0] == 0)) {
-	++bnData;
-	--bnSize;
+        ++bnData;
+        --bnSize;
     }
 
     if(((bnData == NULL) || (bnSize == 0)) && ((data == NULL) || (dataSize == 0))) {
-	return(0);
+        return(0);
     } else if((bnData == NULL) || (bnSize == 0)) {
-	return(-1);
+        return(-1);
     } else if((data == NULL) || (dataSize == 0)) {
-	return(1);
+        return(1);
     } else if(bnSize < dataSize) {
-	return(-1);
+        return(-1);
     } else if(bnSize > dataSize) {
-	return(-1);
+        return(-1);
     } 
 
     xmlSecAssert2(bnData != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(bnSize == dataSize, -1);
     for(i = 0, j = dataSize - 1; i < dataSize; ++i, --j) {
-	if(bnData[i] < data[j]) {
-	    return(-1);
-	} else if(data[j] < bnData[i]) {
-	    return(1);
-	}
+        if(bnData[i] < data[j]) {
+            return(-1);
+        } else if(data[j] < bnData[i]) {
+            return(1);
+        }
     }
 
     return(0);
@@ -822,10 +822,10 @@ xmlSecBnCompareReverse(xmlSecBnPtr bn, const xmlSecByte* data, xmlSecSize dataSi
 
 /**
  * xmlSecBnGetNodeValue:
- * @bn:		the pointer to BN.
- * @cur:	the poitner to an XML node.
- * @format:	the BN format.
- * @reverse:	if set then reverse read buffer after reading.
+ * @bn:         the pointer to BN.
+ * @cur:        the poitner to an XML node.
+ * @format:     the BN format.
+ * @reverse:    if set then reverse read buffer after reading.
  *
  * Converts the node content from @format to @bn.
  *
@@ -841,83 +841,83 @@ xmlSecBnGetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 
     switch(format) {
     case xmlSecBnBase64:
-	ret = xmlSecBufferBase64NodeContentRead(bn, cur);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBufferBase64NodeContentRead",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-	break;
+        ret = xmlSecBufferBase64NodeContentRead(bn, cur);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBufferBase64NodeContentRead",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+        break;
     case xmlSecBnHex:
-	content = xmlNodeGetContent(cur);
-	if(content == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlNodeGetContent",
-	    		XMLSEC_ERRORS_R_XML_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-	ret = xmlSecBnFromHexString(bn, content);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBnFromHexString",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFree(content);
-	    return(-1);
-	}
-	xmlFree(content);
-	break;
+        content = xmlNodeGetContent(cur);
+        if(content == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlNodeGetContent",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+        ret = xmlSecBnFromHexString(bn, content);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnFromHexString",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(content);
+            return(-1);
+        }
+        xmlFree(content);
+        break;
     case xmlSecBnDec:
-	content = xmlNodeGetContent(cur);
-	if(content == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlNodeGetContent",
-	    		XMLSEC_ERRORS_R_XML_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-	ret = xmlSecBnFromDecString(bn, content);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBnFromDecString",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFree(content);
-	    return(-1);
-	}
-	xmlFree(content);
-	break;
+        content = xmlNodeGetContent(cur);
+        if(content == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlNodeGetContent",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+        ret = xmlSecBnFromDecString(bn, content);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnFromDecString",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(content);
+            return(-1);
+        }
+        xmlFree(content);
+        break;
     }
 
     if(reverse != 0) {
-    	ret = xmlSecBnReverse(bn);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBnReverse",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
+        ret = xmlSecBnReverse(bn);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnReverse",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
     }
     return(0);
 }
 
 /**
  * xmlSecBnSetNodeValue:
- * @bn:			the pointer to BN.
- * @cur:		the poitner to an XML node.
- * @format:		the BN format.
- * @reverse:		the flag that indicates whether to reverse the buffer before writing.
- * @addLineBreaks:  	the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
+ * @bn:                 the pointer to BN.
+ * @cur:                the poitner to an XML node.
+ * @format:             the BN format.
+ * @reverse:            the flag that indicates whether to reverse the buffer before writing.
+ * @addLineBreaks:      the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
  *
  * Converts the @bn and sets it to node content.
  *
@@ -932,65 +932,65 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
     xmlSecAssert2(cur != NULL, -1);
 
     if(reverse != 0) {
-    	ret = xmlSecBnReverse(bn);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBnReverse",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
+        ret = xmlSecBnReverse(bn);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnReverse",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
     }
 
     if(addLineBreaks) {
-	xmlNodeAddContent(cur, xmlSecStringCR);
+        xmlNodeAddContent(cur, xmlSecStringCR);
     }
 
     switch(format) {
     case xmlSecBnBase64:
-	ret = xmlSecBufferBase64NodeContentWrite(bn, cur, xmlSecBase64GetDefaultLineSize());
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBufferBase64NodeContentWrite",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    return(-1);
-	}
-	break;
+        ret = xmlSecBufferBase64NodeContentWrite(bn, cur, xmlSecBase64GetDefaultLineSize());
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBufferBase64NodeContentWrite",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+        break;
     case xmlSecBnHex:
-	content = xmlSecBnToHexString(bn);
-	if(content == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBnToHexString",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFree(content);
-	    return(-1);
-	}
-	xmlNodeSetContent(cur, content);
-	xmlFree(content);
-	break;
+        content = xmlSecBnToHexString(bn);
+        if(content == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnToHexString",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(content);
+            return(-1);
+        }
+        xmlNodeSetContent(cur, content);
+        xmlFree(content);
+        break;
     case xmlSecBnDec:
-	content = xmlSecBnToDecString(bn);
-	if(content == NULL) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			NULL,
-			"xmlSecBnToDecString",
-	    		XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			XMLSEC_ERRORS_NO_MESSAGE);
-	    xmlFree(content);
-	    return(-1);
-	}
-	xmlNodeSetContent(cur, content);
-	xmlFree(content);
-	break;
+        content = xmlSecBnToDecString(bn);
+        if(content == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecBnToDecString",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlFree(content);
+            return(-1);
+        }
+        xmlNodeSetContent(cur, content);
+        xmlFree(content);
+        break;
     }
 
     if(addLineBreaks) {
-	xmlNodeAddContent(cur, xmlSecStringCR);
+        xmlNodeAddContent(cur, xmlSecStringCR);
     }
 
     return(0);
@@ -998,14 +998,14 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
 
 /**
  * xmlSecBnBlobSetNodeValue:
- * @data:	the pointer to BN blob.
- * @dataSize:	the size of BN blob.
- * @cur:	the poitner to an XML node.
- * @format:	the BN format.
- * @reverse:	the flag that indicates whether to reverse the buffer before writing.
+ * @data:       the pointer to BN blob.
+ * @dataSize:   the size of BN blob.
+ * @cur:        the poitner to an XML node.
+ * @format:     the BN format.
+ * @reverse:    the flag that indicates whether to reverse the buffer before writing.
  * @addLineBreaks:  if the flag is equal to 1 then 
- *		linebreaks will be added before and after
- *		new buffer content.
+ *              linebreaks will be added before and after
+ *              new buffer content.
  *
  * Converts the @blob and sets it to node content.
  *
@@ -1013,8 +1013,8 @@ xmlSecBnSetNodeValue(xmlSecBnPtr bn, xmlNodePtr cur, xmlSecBnFormat format, int 
  */
 int  
 xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize, 
-			 xmlNodePtr cur, xmlSecBnFormat format, int reverse,
-			 int addLineBreaks) {
+                         xmlNodePtr cur, xmlSecBnFormat format, int reverse,
+                         int addLineBreaks) {
     xmlSecBn bn;
     int ret;
 
@@ -1023,34 +1023,34 @@ xmlSecBnBlobSetNodeValue(const xmlSecByte* data, xmlSecSize dataSize,
 
     ret = xmlSecBnInitialize(&bn, dataSize);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBnInitialize",
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBnInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     ret = xmlSecBnSetData(&bn, data, dataSize);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBnSetData",
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecBnFinalize(&bn);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBnSetData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecBnFinalize(&bn);
+        return(-1);
     }
 
     ret = xmlSecBnSetNodeValue(&bn, cur, format, reverse, addLineBreaks);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecBnSetNodeValue",
-	    	    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	xmlSecBnFinalize(&bn);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBnSetNodeValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecBnFinalize(&bn);
+        return(-1);
     }
 
     xmlSecBnFinalize(&bn);

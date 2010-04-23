@@ -31,7 +31,7 @@ extern "C" {
  *
  * Void pointer.
  */
-typedef void*					xmlSecPtr;
+typedef void*                                   xmlSecPtr;
 
 /**
  * xmlSecSize:
@@ -40,9 +40,9 @@ typedef void*					xmlSecPtr;
  * but it will break ABI (todo).
  */
 #ifdef XMLSEC_NO_SIZE_T
-#define xmlSecSize				unsigned int
+#define xmlSecSize                              unsigned int
 #else  /* XMLSEC_NO_SIZE_T */
-#define xmlSecSize				size_t
+#define xmlSecSize                              size_t
 #endif /* XMLSEC_NO_SIZE_T */
 
 /**
@@ -51,36 +51,36 @@ typedef void*					xmlSecPtr;
  * One byte. Should be typedef instead of define
  * but it will break ABI (todo).
  */
-#define xmlSecByte				unsigned char
+#define xmlSecByte                              unsigned char
 
 /***********************************************************************
  *
  * Forward declarations
  *
  ***********************************************************************/
-typedef struct _xmlSecKeyData 			xmlSecKeyData, *xmlSecKeyDataPtr; 
-typedef struct _xmlSecKeyDataStore		xmlSecKeyDataStore, *xmlSecKeyDataStorePtr; 
-typedef struct _xmlSecKeyInfoCtx  		xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr; 
-typedef struct _xmlSecKey 			xmlSecKey, *xmlSecKeyPtr; 
-typedef struct _xmlSecKeyStore			xmlSecKeyStore, *xmlSecKeyStorePtr; 
-typedef struct _xmlSecKeysMngr  		xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
-typedef struct _xmlSecTransform 		xmlSecTransform, *xmlSecTransformPtr; 
-typedef struct _xmlSecTransformCtx 		xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
+typedef struct _xmlSecKeyData                   xmlSecKeyData, *xmlSecKeyDataPtr; 
+typedef struct _xmlSecKeyDataStore              xmlSecKeyDataStore, *xmlSecKeyDataStorePtr; 
+typedef struct _xmlSecKeyInfoCtx                xmlSecKeyInfoCtx, *xmlSecKeyInfoCtxPtr; 
+typedef struct _xmlSecKey                       xmlSecKey, *xmlSecKeyPtr; 
+typedef struct _xmlSecKeyStore                  xmlSecKeyStore, *xmlSecKeyStorePtr; 
+typedef struct _xmlSecKeysMngr                  xmlSecKeysMngr, *xmlSecKeysMngrPtr; 
+typedef struct _xmlSecTransform                 xmlSecTransform, *xmlSecTransformPtr; 
+typedef struct _xmlSecTransformCtx              xmlSecTransformCtx, *xmlSecTransformCtxPtr; 
 
 #ifndef XMLSEC_NO_XMLDSIG
-typedef struct _xmlSecDSigCtx 			xmlSecDSigCtx, *xmlSecDSigCtxPtr; 
+typedef struct _xmlSecDSigCtx                   xmlSecDSigCtx, *xmlSecDSigCtxPtr; 
 #endif /* XMLSEC_NO_XMLDSIG */
 
 #ifndef XMLSEC_NO_XMLENC
-typedef struct _xmlSecEncCtx 			xmlSecEncCtx, *xmlSecEncCtxPtr; 
+typedef struct _xmlSecEncCtx                    xmlSecEncCtx, *xmlSecEncCtxPtr; 
 #endif /* XMLSEC_NO_XMLENC */
 
 #ifndef XMLSEC_NO_XKMS
-typedef struct _xmlSecXkmsServerCtx		xmlSecXkmsServerCtx, *xmlSecXkmsServerCtxPtr; 
+typedef struct _xmlSecXkmsServerCtx             xmlSecXkmsServerCtx, *xmlSecXkmsServerCtxPtr; 
 #endif /* XMLSEC_NO_XKMS */
 
-XMLSEC_EXPORT int	xmlSecInit		(void);
-XMLSEC_EXPORT int	xmlSecShutdown		(void);
+XMLSEC_EXPORT int       xmlSecInit              (void);
+XMLSEC_EXPORT int       xmlSecShutdown          (void);
 
 
 
@@ -96,7 +96,7 @@ XMLSEC_EXPORT int	xmlSecShutdown		(void);
  * the one used to compile the caller, 0 if it does not or a negative
  * value if an error occurs.
  */
-#define xmlSecCheckVersionExact()	\
+#define xmlSecCheckVersionExact()       \
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionExactMatch)
 
 /** 
@@ -106,13 +106,13 @@ XMLSEC_EXPORT int	xmlSecShutdown		(void);
  * the one used to compile the caller, 0 if it does not or a negative
  * value if an error occurs.
  */
-#define xmlSecCheckVersion()	\
+#define xmlSecCheckVersion()    \
     xmlSecCheckVersionExt(XMLSEC_VERSION_MAJOR, XMLSEC_VERSION_MINOR, XMLSEC_VERSION_SUBMINOR, xmlSecCheckVersionABICompatible)
 
 /**
  * xmlSecCheckVersionMode:
- * @xmlSecCheckVersionExactMatch:	the version should match exactly.
- * @xmlSecCheckVersionABICompatible:	the version should be ABI compatible.
+ * @xmlSecCheckVersionExactMatch:       the version should match exactly.
+ * @xmlSecCheckVersionABICompatible:    the version should be ABI compatible.
  *
  * The xmlsec library version mode.
  */
@@ -121,10 +121,10 @@ typedef enum {
     xmlSecCheckVersionABICompatible
 } xmlSecCheckVersionMode;
 
-XMLSEC_EXPORT int	xmlSecCheckVersionExt	(int major, 
-						 int minor, 
-						 int subminor, 
-						 xmlSecCheckVersionMode mode);
+XMLSEC_EXPORT int       xmlSecCheckVersionExt   (int major, 
+                                                 int minor, 
+                                                 int subminor, 
+                                                 xmlSecCheckVersionMode mode);
 
 /**
  * ATTRIBUTE_UNUSED:

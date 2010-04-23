@@ -27,16 +27,16 @@ extern "C" {
  *
  * A MSCrypto keys store klass id.
  */
-#define xmlSecMSCryptoKeysStoreId	xmlSecMSCryptoKeysStoreGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId	xmlSecMSCryptoKeysStoreGetKlass	(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeysStoreAdoptKey	(xmlSecKeyStorePtr store,
-									 xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeysStoreLoad 	(xmlSecKeyStorePtr store,
-									 const char *uri,
-									 xmlSecKeysMngrPtr keysMngr);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeysStoreSave	(xmlSecKeyStorePtr store, 
-									 const char *filename,
-									 xmlSecKeyDataType type);
+#define xmlSecMSCryptoKeysStoreId       xmlSecMSCryptoKeysStoreGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyStoreId   xmlSecMSCryptoKeysStoreGetKlass (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreAdoptKey (xmlSecKeyStorePtr store,
+                                                                         xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreLoad     (xmlSecKeyStorePtr store,
+                                                                         const char *uri,
+                                                                         xmlSecKeysMngrPtr keysMngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreSave     (xmlSecKeyStorePtr store, 
+                                                                         const char *filename,
+                                                                         xmlSecKeyDataType type);
 
 #ifdef __cplusplus
 }

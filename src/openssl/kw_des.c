@@ -28,9 +28,9 @@
 
 #include <xmlsec/openssl/crypto.h>
 
-#define XMLSEC_OPENSSL_DES3_KEY_LENGTH				24
-#define XMLSEC_OPENSSL_DES3_IV_LENGTH				8
-#define XMLSEC_OPENSSL_DES3_BLOCK_LENGTH			8
+#define XMLSEC_OPENSSL_DES3_KEY_LENGTH                          24
+#define XMLSEC_OPENSSL_DES3_IV_LENGTH                           8
+#define XMLSEC_OPENSSL_DES3_BLOCK_LENGTH                        8
 
 /*********************************************************************
  *
@@ -41,67 +41,67 @@
  ********************************************************************/
 #define xmlSecOpenSSLKWDes3GetKey(transform) \
     ((xmlSecBufferPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecOpenSSLKWDes3Size	\
+#define xmlSecOpenSSLKWDes3Size \
     (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
 
-static int 	xmlSecOpenSSLKWDes3Initialize			(xmlSecTransformPtr transform);
-static void 	xmlSecOpenSSLKWDes3Finalize			(xmlSecTransformPtr transform);
-static int  	xmlSecOpenSSLKWDes3SetKeyReq			(xmlSecTransformPtr transform, 
-								 xmlSecKeyReqPtr keyReq);
-static int  	xmlSecOpenSSLKWDes3SetKey			(xmlSecTransformPtr transform, 
-								 xmlSecKeyPtr key);
-static int  	xmlSecOpenSSLKWDes3Execute			(xmlSecTransformPtr transform, 
-								 int last,
-								 xmlSecTransformCtxPtr transformCtx);
-static int  	xmlSecOpenSSLKWDes3Encode			(const xmlSecByte *key,
-								 xmlSecSize keySize,
-								 const xmlSecByte *in,
-								 xmlSecSize inSize,
-								 xmlSecByte *out,
-								 xmlSecSize outSize);
-static int  	xmlSecOpenSSLKWDes3Decode			(const xmlSecByte *key,
-							         xmlSecSize keySize,
-								 const xmlSecByte *in,
-								 xmlSecSize inSize,
-								 xmlSecByte *out,
-								 xmlSecSize outSize);
-static int	xmlSecOpenSSLKWDes3Encrypt			(const xmlSecByte *key, 
-								 xmlSecSize keySize,
-						    		 const xmlSecByte *iv,
-								 xmlSecSize ivSize,
-								 const xmlSecByte *in, 
-								 xmlSecSize inSize,
-								 xmlSecByte *out,
-								 xmlSecSize outSize, 
-								 int enc);
-static int 	xmlSecOpenSSLKWDes3BufferReverse		(xmlSecByte *buf, 
-								 xmlSecSize size);
+static int      xmlSecOpenSSLKWDes3Initialize                   (xmlSecTransformPtr transform);
+static void     xmlSecOpenSSLKWDes3Finalize                     (xmlSecTransformPtr transform);
+static int      xmlSecOpenSSLKWDes3SetKeyReq                    (xmlSecTransformPtr transform, 
+                                                                 xmlSecKeyReqPtr keyReq);
+static int      xmlSecOpenSSLKWDes3SetKey                       (xmlSecTransformPtr transform, 
+                                                                 xmlSecKeyPtr key);
+static int      xmlSecOpenSSLKWDes3Execute                      (xmlSecTransformPtr transform, 
+                                                                 int last,
+                                                                 xmlSecTransformCtxPtr transformCtx);
+static int      xmlSecOpenSSLKWDes3Encode                       (const xmlSecByte *key,
+                                                                 xmlSecSize keySize,
+                                                                 const xmlSecByte *in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte *out,
+                                                                 xmlSecSize outSize);
+static int      xmlSecOpenSSLKWDes3Decode                       (const xmlSecByte *key,
+                                                                 xmlSecSize keySize,
+                                                                 const xmlSecByte *in,
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte *out,
+                                                                 xmlSecSize outSize);
+static int      xmlSecOpenSSLKWDes3Encrypt                      (const xmlSecByte *key, 
+                                                                 xmlSecSize keySize,
+                                                                 const xmlSecByte *iv,
+                                                                 xmlSecSize ivSize,
+                                                                 const xmlSecByte *in, 
+                                                                 xmlSecSize inSize,
+                                                                 xmlSecByte *out,
+                                                                 xmlSecSize outSize, 
+                                                                 int enc);
+static int      xmlSecOpenSSLKWDes3BufferReverse                (xmlSecByte *buf, 
+                                                                 xmlSecSize size);
 
 static xmlSecTransformKlass xmlSecOpenSSLKWDes3Klass = {
     /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),		/* xmlSecSize klassSize */
-    xmlSecOpenSSLKWDes3Size,			/* xmlSecSize objSize */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLKWDes3Size,                    /* xmlSecSize objSize */
 
-    xmlSecNameKWDes3,				/* const xmlChar* name; */
-    xmlSecHrefKWDes3, 				/* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,	/* xmlSecAlgorithmUsage usage; */
+    xmlSecNameKWDes3,                           /* const xmlChar* name; */
+    xmlSecHrefKWDes3,                           /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecOpenSSLKWDes3Initialize, 		/* xmlSecTransformInitializeMethod initialize; */
-    xmlSecOpenSSLKWDes3Finalize,		/* xmlSecTransformFinalizeMethod finalize; */
-    NULL,					/* xmlSecTransformNodeReadMethod readNode; */
-    NULL,					/* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecOpenSSLKWDes3SetKeyReq,		/* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecOpenSSLKWDes3SetKey,			/* xmlSecTransformSetKeyMethod setKey; */
-    NULL,					/* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,		/* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,		/* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,		/* xmlSecTransformPopBinMethod popBin; */
-    NULL,					/* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,					/* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecOpenSSLKWDes3Execute,			/* xmlSecTransformExecuteMethod execute; */
+    xmlSecOpenSSLKWDes3Initialize,              /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLKWDes3Finalize,                /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLKWDes3SetKeyReq,               /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecOpenSSLKWDes3SetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLKWDes3Execute,                 /* xmlSecTransformExecuteMethod execute; */
     
-    NULL,					/* void* reserved0; */
-    NULL,					/* void* reserved1; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
 };
 
 /** 
@@ -125,12 +125,12 @@ xmlSecOpenSSLKWDes3Initialize(xmlSecTransformPtr transform) {
     
     ret = xmlSecBufferInitialize(xmlSecOpenSSLKWDes3GetKey(transform), 0);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecBufferInitialize",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
         
     return(0);
@@ -142,7 +142,7 @@ xmlSecOpenSSLKWDes3Finalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size));
     
     if(xmlSecOpenSSLKWDes3GetKey(transform) != NULL) {
-	xmlSecBufferFinalize(xmlSecOpenSSLKWDes3GetKey(transform));
+        xmlSecBufferFinalize(xmlSecOpenSSLKWDes3GetKey(transform));
     }
 }
 
@@ -153,18 +153,18 @@ xmlSecOpenSSLKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyR
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLKWDes3Size), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    keyReq->keyId 	= xmlSecOpenSSLKeyDataDesId;
-    keyReq->keyType 	= xmlSecKeyDataTypeSymmetric;
+    keyReq->keyId       = xmlSecOpenSSLKeyDataDesId;
+    keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-	keyReq->keyUsage= xmlSecKeyUsageEncrypt;
+        keyReq->keyUsage= xmlSecKeyUsageEncrypt;
     } else {
-	keyReq->keyUsage= xmlSecKeyUsageDecrypt;
+        keyReq->keyUsage= xmlSecKeyUsageDecrypt;
     }
     keyReq->keyBitsSize = 8 * XMLSEC_OPENSSL_DES3_KEY_LENGTH;
     return(0);
 }
 
-static int  	
+static int      
 xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     xmlSecSize keySize;
@@ -182,25 +182,25 @@ xmlSecOpenSSLKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     keySize = xmlSecBufferGetSize(buffer);
     if(keySize < XMLSEC_OPENSSL_DES3_KEY_LENGTH) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
-		    "key length %d is not enough (%d expected)",
-		    keySize, XMLSEC_OPENSSL_DES3_KEY_LENGTH);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
+                    "key length %d is not enough (%d expected)",
+                    keySize, XMLSEC_OPENSSL_DES3_KEY_LENGTH);
+        return(-1);
     }
         
     ret = xmlSecBufferSetData(xmlSecOpenSSLKWDes3GetKey(transform),
-			    xmlSecBufferGetData(buffer), 
-			    XMLSEC_OPENSSL_DES3_KEY_LENGTH);
+                            xmlSecBufferGetData(buffer), 
+                            XMLSEC_OPENSSL_DES3_KEY_LENGTH);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    "xmlSecBufferSetData",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    "size=%d", XMLSEC_OPENSSL_DES3_KEY_LENGTH);
-	return(-1);    
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecBufferSetData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", XMLSEC_OPENSSL_DES3_KEY_LENGTH);
+        return(-1);    
     }
 
     return(0);
@@ -230,102 +230,102 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
     xmlSecAssert2(outSize == 0, -1);
     
     if(transform->status == xmlSecTransformStatusNone) {
-	transform->status = xmlSecTransformStatusWorking;
+        transform->status = xmlSecTransformStatusWorking;
     }
     
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
-	/* just do nothing */
+        /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-	if((inSize % XMLSEC_OPENSSL_DES3_BLOCK_LENGTH) != 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE,
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			NULL,
-			XMLSEC_ERRORS_R_INVALID_SIZE,
-			"%d bytes - not %d bytes aligned", 
-			inSize, XMLSEC_OPENSSL_DES3_BLOCK_LENGTH);
-	    return(-1);
-	}	
-	
-	if(transform->operation == xmlSecTransformOperationEncrypt) {
-	    /* the encoded key might be 16 bytes longer plus one block just in case */
-	    outSize = inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH +
-			       XMLSEC_OPENSSL_DES3_BLOCK_LENGTH +
-			       XMLSEC_OPENSSL_DES3_BLOCK_LENGTH;
-	} else {
-	    outSize = inSize + XMLSEC_OPENSSL_DES3_BLOCK_LENGTH;
-	}
+        if((inSize % XMLSEC_OPENSSL_DES3_BLOCK_LENGTH) != 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        NULL,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
+                        "%d bytes - not %d bytes aligned", 
+                        inSize, XMLSEC_OPENSSL_DES3_BLOCK_LENGTH);
+            return(-1);
+        }       
+        
+        if(transform->operation == xmlSecTransformOperationEncrypt) {
+            /* the encoded key might be 16 bytes longer plus one block just in case */
+            outSize = inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH +
+                               XMLSEC_OPENSSL_DES3_BLOCK_LENGTH +
+                               XMLSEC_OPENSSL_DES3_BLOCK_LENGTH;
+        } else {
+            outSize = inSize + XMLSEC_OPENSSL_DES3_BLOCK_LENGTH;
+        }
 
-	ret = xmlSecBufferSetMaxSize(out, outSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferSetMaxSize",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"size=%d", outSize);
-	    return(-1);
-	}
+        ret = xmlSecBufferSetMaxSize(out, outSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE, 
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferSetMaxSize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", outSize);
+            return(-1);
+        }
 
-	if(transform->operation == xmlSecTransformOperationEncrypt) {
-	    ret = xmlSecOpenSSLKWDes3Encode(xmlSecBufferGetData(key), keySize,
-					    xmlSecBufferGetData(in), inSize,
-					    xmlSecBufferGetData(out), outSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "xmlSecOpenSSLKWDes3Encode",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "key=%d,in=%d,out=%d",
-			    keySize, inSize, outSize);
-		return(-1);
-	    }
-	    outSize = ret;
-	} else {
-	    ret = xmlSecOpenSSLKWDes3Decode(xmlSecBufferGetData(key), keySize,
-					    xmlSecBufferGetData(in), inSize,
-					    xmlSecBufferGetData(out), outSize);
-	    if(ret < 0) {
-		xmlSecError(XMLSEC_ERRORS_HERE, 
-			    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			    "xmlSecOpenSSLKWDes3Decode",
-			    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			    "key=%d,in=%d,out=%d",
-			    keySize, inSize, outSize);
-		return(-1);
-	    }
-	    outSize = ret;
-	}
+        if(transform->operation == xmlSecTransformOperationEncrypt) {
+            ret = xmlSecOpenSSLKWDes3Encode(xmlSecBufferGetData(key), keySize,
+                                            xmlSecBufferGetData(in), inSize,
+                                            xmlSecBufferGetData(out), outSize);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE, 
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecOpenSSLKWDes3Encode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            "key=%d,in=%d,out=%d",
+                            keySize, inSize, outSize);
+                return(-1);
+            }
+            outSize = ret;
+        } else {
+            ret = xmlSecOpenSSLKWDes3Decode(xmlSecBufferGetData(key), keySize,
+                                            xmlSecBufferGetData(in), inSize,
+                                            xmlSecBufferGetData(out), outSize);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE, 
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecOpenSSLKWDes3Decode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            "key=%d,in=%d,out=%d",
+                            keySize, inSize, outSize);
+                return(-1);
+            }
+            outSize = ret;
+        }
 
-	ret = xmlSecBufferSetSize(out, outSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferSetSize",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"size=%d", outSize);
-	    return(-1);
-	}
-	
-	ret = xmlSecBufferRemoveHead(in, inSize);
-	if(ret < 0) {
-	    xmlSecError(XMLSEC_ERRORS_HERE, 
-			xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-			"xmlSecBufferRemoveHead",
-			XMLSEC_ERRORS_R_XMLSEC_FAILED,
-			"size=%d", inSize);
-	    return(-1);
-	}
-	
-	transform->status = xmlSecTransformStatusFinished;
+        ret = xmlSecBufferSetSize(out, outSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE, 
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferSetSize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", outSize);
+            return(-1);
+        }
+        
+        ret = xmlSecBufferRemoveHead(in, inSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE, 
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferRemoveHead",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "size=%d", inSize);
+            return(-1);
+        }
+        
+        transform->status = xmlSecTransformStatusFinished;
     } else if(transform->status == xmlSecTransformStatusFinished) {
-	/* the only way we can get here is if there is no input */
-	xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+        /* the only way we can get here is if there is no input */
+        xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-	xmlSecError(XMLSEC_ERRORS_HERE, 
-		    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_STATUS,
-		    "status=%d", transform->status);
-	return(-1);
+        xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_STATUS,
+                    "status=%d", transform->status);
+        return(-1);
     }
     return(0);
 }
@@ -356,10 +356,10 @@ static xmlSecByte xmlSecOpenSSLKWDes3Iv[XMLSEC_OPENSSL_DES3_IV_LENGTH] = {
  *    It is 40 octets long if a 168 bit key is being wrapped.
  *
  */
-static int  	
+static int      
 xmlSecOpenSSLKWDes3Encode(const xmlSecByte *key, xmlSecSize keySize,
-			const xmlSecByte *in, xmlSecSize inSize,
-			xmlSecByte *out, xmlSecSize outSize) {
+                        const xmlSecByte *in, xmlSecSize inSize,
+                        xmlSecByte *out, xmlSecSize outSize) {
     xmlSecByte sha1[SHA_DIGEST_LENGTH];    
     xmlSecByte iv[XMLSEC_OPENSSL_DES3_IV_LENGTH];
     xmlSecSize s;    
@@ -374,12 +374,12 @@ xmlSecOpenSSLKWDes3Encode(const xmlSecByte *key, xmlSecSize keySize,
 
     /* step 2: calculate sha1 and CMS */
     if(SHA1(in, inSize, sha1) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "SHA1",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "SHA1",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
 
     /* step 3: construct WKCKS */
@@ -389,56 +389,56 @@ xmlSecOpenSSLKWDes3Encode(const xmlSecByte *key, xmlSecSize keySize,
     /* step 4: generate random iv */
     ret = RAND_bytes(iv, XMLSEC_OPENSSL_DES3_IV_LENGTH);
     if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "RAND_bytes",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    "ret=%d", ret);
-	return(-1);    
-    }	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "RAND_bytes",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "ret=%d", ret);
+        return(-1);    
+    }   
 
     /* step 5: first encryption, result is TEMP1 */
     ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
-				    iv, XMLSEC_OPENSSL_DES3_IV_LENGTH, 
-				    out, inSize + XMLSEC_OPENSSL_DES3_BLOCK_LENGTH, 
-				    out, outSize, 1);
+                                    iv, XMLSEC_OPENSSL_DES3_IV_LENGTH, 
+                                    out, inSize + XMLSEC_OPENSSL_DES3_BLOCK_LENGTH, 
+                                    out, outSize, 1);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecOpenSSLKWDes3Encrypt",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLKWDes3Encrypt",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
 
     /* step 6: construct TEMP2=IV || TEMP1 */
     memmove(out + XMLSEC_OPENSSL_DES3_IV_LENGTH, out, 
-	    inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH);
+            inSize + XMLSEC_OPENSSL_DES3_IV_LENGTH);
     memcpy(out, iv, XMLSEC_OPENSSL_DES3_IV_LENGTH);
     s = ret + XMLSEC_OPENSSL_DES3_IV_LENGTH; 
     
     /* step 7: reverse octets order, result is TEMP3 */
     ret = xmlSecOpenSSLKWDes3BufferReverse(out, s);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecOpenSSLKWDes3BufferReverse",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLKWDes3BufferReverse",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
 
     /* step 8: second encryption with static IV */
     ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
-				    xmlSecOpenSSLKWDes3Iv, XMLSEC_OPENSSL_DES3_IV_LENGTH,
-				    out, s, out, outSize, 1);
+                                    xmlSecOpenSSLKWDes3Iv, XMLSEC_OPENSSL_DES3_IV_LENGTH,
+                                    out, s, out, outSize, 1);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecOpenSSLKWDes3Encrypt",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLKWDes3Encrypt",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
     s = ret; 
     return(s);
@@ -470,10 +470,10 @@ xmlSecOpenSSLKWDes3Encode(const xmlSecByte *key, xmlSecSize keySize,
  *    error.
  * 8. WK is the wrapped key, now extracted for use in data decryption.
  */
-static int  	
+static int      
 xmlSecOpenSSLKWDes3Decode(const xmlSecByte *key, xmlSecSize keySize,
-			const xmlSecByte *in, xmlSecSize inSize,
-			xmlSecByte *out, xmlSecSize outSize) {
+                        const xmlSecByte *in, xmlSecSize inSize,
+                        xmlSecByte *out, xmlSecSize outSize) {
     xmlSecByte sha1[SHA_DIGEST_LENGTH];    
     xmlSecSize s;    
     int ret;
@@ -487,62 +487,62 @@ xmlSecOpenSSLKWDes3Decode(const xmlSecByte *key, xmlSecSize keySize,
 
     /* step 2: first decryption with static IV, result is TEMP3 */
     ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
-				    xmlSecOpenSSLKWDes3Iv, XMLSEC_OPENSSL_DES3_IV_LENGTH,
-				    in, inSize, out, outSize, 0);
+                                    xmlSecOpenSSLKWDes3Iv, XMLSEC_OPENSSL_DES3_IV_LENGTH,
+                                    in, inSize, out, outSize, 0);
     if((ret < 0) || (ret < XMLSEC_OPENSSL_DES3_IV_LENGTH)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecOpenSSLKWDes3Encrypt",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLKWDes3Encrypt",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
     s = ret; 
     
     /* step 3: reverse octets order in TEMP3, result is TEMP2 */
     ret = xmlSecOpenSSLKWDes3BufferReverse(out, s);
     if(ret < 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecOpenSSLKWDes3BufferReverse",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLKWDes3BufferReverse",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
 
     /* steps 4 and 5: get IV and decrypt second time, result is WKCKS */
     ret = xmlSecOpenSSLKWDes3Encrypt(key, keySize, 
-				     out, XMLSEC_OPENSSL_DES3_IV_LENGTH,
-				     out + XMLSEC_OPENSSL_DES3_IV_LENGTH, 
-				     s - XMLSEC_OPENSSL_DES3_IV_LENGTH, 
-				     out, outSize, 0);
+                                     out, XMLSEC_OPENSSL_DES3_IV_LENGTH,
+                                     out + XMLSEC_OPENSSL_DES3_IV_LENGTH, 
+                                     s - XMLSEC_OPENSSL_DES3_IV_LENGTH, 
+                                     out, outSize, 0);
     if((ret < 0) || (ret < XMLSEC_OPENSSL_DES3_BLOCK_LENGTH)) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "xmlSecOpenSSLKWDes3Encrypt",
-		    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecOpenSSLKWDes3Encrypt",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
     s = ret - XMLSEC_OPENSSL_DES3_BLOCK_LENGTH; 
     
     /* steps 6 and 7: calculate SHA1 and validate it */
     if(SHA1(out, s, sha1) == NULL) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "SHA1",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "SHA1",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);         
     }
 
     if(memcmp(sha1, out + s, XMLSEC_OPENSSL_DES3_BLOCK_LENGTH) != 0) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    NULL,
-		    XMLSEC_ERRORS_R_INVALID_DATA,
-		    "SHA1 does not match");
-	return(-1);	    
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_DATA,
+                    "SHA1 does not match");
+        return(-1);         
     }
     
     return(s);
@@ -550,9 +550,9 @@ xmlSecOpenSSLKWDes3Decode(const xmlSecByte *key, xmlSecSize keySize,
 
 static int
 xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
-			   const xmlSecByte *iv, xmlSecSize ivSize,
-            		   const xmlSecByte *in, xmlSecSize inSize,
-	        	   xmlSecByte *out, xmlSecSize outSize, int enc) {
+                           const xmlSecByte *iv, xmlSecSize ivSize,
+                           const xmlSecByte *in, xmlSecSize inSize,
+                           xmlSecByte *out, xmlSecSize outSize, int enc) {
     EVP_CIPHER_CTX cipherCtx;
     int updateLen;
     int finalLen;
@@ -570,41 +570,41 @@ xmlSecOpenSSLKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
     EVP_CIPHER_CTX_init(&cipherCtx);
     ret = EVP_CipherInit(&cipherCtx, EVP_des_ede3_cbc(), key, iv, enc);  
     if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "EVP_CipherInit",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EVP_CipherInit",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);     
     }
 
 #ifndef XMLSEC_OPENSSL_096
     EVP_CIPHER_CTX_set_padding(&cipherCtx, 0);    
-#endif /* XMLSEC_OPENSSL_096 */	
+#endif /* XMLSEC_OPENSSL_096 */ 
     
     ret = EVP_CipherUpdate(&cipherCtx, out, &updateLen, in, inSize);
     if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "EVP_CipherUpdate",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EVP_CipherUpdate",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);     
     }
     
     ret = EVP_CipherFinal(&cipherCtx, out + updateLen, &finalLen);
     if(ret != 1) {
-	xmlSecError(XMLSEC_ERRORS_HERE,
-		    NULL,
-		    "EVP_CipherFinal",
-		    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-		    XMLSEC_ERRORS_NO_MESSAGE);
-	return(-1);	
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EVP_CipherFinal",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);     
     }    
     EVP_CIPHER_CTX_cleanup(&cipherCtx);
 
     return(updateLen + finalLen);
-}	      
+}             
 
 static int 
 xmlSecOpenSSLKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size) {
@@ -617,9 +617,9 @@ xmlSecOpenSSLKWDes3BufferReverse(xmlSecByte *buf, xmlSecSize size) {
     s = size / 2;
     --size;
     for(i = 0; i < s; ++i) {
-	c = buf[i];
-	buf[i] = buf[size - i];
-	buf[size - i] = c;
+        c = buf[i];
+        buf[i] = buf[size - i];
+        buf[size - i] = c;
     }
     return(0);
 }

@@ -27,7 +27,7 @@ extern "C" {
  *
  * The key usage.
  */
-typedef unsigned int 			xmlSecKeyUsage;
+typedef unsigned int                    xmlSecKeyUsage;
 
 /**
  * xmlSecKeyUsageSign:
@@ -35,42 +35,42 @@ typedef unsigned int 			xmlSecKeyUsage;
  * Key can be used in any way.
 
  */
-#define	xmlSecKeyUsageSign		0x00000001
+#define xmlSecKeyUsageSign              0x00000001
 
 /**
  * xmlSecKeyUsageVerify:
  *
  * Key for signing.
  */
-#define	xmlSecKeyUsageVerify		0x00000002
+#define xmlSecKeyUsageVerify            0x00000002
 
 /**
  * xmlSecKeyUsageEncrypt:
  *
  * Key for signature verification.
  */
-#define	xmlSecKeyUsageEncrypt		0x00000004
+#define xmlSecKeyUsageEncrypt           0x00000004
 
 /**
  * xmlSecKeyUsageDecrypt:
  *
  * An encryption key.
  */
-#define	xmlSecKeyUsageDecrypt		0x00000008
+#define xmlSecKeyUsageDecrypt           0x00000008
 
 /**
  * xmlSecKeyUsageKeyExchange:
  *
  * The key is used for key exchange.
  */
-#define	xmlSecKeyUsageKeyExchange	0x00000010
+#define xmlSecKeyUsageKeyExchange       0x00000010
 
 /**
  * xmlSecKeyUsageAny:
  *
  * A decryption key.
  */
-#define	xmlSecKeyUsageAny		0xFFFFFFFF
+#define xmlSecKeyUsageAny               0xFFFFFFFF
 
 
 /**************************************************************************
@@ -78,30 +78,30 @@ typedef unsigned int 			xmlSecKeyUsage;
  * xmlSecKeyUseWith
  *
  *************************************************************************/
-typedef struct _xmlSecKeyUseWith		xmlSecKeyUseWith, *xmlSecKeyUseWithPtr; 
-XMLSEC_EXPORT int	xmlSecKeyUseWithInitialize		(xmlSecKeyUseWithPtr keyUseWith);
-XMLSEC_EXPORT void	xmlSecKeyUseWithFinalize		(xmlSecKeyUseWithPtr keyUseWith);
-XMLSEC_EXPORT void	xmlSecKeyUseWithReset			(xmlSecKeyUseWithPtr keyUseWith);
-XMLSEC_EXPORT int	xmlSecKeyUseWithCopy			(xmlSecKeyUseWithPtr dst,
-								 xmlSecKeyUseWithPtr src);
-XMLSEC_EXPORT xmlSecKeyUseWithPtr xmlSecKeyUseWithCreate	(const xmlChar* application,
+typedef struct _xmlSecKeyUseWith                xmlSecKeyUseWith, *xmlSecKeyUseWithPtr; 
+XMLSEC_EXPORT int       xmlSecKeyUseWithInitialize              (xmlSecKeyUseWithPtr keyUseWith);
+XMLSEC_EXPORT void      xmlSecKeyUseWithFinalize                (xmlSecKeyUseWithPtr keyUseWith);
+XMLSEC_EXPORT void      xmlSecKeyUseWithReset                   (xmlSecKeyUseWithPtr keyUseWith);
+XMLSEC_EXPORT int       xmlSecKeyUseWithCopy                    (xmlSecKeyUseWithPtr dst,
+                                                                 xmlSecKeyUseWithPtr src);
+XMLSEC_EXPORT xmlSecKeyUseWithPtr xmlSecKeyUseWithCreate        (const xmlChar* application,
                                                                  const xmlChar* identifier);
-XMLSEC_EXPORT xmlSecKeyUseWithPtr xmlSecKeyUseWithDuplicate	(xmlSecKeyUseWithPtr keyUseWith);
-XMLSEC_EXPORT void	xmlSecKeyUseWithDestroy			(xmlSecKeyUseWithPtr keyUseWith);
-XMLSEC_EXPORT int	xmlSecKeyUseWithSet			(xmlSecKeyUseWithPtr keyUseWith,
-								 const xmlChar* application,
+XMLSEC_EXPORT xmlSecKeyUseWithPtr xmlSecKeyUseWithDuplicate     (xmlSecKeyUseWithPtr keyUseWith);
+XMLSEC_EXPORT void      xmlSecKeyUseWithDestroy                 (xmlSecKeyUseWithPtr keyUseWith);
+XMLSEC_EXPORT int       xmlSecKeyUseWithSet                     (xmlSecKeyUseWithPtr keyUseWith,
+                                                                 const xmlChar* application,
                                                                  const xmlChar* identifier);
-XMLSEC_EXPORT void	xmlSecKeyUseWithDebugDump		(xmlSecKeyUseWithPtr keyUseWith,
-								 FILE* output);
-XMLSEC_EXPORT void	xmlSecKeyUseWithDebugXmlDump		(xmlSecKeyUseWithPtr keyUseWith,
-								 FILE* output);
+XMLSEC_EXPORT void      xmlSecKeyUseWithDebugDump               (xmlSecKeyUseWithPtr keyUseWith,
+                                                                 FILE* output);
+XMLSEC_EXPORT void      xmlSecKeyUseWithDebugXmlDump            (xmlSecKeyUseWithPtr keyUseWith,
+                                                                 FILE* output);
 
 /**
  * xmlSecKeyUseWith:
  * @application:        the application.
  * @identifier:         the identifier.
- * @reserved1:		reserved for future use.
- * @reserved2:		reserved for future use.
+ * @reserved1:          reserved for future use.
+ * @reserved2:          reserved for future use.
  *
  * Information about application and user of the key.
  */
@@ -118,122 +118,122 @@ struct _xmlSecKeyUseWith {
  * 
  * The keys list klass.
  */
-#define xmlSecKeyUseWithPtrListId	xmlSecKeyUseWithPtrListGetKlass()
-XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyUseWithPtrListGetKlass	(void);
+#define xmlSecKeyUseWithPtrListId       xmlSecKeyUseWithPtrListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyUseWithPtrListGetKlass (void);
 
 /**************************************************************************
  *
  * xmlSecKeyReq - what key are we looking for?
  *
  *************************************************************************/
-typedef struct _xmlSecKeyReq 			xmlSecKeyReq, *xmlSecKeyReqPtr; 
+typedef struct _xmlSecKeyReq                    xmlSecKeyReq, *xmlSecKeyReqPtr; 
 
 /**
  * xmlSecKeyReq:
- * @keyId:		the desired key value klass.
- * @keyType:		the desired key type.
- * @keyUsage:		the desired key usage.
- * @keyBitsSize:	the desired key size (in bits!).
+ * @keyId:              the desired key value klass.
+ * @keyType:            the desired key type.
+ * @keyUsage:           the desired key usage.
+ * @keyBitsSize:        the desired key size (in bits!).
  * @keyUseWithList:     the desired key use with application/identifier information.
- * @reserved1:		reserved for future use.
- * @reserved2:		reserved for future use.
+ * @reserved1:          reserved for future use.
+ * @reserved2:          reserved for future use.
  *
  * The key requirements information.
  */
 struct _xmlSecKeyReq {
-    xmlSecKeyDataId	        keyId;
-    xmlSecKeyDataType		keyType;
-    xmlSecKeyUsage		keyUsage;
-    xmlSecSize			keyBitsSize;
+    xmlSecKeyDataId             keyId;
+    xmlSecKeyDataType           keyType;
+    xmlSecKeyUsage              keyUsage;
+    xmlSecSize                  keyBitsSize;
     xmlSecPtrList               keyUseWithList;    
 
     void*                       reserved1;
     void*                       reserved2;
 };
 
-XMLSEC_EXPORT int	xmlSecKeyReqInitialize			(xmlSecKeyReqPtr keyReq);
-XMLSEC_EXPORT void	xmlSecKeyReqFinalize			(xmlSecKeyReqPtr keyReq);
-XMLSEC_EXPORT void	xmlSecKeyReqReset			(xmlSecKeyReqPtr keyReq);
-XMLSEC_EXPORT int	xmlSecKeyReqCopy			(xmlSecKeyReqPtr dst,
-								 xmlSecKeyReqPtr src);
-XMLSEC_EXPORT int	xmlSecKeyReqMatchKey			(xmlSecKeyReqPtr keyReq,
-								 xmlSecKeyPtr key);
-XMLSEC_EXPORT int	xmlSecKeyReqMatchKeyValue		(xmlSecKeyReqPtr keyReq,
-								 xmlSecKeyDataPtr value);
-XMLSEC_EXPORT void	xmlSecKeyReqDebugDump		        (xmlSecKeyReqPtr keyReq,
-								 FILE* output);
-XMLSEC_EXPORT void	xmlSecKeyReqDebugXmlDump	        (xmlSecKeyReqPtr keyReq,
-								 FILE* output);
+XMLSEC_EXPORT int       xmlSecKeyReqInitialize                  (xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT void      xmlSecKeyReqFinalize                    (xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT void      xmlSecKeyReqReset                       (xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT int       xmlSecKeyReqCopy                        (xmlSecKeyReqPtr dst,
+                                                                 xmlSecKeyReqPtr src);
+XMLSEC_EXPORT int       xmlSecKeyReqMatchKey                    (xmlSecKeyReqPtr keyReq,
+                                                                 xmlSecKeyPtr key);
+XMLSEC_EXPORT int       xmlSecKeyReqMatchKeyValue               (xmlSecKeyReqPtr keyReq,
+                                                                 xmlSecKeyDataPtr value);
+XMLSEC_EXPORT void      xmlSecKeyReqDebugDump                   (xmlSecKeyReqPtr keyReq,
+                                                                 FILE* output);
+XMLSEC_EXPORT void      xmlSecKeyReqDebugXmlDump                (xmlSecKeyReqPtr keyReq,
+                                                                 FILE* output);
 
 /**
  * xmlSecKey:
- * @name: 		the key name.
- * @value:		the key value.
- * @dataList:		the key data list.
- * @usage:		the key usage.
- * @notValidBefore:	the start key validity interval.
- * @notValidAfter:	the end key validity interval.
+ * @name:               the key name.
+ * @value:              the key value.
+ * @dataList:           the key data list.
+ * @usage:              the key usage.
+ * @notValidBefore:     the start key validity interval.
+ * @notValidAfter:      the end key validity interval.
  *
  * The key.
  */
 struct _xmlSecKey {
-    xmlChar*				name;
-    xmlSecKeyDataPtr			value;
-    xmlSecPtrListPtr			dataList;
-    xmlSecKeyUsage			usage;
-    time_t				notValidBefore;
-    time_t				notValidAfter;    
+    xmlChar*                            name;
+    xmlSecKeyDataPtr                    value;
+    xmlSecPtrListPtr                    dataList;
+    xmlSecKeyUsage                      usage;
+    time_t                              notValidBefore;
+    time_t                              notValidAfter;    
 };
 
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyCreate		(void);
-XMLSEC_EXPORT void		xmlSecKeyDestroy	(xmlSecKeyPtr key);
-XMLSEC_EXPORT void		xmlSecKeyEmpty		(xmlSecKeyPtr key);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyDuplicate	(xmlSecKeyPtr key);
-XMLSEC_EXPORT int		xmlSecKeyCopy		(xmlSecKeyPtr keyDst,
-							 xmlSecKeyPtr keySrc);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyCreate         (void);
+XMLSEC_EXPORT void              xmlSecKeyDestroy        (xmlSecKeyPtr key);
+XMLSEC_EXPORT void              xmlSecKeyEmpty          (xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyDuplicate      (xmlSecKeyPtr key);
+XMLSEC_EXPORT int               xmlSecKeyCopy           (xmlSecKeyPtr keyDst,
+                                                         xmlSecKeyPtr keySrc);
 
-XMLSEC_EXPORT const xmlChar*	xmlSecKeyGetName	(xmlSecKeyPtr key);
-XMLSEC_EXPORT int		xmlSecKeySetName	(xmlSecKeyPtr key,
-							 const xmlChar* name);
+XMLSEC_EXPORT const xmlChar*    xmlSecKeyGetName        (xmlSecKeyPtr key);
+XMLSEC_EXPORT int               xmlSecKeySetName        (xmlSecKeyPtr key,
+                                                         const xmlChar* name);
 
-XMLSEC_EXPORT xmlSecKeyDataType	xmlSecKeyGetType	(xmlSecKeyPtr key);
+XMLSEC_EXPORT xmlSecKeyDataType xmlSecKeyGetType        (xmlSecKeyPtr key);
 
-XMLSEC_EXPORT xmlSecKeyDataPtr	xmlSecKeyGetValue	(xmlSecKeyPtr key);
-XMLSEC_EXPORT int		xmlSecKeySetValue	(xmlSecKeyPtr key,
-							 xmlSecKeyDataPtr value);
+XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetValue       (xmlSecKeyPtr key);
+XMLSEC_EXPORT int               xmlSecKeySetValue       (xmlSecKeyPtr key,
+                                                         xmlSecKeyDataPtr value);
 
-XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecKeyGetData	(xmlSecKeyPtr key, 
-							 xmlSecKeyDataId dataId);
-XMLSEC_EXPORT xmlSecKeyDataPtr 	xmlSecKeyEnsureData	(xmlSecKeyPtr key, 
-							 xmlSecKeyDataId dataId);
-XMLSEC_EXPORT int		xmlSecKeyAdoptData	(xmlSecKeyPtr key,
-							 xmlSecKeyDataPtr data);
+XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyGetData        (xmlSecKeyPtr key, 
+                                                         xmlSecKeyDataId dataId);
+XMLSEC_EXPORT xmlSecKeyDataPtr  xmlSecKeyEnsureData     (xmlSecKeyPtr key, 
+                                                         xmlSecKeyDataId dataId);
+XMLSEC_EXPORT int               xmlSecKeyAdoptData      (xmlSecKeyPtr key,
+                                                         xmlSecKeyDataPtr data);
 
-XMLSEC_EXPORT void		xmlSecKeyDebugDump	(xmlSecKeyPtr key,
-							 FILE *output);
-XMLSEC_EXPORT void		xmlSecKeyDebugXmlDump	(xmlSecKeyPtr key,
-							 FILE *output);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerate	(xmlSecKeyDataId dataId,
-							 xmlSecSize sizeBits,
-							 xmlSecKeyDataType type);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyGenerateByName (const xmlChar* name,
-							 xmlSecSize sizeBits,
-							 xmlSecKeyDataType type);
+XMLSEC_EXPORT void              xmlSecKeyDebugDump      (xmlSecKeyPtr key,
+                                                         FILE *output);
+XMLSEC_EXPORT void              xmlSecKeyDebugXmlDump   (xmlSecKeyPtr key,
+                                                         FILE *output);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyGenerate       (xmlSecKeyDataId dataId,
+                                                         xmlSecSize sizeBits,
+                                                         xmlSecKeyDataType type);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyGenerateByName (const xmlChar* name,
+                                                         xmlSecSize sizeBits,
+                                                         xmlSecKeyDataType type);
 
 
-XMLSEC_EXPORT int		xmlSecKeyMatch		(xmlSecKeyPtr key, 
-							 const xmlChar *name,
-							 xmlSecKeyReqPtr keyReq);
+XMLSEC_EXPORT int               xmlSecKeyMatch          (xmlSecKeyPtr key, 
+                                                         const xmlChar *name,
+                                                         xmlSecKeyReqPtr keyReq);
 
-XMLSEC_EXPORT xmlSecKeyPtr  	xmlSecKeyReadBuffer	(xmlSecKeyDataId dataId,
-                            				 xmlSecBuffer* buffer);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadBinaryFile	(xmlSecKeyDataId dataId,
-							 const char* filename);
-XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadMemory	(xmlSecKeyDataId dataId,
-							 const xmlSecByte* data,
-							 xmlSecSize dataSize);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadBuffer     (xmlSecKeyDataId dataId,
+                                                         xmlSecBuffer* buffer);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadBinaryFile (xmlSecKeyDataId dataId,
+                                                         const char* filename);
+XMLSEC_EXPORT xmlSecKeyPtr      xmlSecKeyReadMemory     (xmlSecKeyDataId dataId,
+                                                         const xmlSecByte* data,
+                                                         xmlSecSize dataSize);
 
-							 
+                                                         
 /**
  * xmlSecKeyIsValid:
  * @key: the pointer to key.
@@ -242,9 +242,9 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadMemory	(xmlSecKeyDataId dataId,
  * or 0 otherwise.
  */ 
 #define xmlSecKeyIsValid(key) \
-	((( key ) != NULL) && \
-	 (( key )->value != NULL) && \
-	 ((( key )->value->id) != NULL))
+        ((( key ) != NULL) && \
+         (( key )->value != NULL) && \
+         ((( key )->value->id) != NULL))
 /**
  * xmlSecKeyCheckId:
  * @key: the pointer to key.
@@ -253,8 +253,8 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadMemory	(xmlSecKeyDataId dataId,
  * Macro. Returns 1 if @key is valid and @key's id is equal to @keyId.
  */
 #define xmlSecKeyCheckId(key, keyId) \
- 	(xmlSecKeyIsValid(( key )) && \
-	((( key )->value->id) == ( keyId )))
+        (xmlSecKeyIsValid(( key )) && \
+        ((( key )->value->id) == ( keyId )))
 
 
 /***********************************************************************
@@ -267,8 +267,8 @@ XMLSEC_EXPORT xmlSecKeyPtr	xmlSecKeyReadMemory	(xmlSecKeyDataId dataId,
  * 
  * The keys list klass.
  */
-#define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()
-XMLSEC_EXPORT xmlSecPtrListId	xmlSecKeyPtrListGetKlass		(void);
+#define xmlSecKeyPtrListId      xmlSecKeyPtrListGetKlass()
+XMLSEC_EXPORT xmlSecPtrListId   xmlSecKeyPtrListGetKlass                (void);
 
 #ifdef __cplusplus
 }

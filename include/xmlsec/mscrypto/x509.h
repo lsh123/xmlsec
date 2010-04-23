@@ -28,23 +28,23 @@ extern "C" {
  * The MSCrypto X509 data klass.
  */
 #define xmlSecMSCryptoKeyDataX509Id \
-	xmlSecMSCryptoKeyDataX509GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataX509GetKlass(void);
+        xmlSecMSCryptoKeyDataX509GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataX509GetKlass(void);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetKeyCert	(xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataX509AdoptKeyCert	(xmlSecKeyDataPtr data, 
-									        PCCERT_CONTEXT cert);
-XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCert	(xmlSecKeyDataPtr data,
-										 PCCERT_CONTEXT cert);
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT	xmlSecMSCryptoKeyDataX509GetCert    	(xmlSecKeyDataPtr data,
-									         xmlSecSize pos);
-XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCertsSize	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetKeyCert     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptKeyCert   (xmlSecKeyDataPtr data, 
+                                                                                PCCERT_CONTEXT cert);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCert      (xmlSecKeyDataPtr data,
+                                                                                 PCCERT_CONTEXT cert);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataX509GetCert        (xmlSecKeyDataPtr data,
+                                                                                 xmlSecSize pos);
+XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecMSCryptoKeyDataX509GetCertsSize   (xmlSecKeyDataPtr data);
 
-XMLSEC_CRYPTO_EXPORT int 		xmlSecMSCryptoKeyDataX509AdoptCrl	(xmlSecKeyDataPtr data,
-										 PCCRL_CONTEXT crl);
-XMLSEC_CRYPTO_EXPORT PCCRL_CONTEXT	xmlSecMSCryptoKeyDataX509GetCrl		(xmlSecKeyDataPtr data,
-										 xmlSecSize pos);
-XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCrlsSize	(xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataX509AdoptCrl       (xmlSecKeyDataPtr data,
+                                                                                 PCCRL_CONTEXT crl);
+XMLSEC_CRYPTO_EXPORT PCCRL_CONTEXT      xmlSecMSCryptoKeyDataX509GetCrl         (xmlSecKeyDataPtr data,
+                                                                                 xmlSecSize pos);
+XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecMSCryptoKeyDataX509GetCrlsSize    (xmlSecKeyDataPtr data);
 
 
 /**
@@ -53,8 +53,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecSize		xmlSecMSCryptoKeyDataX509GetCrlsSize	(xmlSecKey
  * The MSCrypto raw X509 certificate klass.
  */
 #define xmlSecMSCryptoKeyDataRawX509CertId \
-	xmlSecMSCryptoKeyDataRawX509CertGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataRawX509CertGetKlass(void);
+        xmlSecMSCryptoKeyDataRawX509CertGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataRawX509CertGetKlass(void);
 
 /**
  * xmlSecMSCryptoX509StoreId:
@@ -62,38 +62,38 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataRawX509CertGetKlass(v
  * The MSCrypto X509 store klass.
  */
 #define xmlSecMSCryptoX509StoreId \
-	xmlSecMSCryptoX509StoreGetKlass()
+        xmlSecMSCryptoX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecMSCryptoX509StoreGetKlass(void);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoX509StoreFindCert		(xmlSecKeyDataStorePtr store,
-									 	 xmlChar *subjectName,
-									 	 xmlChar *issuerName, 
-									 	 xmlChar *issuerSerial,
-									 	 xmlChar *ski,
-									 	 xmlSecKeyInfoCtx* keyInfoCtx);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert         (xmlSecKeyDataStorePtr store,
+                                                                                 xmlChar *subjectName,
+                                                                                 xmlChar *issuerName, 
+                                                                                 xmlChar *issuerSerial,
+                                                                                 xmlChar *ski,
+                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
 
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT 	xmlSecMSCryptoX509StoreVerify		(xmlSecKeyDataStorePtr store,
-									 	 HCERTSTORE certs,
-									 	 xmlSecKeyInfoCtx* keyInfoCtx);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptCert 	(xmlSecKeyDataStorePtr store,
-										 PCCERT_CONTEXT cert,
-										 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify           (xmlSecKeyDataStorePtr store,
+                                                                                 HCERTSTORE certs,
+                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptCert        (xmlSecKeyDataStorePtr store,
+                                                                                 PCCERT_CONTEXT cert,
+                                                                                 xmlSecKeyDataType type);
 
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptKeyStore (
-										xmlSecKeyDataStorePtr store,
-										HCERTSTORE keyStore
-								) ;
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptKeyStore (
+                                                                                xmlSecKeyDataStorePtr store,
+                                                                                HCERTSTORE keyStore
+                                                                ) ;
 
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptTrustedStore (
-										xmlSecKeyDataStorePtr store,
-										HCERTSTORE trustedStore
-								) ;
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptTrustedStore (
+                                                                                xmlSecKeyDataStorePtr store,
+                                                                                HCERTSTORE trustedStore
+                                                                ) ;
 
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoX509StoreAdoptUntrustedStore (
-										xmlSecKeyDataStorePtr store,
-										HCERTSTORE untrustedStore
-								) ;
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptUntrustedStore (
+                                                                                xmlSecKeyDataStorePtr store,
+                                                                                HCERTSTORE untrustedStore
+                                                                ) ;
 
 XMLSEC_CRYPTO_EXPORT void       xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (
                                         xmlSecKeyDataStorePtr store, 

@@ -5,13 +5,13 @@
  * DES key (encrypted with an RSA key).
  * 
  * Usage: 
- *	./encrypt3 <xml-doc> <rsa-pem-key-file> 
+ *      ./encrypt3 <xml-doc> <rsa-pem-key-file> 
  *
  * Example:
- *	./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
+ *      ./encrypt3 encrypt3-doc.xml rsakey.pem > encrypt3-res.xml
  *
  * The result could be decrypted with decrypt3 example:
- *	./decrypt3 encrypt3-res.xml
+ *      ./decrypt3 encrypt3-res.xml
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -46,9 +46,9 @@ main(int argc, char **argv) {
     assert(argv);
 
     if(argc != 3) {
-	fprintf(stderr, "Error: wrong number of arguments.\n");
-	fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
-	return(1);
+        fprintf(stderr, "Error: wrong number of arguments.\n");
+        fprintf(stderr, "Usage: %s <xml-file> <key-file>\n", argv[0]);
+        return(1);
     }
 
     /* Init libxml and libxslt libraries */
@@ -59,17 +59,17 @@ main(int argc, char **argv) {
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1; 
 #endif /* XMLSEC_NO_XSLT */
-        	
+                
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
-	fprintf(stderr, "Error: xmlsec initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec initialization failed.\n");
+        return(-1);
     }
 
     /* Check loaded library version */
     if(xmlSecCheckVersion() != 1) {
-	fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-	return(-1);
+        fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
+        return(-1);
     }
 
     /* Load default crypto engine if we are supporting dynamic
@@ -79,35 +79,35 @@ main(int argc, char **argv) {
      */
 #ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLLoadLibrary(BAD_CAST XMLSEC_CRYPTO) < 0) {
-	fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
-			"that you have it installed and check shared libraries path\n"
-			"(LD_LIBRARY_PATH) envornment variable.\n");
-	return(-1);	
+        fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
+                        "that you have it installed and check shared libraries path\n"
+                        "(LD_LIBRARY_PATH) envornment variable.\n");
+        return(-1);     
     }
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 
     /* Init crypto library */
     if(xmlSecCryptoAppInit(NULL) < 0) {
-	fprintf(stderr, "Error: crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: crypto initialization failed.\n");
+        return(-1);
     }
 
     /* Init xmlsec-crypto library */
     if(xmlSecCryptoInit() < 0) {
-	fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-	return(-1);
+        fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
+        return(-1);
     }
 
     /* create keys manager and load keys */
     mngr = load_rsa_keys(argv[2]);
     if(mngr == NULL) {
-	return(-1);
+        return(-1);
     }
 
     /* we use key filename as key name here */
     if(encrypt_file(mngr, argv[1], argv[2]) < 0) {
-	xmlSecKeysMngrDestroy(mngr);
-	return(-1);
+        xmlSecKeysMngrDestroy(mngr);
+        return(-1);
     }    
 
     /* destroy keys manager */
@@ -133,7 +133,7 @@ main(int argc, char **argv) {
 
 /**
  * load_rsa_keys:
- * @key_file:		the key filename.
+ * @key_file:           the key filename.
  *
  * Creates simple keys manager and load RSA key from #key_file in it.
  * The caller is responsible for destroing returned keys manager using
@@ -155,13 +155,13 @@ load_rsa_keys(char* key_file) {
      */
     mngr = xmlSecKeysMngrCreate();
     if(mngr == NULL) {
-	fprintf(stderr, "Error: failed to create keys manager.\n");
-	return(NULL);
+        fprintf(stderr, "Error: failed to create keys manager.\n");
+        return(NULL);
     }
     if(xmlSecCryptoAppDefaultKeysMngrInit(mngr) < 0) {
-	fprintf(stderr, "Error: failed to initialize keys manager.\n");
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
+        fprintf(stderr, "Error: failed to initialize keys manager.\n");
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
     }    
     
     /* load private RSA key */
@@ -175,11 +175,11 @@ load_rsa_keys(char* key_file) {
     /* set key name to the file name, this is just an example! */
     if(xmlSecKeySetName(key, BAD_CAST key_file) < 0) {
         fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-        xmlSecKeyDestroy(key);	
-	xmlSecKeysMngrDestroy(mngr);
-	return(NULL);
+        xmlSecKeyDestroy(key);  
+        xmlSecKeysMngrDestroy(mngr);
+        return(NULL);
     }
-	
+        
     /* add key to keys manager, from now on keys manager is responsible 
      * for destroying key 
      */
@@ -195,9 +195,9 @@ load_rsa_keys(char* key_file) {
 
 /**
  * encrypt_file:
- * @mngr:		the pointer to keys manager.
- * @xml_file:		the encryption template file name.
- * @key_name:		the RSA key name.
+ * @mngr:               the pointer to keys manager.
+ * @xml_file:           the encryption template file name.
+ * @key_name:           the RSA key name.
  *
  * Encrypts #xml_file using a dynamicaly created template, a session DES key 
  * and an RSA key from keys manager.
@@ -221,78 +221,78 @@ encrypt_file(xmlSecKeysMngrPtr mngr, const char* xml_file, const char* key_name)
     /* load template */
     doc = xmlParseFile(xml_file);
     if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-	fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
-	goto done;	
+        fprintf(stderr, "Error: unable to parse file \"%s\"\n", xml_file);
+        goto done;      
     }
     
     /* create encryption template to encrypt XML file and replace 
      * its content with encryption result */
     encDataNode = xmlSecTmplEncDataCreate(doc, xmlSecTransformDes3CbcId,
-				NULL, xmlSecTypeEncElement, NULL, NULL);
+                                NULL, xmlSecTypeEncElement, NULL, NULL);
     if(encDataNode == NULL) {
-	fprintf(stderr, "Error: failed to create encryption template\n");
-	goto done;   
+        fprintf(stderr, "Error: failed to create encryption template\n");
+        goto done;   
     }
 
     /* we want to put encrypted data in the <enc:CipherValue/> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encDataNode) == NULL) {
-	fprintf(stderr, "Error: failed to add CipherValue node\n");
-	goto done;   
+        fprintf(stderr, "Error: failed to add CipherValue node\n");
+        goto done;   
     }
 
     /* add <dsig:KeyInfo/> */
     keyInfoNode = xmlSecTmplEncDataEnsureKeyInfo(encDataNode, NULL);
     if(keyInfoNode == NULL) {
-	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add key info\n");
+        goto done;              
     }
 
     /* add <enc:EncryptedKey/> to store the encrypted session key */
     encKeyNode = xmlSecTmplKeyInfoAddEncryptedKey(keyInfoNode, 
-				    xmlSecTransformRsaPkcs1Id, 
-				    NULL, NULL, NULL);
+                                    xmlSecTransformRsaPkcs1Id, 
+                                    NULL, NULL, NULL);
     if(encKeyNode == NULL) {
-	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add key info\n");
+        goto done;              
     }
 
     /* we want to put encrypted key in the <enc:CipherValue/> node */
     if(xmlSecTmplEncDataEnsureCipherValue(encKeyNode) == NULL) {
-	fprintf(stderr, "Error: failed to add CipherValue node\n");
-	goto done;   
+        fprintf(stderr, "Error: failed to add CipherValue node\n");
+        goto done;   
     }
 
     /* add <dsig:KeyInfo/> and <dsig:KeyName/> nodes to <enc:EncryptedKey/> */
     keyInfoNode2 = xmlSecTmplEncDataEnsureKeyInfo(encKeyNode, NULL);
     if(keyInfoNode2 == NULL) {
-	fprintf(stderr, "Error: failed to add key info\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add key info\n");
+        goto done;              
     }
     
     /* set key name so we can lookup key when needed */
     if(xmlSecTmplKeyInfoAddKeyName(keyInfoNode2, key_name) == NULL) {
-	fprintf(stderr, "Error: failed to add key name\n");
-	goto done;		
+        fprintf(stderr, "Error: failed to add key name\n");
+        goto done;              
     }
 
     /* create encryption context */
     encCtx = xmlSecEncCtxCreate(mngr);
     if(encCtx == NULL) {
         fprintf(stderr,"Error: failed to create encryption context\n");
-	goto done;
+        goto done;
     }
 
     /* generate a Triple DES key */
     encCtx->encKey = xmlSecKeyGenerate(xmlSecKeyDataDesId, 192, xmlSecKeyDataTypeSession);
     if(encCtx->encKey == NULL) {
         fprintf(stderr,"Error: failed to generate session des key\n");
-	goto done;
+        goto done;
     }
 
     /* encrypt the data */
     if(xmlSecEncCtxXmlEncrypt(encCtx, encDataNode, xmlDocGetRootElement(doc)) < 0) {
         fprintf(stderr,"Error: encryption failed\n");
-	goto done;
+        goto done;
     }
     
     /* we template is inserted in the doc */
@@ -308,15 +308,15 @@ done:
 
     /* cleanup */
     if(encCtx != NULL) {
-	xmlSecEncCtxDestroy(encCtx);
+        xmlSecEncCtxDestroy(encCtx);
     }
 
     if(encDataNode != NULL) {
-	xmlFreeNode(encDataNode);
+        xmlFreeNode(encDataNode);
     }
         
     if(doc != NULL) {
-	xmlFreeDoc(doc); 
+        xmlFreeDoc(doc); 
     }
     return(res);
 }

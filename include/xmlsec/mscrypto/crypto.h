@@ -21,33 +21,33 @@ extern "C" {
 #include <xmlsec/transforms.h>
 #include <xmlsec/dl.h>
 
-XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr	xmlSecCryptoGetFunctions_mscrypto(void);
+XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscrypto(void);
 
 /**
  * Init shutdown
  */
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoInit		(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoShutdown		(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoInit              (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoShutdown          (void);
 
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeysMngrInit	(xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoGenerateRandom	(xmlSecBufferPtr buffer,
-									 size_t size);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysMngrInit      (xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoGenerateRandom    (xmlSecBufferPtr buffer,
+                                                                         size_t size);
 
-XMLSEC_CRYPTO_EXPORT void		xmlSecMSCryptoErrorsDefaultCallback(const char* file, 
-									int line, 
-									const char* func,
-									const char* errorObject, 
-									const char* errorSubject,
-									int reason, 
-									const char* msg);
+XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(const char* file, 
+                                                                        int line, 
+                                                                        const char* func,
+                                                                        const char* errorObject, 
+                                                                        const char* errorSubject,
+                                                                        int reason, 
+                                                                        const char* msg);
 
 /**
  * Utils
  */
-XMLSEC_CRYPTO_EXPORT BYTE*		xmlSecMSCryptoCertStrToName	(DWORD dwCertEncodingType, 
-									 LPCTSTR pszX500, 
-									 DWORD dwStrType,
-									 DWORD* len);
+XMLSEC_CRYPTO_EXPORT BYTE*              xmlSecMSCryptoCertStrToName     (DWORD dwCertEncodingType, 
+                                                                         LPCTSTR pszX500, 
+                                                                         DWORD dwStrType,
+                                                                         DWORD* len);
 
 
 
@@ -64,8 +64,8 @@ XMLSEC_CRYPTO_EXPORT BYTE*		xmlSecMSCryptoCertStrToName	(DWORD dwCertEncodingTyp
  * The DSA key klass.
  */
 #define xmlSecMSCryptoKeyDataDsaId \
-	xmlSecMSCryptoKeyDataDsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDsaGetKlass	(void);
+        xmlSecMSCryptoKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataDsaGetKlass        (void);
 
 /**
  * xmlSecMSCryptoTransformDsaSha1Id:
@@ -73,7 +73,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDsaGetKlass	(void);
  * The DSA SHA1 signature transform klass.
  */
 #define xmlSecMSCryptoTransformDsaSha1Id \
-	xmlSecMSCryptoTransformDsaSha1GetKlass()
+        xmlSecMSCryptoTransformDsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDsaSha1GetKlass(void);
 
 #endif /* XMLSEC_NO_DSA */
@@ -91,8 +91,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDsaSha1GetKlass(vo
  * The GOST2001 key klass.
  */
 #define xmlSecMSCryptoKeyDataGost2001Id \
-	xmlSecMSCryptoKeyDataGost2001GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataGost2001GetKlass	(void);
+        xmlSecMSCryptoKeyDataGost2001GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataGost2001GetKlass   (void);
 
 /**
  * xmlSecMSCryptoTransformGost2001GostR3411_94Id:
@@ -100,7 +100,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataGost2001GetKlass	(voi
  * The GOST2001 GOSTR3411_94 signature transform klass.
  */
 #define xmlSecMSCryptoTransformGost2001GostR3411_94Id \
-	xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass()
+        xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass(void);
 
 #endif /* XMLSEC_NO_GOST */
@@ -118,7 +118,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGost2001GostR3411_
  * The RSA key klass.
  */
 #define xmlSecMSCryptoKeyDataRsaId \
-	xmlSecMSCryptoKeyDataRsaGetKlass()
+        xmlSecMSCryptoKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCryptoKeyDataRsaGetKlass(void);
 
 
@@ -128,8 +128,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCryptoKeyDataRsaGetKlass(void);
  * The RSA-SHA1 signature transform klass.
  */
 
-#define xmlSecMSCryptoTransformRsaSha1Id	\
-	xmlSecMSCryptoTransformRsaSha1GetKlass()
+#define xmlSecMSCryptoTransformRsaSha1Id        \
+        xmlSecMSCryptoTransformRsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha1GetKlass(void);
 
 /**
@@ -138,7 +138,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha1GetKlass(vo
  * The RSA PKCS1 key transport transform klass.
  */
 #define xmlSecMSCryptoTransformRsaPkcs1Id \
-	xmlSecMSCryptoTransformRsaPkcs1GetKlass()
+        xmlSecMSCryptoTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(void);
 
 /**
@@ -148,7 +148,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(v
  */
 /*
 #define xmlSecMSCryptoTransformRsaOaepId \
-	xmlSecMSCryptoTransformRsaOaepGetKlass()
+        xmlSecMSCryptoTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(void);
 */
 #endif /* XMLSEC_NO_RSA */
@@ -166,7 +166,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(vo
  * The SHA1 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha1Id \
-	xmlSecMSCryptoTransformSha1GetKlass()
+        xmlSecMSCryptoTransformSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -183,7 +183,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void)
  * The GOSTR3411_94 digest transform klass.
  */
 #define xmlSecMSCryptoTransformGostR3411_94Id \
-	xmlSecMSCryptoTransformGostR3411_94GetKlass()
+        xmlSecMSCryptoTransformGostR3411_94GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_94GetKlass(void);
 #endif /* XMLSEC_NO_GOST */
 
@@ -199,19 +199,19 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformGostR3411_94GetKla
  * The AES key data klass.
  */
 #define xmlSecMSCryptoKeyDataAesId \
-	xmlSecMSCryptoKeyDataAesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataAesGetKlass(void);
-XMLSEC_CRYPTO_EXPORT int		xmlSecMSCryptoKeyDataAesSet	(xmlSecKeyDataPtr data,
-									 const xmlSecByte* buf,
-									 xmlSecSize bufSize);
+        xmlSecMSCryptoKeyDataAesGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataAesGetKlass(void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeyDataAesSet     (xmlSecKeyDataPtr data,
+                                                                         const xmlSecByte* buf,
+                                                                         xmlSecSize bufSize);
 /**
  * xmlSecMSCryptoTransformAes128CbcId:
  * 
  * The AES128 CBC cipher transform klass.
  */
 #define xmlSecMSCryptoTransformAes128CbcId \
-	xmlSecMSCryptoTransformAes128CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes128CbcGetKlass(void);
+        xmlSecMSCryptoTransformAes128CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformAes128CbcGetKlass(void);
 
 /**
  * xmlSecMSCryptoTransformAes192CbcId:
@@ -219,8 +219,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes128CbcGetKlass(
  * The AES192 CBC cipher transform klass.
  */
 #define xmlSecMSCryptoTransformAes192CbcId \
-	xmlSecMSCryptoTransformAes192CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes192CbcGetKlass(void);
+        xmlSecMSCryptoTransformAes192CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformAes192CbcGetKlass(void);
 
 /**
  * xmlSecMSCryptoTransformAes256CbcId:
@@ -228,8 +228,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes192CbcGetKlass(
  * The AES256 CBC cipher transform klass.
  */
 #define xmlSecMSCryptoTransformAes256CbcId \
-	xmlSecMSCryptoTransformAes256CbcGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes256CbcGetKlass(void);
+        xmlSecMSCryptoTransformAes256CbcGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecMSCryptoTransformAes256CbcGetKlass(void);
 
 #endif /* XMLSEC_NO_AES */
 
@@ -247,8 +247,8 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId	xmlSecMSCryptoTransformAes256CbcGetKlass(
  * The DES key data klass.
  */
 #define xmlSecMSCryptoKeyDataDesId \
-	xmlSecMSCryptoKeyDataDesGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDesGetKlass(void);
+        xmlSecMSCryptoKeyDataDesGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataDesGetKlass(void);
 
 /**
  * xmlSecMSCryptoTransformDes3CbcId:
@@ -256,7 +256,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId 	xmlSecMSCryptoKeyDataDesGetKlass(void);
  * The DES3 CBC cipher transform klass.
  */
 #define xmlSecMSCryptoTransformDes3CbcId \
-	xmlSecMSCryptoTransformDes3CbcGetKlass()
+        xmlSecMSCryptoTransformDes3CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDes3CbcGetKlass(void);
 
 

@@ -48,16 +48,6 @@ XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (con
 XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
 
 
-XMLSEC_CRYPTO_EXPORT BYTE*              xmlSecMSCryptoCertStrToName     (DWORD dwCertEncodingType,
-                                                                         LPCTSTR pszX500,
-                                                                         DWORD dwStrType,
-                                                                         DWORD* len);
-
-XMLSEC_CRYPTO_EXPORT BYTE*              xmlSecMSCryptoCertStrToNameW    (DWORD dwCertEncodingType,
-                                                                         LPWSTR pszX500,
-                                                                         DWORD dwStrType,
-                                                                         DWORD* len);
-
 
 /********************************************************************
  *

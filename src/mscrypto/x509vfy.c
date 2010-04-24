@@ -884,6 +884,57 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
+/**
+ * xmlSecMSCryptoCertStrToName:
+ * @dwCertEncodingType:         the encoding used.
+ * @pszX500:                    the string to convert.
+ * @dwStrType:                  the string type.
+ * @len:                        the result len.
+ *
+ * Converts input string to name by calling @CertStrToName function.
+ *
+ * Returns: a pointer to newly allocated string or NULL if an error occurs.
+ */
+static BYTE*
+xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwStrType, DWORD* len) {
+    BYTE* str = NULL;
+    LPCWSTR ppszError = NULL;
+
+    xmlSecAssert2(pszX500 != NULL, NULL);
+    xmlSecAssert2(len != NULL, NULL);
+
+    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType,
+                        NULL, NULL, len, &ppszError)) {
+        /* this might not be an error, string might just not exist */
+                DWORD dw = GetLastError();
+        return(NULL);
+    }
+
+    str = (BYTE *)xmlMalloc((*len) + 1);
+    if(str == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "len=%ld", (*len));
+        return(NULL);
+    }
+    memset(str, 0, (*len) + 1);
+
+    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType,
+                        NULL, str, len, NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "CertStrToName",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(str);
+        return(NULL);
+    }
+
+    return(str);
+}
+
 
 /**
  * xmlSecMSCryptoX509FindCertBySubject:
@@ -907,7 +958,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DW
 
     /* CASE 1: UTF8, DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcSubject,
                     CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR,
                     &len);
@@ -927,7 +978,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DW
 
     /* CASE 2: UTF8, REVERSE DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcSubject,
                     CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                     &len);
@@ -947,7 +998,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DW
 
     /* CASE 3: UNICODE, DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcSubject,
                     CERT_OID_NAME_STR,
                     &len);
@@ -967,7 +1018,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DW
 
     /* CASE 4: UNICODE, REVERSE DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcSubject,
                     CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                     &len);
@@ -1021,7 +1072,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
 
     /* CASE 1: UTF8, DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcIssuer,
                     CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR,
                     &len);
@@ -1041,7 +1092,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
 
     /* CASE 2: UTF8, REVERSE DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcIssuer,
                     CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                     &len);
@@ -1061,7 +1112,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
 
     /* CASE 3: UNICODE, DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcIssuer,
                     CERT_OID_NAME_STR,
                     &len);
@@ -1081,7 +1132,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
 
     /* CASE 4: UNICODE, REVERSE DN */
     if (NULL == res) {
-        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+        bdata = xmlSecMSCryptoCertStrToName(dwCertEncodingType,
                     wcIssuer,
                     CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
                     &len);

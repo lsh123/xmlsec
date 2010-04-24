@@ -608,7 +608,7 @@ xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecMSCryptoKeyDataGetMSCryptoProvider:
- * @data:              the key data 
+ * @data:              the key data
  *
  * Gets crypto provider handle
  *
@@ -629,7 +629,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
 
 /**
  * xmlSecMSCryptoKeyDataGetMSCryptoKeySpec:
- * @data:              the key data 
+ * @data:              the key data
  *
  * Gets key spec info.
  *
@@ -997,16 +997,16 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/* Ordered list of providers to search for algorithm implementation using 
+/* Ordered list of providers to search for algorithm implementation using
  * xmlSecMSCryptoFindProvider() function
- * 
- * MUST END with { NULL, 0 } !!! 
+ *
+ * MUST END with { NULL, 0 } !!!
  */
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Rsa[] = {
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},      
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },    
-    { MS_STRONG_PROV,               PROV_RSA_FULL }, 
-    { MS_ENHANCED_PROV,             PROV_RSA_FULL }, 
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
+    { MS_STRONG_PROV,               PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,             PROV_RSA_FULL },
     { NULL, 0 }
 };
 
@@ -1229,7 +1229,7 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
-    
+
     if (!CryptImportKey(hProv, xmlSecBufferGetData(&blob), xmlSecBufferGetSize(&blob), 0, 0, &hKey)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
@@ -1698,13 +1698,13 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDsaKlass = {
     NULL,                               /* void* reserved1; */
 };
 
-/* Ordered list of providers to search for algorithm implementation using 
+/* Ordered list of providers to search for algorithm implementation using
  * xmlSecMSCryptoFindProvider() function
- * 
- * MUST END with { NULL, 0 } !!! 
+ *
+ * MUST END with { NULL, 0 } !!!
  */
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Dss[] = {
-    { MS_DEF_DSS_PROV,              PROV_DSS }, 
+    { MS_DEF_DSS_PROV,              PROV_DSS },
     { NULL, 0 }
 };
 
@@ -2530,14 +2530,14 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
     NULL,                               /* void* reserved1; */
 };
 
-/* Ordered list of providers to search for algorithm implementation using 
+/* Ordered list of providers to search for algorithm implementation using
  * xmlSecMSCryptoFindProvider() function
- * 
- * MUST END with { NULL, 0 } !!! 
+ *
+ * MUST END with { NULL, 0 } !!!
  */
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
-    { MAGPRO_CSP,                   PROV_MAGPRO_GOST }, 
-    { CRYPTOPRO_CSP,                PROV_CRYPTOPRO_GOST }, 
+    { MAGPRO_CSP,                   PROV_MAGPRO_GOST },
+    { CRYPTOPRO_CSP,                PROV_CRYPTOPRO_GOST },
     { NULL, 0 }
 };
 

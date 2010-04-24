@@ -164,7 +164,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha1GetKlass(vo
 
 /**
  * xmlSecMSCryptoTransformRsaSha256Id:
- * 
+ *
  * The RSA-SHA256 signature transform klass.
  */
 
@@ -174,7 +174,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha256GetKlass(
 
 /**
  * xmlSecMSCryptoTransformRsaSha384Id:
- * 
+ *
  * The RSA-SHA384 signature transform klass.
  */
 
@@ -184,7 +184,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha384GetKlass(
 
 /**
  * xmlSecMSCryptoTransformRsaSha512Id:
- * 
+ *
  * The RSA-SHA512 signature transform klass.
  */
 
@@ -239,7 +239,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void)
 
 /**
  * xmlSecMSCryptoTransformSha256Id:
- * 
+ *
  * The SHA256 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha256Id \
@@ -256,7 +256,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha256GetKlass(voi
 
 /**
  * xmlSecMSCryptoTransformSha384Id:
- * 
+ *
  * The SHA384 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha384Id \
@@ -273,7 +273,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha384GetKlass(voi
 
 /**
  * xmlSecMSCryptoTransformSha512Id:
- * 
+ *
  * The SHA512 digest transform klass.
  */
 #define xmlSecMSCryptoTransformSha512Id \

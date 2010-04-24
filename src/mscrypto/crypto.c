@@ -132,13 +132,13 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformSha1GetKlass             = xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
-#ifndef XMLSEC_NO_SHA256    
+#ifndef XMLSEC_NO_SHA256
     gXmlSecMSCryptoFunctions->transformSha256GetKlass          = xmlSecMSCryptoTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
-#ifndef XMLSEC_NO_SHA384    
+#ifndef XMLSEC_NO_SHA384
     gXmlSecMSCryptoFunctions->transformSha384GetKlass          = xmlSecMSCryptoTransformSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
-#ifndef XMLSEC_NO_SHA512    
+#ifndef XMLSEC_NO_SHA512
     gXmlSecMSCryptoFunctions->transformSha512GetKlass          = xmlSecMSCryptoTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
@@ -456,11 +456,11 @@ xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
  *
  * Returns: provider handle on success or NULL for error.
  */
-HCRYPTPROV 
-xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers, 
-                           LPCTSTR pszContainer, 
-                           DWORD dwFlags, 
-                           BOOL bUseXmlSecContainer) 
+HCRYPTPROV
+xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
+                           LPCTSTR pszContainer,
+                           DWORD dwFlags,
+                           BOOL bUseXmlSecContainer)
 {
     HCRYPTPROV res = 0;
     DWORD dwLastError;
@@ -468,18 +468,18 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
     int ii;
 
     xmlSecAssert2(providers != NULL, 0);
-    
+
     for(ii = 0; (res == 0) && (providers[ii].providerName != NULL) && (providers[ii].providerType != 0); ++ii) {
         /* first try */
-        ret = CryptAcquireContext(&res, 
-                    pszContainer, 
-                    providers[ii].providerName, 
-                    providers[ii].providerType, 
+        ret = CryptAcquireContext(&res,
+                    pszContainer,
+                    providers[ii].providerName,
+                    providers[ii].providerType,
                     dwFlags);
         if((ret == TRUE) && (res != 0)) {
             return (res);
-        } 
-            
+        }
+
         /* check errors */
         dwLastError = GetLastError();
         switch(dwLastError) {
@@ -490,10 +490,10 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
              * This is also referenced in
              * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
              */
-            ret = CryptAcquireContext(&res, 
-                        pszContainer, 
-                        providers[ii].providerName, 
-                        providers[ii].providerType, 
+            ret = CryptAcquireContext(&res,
+                        pszContainer,
+                        providers[ii].providerName,
+                        providers[ii].providerType,
                         CRYPT_NEWKEYSET | dwFlags);
             if((ret == TRUE) && (res != 0)) {
                 return (res);
@@ -503,23 +503,23 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
         case NTE_EXISTS:
             /* If we can, try our container */
             if(bUseXmlSecContainer == TRUE) {
-                ret = CryptAcquireContext(&res, 
-                            XMLSEC_CONTAINER_NAME, 
-                            providers[ii].providerName, 
-                            providers[ii].providerType, 
+                ret = CryptAcquireContext(&res,
+                            XMLSEC_CONTAINER_NAME,
+                            providers[ii].providerName,
+                            providers[ii].providerType,
                             CRYPT_NEWKEYSET | dwFlags);
                 if((ret == TRUE) && (res != 0)) {
-                    /* ALEKSEY TODO - NEED TO DELETE ALL THE TEMP CONTEXTS ON SHUTDOWN 
+                    /* ALEKSEY TODO - NEED TO DELETE ALL THE TEMP CONTEXTS ON SHUTDOWN
 
                         CryptAcquireContext(&tmp, XMLSEC_CONTAINER_NAME,
-                            providers[ii].providerName, 
-                            providers[ii].providerType, 
+                            providers[ii].providerName,
+                            providers[ii].providerType,
                             CRYPT_DELETEKEYSET);
 
                      */
                     return (res);
                 }
-            }                    
+            }
             break;
 
         default:

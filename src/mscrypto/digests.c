@@ -60,22 +60,22 @@ static int      xmlSecMSCryptoDigestExecute     (xmlSecTransformPtr transform,
 static int      xmlSecMSCryptoDigestCheckId     (xmlSecTransformPtr transform);
 
 
-/* Ordered list of providers to search for algorithm implementation using 
+/* Ordered list of providers to search for algorithm implementation using
  * xmlSecMSCryptoFindProvider() function
- * 
- * MUST END with { NULL, 0 } !!! 
+ *
+ * MUST END with { NULL, 0 } !!!
  */
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha[] = {
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},      
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },    
-    { MS_STRONG_PROV,               PROV_RSA_FULL }, 
-    { MS_ENHANCED_PROV,             PROV_RSA_FULL }, 
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
+    { MS_STRONG_PROV,               PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,             PROV_RSA_FULL },
     { NULL, 0 }
 };
 
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
-    { MAGPRO_CSP,                   PROV_MAGPRO_GOST }, 
-    { CRYPTOPRO_CSP,                PROV_CRYPTOPRO_GOST }, 
+    { MAGPRO_CSP,                   PROV_MAGPRO_GOST },
+    { CRYPTOPRO_CSP,                PROV_CRYPTOPRO_GOST },
     { NULL, 0 }
 };
 
@@ -91,19 +91,19 @@ xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha256Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_SHA256 */    
+#endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha384Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_SHA384 */    
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha512Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_SHA512 */    
+#endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_94Id)) {
@@ -138,21 +138,21 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha256Id)) {
         ctx->alg_id = CALG_SHA_256;
         ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
-    } else 
-#endif /* XMLSEC_NO_SHA256 */    
+    } else
+#endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha384Id)) {
         ctx->alg_id = CALG_SHA_384;
         ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
-    } else 
-#endif /* XMLSEC_NO_SHA384 */    
+    } else
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha512Id)) {
         ctx->alg_id = CALG_SHA_512;
         ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
-    } else 
+    } else
 #endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_GOST
@@ -439,19 +439,19 @@ static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoDigestExecute,               /* xmlSecTransformExecuteMethod execute; */    
+    xmlSecMSCryptoDigestExecute,               /* xmlSecTransformExecuteMethod execute; */
     NULL,                                      /* void* reserved0; */
     NULL,                                      /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoTransformSha256GetKlass:
  *
  * SHA-256 digest transform klass.
  *
  * Returns pointer to SHA-256 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformSha256GetKlass(void) {
     return(&xmlSecMSCryptoSha256Klass);
 }
@@ -483,19 +483,19 @@ static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoDigestExecute,               /* xmlSecTransformExecuteMethod execute; */    
+    xmlSecMSCryptoDigestExecute,               /* xmlSecTransformExecuteMethod execute; */
     NULL,                                      /* void* reserved0; */
     NULL,                                      /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoTransformSha384GetKlass:
  *
  * SHA-384 digest transform klass.
  *
  * Returns pointer to SHA-384 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformSha384GetKlass(void) {
     return(&xmlSecMSCryptoSha384Klass);
 }
@@ -527,19 +527,19 @@ static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
     xmlSecTransformDefaultPopBin,              /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoDigestExecute,               /* xmlSecTransformExecuteMethod execute; */    
+    xmlSecMSCryptoDigestExecute,               /* xmlSecTransformExecuteMethod execute; */
     NULL,                                      /* void* reserved0; */
     NULL,                                      /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoTransformSha512GetKlass:
  *
  * SHA-512 digest transform klass.
  *
  * Returns pointer to SHA-512 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformSha512GetKlass(void) {
     return(&xmlSecMSCryptoSha512Klass);
 }

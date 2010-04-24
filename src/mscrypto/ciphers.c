@@ -467,22 +467,22 @@ static int      xmlSecMSCryptoBlockCipherCheckId        (xmlSecTransformPtr tran
 
 
 
-/* Ordered list of providers to search for algorithm implementation using 
+/* Ordered list of providers to search for algorithm implementation using
  * xmlSecMSCryptoFindProvider() function
- * 
- * MUST END with { NULL, 0 } !!! 
+ *
+ * MUST END with { NULL, 0 } !!!
  */
 #ifndef XMLSEC_NO_DES
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Des[] = {
-    { MS_STRONG_PROV,               PROV_RSA_FULL }, 
-    { MS_ENHANCED_PROV,             PROV_RSA_FULL }, 
+    { MS_STRONG_PROV,               PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,             PROV_RSA_FULL },
     { NULL, 0 }
 };
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Aes[] = {
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},      
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},
     { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
     { NULL, 0 }
 };

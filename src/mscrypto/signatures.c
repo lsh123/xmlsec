@@ -130,26 +130,26 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
         ctx->keyId          = xmlSecMSCryptoKeyDataRsaId;
     } else
 
-#ifndef XMLSEC_NO_SHA256 
+#ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
         ctx->digestAlgId    = CALG_SHA_256;
         ctx->keyId          = xmlSecMSCryptoKeyDataRsaId;
     } else
-#endif /* XMLSEC_NO_SHA256 */ 
+#endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
         ctx->digestAlgId    = CALG_SHA_384;
         ctx->keyId          = xmlSecMSCryptoKeyDataRsaId;
     } else
-#endif /* XMLSEC_NO_SHA384 */ 
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
         ctx->digestAlgId    = CALG_SHA_512;
         ctx->keyId          = xmlSecMSCryptoKeyDataRsaId;
     } else
-#endif /* XMLSEC_NO_SHA512 */ 
+#endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_RSA */
 
@@ -310,24 +310,24 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
 #ifndef XMLSEC_NO_RSA
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
         ConvertEndian(data, tmpBuf, dataSize);
-    } else 
+    } else
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
         ConvertEndian(data, tmpBuf, dataSize);
-    } else 
+    } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
         ConvertEndian(data, tmpBuf, dataSize);
-    } else 
+    } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
         ConvertEndian(data, tmpBuf, dataSize);
-    } else 
+    } else
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_RSA */
@@ -336,13 +336,13 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (dataSize == 40)) {
         ConvertEndian(data, tmpBuf, 20);
         ConvertEndian(data + 20, tmpBuf + 20, 20);
-    } else 
+    } else
 #endif /*endif XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
         ConvertEndian(data, tmpBuf, dataSize);
-    } else 
+    } else
 #endif /* XMLSEC_NO_GOST*/
 
     {
@@ -531,24 +531,24 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 #ifndef XMLSEC_NO_RSA
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
                 ConvertEndian(tmpBuf, outBuf, outSize);
-            } else 
+            } else
 
 #ifndef XMLSEC_NO_SHA256
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
                 ConvertEndian(tmpBuf, outBuf, outSize);
-            } else 
+            } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
                 ConvertEndian(tmpBuf, outBuf, outSize);
-            } else 
+            } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
                 ConvertEndian(tmpBuf, outBuf, outSize);
-            } else 
+            } else
 #endif /* XMLSEC_NO_SHA512 */
 
 
@@ -558,13 +558,13 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id) && (outSize == 40)) {
                 ConvertEndian(tmpBuf, outBuf, 20);
                 ConvertEndian(tmpBuf + 20, outBuf + 20, 20);
-            } else 
+            } else
 #endif /* XMLSEC_NO_DSA*/
 
 #ifndef XMLSEC_NO_GOST
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
                 ConvertEndian(tmpBuf, outBuf, outSize);
-            } else 
+            } else
 #endif /* XMLSEC_NO_GOST*/
 
             {
@@ -657,7 +657,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
     xmlSecNameRsaSha256,                       /* const xmlChar* name; */
     xmlSecHrefRsaSha256,                       /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-    
+
     xmlSecMSCryptoSignatureInitialize,         /* xmlSecTransformInitializeMethod initialize; */
     xmlSecMSCryptoSignatureFinalize,           /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
@@ -671,19 +671,19 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
     NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoSignatureExecute,            /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                      /* void* reserved0; */
     NULL,                                      /* void* reserved1; */
 };
 
 /**
  * xmlSecMSCryptoTransformRsaSha256GetKlass:
- * 
+ *
  * The RSA-SHA256 signature transform klass.
  *
  * Returns RSA-SHA256 signature transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha256GetKlass(void) {
     return(&xmlSecMSCryptoRsaSha256Klass);
 }
@@ -703,7 +703,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
     xmlSecNameRsaSha384,                       /* const xmlChar* name; */
     xmlSecHrefRsaSha384,                       /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-    
+
     xmlSecMSCryptoSignatureInitialize,         /* xmlSecTransformInitializeMethod initialize; */
     xmlSecMSCryptoSignatureFinalize,           /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
@@ -717,19 +717,19 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
     NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoSignatureExecute,            /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                      /* void* reserved0; */
     NULL,                                      /* void* reserved1; */
 };
 
 /**
  * xmlSecMSCryptoTransformRsaSha384GetKlass:
- * 
+ *
  * The RSA-SHA384 signature transform klass.
  *
  * Returns RSA-SHA384 signature transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
     return(&xmlSecMSCryptoRsaSha384Klass);
 }
@@ -749,7 +749,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
     xmlSecNameRsaSha512,                       /* const xmlChar* name; */
     xmlSecHrefRsaSha512,                       /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,       /* xmlSecTransformUsage usage; */
-    
+
     xmlSecMSCryptoSignatureInitialize,         /* xmlSecTransformInitializeMethod initialize; */
     xmlSecMSCryptoSignatureFinalize,           /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                      /* xmlSecTransformNodeReadMethod readNode; */
@@ -763,19 +763,19 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
     NULL,                                      /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                      /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoSignatureExecute,            /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                      /* void* reserved0; */
     NULL,                                      /* void* reserved1; */
 };
 
 /**
  * xmlSecMSCryptoTransformRsaSha512GetKlass:
- * 
+ *
  * The RSA-SHA512 signature transform klass.
  *
  * Returns RSA-SHA512 signature transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha512GetKlass(void) {
     return(&xmlSecMSCryptoRsaSha512Klass);
 }

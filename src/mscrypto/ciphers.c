@@ -482,8 +482,8 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Des[] = {
 
 #ifndef XMLSEC_NO_AES
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Aes[] = {
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
     { NULL, 0 }
 };
 #endif /* XMLSEC_NO_AES */

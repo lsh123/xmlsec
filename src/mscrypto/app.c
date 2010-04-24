@@ -583,7 +583,7 @@ xmlSecMSCryptoAppPkcs12LoadMemory(const xmlSecByte* data,
         goto done;
     }
 
-        wcPwd = xmlSecMSCryptoConvertLocaleToUnicode(pwd);
+    wcPwd = xmlSecMSCryptoConvertLocaleToUnicode(pwd);
     if (wcPwd == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,

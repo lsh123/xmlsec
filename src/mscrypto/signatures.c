@@ -407,7 +407,7 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     xmlSecSize inSize, outSize;
     int ret;
     DWORD dwSigLen;
-    BYTE *tmpBuf, *outBuf, *i, *j, *m, *n;
+    BYTE *tmpBuf, *outBuf;
 
     xmlSecAssert2(xmlSecMSCryptoSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);

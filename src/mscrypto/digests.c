@@ -65,17 +65,24 @@ static int      xmlSecMSCryptoDigestCheckId     (xmlSecTransformPtr transform);
  *
  * MUST END with { NULL, 0 } !!!
  */
-static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha[] = {
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
-    { MS_STRONG_PROV,               PROV_RSA_FULL },
-    { MS_ENHANCED_PROV,             PROV_RSA_FULL },
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha1[] = {
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
+    { MS_STRONG_PROV,                                   PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,                                 PROV_RSA_FULL },
+    { MS_DEF_PROV,                                      PROV_RSA_FULL },
+    { NULL, 0 }
+};
+
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
     { NULL, 0 }
 };
 
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
-    { MAGPRO_CSP,                   PROV_MAGPRO_GOST },
-    { CRYPTOPRO_CSP,                PROV_CRYPTOPRO_GOST },
+    { MAGPRO_CSP,                                       PROV_MAGPRO_GOST },
+    { CRYPTOPRO_CSP,                                    PROV_CRYPTOPRO_GOST },
     { NULL, 0 }
 };
 
@@ -130,28 +137,28 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha1Id)) {
         ctx->alg_id = CALG_SHA;
-        ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Sha1;
     } else
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha256Id)) {
         ctx->alg_id = CALG_SHA_256;
-        ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Sha2;
     } else
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha384Id)) {
         ctx->alg_id = CALG_SHA_384;
-        ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Sha2;
     } else
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha512Id)) {
         ctx->alg_id = CALG_SHA_512;
-        ctx->providers = xmlSecMSCryptoProviderInfo_Sha;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Sha2;
     } else
 #endif /* XMLSEC_NO_SHA512 */
 

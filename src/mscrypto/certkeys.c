@@ -443,11 +443,11 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         BOOL fCallerFreeProv = FALSE;
 
         if (!CryptAcquireCertificatePrivateKey(pCert,
-                                               CRYPT_ACQUIRE_SILENT_FLAG | CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
-                                               NULL,
-                                               &hProv,
-                                               &(ctx->dwKeySpec),
-                                               &fCallerFreeProv)) {
+                    CRYPT_ACQUIRE_SILENT_FLAG | CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
+                    NULL,
+                    &hProv,
+                    &(ctx->dwKeySpec),
+                    &fCallerFreeProv)) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
                             "CryptAcquireCertificatePrivateKey",
@@ -1003,10 +1003,11 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
  * MUST END with { NULL, 0 } !!!
  */
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Rsa[] = {
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},
-    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
-    { MS_STRONG_PROV,               PROV_RSA_FULL },
-    { MS_ENHANCED_PROV,             PROV_RSA_FULL },
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,                PROV_RSA_AES},
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,      PROV_RSA_AES },
+    { MS_STRONG_PROV,                                   PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,                                 PROV_RSA_FULL },
+    { MS_DEF_PROV,                                      PROV_RSA_FULL },
     { NULL, 0 }
 };
 

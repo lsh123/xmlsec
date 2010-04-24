@@ -263,6 +263,12 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Random[] = {
+    { MS_STRONG_PROV,               PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,             PROV_RSA_FULL },
+    { NULL, 0 }
+};
+
 /**
  * xmlSecMSCryptoGenerateRandom:
  * @buffer:             the destination buffer.
@@ -291,11 +297,12 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
         return(-1);
     }
 
-    if (FALSE == CryptAcquireContext(&hProv, NULL, MS_ENHANCED_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+    hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Random, NULL, CRYPT_VERIFYCONTEXT, FALSE);
+    if (0 == hProv) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "CryptAcquireContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "xmlSecMSCryptoFindProvider",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }

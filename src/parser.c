@@ -1,11 +1,11 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * XML Parser transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -29,34 +29,34 @@
  * Internal parser
  *
  *****************************************************************************/
-typedef struct _xmlSecParserCtx                                 xmlSecParserCtx, 
+typedef struct _xmlSecParserCtx                                 xmlSecParserCtx,
                                                                 *xmlSecParserCtxPtr;
 struct _xmlSecParserCtx {
     xmlParserCtxtPtr    parserCtx;
-};          
+};
 
 /**************************************************************************
  *
- * XML Parser transform 
+ * XML Parser transform
  *
  * xmlSecParserCtx is located after xmlSecTransform
- * 
+ *
  ***************************************************************************/
 #define xmlSecParserSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecParserCtx)) 
+    (sizeof(xmlSecTransform) + sizeof(xmlSecParserCtx))
 #define xmlSecParserGetCtx(transform) \
     ((xmlSecTransformCheckSize((transform), xmlSecParserSize)) ? \
         ((xmlSecParserCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform))) : \
-        (xmlSecParserCtxPtr)NULL)           
+        (xmlSecParserCtxPtr)NULL)
 
 static int              xmlSecParserInitialize                  (xmlSecTransformPtr transform);
 static void             xmlSecParserFinalize                    (xmlSecTransformPtr transform);
-static int              xmlSecParserPushBin                     (xmlSecTransformPtr transform, 
+static int              xmlSecParserPushBin                     (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  int final,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int              xmlSecParserPopXml                      (xmlSecTransformPtr transform, 
+static int              xmlSecParserPopXml                      (xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr* nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
@@ -68,7 +68,7 @@ static xmlSecTransformKlass xmlSecParserKlass = {
     BAD_CAST "xml-parser",                      /* const xmlChar* name; */
     NULL,                                       /* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
-    
+
     xmlSecParserInitialize,                     /* xmlSecTransformInitializeMethod initialize; */
     xmlSecParserFinalize,                       /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -94,21 +94,21 @@ static xmlSecTransformKlass xmlSecParserKlass = {
  *
  * Returns: XML parser transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecTransformXmlParserGetKlass(void) {
     return(&xmlSecParserKlass);
 }
 
-static int 
-xmlSecParserInitialize(xmlSecTransformPtr transform) {    
+static int
+xmlSecParserInitialize(xmlSecTransformPtr transform) {
     xmlSecParserCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecParserSize), -1);
 
     ctx = xmlSecParserGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecParserCtx));
     return(0);
@@ -123,19 +123,19 @@ xmlSecParserFinalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecParserGetCtx(transform);
     xmlSecAssert(ctx != NULL);
-    
+
     if(ctx->parserCtx != NULL) {
         xmlFreeParserCtxt(ctx->parserCtx);
     }
     memset(ctx, 0, sizeof(xmlSecParserCtx));
 }
 
-static int 
+static int
 xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
                                 xmlSecSize dataSize, int final, xmlSecTransformCtxPtr transformCtx) {
     xmlSecParserCtxPtr ctx;
     int ret;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
@@ -145,7 +145,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     /* check/update current transform status */
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(ctx->parserCtx == NULL, -1);
-        
+
         ctx->parserCtx = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
         if(ctx->parserCtx == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -157,14 +157,14 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         }
 
         /* required for c14n! */
-        ctx->parserCtx->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+        ctx->parserCtx->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
         ctx->parserCtx->replaceEntities = 1;
 
         transform->status = xmlSecTransformStatusWorking;
     } else if(transform->status == xmlSecTransformStatusFinished) {
         return(0);
     } else if(transform->status != xmlSecTransformStatusWorking) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
@@ -173,7 +173,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
     xmlSecAssert2(ctx->parserCtx != NULL, -1);
-    
+
     /* push data to the input buffer */
     if((data != NULL) && (dataSize > 0)) {
         ret = xmlParseChunk(ctx->parserCtx, (const char*)data, dataSize, 0);
@@ -184,9 +184,9 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
                         XMLSEC_ERRORS_R_XML_FAILED,
                         "size=%d", dataSize);
             return(-1);
-        }       
-    }    
-    
+        }
+    }
+
     /* finish parsing and push to next in the chain */
     if(final != 0) {
         ret = xmlParseChunk(ctx->parserCtx, NULL, 0, 1);
@@ -197,10 +197,10 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
                         XMLSEC_ERRORS_R_XML_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
+        }
 
         /* todo: check that document is well formed? */
-        transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc, 
+        transform->outNodes = xmlSecNodeSetCreate(ctx->parserCtx->myDoc,
                                                   NULL, xmlSecNodeSetTree);
         if(transform->outNodes == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -214,7 +214,7 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         }
         xmlSecNodeSetDocDestroy(transform->outNodes); /* this node set "owns" the doc pointer */
         ctx->parserCtx->myDoc = NULL;
-        
+
         /* push result to the next transform (if exist) */
         if(transform->next != NULL) {
             ret = xmlSecTransformPushXml(transform->next, transform->outNodes, transformCtx);
@@ -226,15 +226,15 @@ xmlSecParserPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-        }        
-        
+        }
+
         transform->status = xmlSecTransformStatusFinished;
     }
 
     return(0);
 }
 
-static int 
+static int
 xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
                                xmlSecTransformCtxPtr transformCtx) {
     xmlSecParserCtxPtr ctx;
@@ -243,9 +243,9 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     int ret;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXmlParserId), -1);
-    xmlSecAssert2(nodes != NULL, -1);    
+    xmlSecAssert2(nodes != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
     ctx = xmlSecParserGetCtx(transform);
@@ -263,7 +263,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         (*nodes) = NULL;
         return(0);
     default:
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
@@ -271,7 +271,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         return(-1);
     }
     xmlSecAssert2(transform->status == xmlSecTransformStatusWorking, -1);
-    
+
     /* prepare parser context */
     if(transform->prev == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -281,7 +281,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
                     "prev transform is null");
         return(-1);
     }
-    
+
     buf = xmlSecTransformCreateInputBuffer(transform->prev, transformCtx);
     if(buf == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -291,7 +291,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ctxt = xmlNewParserCtxt();
     if (ctxt == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -302,7 +302,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         xmlFreeParserInputBuffer(buf);
         return(-1);
     }
-    
+
     input = xmlNewIOInputStream(ctxt, buf, XML_CHAR_ENCODING_NONE);
     if(input == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -314,7 +314,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         xmlFreeParserInputBuffer(buf);
         return(-1);
     }
-    
+
     ret = inputPush(ctxt, input);
     if(input == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -328,7 +328,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
     }
 
     /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
 
     /* finaly do the parsing */
@@ -346,11 +346,11 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
         xmlFreeParserCtxt(ctxt);
         return(-1);
     }
-    
+
     /* remember the result and free parsing context */
     doc = ctxt->myDoc;
     ctxt->myDoc = NULL;
-    xmlFreeParserCtxt(ctxt);    
+    xmlFreeParserCtxt(ctxt);
 
     /* return result to the caller */
     (*nodes) = xmlSecNodeSetCreate(doc, NULL, xmlSecNodeSetTree);
@@ -362,7 +362,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlFreeDoc(doc);
         return(-1);
-    }   
+    }
     xmlSecNodeSetDocDestroy((*nodes)); /* this node set "owns" the doc pointer */
     transform->status = xmlSecTransformStatusFinished;
     return(0);
@@ -374,7 +374,7 @@ xmlSecParserPopXml(xmlSecTransformPtr transform, xmlSecNodeSetPtr* nodes,
  *
  *************************************************************************/
 typedef struct _xmlSecExtMemoryParserCtx {
-    const xmlSecByte    *prefix; 
+    const xmlSecByte    *prefix;
     xmlSecSize                  prefixSize;
     const xmlSecByte    *buffer;
     xmlSecSize                  bufferSize;
@@ -382,11 +382,11 @@ typedef struct _xmlSecExtMemoryParserCtx {
     xmlSecSize                  postfixSize;
 } xmlSecExtMemoryParserCtx, *xmlSecExtMemoryParserCtxPtr;
 
-/** 
+/**
  * xmlSecParseFile:
  * @filename:           the filename.
  *
- * Loads XML Doc from file @filename. We need a special version because of 
+ * Loads XML Doc from file @filename. We need a special version because of
  * c14n issue. The code is copied from xmlSAXParseFileWithData() function.
  *
  * Returns: pointer to the loaded XML document or NULL if an error occurs.
@@ -396,7 +396,7 @@ xmlSecParseFile(const char *filename) {
     xmlDocPtr ret;
     xmlParserCtxtPtr ctxt;
     char *directory = NULL;
-    
+
     xmlSecAssert2(filename != NULL, NULL);
 
     xmlInitParser();
@@ -405,28 +405,28 @@ xmlSecParseFile(const char *filename) {
         return(NULL);
     }
 
-    /* todo: set directories from current doc? */    
+    /* todo: set directories from current doc? */
     if ((ctxt->directory == NULL) && (directory == NULL))
         directory = xmlParserGetDirectory(filename);
     if ((ctxt->directory == NULL) && (directory != NULL))
         ctxt->directory = (char *) xmlStrdup((xmlChar *) directory);
 
     /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
-    
+
     xmlParseDocument(ctxt);
 
-    if(ctxt->wellFormed) { 
+    if(ctxt->wellFormed) {
         ret = ctxt->myDoc;
     } else {
        ret = NULL;
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
     }
-    xmlFreeParserCtxt(ctxt);    
+    xmlFreeParserCtxt(ctxt);
     return(ret);
-    
+
 }
 
 /**
@@ -438,18 +438,18 @@ xmlSecParseFile(const char *filename) {
  * @postfix:            the third part of the input.
  * @postfixSize:        the size of the third part of the input.
  *
- * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix. 
+ * Loads XML Doc from 3 chunks of memory: @prefix, @buffer and @postfix.
  *
  * Returns: pointer to the loaded XML document or NULL if an error occurs.
  */
 xmlDocPtr
 xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
-                     const xmlSecByte *buffer, xmlSecSize bufferSize, 
+                     const xmlSecByte *buffer, xmlSecSize bufferSize,
                      const xmlSecByte *postfix, xmlSecSize postfixSize) {
     xmlParserCtxtPtr ctxt = NULL;
     xmlDocPtr doc = NULL;
     int ret;
-    
+
     /* create context */
     ctxt = xmlCreatePushParserCtxt(NULL, NULL, NULL, 0, NULL);
     if(ctxt == NULL) {
@@ -462,7 +462,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
     }
 
     /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
 
     /* prefix */
@@ -476,7 +476,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
                         "prefixSize=%d", prefixSize);
             goto done;
         }
-    }   
+    }
 
     /* buffer */
     if((buffer != NULL) && (bufferSize > 0)) {
@@ -489,7 +489,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
                         "bufferSize=%d", bufferSize);
             goto done;
         }
-    }   
+    }
 
     /* postfix */
     if((postfix != NULL) && (postfixSize > 0)) {
@@ -502,7 +502,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
                         "postfixSize=%d", postfixSize);
             goto done;
         }
-    }   
+    }
 
     /* finishing */
     ret = xmlParseChunk(ctxt, NULL, 0, 1);
@@ -513,7 +513,7 @@ xmlSecParseMemoryExt(const xmlSecByte *prefix, xmlSecSize prefixSize,
                     XMLSEC_ERRORS_R_XML_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
-    }   
+    }
     doc = ctxt->myDoc;
 
 done:
@@ -530,7 +530,7 @@ done:
  * @size:               the input buffer size.
  * @recovery:           the flag.
  *
- * Loads XML Doc from memory. We need a special version because of 
+ * Loads XML Doc from memory. We need a special version because of
  * c14n issue. The code is copied from xmlSAXParseMemory() function.
  *
  * Returns: pointer to the loaded XML document or NULL if an error occurs.
@@ -541,7 +541,7 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     xmlParserCtxtPtr ctxt;
 
     xmlSecAssert2(buffer != NULL, NULL);
-    
+
     ctxt = xmlCreateMemoryParserCtxt((char*)buffer, size);
     if (ctxt == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -553,19 +553,19 @@ xmlSecParseMemory(const xmlSecByte *buffer, xmlSecSize size, int recovery) {
     }
 
     /* required for c14n! */
-    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS; 
+    ctxt->loadsubset = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
     ctxt->replaceEntities = 1;
 
     xmlParseDocument(ctxt);
 
     if((ctxt->wellFormed) || recovery) {
-        ret = ctxt->myDoc; 
+        ret = ctxt->myDoc;
     } else {
        ret = NULL;
        xmlFreeDoc(ctxt->myDoc);
        ctxt->myDoc = NULL;
     }
-    xmlFreeParserCtxt(ctxt);    
+    xmlFreeParserCtxt(ctxt);
     return(ret);
 }
 

@@ -1,11 +1,11 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
- * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).  
+ * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 #include "globals.h"
 
@@ -32,7 +32,7 @@ struct _xmlSecMSCryptoDigestCtx {
     HCRYPTHASH      mscHash;
     unsigned char   dgst[MSCRYPTO_MAX_HASH_SIZE];
     size_t          dgstSize;   /* dgst size in bytes */
-};          
+};
 
 /******************************************************************************
  *
@@ -42,41 +42,41 @@ struct _xmlSecMSCryptoDigestCtx {
  *
  *****************************************************************************/
 #define xmlSecMSCryptoDigestSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoDigestCtx)) 
+    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoDigestCtx))
 #define xmlSecMSCryptoDigestGetCtx(transform) \
     ((xmlSecMSCryptoDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 
 static int      xmlSecMSCryptoDigestInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoDigestFinalize    (xmlSecTransformPtr transform);
-static int      xmlSecMSCryptoDigestVerify      (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoDigestVerify      (xmlSecTransformPtr transform,
                                                  const xmlSecByte* data,
                                                  xmlSecSize dataSize,
                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecMSCryptoDigestExecute     (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoDigestExecute     (xmlSecTransformPtr transform,
                                                  int last,
                                                  xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecMSCryptoDigestCheckId     (xmlSecTransformPtr transform);
 
 
-static int 
+static int
 xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha1Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_SHA1 */    
-    
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_94Id)) {
         return(1);
     }
-#endif /* XMLSEC_NO_GOST*/    
-    
+#endif /* XMLSEC_NO_GOST*/
+
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoDigestCtxPtr ctx;
 
@@ -92,8 +92,8 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha1Id)) {
         ctx->alg_id = CALG_SHA;
-    } else 
-#endif /* XMLSEC_NO_SHA1 */    
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_GOST
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGostR3411_94Id)) {
@@ -102,7 +102,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     /* TODO: Check what provider is best suited here.... */
     if (!CryptAcquireContext(&ctx->provider, NULL, 0, PROV_MAGPRO_GOST, CRYPT_VERIFYCONTEXT)) {
       if (!CryptAcquireContext(&ctx->provider, NULL, 0, PROV_CRYPTOPRO_GOST, CRYPT_VERIFYCONTEXT)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -111,11 +111,11 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     }
     }
     return(0);
-    } else 
-#endif /* XMLSEC_NO_GOST*/    
+    } else
+#endif /* XMLSEC_NO_GOST*/
 
     {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
@@ -126,7 +126,7 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     /* TODO: Check what provider is best suited here.... */
     if (!CryptAcquireContext(&ctx->provider, NULL, MS_STRONG_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
         if (!CryptAcquireContext(&ctx->provider, NULL, MS_ENHANCED_PROV,PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -155,13 +155,13 @@ static void xmlSecMSCryptoDigestFinalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecMSCryptoDigestCtx));
 }
 
-static int 
-xmlSecMSCryptoDigestVerify(xmlSecTransformPtr transform, 
-                           const xmlSecByte* data, 
+static int
+xmlSecMSCryptoDigestVerify(xmlSecTransformPtr transform,
+                           const xmlSecByte* data,
                            xmlSecSize dataSize,
                            xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoDigestCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecMSCryptoDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoDigestSize), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -174,18 +174,18 @@ xmlSecMSCryptoDigestVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx->dgstSize > 0, -1);
 
     if(dataSize != ctx->dgstSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "data_size=%d;dgst_size=%d", 
+                    "data_size=%d;dgst_size=%d",
                     dataSize, ctx->dgstSize);
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
 
     if(memcmp(ctx->dgst, data, ctx->dgstSize) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_DATA,
@@ -193,19 +193,19 @@ xmlSecMSCryptoDigestVerify(xmlSecTransformPtr transform,
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
-    
+
     transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 
-static int 
-xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform, 
-                            int last, 
+static int
+xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
+                            int last,
                             xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoDigestCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
-    
+
     xmlSecAssert2(xmlSecMSCryptoDigestCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoDigestSize), -1);
@@ -219,7 +219,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
     ctx = xmlSecMSCryptoDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     if(transform->status == xmlSecTransformStatusNone) {
         ret = CryptCreateHash(ctx->provider,
             ctx->alg_id,
@@ -228,17 +228,17 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             &(ctx->mscHash));
 
         if((ret == 0) || (ctx->mscHash == 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "CryptHashData",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);                 
+            return(-1);
         }
 
         transform->status = xmlSecTransformStatusWorking;
     }
-    
+
     if (transform->status == xmlSecTransformStatusWorking) {
         xmlSecSize inSize;
 
@@ -250,7 +250,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 0);
 
             if(ret == 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "CryptHashData",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -260,7 +260,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
 
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferRemoveHead",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -281,7 +281,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
                 0);
 
             if (ret == 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "CryptGetHashParam",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -297,7 +297,7 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecError(XMLSEC_ERRORS_HERE,
                                 xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                                 "xmlSecBufferAppend",
                                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -311,14 +311,14 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
                     "status=%d", transform->status);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -349,19 +349,19 @@ static xmlSecTransformKlass xmlSecMSCryptoSha1Klass = {
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */    
+    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoTransformSha1GetKlass:
  *
  * SHA-1 digest transform klass.
  *
  * Returns: pointer to SHA-1 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformSha1GetKlass(void) {
     return(&xmlSecMSCryptoSha1Klass);
 }
@@ -393,19 +393,19 @@ static xmlSecTransformKlass xmlSecMSCryptoGostR3411_94Klass = {
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */    
+    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoTransformGostR3411_94GetKlass:
  *
  * GOSTR3411_94 digest transform klass.
  *
  * Returns: pointer to GOSTR3411_94 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformGostR3411_94GetKlass(void) {
     return(&xmlSecMSCryptoGostR3411_94Klass);
 }

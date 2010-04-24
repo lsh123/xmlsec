@@ -1,11 +1,11 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Enveloped transform.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -25,11 +25,11 @@
 
 /**************************************************************************
  *
- *  Enveloped transform 
+ *  Enveloped transform
  *
  *************************************************************************/
 static int      xmlSecTransformEnvelopedExecute         (xmlSecTransformPtr transform,
-                                                         int last, 
+                                                         int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 
 
@@ -41,11 +41,11 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
     xmlSecNameEnveloped,                        /* const xmlChar* name; */
     xmlSecHrefEnveloped,                        /* const xmlChar* href; */
     xmlSecTransformUsageDSigTransform,          /* xmlSecTransformUsage usage; */
-    
+
     NULL,                                       /* xmlSecTransformInitializeMethod initialize; */
     NULL,                                       /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */    
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
     NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
     NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
@@ -65,35 +65,35 @@ static xmlSecTransformKlass xmlSecTransformEnvelopedKlass = {
  *
  * The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/#sec-EnvelopedSignature):
  *
- * An enveloped signature transform T removes the whole Signature element 
- * containing T from the digest calculation of the Reference element 
- * containing T. The entire string of characters used by an XML processor 
- * to match the Signature with the XML production element is removed. 
- * The output of the transform is equivalent to the output that would 
- * result from replacing T with an XPath transform containing the following 
+ * An enveloped signature transform T removes the whole Signature element
+ * containing T from the digest calculation of the Reference element
+ * containing T. The entire string of characters used by an XML processor
+ * to match the Signature with the XML production element is removed.
+ * The output of the transform is equivalent to the output that would
+ * result from replacing T with an XPath transform containing the following
  * XPath parameter element:
  *
  * <XPath xmlns:dsig="&dsig;">
  *   count(ancestor-or-self::dsig:Signature |
  *   here()/ancestor::dsig:Signature[1]) >
  *   count(ancestor-or-self::dsig:Signature)</XPath>
- *    
- * The input and output requirements of this transform are identical to 
- * those of the XPath transform, but may only be applied to a node-set from 
- * its parent XML document. Note that it is not necessary to use an XPath 
- * expression evaluator to create this transform. However, this transform 
- * MUST produce output in exactly the same manner as the XPath transform 
+ *
+ * The input and output requirements of this transform are identical to
+ * those of the XPath transform, but may only be applied to a node-set from
+ * its parent XML document. Note that it is not necessary to use an XPath
+ * expression evaluator to create this transform. However, this transform
+ * MUST produce output in exactly the same manner as the XPath transform
  * parameterized by the XPath expression above.
  *
  * Returns: enveloped transform id.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecTransformEnvelopedGetKlass(void) {
     return(&xmlSecTransformEnvelopedKlass);
 }
 
 static int
-xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last, 
+xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
                                  xmlSecTransformCtxPtr transformCtx) {
     xmlNodePtr node;
     xmlSecNodeSetPtr children;
@@ -103,7 +103,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     xmlSecAssert2(transform->outNodes == NULL, -1);
     xmlSecAssert2(last != 0, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-    
+
     if((transform->inNodes != NULL) && (transform->inNodes->doc != transform->hereNode->doc)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -112,7 +112,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     /* find signature node and get all its children in the nodes set */
     node = xmlSecFindParent(transform->hereNode, xmlSecNodeSignature, xmlSecDSigNs);
     if(node == NULL) {
@@ -123,7 +123,7 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     children = xmlSecNodeSetGetChildren(node->doc, node, 1, 1);
     if(children == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -140,13 +140,13 @@ xmlSecTransformEnvelopedExecute(xmlSecTransformPtr transform, int last,
     if(transform->outNodes == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecNodeSetAdd",             
+                    "xmlSecNodeSetAdd",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecNodeSetDestroy(children);
         return(-1);
     }
-    
+
     return(0);
 }
 

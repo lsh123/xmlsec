@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
@@ -39,10 +39,10 @@ extern CERTCertificate * __CERT_NewTempCertificate              (CERTCertDBHandl
                                                                  char *nickname,
                                                                  PRBool isperm,
                                                                  PRBool copyDER);
-static int xmlSecNssAppCreateSECItem                            (SECItem *contents, 
+static int xmlSecNssAppCreateSECItem                            (SECItem *contents,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize);
-static int xmlSecNssAppReadSECItem                              (SECItem *contents, 
+static int xmlSecNssAppReadSECItem                              (SECItem *contents,
                                                                  const char *fn);
 static PRBool xmlSecNssAppAscii2UCS2Conv                        (PRBool toUnicode,
                                                                  unsigned char *inBuf,
@@ -59,9 +59,9 @@ static xmlSecKeyPtr     xmlSecNssAppDerKeyLoadSECItem           (SECItem* secIte
 /**
  * xmlSecNssAppInit:
  * @config:             the path to NSS database files.
- * 
+ *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before 
+ * by XMLSec command line utility and called before
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -77,7 +77,7 @@ xmlSecNssAppInit(const char* config) {
                         NULL,
                         "NSS_InitReadWrite",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "config=%s", 
+                        "config=%s",
                         xmlSecErrorsSafeString(config));
             return(-1);
         }
@@ -97,8 +97,8 @@ xmlSecNssAppInit(const char* config) {
     PK11_ConfigurePKCS11("manufacturesID", "libraryDescription",
                          "tokenDescription", "privateTokenDescription",
                          "slotDescription", "privateSlotDescription",
-                         "fipsSlotDescription", "fipsPrivateSlotDescription", 
-                         0, 0); 
+                         "fipsSlotDescription", "fipsPrivateSlotDescription",
+                         0, 0);
 
     /* setup for PKCS12 */
     PORT_SetUCS2_ASCIIConversionFunction(xmlSecNssAppAscii2UCS2Conv);
@@ -115,9 +115,9 @@ xmlSecNssAppInit(const char* config) {
 
 /**
  * xmlSecNssAppShutdown:
- * 
+ *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after 
+ * by XMLSec command line utility and called after
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -127,8 +127,8 @@ xmlSecNssAppShutdown(void) {
     SECStatus rv;
 /*
     SSL_ClearSessionCache();
-*/    
-    PK11_LogoutAll();    
+*/
+    PK11_LogoutAll();
     rv = NSS_Shutdown();
     if(rv != SECSuccess) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -156,7 +156,7 @@ xmlSecNssAppCreateSECItem(SECItem *contents, const xmlSecByte* data, xmlSecSize 
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     if(dataSize > 0) {
         xmlSecAssert2(contents->data != NULL, -1);
         memcpy(contents->data,  data, dataSize);
@@ -207,7 +207,7 @@ xmlSecNssAppReadSECItem(SECItem *contents, const char *fn) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
-    
+
     numBytes = PR_Read(file, contents->data, info.size);
     if (numBytes != info.size) {
         SECITEM_FreeItem(contents, PR_FALSE);
@@ -223,7 +223,7 @@ done:
     return (ret);
 }
 
-static PRBool 
+static PRBool
 xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
                            unsigned char *inBuf,
                            unsigned int   inBufLen,
@@ -233,7 +233,7 @@ xmlSecNssAppAscii2UCS2Conv(PRBool toUnicode,
                            PRBool         swapBytes ATTRIBUTE_UNUSED)
 {
     SECItem it;
-                                          
+
     if (toUnicode == PR_FALSE) {
         return (PR_FALSE);
     }
@@ -278,7 +278,7 @@ xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
-    
+
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
@@ -293,7 +293,7 @@ xmlSecNssAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     res = xmlSecNssAppKeyLoadSECItem(&secItem, format, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -328,7 +328,7 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
-    
+
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
@@ -342,7 +342,7 @@ xmlSecNssAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, xmlSecKey
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     res = xmlSecNssAppKeyLoadSECItem(&secItem, format, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -390,10 +390,10 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
                         "xmlSecNssAppPkcs12LoadSECItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);       
+            return(NULL);
         }
         break;
-    case xmlSecKeyDataFormatCertDer: 
+    case xmlSecKeyDataFormatCertDer:
         key = xmlSecNssAppKeyFromCertLoadSECItem(secItem, format);
         if(key == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -401,7 +401,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
                         "xmlSecNssAppKeyFromCertLoadSECItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);       
+            return(NULL);
         }
         break;
 #endif /* XMLSEC_NO_X509 */
@@ -413,7 +413,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
                         "xmlSecNssAppDerKeyLoadSECItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);       
+            return(NULL);
         }
         break;
     default:
@@ -422,7 +422,7 @@ xmlSecNssAppKeyLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format,
                     "xmlSecNssAppKeyLoad",
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
                     "format=%d", format);
-            return(NULL);       
+            return(NULL);
     }
 
     return(key);
@@ -443,8 +443,8 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
 
     xmlSecAssert2(secItem != NULL, NULL);
 
-    /* we're importing a key about which we know nothing yet, just use the 
-     * internal slot 
+    /* we're importing a key about which we know nothing yet, just use the
+     * internal slot
      */
     slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
@@ -460,13 +460,13 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     nickname.data = NULL;
 
 
-    /* TRY PRIVATE KEY FIRST 
+    /* TRY PRIVATE KEY FIRST
      * Note: This expects the key to be in PrivateKeyInfo format. The
-     * DER files created from PEM via openssl utilities aren't in that 
+     * DER files created from PEM via openssl utilities aren't in that
      * format
      */
-    status = PK11_ImportDERPrivateKeyInfoAndReturnKey(slot, secItem, 
-                            &nickname, NULL, PR_FALSE, 
+    status = PK11_ImportDERPrivateKeyInfoAndReturnKey(slot, secItem,
+                            &nickname, NULL, PR_FALSE,
                             PR_TRUE, KU_ALL, &privkey, NULL);
     if (status != SECSuccess) {
         /* TRY PUBLIC KEY */
@@ -478,7 +478,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
         }
-        
+
         pubkey = SECKEY_ExtractPublicKey(spki);
         if (pubkey == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -498,7 +498,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
-    }    
+    }
     privkey = NULL;
     pubkey = NULL;
 
@@ -511,7 +511,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
-    
+
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -525,7 +525,7 @@ xmlSecNssAppDerKeyLoadSECItem(SECItem* secItem) {
     retval = key;
     key = NULL;
     data = NULL;
-    
+
 
 done:
     if(slot != NULL) {
@@ -556,15 +556,15 @@ done:
  * @filename:           the certificate filename.
  * @format:             the certificate file format.
  *
- * Reads the certificate from $@filename and adds it to key 
- * 
+ * Reads the certificate from $@filename and adds it to key
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-int             
+int
 xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFormat format) {
     SECItem secItem;
     int ret;
-    
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
@@ -580,7 +580,7 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssAppKeyCertLoadSECItem(key, &secItem, format);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -603,15 +603,15 @@ xmlSecNssAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, xmlSecKeyDataFor
  * @dataSize:           the key binary data size.
  * @format:             the certificate format.
  *
- * Reads the certificate from @data and adds it to key 
- * 
+ * Reads the certificate from @data and adds it to key
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-int             
+int
 xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, xmlSecKeyDataFormat format) {
     SECItem secItem;
     int ret;
-    
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
@@ -627,7 +627,7 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssAppKeyCertLoadSECItem(key, &secItem, format);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -649,11 +649,11 @@ xmlSecNssAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSi
  * @secItem:            the pointer to SECItem.
  * @format:             the certificate format.
  *
- * Reads the certificate from @secItem and adds it to key 
- * 
+ * Reads the certificate from @secItem and adds it to key
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-int             
+int
 xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyDataFormat format) {
     CERTCertificate *cert=NULL;
     xmlSecKeyDataPtr data;
@@ -662,12 +662,12 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
-    
+
     data = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(data == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecKeyEnsureData",                  
+                    "xmlSecKeyEnsureData",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "transform=%s",
                     xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id)));
@@ -677,15 +677,15 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
     switch(format) {
     case xmlSecKeyDataFormatPkcs8Der:
     case xmlSecKeyDataFormatDer:
-        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(), 
+        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "__CERT_NewTempCertificate", 
+                        "__CERT_NewTempCertificate",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "format=%d", format);
-            return(-1);    
+            return(-1);
         }
         break;
     default:
@@ -693,10 +693,10 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format); 
+                    "format=%d", format);
         return(-1);
     }
-    
+
     xmlSecAssert2(cert != NULL, -1);
     ret = xmlSecNssKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
@@ -707,10 +707,10 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
                     "data=%s",
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
         CERT_DestroyCertificate(cert);
-        return(-1);    
+        return(-1);
     }
-    
-    return(0);        
+
+    return(0);
 }
 
 /**
@@ -726,14 +726,14 @@ xmlSecNssAppKeyCertLoadSECItem(xmlSecKeyPtr key, SECItem* secItem, xmlSecKeyData
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
-xmlSecKeyPtr    
+xmlSecKeyPtr
 xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED, 
+                       void *pwdCallback ATTRIBUTE_UNUSED,
                        void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
-    
+
     xmlSecAssert2(filename != NULL, NULL);
 
     /* read the file contents */
@@ -747,7 +747,7 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     res = xmlSecNssAppPkcs12LoadSECItem(&secItem, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -777,14 +777,14 @@ xmlSecNssAppPkcs12Load(const char *filename, const char *pwd,
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
-xmlSecKeyPtr    
+xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED, 
+                       void *pwdCallback ATTRIBUTE_UNUSED,
                        void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     SECItem secItem;
     xmlSecKeyPtr res;
     int ret;
-    
+
     xmlSecAssert2(data != NULL, NULL);
 
     memset(&secItem, 0, sizeof(secItem));
@@ -797,7 +797,7 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     res = xmlSecNssAppPkcs12LoadSECItem(&secItem, pwd, pwdCallback, pwdCallbackCtx);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -827,9 +827,9 @@ xmlSecNssAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, const 
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
-xmlSecKeyPtr    
+xmlSecKeyPtr
 xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
-                       void *pwdCallback ATTRIBUTE_UNUSED, 
+                       void *pwdCallback ATTRIBUTE_UNUSED,
                        void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr data = NULL;
@@ -854,9 +854,9 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         pwd = "";
     }
     memset(&uc2_pwditem, 0, sizeof(uc2_pwditem));
-        
-    /* we're importing a key about which we know nothing yet, just use the 
-     * internal slot. We have no criteria to choose a slot. 
+
+    /* we're importing a key about which we know nothing yet, just use the
+     * internal slot. We have no criteria to choose a slot.
      */
     slot = xmlSecNssGetInternalKeySlot();
     if (slot == NULL) {
@@ -960,7 +960,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
                     "transform=%s",
                     xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecNssKeyDataX509Id)));
         goto done;
-    }    
+    }
 
     for (head = CERT_LIST_HEAD(certlist);
          !CERT_LIST_END(head, certlist);
@@ -971,7 +971,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         if (privkey != NULL) {
             if (data != NULL) {
                 /* we already found a private key.
-                 * assume the first private key we find is THE ONE 
+                 * assume the first private key we find is THE ONE
                  */
                 SECKEY_DestroyPrivateKey(privkey);
                 privkey = NULL;
@@ -1006,7 +1006,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
                                 XMLSEC_ERRORS_R_CRYPTO_FAILED,
                                 "data=%s",
                                 xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-                    goto done;  
+                    goto done;
                 }
 
                 ret = xmlSecNssKeyDataX509AdoptKeyCert(x509Data, tmpcert);
@@ -1032,7 +1032,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "data=%s",
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-            goto done;  
+            goto done;
         }
         ret = xmlSecNssKeyDataX509AdoptCert(x509Data, tmpcert);
         if(ret < 0) {
@@ -1065,8 +1065,8 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
-    }    
-    
+    }
+
     ret = xmlSecKeySetValue(key, data);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1094,7 +1094,7 @@ xmlSecNssAppPkcs12LoadSECItem(SECItem* secItem, const char *pwd,
         goto done;
     }
     x509Data = NULL;
-    
+
 done:
     if (p12ctx) {
         SEC_PKCS12DecoderFinish(p12ctx);
@@ -1119,7 +1119,7 @@ done:
         SECKEY_DestroyPublicKey(pubkey);
     }
 
-    return(key);    
+    return(key);
 }
 
 /**
@@ -1131,7 +1131,7 @@ done:
  *
  * Returns: pointer to key or NULL if an error occurs.
  */
-xmlSecKeyPtr 
+xmlSecKeyPtr
 xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format) {
     xmlSecKeyPtr key;
     xmlSecKeyDataPtr keyData;
@@ -1141,19 +1141,19 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
 
     xmlSecAssert2(secItem != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    
+
     /* load cert */
     switch(format) {
     case xmlSecKeyDataFormatCertDer:
-        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(), 
+        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "__CERT_NewTempCertificate", 
+                        "__CERT_NewTempCertificate",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "format=%d", format);
-            return(NULL);    
+            return(NULL);
         }
         break;
     default:
@@ -1161,7 +1161,7 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format); 
+                    "format=%d", format);
         return(NULL);
     }
 
@@ -1174,9 +1174,9 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         CERT_DestroyCertificate(cert);
-        return(NULL);    
+        return(NULL);
     }
-    
+
     /* create key */
     key = xmlSecKeyCreate();
     if(key == NULL) {
@@ -1187,9 +1187,9 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDataDestroy(keyData);
         CERT_DestroyCertificate(cert);
-        return(NULL);    
-    }    
-    
+        return(NULL);
+    }
+
     /* set key value */
     ret = xmlSecKeySetValue(key, keyData);
     if(ret < 0) {
@@ -1201,20 +1201,20 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
         xmlSecKeyDestroy(key);
         xmlSecKeyDataDestroy(keyData);
         CERT_DestroyCertificate(cert);
-        return(NULL);    
+        return(NULL);
     }
 
-    /* create cert data */ 
+    /* create cert data */
     certData = xmlSecKeyEnsureData(key, xmlSecNssKeyDataX509Id);
     if(certData == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecKeyEnsureData",                  
+                    "xmlSecKeyEnsureData",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDestroy(key);
         CERT_DestroyCertificate(cert);
-        return(NULL);    
+        return(NULL);
     }
 
     /* put cert in the cert data */
@@ -1227,9 +1227,9 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDestroy(key);
         CERT_DestroyCertificate(cert);
-        return(NULL);    
+        return(NULL);
     }
-    
+
     return(key);
 }
 
@@ -1247,12 +1247,12 @@ xmlSecNssAppKeyFromCertLoadSECItem(SECItem* secItem, xmlSecKeyDataFormat format)
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
-                             xmlSecKeyDataFormat format, 
+xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
+                             xmlSecKeyDataFormat format,
                              xmlSecKeyDataType type) {
     SECItem secItem;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
@@ -1268,7 +1268,7 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssAppKeysMngrCertLoadSECItem(mngr, &secItem, format, type);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1298,12 +1298,12 @@ xmlSecNssAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data, 
-                             xmlSecSize dataSize, xmlSecKeyDataFormat format, 
+xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
+                             xmlSecSize dataSize, xmlSecKeyDataFormat format,
                              xmlSecKeyDataType type) {
     SECItem secItem;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
@@ -1318,7 +1318,7 @@ xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* dat
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssAppKeysMngrCertLoadSECItem(mngr, &secItem, format, type);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1347,8 +1347,8 @@ xmlSecNssAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* dat
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem, 
-                             xmlSecKeyDataFormat format, 
+xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
+                             xmlSecKeyDataFormat format,
                              xmlSecKeyDataType type) {
     xmlSecKeyDataStorePtr x509Store;
     CERTCertificate* cert;
@@ -1357,7 +1357,7 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(secItem != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
-    
+
     x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecNssX509StoreId);
     if(x509Store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1370,15 +1370,15 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
 
     switch(format) {
     case xmlSecKeyDataFormatDer:
-        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(), 
+        cert = __CERT_NewTempCertificate(CERT_GetDefaultCertDB(),
                                          secItem, NULL, PR_FALSE, PR_TRUE);
         if(cert == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "__CERT_NewTempCertificate", 
+                        "__CERT_NewTempCertificate",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "format=%d", format);
-            return(-1);    
+            return(-1);
         }
         break;
     default:
@@ -1386,10 +1386,10 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_FORMAT,
-                    "format=%d", format); 
+                    "format=%d", format);
         return(-1);
     }
-    
+
     ret = xmlSecNssX509StoreAdoptCert(x509Store, cert, type);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1414,14 +1414,14 @@ xmlSecNssAppKeysMngrCertLoadSECItem(xmlSecKeysMngrPtr mngr, SECItem* secItem,
  * and a default NSS crypto key data stores.
  *
  * Returns: 0 on success or a negative value otherwise.
- */ 
+ */
 int
 xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
 
-    /* create NSS keys store if needed */        
+    /* create NSS keys store if needed */
     if(xmlSecKeysMngrGetKeysStore(mngr) == NULL) {
         xmlSecKeyStorePtr keysStore;
 
@@ -1434,7 +1434,7 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
                         "xmlSecNssKeysStoreId");
             return(-1);
         }
-        
+
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1443,20 +1443,20 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecKeyStoreDestroy(keysStore);
-            return(-1);        
+            return(-1);
         }
     }
 
-    ret = xmlSecNssKeysMngrInit(mngr);    
+    ret = xmlSecNssKeysMngrInit(mngr);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecNssKeysMngrInit",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1); 
+        return(-1);
     }
-    
+
     mngr->getKey = xmlSecKeysMngrGetKey;
     return(0);
 }
@@ -1468,17 +1468,17 @@ xmlSecNssAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  *
  * Adds @key to the keys manager @mngr created with #xmlSecNssAppDefaultKeysMngrInit
  * function.
- *  
+ *
  * Returns: 0 on success or a negative value otherwise.
- */ 
-int 
+ */
+int
 xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    
+
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1488,7 +1488,7 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssKeysStoreAdoptKey(store, key);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1498,7 +1498,7 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -1507,19 +1507,19 @@ xmlSecNssAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
  * @mngr:               the pointer to keys manager.
  * @uri:                the uri.
  *
- * Loads XML keys file from @uri to the keys manager @mngr created 
+ * Loads XML keys file from @uri to the keys manager @mngr created
  * with #xmlSecNssAppDefaultKeysMngrInit function.
- *  
+ *
  * Returns: 0 on success or a negative value otherwise.
- */ 
-int 
+ */
+int
 xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
-    
+
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1529,7 +1529,7 @@ xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1539,7 +1539,7 @@ xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
                     "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -1550,17 +1550,17 @@ xmlSecNssAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  * @type:               the type of keys to save (public/private/symmetric).
  *
  * Saves keys from @mngr to  XML keys file.
- *  
+ *
  * Returns: 0 on success or a negative value otherwise.
- */ 
-int 
+ */
+int
 xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
-    
+
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1570,7 +1570,7 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecNssKeysStoreSave(store, filename, type);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1580,7 +1580,7 @@ xmlSecNssAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xm
                     "filename%s", xmlSecErrorsSafeString(filename));
         return(-1);
     }
-    
+
     return(0);
 }
 

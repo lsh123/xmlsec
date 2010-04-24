@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_OPENSSL_EVP_H__
-#define __XMLSEC_OPENSSL_EVP_H__    
+#define __XMLSEC_OPENSSL_EVP_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <openssl/evp.h>
 
@@ -22,7 +22,7 @@ extern "C" {
 #include <xmlsec/openssl/crypto.h>
 
 
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLEvpKeyDataAdoptEvp (xmlSecKeyDataPtr data, 
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLEvpKeyDataAdoptEvp (xmlSecKeyDataPtr data,
                                                                          EVP_PKEY* pKey);
 XMLSEC_CRYPTO_EXPORT EVP_PKEY*          xmlSecOpenSSLEvpKeyDataGetEvp   (xmlSecKeyDataPtr data);
 

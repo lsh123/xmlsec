@@ -1,26 +1,26 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Key Management Specification v 2.0" implementation
  *  http://www.w3.org/TR/xkms2/
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_XKMS_H__
-#define __XMLSEC_XKMS_H__    
+#define __XMLSEC_XKMS_H__
 
 #ifndef XMLSEC_NO_XKMS
-        
+
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
-#include <stdio.h>              
+#endif /* __cplusplus */
+#include <stdio.h>
 
 #include <libxml/tree.h>
-#include <libxml/parser.h> 
+#include <libxml/parser.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -35,33 +35,33 @@ extern "C" {
  * Forward declarations. These internal xmlsec library structures are
  * declared in "xmlsec/private/xkms.h" file.
  *
- ************************************************************************/ 
-typedef struct _xmlSecXkmsRespondWithKlass      xmlSecXkmsRespondWithKlass, 
+ ************************************************************************/
+typedef struct _xmlSecXkmsRespondWithKlass      xmlSecXkmsRespondWithKlass,
                                                 *xmlSecXkmsRespondWithId;
 
-typedef struct _xmlSecXkmsServerRequestKlass    xmlSecXkmsServerRequestKlass, 
+typedef struct _xmlSecXkmsServerRequestKlass    xmlSecXkmsServerRequestKlass,
                                                 *xmlSecXkmsServerRequestId;
 
 
 /**
  * xmlSecXkmsResultMajor:
  * @xmlSecXkmsResultMajorSuccess:               The operation succeeded.
- * @xmlSecXkmsResultMajorVersionMismatch:       The service does not support 
- *                                              the protocol version specified 
+ * @xmlSecXkmsResultMajorVersionMismatch:       The service does not support
+ *                                              the protocol version specified
  *                                              in the request.
  * @xmlSecXkmsResultMajorSender:                An error occurred that was due
  *                                              to the message sent by the sender.
  * @xmlSecXkmsResultMajorReceiver:              An error occurred at the receiver.
- * @xmlSecXkmsResultMajorRepresent:             The service has not acted on the 
+ * @xmlSecXkmsResultMajorRepresent:             The service has not acted on the
  *                                              request. In order for the request
- *                                              to be acted upon the request MUST 
+ *                                              to be acted upon the request MUST
  *                                              be represented with the specified
  *                                              nonce in accordance with the two
  *                                              phase protocol.
- * @xmlSecXkmsResultMajorPending:               The request has been accepted 
- *                                              for processing and the service 
+ * @xmlSecXkmsResultMajorPending:               The request has been accepted
+ *                                              for processing and the service
  *                                              will return the result asynchronously.
- * 
+ *
  * The values for ResultMajor attribute.
  */
 typedef enum {
@@ -76,34 +76,34 @@ typedef enum {
 /**
  * xmlSecXkmsResultMinor:
  * @xmlSecXkmsResultMinorNone:                  No minor result code available.
- * @xmlSecXkmsResultMinorNoMatch:               No match was found for the search 
+ * @xmlSecXkmsResultMinorNoMatch:               No match was found for the search
  *                                              prototype provided.
- * @xmlSecXkmsResultMinorTooManyResponses:      The request resulted in the 
- *                                              number of responses that 
- *                                              exceeded either the ResponseLimit 
- *                                              value specified in the request or 
- *                                              some other limit determined by 
- *                                              the service. The service MAY 
- *                                              either return a subset of the 
+ * @xmlSecXkmsResultMinorTooManyResponses:      The request resulted in the
+ *                                              number of responses that
+ *                                              exceeded either the ResponseLimit
+ *                                              value specified in the request or
+ *                                              some other limit determined by
+ *                                              the service. The service MAY
+ *                                              either return a subset of the
  *                                              possible responses or none at all.
- * @xmlSecXkmsResultMinorIncomplete:            Only part of the information 
+ * @xmlSecXkmsResultMinorIncomplete:            Only part of the information
  *                                              requested could be provided.
- * @xmlSecXkmsResultMinorFailure:               The service attempted to perform 
- *                                              the request but the operation 
+ * @xmlSecXkmsResultMinorFailure:               The service attempted to perform
+ *                                              the request but the operation
  *                                              failed for unspecified reasons.
- * @xmlSecXkmsResultMinorRefused:               The operation was refused. The 
- *                                              service did not attempt to 
+ * @xmlSecXkmsResultMinorRefused:               The operation was refused. The
+ *                                              service did not attempt to
  *                                              perform the request.
- * @xmlSecXkmsResultMinorNoAuthentication:      The operation was refused 
- *                                              because the necessary authentication 
+ * @xmlSecXkmsResultMinorNoAuthentication:      The operation was refused
+ *                                              because the necessary authentication
  *                                              information was incorrect or missing.
- * @xmlSecXkmsResultMinorMessageNotSupported:   The receiver does not implement 
+ * @xmlSecXkmsResultMinorMessageNotSupported:   The receiver does not implement
  *                                              the specified operation.
- * @xmlSecXkmsResultMinorUnknownResponseId:     The ResponseId for which pending 
- *                                              status was requested is unknown to 
+ * @xmlSecXkmsResultMinorUnknownResponseId:     The ResponseId for which pending
+ *                                              status was requested is unknown to
  *                                              the service.
- * @xmlSecXkmsResultMinorSynchronous:           The receiver does not support 
- *                                              synchronous processing of this 
+ * @xmlSecXkmsResultMinorSynchronous:           The receiver does not support
+ *                                              synchronous processing of this
  *                                              type of request.
  *
  * The values for ResultMinor attribute.
@@ -121,7 +121,7 @@ typedef enum {
     xmlSecXkmsResultMinorSynchronous
 } xmlSecXkmsResultMinor;
 
-/** 
+/**
  * xmlSecXkmsKeyBindingStatus:
  * @xmlSecXkmsKeyBindingStatusNone:             The key status is not available.
  * @xmlSecXkmsKeyBindingStatusValid:            The key is valid.
@@ -129,7 +129,7 @@ typedef enum {
  * @xmlSecXkmsKeyBindingStatusIndeterminate:    Could not determine key status.
  *
  * The values for key binding StatusValue attribute.
- */ 
+ */
 typedef enum {
     xmlSecXkmsKeyBindingStatusNone,
     xmlSecXkmsKeyBindingStatusValid,
@@ -161,8 +161,8 @@ XMLSEC_EXPORT const xmlChar*     xmlSecXkmsServerFormatToString (xmlSecXkmsServe
  *
  * XKMS requests server side processing klass
  *
- ************************************************************************/ 
-/** 
+ ************************************************************************/
+/**
  * xmlSecXkmsServerCtx:
  * @userData:                   the pointer to user data (xmlsec and xmlsec-crypto libraries
  *                              never touches this).
@@ -172,14 +172,14 @@ XMLSEC_EXPORT const xmlChar*     xmlSecXkmsServerFormatToString (xmlSecXkmsServe
  * @keyInfoWriteCtx:            the writing key context (not used for signature verification).
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
- * 
+ *
  * XKMS context.
  */
 struct _xmlSecXkmsServerCtx {
     /* these data user can set before performing the operation */
     void*                       userData;
     xmlSecBitMask               flags;
-    xmlSecBitMask               flags2;    
+    xmlSecBitMask               flags2;
     xmlSecKeyInfoCtx            keyInfoReadCtx;
     xmlSecKeyInfoCtx            keyInfoWriteCtx;
     xmlSecPtrList               enabledRespondWithIds;
@@ -187,13 +187,13 @@ struct _xmlSecXkmsServerCtx {
     xmlChar*                    expectedService;
     xmlChar*                    idPrefix;
     xmlSecSize                  idLen;
-        
+
     /* these data are returned */
     xmlSecPtrList               keys;
     xmlSecXkmsResultMajor       resultMajor;
     xmlSecXkmsResultMinor       resultMinor;
     xmlSecXkmsServerRequestId   requestId;
-    xmlChar*                    id;    
+    xmlChar*                    id;
     xmlChar*                    service;
     xmlChar*                    nonce;
     xmlChar*                    originalRequestId;
@@ -209,7 +209,7 @@ struct _xmlSecXkmsServerCtx {
     xmlNodePtr                  firtsMsgExtNode;
     xmlNodePtr                  keyInfoNode;
     xmlSecPtrList               respWithList;
-    
+
     /* reserved for future */
     void*                       reserved0;
     void*                       reserved1;
@@ -238,7 +238,7 @@ XMLSEC_EXPORT xmlNodePtr        xmlSecXkmsServerCtxResponseWrap (xmlSecXkmsServe
                                                                  xmlNodePtr node,
                                                                  xmlSecXkmsServerFormat format,
                                                                  xmlDocPtr doc);
-XMLSEC_EXPORT xmlNodePtr        xmlSecXkmsServerCtxFatalErrorResponseCreate 
+XMLSEC_EXPORT xmlNodePtr        xmlSecXkmsServerCtxFatalErrorResponseCreate
                                                                 (xmlSecXkmsServerCtxPtr ctx,
                                                                  xmlSecXkmsServerFormat format,
                                                                  xmlDocPtr doc);
@@ -254,7 +254,7 @@ XMLSEC_EXPORT void              xmlSecXkmsServerCtxDebugXmlDump (xmlSecXkmsServe
  *
  * xmlSecXkmsServerCtxPtr list
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * xmlSecXkmsServerCtxPtrListId:
  *
@@ -268,11 +268,11 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
  *
  * xmlSecXkmsServerCtxFlags
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM
  *
- * If flag is set then we abort if an unknown <xkms:ResponseMechanism/> 
+ * If flag is set then we abort if an unknown <xkms:ResponseMechanism/>
  * value is found.
  */
 #define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPONSE_MECHANISM     0x00000001
@@ -280,7 +280,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
 /**
  * XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH
  *
- * If flag is set then we abort if an unknown <xkms:RespondWith/> 
+ * If flag is set then we abort if an unknown <xkms:RespondWith/>
  * value is found.
  */
 #define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_RESPOND_WITH           0x00000002
@@ -288,7 +288,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
 /**
  * XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE
  *
- * If flag is set then we abort if an unknown <xkms:KeyUsage/> 
+ * If flag is set then we abort if an unknown <xkms:KeyUsage/>
  * value is found.
  */
 #define XMLSEC_XKMS_SERVER_FLAGS_STOP_ON_UNKNOWN_KEY_USAGE              0x00000004
@@ -297,21 +297,21 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
  *
  * XKMS ResponseMechanism element values.
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT:
  *
- * XKMS ResponseMechanism element value. The requestor is prepared to 
- * accept a response that uses asynchronous processing, i.e. the service 
+ * XKMS ResponseMechanism element value. The requestor is prepared to
+ * accept a response that uses asynchronous processing, i.e. the service
  * MAY return the MajorResult code Pending.
  */
-#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_PENDING                     0x00000001      
+#define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_PENDING                     0x00000001
 
 /**
  * XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT:
  *
- * XKMS ResponseMechanism element value. The requestor is prepared to 
- * accept a response that uses the two phase protocol, i.e. the service 
+ * XKMS ResponseMechanism element value. The requestor is prepared to
+ * accept a response that uses the two phase protocol, i.e. the service
  * MAY return the MajorResult code Represent.
  */
 #define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REPRESENT                   0x00000002
@@ -319,7 +319,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
 /**
  * XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE:
  *
- * XKMS ResponseMechanism element value. The requestor is prepared to 
+ * XKMS ResponseMechanism element value. The requestor is prepared to
  * accept a response that carries a <RequestSignatureValue> element.
  */
 #define XMLSEC_XKMS_RESPONSE_MECHANISM_MASK_REQUEST_SIGNATURE_VALUE     0x00000004
@@ -328,7 +328,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
  *
  * XKMS ResponseLimit element values
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * XMLSEC_XKMS_NO_RESPONSE_LIMIT:
  *
@@ -341,11 +341,11 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
  *
  * XKMS KeyBinding reason values
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_ISSUER_TRAST:
  *
- * The issuer of the information on which the key binding is based is 
+ * The issuer of the information on which the key binding is based is
  * considered to be trustworthy by the XKMS service.
  *
  * X.509 Equivalents
@@ -357,7 +357,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
 /**
  * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_REVOCATION_STATUS:
  *
- * The XKMS service has affirmatively verified the status of the 
+ * The XKMS service has affirmatively verified the status of the
  * key binding with an authoritative source
  *
  * X.509 Equivalents
@@ -369,12 +369,12 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
 /**
  * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL:
  *
- * The requested time instant was within the validity interval of 
+ * The requested time instant was within the validity interval of
  * the key binding
  *
  * X.509 Equivalents
  *   - Valid:   The certificate chain was valid at the requested time instant.
- *   - Invalid: The requested time instant was before or after the certificate 
+ *   - Invalid: The requested time instant was before or after the certificate
  *              chain validity interval.
  */
 #define XMLSEC_XKMS_KEY_BINDING_REASON_MASK_VALIDITY_INTERVAL    0x00000004
@@ -382,7 +382,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
 /**
  * XMLSEC_XKMS_KEY_BINDING_REASON_MASK_SIGNATURE:
  *
- * Signature on signed data provided by the client in the <Keyinfo> element was 
+ * Signature on signed data provided by the client in the <Keyinfo> element was
  * successfully verified.
  *
  * X.509 Equivalents
@@ -396,7 +396,7 @@ XMLSEC_EXPORT xmlSecPtrListId   xmlSecXkmsServerCtxPtrListGetKlass
  *
  * XKMS RespondWith Klass
  *
- ************************************************************************/ 
+ ************************************************************************/
 XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecXkmsRespondWithIdsGet     (void);
 XMLSEC_EXPORT int               xmlSecXkmsRespondWithIdsInit    (void);
 XMLSEC_EXPORT void              xmlSecXkmsRespondWithIdsShutdown(void);
@@ -426,7 +426,7 @@ XMLSEC_EXPORT int               xmlSecXkmsRespondWithDefaultNodeWrite
  *
  * XKMS RespondWith Klass List
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * xmlSecXkmsRespondWithIdListId:
  *
@@ -444,7 +444,7 @@ XMLSEC_EXPORT int               xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPt
                                                                  xmlSecXkmsServerCtxPtr ctx,
                                                                  xmlNodePtr node);
 
-/******************************************************************** 
+/********************************************************************
  *
  * XML Sec Library RespondWith Ids
  *
@@ -460,7 +460,7 @@ XMLSEC_EXPORT int               xmlSecXkmsRespondWithIdListWrite(xmlSecPtrListPt
  * xmlSecXkmsRespondWithKeyNameId:
  *
  * The respond with KeyName klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithKeyNameId \
         xmlSecXkmsRespondWithKeyNameGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithKeyNameGetKlass(void);
@@ -469,7 +469,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithKeyNameGetKlass(voi
  * xmlSecXkmsRespondWithKeyValueId:
  *
  * The respond with KeyValue klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithKeyValueId \
         xmlSecXkmsRespondWithKeyValueGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithKeyValueGetKlass(void);
@@ -478,7 +478,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithKeyValueGetKlass(vo
  * xmlSecXkmsRespondWithPrivateKeyId:
  *
  * The respond with PrivateKey klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithPrivateKeyId \
         xmlSecXkmsRespondWithPrivateKeyGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithPrivateKeyGetKlass(void);
@@ -487,7 +487,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithPrivateKeyGetKlass(
  * xmlSecXkmsRespondWithRetrievalMethodId:
  *
  * The respond with RetrievalMethod klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithRetrievalMethodId \
         xmlSecXkmsRespondWithRetrievalMethodGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithRetrievalMethodGetKlass(void);
@@ -496,7 +496,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithRetrievalMethodGetK
  * xmlSecXkmsRespondWithX509CertId:
  *
  * The respond with X509Cert klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithX509CertId \
         xmlSecXkmsRespondWithX509CertGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithX509CertGetKlass(void);
@@ -505,7 +505,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithX509CertGetKlass(vo
  * xmlSecXkmsRespondWithX509ChainId:
  *
  * The respond with X509Chain klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithX509ChainId \
         xmlSecXkmsRespondWithX509ChainGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithX509ChainGetKlass(void);
@@ -514,7 +514,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithX509ChainGetKlass(v
  * xmlSecXkmsRespondWithX509CRLId:
  *
  * The respond with X509CRL klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithX509CRLId \
         xmlSecXkmsRespondWithX509CRLGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithX509CRLGetKlass(void);
@@ -524,7 +524,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithX509CRLGetKlass(voi
  * xmlSecXkmsRespondWithPGPId:
  *
  * The respond with PGP klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithPGPId \
         xmlSecXkmsRespondWithPGPGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithPGPGetKlass(void);
@@ -533,7 +533,7 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithPGPGetKlass(void);
  * xmlSecXkmsRespondWithSPKIId:
  *
  * The respond with SPKI klass.
- */ 
+ */
 #define xmlSecXkmsRespondWithSPKIId \
         xmlSecXkmsRespondWithSPKIGetKlass()
 XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithSPKIGetKlass(void);
@@ -543,14 +543,14 @@ XMLSEC_EXPORT xmlSecXkmsRespondWithId   xmlSecXkmsRespondWithSPKIGetKlass(void);
  *
  * XKMS ServerRequest Klass
  *
- ************************************************************************/ 
+ ************************************************************************/
 XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecXkmsServerRequestIdsGet   (void);
 XMLSEC_EXPORT int               xmlSecXkmsServerRequestIdsInit  (void);
 XMLSEC_EXPORT void              xmlSecXkmsServerRequestIdsShutdown
                                                                 (void);
 XMLSEC_EXPORT int               xmlSecXkmsServerRequestIdsRegisterDefault
                                                                 (void);
-XMLSEC_EXPORT int               xmlSecXkmsServerRequestIdsRegister      
+XMLSEC_EXPORT int               xmlSecXkmsServerRequestIdsRegister
                                                                 (xmlSecXkmsServerRequestId id);
 XMLSEC_EXPORT int               xmlSecXkmsServerRequestNodeRead (xmlSecXkmsServerRequestId id,
                                                                  xmlSecXkmsServerCtxPtr ctx,
@@ -571,7 +571,7 @@ XMLSEC_EXPORT void              xmlSecXkmsServerRequestDebugXmlDump
  *
  * XKMS ServerRequest Klass List
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * xmlSecXkmsServerRequestIdListId:
  *
@@ -601,7 +601,7 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestIdListFindByNode
  * xmlSecXkmsServerRequestResultId:
  *
  * The Result response klass.
- */ 
+ */
 #define xmlSecXkmsServerRequestResultId \
         xmlSecXkmsServerRequestResultGetKlass()
 XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestResultGetKlass(void);
@@ -610,7 +610,7 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestResultGetKlass(vo
  * xmlSecXkmsServerRequestStatusId:
  *
  * The StatusRequest klass.
- */ 
+ */
 #define xmlSecXkmsServerRequestStatusId \
         xmlSecXkmsServerRequestStatusGetKlass()
 XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestStatusGetKlass(void);
@@ -619,7 +619,7 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestStatusGetKlass(vo
  * xmlSecXkmsServerRequestCompoundId:
  *
  * The CompoundRequest klass.
- */ 
+ */
 #define xmlSecXkmsServerRequestCompoundId \
         xmlSecXkmsServerRequestCompoundGetKlass()
 XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestCompoundGetKlass(void);
@@ -628,7 +628,7 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestCompoundGetKlass(
  * xmlSecXkmsServerRequestLocateId:
  *
  * The LocateRequest klass.
- */ 
+ */
 #define xmlSecXkmsServerRequestLocateId \
         xmlSecXkmsServerRequestLocateGetKlass()
 XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestLocateGetKlass(void);
@@ -637,7 +637,7 @@ XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestLocateGetKlass(vo
  * xmlSecXkmsServerRequestValidateId:
  *
  * The ValidateRequest klass.
- */ 
+ */
 #define xmlSecXkmsServerRequestValidateId \
         xmlSecXkmsServerRequestValidateGetKlass()
 XMLSEC_EXPORT xmlSecXkmsServerRequestId xmlSecXkmsServerRequestValidateGetKlass(void);

@@ -1,12 +1,12 @@
-/** 
+/**
  *
  * XMLSec library
- * 
+ *
  * AES Algorithm support
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef XMLSEC_NO_AES
@@ -35,9 +35,9 @@
 #define XMLSEC_NSS_AES_BLOCK_SIZE               16
 
 #ifndef NSS_AES_KEYWRAP_BUG_FIXED
-static PK11SymKey*      xmlSecNssMakeAesKey(const xmlSecByte *key, 
+static PK11SymKey*      xmlSecNssMakeAesKey(const xmlSecByte *key,
                                             xmlSecSize keySize, int enc);
-static void             xmlSecNssAesOp(PK11SymKey *aeskey, 
+static void             xmlSecNssAesOp(PK11SymKey *aeskey,
                                        const xmlSecByte *in, xmlSecByte *out,
                                        int enc);
 #endif /* NSS_AES_KEYWRAP_BUG_FIXED */
@@ -56,11 +56,11 @@ static void             xmlSecNssAesOp(PK11SymKey *aeskey,
 
 static int              xmlSecNssKWAesInitialize        (xmlSecTransformPtr transform);
 static void             xmlSecNssKWAesFinalize          (xmlSecTransformPtr transform);
-static int              xmlSecNssKWAesSetKeyReq         (xmlSecTransformPtr transform, 
+static int              xmlSecNssKWAesSetKeyReq         (xmlSecTransformPtr transform,
                                                          xmlSecKeyReqPtr keyReq);
-static int              xmlSecNssKWAesSetKey            (xmlSecTransformPtr transform, 
+static int              xmlSecNssKWAesSetKey            (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
-static int              xmlSecNssKWAesExecute           (xmlSecTransformPtr transform, 
+static int              xmlSecNssKWAesExecute           (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 static xmlSecSize       xmlSecNssKWAesGetKeySize        (xmlSecTransformPtr transform);
@@ -94,7 +94,7 @@ static xmlSecTransformKlass xmlSecNssKWAes128Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
@@ -121,7 +121,7 @@ static xmlSecTransformKlass xmlSecNssKWAes192Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
@@ -148,7 +148,7 @@ static xmlSecTransformKlass xmlSecNssKWAes256Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssKWAesExecute,                      /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
@@ -160,49 +160,49 @@ static xmlSecTransformKlass xmlSecNssKWAes256Klass = {
      xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes192Id) || \
      xmlSecTransformCheckId((transform), xmlSecNssTransformKWAes256Id))
 
-/** 
+/**
  * xmlSecNssTransformKWAes128GetKlass:
  *
  * The AES-128 key wrapper transform klass.
  *
  * Returns: AES-128 key wrapper transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecNssTransformKWAes128GetKlass(void) {
     return(&xmlSecNssKWAes128Klass);
 }
 
-/** 
+/**
  * xmlSecNssTransformKWAes192GetKlass:
  *
  * The AES-192 key wrapper transform klass.
  *
  * Returns: AES-192 key wrapper transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecNssTransformKWAes192GetKlass(void) {
     return(&xmlSecNssKWAes192Klass);
 }
 
-/** 
+/**
  * xmlSecNssTransformKWAes256GetKlass:
  *
  * The AES-256 key wrapper transform klass.
  *
  * Returns: AES-256 key wrapper transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecNssTransformKWAes256GetKlass(void) {
     return(&xmlSecNssKWAes256Klass);
 }
 
-static int 
+static int
 xmlSecNssKWAesInitialize(xmlSecTransformPtr transform) {
     int ret;
-    
+
     xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
-    
+
     ret = xmlSecBufferInitialize(xmlSecNssKWAesGetKey(transform), 0);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -212,21 +212,21 @@ xmlSecNssKWAesInitialize(xmlSecTransformPtr transform) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-        
+
     return(0);
 }
 
-static void 
+static void
 xmlSecNssKWAesFinalize(xmlSecTransformPtr transform) {
     xmlSecAssert(xmlSecNssKWAesCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize));
-    
+
     if(xmlSecNssKWAesGetKey(transform) != NULL) {
         xmlSecBufferFinalize(xmlSecNssKWAesGetKey(transform));
     }
 }
 
-static int  
+static int
 xmlSecNssKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
@@ -241,24 +241,24 @@ xmlSecNssKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
         keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
     keyReq->keyBitsSize = 8 * xmlSecNssKWAesGetKeySize(transform);
-    
+
     return(0);
 }
 
-static int      
+static int
 xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecBufferPtr buffer;
     xmlSecSize keySize;
     xmlSecSize expectedKeySize;
     int ret;
-    
+
     xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKWAesSize), -1);
     xmlSecAssert2(xmlSecNssKWAesGetKey(transform) != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecNssKeyDataAesId), -1);
-    
+
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
     xmlSecAssert2(buffer != NULL, -1);
 
@@ -273,23 +273,23 @@ xmlSecNssKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                     keySize, expectedKeySize);
         return(-1);
     }
-        
+
     ret = xmlSecBufferSetData(xmlSecNssKWAesGetKey(transform),
-                            xmlSecBufferGetData(buffer), 
+                            xmlSecBufferGetData(buffer),
                             expectedKeySize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferSetData",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "expected-size=%d", expectedKeySize);
-        return(-1);    
+        return(-1);
     }
 
     return(0);
 }
 
-static int 
+static int
 xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecBufferPtr in, out, key;
     xmlSecSize inSize, outSize, keySize, expectedKeySize;
@@ -306,17 +306,17 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
     keySize = xmlSecBufferGetSize(key);
     expectedKeySize = xmlSecNssKWAesGetKeySize(transform);
     xmlSecAssert2(keySize == expectedKeySize, -1);
-    
+
     in = &(transform->inBuf);
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);    
+    outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
-    
+
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
     }
-    
+
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
@@ -327,11 +327,11 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                         XMLSEC_ERRORS_R_INVALID_SIZE,
                         "size=%d(not 8 bytes aligned)", inSize);
             return(-1);
-        }       
-        
+        }
+
         if(transform->operation == xmlSecTransformOperationEncrypt) {
             /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
-            outSize = inSize + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE + 
+            outSize = inSize + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE +
                                XMLSEC_NSS_AES_BLOCK_SIZE;
         } else {
             outSize = inSize + XMLSEC_NSS_AES_BLOCK_SIZE;
@@ -339,7 +339,7 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 
         ret = xmlSecBufferSetMaxSize(out, outSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferSetMaxSize",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -352,7 +352,7 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                    xmlSecBufferGetData(in), inSize,
                                    xmlSecBufferGetData(out), outSize, 1);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecNssKWAesOp",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -365,7 +365,7 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
                                    xmlSecBufferGetData(in), inSize,
                                    xmlSecBufferGetData(out), outSize, 0);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecNssKWAesOp",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -377,30 +377,30 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
 
         ret = xmlSecBufferSetSize(out, outSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferSetSize", 
+                        "xmlSecBufferSetSize",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "outSize=%d", outSize);
             return(-1);
         }
-        
+
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferRemoveHead",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "inSize%d", inSize);
             return(-1);
         }
-        
+
         transform->status = xmlSecTransformStatusFinished;
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
@@ -410,7 +410,7 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
     return(0);
 }
 
-static xmlSecSize  
+static xmlSecSize
 xmlSecNssKWAesGetKeySize(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformKWAes128Id)) {
         return(XMLSEC_NSS_AES128_KEY_SIZE);
@@ -425,22 +425,22 @@ xmlSecNssKWAesGetKeySize(xmlSecTransformPtr transform) {
 /**
  * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap:
  *
- * Assume that the data to be wrapped consists of N 64-bit data blocks 
- * denoted P(1), P(2), P(3) ... P(N). The result of wrapping will be N+1 
- * 64-bit blocks denoted C(0), C(1), C(2), ... C(N). The key encrypting 
- * key is represented by K. Assume integers i, j, and t and intermediate 
- * 64-bit register A, 128-bit register B, and array of 64-bit quantities 
+ * Assume that the data to be wrapped consists of N 64-bit data blocks
+ * denoted P(1), P(2), P(3) ... P(N). The result of wrapping will be N+1
+ * 64-bit blocks denoted C(0), C(1), C(2), ... C(N). The key encrypting
+ * key is represented by K. Assume integers i, j, and t and intermediate
+ * 64-bit register A, 128-bit register B, and array of 64-bit quantities
  * R(1) through R(N).
  *
- * "|" represents concatentation so x|y, where x and y and 64-bit quantities, 
- * is the 128-bit quantity with x in the most significant bits and y in the 
- * least significant bits. AES(K)enc(x) is the operation of AES encrypting 
- * the 128-bit quantity x under the key K. AES(K)dec(x) is the corresponding 
- * decryption opteration. XOR(x,y) is the bitwise exclusive or of x and y. 
- * MSB(x) and LSB(y) are the most significant 64 bits and least significant 
+ * "|" represents concatentation so x|y, where x and y and 64-bit quantities,
+ * is the 128-bit quantity with x in the most significant bits and y in the
+ * least significant bits. AES(K)enc(x) is the operation of AES encrypting
+ * the 128-bit quantity x under the key K. AES(K)dec(x) is the corresponding
+ * decryption opteration. XOR(x,y) is the bitwise exclusive or of x and y.
+ * MSB(x) and LSB(y) are the most significant 64 bits and least significant
  * 64 bits of x and y respectively.
  *
- * If N is 1, a single AES operation is performed for wrap or unwrap. 
+ * If N is 1, a single AES operation is performed for wrap or unwrap.
  * If N>1, then 6*N AES operations are performed for wrap or unwrap.
  *
  * The key wrap algorithm is as follows:
@@ -471,7 +471,7 @@ xmlSecNssKWAesGetKeySize(xmlSecTransformPtr transform) {
  *   1. If N is 1:
  *          * B=AES(K)dec(C(0)|C(1))
  *          * P(1)=LSB(B)
- *          * If MSB(B) is 0xA6A6A6A6A6A6A6A6, return success. Otherwise, 
+ *          * If MSB(B) is 0xA6A6A6A6A6A6A6A6, return success. Otherwise,
  *            return an integrity check failure error.
  *      If N>1, perform the following steps:
  *   2. Initialize the variables:
@@ -488,16 +488,16 @@ xmlSecNssKWAesGetKeySize(xmlSecTransformPtr transform) {
  *   4. Output the results:
  *          * For i=1 to N,
  *            P(i)=R(i)
- *          * If A is 0xA6A6A6A6A6A6A6A6, return success. Otherwise, return 
+ *          * If A is 0xA6A6A6A6A6A6A6A6, return success. Otherwise, return
  *            an integrity check failure error.
  */
 
 #ifndef NSS_AES_KEYWRAP_BUG_FIXED
-static const xmlSecByte xmlSecNssKWAesMagicBlock[XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE] = { 
+static const xmlSecByte xmlSecNssKWAesMagicBlock[XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE] = {
     0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6,  0xA6
 };
-                                                
-static int      
+
+static int
 xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
                  const xmlSecByte *in, xmlSecSize inSize,
                  xmlSecByte *out, xmlSecSize outSize, int enc) {
@@ -506,7 +506,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
     int N, i, j, t;
     int result = -1;
     PK11SymKey *aeskey = NULL;
-    
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -517,14 +517,14 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
     if (enc == 1) {
         aeskey = xmlSecNssMakeAesKey(key, keySize, enc);
         if(aeskey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlSecNssMakeAesKey",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             goto done;
         }
-    
+
         /* prepend magic block */
         if(in != out) {
             memcpy(out + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE, in, inSize);
@@ -532,7 +532,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
             memmove(out + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE, out, inSize);
         }
         memcpy(out, xmlSecNssKWAesMagicBlock, XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE);
-        
+
         N = (inSize / 8);
         if(N == 1) {
             xmlSecNssAesOp(aeskey, out, out, enc);
@@ -541,10 +541,10 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
                 for(i = 1; i <= N; ++i) {
                     t = i + (j * N);
                     p = out + i * 8;
-    
+
                     memcpy(block, out, 8);
                     memcpy(block + 8, p, 8);
-                
+
                     xmlSecNssAesOp(aeskey, block, block, enc);
                     block[7] ^=  t;
                     memcpy(out, block, 8);
@@ -552,24 +552,24 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
                 }
             }
         }
-        
+
         result = inSize + 8;
     } else {
         aeskey = xmlSecNssMakeAesKey(key, keySize, enc);
         if(aeskey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlSecNssMakeAesKey",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             goto done;
         }
-        
+
         /* copy input */
         if(in != out) {
             memcpy(out, in, inSize);
         }
-            
+
         N = (inSize / 8) - 1;
         if(N == 1) {
             xmlSecNssAesOp(aeskey, out, out, enc);
@@ -578,11 +578,11 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
                 for(i = N; i > 0; --i) {
                     t = i + (j * N);
                     p = out + i * 8;
-    
+
                     memcpy(block, out, 8);
                     memcpy(block + 8, p, 8);
                     block[7] ^= t;
-                
+
                     xmlSecNssAesOp(aeskey, block, block, enc);
                     memcpy(out, block, 8);
                     memcpy(p, block + 8, 8);
@@ -591,16 +591,16 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
         }
         /* do not left data in memory */
         memset(block, 0, sizeof(block));
-        
+
         if(memcmp(xmlSecNssKWAesMagicBlock, out, XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_DATA,
                         "bad magic block");
             goto done;
         }
-        
+
         memmove(out, out + XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE, inSize - XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE);
         result = (inSize - XMLSEC_NSS_KW_AES_MAGIC_BLOCK_SIZE);
     }
@@ -619,7 +619,7 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
     PK11SlotInfo*      slot = NULL;
     PK11SymKey*        aeskey = NULL;
     SECItem            keyItem;
-    
+
     xmlSecAssert2(key != NULL, NULL);
     xmlSecAssert2(keySize > 0, NULL);
 
@@ -636,7 +636,7 @@ xmlSecNssMakeAesKey(const xmlSecByte *key, xmlSecSize keySize, int enc) {
 
     keyItem.data = (unsigned char *)key;
     keyItem.len = keySize;
-    aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap, 
+    aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
                                enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if (aeskey == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -681,8 +681,8 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
         goto done;
     }
 
-    EncContext = PK11_CreateContextBySymKey(cipherMech, 
-                                            enc ? CKA_ENCRYPT : CKA_DECRYPT, 
+    EncContext = PK11_CreateContextBySymKey(cipherMech,
+                                            enc ? CKA_ENCRYPT : CKA_DECRYPT,
                                             aeskey, SecParam);
     if (EncContext == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -694,8 +694,8 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
     }
 
     tmp1_outlen = tmp2_outlen = 0;
-    rv = PK11_CipherOp(EncContext, out, &tmp1_outlen, 
-                       XMLSEC_NSS_AES_BLOCK_SIZE, (unsigned char *)in, 
+    rv = PK11_CipherOp(EncContext, out, &tmp1_outlen,
+                       XMLSEC_NSS_AES_BLOCK_SIZE, (unsigned char *)in,
                        XMLSEC_NSS_AES_BLOCK_SIZE);
     if (rv != SECSuccess) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -706,7 +706,7 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out,
         goto done;
     }
 
-    rv = PK11_DigestFinal(EncContext, out+tmp1_outlen, 
+    rv = PK11_DigestFinal(EncContext, out+tmp1_outlen,
                           &tmp2_outlen, XMLSEC_NSS_AES_BLOCK_SIZE-tmp1_outlen);
     if (rv != SECSuccess) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -740,9 +740,9 @@ done:
 
 /* NSS implements the AES Key Wrap algorithm described at
  * http://www.w3.org/TR/xmlenc-core/#sec-Alg-SymmetricKeyWrap
- */ 
+ */
 
-static int      
+static int
 xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
                  const xmlSecByte *in, xmlSecSize inSize,
                  xmlSecByte *out, xmlSecSize outSize, int enc) {
@@ -757,7 +757,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
     int                result_len = -1;
     int                tmp1_outlen;
     unsigned int       tmp2_outlen;
-    
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keySize > 0, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -778,7 +778,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
 
     keyItem.data = (unsigned char *)key;
     keyItem.len = keySize;
-    aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap, 
+    aeskey = PK11_ImportSymKey(slot, cipherMech, PK11_OriginUnwrap,
                                enc ? CKA_ENCRYPT : CKA_DECRYPT, &keyItem, NULL);
     if (aeskey == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -799,8 +799,8 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
         goto done;
     }
 
-    EncContext = PK11_CreateContextBySymKey(cipherMech, 
-                                            enc ? CKA_ENCRYPT : CKA_DECRYPT, 
+    EncContext = PK11_CreateContextBySymKey(cipherMech,
+                                            enc ? CKA_ENCRYPT : CKA_DECRYPT,
                                             aeskey, SecParam);
     if (EncContext == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -823,7 +823,7 @@ xmlSecNssKWAesOp(const xmlSecByte *key, xmlSecSize keySize,
         goto done;
     }
 
-    rv = PK11_DigestFinal(EncContext, out+tmp1_outlen, 
+    rv = PK11_DigestFinal(EncContext, out+tmp1_outlen,
                           &tmp2_outlen, outSize-tmp1_outlen);
     if (rv != SECSuccess) {
         xmlSecError(XMLSEC_ERRORS_HERE,

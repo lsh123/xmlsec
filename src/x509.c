@@ -1,21 +1,21 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 
 #ifndef XMLSEC_NO_X509
- 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <libxml/tree.h>
-#include <libxml/parser.h> 
+#include <libxml/parser.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -50,7 +50,7 @@ xmlSecX509DataGetNodeContent (xmlNodePtr node, int deleteChildren,
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* determine the current node content */
-    cur = xmlSecGetNextElementNode(node->children); 
+    cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
         deleteCurNode = 0;
         if(xmlSecCheckNodeName(cur, xmlSecNodeX509Certificate, xmlSecDSigNs)) {

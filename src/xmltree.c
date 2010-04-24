@@ -1,11 +1,11 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Common XML Doc utility functions
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -14,7 +14,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
- 
+
 #include <libxml/tree.h>
 #include <libxml/valid.h>
 #include <libxml/xpath.h>
@@ -33,19 +33,19 @@
  * @name:               the name.
  * @ns:                 the namespace href (may be NULL).
  *
- * Searches a direct child of the @parent node having given name and 
+ * Searches a direct child of the @parent node having given name and
  * namespace href.
- * 
- * Returns: the pointer to the found node or NULL if an error occurs or 
+ *
+ * Returns: the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
 xmlNodePtr
 xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr cur;
-        
+
     xmlSecAssert2(parent != NULL, NULL);
     xmlSecAssert2(name != NULL, NULL);
-    
+
     cur = parent->children;
     while(cur != NULL) {
         if(cur->type == XML_ELEMENT_NODE) {
@@ -64,16 +64,16 @@ xmlSecFindChild(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns)
  * @name:               the name.
  * @ns:                 the namespace href (may be NULL).
  *
- * Searches the ancestors axis of the @cur node for a node having given name 
+ * Searches the ancestors axis of the @cur node for a node having given name
  * and namespace href.
- * 
- * Returns: the pointer to the found node or NULL if an error occurs or 
+ *
+ * Returns: the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
 xmlNodePtr
 xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
     xmlSecAssert2(cur != NULL, NULL);
-    xmlSecAssert2(name != NULL, NULL);        
+    xmlSecAssert2(name != NULL, NULL);
 
     if(xmlSecCheckNodeName(cur, name, ns)) {
         return(cur);
@@ -89,19 +89,19 @@ xmlSecFindParent(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
  * @name:               the name.
  * @ns:                 the namespace href (may be NULL).
  *
- * Searches all children of the @parent node having given name and 
+ * Searches all children of the @parent node having given name and
  * namespace href.
- * 
- * Returns: the pointer to the found node or NULL if an error occurs or 
+ *
+ * Returns: the pointer to the found node or NULL if an error occurs or
  * node is not found.
  */
-xmlNodePtr              
+xmlNodePtr
 xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr cur;
     xmlNodePtr ret;
-        
-    xmlSecAssert2(name != NULL, NULL); 
-    
+
+    xmlSecAssert2(name != NULL, NULL);
+
     cur = parent;
     while(cur != NULL) {
         if((cur->type == XML_ELEMENT_NODE) && xmlSecCheckNodeName(cur, name, ns)) {
@@ -110,7 +110,7 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
         if(cur->children != NULL) {
             ret = xmlSecFindNode(cur->children, name, ns);
             if(ret != NULL) {
-                return(ret);        
+                return(ret);
             }
         }
         cur = cur->next;
@@ -126,27 +126,27 @@ xmlSecFindNode(const xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) 
  *
  * Returns: node's namespace href.
  */
-const xmlChar* 
+const xmlChar*
 xmlSecGetNodeNsHref(const xmlNodePtr cur) {
     xmlNsPtr ns;
-    
+
     xmlSecAssert2(cur != NULL, NULL);
-    
+
     /* do we have a namespace in the node? */
     if(cur->ns != NULL) {
         return(cur->ns->href);
     }
-    
+
     /* search for default namespace */
     ns = xmlSearchNs(cur->doc, cur, NULL);
     if(ns != NULL) {
         return(ns->href);
     }
-        
+
     return(NULL);
 }
 
-/** 
+/**
  * xmlSecCheckNodeName:
  * @cur:                the pointer to an XML node.
  * @name:               the name,
@@ -159,8 +159,8 @@ xmlSecGetNodeNsHref(const xmlNodePtr cur) {
 int
 xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns) {
     xmlSecAssert2(cur != NULL, 0);
-    
-    return(xmlStrEqual(cur->name, name) && 
+
+    return(xmlStrEqual(cur->name, name) &&
            xmlStrEqual(xmlSecGetNodeNsHref(cur), ns));
 }
 
@@ -174,18 +174,18 @@ xmlSecCheckNodeName(const xmlNodePtr cur, const xmlChar *name, const xmlChar *ns
  *
  * Returns: pointer to the new node or NULL if an error occurs.
  */
-xmlNodePtr              
+xmlNodePtr
 xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr cur;
     xmlNodePtr text;
 
     xmlSecAssert2(parent != NULL, NULL);
-    xmlSecAssert2(name != NULL, NULL);        
+    xmlSecAssert2(name != NULL, NULL);
 
     if(parent->children == NULL) {
         /* TODO: add indents */
-        text = xmlNewText(xmlSecStringCR); 
-        if(text == NULL) {      
+        text = xmlNewText(xmlSecStringCR);
+        if(text == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlNewText",
@@ -209,7 +209,7 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
     /* namespaces support */
     if(ns != NULL) {
         xmlNsPtr nsPtr;
-        
+
         /* find namespace by href and check that its prefix is not overwritten */
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
@@ -217,10 +217,10 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
         }
         xmlSetNs(cur, nsPtr);
     }
-    
+
     /* TODO: add indents */
-    text = xmlNewText(xmlSecStringCR); 
-    if(text == NULL) {  
+    text = xmlNewText(xmlSecStringCR);
+    if(text == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlNewText",
@@ -242,17 +242,17 @@ xmlSecAddChild(xmlNodePtr parent, const xmlChar *name, const xmlChar *ns) {
  *
  * Returns: pointer to the new node or NULL if an error occurs.
  */
-xmlNodePtr              
+xmlNodePtr
 xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
     xmlNodePtr text;
 
     xmlSecAssert2(parent != NULL, NULL);
-    xmlSecAssert2(child != NULL, NULL);        
+    xmlSecAssert2(child != NULL, NULL);
 
     if(parent->children == NULL) {
         /* TODO: add indents */
-        text = xmlNewText(xmlSecStringCR); 
-        if(text == NULL) {      
+        text = xmlNewText(xmlSecStringCR);
+        if(text == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlNewText",
@@ -266,8 +266,8 @@ xmlSecAddChildNode(xmlNodePtr parent, xmlNodePtr child) {
     xmlAddChild(parent, child);
 
     /* TODO: add indents */
-    text = xmlNewText(xmlSecStringCR); 
-    if(text == NULL) {  
+    text = xmlNewText(xmlSecStringCR);
+    if(text == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlNewText",
@@ -296,7 +296,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr text;
 
     xmlSecAssert2(node != NULL, NULL);
-    xmlSecAssert2(name != NULL, NULL);    
+    xmlSecAssert2(name != NULL, NULL);
 
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
@@ -312,7 +312,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     /* namespaces support */
     if(ns != NULL) {
         xmlNsPtr nsPtr;
-        
+
         /* find namespace by href and check that its prefix is not overwritten */
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
@@ -323,7 +323,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
     /* TODO: add indents */
     text = xmlNewText(xmlSecStringCR);
-    if(text == NULL) {  
+    if(text == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlNewText",
@@ -332,7 +332,7 @@ xmlSecAddNextSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
         return(NULL);
     }
     xmlAddNextSibling(node, text);
-    
+
     return(cur);
 }
 
@@ -352,7 +352,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     xmlNodePtr text;
 
     xmlSecAssert2(node != NULL, NULL);
-    xmlSecAssert2(name != NULL, NULL);    
+    xmlSecAssert2(name != NULL, NULL);
 
     cur = xmlNewNode(NULL, name);
     if(cur == NULL) {
@@ -368,7 +368,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
     /* namespaces support */
     if(ns != NULL) {
         xmlNsPtr nsPtr;
-        
+
         /* find namespace by href and check that its prefix is not overwritten */
         nsPtr = xmlSearchNsByHref(cur->doc, cur, ns);
         if((nsPtr == NULL) || (xmlSearchNs(cur->doc, cur, nsPtr->prefix) != nsPtr)) {
@@ -379,7 +379,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
 
     /* TODO: add indents */
     text = xmlNewText(xmlSecStringCR);
-    if(text == NULL) {  
+    if(text == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlNewText",
@@ -402,7 +402,7 @@ xmlSecAddPrevSibling(xmlNodePtr node, const xmlChar *name, const xmlChar *ns) {
  */
 xmlNodePtr
 xmlSecGetNextElementNode(xmlNodePtr cur) {
-    
+
     while((cur != NULL) && (cur->type != XML_ELEMENT_NODE)) {
         cur = cur->next;
     }
@@ -413,7 +413,7 @@ xmlSecGetNextElementNode(xmlNodePtr cur) {
  * xmlSecReplaceNode:
  * @node:               the current node.
  * @newNode:            the new node.
- * 
+ *
  * Swaps the @node and @newNode in the XML tree.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -423,12 +423,12 @@ xmlSecReplaceNode(xmlNodePtr node, xmlNodePtr newNode) {
     return xmlSecReplaceNodeAndReturn(node, newNode, NULL);
 }
 
-/**                 
+/**
  * xmlSecReplaceNodeAndReturn:
  * @node:               the current node.
  * @newNode:            the new node.
  * @replaced:           the replaced node, or release it if NULL is given
- * 
+ *
  * Swaps the @node and @newNode in the XML tree.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -437,9 +437,9 @@ int
 xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* replaced) {
     xmlNodePtr oldNode;
     int restoreRoot = 0;
-    
+
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(newNode != NULL, -1);    
+    xmlSecAssert2(newNode != NULL, -1);
 
     /* fix documents children if necessary first */
     if((node->doc != NULL) && (node->doc->children == node)) {
@@ -466,11 +466,11 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
 
     /* return the old node if requested */
     if(replaced != NULL) {
-        (*replaced) = oldNode;                  
+        (*replaced) = oldNode;
     } else {
-        xmlFreeNode(oldNode); 
+        xmlFreeNode(oldNode);
     }
-   
+
     return(0);
 }
 
@@ -478,7 +478,7 @@ xmlSecReplaceNodeAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr* repl
  * xmlSecReplaceContent
  * @node:               the current node.
  * @newNode:            the new node.
- * 
+ *
  * Swaps the content of @node and @newNode.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -493,7 +493,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
  * @node:               the current node.
  * @newNode:            the new node.
  * @replaced:           the replaced nodes, or release them if NULL is given
- * 
+ *
  * Swaps the content of @node and @newNode.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -501,7 +501,7 @@ xmlSecReplaceContent(xmlNodePtr node, xmlNodePtr newNode) {
 int
 xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *replaced) {
     xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(newNode != NULL, -1);  
+    xmlSecAssert2(newNode != NULL, -1);
 
     xmlUnlinkNode(newNode);
     xmlSetTreeDoc(newNode, node->doc);
@@ -514,13 +514,13 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
         for(cur = node->children; (cur != NULL); cur = next) {
             next = cur->next;
             if((*replaced) != NULL) {
-                /* n is unlinked in this function */            
-                xmlAddNextSibling(tail, cur); 
+                /* n is unlinked in this function */
+                xmlAddNextSibling(tail, cur);
                 tail = cur;
             } else {
                 /* this is the first node, (*replaced) is the head */
                 xmlUnlinkNode(cur);
-                (*replaced) = tail = cur;           
+                (*replaced) = tail = cur;
           }
         }
     } else {
@@ -539,7 +539,7 @@ xmlSecReplaceContentAndReturn(xmlNodePtr node, xmlNodePtr newNode, xmlNodePtr *r
  * @node:               the current node.
  * @buffer:             the XML data.
  * @size:               the XML data size.
- * 
+ *
  * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -555,7 +555,7 @@ xmlSecReplaceNodeBuffer(xmlNodePtr node, const xmlSecByte *buffer, xmlSecSize si
  * @buffer:             the XML data.
  * @size:               the XML data size.
  * @replaced:           the replaced nodes, or release them if NULL is given
- * 
+ *
  * Swaps the @node and the parsed XML data from the @buffer in the XML tree.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -575,7 +575,7 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
                     "xmlParseInNodeContext",
                     XMLSEC_ERRORS_R_XML_FAILED,
                     "Failed to parse content");
-        return(-1);         
+        return(-1);
     }
 
     /* add new nodes */
@@ -590,9 +590,9 @@ xmlSecReplaceNodeBufferAndReturn(xmlNodePtr node, const xmlSecByte *buffer, xmlS
 
     /* return the old node if requested */
     if(replaced != NULL) {
-        (*replaced) = node;             
+        (*replaced) = node;
     } else {
-        xmlFreeNode(node); 
+        xmlFreeNode(node);
     }
 
     return(0);
@@ -612,18 +612,18 @@ int
 xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
-    
+
     if(buffer != NULL) {
             xmlChar * tmp;
 
-        tmp = xmlEncodeSpecialChars(node->doc, buffer);        
+        tmp = xmlEncodeSpecialChars(node->doc, buffer);
         if (tmp == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlEncodeSpecialChars",
                         XMLSEC_ERRORS_R_XML_FAILED,
                         "Failed to encode special characters");
-            return(-1);         
+            return(-1);
         }
 
         xmlNodeSetContent(node, tmp);
@@ -641,22 +641,22 @@ xmlSecNodeEncodeAndSetContent(xmlNodePtr node, const xmlChar * buffer) {
  * @cur:                the pointer to an XML node.
  * @ids:                the pointer to a NULL terminated list of ID attributes.
  *
- * Walks thru all children of the @cur node and adds all attributes 
+ * Walks thru all children of the @cur node and adds all attributes
  * from the @ids list to the @doc document IDs attributes hash.
  */
-void    
+void
 xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
     xmlNodePtr children = NULL;
 
     xmlSecAssert(doc != NULL);
-    xmlSecAssert(ids != NULL);    
-    
+    xmlSecAssert(ids != NULL);
+
     if((cur != NULL) && (cur->type == XML_ELEMENT_NODE)) {
         xmlAttrPtr attr;
         xmlAttrPtr tmp;
         int i;
         xmlChar* name;
-        
+
         for(attr = cur->properties; attr != NULL; attr = attr->next) {
             for(i = 0; ids[i] != NULL; ++i) {
                 if(xmlStrEqual(attr->name, ids[i])) {
@@ -670,20 +670,20 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
                                         NULL,
                                         NULL,
                                         XMLSEC_ERRORS_R_INVALID_DATA,
-                                        "id=%s already defined", 
+                                        "id=%s already defined",
                                         xmlSecErrorsSafeString(name));
                         }
                         xmlFree(name);
-                    }               
+                    }
                 }
             }
         }
-        
+
         children = cur->children;
     } else if(cur == NULL) {
         children = doc->children;
     }
-    
+
     while(children != NULL) {
         if(children->type == XML_ELEMENT_NODE) {
             xmlSecAddIDs(doc, children, ids);
@@ -704,13 +704,13 @@ xmlSecAddIDs(xmlDocPtr doc, xmlNodePtr cur, const xmlChar** ids) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* prefix, xmlSecSize len) {
     xmlChar* id;
     int count;
-    
-    xmlSecAssert2(node != NULL, -1);    
-    xmlSecAssert2(attrName != NULL, -1);    
+
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(attrName != NULL, -1);
 
     /* we will try 5 times before giving up */
     for(count = 0; count < 5; count++) {
@@ -733,9 +733,9 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
                             XMLSEC_ERRORS_R_XML_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
                 xmlFree(id);
-                return(-1);     
+                return(-1);
             }
-            
+
             xmlFree(id);
             return(0);
         }
@@ -757,17 +757,17 @@ xmlSecGenerateAndAddID(xmlNodePtr node, const xmlChar* attrName, const xmlChar* 
  */
 xmlChar*
 xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
-    xmlSecBuffer buffer;    
+    xmlSecBuffer buffer;
     xmlSecSize i, binLen;
     xmlChar* res;
     xmlChar* p;
     int ret;
 
-    xmlSecAssert2(len > 0, NULL);    
-    
+    xmlSecAssert2(len > 0, NULL);
+
     /* we will do base64 decoding later */
     binLen = (3 * len + 1) / 4;
-    
+
     ret = xmlSecBufferInitialize(&buffer, binLen + 1);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -775,11 +775,11 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
                     "xmlSecBufferInitialize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
     xmlSecAssert2(xmlSecBufferGetData(&buffer) != NULL, NULL);
     xmlSecAssert2(xmlSecBufferGetMaxSize(&buffer) >= binLen, NULL);
-    
+
     ret = xmlSecBufferSetSize(&buffer, binLen);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -788,15 +788,15 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecBufferFinalize(&buffer);
-        return(NULL);   
+        return(NULL);
     }
     xmlSecAssert2(xmlSecBufferGetSize(&buffer) == binLen, NULL);
-    
+
     /* create random bytes */
     for(i = 0; i < binLen; i++) {
         (xmlSecBufferGetData(&buffer)) [i] = (xmlSecByte) (256.0 * rand() / (RAND_MAX + 1.0));
     }
-    
+
     /* base64 encode random bytes */
     res = xmlSecBase64Encode(xmlSecBufferGetData(&buffer), xmlSecBufferGetSize(&buffer), 0);
     if((res == NULL) || (xmlStrlen(res) == 0)) {
@@ -806,7 +806,7 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecBufferFinalize(&buffer);
-        return(NULL);   
+        return(NULL);
     }
     xmlSecBufferFinalize(&buffer);
 
@@ -815,18 +815,18 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
         res[len] = '\0';
     }
 
-    /* we need to cleanup base64 encoded id because ID attr can't have '+' or '/' characters */ 
+    /* we need to cleanup base64 encoded id because ID attr can't have '+' or '/' characters */
     for(p = res; (*p) != '\0'; p++) {
         if(((*p) == '+') || ((*p) == '/')) {
             (*p) = '_';
         }
     }
-    
+
     /* add prefix if exist */
     if(prefix) {
         xmlChar* tmp;
         xmlSecSize tmpLen;
-        
+
         tmpLen = xmlStrlen(prefix) + xmlStrlen(res) + 1;
         tmp = xmlMalloc(tmpLen + 1);
         if(tmp == NULL) {
@@ -838,18 +838,18 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
             xmlFree(res);
             return(NULL);
         }
-        
+
         xmlSecStrPrintf(tmp, tmpLen, BAD_CAST "%s%s", prefix, res);
         xmlFree(res);
-        res = tmp;    
+        res = tmp;
     } else {
         /* no prefix: check that ID attribute starts from a letter */
-        if(!(((res[0] >= 'A') && (res[0] <= 'Z')) || 
+        if(!(((res[0] >= 'A') && (res[0] <= 'Z')) ||
              ((res[0] >= 'a') && (res[0] <= 'z')))) {
              res[0] = 'A';
         }
     }
-    
+
     return(res);
 }
 
@@ -863,12 +863,12 @@ xmlSecGenerateID(const xmlChar* prefix, xmlSecSize len) {
  *
  * Returns: pointer to the newly created tree or NULL if an error occurs.
  */
-xmlDocPtr 
+xmlDocPtr
 xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
     xmlDocPtr doc;
     xmlNodePtr root;
     xmlNsPtr ns;
-    
+
     xmlSecAssert2(rootNodeName != NULL, NULL);
 
     /* create doc */
@@ -881,11 +881,11 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     /* create root node */
-    root = xmlNewDocNode(doc, NULL, rootNodeName, NULL); 
+    root = xmlNewDocNode(doc, NULL, rootNodeName, NULL);
     if(root == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlNewDocNode",
                     XMLSEC_ERRORS_R_XML_FAILED,
@@ -904,7 +904,7 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
                     XMLSEC_ERRORS_R_XML_FAILED,
                     "ns=%s",
                     xmlSecErrorsSafeString(rootNodeNs));
-        xmlFreeDoc(doc); 
+        xmlFreeDoc(doc);
         return(NULL);
     }
     xmlSetNs(root, ns);
@@ -920,22 +920,22 @@ xmlSecCreateTree(const xmlChar* rootNodeName, const xmlChar* rootNodeNs) {
  *
  * Returns: 1 if @node is empty, 0 otherwise or a negative value if an error occurs.
  */
-int 
+int
 xmlSecIsEmptyNode(xmlNodePtr node) {
     xmlChar* content;
     int res;
-    
+
     xmlSecAssert2(node != NULL, -1);
 
     if(xmlSecGetNextElementNode(node->children) != NULL) {
         return(0);
     }
-    
+
     content = xmlNodeGetContent(node);
     if(content == NULL) {
         return(1);
     }
-    
+
     res = xmlSecIsEmptyString(content);
     xmlFree(content);
     return(res);
@@ -949,10 +949,10 @@ xmlSecIsEmptyNode(xmlNodePtr node) {
  *
  * Returns: 1 if @str is empty, 0 otherwise or a negative value if an error occurs.
  */
-int 
+int
 xmlSecIsEmptyString(const xmlChar* str) {
     xmlSecAssert2(str != NULL, -1);
-    
+
     for( ;*str != '\0'; ++str) {
         if(!isspace((int)(*str))) {
             return(0);
@@ -962,7 +962,7 @@ xmlSecIsEmptyString(const xmlChar* str) {
 }
 
 /**
- * xmlSecPrintXmlString: 
+ * xmlSecPrintXmlString:
  * @fd:                the file descriptor to write the XML string to
  * @str:               the string
  *
@@ -970,15 +970,15 @@ xmlSecIsEmptyString(const xmlChar* str) {
  *
  * Returns: he number of bytes transmitted or a negative value if an error occurs.
  */
-int 
+int
 xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
     int res;
-    
-    if(str != NULL) {    
+
+    if(str != NULL) {
         xmlChar * encoded_str = NULL;
         encoded_str = xmlEncodeSpecialChars(NULL, str);
         if(encoded_str == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,     
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "xmlEncodeSpecialChars",
                         XMLSEC_ERRORS_R_XML_FAILED,
@@ -986,15 +986,15 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
                         xmlSecErrorsSafeString(str));
             return(-1);
         }
-    
+
         res = fprintf(fd, "%s", (const char*)encoded_str);
         xmlFree(encoded_str);
     } else {
         res = fprintf(fd, "NULL");
     }
-    
+
     if(res < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "fprintf",
                     XMLSEC_ERRORS_R_IO_FAILED,
@@ -1006,7 +1006,7 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
 }
 
 
-/** 
+/**
  * xmlSecGetQName:
  * @node:               the context node.
  * @href:               the QName href (can be NULL).
@@ -1017,7 +1017,7 @@ xmlSecPrintXmlString(FILE * fd, const xmlChar * str) {
  *
  * Returns: qname or NULL if an error occurs.
  */
-xmlChar* 
+xmlChar*
 xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
     xmlChar* qname;
     xmlNsPtr ns;
@@ -1038,10 +1038,10 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
                     xmlSecErrorsSafeString(href));
         return(NULL);
     }
-        
+
     if((ns != NULL) && (ns->prefix != NULL)) {
         xmlSecSize len;
-        
+
         len = xmlStrlen(local) + xmlStrlen(ns->prefix) + 4;
         qname = xmlMalloc(len);
         if(qname == NULL) {
@@ -1077,17 +1077,17 @@ xmlSecGetQName(xmlNodePtr node, const xmlChar* href, const xmlChar* local) {
  * QName <-> Integer mapping
  *
  ************************************************************************/
-/** 
+/**
  * xmlSecQName2IntegerGetInfo:
  * @info:               the qname<->integer mapping information.
  * @intValue:           the integer value.
  *
  * Maps integer @intValue to a QName prefix.
- * 
+ *
  * Returns: the QName info that is mapped to @intValue or NULL if such value
  * is not found.
  */
-xmlSecQName2IntegerInfoConstPtr 
+xmlSecQName2IntegerInfoConstPtr
 xmlSecQName2IntegerGetInfo(xmlSecQName2IntegerInfoConstPtr info, int intValue) {
     unsigned int ii;
 
@@ -1102,20 +1102,20 @@ xmlSecQName2IntegerGetInfo(xmlSecQName2IntegerInfoConstPtr info, int intValue) {
     return(NULL);
 }
 
-/** 
+/**
  * xmlSecQName2IntegerGetInteger:
  * @info:               the qname<->integer mapping information.
  * @qnameHref:          the qname href value.
  * @qnameLocalPart:     the qname local part value.
  * @intValue:           the pointer to result integer value.
- * 
+ *
  * Maps qname qname to an integer and returns it in @intValue.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
-xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info, 
-                             const xmlChar* qnameHref, const xmlChar* qnameLocalPart, 
+int
+xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
+                             const xmlChar* qnameHref, const xmlChar* qnameLocalPart,
                              int* intValue) {
     unsigned int ii;
 
@@ -1124,7 +1124,7 @@ xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
     xmlSecAssert2(intValue != NULL, -1);
 
     for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
-        if(xmlStrEqual(info[ii].qnameLocalPart, qnameLocalPart) && 
+        if(xmlStrEqual(info[ii].qnameLocalPart, qnameLocalPart) &&
            xmlStrEqual(info[ii].qnameHref, qnameHref)) {
             (*intValue) = info[ii].intValue;
             return(0);
@@ -1134,18 +1134,18 @@ xmlSecQName2IntegerGetInteger(xmlSecQName2IntegerInfoConstPtr info,
     return(-1);
 }
 
-/** 
+/**
  * xmlSecQName2IntegerGetIntegerFromString:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @qname:              the qname string.
  * @intValue:           the pointer to result integer value.
- * 
+ *
  * Converts @qname into integer in context of @node.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
                                         xmlNodePtr node, const xmlChar* qname,
                                         int* intValue) {
@@ -1154,12 +1154,12 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
     const xmlChar* qnameHref;
     xmlNsPtr ns;
     int ret;
-    
+
     xmlSecAssert2(info != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(qname != NULL, -1);
     xmlSecAssert2(intValue != NULL, -1);
-    
+
     qnameLocalPart = xmlStrchr(qname, ':');
     if(qnameLocalPart != NULL) {
         qnamePrefix = xmlStrndup(qname, qnameLocalPart - qname);
@@ -1171,14 +1171,14 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
                         "node=%s,value=%s",
                         xmlSecErrorsSafeString(node->name),
                         xmlSecErrorsSafeString(qname));
-            return(-1); 
+            return(-1);
         }
         qnameLocalPart++;
     } else {
         qnamePrefix = NULL;
         qnameLocalPart = qname;
     }
-    
+
     /* search namespace href */
     ns = xmlSearchNs(node->doc, node, qnamePrefix);
     if((ns == NULL) && (qnamePrefix != NULL)) {
@@ -1192,7 +1192,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
-        return(-1);     
+        return(-1);
     }
     qnameHref = (ns != NULL) ? ns->href : BAD_CAST NULL;
 
@@ -1210,7 +1210,7 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
-        return(-1);     
+        return(-1);
     }
 
     if(qnamePrefix != NULL) {
@@ -1220,18 +1220,18 @@ xmlSecQName2IntegerGetIntegerFromString(xmlSecQName2IntegerInfoConstPtr info,
 }
 
 
-/** 
+/**
  * xmlSecQName2IntegerGetStringFromInteger:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @intValue:           the integer value.
- * 
+ *
  * Creates qname string for @intValue in context of given @node. Caller
  * is responsible for freeing returned string with @xmlFree.
- * 
+ *
  * Returns: pointer to newly allocated string on success or NULL if an error occurs,
  */
-xmlChar* 
+xmlChar*
 xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
                                         xmlNodePtr node, int intValue) {
     xmlSecQName2IntegerInfoConstPtr qnameInfo;
@@ -1250,22 +1250,22 @@ xmlSecQName2IntegerGetStringFromInteger(xmlSecQName2IntegerInfoConstPtr info,
                     intValue);
         return(NULL);
     }
-    
+
     return (xmlSecGetQName(node, qnameInfo->qnameHref, qnameInfo->qnameLocalPart));
 }
 
-/** 
+/**
  * xmlSecQName2IntegerNodeRead:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @intValue:           the pointer to result integer value.
- * 
- * Reads the content of @node and converts it to an integer using mapping 
+ *
+ * Reads the content of @node and converts it to an integer using mapping
  * from @info.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node, int* intValue) {
     xmlChar* content = NULL;
     int ret;
@@ -1282,7 +1282,7 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
                     XMLSEC_ERRORS_R_XML_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(node->name));
-        return(-1);     
+        return(-1);
     }
     /* todo: trim content? */
 
@@ -1296,26 +1296,26 @@ xmlSecQName2IntegerNodeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr nod
                     xmlSecErrorsSafeString(node->name),
                     xmlSecErrorsSafeString(content));
         xmlFree(content);
-        return(-1);     
+        return(-1);
     }
 
     xmlFree(content);
     return(0);
 }
 
-/** 
+/**
  * xmlSecQName2IntegerNodeWrite:
  * @info:               the qname<->integer mapping information.
  * @node:               the parent node.
  * @nodeName:           the child node name.
  * @nodeNs:             the child node namespace.
  * @intValue:           the integer value.
- * 
+ *
  * Creates new child node in @node and sets its value to @intValue.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
                             const xmlChar* nodeName, const xmlChar* nodeNs, int intValue) {
     xmlNodePtr cur;
@@ -1337,7 +1337,7 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
                     intValue);
         return(-1);
     }
-    
+
     cur = xmlSecAddChild(node, nodeName, nodeNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1356,19 +1356,19 @@ xmlSecQName2IntegerNodeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr no
     return(0);
 }
 
-/** 
+/**
  * xmlSecQName2IntegerAttributeRead:
  * @info:               the qname<->integer mapping information.
- * @node:               the element node. 
+ * @node:               the element node.
  * @attrName:           the attribute name.
  * @intValue:           the pointer to result integer value.
- * 
+ *
  * Gets the value of @attrName atrtibute from @node and converts it to integer
  * according to @info.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePtr node,
                             const xmlChar* attrName, int* intValue) {
     xmlChar* attrValue;
@@ -1388,7 +1388,7 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
                     "node=%s,attrValue=%s",
                     xmlSecErrorsSafeString(node->name),
                     xmlSecErrorsSafeString(attrName));
-        return(-1);     
+        return(-1);
     }
     /* todo: trim value? */
 
@@ -1403,23 +1403,23 @@ xmlSecQName2IntegerAttributeRead(xmlSecQName2IntegerInfoConstPtr info, xmlNodePt
                     xmlSecErrorsSafeString(attrName),
                     xmlSecErrorsSafeString(attrValue));
         xmlFree(attrValue);
-        return(-1);     
+        return(-1);
     }
 
     xmlFree(attrValue);
     return(0);
 }
 
-/** 
+/**
  * xmlSecQName2IntegerAttributeWrite:
  * @info:               the qname<->integer mapping information.
  * @node:               the parent node.
  * @attrName:           the name of attribute.
  * @intValue:           the integer value.
- * 
- * Converts @intValue to a qname and sets it to the value of 
+ *
+ * Converts @intValue to a qname and sets it to the value of
  * attribute @attrName in @node.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
 int
@@ -1464,16 +1464,16 @@ xmlSecQName2IntegerAttributeWrite(xmlSecQName2IntegerInfoConstPtr info, xmlNodeP
     return(0);
 }
 
-/** 
+/**
  * xmlSecQName2IntegerDebugDump:
  * @info:               the qname<->integer mapping information.
  * @intValue:           the integer value.
  * @name:               the value name to print.
  * @output:             the pointer to output FILE.
- * 
+ *
  * Prints @intValue into @output.
  */
-void 
+void
 xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
                             const xmlChar* name, FILE* output) {
     xmlSecQName2IntegerInfoConstPtr qnameInfo;
@@ -1484,22 +1484,22 @@ xmlSecQName2IntegerDebugDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
 
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
-        fprintf(output, "== %s: %d (name=\"%s\", href=\"%s\")\n", name, intValue, 
+        fprintf(output, "== %s: %d (name=\"%s\", href=\"%s\")\n", name, intValue,
             (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST NULL,
             (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST NULL);
-    }    
+    }
 }
 
-/** 
+/**
  * xmlSecQName2IntegerDebugXmlDump:
  * @info:               the qname<->integer mapping information.
  * @intValue:           the integer value.
  * @name:               the value name to print.
  * @output:             the pointer to output FILE.
- * 
- * Prints @intValue into @output in XML format. 
+ *
+ * Prints @intValue into @output in XML format.
  */
-void 
+void
 xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intValue,
                             const xmlChar* name, FILE* output) {
     xmlSecQName2IntegerInfoConstPtr qnameInfo;
@@ -1510,24 +1510,24 @@ xmlSecQName2IntegerDebugXmlDump(xmlSecQName2IntegerInfoConstPtr info, int intVal
 
     qnameInfo = xmlSecQName2IntegerGetInfo(info, intValue);
     if(qnameInfo != NULL) {
-        fprintf(output, "<%s value=\"%d\" href=\"%s\">%s<%s>\n", name, intValue, 
+        fprintf(output, "<%s value=\"%d\" href=\"%s\">%s<%s>\n", name, intValue,
             (qnameInfo->qnameHref) ? qnameInfo->qnameHref : BAD_CAST NULL,
             (qnameInfo->qnameLocalPart) ? qnameInfo->qnameLocalPart : BAD_CAST NULL,
             name);
-    }    
+    }
 }
-                                                                 
+
 
 /*************************************************************************
  *
  * QName <-> Bits mask mapping
  *
  ************************************************************************/
-/** 
+/**
  * xmlSecQName2BitMaskGetInfo:
  * @info:               the qname<->bit mask mapping information.
  * @mask:               the bit mask.
- * 
+ *
  * Converts @mask to qname.
  *
  * Returns: pointer to the qname info for @mask or NULL if mask is unknown.
@@ -1548,19 +1548,19 @@ xmlSecQName2BitMaskGetInfo(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask m
     return(NULL);
 }
 
-/** 
+/**
  * xmlSecQName2BitMaskGetBitMask:
  * @info:               the qname<->bit mask mapping information.
  * @qnameHref:          the qname Href value.
  * @qnameLocalPart:     the qname LocalPart value.
  * @mask:               the pointer to result mask.
- * 
+ *
  * Converts @qnameLocalPart to @mask.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
-xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info, 
+int
+xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
                             const xmlChar* qnameHref, const xmlChar* qnameLocalPart,
                             xmlSecBitMask* mask) {
     unsigned int ii;
@@ -1571,7 +1571,7 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
 
     for(ii = 0; info[ii].qnameLocalPart != NULL; ii++) {
         xmlSecAssert2(info[ii].mask != 0, -1);
-        if(xmlStrEqual(info[ii].qnameLocalPart, qnameLocalPart) && 
+        if(xmlStrEqual(info[ii].qnameLocalPart, qnameLocalPart) &&
            xmlStrEqual(info[ii].qnameHref, qnameHref)) {
 
             (*mask) = info[ii].mask;
@@ -1582,18 +1582,18 @@ xmlSecQName2BitMaskGetBitMask(xmlSecQName2BitMaskInfoConstPtr info,
     return(-1);
 }
 
-/** 
+/**
  * xmlSecQName2BitMaskGetBitMaskFromString:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @qname:              the qname string.
  * @mask:               the pointer to result msk value.
- * 
+ *
  * Converts @qname into integer in context of @node.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
                                         xmlNodePtr node, const xmlChar* qname,
                                         xmlSecBitMask* mask) {
@@ -1602,7 +1602,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
     const xmlChar* qnameHref;
     xmlNsPtr ns;
     int ret;
-    
+
     xmlSecAssert2(info != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(qname != NULL, -1);
@@ -1619,14 +1619,14 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
                         "node=%s,value=%s",
                         xmlSecErrorsSafeString(node->name),
                         xmlSecErrorsSafeString(qname));
-            return(-1); 
+            return(-1);
         }
         qnameLocalPart++;
     } else {
         qnamePrefix = NULL;
         qnameLocalPart = qname;
     }
-    
+
     /* search namespace href */
     ns = xmlSearchNs(node->doc, node, qnamePrefix);
     if((ns == NULL) && (qnamePrefix != NULL)) {
@@ -1640,7 +1640,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
-        return(-1);     
+        return(-1);
     }
     qnameHref = (ns != NULL) ? ns->href : BAD_CAST NULL;
 
@@ -1658,7 +1658,7 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
         if(qnamePrefix != NULL) {
             xmlFree(qnamePrefix);
         }
-        return(-1);     
+        return(-1);
     }
 
     if(qnamePrefix != NULL) {
@@ -1668,18 +1668,18 @@ xmlSecQName2BitMaskGetBitMaskFromString(xmlSecQName2BitMaskInfoConstPtr info,
 }
 
 
-/** 
+/**
  * xmlSecQName2BitMaskGetStringFromBitMask:
  * @info:               the qname<->integer mapping information.
  * @node:               the pointer to node.
  * @mask:               the mask.
- * 
+ *
  * Creates qname string for @mask in context of given @node. Caller
  * is responsible for freeing returned string with @xmlFree.
- * 
+ *
  * Returns: pointer to newly allocated string on success or NULL if an error occurs,
  */
-xmlChar* 
+xmlChar*
 xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
                                         xmlNodePtr node, xmlSecBitMask mask) {
     xmlSecQName2BitMaskInfoConstPtr qnameInfo;
@@ -1698,11 +1698,11 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
                     mask);
         return(NULL);
     }
-    
+
     return(xmlSecGetQName(node, qnameInfo->qnameHref, qnameInfo->qnameLocalPart));
 }
 
-/** 
+/**
  * xmlSecQName2BitMaskNodesRead:
  * @info:               the qname<->bit mask mapping information.
  * @node:               the start.
@@ -1711,16 +1711,16 @@ xmlSecQName2BitMaskGetStringFromBitMask(xmlSecQName2BitMaskInfoConstPtr info,
  * @stopOnUnknown:      if this flag is set then function exits if unknown
  *                      value was found.
  * @mask:               the pointer to result mask.
- * 
+ *
  * Reads <@nodeNs:@nodeName> elements and puts the result bit mask
  * into @mask. When function exits, @node points to the first element node
  * after all the <@nodeNs:@nodeName> elements.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* node,
-                            const xmlChar* nodeName, const xmlChar* nodeNs, 
+                            const xmlChar* nodeName, const xmlChar* nodeNs,
                             int stopOnUnknown, xmlSecBitMask* mask) {
     xmlNodePtr cur;
     xmlChar* content;
@@ -1742,9 +1742,9 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
                         XMLSEC_ERRORS_R_XML_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(cur->name));
-            return(-1); 
+            return(-1);
         }
-        
+
         ret = xmlSecQName2BitMaskGetBitMaskFromString(info, cur, content, &tmp);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1754,7 +1754,7 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
                         "value=%s",
                         xmlSecErrorsSafeString(content));
             xmlFree(content);
-            return(-1); 
+            return(-1);
         }
         xmlFree(content);
 
@@ -1766,32 +1766,32 @@ xmlSecQName2BitMaskNodesRead(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr* n
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "value=%s",
                         xmlSecErrorsSafeString(content));
-            return(-1); 
+            return(-1);
         }
-        
+
         (*mask) |= tmp;
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
-    (*node) = cur;    
-    return(0); 
+    (*node) = cur;
+    return(0);
 }
 
-/** 
+/**
  * xmlSecQName2BitMaskNodesWrite:
  * @info:               the qname<->bit mask mapping information.
  * @node:               the parent element for mask nodes.
  * @nodeName:           the mask nodes name.
  * @nodeNs:             the mask nodes namespace.
  * @mask:               the bit mask.
- * 
+ *
  * Writes <@nodeNs:@nodeName> elemnts with values from @mask to @node.
- * 
+ *
  * Returns: 0 on success or a negative value if an error occurs,
  */
-int 
+int
 xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr node,
-                            const xmlChar* nodeName, const xmlChar* nodeNs, 
+                            const xmlChar* nodeName, const xmlChar* nodeNs,
                             xmlSecBitMask mask) {
     unsigned int ii;
 
@@ -1805,7 +1805,7 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
         if((mask & info[ii].mask) != 0) {
             xmlNodePtr cur;
             xmlChar* qname;
-            
+
             qname = xmlSecGetQName(node, info[ii].qnameHref, info[ii].qnameLocalPart);
             if(qname == NULL) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1814,9 +1814,9 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
                             XMLSEC_ERRORS_R_XML_FAILED,
                             "node=%s",
                             xmlSecErrorsSafeString(nodeName));
-                return(-1);     
+                return(-1);
             }
-            
+
             cur = xmlSecAddChild(node, nodeName, nodeNs);
             if(cur == NULL) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1828,7 +1828,7 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
                 xmlFree(qname);
                 return(-1);
             }
-            
+
             xmlNodeSetContent(cur, qname);
             xmlFree(qname);
         }
@@ -1836,16 +1836,16 @@ xmlSecQName2BitMaskNodesWrite(xmlSecQName2BitMaskInfoConstPtr info, xmlNodePtr n
     return(0);
 }
 
-/** 
+/**
  * xmlSecQName2BitMaskDebugDump:
  * @info:               the qname<->bit mask mapping information.
  * @mask:               the bit mask.
  * @name:               the value name to print.
  * @output:             the pointer to output FILE.
- * 
+ *
  * Prints debug information about @mask to @output.
  */
-void 
+void
 xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask mask,
                             const xmlChar* name, FILE* output) {
     unsigned int ii;
@@ -1869,16 +1869,16 @@ xmlSecQName2BitMaskDebugDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask
     fprintf(output, "\n");
 }
 
-/** 
+/**
  * xmlSecQName2BitMaskDebugXmlDump:
  * @info:               the qname<->bit mask mapping information.
  * @mask:               the bit mask.
  * @name:               the value name to print.
  * @output:             the pointer to output FILE.
- * 
+ *
  * Prints debug information about @mask to @output in XML format.
  */
-void 
+void
 xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitMask mask,
                             const xmlChar* name, FILE* output) {
     unsigned int ii;
@@ -1896,13 +1896,13 @@ xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitMaskInfoConstPtr info, xmlSecBitM
         xmlSecAssert(info[ii].mask != 0);
 
         if((mask & info[ii].mask) != 0) {
-            fprintf(output, "<%s href=\"%s\">%s</%s>\n", name, 
+            fprintf(output, "<%s href=\"%s\">%s</%s>\n", name,
                     info[ii].qnameHref, info[ii].qnameLocalPart, name);
         }
     }
     fprintf(output, "</%sList>\n", name);
 }
-                                                                 
+
 
 
 

@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #ifndef __XMLSEC_NSS_PKIKEYS_H__
-#define __XMLSEC_NSS_PKIKEYS_H__    
+#define __XMLSEC_NSS_PKIKEYS_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <nspr.h>
 #include <nss.h>

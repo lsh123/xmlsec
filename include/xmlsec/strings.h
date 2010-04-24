@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * All the string constans.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_STRINGS_H__
-#define __XMLSEC_STRINGS_H__    
+#define __XMLSEC_STRINGS_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 

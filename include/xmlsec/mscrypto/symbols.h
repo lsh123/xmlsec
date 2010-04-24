@@ -1,13 +1,13 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_SYMBOLS_H__
-#define __XMLSEC_MSCRYPTO_SYMBOLS_H__    
+#define __XMLSEC_MSCRYPTO_SYMBOLS_H__
 
 #if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
 #error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -15,14 +15,14 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 /**
  * Defines for writing simple code
  */
 #ifdef XMLSEC_CRYPTO_MSCRYPTO
 
-/**  
+/**
  * Crypto Init/shutdown
  */
 #define xmlSecCryptoInit                        xmlSecMSCryptoInit
@@ -72,7 +72,7 @@ extern "C" {
 
 /**
  * High level routines form xmlsec command line utility
- */ 
+ */
 
 #define xmlSecCryptoAppInit                     xmlSecMSCryptoAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecMSCryptoAppShutdown
@@ -98,5 +98,5 @@ extern "C" {
 
 #endif /* __XMLSEC_MSCRYPTO_CRYPTO_H__ */
 
-#define __XMLSEC_MSCRYPTO_CRYPTO_H__    
+#define __XMLSEC_MSCRYPTO_CRYPTO_H__
 

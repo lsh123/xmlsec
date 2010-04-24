@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Enchanced nodes Set
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_NODESET_H__
-#define __XMLSEC_NODESET_H__    
+#define __XMLSEC_NODESET_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -22,27 +22,27 @@ extern "C" {
 
 typedef struct _xmlSecNodeSet   xmlSecNodeSet, *xmlSecNodeSetPtr;
 
-/** 
+/**
  * xmlSecNodeSetType:
  * @xmlSecNodeSetNormal:        nodes set = nodes in the list.
  * @xmlSecNodeSetInvert:        nodes set = all document nodes minus nodes in the list.
  * @xmlSecNodeSetTree:          nodes set = nodes in the list and all their subtress.
- * @xmlSecNodeSetTreeWithoutComments:           nodes set = nodes in the list and 
+ * @xmlSecNodeSetTreeWithoutComments:           nodes set = nodes in the list and
  *                              all their subtress but no comment nodes.
- * @xmlSecNodeSetTreeInvert:    nodes set = all document nodes minus nodes in the 
+ * @xmlSecNodeSetTreeInvert:    nodes set = all document nodes minus nodes in the
  *                              list and all their subtress.
- * @xmlSecNodeSetTreeWithoutCommentsInvert:     nodes set = all document nodes 
- *                              minus (nodes in the list and all their subtress 
+ * @xmlSecNodeSetTreeWithoutCommentsInvert:     nodes set = all document nodes
+ *                              minus (nodes in the list and all their subtress
  *                              plus all comment nodes).
  * @xmlSecNodeSetList:          nodes set = all nodes in the chidren list of nodes sets.
- * 
+ *
  * The basic nodes sets types.
  */
 typedef enum {
     xmlSecNodeSetNormal = 0,
     xmlSecNodeSetInvert,
     xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments, 
+    xmlSecNodeSetTreeWithoutComments,
     xmlSecNodeSetTreeInvert,
     xmlSecNodeSetTreeWithoutCommentsInvert,
     xmlSecNodeSetList
@@ -53,7 +53,7 @@ typedef enum {
  * @xmlSecNodeSetIntersection:  intersection.
  * @xmlSecNodeSetSubtraction:   subtraction.
  * @xmlSecNodeSetUnion:         union.
- * 
+ *
  * The simple nodes sets operations.
  */
 typedef enum {
@@ -72,7 +72,7 @@ typedef enum {
  * @op:                         the operation type.
  * @next:                       the next nodes set.
  * @prev:                       the previous nodes set.
- * @children:                   the children list (valid only if type 
+ * @children:                   the children list (valid only if type
  *                              equal to #xmlSecNodeSetList).
  *
  * The enchanced nodes set.
@@ -130,7 +130,7 @@ XMLSEC_EXPORT int               xmlSecNodeSetDumpTextNodes(xmlSecNodeSetPtr nset
                                                         xmlOutputBufferPtr out);
 XMLSEC_EXPORT void              xmlSecNodeSetDebugDump  (xmlSecNodeSetPtr nset,
                                                          FILE *output);
-                                                         
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

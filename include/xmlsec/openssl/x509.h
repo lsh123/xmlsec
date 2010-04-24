@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_OPENSSL_X509_H__
-#define __XMLSEC_OPENSSL_X509_H__    
+#define __XMLSEC_OPENSSL_X509_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #ifndef XMLSEC_NO_X509
 
@@ -37,7 +37,7 @@ extern "C" {
 
 /**
  * xmlSecOpenSSLKeyDataX509Id:
- * 
+ *
  * The OpenSSL X509 data klass.
  */
 #define xmlSecOpenSSLKeyDataX509Id \
@@ -45,7 +45,7 @@ extern "C" {
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataX509GetKlass(void);
 
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLKeyDataX509GetKeyCert(xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, 
+XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data,
                                                                          X509* cert);
 
 XMLSEC_CRYPTO_EXPORT int                xmlSecOpenSSLKeyDataX509AdoptCert(xmlSecKeyDataPtr data,
@@ -65,7 +65,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecOpenSSLX509CertGetKey     (X509* c
 
 /**
  * xmlSecOpenSSLKeyDataRawX509CertId:
- * 
+ *
  * The OpenSSL raw X509 certificate klass.
  */
 #define xmlSecOpenSSLKeyDataRawX509CertId \
@@ -74,7 +74,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass(
 
 /**
  * xmlSecOpenSSLX509StoreId:
- * 
+ *
  * The OpenSSL X509 store klass.
  */
 #define xmlSecOpenSSLX509StoreId \
@@ -82,7 +82,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataRawX509CertGetKlass(
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecOpenSSLX509StoreGetKlass(void);
 XMLSEC_CRYPTO_EXPORT X509*              xmlSecOpenSSLX509StoreFindCert  (xmlSecKeyDataStorePtr store,
                                                                          xmlChar *subjectName,
-                                                                         xmlChar *issuerName, 
+                                                                         xmlChar *issuerName,
                                                                          xmlChar *issuerSerial,
                                                                          xmlChar *ski,
                                                                          xmlSecKeyInfoCtx* keyInfoCtx);

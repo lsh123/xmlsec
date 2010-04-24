@@ -1,30 +1,30 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Key Management Specification v 2.0" implementation
  *  http://www.w3.org/TR/xkms2/
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_PRIVATE_XKMS_H__
-#define __XMLSEC_PRIVATE_XKMS_H__    
+#define __XMLSEC_PRIVATE_XKMS_H__
 
 #ifndef XMLSEC_PRIVATE
 #error "xmlsec/private/xkms.h file contains private xmlsec definitions and should not be used outside xmlsec or xmlsec-<crypto> libraries"
 #endif /* XMLSEC_PRIVATE */
 
 #ifndef XMLSEC_NO_XKMS
-        
+
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
-#include <stdio.h>              
+#endif /* __cplusplus */
+#include <stdio.h>
 
 #include <libxml/tree.h>
-#include <libxml/parser.h> 
+#include <libxml/parser.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -39,7 +39,7 @@ extern "C" {
  *
  * XKMS RespondWith Klass
  *
- ************************************************************************/ 
+ ************************************************************************/
 typedef int             (*xmlSecXkmsRespondWithNodeReadMethod)  (xmlSecXkmsRespondWithId id,
                                                                  xmlSecXkmsServerCtxPtr ctx,
                                                                  xmlNodePtr node);
@@ -49,10 +49,10 @@ typedef int             (*xmlSecXkmsRespondWithNodeWriteMethod) (xmlSecXkmsRespo
 struct _xmlSecXkmsRespondWithKlass {
     const xmlChar*                              valueName;
     const xmlChar*                              valueNs;
-    
+
     const xmlChar*                              nodeName;
     const xmlChar*                              nodeNs;
-    
+
     xmlSecXkmsRespondWithNodeReadMethod         readNode;
     xmlSecXkmsRespondWithNodeWriteMethod        writeNode;
 
@@ -67,7 +67,7 @@ struct _xmlSecXkmsRespondWithKlass {
  *
  * XKMS ServerRequest Klass
  *
- ************************************************************************/ 
+ ************************************************************************/
 typedef int                     (*xmlSecXkmsServerRequestNodeReadMethod)
                                                                 (xmlSecXkmsServerRequestId id,
                                                                  xmlSecXkmsServerCtxPtr ctx,
@@ -86,11 +86,11 @@ struct _xmlSecXkmsServerRequestKlass {
     const xmlChar*                              resultNodeName;
     const xmlChar*                              resultNodeNs;
     xmlSecBitMask                               flags;
-    
+
     xmlSecXkmsServerRequestNodeReadMethod       readNode;
     xmlSecXkmsServerRequestNodeWriteMethod      writeNode;
     xmlSecXkmsServerRequestExecuteMethod        execute;
-    
+
     void*                                       reserved1;
     void*                                       reserved2;
 };
@@ -103,7 +103,7 @@ struct _xmlSecXkmsServerRequestKlass {
  *
  * XKMS ServerRequest Klass flags
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * XMLSEC_XKMS_SERVER_REQUEST_KLASS_ALLOWED_IN_COUMPOUND:
  *

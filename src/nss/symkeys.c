@@ -1,12 +1,12 @@
-/** 
+/**
  *
  * XMLSec library
- * 
+ *
  * DES Algorithm support
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -25,7 +25,7 @@
 #include <xmlsec/nss/crypto.h>
 
 /*****************************************************************************
- * 
+ *
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
  ****************************************************************************/
@@ -70,7 +70,7 @@ static int      xmlSecNssSymKeyDataKlassCheck   (xmlSecKeyDataKlass* klass);
 static int
 xmlSecNssSymKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(data), -1);
-    
+
     return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
@@ -79,14 +79,14 @@ xmlSecNssSymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(dst), -1);
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(src), -1);
     xmlSecAssert2(dst->id == src->id, -1);
-        
+
     return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
 xmlSecNssSymKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecNssSymKeyDataCheckId(data));
-    
+
     xmlSecKeyDataBinaryValueFinalize(data);
 }
 
@@ -94,15 +94,15 @@ static int
 xmlSecNssSymKeyDataXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecNssSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueXmlRead(id, key, node, keyInfoCtx));
 }
 
-static int 
+static int
 xmlSecNssSymKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                     xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecNssSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueXmlWrite(id, key, node, keyInfoCtx));
 }
 
@@ -111,7 +111,7 @@ xmlSecNssSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                     const xmlSecByte* buf, xmlSecSize bufSize,
                                     xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecNssSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueBinRead(id, key, buf, bufSize, keyInfoCtx));
 }
 
@@ -120,7 +120,7 @@ xmlSecNssSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                     xmlSecByte** buf, xmlSecSize* bufSize,
                                     xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecNssSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueBinWrite(id, key, buf, bufSize, keyInfoCtx));
 }
 
@@ -133,7 +133,7 @@ xmlSecNssSymKeyDataGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKe
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     return(xmlSecNssGenerateRandom(buffer, (sizeBits + 7) / 8));
 }
 
@@ -149,29 +149,29 @@ xmlSecNssSymKeyDataGetType(xmlSecKeyDataPtr data) {
     return((xmlSecBufferGetSize(buffer) > 0) ? xmlSecKeyDataTypeSymmetric : xmlSecKeyDataTypeUnknown);
 }
 
-static xmlSecSize 
+static xmlSecSize
 xmlSecNssSymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecNssSymKeyDataCheckId(data), 0);
-    
+
     return(xmlSecKeyDataBinaryValueGetSize(data));
 }
 
-static void 
+static void
 xmlSecNssSymKeyDataDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecNssSymKeyDataCheckId(data));
-    
-    xmlSecKeyDataBinaryValueDebugDump(data, output);    
+
+    xmlSecKeyDataBinaryValueDebugDump(data, output);
 }
 
 static void
 xmlSecNssSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecNssSymKeyDataCheckId(data));
-    
-    xmlSecKeyDataBinaryValueDebugXmlDump(data, output);    
+
+    xmlSecKeyDataBinaryValueDebugXmlDump(data, output);
 }
 
-static int 
-xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {    
+static int
+xmlSecNssSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 #ifndef XMLSEC_NO_DES
     if(klass == xmlSecNssKeyDataDesId) {
         return(1);
@@ -205,18 +205,18 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataAesKlass = {
 
     /* data */
     xmlSecNameAESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
     xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecNssSymKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecNssSymKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecNssSymKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecNssSymKeyDataGenerate,                /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecNssSymKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecNssSymKeyDataGetSize,         /* xmlSecKeyDataGetSizeMethod getSize; */
@@ -237,14 +237,14 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataAesKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecNssKeyDataAesGetKlass:
- * 
+ *
  * The AES key data klass.
  *
  * Returns: AES key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecNssKeyDataAesGetKlass(void) {
     return(&xmlSecNssKeyDataAesKlass);
 }
@@ -262,14 +262,14 @@ xmlSecNssKeyDataAesGetKlass(void) {
 int
 xmlSecNssKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataAesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
-    
+
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 #endif /* XMLSEC_NO_AES */
@@ -286,18 +286,18 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataDesKlass = {
 
     /* data */
     xmlSecNameDESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
     xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecNssSymKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecNssSymKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecNssSymKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecNssSymKeyDataGenerate,                /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecNssSymKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecNssSymKeyDataGetSize,         /* xmlSecKeyDataGetSizeMethod getSize; */
@@ -318,14 +318,14 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataDesKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecNssKeyDataDesGetKlass:
- * 
+ *
  * The DES key data klass.
  *
  * Returns: DES key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecNssKeyDataDesGetKlass(void) {
     return(&xmlSecNssKeyDataDesKlass);
 }
@@ -343,14 +343,14 @@ xmlSecNssKeyDataDesGetKlass(void) {
 int
 xmlSecNssKeyDataDesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataDesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
-    
+
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 
@@ -368,18 +368,18 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataHmacKlass = {
 
     /* data */
     xmlSecNameHMACKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefHMACKeyValue,                     /* const xmlChar* href; */
     xmlSecNodeHMACKeyValue,                     /* const xmlChar* dataNodeName; */
     xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecNssSymKeyDataInitialize,              /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecNssSymKeyDataDuplicate,               /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecNssSymKeyDataFinalize,                /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecNssSymKeyDataGenerate,                /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecNssSymKeyDataGetType,                 /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecNssSymKeyDataGetSize,         /* xmlSecKeyDataGetSizeMethod getSize; */
@@ -400,14 +400,14 @@ static xmlSecKeyDataKlass xmlSecNssKeyDataHmacKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecNssKeyDataHmacGetKlass:
- * 
+ *
  * The HMAC key data klass.
  *
  * Returns: HMAC key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecNssKeyDataHmacGetKlass(void) {
     return(&xmlSecNssKeyDataHmacKlass);
 }
@@ -425,14 +425,14 @@ xmlSecNssKeyDataHmacGetKlass(void) {
 int
 xmlSecNssKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecNssKeyDataHmacId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
-    
+
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 

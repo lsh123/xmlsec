@@ -1,26 +1,26 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Digital Signature" implementation
  *  http://www.w3.org/TR/xmldsig-core/
  *  http://www.w3.org/Signature/Overview.html
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_XMLDSIG_H__
-#define __XMLSEC_XMLDSIG_H__    
+#define __XMLSEC_XMLDSIG_H__
 
 #ifndef XMLSEC_NO_XMLDSIG
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
-#include <libxml/parser.h> 
+#include <libxml/parser.h>
 
 
 #include <xmlsec/xmlsec.h>
@@ -90,7 +90,7 @@ typedef enum {
  *
  * If this flag is set then URI ID references are resolved directly
  * without using XPointers. This allows one to sign/verify Visa3D
- * documents that don't follow XML, XPointer and XML DSig specifications. 
+ * documents that don't follow XML, XPointer and XML DSig specifications.
  */
 #define XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK                       0x00000010
 
@@ -121,12 +121,12 @@ typedef enum {
  *                              (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE flag is set).
  * @signValueNode:              the pointer to <dsig:SignatureValue/> node.
  * @id:                         the pointer to Id attribute of <dsig:Signature/> node.
- * @signedInfoReferences:       the list of references in <dsig:SignedInfo/> node.              
+ * @signedInfoReferences:       the list of references in <dsig:SignedInfo/> node.
  * @manifestReferences:         the list of references in <dsig:Manifest/> nodes.
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
  *
- * XML DSig processing context. 
+ * XML DSig processing context.
  */
 struct _xmlSecDSigCtx {
     /* these data user can set before performing the operation */
@@ -142,7 +142,7 @@ struct _xmlSecDSigCtx {
     xmlSecTransformId           defSignMethodId;
     xmlSecTransformId           defC14NMethodId;
     xmlSecTransformId           defDigestMethodId;
-        
+
     /* these data are returned */
     xmlSecKeyPtr                signKey;
     xmlSecTransformOperation    operation;
@@ -152,14 +152,14 @@ struct _xmlSecDSigCtx {
     xmlSecTransformPtr          c14nMethod;
     xmlSecTransformPtr          preSignMemBufMethod;
     xmlNodePtr                  signValueNode;
-    xmlChar*                    id;    
+    xmlChar*                    id;
     xmlSecPtrList               signedInfoReferences;
     xmlSecPtrList               manifestReferences;
 
     /* reserved for future */
     void*                       reserved0;
-    void*                       reserved1;    
-};                                              
+    void*                       reserved1;
+};
 
 /* constructor/destructor */
 XMLSEC_EXPORT xmlSecDSigCtxPtr  xmlSecDSigCtxCreate             (xmlSecKeysMngrPtr keysMngr);
@@ -191,8 +191,8 @@ XMLSEC_EXPORT void              xmlSecDSigCtxDebugXmlDump       (xmlSecDSigCtxPt
  * xmlSecDSigReferenceOrigin:
  * @xmlSecDSigReferenceOriginSignedInfo:reference in <dsig:SignedInfo> node.
  * @xmlSecDSigReferenceOriginManifest:  reference <dsig:Manifest> node.
- * 
- * The possible <dsig:Reference/> node locations: in the <dsig:SignedInfo/> 
+ *
+ * The possible <dsig:Reference/> node locations: in the <dsig:SignedInfo/>
  * node or in the <dsig:Manifest/> node.
  */
 typedef enum  {
@@ -214,9 +214,9 @@ typedef enum  {
  *                              (valid only if either
  *                              #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
  *                              #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flags are set).
- * @id:                         the <dsig:Reference/> node ID attribute. 
- * @uri:                        the <dsig:Reference/> node URI attribute. 
- * @type:                       the <dsig:Reference/> node Type attribute. 
+ * @id:                         the <dsig:Reference/> node ID attribute.
+ * @uri:                        the <dsig:Reference/> node URI attribute.
+ * @type:                       the <dsig:Reference/> node Type attribute.
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
  *
@@ -235,10 +235,10 @@ struct _xmlSecDSigReferenceCtx {
     xmlChar*                    id;
     xmlChar*                    uri;
     xmlChar*                    type;
-    
+
      /* reserved for future */
     void*                       reserved0;
-    void*                       reserved1;    
+    void*                       reserved1;
 };
 
 XMLSEC_EXPORT xmlSecDSigReferenceCtxPtr xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx,
@@ -246,9 +246,9 @@ XMLSEC_EXPORT xmlSecDSigReferenceCtxPtr xmlSecDSigReferenceCtxCreate(xmlSecDSigC
 XMLSEC_EXPORT void              xmlSecDSigReferenceCtxDestroy   (xmlSecDSigReferenceCtxPtr dsigRefCtx);
 XMLSEC_EXPORT int               xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx,
                                                                 xmlSecDSigCtxPtr dsigCtx,
-                                                                xmlSecDSigReferenceOrigin origin); 
+                                                                xmlSecDSigReferenceOrigin origin);
 XMLSEC_EXPORT void              xmlSecDSigReferenceCtxFinalize  (xmlSecDSigReferenceCtxPtr dsigRefCtx);
-XMLSEC_EXPORT int               xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, 
+XMLSEC_EXPORT int               xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx,
                                                                   xmlNodePtr node);
 XMLSEC_EXPORT xmlSecBufferPtr   xmlSecDSigReferenceCtxGetPreDigestBuffer
                                                                 (xmlSecDSigReferenceCtxPtr dsigRefCtx);

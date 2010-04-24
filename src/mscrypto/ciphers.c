@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
  */
@@ -29,13 +29,13 @@
 #define MS_ENH_RSA_AES_PROV_PROTO "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
 #endif /* MS_ENH_RSA_AES_PROV_PROTO */
 
-static BOOL xmlSecMSCryptoCreatePrivateExponentOneKey   (HCRYPTPROV hProv, 
+static BOOL xmlSecMSCryptoCreatePrivateExponentOneKey   (HCRYPTPROV hProv,
                                                          HCRYPTKEY *hPrivateKey);
-static BOOL xmlSecMSCryptoImportPlainSessionBlob        (HCRYPTPROV hProv, 
+static BOOL xmlSecMSCryptoImportPlainSessionBlob        (HCRYPTPROV hProv,
                                                          HCRYPTKEY hPrivateKey,
-                                                         ALG_ID dwAlgId, 
+                                                         ALG_ID dwAlgId,
                                                          LPBYTE pbKeyMaterial,
-                                                         DWORD dwKeyMaterial, 
+                                                         DWORD dwKeyMaterial,
                                                          HCRYPTKEY *hSessionKey);
 
 /**************************************************************************
@@ -67,7 +67,7 @@ static int      xmlSecMSCryptoBlockCipherCtxUpdate      (xmlSecMSCryptoBlockCiph
                                                          xmlSecTransformCtxPtr transformCtx);
 
 
-static int 
+static int
 xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                  xmlSecBufferPtr in,
                                  xmlSecBufferPtr out,
@@ -88,25 +88,25 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* iv len == block len */
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "CryptGetKeyParam",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     blockLen = dwBlockLen / 8;
     xmlSecAssert2(blockLen > 0, -1);
     if(encrypt) {
         unsigned char* iv;
         size_t outSize;
 
-        /* allocate space for IV */     
+        /* allocate space for IV */
         outSize = xmlSecBufferGetSize(out);
         ret = xmlSecBufferSetSize(out, outSize + blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "xmlSecBufferSetSize",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -117,16 +117,16 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
         /* generate and use random iv */
         if(!CryptGenRandom(ctx->cryptProvider, blockLen, iv)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptGenRandom",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "len=%d", blockLen);
             return(-1);
         }
-            
+
         if(!CryptSetKeyParam(ctx->cryptKey, KP_IV, iv, 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptSetKeyParam",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -134,7 +134,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
             return(-1);
         }
     } else {
-        /* if we don't have enough data, exit and hope that 
+        /* if we don't have enough data, exit and hope that
         * we'll have iv next time */
         if(xmlSecBufferGetSize(in) < (size_t)blockLen) {
             return(0);
@@ -143,7 +143,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
         /* set iv */
         if (!CryptSetKeyParam(ctx->cryptKey, KP_IV, xmlSecBufferGetData(in), 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptSetKeyParam",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -154,7 +154,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "xmlSecBufferRemoveHead",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -165,10 +165,10 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
 
     ctx->ctxInitialized = 1;
-    return(0);                                                           
+    return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                    xmlSecBufferPtr in, xmlSecBufferPtr out,
                                    int encrypt,
@@ -186,10 +186,10 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-        
+
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "CryptSetKeyParam",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -201,7 +201,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
-    
+
     if(inSize < (size_t)blockLen) {
         return(0);
     }
@@ -209,7 +209,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     if(encrypt) {
         inBlocks = inSize / ((size_t)blockLen);
     } else {
-        /* we want to have the last block in the input buffer 
+        /* we want to have the last block in the input buffer
          * for padding check */
         inBlocks = (inSize - 1) / ((size_t)blockLen);
     }
@@ -218,7 +218,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -233,7 +233,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     dwCLen = inSize;
     if(encrypt) {
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptEncrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -242,7 +242,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
     } else {
         if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptSetKeyDecrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -252,7 +252,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     }
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "CryptEn/Decrypt",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -263,7 +263,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -274,7 +274,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -284,7 +284,7 @@ xmlSecMSCryptoBlockCipherCtxUpdate(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                                   xmlSecBufferPtr in,
                                   xmlSecBufferPtr out,
@@ -297,7 +297,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     unsigned char* outBuf;
     int ret;
     DWORD dwBlockLen, dwBlockLenLen, dwCLen;
-    
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->ctxInitialized != 0, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -306,7 +306,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     dwBlockLenLen = sizeof(DWORD);
     if (!CryptGetKeyParam(ctx->cryptKey, KP_BLOCKLEN, (BYTE *)&dwBlockLen, &dwBlockLenLen, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "CryptGetKeyParam",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -320,12 +320,12 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (size_t)blockLen, -1);        
+        xmlSecAssert2(inSize < (size_t)blockLen, -1);
 
         /* create padding */
         ret = xmlSecBufferSetMaxSize(in, blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "xmlSecBufferSetMaxSize",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -337,7 +337,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         /* create random padding */
         if((size_t)blockLen > (inSize + 1)) {
             if (!CryptGenRandom(ctx->cryptProvider, blockLen - inSize - 1, inBuf + inSize)) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(cipherName),
                             "CryptGenRandom",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -349,7 +349,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         inSize = blockLen;
     } else {
         if(inSize != (size_t)blockLen) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_DATA,
@@ -358,11 +358,11 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
         inBuf = xmlSecBufferGetData(in);
     }
-    
+
     /* process last block */
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -374,10 +374,10 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     dwCLen = inSize;
     if(encrypt) {
-        /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding 
+        /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
          * can be skipped. I hope this will work .... */
         if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen, inSize + blockLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptEncrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -386,7 +386,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
         }
     } else {
         if (!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, outBuf, &dwCLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "CryptDecrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -397,7 +397,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
     /* Check if we really have de/encrypted the numbers of bytes that we requested */
     if (dwCLen != inSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "CryptEn/Decrypt",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -414,7 +414,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
                         XMLSEC_ERRORS_R_INVALID_DATA,
                         "padding=%d;buffer=%d",
                         outBuf[blockLen - 1], inSize);
-            return(-1); 
+            return(-1);
         }
         outLen = inSize - outBuf[blockLen - 1];
     } else {
@@ -424,7 +424,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -435,14 +435,14 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", inSize);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -451,7 +451,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
  *  Block Cipher transforms
  *
  * xmlSecMSCryptoBlockCipherCtx block is located after xmlSecTransform structure
- * 
+ *
  *****************************************************************************/
 #define xmlSecMSCryptoBlockCipherSize   \
     (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoBlockCipherCtx))
@@ -460,7 +460,7 @@ xmlSecMSCryptoBlockCipherCtxFinal(xmlSecMSCryptoBlockCipherCtxPtr ctx,
 
 static int      xmlSecMSCryptoBlockCipherInitialize     (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoBlockCipherFinalize       (xmlSecTransformPtr transform);
-static int      xmlSecMSCryptoBlockCipherSetKeyReq      (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoBlockCipherSetKeyReq      (xmlSecTransformPtr transform,
                                                          xmlSecKeyReqPtr keyReq);
 static int      xmlSecMSCryptoBlockCipherSetKey         (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
@@ -468,7 +468,7 @@ static int      xmlSecMSCryptoBlockCipherExecute        (xmlSecTransformPtr tran
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecMSCryptoBlockCipherCheckId        (xmlSecTransformPtr transform);
-                                                         
+
 static int
 xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_DES
@@ -489,7 +489,7 @@ xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
 
@@ -498,7 +498,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecMSCryptoBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
 
 #ifndef XMLSEC_NO_DES
@@ -508,7 +508,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->providerName           = MS_ENHANCED_PROV;
         ctx->providerType           = PROV_RSA_FULL;
         ctx->keySize                = 24;
-    } else 
+    } else
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
@@ -530,25 +530,25 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->providerName           = MS_ENH_RSA_AES_PROV_PROTO;
         ctx->providerType           = PROV_RSA_AES;
         ctx->keySize                = 32;
-    } else 
+    } else
 #endif /* XMLSEC_NO_AES */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
             NULL,
             XMLSEC_ERRORS_R_INVALID_TRANSFORM,
             XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
-    }        
-        
-    if(!CryptAcquireContext(&ctx->cryptProvider, NULL /*"xmlSecMSCryptoTempContainer"*/, 
+    }
+
+    if(!CryptAcquireContext(&ctx->cryptProvider, NULL /*"xmlSecMSCryptoTempContainer"*/,
                              ctx->providerName, ctx->providerType, 0)) {
         DWORD dwError = GetLastError();
         if (dwError == NTE_EXISTS) {
-            if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer", 
+            if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer",
                                      ctx->providerName, ctx->providerType, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "CryptAcquireContext",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -557,15 +557,15 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
                 return(-1);
             }
         } else if (dwError == NTE_BAD_KEYSET) {
-          /* This error can indicate that a newly installed provider 
+          /* This error can indicate that a newly installed provider
            * does not have a usable key container yet. It needs to be
            * created, and then we have to try again CryptAcquireContext.
-           * This is also referenced in 
+           * This is also referenced in
            * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
            */
             if(!CryptAcquireContext(&ctx->cryptProvider, NULL, ctx->providerName,
                                     ctx->providerType, CRYPT_NEWKEYSET)) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "CryptAcquireContext",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -573,7 +573,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
                 return(-1);
             }
         } else {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "CryptAcquireContext",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -584,7 +584,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
 
     /* Create dummy key to be able to import plain session keys */
     if (!xmlSecMSCryptoCreatePrivateExponentOneKey(ctx->cryptProvider, &(ctx->pubPrivKey))) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecMSCryptoCreatePrivateExponentOneKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -597,7 +597,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
-static void 
+static void
 xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
 
@@ -615,14 +615,14 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     }
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
-        CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer", 
+        CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer",
                             MS_ENHANCED_PROV, ctx->providerType, CRYPT_DELETEKEYSET);
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
 }
 
-static int  
+static int
 xmlSecMSCryptoBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
 
@@ -685,12 +685,12 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     /* Import this key and get an HCRYPTKEY handle */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
-        ctx->algorithmIdentifier, 
-        bufData, 
-        ctx->keySize, 
+        ctx->algorithmIdentifier,
+        bufData,
+        ctx->keySize,
         &(ctx->cryptKey)))  {
 
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecMSCryptoImportPlainSessionBlob",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -702,17 +702,17 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
-    
+
     xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
-        
+
     in = &(transform->inBuf);
     out = &(transform->outBuf);
 
@@ -725,15 +725,15 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
 
     if(transform->status == xmlSecTransformStatusWorking) {
         if(ctx->ctxInitialized == 0) {
-            ret = xmlSecMSCryptoBlockCipherCtxInit(ctx, 
-                                                   in, 
+            ret = xmlSecMSCryptoBlockCipherCtxInit(ctx,
+                                                   in,
                                                    out,
                                                    (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                                                    xmlSecTransformGetName(transform),
                                                    transformCtx);
-                                
+
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecMSCryptoBlockCipherCtxInit",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -742,7 +742,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
             }
         }
         if((ctx->ctxInitialized == 0) && (last != 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_DATA,
@@ -750,11 +750,11 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
             return(-1);
         }
         if(ctx->ctxInitialized != 0) {
-            ret = xmlSecMSCryptoBlockCipherCtxUpdate(ctx, in, out, 
+            ret = xmlSecMSCryptoBlockCipherCtxUpdate(ctx, in, out,
                 (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                 xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecMSCryptoBlockCipherCtxUpdate",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -762,14 +762,14 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
         }
-        
+
         if(last) {
-            ret = xmlSecMSCryptoBlockCipherCtxFinal(ctx, in, out, 
+            ret = xmlSecMSCryptoBlockCipherCtxFinal(ctx, in, out,
                 (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                 xmlSecTransformGetName(transform), transformCtx);
 
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecMSCryptoBlockCipherCtxFinal",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -777,7 +777,7 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;
-        } 
+        }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
@@ -785,14 +785,14 @@ xmlSecMSCryptoBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecT
         /* the only way we can get here is if there is no enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
                     "status=%d", transform->status);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -831,12 +831,12 @@ static xmlSecTransformKlass xmlSecMSCryptoAes128CbcKlass = {
 
 /**
  * xmlSecMSCryptoTransformAes128CbcGetKlass:
- * 
+ *
  * AES 128 CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to AES 128 CBC encryption transform.
- */ 
-xmlSecTransformId 
+ */
+xmlSecTransformId
 xmlSecMSCryptoTransformAes128CbcGetKlass(void) {
     return(&xmlSecMSCryptoAes128CbcKlass);
 }
@@ -863,19 +863,19 @@ static xmlSecTransformKlass xmlSecMSCryptoAes192CbcKlass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoBlockCipherExecute,           /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecMSCryptoTransformAes192CbcGetKlass:
- * 
+ *
  * AES 192 CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to AES 192 CBC encryption transform.
- */ 
-xmlSecTransformId 
+ */
+xmlSecTransformId
 xmlSecMSCryptoTransformAes192CbcGetKlass(void) {
     return(&xmlSecMSCryptoAes192CbcKlass);
 }
@@ -902,19 +902,19 @@ static xmlSecTransformKlass xmlSecMSCryptoAes256CbcKlass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoBlockCipherExecute,           /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecMSCryptoTransformAes256CbcGetKlass:
- * 
+ *
  * AES 256 CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to AES 256 CBC encryption transform.
- */ 
-xmlSecTransformId 
+ */
+xmlSecTransformId
 xmlSecMSCryptoTransformAes256CbcGetKlass(void) {
     return(&xmlSecMSCryptoAes256CbcKlass);
 }
@@ -945,33 +945,33 @@ static xmlSecTransformKlass xmlSecMSCryptoDes3CbcKlass = {
     NULL,                                /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoBlockCipherExecute,    /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                /* void* reserved0; */
     NULL,                                /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoTransformDes3CbcGetKlass:
  *
  * Triple DES CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to Triple DES encryption transform.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformDes3CbcGetKlass(void) {
     return(&xmlSecMSCryptoDes3CbcKlass);
 }
 #endif /* XMLSEC_NO_DES */
 
 /*
- * Low level helper routines for importing plain text keys in MS HKEY handle, 
+ * Low level helper routines for importing plain text keys in MS HKEY handle,
  * since MSCrypto API does not support import of plain text (session) keys
  * just like that.
  * These functions are based upon MS kb article: 228786
- * 
+ *
  * aleksey: also check "Base Provider Key BLOBs" article for priv key blob format
  **/
-static BOOL 
+static BOOL
 xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateKey)
 {
     HCRYPTKEY hKey = 0;
@@ -992,7 +992,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     /* Generate the private key */
     if(!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &hKey)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGenKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1002,7 +1002,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     /* Export the private key, we'll convert it to a private exponent of one key */
     if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, NULL, &keyBlobLen)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1012,16 +1012,16 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
- 
+
     if(!CryptExportKey(hKey, 0, PRIVATEKEYBLOB, 0, keyBlob, &keyBlobLen)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1033,7 +1033,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
 
     /* Get the bit length of the key */
     if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1042,7 +1042,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     }
     pubKeyStruc = (PUBLICKEYSTRUC*)keyBlob;
     if(pubKeyStruc->bVersion != 0x02) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1050,7 +1050,7 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
         goto done;
     }
     if(pubKeyStruc->bType != PRIVATEKEYBLOB) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1059,11 +1059,11 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     }
 
     /* aleksey: don't ask me why it is RSAPUBKEY, just don't ask */
-    rsaPubKey = (RSAPUBKEY*)(keyBlob + sizeof(PUBLICKEYSTRUC)); 
+    rsaPubKey = (RSAPUBKEY*)(keyBlob + sizeof(PUBLICKEYSTRUC));
 
     /* check that we have RSA private key */
-    if(rsaPubKey->magic != 0x32415352) { 
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+    if(rsaPubKey->magic != 0x32415352) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1075,28 +1075,28 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     /*  Modify the Exponent in Key BLOB format Key BLOB format is documented in SDK */
     rsaPubKey->pubexp = 1;
 
-    /* Private-key BLOBs, type PRIVATEKEYBLOB, are used to store private keys outside a CSP. 
+    /* Private-key BLOBs, type PRIVATEKEYBLOB, are used to store private keys outside a CSP.
      * Base provider private-key BLOBs have the following format:
-     * 
+     *
      * PUBLICKEYSTRUC  publickeystruc ;
      * RSAPUBKEY rsapubkey;
      * BYTE modulus[rsapubkey.bitlen/8];                1/8
-     * BYTE prime1[rsapubkey.bitlen/16];                1/16 
-     * BYTE prime2[rsapubkey.bitlen/16];                1/16 
-     * BYTE exponent1[rsapubkey.bitlen/16];             1/16 
-     * BYTE exponent2[rsapubkey.bitlen/16];             1/16 
+     * BYTE prime1[rsapubkey.bitlen/16];                1/16
+     * BYTE prime2[rsapubkey.bitlen/16];                1/16
+     * BYTE exponent1[rsapubkey.bitlen/16];             1/16
+     * BYTE exponent2[rsapubkey.bitlen/16];             1/16
      * BYTE coefficient[rsapubkey.bitlen/16];           1/16
      * BYTE privateExponent[rsapubkey.bitlen/8];        1/8
      */
     if(keyBlobLen < sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY) + bitLen / 2 + bitLen / 16) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptExportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "len=%ld", keyBlobLen);
         goto done;
     }
-    ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY)); 
+    ptr = (BYTE*)(keyBlob + sizeof(PUBLICKEYSTRUC) + sizeof(RSAPUBKEY));
 
     /* Skip modulus, prime1, prime2 */
     ptr += bitLen / 8;
@@ -1127,8 +1127,8 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     }
 
     /* Import the exponent-of-one private key. */
-    if (!CryptImportKey(hProv, keyBlob, keyBlobLen, 0, 0, &hKey)) {                 
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+    if (!CryptImportKey(hProv, keyBlob, keyBlobLen, 0, 0, &hKey)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptImportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1138,9 +1138,9 @@ xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateK
     (*hPrivateKey) = hKey;
     hKey = 0;
     res = TRUE;
-   
+
 done:
-    if(keyBlob != NULL) { 
+    if(keyBlob != NULL) {
         xmlFree(keyBlob);
     }
     if (hKey != 0) {
@@ -1150,7 +1150,7 @@ done:
     return res;
 }
 
-static BOOL 
+static BOOL
 xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
                                      ALG_ID dwAlgId, LPBYTE pbKeyMaterial,
                                      DWORD dwKeyMaterial, HCRYPTKEY *hSessionKey) {
@@ -1161,13 +1161,13 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     ALG_ID* algId;
     DWORD dwPublicKeySize;
     DWORD dwProvSessionKeySize;
-    LPBYTE pbPtr; 
+    LPBYTE pbPtr;
     DWORD dwFlags;
     PROV_ENUMALGS_EX ProvEnum;
     HCRYPTKEY hTempKey = 0;
     BOOL fFound;
     BOOL res = FALSE;
-    
+
     xmlSecAssert2(hProv != 0, FALSE);
     xmlSecAssert2(hPrivateKey != 0, FALSE);
     xmlSecAssert2(pbKeyMaterial != NULL, FALSE);
@@ -1187,7 +1187,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         dwFlags = 0;
     }
     if(!fFound) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGetProvParam",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1195,11 +1195,11 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         goto done;
     }
 
-    /* We have to get the key size(including padding) from an HCRYPTKEY handle.  
+    /* We have to get the key size(including padding) from an HCRYPTKEY handle.
      * PP_ENUMALGS_EX contains the key size without the padding so we can't use it.
      */
     if(!CryptGenKey(hProv, dwAlgId, 0, &hTempKey)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGenKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1209,7 +1209,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
     dwSize = sizeof(DWORD);
     if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGetKeyParam(KP_KEYLEN)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1221,11 +1221,11 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
     /* Our key is too big, leave */
     if ((dwKeyMaterial * 8) > dwProvSessionKeySize) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "dwKeyMaterial=%ld;dwProvSessionKeySize=%ld", 
+                    "dwKeyMaterial=%ld;dwProvSessionKeySize=%ld",
                     dwKeyMaterial, dwProvSessionKeySize);
         goto done;
     }
@@ -1233,7 +1233,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* Get private key's algorithm */
     dwSize = sizeof(ALG_ID);
     if(!CryptGetKeyParam(hPrivateKey, KP_ALGID, (LPBYTE)&dwPrivKeyAlg, &dwSize, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGetKeyParam(KP_ALGID)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1244,30 +1244,30 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* Get private key's length in bits */
     dwSize = sizeof(DWORD);
     if(!CryptGetKeyParam(hPrivateKey, KP_KEYLEN, (LPBYTE)&dwPublicKeySize, &dwSize, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGetKeyParam(KP_KEYLEN)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "algId=%d", dwAlgId);
         goto done;
     }
-    
+
     /* 3 is for the first reserved byte after the key material and the 2 reserved bytes at the end. */
     if(dwPublicKeySize / 8 < dwKeyMaterial + 3) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "dwKeyMaterial=%ld;dwPublicKeySize=%ld", 
+                    "dwKeyMaterial=%ld;dwPublicKeySize=%ld",
                     dwKeyMaterial, dwPublicKeySize);
         goto done;
     }
     rndBlobSize = dwPublicKeySize / 8 - (dwKeyMaterial + 3);
 
-    /* Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP. 
-     * Base provider simple-key BLOBs are always encrypted with a key exchange public key. The pbData 
+    /* Simple key BLOBs, type SIMPLEBLOB, are used to store and transport session keys outside a CSP.
+     * Base provider simple-key BLOBs are always encrypted with a key exchange public key. The pbData
      * member of the SIMPLEBLOB is a sequence of bytes in the following format:
-     * 
+     *
      * PUBLICKEYSTRUC  publickeystruc ;
      * ALG_ID algid;
      * BYTE encryptedkey[rsapubkey.bitlen/8];
@@ -1279,7 +1279,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     /* allocate simple blob buffer */
     keyBlob = (LPBYTE)xmlMalloc(sizeof(BYTE) * keyBlobLen);
     if(keyBlob == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
@@ -1293,7 +1293,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     pubKeyStruc->bType      = SIMPLEBLOB;
     pubKeyStruc->bVersion   = 0x02;
     pubKeyStruc->reserved   = 0;
-    pubKeyStruc->aiKeyAlg   = dwAlgId;  
+    pubKeyStruc->aiKeyAlg   = dwAlgId;
 
     /* Copy private key algorithm to buffer */
     algId                   = (ALG_ID*)(keyBlob + sizeof(PUBLICKEYSTRUC));
@@ -1311,7 +1311,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
 
     /* Generate random data for the rest of the buffer */
     if((rndBlobSize > 0) && !CryptGenRandom(hProv, rndBlobSize, pbPtr)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptGenRandom",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1327,7 +1327,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     keyBlob[keyBlobLen - 2] = 2;
 
     if(!CryptImportKey(hProv, keyBlob , keyBlobLen, hPrivateKey, CRYPT_EXPORTABLE, hSessionKey)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptImportKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -1336,7 +1336,7 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
     }
 
     /* success */
-    res = TRUE;           
+    res = TRUE;
 
 done:
     if(hTempKey != 0) {

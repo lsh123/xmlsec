@@ -1,30 +1,30 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Memory buffer.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_BUFFER_H__
-#define __XMLSEC_BUFFER_H__    
+#define __XMLSEC_BUFFER_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 #include <xmlsec/xmlsec.h>
 
-typedef struct _xmlSecBuffer                                    xmlSecBuffer, 
+typedef struct _xmlSecBuffer                                    xmlSecBuffer,
                                                                 *xmlSecBufferPtr;
 
 
-/** 
+/**
  * xmlSecAllocMode:
- * @xmlSecAllocModeExact:       the memory allocation mode that minimizes total 
+ * @xmlSecAllocModeExact:       the memory allocation mode that minimizes total
  *                              allocated memory size.
  * @xmlSecAllocModeDouble:      the memory allocation mode that tries to minimize
  *                              the number of malloc calls.
@@ -42,7 +42,7 @@ typedef enum {
  *
  ****************************************************************************/
 
-/** 
+/**
  * xmlSecBuffer:
  * @data: the pointer to buffer data.
  * @size: the current data size.

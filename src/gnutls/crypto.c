@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -35,7 +35,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_gnutls(void) {
     static xmlSecCryptoDLFunctions functions;
-    
+
     if(gXmlSecGnuTLSFunctions != NULL) {
         return(gXmlSecGnuTLSFunctions);
     }
@@ -43,7 +43,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecGnuTLSFunctions = &functions;
 
-    /**  
+    /**
      * Crypto Init/shutdown
      */
     gXmlSecGnuTLSFunctions->cryptoInit                  = xmlSecGnuTLSInit;
@@ -53,17 +53,17 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     /**
      * Key data ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecGnuTLSFunctions->keyDataAesGetKlass          = xmlSecGnuTLSKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecGnuTLSFunctions->keyDataDesGetKlass          = xmlSecGnuTLSKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
-#ifndef XMLSEC_NO_HMAC  
+#ifndef XMLSEC_NO_HMAC
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
-#endif /* XMLSEC_NO_HMAC */    
+#endif /* XMLSEC_NO_HMAC */
 
     /**
      * Key data store ids
@@ -72,13 +72,13 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     /**
      * Crypto transforms ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecGnuTLSFunctions->transformAes128CbcGetKlass          = xmlSecGnuTLSTransformAes128CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass          = xmlSecGnuTLSTransformAes192CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes256CbcGetKlass          = xmlSecGnuTLSTransformAes256CbcGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecGnuTLSFunctions->transformDes3CbcGetKlass            = xmlSecGnuTLSTransformDes3CbcGetKlass;
 #endif /* XMLSEC_NO_DES */
 
@@ -88,13 +88,13 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass            = xmlSecGnuTLSTransformHmacMd5GetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecGnuTLSFunctions->transformSha1GetKlass               = xmlSecGnuTLSTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
     /**
      * High level routines form xmlsec command line utility
-     */ 
+     */
     gXmlSecGnuTLSFunctions->cryptoAppInit                       = xmlSecGnuTLSAppInit;
     gXmlSecGnuTLSFunctions->cryptoAppShutdown                   = xmlSecGnuTLSAppShutdown;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGnuTLSAppDefaultKeysMngrInit;
@@ -103,10 +103,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGnuTLSAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
     gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGnuTLSAppKeysMngrCertLoad;
-    gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load                 = xmlSecGnuTLSAppPkcs12Load; 
+    gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load                 = xmlSecGnuTLSAppPkcs12Load;
     gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad                = xmlSecGnuTLSAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecGnuTLSFunctions->cryptoAppKeyLoad                    = xmlSecGnuTLSAppKeyLoad; 
+    gXmlSecGnuTLSFunctions->cryptoAppKeyLoad                    = xmlSecGnuTLSAppKeyLoad;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGnuTLSAppGetDefaultPwdCallback();
 
     return(gXmlSecGnuTLSFunctions);
@@ -115,12 +115,12 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
 /**
  * xmlSecGnuTLSInit:
- * 
- * XMLSec library specific crypto engine initialization. 
+ *
+ * XMLSec library specific crypto engine initialization.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecGnuTLSInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
@@ -141,18 +141,18 @@ xmlSecGnuTLSInit (void)  {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     return(0);
 }
 
 /**
  * xmlSecGnuTLSShutdown:
- * 
- * XMLSec library specific crypto engine shutdown. 
+ *
+ * XMLSec library specific crypto engine shutdown.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecGnuTLSShutdown(void) {
     return(0);
 }
@@ -183,22 +183,22 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {   
+xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     int ret;
-    
+
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", size);
         return(-1);
     }
-        
+
     /* get random data */
     gcry_randomize(xmlSecBufferGetData(buffer), size, GCRY_STRONG_RANDOM);
     return(0);

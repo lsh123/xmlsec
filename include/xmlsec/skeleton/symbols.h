@@ -1,13 +1,13 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_SKELETON_SYMBOLS_H__
-#define __XMLSEC_SKELETON_SYMBOLS_H__    
+#define __XMLSEC_SKELETON_SYMBOLS_H__
 
 #if !defined(IN_XMLSEC) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
 #error To disable dynamic loading of xmlsec-crypto libraries undefine XMLSEC_CRYPTO_DYNAMIC_LOADING
@@ -15,14 +15,14 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 /**
  * Defines for writing simple code
  */
 #ifdef XMLSEC_CRYPTO_SKELETON
 
-/**  
+/**
  * Crypto Init/shutdown
  */
 #define xmlSecCryptoInit                        xmlSecSkeletonInit
@@ -82,7 +82,7 @@ extern "C" {
 
 /**
  * High level routines form xmlsec command line utility
- */ 
+ */
 #define xmlSecCryptoAppInit                     xmlSecSkeletonAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecSkeletonAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecSkeletonAppDefaultKeysMngrInit
@@ -107,4 +107,4 @@ extern "C" {
 
 #endif /* __XMLSEC_SKELETON_CRYPTO_H__ */
 
-#define __XMLSEC_SKELETON_CRYPTO_H__    
+#define __XMLSEC_SKELETON_CRYPTO_H__

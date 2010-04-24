@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -34,7 +34,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecSkeletonFunctions = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_skeleton(void) {
     static xmlSecCryptoDLFunctions functions;
-    
+
     if(gXmlSecSkeletonFunctions != NULL) {
         return(gXmlSecSkeletonFunctions);
     }
@@ -42,7 +42,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecSkeletonFunctions = &functions;
 
-    /**  
+    /**
      * Crypto Init/shutdown
      */
     gXmlSecSkeletonFunctions->cryptoInit                = xmlSecSkeletonInit;
@@ -52,25 +52,25 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     /**
      * Key data ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecSkeletonFunctions->keyDataAesGetKlass        = xmlSecSkeletonKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecSkeletonFunctions->keyDataDesGetKlass        = xmlSecSkeletonKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_DSA
     gXmlSecSkeletonFunctions->keyDataDsaGetKlass        = xmlSecSkeletonKeyDataDsaGetKlass;
-#endif /* XMLSEC_NO_DSA */    
+#endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecSkeletonFunctions->keyDataGost2001GetKlass   = xmlSecSkeletonKeyDataGost2001GetKlass;
-#endif /* XMLSEC_NO_GOST */    
+#endif /* XMLSEC_NO_GOST */
 
-#ifndef XMLSEC_NO_HMAC  
+#ifndef XMLSEC_NO_HMAC
     gXmlSecSkeletonFunctions->keyDataHmacGetKlass       = xmlSecSkeletonKeyDataHmacGetKlass;
-#endif /* XMLSEC_NO_HMAC */    
+#endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecSkeletonFunctions->keyDataRsaGetKlass        = xmlSecSkeletonKeyDataRsaGetKlass;
@@ -91,7 +91,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     /**
      * Crypto transforms ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecSkeletonFunctions->transformAes128CbcGetKlass        = xmlSecSkeletonTransformAes128CbcGetKlass;
     gXmlSecSkeletonFunctions->transformAes192CbcGetKlass        = xmlSecSkeletonTransformAes192CbcGetKlass;
     gXmlSecSkeletonFunctions->transformAes256CbcGetKlass        = xmlSecSkeletonTransformAes256CbcGetKlass;
@@ -100,7 +100,7 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->transformKWAes256GetKlass         = xmlSecSkeletonTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecSkeletonFunctions->transformDes3CbcGetKlass          = xmlSecSkeletonTransformDes3CbcGetKlass;
     gXmlSecSkeletonFunctions->transformKWDes3GetKlass           = xmlSecSkeletonTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -129,17 +129,17 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->transformRsaOaepGetKlass          = xmlSecSkeletonTransformRsaOaepGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecSkeletonFunctions->transformSha1GetKlass             = xmlSecSkeletonTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifndef XMLSEC_NO_GOST    
+#ifndef XMLSEC_NO_GOST
     gXmlSecSkeletonFunctions->transformGostR3411_94GetKlass             = xmlSecSkeletonTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
     /**
      * High level routines form xmlsec command line utility
-     */ 
+     */
     gXmlSecSkeletonFunctions->cryptoAppInit                     = xmlSecSkeletonAppInit;
     gXmlSecSkeletonFunctions->cryptoAppShutdown                 = xmlSecSkeletonAppShutdown;
     gXmlSecSkeletonFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecSkeletonAppDefaultKeysMngrInit;
@@ -149,13 +149,13 @@ xmlSecCryptoGetFunctions_skeleton(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecSkeletonFunctions->cryptoAppKeysMngrCertLoad         = xmlSecSkeletonAppKeysMngrCertLoad;
     gXmlSecSkeletonFunctions->cryptoAppKeysMngrCertLoadMemory   = xmlSecSkeletonAppKeysMngrCertLoadMemory;
-    gXmlSecSkeletonFunctions->cryptoAppPkcs12Load               = xmlSecSkeletonAppPkcs12Load; 
-    gXmlSecSkeletonFunctions->cryptoAppPkcs12LoadMemory         = xmlSecSkeletonAppPkcs12LoadMemory; 
+    gXmlSecSkeletonFunctions->cryptoAppPkcs12Load               = xmlSecSkeletonAppPkcs12Load;
+    gXmlSecSkeletonFunctions->cryptoAppPkcs12LoadMemory         = xmlSecSkeletonAppPkcs12LoadMemory;
     gXmlSecSkeletonFunctions->cryptoAppKeyCertLoad              = xmlSecSkeletonAppKeyCertLoad;
     gXmlSecSkeletonFunctions->cryptoAppKeyCertLoadMemory        = xmlSecSkeletonAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecSkeletonFunctions->cryptoAppKeyLoad                  = xmlSecSkeletonAppKeyLoad; 
-    gXmlSecSkeletonFunctions->cryptoAppKeyLoadMemory            = xmlSecSkeletonAppKeyLoadMemory; 
+    gXmlSecSkeletonFunctions->cryptoAppKeyLoad                  = xmlSecSkeletonAppKeyLoad;
+    gXmlSecSkeletonFunctions->cryptoAppKeyLoadMemory            = xmlSecSkeletonAppKeyLoadMemory;
     gXmlSecSkeletonFunctions->cryptoAppDefaultPwdCallback       = (void*)xmlSecSkeletonAppGetDefaultPwdCallback();
 
     return(gXmlSecSkeletonFunctions);
@@ -164,12 +164,12 @@ xmlSecCryptoGetFunctions_skeleton(void) {
 
 /**
  * xmlSecSkeletonInit:
- * 
- * XMLSec library specific crypto engine initialization. 
+ *
+ * XMLSec library specific crypto engine initialization.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecSkeletonInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
@@ -197,12 +197,12 @@ xmlSecSkeletonInit (void)  {
 
 /**
  * xmlSecSkeletonShutdown:
- * 
- * XMLSec library specific crypto engine shutdown. 
+ *
+ * XMLSec library specific crypto engine shutdown.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecSkeletonShutdown(void) {
     /* TODO: if necessary, do additional shutdown here */
     return(0);

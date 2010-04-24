@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
@@ -63,7 +63,7 @@ static int      xmlSecNssBlockCipherCtxFinal            (xmlSecNssBlockCipherCtx
                                                          int encrypt,
                                                          const xmlChar* cipherName,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int 
+static int
 xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
                                 xmlSecBufferPtr in, xmlSecBufferPtr out,
                                 int encrypt,
@@ -89,7 +89,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     ivLen = PK11_GetIVLength(ctx->cipher);
     xmlSecAssert2(ivLen > 0, -1);
     xmlSecAssert2((xmlSecSize)ivLen <= sizeof(ctx->iv), -1);
-    
+
     if(encrypt) {
         /* generate random iv */
         rv = PK11_GenerateRandom(ctx->iv, ivLen);
@@ -99,35 +99,35 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
                         "PK11_GenerateRandom",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "size=%d", ivLen);
-            return(-1);    
+            return(-1);
         }
-        
+
         /* write iv to the output */
         ret = xmlSecBufferAppend(out, ctx->iv, ivLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "xmlSecBufferAppend",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "size=%d", ivLen);
             return(-1);
         }
-        
+
     } else {
-        /* if we don't have enough data, exit and hope that 
+        /* if we don't have enough data, exit and hope that
          * we'll have iv next time */
         if(xmlSecBufferGetSize(in) < (xmlSecSize)ivLen) {
             return(0);
         }
-        
+
         /* copy iv to our buffer*/
         xmlSecAssert2(xmlSecBufferGetData(in) != NULL, -1);
         memcpy(ctx->iv, xmlSecBufferGetData(in), ivLen);
-        
+
         /* and remove from input */
         ret = xmlSecBufferRemoveHead(in, ivLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "xmlSecBufferRemoveHead",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -138,25 +138,25 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
 
     memset(&keyItem, 0, sizeof(keyItem));
     keyItem.data = ctx->key;
-    keyItem.len  = ctx->keySize; 
+    keyItem.len  = ctx->keySize;
     memset(&ivItem, 0, sizeof(ivItem));
     ivItem.data = ctx->iv;
-    ivItem.len  = ctx->ivSize; 
+    ivItem.len  = ctx->ivSize;
 
     slot = PK11_GetBestSlot(ctx->cipher, NULL);
     if(slot == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "PK11_GetBestSlot",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-        
-    symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive, 
+
+    symKey = PK11_ImportSymKey(slot, ctx->cipher, PK11_OriginDerive,
                                CKA_SIGN, &keyItem, NULL);
     if(symKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "PK11_ImportSymKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -165,11 +165,11 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
         return(-1);
     }
 
-    ctx->cipherCtx = PK11_CreateContextBySymKey(ctx->cipher, 
-                        (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT, 
+    ctx->cipherCtx = PK11_CreateContextBySymKey(ctx->cipher,
+                        (encrypt) ? CKA_ENCRYPT : CKA_DECRYPT,
                         symKey, &ivItem);
     if(ctx->cipherCtx == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "PK11_CreateContextBySymKey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -185,7 +185,7 @@ xmlSecNssBlockCipherCtxInit(xmlSecNssBlockCipherCtxPtr ctx,
     return(0);
 }
 
-static int 
+static int
 xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
                                   xmlSecBufferPtr in, xmlSecBufferPtr out,
                                   int encrypt,
@@ -197,7 +197,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     xmlSecByte* outBuf;
     SECStatus rv;
     int ret;
-    
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->cipherCtx != NULL, -1);
@@ -211,7 +211,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
 
     inSize = xmlSecBufferGetSize(in);
     outSize = xmlSecBufferGetSize(out);
-    
+
     if(inSize < (xmlSecSize)blockLen) {
         return(0);
     }
@@ -219,7 +219,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     if(encrypt) {
         inBlocks = inSize / ((xmlSecSize)blockLen);
     } else {
-        /* we want to have the last block in the input buffer 
+        /* we want to have the last block in the input buffer
          * for padding check */
         inBlocks = (inSize - 1) / ((xmlSecSize)blockLen);
     }
@@ -228,7 +228,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     /* we write out the input size plus may be one block */
     ret = xmlSecBufferSetMaxSize(out, outSize + inSize + blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -236,11 +236,11 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
         return(-1);
     }
     outBuf = xmlSecBufferGetData(out) + outSize;
-    
+
     rv = PK11_CipherOp(ctx->cipherCtx, outBuf, &outLen, inSize + blockLen,
                         xmlSecBufferGetData(in), inSize);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "PK11_CipherOp",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -248,22 +248,22 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
         return(-1);
     }
     xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
-    
+
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", outSize + outLen);
         return(-1);
     }
-        
+
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -273,7 +273,7 @@ xmlSecNssBlockCipherCtxUpdate(xmlSecNssBlockCipherCtxPtr ctx,
     return(0);
 }
 
-static int 
+static int
 xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
                                  xmlSecBufferPtr in,
                                  xmlSecBufferPtr out,
@@ -286,7 +286,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     xmlSecByte* outBuf;
     SECStatus rv;
     int ret;
-    
+
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->cipher != 0, -1);
     xmlSecAssert2(ctx->cipherCtx != NULL, -1);
@@ -302,12 +302,12 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     outSize = xmlSecBufferGetSize(out);
 
     if(encrypt != 0) {
-        xmlSecAssert2(inSize < (xmlSecSize)blockLen, -1);        
-    
+        xmlSecAssert2(inSize < (xmlSecSize)blockLen, -1);
+
         /* create padding */
         ret = xmlSecBufferSetMaxSize(in, blockLen);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         "xmlSecBufferSetMaxSize",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -324,15 +324,15 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
                             xmlSecErrorsSafeString(cipherName),
                             "PK11_GenerateRandom",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "size=%d", blockLen - inSize - 1); 
-                return(-1);    
+                            "size=%d", blockLen - inSize - 1);
+                return(-1);
             }
         }
         inBuf[blockLen - 1] = blockLen - inSize;
         inSize = blockLen;
     } else {
         if(inSize != (xmlSecSize)blockLen) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(cipherName),
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_DATA,
@@ -340,11 +340,11 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
             return(-1);
         }
     }
-    
+
     /* process last block */
     ret = xmlSecBufferSetMaxSize(out, outSize + 2 * blockLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -356,7 +356,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     rv = PK11_CipherOp(ctx->cipherCtx, outBuf, &outLen, 2 * blockLen,
                         xmlSecBufferGetData(in), inSize);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "PK11_CipherOp",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -364,7 +364,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
         return(-1);
     }
     xmlSecAssert2((xmlSecSize)outLen == inSize, -1);
-    
+
     if(encrypt == 0) {
         /* check padding */
         if(outLen < outBuf[blockLen - 1]) {
@@ -374,15 +374,15 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
                         XMLSEC_ERRORS_R_INVALID_DATA,
                         "padding=%d;buffer=%d",
                         outBuf[blockLen - 1], outLen);
-            return(-1); 
+            return(-1);
         }
         outLen -= outBuf[blockLen - 1];
-    } 
+    }
 
     /* set correct output buffer size */
     ret = xmlSecBufferSetSize(out, outSize + outLen);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -393,7 +393,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
     /* remove the processed block from input */
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(cipherName),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -410,7 +410,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
  * EVP Block Cipher transforms
  *
  * xmlSecNssBlockCipherCtx block is located after xmlSecTransform structure
- * 
+ *
  *****************************************************************************/
 #define xmlSecNssBlockCipherSize        \
     (sizeof(xmlSecTransform) + sizeof(xmlSecNssBlockCipherCtx))
@@ -419,7 +419,7 @@ xmlSecNssBlockCipherCtxFinal(xmlSecNssBlockCipherCtxPtr ctx,
 
 static int      xmlSecNssBlockCipherInitialize  (xmlSecTransformPtr transform);
 static void     xmlSecNssBlockCipherFinalize            (xmlSecTransformPtr transform);
-static int      xmlSecNssBlockCipherSetKeyReq   (xmlSecTransformPtr transform, 
+static int      xmlSecNssBlockCipherSetKeyReq   (xmlSecTransformPtr transform,
                                                          xmlSecKeyReqPtr keyReq);
 static int      xmlSecNssBlockCipherSetKey              (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
@@ -427,7 +427,7 @@ static int      xmlSecNssBlockCipherExecute             (xmlSecTransformPtr tran
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecNssBlockCipherCheckId             (xmlSecTransformPtr transform);
-                                                         
+
 
 
 static int
@@ -442,24 +442,24 @@ xmlSecNssBlockCipherCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformAes128CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecNssTransformAes192CbcId) ||
        xmlSecTransformCheckId(transform, xmlSecNssTransformAes256CbcId)) {
-       
+
        return(1);
     }
 #endif /* XMLSEC_NO_AES */
-    
+
     return(0);
 }
 
-static int 
+static int
 xmlSecNssBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecNssBlockCipherCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
 
     ctx = xmlSecNssBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     memset(ctx, 0, sizeof(xmlSecNssBlockCipherCtx));
 
 #ifndef XMLSEC_NO_DES
@@ -467,38 +467,38 @@ xmlSecNssBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->cipher     = CKM_DES3_CBC;
         ctx->keyId      = xmlSecNssKeyDataDesId;
         ctx->keySize    = 24;
-    } else 
+    } else
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_AES
     if(transform->id == xmlSecNssTransformAes128CbcId) {
-        ctx->cipher     = CKM_AES_CBC;  
+        ctx->cipher     = CKM_AES_CBC;
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = 16;
     } else if(transform->id == xmlSecNssTransformAes192CbcId) {
-        ctx->cipher     = CKM_AES_CBC;  
+        ctx->cipher     = CKM_AES_CBC;
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = 24;
     } else if(transform->id == xmlSecNssTransformAes256CbcId) {
-        ctx->cipher     = CKM_AES_CBC;  
+        ctx->cipher     = CKM_AES_CBC;
         ctx->keyId      = xmlSecNssKeyDataAesId;
         ctx->keySize    = 32;
-    } else 
+    } else
 #endif /* XMLSEC_NO_AES */
 
     if(1) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
-    }        
-    
+    }
+
     return(0);
 }
 
-static void 
+static void
 xmlSecNssBlockCipherFinalize(xmlSecTransformPtr transform) {
     xmlSecNssBlockCipherCtxPtr ctx;
 
@@ -511,11 +511,11 @@ xmlSecNssBlockCipherFinalize(xmlSecTransformPtr transform) {
     if(ctx->cipherCtx != NULL) {
         PK11_DestroyContext(ctx->cipherCtx, PR_TRUE);
     }
-    
+
     memset(ctx, 0, sizeof(xmlSecNssBlockCipherCtx));
 }
 
-static int  
+static int
 xmlSecNssBlockCipherSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecNssBlockCipherCtxPtr ctx;
 
@@ -543,7 +543,7 @@ static int
 xmlSecNssBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecNssBlockCipherCtxPtr ctx;
     xmlSecBufferPtr buffer;
-    
+
     xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
@@ -571,20 +571,20 @@ xmlSecNssBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                     xmlSecBufferGetSize(buffer), ctx->keySize);
         return(-1);
     }
-    
+
     xmlSecAssert2(xmlSecBufferGetData(buffer) != NULL, -1);
     memcpy(ctx->key, xmlSecBufferGetData(buffer), ctx->keySize);
-    
+
     ctx->keyInitialized = 1;
     return(0);
 }
 
-static int 
+static int
 xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssBlockCipherCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
-    
+
     xmlSecAssert2(xmlSecNssBlockCipherCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssBlockCipherSize), -1);
@@ -602,11 +602,11 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     if(transform->status == xmlSecTransformStatusWorking) {
         if(ctx->ctxInitialized == 0) {
-            ret = xmlSecNssBlockCipherCtxInit(ctx, in, out, 
+            ret = xmlSecNssBlockCipherCtxInit(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecNssBlockCipherCtxInit",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -615,7 +615,7 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
             }
         }
         if((ctx->ctxInitialized == 0) && (last != 0)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_DATA,
@@ -624,11 +624,11 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         }
 
         if(ctx->ctxInitialized != 0) {
-            ret = xmlSecNssBlockCipherCtxUpdate(ctx, in, out, 
+            ret = xmlSecNssBlockCipherCtxUpdate(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecNssBlockCipherCtxUpdate",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -636,13 +636,13 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                 return(-1);
             }
         }
-        
+
         if(last) {
-            ret = xmlSecNssBlockCipherCtxFinal(ctx, in, out, 
+            ret = xmlSecNssBlockCipherCtxFinal(ctx, in, out,
                         (transform->operation == xmlSecTransformOperationEncrypt) ? 1 : 0,
                         xmlSecTransformGetName(transform), transformCtx);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecNssBlockCipherCtxFinal",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -650,7 +650,7 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
                 return(-1);
             }
             transform->status = xmlSecTransformStatusFinished;
-        } 
+        }
     } else if(transform->status == xmlSecTransformStatusFinished) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
@@ -658,14 +658,14 @@ xmlSecNssBlockCipherExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         /* the only way we can get here is if there is no enough data in the input */
         xmlSecAssert2(last == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
                     "status=%d", transform->status);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -705,12 +705,12 @@ static xmlSecTransformKlass xmlSecNssAes128CbcKlass = {
 
 /**
  * xmlSecNssTransformAes128CbcGetKlass:
- * 
+ *
  * AES 128 CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to AES 128 CBC encryption transform.
- */ 
-xmlSecTransformId 
+ */
+xmlSecTransformId
 xmlSecNssTransformAes128CbcGetKlass(void) {
     return(&xmlSecNssAes128CbcKlass);
 }
@@ -737,19 +737,19 @@ static xmlSecTransformKlass xmlSecNssAes192CbcKlass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecNssTransformAes192CbcGetKlass:
- * 
+ *
  * AES 192 CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to AES 192 CBC encryption transform.
- */ 
-xmlSecTransformId 
+ */
+xmlSecTransformId
 xmlSecNssTransformAes192CbcGetKlass(void) {
     return(&xmlSecNssAes192CbcKlass);
 }
@@ -776,19 +776,19 @@ static xmlSecTransformKlass xmlSecNssAes256CbcKlass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecNssTransformAes256CbcGetKlass:
- * 
+ *
  * AES 256 CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to AES 256 CBC encryption transform.
- */ 
-xmlSecTransformId 
+ */
+xmlSecTransformId
 xmlSecNssTransformAes256CbcGetKlass(void) {
     return(&xmlSecNssAes256CbcKlass);
 }
@@ -818,19 +818,19 @@ static xmlSecTransformKlass xmlSecNssDes3CbcKlass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssBlockCipherExecute,                /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecNssTransformDes3CbcGetKlass:
  *
  * Triple DES CBC encryption transform klass.
- * 
+ *
  * Returns: pointer to Triple DES encryption transform.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecNssTransformDes3CbcGetKlass(void) {
     return(&xmlSecNssDes3CbcKlass);
 }

@@ -1,26 +1,26 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * List of pointers.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_LIST_H__
-#define __XMLSEC_LIST_H__    
+#define __XMLSEC_LIST_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
 
-typedef const struct _xmlSecPtrListKlass                        xmlSecPtrListKlass, 
+typedef const struct _xmlSecPtrListKlass                        xmlSecPtrListKlass,
                                                                 *xmlSecPtrListId;
-typedef struct _xmlSecPtrList                                   xmlSecPtrList, 
+typedef struct _xmlSecPtrList                                   xmlSecPtrList,
                                                                 *xmlSecPtrListPtr;
 
 /**
@@ -30,11 +30,11 @@ typedef struct _xmlSecPtrList                                   xmlSecPtrList,
  * @use:                        the current list size.
  * @max:                        the max (allocated) list size.
  * @allocMode:                  the memory allocation mode.
- * 
+ *
  * The pointers list.
  */
 struct _xmlSecPtrList {
-    xmlSecPtrListId             id;        
+    xmlSecPtrListId             id;
 
     xmlSecPtr*                  data;
     xmlSecSize                  use;
@@ -75,7 +75,7 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
 /**
  * xmlSecPtrListGetName:
  * @list:               the ponter to list.
- * 
+ *
  * Macro. Returns lists's name.
  */
 #define xmlSecPtrListGetName(list) \
@@ -87,7 +87,7 @@ XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPt
  *
  * Macro. Returns 1 if @list is not NULL and @list->id is not NULL
  * or 0 otherwise.
- */ 
+ */
 #define xmlSecPtrListIsValid(list) \
         ((( list ) != NULL) && ((( list )->id) != NULL))
 /**
@@ -143,7 +143,7 @@ typedef void                    (*xmlSecPtrDebugDumpItemMethod) (xmlSecPtr ptr,
                                                                  FILE* output);
 
 /**
- * xmlSecPtrListKlass: 
+ * xmlSecPtrListKlass:
  * @name:               the list klass name.
  * @duplicateItem:      the duplciate item method.
  * @destroyItem:        the destroy item method.
@@ -161,10 +161,10 @@ struct _xmlSecPtrListKlass {
 };
 
 /**
- * xmlSecPtrListKlassGetName: 
+ * xmlSecPtrListKlassGetName:
  * @klass:              the list klass.
  *2
- 
+
  * Macro. Returns the list klass name.
  */
 #define xmlSecPtrListKlassGetName(klass) \

@@ -1,12 +1,12 @@
-/** 
+/**
  *
  * XMLSec library
- * 
+ *
  * RSA Algorithms support
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -40,11 +40,11 @@
  * Internal OpenSSL RSA PKCS1 CTX
  *
  *************************************************************************/
-typedef struct _xmlSecOpenSSLRsaPkcs1Ctx        xmlSecOpenSSLRsaPkcs1Ctx, 
+typedef struct _xmlSecOpenSSLRsaPkcs1Ctx        xmlSecOpenSSLRsaPkcs1Ctx,
                                                 *xmlSecOpenSSLRsaPkcs1CtxPtr;
 struct _xmlSecOpenSSLRsaPkcs1Ctx {
     EVP_PKEY*           pKey;
-};          
+};
 
 /*********************************************************************
  *
@@ -54,20 +54,20 @@ struct _xmlSecOpenSSLRsaPkcs1Ctx {
  *
  ********************************************************************/
 #define xmlSecOpenSSLRsaPkcs1Size       \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaPkcs1Ctx))        
+    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaPkcs1Ctx))
 #define xmlSecOpenSSLRsaPkcs1GetCtx(transform) \
     ((xmlSecOpenSSLRsaPkcs1CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int      xmlSecOpenSSLRsaPkcs1Initialize                 (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLRsaPkcs1Finalize                   (xmlSecTransformPtr transform);
-static int      xmlSecOpenSSLRsaPkcs1SetKeyReq                  (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaPkcs1SetKeyReq                  (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecOpenSSLRsaPkcs1SetKey                     (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaPkcs1SetKey                     (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecOpenSSLRsaPkcs1Execute                    (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaPkcs1Execute                    (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLRsaPkcs1Process                    (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaPkcs1Process                    (xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
@@ -92,38 +92,38 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaPkcs1Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaPkcs1Execute,               /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformRsaPkcs1GetKlass:
  *
  * The RSA-PKCS1 key transport transform klass.
  *
  * Returns: RSA-PKCS1 key transport transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecOpenSSLRsaPkcs1Klass);
 }
 
-static int 
+static int
 xmlSecOpenSSLRsaPkcs1Initialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
 
     ctx = xmlSecOpenSSLRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     memset(ctx, 0, sizeof(xmlSecOpenSSLRsaPkcs1Ctx));
     return(0);
 }
 
-static void 
+static void
 xmlSecOpenSSLRsaPkcs1Finalize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
 
@@ -132,14 +132,14 @@ xmlSecOpenSSLRsaPkcs1Finalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecOpenSSLRsaPkcs1GetCtx(transform);
     xmlSecAssert(ctx != NULL);
-    
+
     if(ctx->pKey != NULL) {
         EVP_PKEY_free(ctx->pKey);
     }
     memset(ctx, 0, sizeof(xmlSecOpenSSLRsaPkcs1Ctx));
 }
 
-static int  
+static int
 xmlSecOpenSSLRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
 
@@ -158,15 +158,15 @@ xmlSecOpenSSLRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
     } else {
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
         keyReq->keyUsage = xmlSecKeyUsageDecrypt;
-    }    
+    }
     return(0);
 }
 
-static int      
+static int
 xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     EVP_PKEY* pKey;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaPkcs1Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaPkcs1Size), -1);
@@ -186,23 +186,23 @@ xmlSecOpenSSLRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    xmlSecAssert2(pKey->type == EVP_PKEY_RSA, -1);    
-    xmlSecAssert2(pKey->pkey.rsa != NULL, -1);    
-    
-    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);    
+    xmlSecAssert2(pKey->type == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(pKey->pkey.rsa != NULL, -1);
+
+    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecOpenSSLEvpKeyDup",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);    
+        return(-1);
     }
 
     return(0);
 }
 
-static int 
+static int
 xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     int ret;
@@ -218,14 +218,14 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
-    } 
-    
+    }
+
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecOpenSSLRsaPkcs1Process(transform, transformCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecOpenSSLRsaPkcs1Process",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -237,7 +237,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
@@ -247,7 +247,7 @@ xmlSecOpenSSLRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTrans
     return(0);
 }
 
-static int  
+static int
 xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaPkcs1CtxPtr ctx;
     xmlSecBufferPtr in, out;
@@ -263,17 +263,17 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
     ctx = xmlSecOpenSSLRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(ctx->pKey->type == EVP_PKEY_RSA, -1);    
-    xmlSecAssert2(ctx->pKey->pkey.rsa != NULL, -1);    
-    
+    xmlSecAssert2(ctx->pKey->type == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(ctx->pKey->pkey.rsa != NULL, -1);
+
     keySize = RSA_size(ctx->pKey->pkey.rsa);
     xmlSecAssert2(keySize > 0, -1);
-    
+
     in = &(transform->inBuf);
     out = &(transform->outBuf);
-        
+
     inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);    
+    outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
     /* the encoded size is equal to the keys size so we could not
@@ -293,11 +293,11 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
                     "%d when expected %d", inSize, keySize);
         return(-1);
     }
-        
-    outSize = keySize; 
+
+    outSize = keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -307,10 +307,10 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out), 
+                                xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_PKCS1_PADDING);
         if(ret <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "RSA_public_encrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -320,10 +320,10 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
         outSize = ret;
     } else {
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out), 
+                                xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_PKCS1_PADDING);
         if(ret <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "RSA_private_decrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -335,24 +335,24 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBufferSetSize",                  
+                    "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", outSize);
         return(-1);
     }
-        
+
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", inSize);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -361,12 +361,12 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
  * Internal OpenSSL RSA OAPE CTX
  *
  *************************************************************************/
-typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx, 
+typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx,
                                                 *xmlSecOpenSSLRsaOaepCtxPtr;
 struct _xmlSecOpenSSLRsaOaepCtx {
     EVP_PKEY*           pKey;
     xmlSecBuffer        oaepParams;
-};          
+};
 
 /*********************************************************************
  *
@@ -376,23 +376,23 @@ struct _xmlSecOpenSSLRsaOaepCtx {
  *
  ********************************************************************/
 #define xmlSecOpenSSLRsaOaepSize        \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaOaepCtx)) 
+    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLRsaOaepCtx))
 #define xmlSecOpenSSLRsaOaepGetCtx(transform) \
     ((xmlSecOpenSSLRsaOaepCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int      xmlSecOpenSSLRsaOaepInitialize                  (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLRsaOaepFinalize                    (xmlSecTransformPtr transform);
-static int      xmlSecOpenSSLRsaOaepNodeRead                    (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaOaepNodeRead                    (xmlSecTransformPtr transform,
                                                                  xmlNodePtr node,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLRsaOaepSetKeyReq                   (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaOaepSetKeyReq                   (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecOpenSSLRsaOaepSetKey                      (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaOaepSetKey                      (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecOpenSSLRsaOaepExecute                     (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaOaepExecute                     (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLRsaOaepProcess                     (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLRsaOaepProcess                     (xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
@@ -417,35 +417,35 @@ static xmlSecTransformKlass xmlSecOpenSSLRsaOaepKlass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLRsaOaepExecute,                /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformRsaOaepGetKlass:
  *
  * The RSA-OAEP key transport transform klass.
  *
  * Returns: RSA-OAEP key transport transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformRsaOaepGetKlass(void) {
     return(&xmlSecOpenSSLRsaOaepKlass);
 }
 
-static int 
+static int
 xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     int ret;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));    
+    memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
 
     ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
     if(ret < 0) {
@@ -459,7 +459,7 @@ xmlSecOpenSSLRsaOaepInitialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
-static void 
+static void
 xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
 
@@ -468,20 +468,20 @@ xmlSecOpenSSLRsaOaepFinalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert(ctx != NULL);
-    
+
     if(ctx->pKey != NULL) {
         EVP_PKEY_free(ctx->pKey);
     }
     xmlSecBufferFinalize(&(ctx->oaepParams));
-    memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));    
+    memset(ctx, 0, sizeof(xmlSecOpenSSLRsaOaepCtx));
 }
 
-static int      
+static int
 xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlNodePtr cur;
     int ret;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
     xmlSecAssert2(node != NULL, -1);
@@ -490,7 +490,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
-    
+
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && xmlSecCheckNodeName(cur,  xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
         ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
@@ -504,7 +504,7 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
-    
+
     if((cur != NULL) && xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
         xmlChar* algorithm;
 
@@ -515,12 +515,12 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
                         XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1);         
+            return(-1);
         }
 
-        /* for now we support only sha1 */      
+        /* for now we support only sha1 */
         if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -528,10 +528,10 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
                         XMLSEC_ERRORS_R_INVALID_TRANSFORM,
                         "digest algorithm is not supported for rsa/oaep");
             xmlFree(algorithm);
-            return(-1);         
+            return(-1);
         }
         xmlFree(algorithm);
-        
+
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -543,11 +543,11 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-        
+
     return(0);
 }
 
-static int  
+static int
 xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
 
@@ -567,15 +567,15 @@ xmlSecOpenSSLRsaOaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr key
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
         keyReq->keyUsage = xmlSecKeyUsageDecrypt;
     }
-    
+
     return(0);
 }
 
-static int      
+static int
 xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     EVP_PKEY* pKey;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRsaOaepId), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLRsaOaepSize), -1);
@@ -595,23 +595,23 @@ xmlSecOpenSSLRsaOaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    xmlSecAssert2(pKey->type == EVP_PKEY_RSA, -1);    
-    xmlSecAssert2(pKey->pkey.rsa != NULL, -1);    
-    
-    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);    
+    xmlSecAssert2(pKey->type == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(pKey->pkey.rsa != NULL, -1);
+
+    ctx->pKey = xmlSecOpenSSLEvpKeyDup(pKey);
     if(ctx->pKey == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecOpenSSLEvpKeyDup",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);    
+        return(-1);
     }
 
     return(0);
 }
 
-static int 
+static int
 xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     int ret;
@@ -627,14 +627,14 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
-    } 
-    
+    }
+
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
         /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecOpenSSLRsaOaepProcess(transform, transformCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecOpenSSLRsaOaepProcess",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -646,7 +646,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
@@ -656,7 +656,7 @@ xmlSecOpenSSLRsaOaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransf
     return(0);
 }
 
-static int  
+static int
 xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLRsaOaepCtxPtr ctx;
     xmlSecSize paramsSize;
@@ -673,17 +673,17 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     ctx = xmlSecOpenSSLRsaOaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pKey != NULL, -1);
-    xmlSecAssert2(ctx->pKey->type == EVP_PKEY_RSA, -1);    
-    xmlSecAssert2(ctx->pKey->pkey.rsa != NULL, -1);    
-    
+    xmlSecAssert2(ctx->pKey->type == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(ctx->pKey->pkey.rsa != NULL, -1);
+
     keySize = RSA_size(ctx->pKey->pkey.rsa);
     xmlSecAssert2(keySize > 0, -1);
-    
+
     in = &(transform->inBuf);
     out = &(transform->outBuf);
-        
+
     inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);    
+    outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
 
     /* the encoded size is equal to the keys size so we could not
@@ -703,11 +703,11 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                     "%d when expected %d", inSize, keySize);
         return(-1);
     }
-        
-    outSize = keySize; 
+
+    outSize = keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -719,12 +719,12 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
     if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize == 0)) {
         /* encode w/o OAEPParams --> simple */
         ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out), 
+                                xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_PKCS1_OAEP_PADDING);
         if(ret <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "RSA_public_encrypt(RSA_PKCS1_OAEP_PADDING)",                   
+                        "RSA_public_encrypt(RSA_PKCS1_OAEP_PADDING)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
@@ -732,22 +732,22 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         outSize = ret;
     } else if((transform->operation == xmlSecTransformOperationEncrypt) && (paramsSize > 0)) {
         xmlSecAssert2(xmlSecBufferGetData(&(ctx->oaepParams)) != NULL, -1);
-        
+
         /* add space for padding */
         ret = xmlSecBufferSetMaxSize(in, keySize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferSetMaxSize",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "size=%d", keySize);
             return(-1);
         }
-        
+
         /* add padding */
-        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(in), keySize, 
+        ret = RSA_padding_add_PKCS1_OAEP(xmlSecBufferGetData(in), keySize,
                                          xmlSecBufferGetData(in), inSize,
-                                         xmlSecBufferGetData(&(ctx->oaepParams)), 
+                                         xmlSecBufferGetData(&(ctx->oaepParams)),
                                          paramsSize);
         if(ret != 1) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -756,15 +756,15 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
+        }
         inSize = keySize;
 
         /* encode with OAEPParams */
         ret = RSA_public_encrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out), 
+                                xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_NO_PADDING);
         if(ret <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "RSA_public_encrypt(RSA_NO_PADDING)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -774,10 +774,10 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         outSize = ret;
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize == 0)) {
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out), 
+                                xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_PKCS1_OAEP_PADDING);
         if(ret <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "RSA_private_decrypt(RSA_PKCS1_OAEP_PADDING)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -787,21 +787,21 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         outSize = ret;
     } else if((transform->operation == xmlSecTransformOperationDecrypt) && (paramsSize != 0)) {
         BIGNUM bn;
-        
+
         ret = RSA_private_decrypt(inSize, xmlSecBufferGetData(in),
-                                xmlSecBufferGetData(out), 
+                                xmlSecBufferGetData(out),
                                 ctx->pKey->pkey.rsa, RSA_NO_PADDING);
         if(ret <= 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "RSA_private_decrypt(RSA_NO_PADDING)",                  
+                        "RSA_private_decrypt(RSA_NO_PADDING)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
         outSize = ret;
-        
-        /* 
+
+        /*
          * the private decrypt w/o padding adds '0's at the begginning.
          * it's not clear for me can I simply skip all '0's from the
          * beggining so I have to do decode it back to BIGNUM and dump
@@ -815,9 +815,9 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "size=%d", outSize);
             BN_clear_free(&bn);
-            return(-1);             
+            return(-1);
         }
-        
+
         ret = BN_bn2bin(&bn, xmlSecBufferGetData(out));
         if(ret <= 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -826,7 +826,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             BN_clear_free(&bn);
-            return(-1);             
+            return(-1);
         }
         BN_clear_free(&bn);
         outSize = ret;
@@ -834,7 +834,7 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
         ret = RSA_padding_check_PKCS1_OAEP(xmlSecBufferGetData(out), outSize,
                                            xmlSecBufferGetData(out), outSize,
                                            keySize,
-                                           xmlSecBufferGetData(&(ctx->oaepParams)), 
+                                           xmlSecBufferGetData(&(ctx->oaepParams)),
                                            paramsSize);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -843,8 +843,8 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
-        outSize = ret;  
+        }
+        outSize = ret;
     } else {
         xmlSecAssert2("we could not be here" == NULL, -1);
         return(-1);
@@ -852,24 +852,24 @@ xmlSecOpenSSLRsaOaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr 
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", outSize);
         return(-1);
     }
-        
+
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", inSize);
         return(-1);
     }
-    
+
     return(0);
 }
 

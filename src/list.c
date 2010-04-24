@@ -1,18 +1,18 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * List of pointers.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 
 #include <stdlib.h>
 #include <string.h>
- 
+
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
@@ -22,21 +22,21 @@
 
 static int              xmlSecPtrListEnsureSize                 (xmlSecPtrListPtr list,
                                                                  xmlSecSize size);
-                                                                 
+
 static xmlSecAllocMode gAllocMode = xmlSecAllocModeDouble;
 static xmlSecSize gInitialSize = 64;
 
-/** 
+/**
  * xmlSecPtrListSetDefaultAllocMode:
  * @defAllocMode:       the new default memory allocation mode.
  * @defInitialSize:     the new default minimal initial size.
  *
  * Sets new default allocation mode and minimal initial list size.
  */
-void 
+void
 xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defInitialSize) {
     xmlSecAssert(defInitialSize > 0);
-    
+
     gAllocMode = defAllocMode;
     gInitialSize = defInitialSize;
 }
@@ -44,19 +44,19 @@ xmlSecPtrListSetDefaultAllocMode(xmlSecAllocMode defAllocMode, xmlSecSize defIni
 /**
  * xmlSecPtrListCreate:
  * @id:                 the list klass.
- * 
+ *
  * Creates new list object. Caller is responsible for freeing returned list
  * by calling #xmlSecPtrListDestroy function.
  *
  * Returns: pointer to newly allocated list or NULL if an error occurs.
  */
-xmlSecPtrListPtr 
+xmlSecPtrListPtr
 xmlSecPtrListCreate(xmlSecPtrListId id) {
     xmlSecPtrListPtr list;
     int ret;
-    
+
     xmlSecAssert2(id != xmlSecPtrListIdUnknown, NULL);
-    
+
     /* Allocate a new xmlSecPtrList and fill the fields. */
     list = (xmlSecPtrListPtr)xmlMalloc(sizeof(xmlSecPtrList));
     if(list == NULL) {
@@ -64,11 +64,11 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
                     xmlSecErrorsSafeString(xmlSecPtrListKlassGetName(id)),
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecPtrList)=%d", 
+                    "sizeof(xmlSecPtrList)=%d",
                     sizeof(xmlSecPtrList));
         return(NULL);
     }
-    
+
     ret = xmlSecPtrListInitialize(list, id);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -79,8 +79,8 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
         xmlFree(list);
         return(NULL);
     }
-    
-    return(list);    
+
+    return(list);
 }
 
 /**
@@ -89,7 +89,7 @@ xmlSecPtrListCreate(xmlSecPtrListId id) {
  *
  * Destroys @list created with #xmlSecPtrListCreate function.
  */
-void 
+void
 xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecPtrListFinalize(list);
@@ -101,27 +101,27 @@ xmlSecPtrListDestroy(xmlSecPtrListPtr list) {
  * @list:               the pointer to list.
  * @id:                 the list klass.
  *
- * Initializes the list of given klass. Caller is responsible 
+ * Initializes the list of given klass. Caller is responsible
  * for cleaning up by calling #xmlSecPtrListFinalize function.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecPtrListInitialize(xmlSecPtrListPtr list, xmlSecPtrListId id) {
     xmlSecAssert2(id != xmlSecPtrListIdUnknown, -1);
     xmlSecAssert2(list != NULL, -1);
 
-    memset(list, 0, sizeof(xmlSecPtrList));    
+    memset(list, 0, sizeof(xmlSecPtrList));
     list->id = id;
     list->allocMode = gAllocMode;
-    
+
     return(0);
 }
 
 /**
  * xmlSecPtrListFinalize:
  * @list:               the pointer to list.
- *  
+ *
  * Cleans up the list initialized with #xmlSecPtrListInitialize
  * function.
  */
@@ -130,7 +130,7 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
 
     xmlSecPtrListEmpty(list);
-    memset(list, 0, sizeof(xmlSecPtrList));    
+    memset(list, 0, sizeof(xmlSecPtrList));
 }
 
 /**
@@ -139,13 +139,13 @@ xmlSecPtrListFinalize(xmlSecPtrListPtr list) {
  *
  * Remove all items from @list (if any).
  */
-void 
+void
 xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
 
     if(list->id->destroyItem != NULL) {
         xmlSecSize pos;
-        
+
         for(pos = 0; pos < list->use; ++pos) {
             xmlSecAssert(list->data != NULL);
             if(list->data[pos] != NULL) {
@@ -169,7 +169,7 @@ xmlSecPtrListEmpty(xmlSecPtrListPtr list) {
  * @src:                the pointer to source list.
  *
  * Copies @src list items to @dst list using #duplicateItem method
- * of the list klass. If #duplicateItem method is NULL then 
+ * of the list klass. If #duplicateItem method is NULL then
  * we jsut copy pointers to items.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -178,11 +178,11 @@ int
 xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
     xmlSecSize i;
     int ret;
-    
+
     xmlSecAssert2(xmlSecPtrListIsValid(dst), -1);
     xmlSecAssert2(xmlSecPtrListIsValid(src), -1);
     xmlSecAssert2(dst->id == src->id, -1);
-    
+
     /* allocate memory */
     ret = xmlSecPtrListEnsureSize(dst, dst->use + src->use);
     if(ret < 0) {
@@ -194,11 +194,11 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
         return(-1);
     }
 
-    /* copy one item after another */    
+    /* copy one item after another */
     for(i = 0; i < src->use; ++i, ++dst->use) {
         xmlSecAssert2(src->data != NULL, -1);
         xmlSecAssert2(dst->data != NULL, -1);
-        
+
         if((dst->id->duplicateItem != NULL) && (src->data[i] != NULL)) {
             dst->data[dst->use] = dst->id->duplicateItem(src->data[i]);
             if(dst->data[dst->use] == NULL) {
@@ -213,25 +213,25 @@ xmlSecPtrListCopy(xmlSecPtrListPtr dst, xmlSecPtrListPtr src) {
             dst->data[dst->use] = src->data[i];
         }
     }
-    
+
     return(0);
 }
 
 /**
  * xmlSecPtrListDuplicate:
  * @list:               the pointer to list.
- *  
+ *
  * Creates a new copy of @list and all its items.
  *
  * Returns: pointer to newly allocated list or NULL if an error occurs.
  */
-xmlSecPtrListPtr 
+xmlSecPtrListPtr
 xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
     xmlSecPtrListPtr newList;
     int ret;
-    
+
     xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
-    
+
     newList = xmlSecPtrListCreate(list->id);
     if(newList == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -241,7 +241,7 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     ret = xmlSecPtrListCopy(newList, list);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -260,13 +260,13 @@ xmlSecPtrListDuplicate(xmlSecPtrListPtr list) {
  * @list:               the pointer to list.
  *
  * Gets list size.
- * 
+ *
  * Returns: the number of itmes in @list.
  */
-xmlSecSize      
+xmlSecSize
 xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), 0);
-    
+
     return(list->use);
 }
 
@@ -280,7 +280,7 @@ xmlSecPtrListGetSize(xmlSecPtrListPtr list) {
  * Returns: the list item at position @pos or NULL if @pos is greater
  * than the number of items in the list or an error occurs.
  */
-xmlSecPtr 
+xmlSecPtr
 xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
     xmlSecAssert2(list->data != NULL, NULL);
@@ -298,12 +298,12 @@ xmlSecPtrListGetItem(xmlSecPtrListPtr list, xmlSecSize pos) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
     int ret;
-    
+
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
-    
+
     ret = xmlSecPtrListEnsureSize(list, list->use + 1);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -313,7 +313,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
                     "size=%d", list->use + 1);
         return(-1);
     }
-    
+
     list->data[list->use++] = item;
     return(0);
 }
@@ -329,7 +329,7 @@ xmlSecPtrListAdd(xmlSecPtrListPtr list, xmlSecPtr item) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     xmlSecAssert2(list->data != NULL, -1);
@@ -351,7 +351,7 @@ xmlSecPtrListSet(xmlSecPtrListPtr list, xmlSecPtr item, xmlSecSize pos) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
     xmlSecAssert2(list->data != NULL, -1);
@@ -374,21 +374,21 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
  *
  * Prints debug information about @list to the @output.
  */
-void 
+void
 xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecAssert(output != NULL);
 
-    fprintf(output, "=== list size: %d\n", list->use);    
+    fprintf(output, "=== list size: %d\n", list->use);
     if(list->id->debugDumpItem != NULL) {
         xmlSecSize pos;
-        
+
         for(pos = 0; pos < list->use; ++pos) {
             xmlSecAssert(list->data != NULL);
             if(list->data[pos] != NULL) {
                 list->id->debugDumpItem(list->data[pos], output);
             }
-        }       
+        }
     }
 }
 
@@ -399,32 +399,32 @@ xmlSecPtrListDebugDump(xmlSecPtrListPtr list, FILE* output) {
  *
  * Prints debug information about @list to the @output in XML format.
  */
-void 
+void
 xmlSecPtrListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
     xmlSecAssert(xmlSecPtrListIsValid(list));
     xmlSecAssert(output != NULL);
-    
-    fprintf(output, "<List size=\"%d\">\n", list->use);    
+
+    fprintf(output, "<List size=\"%d\">\n", list->use);
     if(list->id->debugXmlDumpItem != NULL) {
         xmlSecSize pos;
-        
+
         for(pos = 0; pos < list->use; ++pos) {
             xmlSecAssert(list->data != NULL);
             if(list->data[pos] != NULL) {
                 list->id->debugXmlDumpItem(list->data[pos], output);
             }
-        }       
+        }
     }
-    fprintf(output, "</List>\n");    
+    fprintf(output, "</List>\n");
 }
 
-static int 
+static int
 xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
     xmlSecPtr* newData;
     xmlSecSize newSize = 0;
 
     xmlSecAssert2(xmlSecPtrListIsValid(list), -1);
-    
+
     if(size < list->max) {
         return(0);
     }
@@ -437,11 +437,11 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
             newSize = 2 * size + 32;
             break;
     }
-    
+
     if(newSize < gInitialSize) {
         newSize = gInitialSize;
     }
-    
+
     if(list->data != NULL) {
         newData = (xmlSecPtr*)xmlRealloc(list->data, sizeof(xmlSecPtr) * newSize);
     } else {
@@ -452,14 +452,14 @@ xmlSecPtrListEnsureSize(xmlSecPtrListPtr list, xmlSecSize size) {
                     xmlSecErrorsSafeString(xmlSecPtrListGetName(list)),
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecPtr)*%d=%d", 
+                    "sizeof(xmlSecPtr)*%d=%d",
                     newSize, sizeof(xmlSecPtr) * newSize);
         return(-1);
     }
-    
+
     list->data = newData;
     list->max = newSize;
-    
+
     return(0);
 }
 
@@ -481,27 +481,27 @@ static xmlSecPtrListKlass xmlSecStringListKlass = {
 
 /**
  * xmlSecStringListGetKlass:
- * 
+ *
  * The strins list class.
  *
  * Returns: strings list klass.
  */
-xmlSecPtrListId 
+xmlSecPtrListId
 xmlSecStringListGetKlass(void) {
     return(&xmlSecStringListKlass);
 }
 
-static xmlSecPtr 
+static xmlSecPtr
 xmlSecStringListDuplicateItem(xmlSecPtr ptr) {
     xmlSecAssert2(ptr != NULL, NULL);
-    
+
     return(xmlStrdup((xmlChar*)ptr));
 }
 
-static void 
+static void
 xmlSecStringListDestroyItem(xmlSecPtr ptr) {
     xmlSecAssert(ptr != NULL);
-    
+
     xmlFree(ptr);
 }
 

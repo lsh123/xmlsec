@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
- * 
+ *
  * MSCrypto keys store that uses Simple Keys Store under the hood. Uses the
- * MS Certificate store as a backing store for the finding keys, but the 
+ * MS Certificate store as a backing store for the finding keys, but the
  * MS Certificate store not written to by the keys store.
  * So, if store->findkey is done and the key is not found in the simple
  * keys store, the MS Certificate store is looked up.
- * Thus, the MS Certificate store can be used to pre-load keys and becomes 
+ * Thus, the MS Certificate store can be used to pre-load keys and becomes
  * an alternate source of keys for xmlsec
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for precise wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
  */
@@ -23,7 +23,7 @@
 #include <windows.h>
 #include <wincrypt.h>
 
-#include <libxml/tree.h> 
+#include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -48,7 +48,7 @@
 /****************************************************************************
  *
  * MSCrypto Keys Store. Uses Simple Keys Store under the hood
- * 
+ *
  * Simple Keys Store ptr is located after xmlSecKeyStore
  *
  ***************************************************************************/
@@ -62,8 +62,8 @@
 
 static int                      xmlSecMSCryptoKeysStoreInitialize   (xmlSecKeyStorePtr store);
 static void                     xmlSecMSCryptoKeysStoreFinalize     (xmlSecKeyStorePtr store);
-static xmlSecKeyPtr             xmlSecMSCryptoKeysStoreFindKey      (xmlSecKeyStorePtr store, 
-                                                                     const xmlChar* name, 
+static xmlSecKeyPtr             xmlSecMSCryptoKeysStoreFindKey      (xmlSecKeyStorePtr store,
+                                                                     const xmlChar* name,
                                                                      xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
@@ -71,8 +71,8 @@ static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
     xmlSecMSCryptoKeysStoreSize,
 
     /* data */
-    BAD_CAST "MSCrypto-keys-store",             /* const xmlChar* name; */ 
-        
+    BAD_CAST "MSCrypto-keys-store",             /* const xmlChar* name; */
+
     /* constructors/destructor */
     xmlSecMSCryptoKeysStoreInitialize,          /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecMSCryptoKeysStoreFinalize,            /* xmlSecKeyStoreFinalizeMethod finalize; */
@@ -85,12 +85,12 @@ static xmlSecKeyStoreKlass xmlSecMSCryptoKeysStoreKlass = {
 
 /**
  * xmlSecMSCryptoKeysStoreGetKlass:
- * 
+ *
  * The MSCrypto list based keys store klass.
  *
  * Returns: MSCrypto list based keys store klass.
  */
-xmlSecKeyStoreId 
+xmlSecKeyStoreId
 xmlSecMSCryptoKeysStoreGetKlass(void) {
     return(&xmlSecMSCryptoKeysStoreKlass);
 }
@@ -99,12 +99,12 @@ xmlSecMSCryptoKeysStoreGetKlass(void) {
  * xmlSecMSCryptoKeysStoreAdoptKey:
  * @store:              the pointer to MSCrypto keys store.
  * @key:                the pointer to key.
- * 
- * Adds @key to the @store. 
+ *
+ * Adds @key to the @store.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr *ss;
 
@@ -112,24 +112,24 @@ xmlSecMSCryptoKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecAssert2((key != NULL), -1);
 
     ss = xmlSecMSCryptoKeysStoreGetSS(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL) && 
+    xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
         (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
     return (xmlSecSimpleKeysStoreAdoptKey(*ss, key));
 }
 
-/** 
+/**
  * xmlSecMSCryptoKeysStoreLoad:
  * @store:              the pointer to MSCrypto keys store.
  * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager. 
- * 
+ * @keysMngr:           the pointer to associated keys manager.
+ *
  * Reads keys from an XML file.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, 
+xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -139,7 +139,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
     int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
-    xmlSecAssert2((uri != NULL), -1);    
+    xmlSecAssert2((uri != NULL), -1);
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {
@@ -147,11 +147,11 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                     xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
                     "xmlParseFile",
                     XMLSEC_ERRORS_R_XML_FAILED,
-                    "uri=%s", 
+                    "uri=%s",
                     xmlSecErrorsSafeString(uri));
         return(-1);
     }
-    
+
     root = xmlDocGetRootElement(doc);
     if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -162,9 +162,9 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         xmlFreeDoc(doc);
         return(-1);
     }
-        
+
     cur = xmlSecGetNextElementNode(root->children);
-    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {  
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
         key = xmlSecKeyCreate();
         if(key == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -188,7 +188,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
             xmlFreeDoc(doc);
             return(-1);
         }
-        
+
         keyInfoCtx.mode           = xmlSecKeyInfoModeRead;
         keyInfoCtx.keysMngr       = keysMngr;
         keyInfoCtx.flags          = XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND |
@@ -210,7 +210,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
             return(-1);
         }
         xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
-        
+
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecMSCryptoKeysStoreAdoptKey(store, key);
             if(ret < 0) {
@@ -229,7 +229,7 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
-    
+
     if(cur != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
@@ -237,19 +237,19 @@ xmlSecMSCryptoKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                     XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlFreeDoc(doc);
-        return(-1);         
+        return(-1);
     }
-    
+
     xmlFreeDoc(doc);
     return(0);
 }
 
-/** 
+/**
  * xmlSecMSCryptoKeysStoreSave:
  * @store:              the pointer to MSCrypto keys store.
  * @filename:           the filename.
  * @type:               the saved keys type (public, private, ...).
- * 
+ *
  * Writes keys from @store to an XML file.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -259,10 +259,10 @@ xmlSecMSCryptoKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSe
     xmlSecKeyStorePtr *ss;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), -1);
-    xmlSecAssert2((filename != NULL), -1);    
-    
+    xmlSecAssert2((filename != NULL), -1);
+
     ss = xmlSecMSCryptoKeysStoreGetSS(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL) && 
+    xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
                    (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
     return (xmlSecSimpleKeysStoreSave(*ss, filename, type));
@@ -287,23 +287,23 @@ xmlSecMSCryptoKeysStoreInitialize(xmlSecKeyStorePtr store) {
         return(-1);
     }
 
-    return(0);    
+    return(0);
 }
 
 static void
 xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecKeyStorePtr *ss;
-    
+
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId));
-    
+
     ss = xmlSecMSCryptoKeysStoreGetSS(store);
     xmlSecAssert((ss != NULL) && (*ss != NULL));
-    
+
     xmlSecKeyStoreDestroy(*ss);
 }
 
 static PCCERT_CONTEXT
-xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name, 
+xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                                 xmlSecKeyInfoCtxPtr keyInfoCtx) {
     const char* storeName;
     HCERTSTORE hStoreHandle = NULL;
@@ -330,6 +330,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         return(NULL);
     }
 
+    /* convert name to unicode */
     wcName = xmlSecMSCryptoConvertUtf8ToUnicode(name);
     if(wcName == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -341,69 +342,12 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         return(NULL);
     }
 
-    /* first attempt: search by cert id == name */
-    if(pCertContext == NULL) {
-        pCertContext = CertFindCertificateInStore(
+    /* first attempt: try to find the cert with a full blown subject dn */
+    if(NULL == pCertContext) {
+        pCertContext = xmlSecMSCryptoX509FindCertBySubject(
             hStoreHandle,
-            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-            0,
-            CERT_FIND_SUBJECT_STR,
             wcName,
-            NULL);
-    }
-
-    /* We don't give up easily, now try to fetch the cert with a full blown 
-     * subject dn
-     */
-    if (NULL == pCertContext) {
-        BYTE* bdata;
-        DWORD len;
-        
-        bdata = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                            wcName, 
-                                            CERT_OID_NAME_STR,
-                                            &len);
-        if(bdata != NULL) {
-            CERT_NAME_BLOB cnb;
-    
-            cnb.cbData = len;
-            cnb.pbData = bdata;
-            
-            pCertContext = CertFindCertificateInStore(hStoreHandle,
-                                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                0,
-                                CERT_FIND_SUBJECT_NAME,
-                                &cnb,
-                                NULL);
-            xmlFree(bdata);
-        }
-    }
-            
-    /* We don't give up easily, now try to fetch the cert with a full blown 
-     * subject dn, and try with a reversed dn
-     */
-    if (NULL == pCertContext) {
-        BYTE* bdata;
-        DWORD len;
-        
-        bdata = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                            wcName, 
-                                            CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-                                            &len);
-        if(bdata != NULL) {
-            CERT_NAME_BLOB cnb;
-    
-            cnb.cbData = len;
-            cnb.pbData = bdata;
-            
-            pCertContext = CertFindCertificateInStore(hStoreHandle,
-                                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                                0,
-                                CERT_FIND_SUBJECT_NAME,
-                                &cnb,
-                                NULL);
-            xmlFree(bdata);
-        }
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
     }
 
     /*
@@ -413,8 +357,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         DWORD dwPropSize;
         PBYTE pbFriendlyName;
         PCCERT_CONTEXT pCertCtxIter = NULL;
-        
-            
+
+
         while (pCertCtxIter = CertEnumCertificatesInStore(hStoreHandle, pCertCtxIter)) {
             if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
@@ -434,7 +378,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                 CertCloseStore(hStoreHandle, 0);
                 return(NULL);
             }
-        
+
             if (TRUE != CertGetCertificateContextProperty(pCertCtxIter,
                                                       CERT_FRIENDLY_NAME_PROP_ID,
                                                       pbFriendlyName,
@@ -453,17 +397,30 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
         }
     }
 
-    /* We could do the following here: 
+    /* We don't give up easily, now try to find cert with part of the name
+     */
+    if (NULL == pCertContext) {
+        pCertContext = CertFindCertificateInStore(
+            hStoreHandle,
+            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
+            0,
+            CERT_FIND_SUBJECT_STR,
+            wcName,
+            NULL);
+    }
+
+
+    /* We could do the following here:
      * It would be nice if we could locate the cert with issuer name and
      * serial number, the given keyname can be something like this:
      * 'serial=1234567;issuer=CN=ikke, C=NL'
      * to be implemented by the first person who reads this, and thinks it's
      * a good idea :) WK
-     */     
+     */
 
     /* OK, I give up, I'm gone :( */
-    
-    /* aleksey todo: is it a right idea to close store if we have a handle to 
+
+    /* aleksey todo: is it a right idea to close store if we have a handle to
      * a cert in this store? */
     xmlFree(wcName);
     CertCloseStore(hStoreHandle, 0);
@@ -471,8 +428,8 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
 }
 
 
-static xmlSecKeyPtr 
-xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, 
+static xmlSecKeyPtr
+xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                                xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyStorePtr* ss;
     xmlSecKeyPtr key = NULL;
@@ -503,9 +460,9 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         goto done;
     }
 
-    /* what type of key are we looking for? 
+    /* what type of key are we looking for?
     * WK: For now, we'll look only for public/private keys using the
-    * name as a cert nickname. Then the name is regarded as the subject 
+    * name as a cert nickname. Then the name is regarded as the subject
     * dn of the certificate to be searched for.
     */
     keyReq = &(keyInfoCtx->keyReq);
@@ -602,7 +559,7 @@ xmlSecMSCryptoKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                         NULL,
                         "xmlSecKeySetValue",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s", 
+                        "data=%s",
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
             goto done;
         }

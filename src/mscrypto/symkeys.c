@@ -1,12 +1,12 @@
-/** 
+/**
  *
  * XMLSec library
- * 
+ *
  * DES Algorithm support
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #include "globals.h"
@@ -28,7 +28,7 @@
 #include <xmlsec/mscrypto/crypto.h>
 
 /*****************************************************************************
- * 
+ *
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary
  *
  ****************************************************************************/
@@ -78,18 +78,18 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataAesKlass = {
 
     /* data */
     xmlSecNameAESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
     xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
@@ -110,14 +110,14 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataAesKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoKeyDataAesGetKlass:
- * 
+ *
  * The AES key data klass.
  *
  * Returns: AES key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecMSCryptoKeyDataAesGetKlass(void) {
     return(&xmlSecMSCryptoKeyDataAesKlass);
 }
@@ -135,14 +135,14 @@ xmlSecMSCryptoKeyDataAesGetKlass(void) {
 int
 xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
     xmlSecBufferPtr buffer;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataAesId), -1);
     xmlSecAssert2(buf != NULL, -1);
     xmlSecAssert2(bufSize > 0, -1);
-    
+
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     return(xmlSecBufferSetData(buffer, buf, bufSize));
 }
 #endif /* XMLSEC_NO_AES */
@@ -159,18 +159,18 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
 
     /* data */
     xmlSecNameDESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                                         /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
     xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
@@ -191,21 +191,21 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoKeyDataDesGetKlass:
- * 
+ *
  * The DES key data klass.
  *
  * Returns: DES key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecMSCryptoKeyDataDesGetKlass(void) {
     return(&xmlSecMSCryptoKeyDataDesKlass);
 }
 #endif /* XMLSEC_NO_DES */
 
 /*
- * GENERIC HELPER FUNCTIONS 
+ * GENERIC HELPER FUNCTIONS
  */
 
 #define xmlSecMSCryptoSymKeyDataCheckId(data) \
@@ -215,7 +215,7 @@ xmlSecMSCryptoKeyDataDesGetKlass(void) {
 static int
 xmlSecMSCryptoSymKeyDataInitialize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataCheckId(data), -1);
-    
+
     return(xmlSecKeyDataBinaryValueInitialize(data));
 }
 
@@ -224,14 +224,14 @@ xmlSecMSCryptoSymKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataCheckId(dst), -1);
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataCheckId(src), -1);
     xmlSecAssert2(dst->id == src->id, -1);
-        
+
     return(xmlSecKeyDataBinaryValueDuplicate(dst, src));
 }
 
 static void
 xmlSecMSCryptoSymKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecMSCryptoSymKeyDataCheckId(data));
-    
+
     xmlSecKeyDataBinaryValueFinalize(data);
 }
 
@@ -239,15 +239,15 @@ static int
 xmlSecMSCryptoSymKeyDataXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueXmlRead(id, key, node, keyInfoCtx));
 }
 
-static int 
+static int
 xmlSecMSCryptoSymKeyDataXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                     xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueXmlWrite(id, key, node, keyInfoCtx));
 }
 
@@ -256,7 +256,7 @@ xmlSecMSCryptoSymKeyDataBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 const unsigned char* buf, size_t bufSize,
                                 xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueBinRead(id, key, buf, bufSize, keyInfoCtx));
 }
 
@@ -265,7 +265,7 @@ xmlSecMSCryptoSymKeyDataBinWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                  unsigned char** buf, size_t* bufSize,
                                  xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataKlassCheck(id), -1);
-    
+
     return(xmlSecKeyDataBinaryValueBinWrite(id, key, buf, bufSize, keyInfoCtx));
 }
 
@@ -278,7 +278,7 @@ xmlSecMSCryptoSymKeyDataGenerate(xmlSecKeyDataPtr data, size_t sizeBits, xmlSecK
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     return(xmlSecMSCryptoGenerateRandom(buffer, (sizeBits + 7) / 8));
 }
 
@@ -294,29 +294,29 @@ xmlSecMSCryptoSymKeyDataGetType(xmlSecKeyDataPtr data) {
     return((xmlSecBufferGetSize(buffer) > 0) ? xmlSecKeyDataTypeSymmetric : xmlSecKeyDataTypeUnknown);
 }
 
-static size_t 
+static size_t
 xmlSecMSCryptoSymKeyDataGetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecMSCryptoSymKeyDataCheckId(data), 0);
-    
+
     return(xmlSecKeyDataBinaryValueGetSize(data));
 }
 
-static void 
+static void
 xmlSecMSCryptoSymKeyDataDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecMSCryptoSymKeyDataCheckId(data));
-    
-    xmlSecKeyDataBinaryValueDebugDump(data, output);    
+
+    xmlSecKeyDataBinaryValueDebugDump(data, output);
 }
 
 static void
 xmlSecMSCryptoSymKeyDataDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecMSCryptoSymKeyDataCheckId(data));
-    
-    xmlSecKeyDataBinaryValueDebugXmlDump(data, output);    
+
+    xmlSecKeyDataBinaryValueDebugXmlDump(data, output);
 }
 
-static int 
-xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {    
+static int
+xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 #ifndef XMLSEC_NO_DES
     if(klass == xmlSecMSCryptoKeyDataDesId) {
         return(1);

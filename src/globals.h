@@ -5,7 +5,7 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 
@@ -13,7 +13,7 @@
 #define __XMLSEC_GLOBALS_H__
 
 /**
- * Use autoconf defines if present. 
+ * Use autoconf defines if present.
  */
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -1,11 +1,11 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * General functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -36,7 +36,7 @@ int
 xmlSecInit(void) {
     xmlSecErrorsInit();
     xmlSecIOInit();
-    
+
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
     if(xmlSecCryptoDLInit() < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -47,7 +47,7 @@ xmlSecInit(void) {
         return(-1);
     }
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
-    
+
     if(xmlSecKeyDataIdsInit() < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -56,7 +56,7 @@ xmlSecInit(void) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     if(xmlSecTransformIdsInit() < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -65,8 +65,8 @@ xmlSecInit(void) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
-#ifndef XMLSEC_NO_XKMS    
+
+#ifndef XMLSEC_NO_XKMS
     if(xmlSecXkmsRespondWithIdsInit() < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -99,9 +99,9 @@ xmlSecInit(void) {
  */
 int
 xmlSecShutdown(void) {
-    int res = 0;    
+    int res = 0;
 
-#ifndef XMLSEC_NO_XKMS    
+#ifndef XMLSEC_NO_XKMS
     xmlSecXkmsServerRequestIdsShutdown();
     xmlSecXkmsRespondWithIdsShutdown();
 #endif /* XMLSEC_NO_XKMS */
@@ -121,11 +121,11 @@ xmlSecShutdown(void) {
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
     xmlSecIOShutdown();
-    xmlSecErrorsShutdown();    
+    xmlSecErrorsShutdown();
     return(res);
 }
 
-/** 
+/**
  * xmlSecCheckVersionExt:
  * @major:              the major version number.
  * @minor:              the minor version number.
@@ -137,11 +137,11 @@ xmlSecShutdown(void) {
  * Returns: 1 if the loaded xmlsec library version is OK to use
  * 0 if it is not or a negative value if an error occurs.
  */
-int 
+int
 xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode mode) {
     /* we always want to have a match for major version number */
     if(major != XMLSEC_VERSION_MAJOR) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -149,11 +149,11 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
                     XMLSEC_VERSION_MAJOR, major);
         return(0);
     }
-    
+
     switch(mode) {
     case xmlSecCheckVersionExactMatch:
         if((minor != XMLSEC_VERSION_MINOR) || (subminor != XMLSEC_VERSION_SUBMINOR)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -165,9 +165,9 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         break;
     case xmlSecCheckVersionABICompatible:
         if((minor < XMLSEC_VERSION_MINOR) ||
-           ((minor == XMLSEC_VERSION_MINOR) && 
+           ((minor == XMLSEC_VERSION_MINOR) &&
             (subminor < XMLSEC_VERSION_SUBMINOR))) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -178,7 +178,7 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         }
         break;
     }
-    
+
     return(1);
 }
 

@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_SKELETON_CRYPTO_H__
-#define __XMLSEC_SKELETON_CRYPTO_H__    
+#define __XMLSEC_SKELETON_CRYPTO_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -35,4 +35,4 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecSkeletonKeysMngrInit      (xmlSecK
 
 #endif /* __XMLSEC_SKELETON_CRYPTO_H__ */
 
-#define __XMLSEC_SKELETON_CRYPTO_H__    
+#define __XMLSEC_SKELETON_CRYPTO_H__

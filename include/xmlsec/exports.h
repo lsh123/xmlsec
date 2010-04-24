@@ -1,21 +1,21 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Export macro declarations for Win32 platform.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_EXPORTS_H__
-#define __XMLSEC_EXPORTS_H__    
+#define __XMLSEC_EXPORTS_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
-/* Now, the export orgy begins. The following we must do for the 
+/* Now, the export orgy begins. The following we must do for the
    Windows platform with MSVC compiler. */
 
 #if !defined XMLSEC_EXPORT
@@ -23,7 +23,7 @@ extern "C" {
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC)
 #      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_EXPORT __declspec(dllexport) 
+#        define XMLSEC_EXPORT __declspec(dllexport)
 #      else
 #        define XMLSEC_EXPORT extern
 #      endif
@@ -38,9 +38,9 @@ extern "C" {
 #      define XMLSEC_EXPORT
 #else
 #      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_EXPORT __declspec(dllimport) 
+#        define XMLSEC_EXPORT __declspec(dllimport)
 #      else
-#        define XMLSEC_EXPORT 
+#        define XMLSEC_EXPORT
 #      endif
 #endif
 #    endif
@@ -56,16 +56,16 @@ extern "C" {
      /* if we compile libxmlsec itself: */
 #    if defined(IN_XMLSEC_CRYPTO)
 #      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_CRYPTO_EXPORT __declspec(dllexport) 
+#        define XMLSEC_CRYPTO_EXPORT __declspec(dllexport)
 #      else
 #        define XMLSEC_CRYPTO_EXPORT extern
 #      endif
      /* if a client program includes this file: */
 #    else
 #      if !defined(XMLSEC_STATIC)
-#        define XMLSEC_CRYPTO_EXPORT __declspec(dllimport) 
+#        define XMLSEC_CRYPTO_EXPORT __declspec(dllimport)
 #      else
-#        define XMLSEC_CRYPTO_EXPORT 
+#        define XMLSEC_CRYPTO_EXPORT
 #      endif
 #    endif
    /* This holds on all other platforms/compilers, which are easier to

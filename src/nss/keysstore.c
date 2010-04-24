@@ -1,6 +1,6 @@
-/** 
+/**
  * XMLSec library
- * 
+ *
  * Nss keys store that uses Simple Keys Store under the hood. Uses the
  * Nss DB as a backing store for the finding keys, but the NSS DB is
  * not written to by the keys store.
@@ -8,12 +8,12 @@
  * keys store, the NSS DB is looked up.
  * If store is called to adopt a key, that key is not written to the NSS
  * DB.
- * Thus, the NSS DB can be used to pre-load keys and becomes an alternate 
+ * Thus, the NSS DB can be used to pre-load keys and becomes an alternate
  * source of keys for xmlsec
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for precise wording.
- * 
+ *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
@@ -21,12 +21,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <nss.h> 
-#include <cert.h> 
-#include <pk11func.h> 
-#include <keyhi.h> 
+#include <nss.h>
+#include <cert.h>
+#include <pk11func.h>
+#include <keyhi.h>
 
-#include <libxml/tree.h> 
+#include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -44,7 +44,7 @@
 /****************************************************************************
  *
  * Nss Keys Store. Uses Simple Keys Store under the hood
- * 
+ *
  * Simple Keys Store ptr is located after xmlSecKeyStore
  *
  ***************************************************************************/
@@ -58,8 +58,8 @@
 
 static int                      xmlSecNssKeysStoreInitialize    (xmlSecKeyStorePtr store);
 static void                     xmlSecNssKeysStoreFinalize      (xmlSecKeyStorePtr store);
-static xmlSecKeyPtr             xmlSecNssKeysStoreFindKey       (xmlSecKeyStorePtr store, 
-                                                                 const xmlChar* name, 
+static xmlSecKeyPtr             xmlSecNssKeysStoreFindKey       (xmlSecKeyStorePtr store,
+                                                                 const xmlChar* name,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 
 static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
@@ -67,8 +67,8 @@ static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
     xmlSecNssKeysStoreSize,
 
     /* data */
-    BAD_CAST "NSS-keys-store",          /* const xmlChar* name; */ 
-        
+    BAD_CAST "NSS-keys-store",          /* const xmlChar* name; */
+
     /* constructors/destructor */
     xmlSecNssKeysStoreInitialize,       /* xmlSecKeyStoreInitializeMethod initialize; */
     xmlSecNssKeysStoreFinalize,         /* xmlSecKeyStoreFinalizeMethod finalize; */
@@ -81,12 +81,12 @@ static xmlSecKeyStoreKlass xmlSecNssKeysStoreKlass = {
 
 /**
  * xmlSecNssKeysStoreGetKlass:
- * 
+ *
  * The Nss list based keys store klass.
  *
  * Returns: Nss list based keys store klass.
  */
-xmlSecKeyStoreId 
+xmlSecKeyStoreId
 xmlSecNssKeysStoreGetKlass(void) {
     return(&xmlSecNssKeysStoreKlass);
 }
@@ -95,37 +95,37 @@ xmlSecNssKeysStoreGetKlass(void) {
  * xmlSecNssKeysStoreAdoptKey:
  * @store:              the pointer to Nss keys store.
  * @key:                the pointer to key.
- * 
- * Adds @key to the @store. 
+ *
+ * Adds @key to the @store.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecNssKeysStoreAdoptKey(xmlSecKeyStorePtr store, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr *ss;
-    
+
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
     xmlSecAssert2((key != NULL), -1);
 
     ss = xmlSecNssKeysStoreGetSS(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL) && 
+    xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
                    (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
     return (xmlSecSimpleKeysStoreAdoptKey(*ss, key));
 }
 
-/** 
+/**
  * xmlSecNssKeysStoreLoad:
  * @store:              the pointer to Nss keys store.
  * @uri:                the filename.
- * @keysMngr:           the pointer to associated keys manager. 
- * 
+ * @keysMngr:           the pointer to associated keys manager.
+ *
  * Reads keys from an XML file.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
 int
-xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri, 
+xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                             xmlSecKeysMngrPtr keysMngr) {
     xmlDocPtr doc;
     xmlNodePtr root;
@@ -135,7 +135,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
     int ret;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
-    xmlSecAssert2((uri != NULL), -1);    
+    xmlSecAssert2((uri != NULL), -1);
 
     doc = xmlParseFile(uri);
     if(doc == NULL) {
@@ -143,11 +143,11 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                     xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
                     "xmlParseFile",
                     XMLSEC_ERRORS_R_XML_FAILED,
-                    "uri=%s", 
+                    "uri=%s",
                     xmlSecErrorsSafeString(uri));
         return(-1);
     }
-    
+
     root = xmlDocGetRootElement(doc);
     if(!xmlSecCheckNodeName(root, BAD_CAST "Keys", xmlSecNs)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -158,9 +158,9 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         xmlFreeDoc(doc);
         return(-1);
     }
-        
+
     cur = xmlSecGetNextElementNode(root->children);
-    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {  
+    while((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeKeyInfo, xmlSecDSigNs)) {
         key = xmlSecKeyCreate();
         if(key == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -184,7 +184,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
             xmlFreeDoc(doc);
             return(-1);
         }
-        
+
         keyInfoCtx.mode           = xmlSecKeyInfoModeRead;
         keyInfoCtx.keysMngr       = keysMngr;
         keyInfoCtx.flags          = XMLSEC_KEYINFO_FLAGS_DONT_STOP_ON_KEY_FOUND |
@@ -206,7 +206,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
             return(-1);
         }
         xmlSecKeyInfoCtxFinalize(&keyInfoCtx);
-        
+
         if(xmlSecKeyIsValid(key)) {
             ret = xmlSecNssKeysStoreAdoptKey(store, key);
             if(ret < 0) {
@@ -225,7 +225,7 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
-    
+
     if(cur != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
@@ -233,19 +233,19 @@ xmlSecNssKeysStoreLoad(xmlSecKeyStorePtr store, const char *uri,
                     XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlFreeDoc(doc);
-        return(-1);         
+        return(-1);
     }
-    
+
     xmlFreeDoc(doc);
     return(0);
 }
 
-/** 
+/**
  * xmlSecNssKeysStoreSave:
  * @store:              the pointer to Nss keys store.
  * @filename:           the filename.
  * @type:               the saved keys type (public, private, ...).
- * 
+ *
  * Writes keys from @store to an XML file.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -255,10 +255,10 @@ xmlSecNssKeysStoreSave(xmlSecKeyStorePtr store, const char *filename, xmlSecKeyD
     xmlSecKeyStorePtr *ss;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId), -1);
-    xmlSecAssert2((filename != NULL), -1);    
-    
+    xmlSecAssert2((filename != NULL), -1);
+
     ss = xmlSecNssKeysStoreGetSS(store);
-    xmlSecAssert2(((ss != NULL) && (*ss != NULL) && 
+    xmlSecAssert2(((ss != NULL) && (*ss != NULL) &&
                    (xmlSecKeyStoreCheckId(*ss, xmlSecSimpleKeysStoreId))), -1);
 
     return (xmlSecSimpleKeysStoreSave(*ss, filename, type));
@@ -283,23 +283,23 @@ xmlSecNssKeysStoreInitialize(xmlSecKeyStorePtr store) {
         return(-1);
     }
 
-    return(0);    
+    return(0);
 }
 
 static void
 xmlSecNssKeysStoreFinalize(xmlSecKeyStorePtr store) {
     xmlSecKeyStorePtr *ss;
-    
+
     xmlSecAssert(xmlSecKeyStoreCheckId(store, xmlSecNssKeysStoreId));
-    
+
     ss = xmlSecNssKeysStoreGetSS(store);
     xmlSecAssert((ss != NULL) && (*ss != NULL));
-    
+
     xmlSecKeyStoreDestroy(*ss);
 }
 
-static xmlSecKeyPtr 
-xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name, 
+static xmlSecKeyPtr
+xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                           xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyStorePtr* ss;
     xmlSecKeyPtr key = NULL;
@@ -330,13 +330,13 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
         goto done;
     }
 
-    /* what type of key are we looking for? 
+    /* what type of key are we looking for?
      * TBD: For now, we'll look only for public/private keys using the
      * name as a cert nickname. Later on, we can attempt to find
-     * symmetric keys using PK11_FindFixedKey 
+     * symmetric keys using PK11_FindFixedKey
      */
     keyReq = &(keyInfoCtx->keyReq);
-    if (keyReq->keyType & 
+    if (keyReq->keyType &
         (xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate)) {
         cert = CERT_FindCertByNickname (CERT_GetDefaultCertDB(), (char *)name);
         if (cert == NULL) {
@@ -353,9 +353,9 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                             XMLSEC_ERRORS_NO_MESSAGE);
                 goto done;
             }
-        } 
+        }
 
-        if (keyReq->keyType & xmlSecKeyDataTypePrivate) { 
+        if (keyReq->keyType & xmlSecKeyDataTypePrivate) {
             privkey = PK11_FindKeyByAnyCert(cert, NULL);
             if (privkey == NULL) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -375,7 +375,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             goto done;
-        }    
+        }
         privkey = NULL;
         pubkey = NULL;
 
@@ -439,7 +439,7 @@ xmlSecNssKeysStoreFindKey(xmlSecKeyStorePtr store, const xmlChar* name,
                         NULL,
                         "xmlSecKeySetValue",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "data=%s", 
+                        "data=%s",
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)));
             goto done;
         }

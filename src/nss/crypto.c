@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
@@ -41,7 +41,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecNssFunctions = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_nss(void) {
     static xmlSecCryptoDLFunctions functions;
-    
+
     if(gXmlSecNssFunctions != NULL) {
         return(gXmlSecNssFunctions);
     }
@@ -49,7 +49,7 @@ xmlSecCryptoGetFunctions_nss(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecNssFunctions = &functions;
 
-    /**  
+    /**
      * Crypto Init/shutdown
      */
     gXmlSecNssFunctions->cryptoInit                     = xmlSecNssInit;
@@ -59,21 +59,21 @@ xmlSecCryptoGetFunctions_nss(void) {
     /**
      * Key data ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecNssFunctions->keyDataAesGetKlass             = xmlSecNssKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecNssFunctions->keyDataDesGetKlass             = xmlSecNssKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_DSA
     gXmlSecNssFunctions->keyDataDsaGetKlass             = xmlSecNssKeyDataDsaGetKlass;
-#endif /* XMLSEC_NO_DSA */    
+#endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_HMAC  
+#ifndef XMLSEC_NO_HMAC
     gXmlSecNssFunctions->keyDataHmacGetKlass            = xmlSecNssKeyDataHmacGetKlass;
-#endif /* XMLSEC_NO_HMAC */    
+#endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecNssFunctions->keyDataRsaGetKlass             = xmlSecNssKeyDataRsaGetKlass;
@@ -94,7 +94,7 @@ xmlSecCryptoGetFunctions_nss(void) {
     /**
      * Crypto transforms ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecNssFunctions->transformAes128CbcGetKlass     = xmlSecNssTransformAes128CbcGetKlass;
     gXmlSecNssFunctions->transformAes192CbcGetKlass     = xmlSecNssTransformAes192CbcGetKlass;
     gXmlSecNssFunctions->transformAes256CbcGetKlass     = xmlSecNssTransformAes256CbcGetKlass;
@@ -103,7 +103,7 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformKWAes256GetKlass      = xmlSecNssTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecNssFunctions->transformDes3CbcGetKlass       = xmlSecNssTransformDes3CbcGetKlass;
     gXmlSecNssFunctions->transformKWDes3GetKlass        = xmlSecNssTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -129,13 +129,13 @@ xmlSecCryptoGetFunctions_nss(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformSha1GetKlass          = xmlSecNssTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
     /**
      * High level routines form xmlsec command line utility
-     */ 
+     */
     gXmlSecNssFunctions->cryptoAppInit                  = xmlSecNssAppInit;
     gXmlSecNssFunctions->cryptoAppShutdown              = xmlSecNssAppShutdown;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrInit   = xmlSecNssAppDefaultKeysMngrInit;
@@ -145,13 +145,13 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoad      = xmlSecNssAppKeysMngrCertLoad;
     gXmlSecNssFunctions->cryptoAppKeysMngrCertLoadMemory= xmlSecNssAppKeysMngrCertLoadMemory;
-    gXmlSecNssFunctions->cryptoAppPkcs12Load            = xmlSecNssAppPkcs12Load; 
-    gXmlSecNssFunctions->cryptoAppPkcs12LoadMemory      = xmlSecNssAppPkcs12LoadMemory; 
+    gXmlSecNssFunctions->cryptoAppPkcs12Load            = xmlSecNssAppPkcs12Load;
+    gXmlSecNssFunctions->cryptoAppPkcs12LoadMemory      = xmlSecNssAppPkcs12LoadMemory;
     gXmlSecNssFunctions->cryptoAppKeyCertLoad           = xmlSecNssAppKeyCertLoad;
     gXmlSecNssFunctions->cryptoAppKeyCertLoadMemory     = xmlSecNssAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecNssFunctions->cryptoAppKeyLoad               = xmlSecNssAppKeyLoad; 
-    gXmlSecNssFunctions->cryptoAppKeyLoadMemory         = xmlSecNssAppKeyLoadMemory; 
+    gXmlSecNssFunctions->cryptoAppKeyLoad               = xmlSecNssAppKeyLoad;
+    gXmlSecNssFunctions->cryptoAppKeyLoadMemory         = xmlSecNssAppKeyLoadMemory;
     gXmlSecNssFunctions->cryptoAppDefaultPwdCallback    = (void*)xmlSecNssAppGetDefaultPwdCallback();
 
     return(gXmlSecNssFunctions);
@@ -159,12 +159,12 @@ xmlSecCryptoGetFunctions_nss(void) {
 
 /**
  * xmlSecNssInit:
- * 
- * XMLSec library specific crypto engine initialization. 
+ *
+ * XMLSec library specific crypto engine initialization.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecNssInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
@@ -188,18 +188,18 @@ xmlSecNssInit (void)  {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     return(0);
 }
 
 /**
  * xmlSecNssShutdown:
- * 
- * XMLSec library specific crypto engine shutdown. 
+ *
+ * XMLSec library specific crypto engine shutdown.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecNssShutdown(void) {
     return(0);
 }
@@ -215,7 +215,7 @@ xmlSecNssShutdown(void) {
 int
 xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
-   
+
     xmlSecAssert2(mngr != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
@@ -251,17 +251,17 @@ xmlSecNssKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 
 /**
  * xmlSecNssGetInternalKeySlot:
- * 
+ *
  * Gets internal NSS key slot.
- * 
+ *
  * Returns: internal key slot and initializes it if needed.
  */
-PK11SlotInfo * 
+PK11SlotInfo *
 xmlSecNssGetInternalKeySlot()
 {
     PK11SlotInfo *slot = NULL;
     SECStatus rv;
-        
+
     slot = PK11_GetInternalKeySlot();
     if (slot == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -309,33 +309,33 @@ xmlSecNssGetInternalKeySlot()
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {      
+xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     SECStatus rv;
     int ret;
-    
+
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", size);
         return(-1);
     }
-        
+
     /* get random data */
     rv = PK11_GenerateRandom((xmlSecByte*)xmlSecBufferGetData(buffer), size);
     if(rv != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "PK11_GenerateRandom",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "size=%d", size);
-        return(-1);    
-    }    
+        return(-1);
+    }
     return(0);
 }
 
@@ -344,14 +344,14 @@ xmlSecNssGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @file:               the error location file name (__FILE__ macro).
  * @line:               the error location line number (__LINE__ macro).
  * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object 
+ * @errorObject:        the error specific error object
  * @errorSubject:       the error specific error subject.
  * @reason:             the error code.
  * @msg:                the additional error message.
  *
  * The default errors reporting callback function.
  */
-void 
+void
 xmlSecNssErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
@@ -360,7 +360,7 @@ xmlSecNssErrorsDefaultCallback(const char* file, int line, const char* func,
 
     err = PORT_GetError();
     xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "%s;last nss error=%d (0x%08X)", msg, err, err);
-    xmlSecErrorsDefaultCallback(file, line, func, 
-                errorObject, errorSubject, 
+    xmlSecErrorsDefaultCallback(file, line, func,
+                errorObject, errorSubject,
                 reason, (char*)buf);
 }

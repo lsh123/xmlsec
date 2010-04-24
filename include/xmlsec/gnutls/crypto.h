@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_GNUTLS_CRYPTO_H__
-#define __XMLSEC_GNUTLS_CRYPTO_H__    
+#define __XMLSEC_GNUTLS_CRYPTO_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -39,7 +39,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSGenerateRandom      (xmlSecB
 #ifndef XMLSEC_NO_AES
 /**
  * xmlSecGnuTLSKeyDataAesId:
- * 
+ *
  * The AES key data klass.
  */
 #define xmlSecGnuTLSKeyDataAesId \
@@ -50,7 +50,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataAesSet       (xmlSecK
                                                                          xmlSecSize bufSize);
 /**
  * xmlSecGnuTLSTransformAes128CbcId:
- * 
+ *
  * The AES128 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformAes128CbcId \
@@ -59,7 +59,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes128CbcGetKlass(v
 
 /**
  * xmlSecGnuTLSTransformAes192CbcId:
- * 
+ *
  * The AES192 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformAes192CbcId \
@@ -68,7 +68,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes192CbcGetKlass(v
 
 /**
  * xmlSecGnuTLSTransformAes256CbcId:
- * 
+ *
  * The AES256 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformAes256CbcId \
@@ -85,7 +85,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes256CbcGetKlass(v
 #ifndef XMLSEC_NO_DES
 /**
  * xmlSecGnuTLSKeyDataDesId:
- * 
+ *
  * The DES key data klass.
  */
 #define xmlSecGnuTLSKeyDataDesId \
@@ -97,7 +97,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDesSet       (xmlSecK
 
 /**
  * xmlSecGnuTLSTransformDes3CbcId:
- * 
+ *
  * The DES3 CBC cipher transform klass.
  */
 #define xmlSecGnuTLSTransformDes3CbcId \
@@ -117,9 +117,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass(void
 XMLSEC_CRYPTO_EXPORT int               xmlSecGnuTLSHmacGetMinOutputLength(void);
 XMLSEC_CRYPTO_EXPORT void              xmlSecGnuTLSHmacSetMinOutputLength(int min_length);
 
-/** 
+/**
  * xmlSecGnuTLSKeyDataHmacId:
- * 
+ *
  * The HMAC key klass.
  */
 #define xmlSecGnuTLSKeyDataHmacId \
@@ -130,7 +130,7 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataHmacSet      (xmlSecK
                                                                          xmlSecSize bufSize);
 /**
  * xmlSecGnuTLSTransformHmacMd5Id:
- * 
+ *
  * The HMAC with MD5 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacMd5Id \
@@ -140,7 +140,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacMd5GetKlass(void
 
 /**
  * xmlSecGnuTLSTransformHmacRipemd160Id:
- * 
+ *
  * The HMAC with RipeMD160 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacRipemd160Id \
@@ -149,7 +149,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacRipemd160GetKlas
 
 /**
  * xmlSecGnuTLSTransformHmacSha1Id:
- * 
+ *
  * The HMAC with SHA1 signature transform klass.
  */
 #define xmlSecGnuTLSTransformHmacSha1Id \
@@ -166,7 +166,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha1GetKlass(voi
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecGnuTLSTransformSha1Id:
- * 
+ *
  * The SHA1 digest transform klass.
  */
 #define xmlSecGnuTLSTransformSha1Id \
@@ -180,4 +180,4 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformSha1GetKlass(void);
 
 #endif /* __XMLSEC_GNUTLS_CRYPTO_H__ */
 
-#define __XMLSEC_GNUTLS_CRYPTO_H__    
+#define __XMLSEC_GNUTLS_CRYPTO_H__

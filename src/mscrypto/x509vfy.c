@@ -1,4 +1,4 @@
-/** 
+/**
  * XMLSec library
  *
  * X509 support
@@ -6,7 +6,7 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
  */
@@ -43,13 +43,13 @@
  * Internal MSCRYPTO X509 store CTX
  *
  *************************************************************************/
-typedef struct _xmlSecMSCryptoX509StoreCtx    xmlSecMSCryptoX509StoreCtx, 
+typedef struct _xmlSecMSCryptoX509StoreCtx    xmlSecMSCryptoX509StoreCtx,
                         *xmlSecMSCryptoX509StoreCtxPtr;
 struct _xmlSecMSCryptoX509StoreCtx {
     HCERTSTORE trusted;
     HCERTSTORE untrusted;
     int        dont_use_system_trusted_certs;
-};        
+};
 
 /****************************************************************************
  *
@@ -63,7 +63,7 @@ struct _xmlSecMSCryptoX509StoreCtx {
                     sizeof(xmlSecKeyDataStoreKlass)))
 #define xmlSecMSCryptoX509StoreSize    \
     (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecMSCryptoX509StoreCtx))
- 
+
 static int         xmlSecMSCryptoX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void        xmlSecMSCryptoX509StoreFinalize      (xmlSecKeyDataStorePtr store);
 
@@ -72,8 +72,8 @@ static xmlSecKeyDataStoreKlass xmlSecMSCryptoX509StoreKlass = {
     xmlSecMSCryptoX509StoreSize,
 
     /* data */
-    xmlSecNameX509Store,                    /* const xmlChar* name; */ 
-        
+    xmlSecNameX509Store,                    /* const xmlChar* name; */
+
     /* constructors/destructor */
     xmlSecMSCryptoX509StoreInitialize,      /* xmlSecKeyDataStoreInitializeMethod initialize; */
     xmlSecMSCryptoX509StoreFinalize,        /* xmlSecKeyDataStoreFinalizeMethod finalize; */
@@ -90,14 +90,14 @@ static PCCERT_CONTEXT xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                          const xmlChar *ski);
 
 
-/** 
+/**
  * xmlSecMSCryptoX509StoreGetKlass:
- * 
+ *
  * The MSCrypto X509 certificates key data store klass.
  *
  * Returns: pointer to MSCrypto X509 certificates key data store klass.
  */
-xmlSecKeyDataStoreId 
+xmlSecKeyDataStoreId
 xmlSecMSCryptoX509StoreGetKlass(void) {
     return(&xmlSecMSCryptoX509StoreKlass);
 }
@@ -122,7 +122,7 @@ xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectNam
                 xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT pCert = NULL;
-    
+
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
@@ -143,7 +143,7 @@ xmlSecMSCryptoX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectNam
 }
 
 
-static void 
+static void
 xmlSecMSCryptoUnixTimeToFileTime(time_t t, LPFILETIME pft) {
     /* Note that LONGLONG is a 64-bit value */
     LONGLONG ll;
@@ -171,7 +171,7 @@ xmlSecMSCrypoVerifyCertTime(PCCERT_CONTEXT pCert, LPFILETIME pft) {
     if(-1 == CompareFileTime(&(pCert->pCertInfo->NotAfter), pft)) {
         return (FALSE);
     }
- 
+
     return (TRUE);
 }
 
@@ -182,7 +182,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
 
     xmlSecAssert2(pCert != NULL, FALSE);
     xmlSecAssert2(hStore != NULL, FALSE);
-    
+
     while((pCrl = CertEnumCRLsInStore(hStore, pCrl)) != NULL) {
         if (CertFindCertificateInCRL(pCert, pCrl, 0, NULL, &pCrlEntry) && (pCrlEntry != NULL)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -265,12 +265,12 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
  * @pfTime: pointer to FILETIME that we are interested in
  * @store_untrusted: untrusted certificates added via API
  * @store_doc: untrusted certificates/CRLs extracted from a document
- * 
+ *
  * Builds certificates chain using Windows API.
- * 
+ *
  * Returns: TRUE on success or FALSE otherwise.
  */
-static BOOL 
+static BOOL
 xmlSecBuildChainUsingWinapi (PCCERT_CONTEXT cert, LPFILETIME pfTime,
                 HCERTSTORE store_untrusted, HCERTSTORE store_doc)
 {
@@ -368,9 +368,9 @@ end:
  * @store_untrusted: untrusted certificates added via API
  * @certs: untrusted certificates/CRLs extracted from a document
  * @store: pointer to store klass passed to error functions
- * 
+ *
  * Builds certificates chain manually.
- * 
+ *
  * Returns: TRUE on success or FALSE otherwise.
  */
 static BOOL
@@ -393,7 +393,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
      * Try to find the cert in the trusted cert store. We will trust
      * the certificate in the trusted store.
      */
-    issuerCert = CertFindCertificateInStore(store_trusted, 
+    issuerCert = CertFindCertificateInStore(store_trusted,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -412,7 +412,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     }
 
     /* try to find issuer cert in the trusted cert in the store */
-    issuerCert = CertFindCertificateInStore(store_trusted, 
+    issuerCert = CertFindCertificateInStore(store_trusted,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -432,7 +432,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     }
 
     /* try the untrusted certs in the chain */
-    issuerCert = CertFindCertificateInStore(certs, 
+    issuerCert = CertFindCertificateInStore(certs,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -455,7 +455,7 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
     }
 
     /* try the untrusted certs in the store */
-    issuerCert = CertFindCertificateInStore(store_untrusted, 
+    issuerCert = CertFindCertificateInStore(store_untrusted,
                 X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                 0,
                 CERT_FIND_SUBJECT_NAME,
@@ -480,13 +480,13 @@ xmlSecMSCryptoBuildCertChainManually (PCCERT_CONTEXT cert, LPFILETIME pfTime,
 }
 
 static BOOL
-xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, HCERTSTORE certs, 
+xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, HCERTSTORE certs,
                               xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
     PCCERT_CONTEXT tempCert = NULL;
     FILETIME fTime;
     BOOL res = FALSE;
-    
+
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId), FALSE);
     xmlSecAssert2(cert != NULL, FALSE);
     xmlSecAssert2(cert->pCertInfo != NULL, FALSE);
@@ -533,7 +533,7 @@ xmlSecMSCryptoX509StoreConstructCertsChain(xmlSecKeyDataStorePtr store, PCCERT_C
  * Verifies @certs list.
  *
  * Returns: pointer to the first verified certificate from @certs.
- */ 
+ */
 PCCERT_CONTEXT
 xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
                   xmlSecKeyInfoCtx* keyInfoCtx) {
@@ -546,10 +546,10 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
     while((cert = CertEnumCertificatesInStore(certs, cert)) != NULL){
         PCCERT_CONTEXT nextCert = NULL;
         unsigned char selected = 1;
-        
+
         xmlSecAssert2(cert->pCertInfo != NULL, NULL);
 
-        /* if cert is the issuer of any other cert in the list, then it is 
+        /* if cert is the issuer of any other cert in the list, then it is
           * to be skipped except a case of a celf-signed cert*/
         do {
             nextCert = CertFindCertificateInStore(certs,
@@ -558,13 +558,13 @@ xmlSecMSCryptoX509StoreVerify(xmlSecKeyDataStorePtr store, HCERTSTORE certs,
                     CERT_FIND_ISSUER_NAME,
                     &(cert->pCertInfo->Subject),
                     nextCert);
-            if((nextCert != NULL) && !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 
+            if((nextCert != NULL) && !CertCompareCertificateName(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
                                         &(nextCert->pCertInfo->Subject), &(nextCert->pCertInfo->Issuer))) {
                 selected = 0;
-            }    
+            }
         } while((selected == 1) && (nextCert != NULL));
         if(nextCert != NULL) {
-            CertFreeCertificateContext(nextCert);                
+            CertFreeCertificateContext(nextCert);
         }
 
         if((selected == 1) && xmlSecMSCryptoX509StoreConstructCertsChain(store, cert, certs, keyInfoCtx)) {
@@ -611,8 +611,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
         return(-1);
     }
 
-    /* TODO: The context to be added here is not duplicated first, 
-    * hopefully this will not lead to errors when closing teh store 
+    /* TODO: The context to be added here is not duplicated first,
+    * hopefully this will not lead to errors when closing teh store
     * and freeing the mem for all the context in the store.
     */
     xmlSecAssert2(certStore != NULL, -1);
@@ -629,8 +629,8 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
 }
 
 
-/** 
- * xmlSecMSCryptoX509StoreAdoptKeyStore: 
+/**
+ * xmlSecMSCryptoX509StoreAdoptKeyStore:
  * @store:              the pointer to X509 key data store klass.
  * @keyStore:           the pointer to keys store.
  *
@@ -638,7 +638,7 @@ xmlSecMSCryptoX509StoreAdoptCert(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT pCe
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int    
+int
 xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE keyStore) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
 
@@ -661,8 +661,8 @@ xmlSecMSCryptoX509StoreAdoptKeyStore (xmlSecKeyDataStorePtr store, HCERTSTORE ke
     return(0);
 }
 
-/** 
- * xmlSecMSCryptoX509StoreAdoptTrustedStore: 
+/**
+ * xmlSecMSCryptoX509StoreAdoptTrustedStore:
  * @store:              the pointer to X509 key data store klass.
  * @trustedStore:       the pointer to certs store.
  *
@@ -693,8 +693,8 @@ xmlSecMSCryptoX509StoreAdoptTrustedStore (xmlSecKeyDataStorePtr store, HCERTSTOR
     return(0);
 }
 
-/** 
- * xmlSecMSCryptoX509StoreAdoptUntrustedStore: 
+/**
+ * xmlSecMSCryptoX509StoreAdoptUntrustedStore:
  * @store:              the pointer to X509 key data store klass.
  * @untrustedStore:     the pointer to certs store.
  *
@@ -725,8 +725,8 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
     return(0);
 }
 
-/** 
- * xmlSecMSCryptoX509StoreEnableSystemTrustedCerts: 
+/**
+ * xmlSecMSCryptoX509StoreEnableSystemTrustedCerts:
  * @store:              the pointer to X509 key data store klass.
  * @val:                the enable/disable flag
  *
@@ -735,13 +735,13 @@ xmlSecMSCryptoX509StoreAdoptUntrustedStore (xmlSecKeyDataStorePtr store, HCERTST
 void
 xmlSecMSCryptoX509StoreEnableSystemTrustedCerts (xmlSecKeyDataStorePtr store, int val) {
     xmlSecMSCryptoX509StoreCtxPtr ctx;
-    
+
     xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId));
-    
+
     ctx = xmlSecMSCryptoX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
     xmlSecAssert(ctx->untrusted != NULL);
-    
+
     /* it is other way around to make default value 0 mimic old behaiviour */
     ctx->dont_use_system_trusted_certs = !val;
 }
@@ -857,7 +857,7 @@ xmlSecMSCryptoX509StoreInitialize(xmlSecKeyDataStorePtr store) {
     }
     CertCloseStore(hUntrustedMemStore, CERT_CLOSE_STORE_CHECK_FLAG);
 
-    return(0);    
+    return(0);
 }
 
 static void
@@ -884,11 +884,231 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
+
+/**
+ * xmlSecMSCryptoX509FindCertBySubject:
+ * @store:              the pointer to certs store
+ * @wcSubject:          the cert subject (Unicode)
+ * @dwCertEncodingType: the cert encoding type
+ *
+ * Searches for a cert with given @subject in the @store
+ *
+ * Returns: cert handle on success or NULL otherwise
+ */
+PCCERT_CONTEXT
+xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DWORD dwCertEncodingType) {
+    PCCERT_CONTEXT res = NULL;
+    CERT_NAME_BLOB cnb;
+    BYTE* bdata;
+    DWORD len;
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(wcSubject != NULL, NULL);
+
+    /* CASE 1: UTF8, DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcSubject,
+                    CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR,
+                    &len);
+        if(bdata != NULL) {
+            cnb.cbData = len;
+            cnb.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_NAME,
+                        &cnb,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+    /* CASE 2: UTF8, REVERSE DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcSubject,
+                    CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    &len);
+        if(bdata != NULL) {
+            cnb.cbData = len;
+            cnb.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_NAME,
+                        &cnb,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+    /* CASE 3: UNICODE, DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcSubject,
+                    CERT_OID_NAME_STR,
+                    &len);
+        if(bdata != NULL) {
+            cnb.cbData = len;
+            cnb.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_NAME,
+                        &cnb,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+    /* CASE 4: UNICODE, REVERSE DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcSubject,
+                    CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    &len);
+        if(bdata != NULL) {
+            cnb.cbData = len;
+            cnb.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_NAME,
+                        &cnb,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+
+    /* done */
+    return (res);
+}
+
+/**
+ * xmlSecMSCryptoX509FindCertByIssuer:
+ * @store:              the pointer to certs store
+ * @wcIssuer:           the cert issuer (Unicode)
+ * @issuerSerialBn:     the cert issuer serial
+ * @dwCertEncodingType: the cert encoding type
+ *
+ * Searches for a cert with given @subject in the @store
+ *
+ * Returns: cert handle on success or NULL otherwise
+ */
 static PCCERT_CONTEXT
-xmlSecMSCryptoX509FindCert(HCERTSTORE store, 
-                const xmlChar *subjectName, 
-                const xmlChar *issuerName, 
-                const xmlChar *issuerSerial, 
+xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
+                                   xmlSecBnPtr issuerSerialBn, DWORD dwCertEncodingType) {
+
+    PCCERT_CONTEXT res = NULL;
+    CERT_INFO certInfo;
+    BYTE* bdata;
+    DWORD len;
+
+
+    xmlSecAssert2(store != NULL, NULL);
+    xmlSecAssert2(wcIssuer != NULL, NULL);
+    xmlSecAssert2(issuerSerialBn != NULL, NULL);
+
+    certInfo.SerialNumber.cbData = xmlSecBnGetSize(issuerSerialBn);
+    certInfo.SerialNumber.pbData = xmlSecBnGetData(issuerSerialBn);
+
+
+    /* CASE 1: UTF8, DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcIssuer,
+                    CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR,
+                    &len);
+        if(bdata != NULL) {
+            certInfo.Issuer.cbData = len;
+            certInfo.Issuer.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_CERT,
+                        &certInfo,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+    /* CASE 2: UTF8, REVERSE DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcIssuer,
+                    CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    &len);
+        if(bdata != NULL) {
+            certInfo.Issuer.cbData = len;
+            certInfo.Issuer.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_CERT,
+                        &certInfo,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+    /* CASE 3: UNICODE, DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcIssuer,
+                    CERT_OID_NAME_STR,
+                    &len);
+        if(bdata != NULL) {
+            certInfo.Issuer.cbData = len;
+            certInfo.Issuer.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_CERT,
+                        &certInfo,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+    /* CASE 4: UNICODE, REVERSE DN */
+    if (NULL == res) {
+        bdata = xmlSecMSCryptoCertStrToNameW(dwCertEncodingType,
+                    wcIssuer,
+                    CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
+                    &len);
+        if(bdata != NULL) {
+            certInfo.Issuer.cbData = len;
+            certInfo.Issuer.pbData = bdata;
+
+            res = CertFindCertificateInStore(store,
+                        dwCertEncodingType,
+                        0,
+                        CERT_FIND_SUBJECT_CERT,
+                        &certInfo,
+                        NULL);
+            xmlFree(bdata);
+        }
+    }
+
+
+    /* done */
+    return (res);
+}
+
+static PCCERT_CONTEXT
+xmlSecMSCryptoX509FindCert(HCERTSTORE store,
+                const xmlChar *subjectName,
+                const xmlChar *issuerName,
+                const xmlChar *issuerSerial,
                 const xmlChar *ski) {
     PCCERT_CONTEXT pCert = NULL;
     int ret;
@@ -896,12 +1116,9 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
     xmlSecAssert2(store != 0, NULL);
 
     if((pCert == NULL) && (NULL != subjectName)) {
-        CERT_NAME_BLOB cnb;
         LPWSTR wcSubjectName = NULL;
-        BYTE *cName = NULL; 
-        DWORD cNameLen;
 
-        /* get subject name */
+        /* get unicode subject name */
         wcSubjectName = xmlSecMSCryptoConvertUtf8ToUnicode(subjectName);
         if(wcSubjectName == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -912,81 +1129,19 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
             return(NULL);
         }
 
-
-        cName = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                        wcSubjectName,
-                        CERT_OID_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-                        &cNameLen);
-        if(cName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoCertStrToName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            xmlFree(wcSubjectName);
-            return (NULL);
-        }
-        cnb.pbData = cName;
-        cnb.cbData = cNameLen;
-
         /* search */
-        pCert = CertFindCertificateInStore(store, 
-                        PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
-                        0,
-                        CERT_FIND_SUBJECT_NAME,
-                        &cnb,
-                        NULL);
-        
+        pCert = xmlSecMSCryptoX509FindCertBySubject(store,
+            wcSubjectName,
+            PKCS_7_ASN_ENCODING | X509_ASN_ENCODING);
+
+
         /* cleanup */
-        xmlFree(cName);
         xmlFree(wcSubjectName);
     }
 
     if((pCert == NULL) && (NULL != issuerName) && (NULL != issuerSerial)) {
-        xmlSecBn issuerSerialBn;    
-        xmlChar * p;
-        CERT_INFO certInfo;
-        CERT_NAME_BLOB cnb;
+        xmlSecBn issuerSerialBn;
         LPWSTR wcIssuerName = NULL;
-        BYTE *cName = NULL; 
-        DWORD cNameLen = 0;    
-
-        /* aleksey: for some unknown to me reasons, mscrypto wants Email
-        * instead of emailAddress. This code is not bullet proof and may 
-        * produce incorrect results if someone has "emailAddress=" string
-        * in one of the fields, but it is best I can suggest to fix this problem.
-        * Also see xmlSecMSCryptoX509NameWrite function.
-        */
-        while( (p = (xmlChar*)xmlStrstr(issuerName, BAD_CAST "emailAddress=")) != NULL) {
-            memcpy(p, "       Email=", 13);
-        }
-
-        /* get issuer name */
-        wcIssuerName = xmlSecMSCryptoConvertUtf8ToUnicode(issuerName);
-        if(wcIssuerName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "xmlSecMSCryptoConvertUtf8ToUnicode",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "wcIssuerName");
-            return(NULL);
-        }
-
-        cName = xmlSecMSCryptoCertStrToNameW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                        wcIssuerName,
-                        CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG | CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG,
-                        &cNameLen);
-        if(cName == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecMSCryptoCertStrToName",
-                XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-            xmlFree(wcIssuerName);
-            return (NULL);
-        }
-        cnb.pbData = cName;
-        cnb.cbData = cNameLen;
 
         /* get serial number */
         ret = xmlSecBnInitialize(&issuerSerialBn, 0);
@@ -996,8 +1151,6 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                 "xmlSecBnInitialize",
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
-            xmlFree(cName);
-            xmlFree(wcIssuerName);
             return(NULL);
         }
 
@@ -1009,13 +1162,11 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecBnFinalize(&issuerSerialBn);
-            xmlFree(cName);
-            xmlFree(wcIssuerName);
             return(NULL);
         }
 
-        /* I have no clue why at a sudden a swap is needed to 
-        * convert from lsb... This code is purely based upon 
+        /* I have no clue why at a sudden a swap is needed to
+        * convert from lsb... This code is purely based upon
         * trial and error :( WK
         */
         ret = xmlSecBnReverse(&issuerSerialBn);
@@ -1026,28 +1177,81 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecBnFinalize(&issuerSerialBn);
-            xmlFree(cName);
-            xmlFree(wcIssuerName);
             return(NULL);
         }
 
-        certInfo.Issuer.cbData = cnb.cbData ;
-        certInfo.Issuer.pbData = cnb.pbData ;
-        certInfo.SerialNumber.cbData = xmlSecBnGetSize( &issuerSerialBn ) ;
-        certInfo.SerialNumber.pbData = xmlSecBnGetData( &issuerSerialBn ) ;
+        /* get issuer name */
+        wcIssuerName = xmlSecMSCryptoConvertUtf8ToUnicode(issuerName);
+        if(wcIssuerName == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecMSCryptoConvertUtf8ToUnicode",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "wcIssuerName");
+            xmlSecBnFinalize(&issuerSerialBn);
+            return(NULL);
+        }
 
-        pCert = CertFindCertificateInStore(
-                        store,
-                        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING,
-                        0,
-                        CERT_FIND_SUBJECT_CERT,
-                        &certInfo,
-                        NULL
-                ) ;
+        /* search */
+        pCert = xmlSecMSCryptoX509FindCertByIssuer(store,
+                        wcIssuerName,
+                        &issuerSerialBn,
+                        X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
 
-        xmlSecBnFinalize(&issuerSerialBn);
-        xmlFree(cName);
         xmlFree(wcIssuerName);
+
+        /* aleksey: for some unknown to me reasons, mscrypto wants Email
+        * instead of emailAddress. This code is not bullet proof and may
+        * produce incorrect results if someone has "emailAddress=" string
+        * in one of the fields, but it is best I can suggest to fix this problem.
+        * Also see xmlSecMSCryptoX509NameWrite function.
+        */
+        if(pCert == NULL) {
+            xmlChar * issuerName2 = NULL;
+            LPWSTR wcIssuerName2 = NULL;
+            xmlChar * p;
+
+            /* replace "emailAddress=" with "Email" */
+            issuerName2 = xmlStrdup(issuerName);
+            if(issuerName2 == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            NULL,
+                            XMLSEC_ERRORS_R_MALLOC_FAILED,
+                            "xmlStrlen(issuerName)=%d",
+                            xmlStrlen(issuerName));
+                xmlSecBnFinalize(&issuerSerialBn);
+                return(NULL);
+            }
+            while( (p = (xmlChar*)xmlStrstr(issuerName2, BAD_CAST "emailAddress=")) != NULL) {
+                memcpy(p, "       Email=", 13);
+            }
+
+            /* get issuer name */
+            wcIssuerName2 = xmlSecMSCryptoConvertUtf8ToUnicode(issuerName2);
+            if(wcIssuerName2 == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "xmlSecMSCryptoConvertUtf8ToUnicode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            "wcIssuerName2");
+                xmlFree(issuerName2);
+                xmlSecBnFinalize(&issuerSerialBn);
+                return(NULL);
+            }
+
+            /* search */
+            pCert = xmlSecMSCryptoX509FindCertByIssuer(store,
+                            wcIssuerName2,
+                            &issuerSerialBn,
+                            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
+
+            xmlFree(issuerName2);
+            xmlFree(wcIssuerName2);
+        }
+
+        /* cleanup */
+        xmlSecBnFinalize(&issuerSerialBn);
     }
 
     if((pCert == NULL) && (ski != NULL)) {
@@ -1080,7 +1284,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
 
         blob.pbData = binSki;
         blob.cbData = binSkiLen;
-        pCert = CertFindCertificateInStore(store, 
+        pCert = CertFindCertificateInStore(store,
                         PKCS_7_ASN_ENCODING | X509_ASN_ENCODING,
                         0,
                         CERT_FIND_KEY_IDENTIFIER,
@@ -1089,7 +1293,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         xmlFree(binSki);
     }
 
-  return(pCert);
+    return(pCert);
 }
 
 

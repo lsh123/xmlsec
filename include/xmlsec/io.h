@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Input uri transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_IO_H__
-#define __XMLSEC_IO_H__    
+#define __XMLSEC_IO_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 #include <libxml/xmlIO.h>
@@ -32,12 +32,12 @@ XMLSEC_EXPORT int       xmlSecIORegisterCallbacks               (xmlInputMatchCa
 
 /********************************************************************
  *
- * Input URI transform 
+ * Input URI transform
  *
  *******************************************************************/
 /**
  * xmlSecTransformInputURIId:
- * 
+ *
  * The Input URI transform id.
  */
 #define xmlSecTransformInputURIId \

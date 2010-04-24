@@ -1,4 +1,4 @@
-/** 
+/**
  * XMLSec library
  *
  * X509 support
@@ -6,7 +6,7 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
  */
@@ -84,29 +84,29 @@ static int              xmlSecMSCryptoX509CRLNodeRead           (xmlSecKeyDataPt
 static int              xmlSecMSCryptoX509CRLNodeWrite          (PCCRL_CONTEXT crl,
                                                                  xmlNodePtr node,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
-static int              xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, 
+static int              xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data,
                                                                 xmlSecKeyPtr key,
                                                                 xmlSecKeyInfoCtxPtr keyInfoCtx);
 
-static PCCERT_CONTEXT   xmlSecMSCryptoX509CertDerRead           (const xmlSecByte* buf, 
+static PCCERT_CONTEXT   xmlSecMSCryptoX509CertDerRead           (const xmlSecByte* buf,
                                                                  xmlSecSize size);
 static PCCERT_CONTEXT   xmlSecMSCryptoX509CertBase64DerRead     (xmlChar* buf);
-static xmlChar*         xmlSecMSCryptoX509CertBase64DerWrite    (PCCERT_CONTEXT cert, 
+static xmlChar*         xmlSecMSCryptoX509CertBase64DerWrite    (PCCERT_CONTEXT cert,
                                                                  int base64LineWrap);
-static PCCRL_CONTEXT    xmlSecMSCryptoX509CrlDerRead            (xmlSecByte* buf, 
+static PCCRL_CONTEXT    xmlSecMSCryptoX509CrlDerRead            (xmlSecByte* buf,
                                                                  xmlSecSize size,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
 static PCCRL_CONTEXT xmlSecMSCryptoX509CrlBase64DerRead         (xmlChar* buf,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);
-static xmlChar*         xmlSecMSCryptoX509CrlBase64DerWrite     (PCCRL_CONTEXT crl, 
+static xmlChar*         xmlSecMSCryptoX509CrlBase64DerWrite     (PCCRL_CONTEXT crl,
                                                                  int base64LineWrap);
 static xmlChar*         xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm);
 static int              xmlSecMSCryptoASN1IntegerWrite          (xmlNodePtr node,
                                                                  PCRYPT_INTEGER_BLOB num);
 static xmlChar*         xmlSecMSCryptoX509SKIWrite              (PCCERT_CONTEXT cert);
-static void             xmlSecMSCryptoX509CertDebugDump         (PCCERT_CONTEXT cert, 
+static void             xmlSecMSCryptoX509CertDebugDump         (PCCERT_CONTEXT cert,
                                                                  FILE* output);
-static void             xmlSecMSCryptoX509CertDebugXmlDump      (PCCERT_CONTEXT cert, 
+static void             xmlSecMSCryptoX509CertDebugXmlDump      (PCCERT_CONTEXT cert,
                                                                  FILE* output);
 static int              xmlSecMSCryptoX509CertGetTime           (FILETIME t,
                                                                  time_t* res);
@@ -134,52 +134,52 @@ struct _xmlSecMSCryptoX509DataCtx {
  *
  * The X509Data  Element (http://www.w3.org/TR/xmldsig-core/#sec-X509Data)
  *
- * An X509Data element within KeyInfo contains one or more identifiers of keys 
- * or X509 certificates (or certificates' identifiers or a revocation list). 
+ * An X509Data element within KeyInfo contains one or more identifiers of keys
+ * or X509 certificates (or certificates' identifiers or a revocation list).
  * The content of X509Data is:
  *
  *  1. At least one element, from the following set of element types; any of these may appear together or more than once iff (if and only if) each instance describes or is related to the same certificate:
  *  2.
- *    * The X509IssuerSerial element, which contains an X.509 issuer 
- *      distinguished name/serial number pair that SHOULD be compliant 
+ *    * The X509IssuerSerial element, which contains an X.509 issuer
+ *      distinguished name/serial number pair that SHOULD be compliant
  *      with RFC2253 [LDAP-DN],
- *    * The X509SubjectName element, which contains an X.509 subject 
+ *    * The X509SubjectName element, which contains an X.509 subject
  *      distinguished name that SHOULD be compliant with RFC2253 [LDAP-DN],
- *    * The X509SKI element, which contains the base64 encoded plain (i.e. 
+ *    * The X509SKI element, which contains the base64 encoded plain (i.e.
  *      non-DER-encoded) value of a X509 V.3 SubjectKeyIdentifier extension.
- *    * The X509Certificate element, which contains a base64-encoded [X509v3] 
+ *    * The X509Certificate element, which contains a base64-encoded [X509v3]
  *      certificate, and
- *    * Elements from an external namespace which accompanies/complements any 
+ *    * Elements from an external namespace which accompanies/complements any
  *      of the elements above.
- *    * The X509CRL element, which contains a base64-encoded certificate 
+ *    * The X509CRL element, which contains a base64-encoded certificate
  *      revocation list (CRL) [X509v3].
  *
- * Any X509IssuerSerial, X509SKI, and X509SubjectName elements that appear 
+ * Any X509IssuerSerial, X509SKI, and X509SubjectName elements that appear
  * MUST refer to the certificate or certificates containing the validation key.
- * All such elements that refer to a particular individual certificate MUST be 
- * grouped inside a single X509Data element and if the certificate to which 
+ * All such elements that refer to a particular individual certificate MUST be
+ * grouped inside a single X509Data element and if the certificate to which
  * they refer appears, it MUST also be in that X509Data element.
  *
- * Any X509IssuerSerial, X509SKI, and X509SubjectName elements that relate to 
- * the same key but different certificates MUST be grouped within a single 
+ * Any X509IssuerSerial, X509SKI, and X509SubjectName elements that relate to
+ * the same key but different certificates MUST be grouped within a single
  * KeyInfo but MAY occur in multiple X509Data elements.
  *
- * All certificates appearing in an X509Data element MUST relate to the 
- * validation key by either containing it or being part of a certification 
+ * All certificates appearing in an X509Data element MUST relate to the
+ * validation key by either containing it or being part of a certification
  * chain that terminates in a certificate containing the validation key.
  *
  * No ordering is implied by the above constraints.
  *
- * Note, there is no direct provision for a PKCS#7 encoded "bag" of 
- * certificates or CRLs. However, a set of certificates and CRLs can occur 
- * within an X509Data element and multiple X509Data elements can occur in a 
- * KeyInfo. Whenever multiple certificates occur in an X509Data element, at 
- * least one such certificate must contain the public key which verifies the 
+ * Note, there is no direct provision for a PKCS#7 encoded "bag" of
+ * certificates or CRLs. However, a set of certificates and CRLs can occur
+ * within an X509Data element and multiple X509Data elements can occur in a
+ * KeyInfo. Whenever multiple certificates occur in an X509Data element, at
+ * least one such certificate must contain the public key which verifies the
  * signature.
  *
  * Schema Definition
  *
- *  <element name="X509Data" type="ds:X509DataType"/> 
+ *  <element name="X509Data" type="ds:X509DataType"/>
  *  <complexType name="X509DataType">
  *    <sequence maxOccurs="unbounded">
  *      <choice>
@@ -192,10 +192,10 @@ struct _xmlSecMSCryptoX509DataCtx {
  *      </choice>
  *    </sequence>
  *  </complexType>
- *  <complexType name="X509IssuerSerialType"> 
- *    <sequence> 
- *       <element name="X509IssuerName" type="string"/> 
- *       <element name="X509SerialNumber" type="integer"/> 
+ *  <complexType name="X509IssuerSerialType">
+ *    <sequence>
+ *       <element name="X509IssuerName" type="string"/>
+ *       <element name="X509SerialNumber" type="integer"/>
  *     </sequence>
  *  </complexType>
  *
@@ -217,7 +217,7 @@ struct _xmlSecMSCryptoX509DataCtx {
  *
  *************************************************************************/
 #define xmlSecMSCryptoX509DataSize      \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCryptoX509DataCtx)) 
+    (sizeof(xmlSecKeyData) + sizeof(xmlSecMSCryptoX509DataCtx))
 #define xmlSecMSCryptoX509DataGetCtx(data) \
     ((xmlSecMSCryptoX509DataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
@@ -249,12 +249,12 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataX509Klass = {
 
     /* data */
     xmlSecNameX509Data,
-    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyInfoNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefX509Data,                         /* const xmlChar* href; */
     xmlSecNodeX509Data,                         /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecMSCryptoKeyDataX509Initialize,        /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecMSCryptoKeyDataX509Duplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
@@ -264,7 +264,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataX509Klass = {
     /* get info */
     xmlSecMSCryptoKeyDataX509GetType,           /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    xmlSecMSCryptoKeyDataX509GetIdentifier,     /* xmlSecKeyDataGetIdentifier getIdentifier; */    
+    xmlSecMSCryptoKeyDataX509GetIdentifier,     /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecMSCryptoKeyDataX509XmlRead,           /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -281,14 +281,14 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataX509Klass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecMSCryptoKeyDataX509GetKlass:
- * 
+ *
  * The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/#sec-X509Data).
  *
  * Returns: the X509 data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecMSCryptoKeyDataX509GetKlass(void) {
     return(&xmlSecMSCryptoKeyDataX509Klass);
 }
@@ -297,7 +297,7 @@ xmlSecMSCryptoKeyDataX509GetKlass(void) {
  * xmlSecMSCryptoKeyDataX509GetKeyCert:
  * @data:               the pointer to X509 key data.
  *
- * Gets the certificate from which the key was extracted. 
+ * Gets the certificate from which the key was extracted.
  *
  * Returns: the key's certificate or NULL if key data was not used for key
  * extraction or an error occurs.
@@ -305,7 +305,7 @@ xmlSecMSCryptoKeyDataX509GetKlass(void) {
 PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataX509GetKeyCert(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), NULL);
 
     ctx = xmlSecMSCryptoX509DataGetCtx(data);
@@ -351,7 +351,7 @@ xmlSecMSCryptoKeyDataX509AdoptKeyCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
 
@@ -368,11 +368,11 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
                     "CertAddCertificateContextToStore",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);     
+        return(-1);
     }
     CertFreeCertificateContext(cert);
     ctx->numCerts++;
-      
+
     return(0);
 }
 
@@ -380,13 +380,13 @@ xmlSecMSCryptoKeyDataX509AdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT cert) {
  * xmlSecMSCryptoKeyDataX509GetCert:
  * @data:               the pointer to X509 key data.
  * @pos:                the desired certificate position.
- * 
+ *
  * Gets a certificate from X509 key data.
  *
- * Returns: the pointer to certificate or NULL if @pos is larger than the 
+ * Returns: the pointer to certificate or NULL if @pos is larger than the
  * number of certificates in @data or an error occurs.
  */
-PCCERT_CONTEXT 
+PCCERT_CONTEXT
 xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
     PCCERT_CONTEXT pCert = NULL;
@@ -413,7 +413,7 @@ xmlSecMSCryptoKeyDataX509GetCert(xmlSecKeyDataPtr data, xmlSecSize pos) {
  *
  * Returns: te number of certificates in @data.
  */
-xmlSecSize      
+xmlSecSize
 xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
 
@@ -434,7 +434,7 @@ xmlSecMSCryptoKeyDataX509GetCertsSize(xmlSecKeyDataPtr data) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
 
@@ -451,7 +451,7 @@ xmlSecMSCryptoKeyDataX509AdoptCrl(xmlSecKeyDataPtr data, PCCRL_CONTEXT crl) {
                     "CertAddCRLContextToStore",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);     
+        return(-1);
     }
     ctx->numCrls++;
 
@@ -506,7 +506,7 @@ xmlSecMSCryptoKeyDataX509GetCrlsSize(xmlSecKeyDataPtr data) {
     return(ctx->numCrls);
 }
 
-static int      
+static int
 xmlSecMSCryptoKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoX509DataCtxPtr ctx;
 
@@ -518,9 +518,9 @@ xmlSecMSCryptoKeyDataX509Initialize(xmlSecKeyDataPtr data) {
     memset(ctx, 0, sizeof(xmlSecMSCryptoX509DataCtx));
 
     ctx->hMemStore = CertOpenStore(CERT_STORE_PROV_MEMORY,
-                                   0, 
-                                   0, 
-                                   CERT_STORE_CREATE_NEW_FLAG, 
+                                   0,
+                                   0,
+                                   CERT_STORE_CREATE_NEW_FLAG,
                                    NULL);
     if (ctx->hMemStore == 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -544,7 +544,7 @@ xmlSecMSCryptoKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecMSCryptoKeyDataX509Id), -1);
 
-    /* copy certsList */ 
+    /* copy certsList */
     size = xmlSecMSCryptoKeyDataX509GetCertsSize(src);
     for(pos = 0; pos < size; ++pos) {
         /* TBD: function below does linear scan, eliminate loop within
@@ -716,7 +716,7 @@ xmlSecMSCryptoKeyDataX509XmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataPtr data;
@@ -725,7 +725,7 @@ xmlSecMSCryptoKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecSize size, pos;
     int content = 0;
     int ret;
-                                
+
     xmlSecAssert2(id == xmlSecMSCryptoKeyDataX509Id, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
@@ -748,7 +748,7 @@ xmlSecMSCryptoKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
     data = xmlSecKeyGetData(key, id);
     if(data == NULL) {
         /* no x509 data in the key */
-        return(0);      
+        return(0);
     }
 
     /* write certs */
@@ -811,7 +811,7 @@ xmlSecMSCryptoKeyDataX509XmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                 return(-1);
             }
         }
-    }    
+    }
 
     /* write crls if needed */
     if((content & XMLSEC_X509DATA_CRL_NODE) != 0) {
@@ -846,19 +846,19 @@ static xmlSecKeyDataType
 xmlSecMSCryptoKeyDataX509GetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), xmlSecKeyDataTypeUnknown);
 
-    /* TODO: return verified/not verified status */     
+    /* TODO: return verified/not verified status */
     return(xmlSecKeyDataTypeUnknown);
 }
 
 static const xmlChar*
 xmlSecMSCryptoKeyDataX509GetIdentifier(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), NULL);
-    
-    /* TODO */    
+
+    /* TODO */
     return(NULL);
 }
 
-static void 
+static void
 xmlSecMSCryptoKeyDataX509DebugDump(xmlSecKeyDataPtr data, FILE* output) {
     PCCERT_CONTEXT cert;
     xmlSecSize size, pos;
@@ -929,13 +929,13 @@ xmlSecMSCryptoKeyDataX509DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 
 static int
 xmlSecMSCryptoX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur; 
+    xmlNodePtr cur;
     int ret;
-        
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    
+
     for(cur = xmlSecGetNextElementNode(node->children);
         cur != NULL;
         cur = xmlSecGetNextElementNode(cur->next)) {
@@ -966,14 +966,14 @@ xmlSecMSCryptoX509DataNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKey
                 xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                 "read node failed");
-            return(-1);  
-        }       
+            return(-1);
+        }
     }
     return(0);
 }
 
 static int
-xmlSecMSCryptoX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) { 
+xmlSecMSCryptoX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar *content;
     PCCERT_CONTEXT cert;
     int ret;
@@ -1007,7 +1007,7 @@ xmlSecMSCryptoX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlFree(content);
         return(-1);
-    }    
+    }
 
     ret = xmlSecMSCryptoKeyDataX509AdoptCert(data, cert);
     if(ret < 0) {
@@ -1020,23 +1020,23 @@ xmlSecMSCryptoX509CertificateNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
         xmlFree(content);
         return(-1);
     }
-     
+
     xmlFree(content);
     return(0);
 }
 
-static int 
-xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, 
+static int
+xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
                                        xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar* buf;
     xmlNodePtr cur;
-    
+
     xmlSecAssert2(cert != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
-    
+
     /* set base64 lines size from context */
-    buf = xmlSecMSCryptoX509CertBase64DerWrite(cert, keyInfoCtx->base64LineSize); 
+    buf = xmlSecMSCryptoX509CertBase64DerWrite(cert, keyInfoCtx->base64LineSize);
     if(buf == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1055,7 +1055,7 @@ xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
         xmlFree(buf);
-        return(-1);     
+        return(-1);
     }
 
     /* todo: add \n around base64 data - from context */
@@ -1066,13 +1066,13 @@ xmlSecMSCryptoX509CertificateNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node,
     return(0);
 }
 
-static int              
-xmlSecMSCryptoX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) { 
+static int
+xmlSecMSCryptoX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataStorePtr x509Store;
     xmlChar* subject;
     PCCERT_CONTEXT cert;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -1111,7 +1111,7 @@ xmlSecMSCryptoX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xm
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                         NULL,
                         XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "subject=%s", 
+                        "subject=%s",
                         xmlSecErrorsSafeString(subject));
             xmlFree(subject);
             return(-1);
@@ -1170,12 +1170,12 @@ xmlSecMSCryptoX509SubjectNameNodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xml
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataStorePtr x509Store;
     xmlNodePtr cur;
     xmlChar *issuerName;
-    xmlChar *issuerSerial;    
+    xmlChar *issuerSerial;
     PCCERT_CONTEXT cert;
     int ret;
 
@@ -1217,7 +1217,7 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
         return(-1);
-    }    
+    }
     issuerName = xmlNodeGetContent(cur);
     if(issuerName == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1228,7 +1228,7 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
                     xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
         return(-1);
     }
-    cur = xmlSecGetNextElementNode(cur->next); 
+    cur = xmlSecGetNextElementNode(cur->next);
 
     /* next is required node X509SerialNumber */
     if((cur == NULL) || !xmlSecCheckNodeName(cur, xmlSecNodeX509SerialNumber, xmlSecDSigNs)) {
@@ -1240,7 +1240,7 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
                     xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
         xmlFree(issuerName);
         return(-1);
-    }    
+    }
     issuerSerial = xmlNodeGetContent(cur);
     if(issuerSerial == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1252,7 +1252,7 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
         xmlFree(issuerName);
         return(-1);
     }
-    cur = xmlSecGetNextElementNode(cur->next); 
+    cur = xmlSecGetNextElementNode(cur->next);
 
     if(cur != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1273,7 +1273,7 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
                         NULL,
                         XMLSEC_ERRORS_R_CERT_NOT_FOUND,
                         "issuerName=%s;issuerSerial=%s",
-                        xmlSecErrorsSafeString(issuerName), 
+                        xmlSecErrorsSafeString(issuerName),
                         xmlSecErrorsSafeString(issuerSerial));
             xmlFree(issuerSerial);
             xmlFree(issuerName);
@@ -1282,7 +1282,7 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
 
         xmlFree(issuerSerial);
         xmlFree(issuerName);
-        return(0);    
+        return(0);
     }
 
     ret = xmlSecMSCryptoKeyDataX509AdoptCert(data, cert);
@@ -1297,15 +1297,15 @@ xmlSecMSCryptoX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, x
         xmlFree(issuerName);
         return(-1);
     }
-    
+
     xmlFree(issuerSerial);
     xmlFree(issuerName);
     return(0);
 }
 
 static int
-xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert, 
-                                        xmlNodePtr node, 
+xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
+                                        xmlNodePtr node,
                                         xmlSecKeyInfoCtxPtr keyInfoCtx ATTRIBUTE_UNUSED) {
     xmlNodePtr cur;
     xmlNodePtr issuerNameNode;
@@ -1375,13 +1375,13 @@ xmlSecMSCryptoX509IssuerSerialNodeWrite(PCCERT_CONTEXT cert,
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataStorePtr x509Store;
     xmlChar* ski;
     PCCERT_CONTEXT cert;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -1423,7 +1423,7 @@ xmlSecMSCryptoX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                         NULL,
                         XMLSEC_ERRORS_R_CERT_NOT_FOUND,
-                        "ski=%s", 
+                        "ski=%s",
                         xmlSecErrorsSafeString(ski));
             return(-1);
         }
@@ -1481,7 +1481,7 @@ xmlSecMSCryptoX509SKINodeWrite(PCCERT_CONTEXT cert, xmlNodePtr node, xmlSecKeyIn
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlChar *content;
     PCCRL_CONTEXT crl;
@@ -1515,7 +1515,7 @@ xmlSecMSCryptoX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlFree(content);
         return(-1);
-    }    
+    }
 
     if (0 != xmlSecMSCryptoKeyDataX509AdoptCrl(data, crl)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1524,10 +1524,10 @@ xmlSecMSCryptoX509CRLNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyI
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlFree(content);
-        CertFreeCRLContext(crl); 
+        CertFreeCRLContext(crl);
         return(-1);
     }
-    
+
     xmlFree(content);
     return(0);
 }
@@ -1542,7 +1542,7 @@ xmlSecMSCryptoX509CRLNodeWrite(PCCRL_CONTEXT crl, xmlNodePtr node, xmlSecKeyInfo
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
     /* set base64 lines size from context */
-    buf = xmlSecMSCryptoX509CrlBase64DerWrite(crl, keyInfoCtx->base64LineSize); 
+    buf = xmlSecMSCryptoX509CrlBase64DerWrite(crl, keyInfoCtx->base64LineSize);
     if(buf == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1579,7 +1579,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
     xmlSecMSCryptoX509DataCtxPtr ctx;
     xmlSecKeyDataStorePtr x509Store;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataX509Id), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
@@ -1664,7 +1664,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 XMLSEC_ERRORS_NO_MESSAGE);
                     xmlSecKeyDataDestroy(keyValue);
                     return(-1);
-            }   
+            }
 
             ret = xmlSecKeySetValue(key, keyValue);
             if(ret < 0) {
@@ -1675,7 +1675,7 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
                                 XMLSEC_ERRORS_NO_MESSAGE);
                     xmlSecKeyDataDestroy(keyValue);
                     return(-1);
-            }       
+            }
 
             ret = xmlSecMSCryptoX509CertGetTime(ctx->keyCert->pCertInfo->NotBefore, &(key->notValidBefore));
             if(ret < 0) {
@@ -1711,9 +1711,9 @@ xmlSecMSCryptoKeyDataX509VerifyAndExtractKey(xmlSecKeyDataPtr data, xmlSecKeyPtr
 static int
 xmlSecMSCryptoX509CertGetTime(FILETIME t, time_t* res) {
     LONGLONG result;
-    
+
     xmlSecAssert2(res != NULL, -1);
-    
+
     result = t.dwHighDateTime;
     result = (result) << 32;
     result |= t.dwLowDateTime;
@@ -1734,9 +1734,9 @@ xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
-    
+
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf)); 
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1745,7 +1745,7 @@ xmlSecMSCryptoX509CertBase64DerRead(xmlChar* buf) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     return(xmlSecMSCryptoX509CertDerRead((xmlSecByte*)buf, ret));
 }
 
@@ -1797,20 +1797,20 @@ xmlSecMSCryptoX509CertBase64DerWrite(PCCERT_CONTEXT cert, int base64LineWrap) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
-    }    
+    }
 
     return(res);
 }
 
 static PCCRL_CONTEXT
-xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf, 
+xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf,
                                    xmlSecKeyInfoCtxPtr keyInfoCtx) {
     int ret;
 
     xmlSecAssert2(buf != NULL, NULL);
 
     /* usual trick with base64 decoding "in-place" */
-    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf)); 
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1824,7 +1824,7 @@ xmlSecMSCryptoX509CrlBase64DerRead(xmlChar* buf,
 }
 
 
-static PCCRL_CONTEXT                      
+static PCCRL_CONTEXT
 xmlSecMSCryptoX509CrlDerRead(xmlSecByte* buf, xmlSecSize size,
                              xmlSecKeyInfoCtxPtr keyInfoCtx) {
     PCCRL_CONTEXT crl = NULL;
@@ -1874,7 +1874,7 @@ xmlSecMSCryptoX509CrlBase64DerWrite(PCCRL_CONTEXT crl, int base64LineWrap) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
-    }   
+    }
 
     return(res);
 }
@@ -1913,7 +1913,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
 
     /* aleksey: this is a hack, but mscrypto can not read E= flag and wants Email= instead.
      * don't ask me how is it possible not to read something you wrote yourself but also
-     * see comment in the xmlSecMSCryptoX509FindCert function. 
+     * see comment in the xmlSecMSCryptoX509FindCert function.
      */
     if(strncmp(str, "E=", 2) == 0) {
         res = xmlMalloc(strlen(str) + 13 + 1);
@@ -1929,7 +1929,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
         }
 
         memcpy(res, "emailAddress=", 13);
-        strcpy(res + 13, BAD_CAST (str + 2)); 
+        strcpy(res + 13, BAD_CAST (str + 2));
     } else {
         res = xmlStrdup(BAD_CAST str);
         if(res == NULL) {
@@ -1977,8 +1977,8 @@ xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
         return(-1);
     }
 
-    /* I have no clue why at a sudden a swap is needed to 
-     * convert from lsb... This code is purely based upon 
+    /* I have no clue why at a sudden a swap is needed to
+     * convert from lsb... This code is purely based upon
      * trial and error :( WK
      */
     ret = xmlSecBnSetNodeValue(&bn, node, xmlSecBnDec, 1, 0);
@@ -1991,7 +1991,7 @@ xmlSecMSCryptoASN1IntegerWrite(xmlNodePtr node, PCRYPT_INTEGER_BLOB num) {
         xmlSecBnFinalize(&bn);
         return(-1);
     }
-    
+
     xmlSecBnFinalize(&bn);
     return(0);
 }
@@ -2059,12 +2059,12 @@ xmlSecMSCryptoX509SKIWrite(PCCERT_CONTEXT cert) {
         return(NULL);
     }
     xmlFree(bSKI);
-    
+
     return(res);
 }
 
 
-static void 
+static void
 xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     PCRYPT_INTEGER_BLOB sn;
     unsigned int i;
@@ -2100,7 +2100,7 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
 }
 
 
-static void 
+static void
 xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     PCRYPT_INTEGER_BLOB sn;
     unsigned int i;
@@ -2111,7 +2111,7 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecAssert(output != NULL);
 
     /* todo: add error checks */
-    
+
     /* subject */
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
     subject = (LPSTR)xmlMalloc(dwSize);
@@ -2121,8 +2121,8 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecPrintXmlString(output, BAD_CAST subject);
     fprintf(output, "</SubjectName>\n");
     xmlFree(subject);
-    
-    
+
+
     /* issuer */
     dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, NULL, 0);
     issuer = (LPSTR)xmlMalloc(dwSize);
@@ -2132,7 +2132,7 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     xmlSecPrintXmlString(output, BAD_CAST issuer);
     fprintf(output, "</IssuerName>\n");
     xmlFree(issuer);
-    
+
     /* serial */
     fprintf(output, "<SerialNumber>");
     sn = &(cert->pCertInfo->SerialNumber);
@@ -2165,12 +2165,12 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRawX509CertKlass = {
 
     /* data */
     xmlSecNameRawX509Cert,
-    xmlSecKeyDataUsageRetrievalMethodNodeBin, 
+    xmlSecKeyDataUsageRetrievalMethodNodeBin,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefRawX509Cert,                      /* const xmlChar* href; */
     NULL,                                       /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     NULL,                                       /* xmlSecKeyDataInitializeMethod initialize; */
     NULL,                                       /* xmlSecKeyDataDuplicateMethod duplicate; */
@@ -2180,7 +2180,7 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRawX509CertKlass = {
     /* get info */
     NULL,                                       /* xmlSecKeyDataGetTypeMethod getType; */
     NULL,                                       /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */    
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     NULL,                                       /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -2199,12 +2199,12 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRawX509CertKlass = {
 
 /**
  * xmlSecMSCryptoKeyDataRawX509CertGetKlass:
- * 
+ *
  * The raw X509 certificates key data klass.
  *
  * Returns: raw X509 certificates key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecMSCryptoKeyDataRawX509CertGetKlass(void) {
     return(&xmlSecMSCryptoKeyDataRawX509CertKlass);
 }
@@ -2216,7 +2216,7 @@ xmlSecMSCryptoKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecKeyDataPtr data;
     PCCERT_CONTEXT cert;
     int ret;
-    
+
     xmlSecAssert2(id == xmlSecMSCryptoKeyDataRawX509CertId, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(buf != NULL, -1);

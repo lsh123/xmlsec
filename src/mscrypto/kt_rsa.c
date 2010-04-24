@@ -1,12 +1,12 @@
-/** 
+/**
  *
  * XMLSec library
- * 
+ *
  * RSA Algorithms support
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #include "globals.h"
@@ -35,12 +35,12 @@
  * Internal MSCRYPTO RSA PKCS1 CTX
  *
  *************************************************************************/
-typedef struct _xmlSecMSCryptoRsaPkcs1Ctx       xmlSecMSCryptoRsaPkcs1Ctx, 
+typedef struct _xmlSecMSCryptoRsaPkcs1Ctx       xmlSecMSCryptoRsaPkcs1Ctx,
                                                 *xmlSecMSCryptoRsaPkcs1CtxPtr;
 struct _xmlSecMSCryptoRsaPkcs1Ctx {
     xmlSecKeyDataPtr data;
     DWORD typeFlags;
-};          
+};
 
 /*********************************************************************
  *
@@ -50,20 +50,20 @@ struct _xmlSecMSCryptoRsaPkcs1Ctx {
  *
  ********************************************************************/
 #define xmlSecMSCryptoRsaPkcs1Size      \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoRsaPkcs1Ctx))       
+    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoRsaPkcs1Ctx))
 #define xmlSecMSCryptoRsaPkcs1GetCtx(transform) \
     ((xmlSecMSCryptoRsaPkcs1CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 static int      xmlSecMSCryptoRsaPkcs1Initialize                (xmlSecTransformPtr transform);
 static void     xmlSecMSCryptoRsaPkcs1Finalize                  (xmlSecTransformPtr transform);
-static int      xmlSecMSCryptoRsaPkcs1SetKeyReq                 (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoRsaPkcs1SetKeyReq                 (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecMSCryptoRsaPkcs1SetKey                    (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoRsaPkcs1SetKey                    (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecMSCryptoRsaPkcs1Execute                   (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoRsaPkcs1Execute                   (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecMSCryptoRsaPkcs1Process                   (xmlSecTransformPtr transform, 
+static int      xmlSecMSCryptoRsaPkcs1Process                   (xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
 static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
@@ -88,39 +88,39 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecMSCryptoRsaPkcs1Execute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 
-/** 
+/**
  * xmlSecMSCryptoTransformRsaPkcs1GetKlass:
  *
  * The RSA-PKCS1 key transport transform klass.
  *
  * Returns: RSA-PKCS1 key transport transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecMSCryptoRsaPkcs1Klass);
 }
 
-static int 
+static int
 xmlSecMSCryptoRsaPkcs1Initialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
 
     ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1Ctx));
     return(0);
 }
 
-static void 
+static void
 xmlSecMSCryptoRsaPkcs1Finalize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
 
@@ -129,7 +129,7 @@ xmlSecMSCryptoRsaPkcs1Finalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
     xmlSecAssert(ctx != NULL);
-    
+
     if (ctx->data != NULL)  {
         xmlSecKeyDataDestroy(ctx->data);
         ctx->data = NULL;
@@ -138,7 +138,7 @@ xmlSecMSCryptoRsaPkcs1Finalize(xmlSecTransformPtr transform) {
     memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1Ctx));
 }
 
-static int  
+static int
 xmlSecMSCryptoRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
 
@@ -157,14 +157,14 @@ xmlSecMSCryptoRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr k
     } else {
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
         keyReq->keyUsage = xmlSecKeyUsageDecrypt;
-    }    
+    }
     return(0);
 }
 
-static int      
+static int
 xmlSecMSCryptoRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
@@ -188,7 +188,7 @@ xmlSecMSCryptoRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0);
 }
 
-static int 
+static int
 xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
     int ret;
@@ -203,14 +203,14 @@ xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTran
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
-    } 
-    
+    }
+
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
                 /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         ret = xmlSecMSCryptoRsaPkcs1Process(transform, transformCtx);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecMSCryptoRsaPkcs1Process",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -222,7 +222,7 @@ xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTran
                 /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
@@ -232,7 +232,7 @@ xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTran
     return(0);
 }
 
-static int  
+static int
 xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
     xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
     xmlSecBufferPtr in, out;
@@ -255,17 +255,17 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data != NULL, -1);
-    
+
     keySize = xmlSecKeyDataGetSize(ctx->data) / 8;
     xmlSecAssert2(keySize > 0, -1);
-    
+
     in = &(transform->inBuf);
     out = &(transform->outBuf);
-        
+
     inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);    
+    outSize = xmlSecBufferGetSize(out);
     xmlSecAssert2(outSize == 0, -1);
-        
+
     /* the encoded size is equal to the keys size so we could not
      * process more than that */
     if((transform->operation == xmlSecTransformOperationEncrypt) && (inSize >= keySize)) {
@@ -283,11 +283,11 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
                     "%d when expected %d", inSize, keySize);
         return(-1);
     }
-        
-    outSize = keySize; 
+
+    outSize = keySize;
     ret = xmlSecBufferSetMaxSize(out, outSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferSetMaxSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -299,18 +299,18 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         BYTE ch;
 
         if(inSize > outSize) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_SIZE,
-                        "inSize=%d;outSize=%d", 
+                        "inSize=%d;outSize=%d",
                         inSize, outSize);
             return(-1);
         }
 
         ret = xmlSecBufferSetData(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferSetData",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -328,7 +328,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
                         XMLSEC_ERRORS_NO_MESSAGE);
             return (-1);
         }
-        
+
         outBuf = xmlSecBufferGetData(out);
         xmlSecAssert2(outBuf != NULL, -1);
         if (!CryptEncrypt(hKey, 0, TRUE, 0, outBuf, &dwInLen, dwBufLen)) {
@@ -351,7 +351,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     } else {
         dwOutLen = inSize;
 
-        /* The input of CryptDecrypt is expected to be little-endian, 
+        /* The input of CryptDecrypt is expected to be little-endian,
          * so we have to convert from big-endian to little endian.
          */
         inBuf   = xmlSecBufferGetData(in);
@@ -372,7 +372,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
             return (-1);
         }
         if (!CryptDecrypt(hKey, 0, TRUE, 0, outBuf, &dwOutLen)) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "CryptDecrypt",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -385,9 +385,9 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 
     ret = xmlSecBufferSetSize(out, outSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecBufferSetSize",                  
+                    "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", outSize);
         return(-1);
@@ -395,7 +395,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 
     ret = xmlSecBufferRemoveHead(in, inSize);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "xmlSecBufferRemoveHead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,

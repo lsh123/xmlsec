@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
@@ -29,7 +29,7 @@
  * Internal NSS signatures ctx
  *
  *****************************************************************************/
-typedef struct _xmlSecNssSignatureCtx   xmlSecNssSignatureCtx, 
+typedef struct _xmlSecNssSignatureCtx   xmlSecNssSignatureCtx,
                                         *xmlSecNssSignatureCtxPtr;
 struct _xmlSecNssSignatureCtx {
     xmlSecKeyDataId     keyId;
@@ -46,7 +46,7 @@ struct _xmlSecNssSignatureCtx {
             SECKEYPublicKey    *pubkey;
         } vfy;
     } u;
-};          
+};
 
 /******************************************************************************
  *
@@ -63,15 +63,15 @@ struct _xmlSecNssSignatureCtx {
 static int      xmlSecNssSignatureCheckId               (xmlSecTransformPtr transform);
 static int      xmlSecNssSignatureInitialize            (xmlSecTransformPtr transform);
 static void     xmlSecNssSignatureFinalize              (xmlSecTransformPtr transform);
-static int      xmlSecNssSignatureSetKeyReq             (xmlSecTransformPtr transform, 
+static int      xmlSecNssSignatureSetKeyReq             (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
 static int      xmlSecNssSignatureSetKey                        (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecNssSignatureVerify                        (xmlSecTransformPtr transform, 
+static int      xmlSecNssSignatureVerify                        (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecNssSignatureExecute               (xmlSecTransformPtr transform, 
+static int      xmlSecNssSignatureExecute               (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
@@ -92,16 +92,16 @@ xmlSecNssSignatureCheckId(xmlSecTransformPtr transform) {
     return(0);
 }
 
-static int 
+static int
 xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
     xmlSecNssSignatureCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssSignatureSize), -1);
     ctx = xmlSecNssSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    memset(ctx, 0, sizeof(xmlSecNssSignatureCtx));    
+    memset(ctx, 0, sizeof(xmlSecNssSignatureCtx));
 
 #ifndef XMLSEC_NO_DSA
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformDsaSha1Id)) {
@@ -110,22 +110,22 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
         /* This creates a signature which is ASN1 encoded */
         /*ctx->alg      = SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST;*/
 
-        /* Fortezza uses the same DSA signature format as XML does. 
-         * DSA and FORTEZZA keys are treated as equivalent keys for doing 
+        /* Fortezza uses the same DSA signature format as XML does.
+         * DSA and FORTEZZA keys are treated as equivalent keys for doing
          * DSA signatures (which is how they are supposed to be treated).
          */
         ctx->alg        = SEC_OID_MISSI_DSS;
-    } else 
+    } else
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_RSA
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaSha1Id)) {
         ctx->keyId      = xmlSecNssKeyDataRsaId;
         ctx->alg        = SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION;
-    } else 
+    } else
 #endif /* XMLSEC_NO_RSA */
         if(1) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         NULL,
                         XMLSEC_ERRORS_R_INVALID_TRANSFORM,
@@ -136,7 +136,7 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
     return(0);
 }
 
-static void 
+static void
 xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
     xmlSecNssSignatureCtxPtr ctx;
 
@@ -146,7 +146,7 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecNssSignatureGetCtx(transform);
     xmlSecAssert(ctx != NULL);
-    
+
     if (transform->operation == xmlSecTransformOperationSign) {
         SGN_DestroyContext(ctx->u.sig.sigctx, PR_TRUE);
         if (ctx->u.sig.privkey) {
@@ -159,10 +159,10 @@ xmlSecNssSignatureFinalize(xmlSecTransformPtr transform) {
         }
     }
 
-    memset(ctx, 0, sizeof(xmlSecNssSignatureCtx));    
+    memset(ctx, 0, sizeof(xmlSecNssSignatureCtx));
 }
 
-static int 
+static int
 xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecNssSignatureCtxPtr ctx;
     xmlSecKeyDataPtr value;
@@ -179,7 +179,7 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(value != NULL, -1);
-    
+
     if (transform->operation == xmlSecTransformOperationSign) {
         if (ctx->u.sig.privkey)
             SECKEY_DestroyPrivateKey(ctx->u.sig.privkey);
@@ -226,11 +226,11 @@ xmlSecNssSignatureSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
             return(-1);
         }
     }
-    
+
     return(0);
 }
 
-static int  
+static int
 xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecNssSignatureCtxPtr ctx;
 
@@ -256,13 +256,13 @@ xmlSecNssSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
 
 
 static int
-xmlSecNssSignatureVerify(xmlSecTransformPtr transform, 
+xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssSignatureCtxPtr ctx;
     SECStatus status;
     SECItem   signature;
-    
+
     xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssSignatureSize), -1);
@@ -278,14 +278,14 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     status = VFY_EndWithSignature(ctx->u.vfy.vfyctx, &signature);
 
     if (status != SECSuccess) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "VFY_Update, VFY_End",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "error code=%d", PORT_GetError());
 
         if (PORT_GetError() == SEC_ERROR_PKCS7_BAD_SIGNATURE) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "VFY_End",
                         XMLSEC_ERRORS_R_DATA_NOT_MATCH,
@@ -299,7 +299,7 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
     return(0);
 }
 
-static int 
+static int
 xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecNssSignatureCtxPtr ctx;
     xmlSecBufferPtr in, out;
@@ -307,7 +307,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     SECStatus status;
     SECItem signature;
     int ret;
-    
+
     xmlSecAssert2(xmlSecNssSignatureCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssSignatureSize), -1);
@@ -319,8 +319,8 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     in = &(transform->inBuf);
     out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
-    outSize = xmlSecBufferGetSize(out);    
-    
+    outSize = xmlSecBufferGetSize(out);
+
     ctx = xmlSecNssSignatureGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     if(transform->operation == xmlSecTransformOperationSign) {
@@ -333,11 +333,11 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
 
     if(transform->status == xmlSecTransformStatusNone) {
         xmlSecAssert2(outSize == 0, -1);
-        
+
         if(transform->operation == xmlSecTransformOperationSign) {
             status = SGN_Begin(ctx->u.sig.sigctx);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "SGN_Begin",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -347,7 +347,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         } else {
             status = VFY_Begin(ctx->u.vfy.vfyctx);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "VFY_Begin",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -357,14 +357,14 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
         transform->status = xmlSecTransformStatusWorking;
     }
-    
+
     if((transform->status == xmlSecTransformStatusWorking) && (inSize > 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
         if(transform->operation == xmlSecTransformOperationSign) {
             status = SGN_Update(ctx->u.sig.sigctx, xmlSecBufferGetData(in), inSize);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "SGN_Update",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -374,7 +374,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         } else {
             status = VFY_Update(ctx->u.vfy.vfyctx, xmlSecBufferGetData(in), inSize);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "VFY_Update",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -382,10 +382,10 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
         }
-            
+
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferRemoveHead",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -400,7 +400,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             memset(&signature, 0, sizeof(signature));
             status = SGN_End(ctx->u.sig.sigctx, &signature);
             if(status != SECSuccess) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "SGN_End",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -411,7 +411,7 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             outSize = signature.len;
             ret = xmlSecBufferSetMaxSize(out, outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferSetMaxSize",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -419,12 +419,12 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 PR_Free(signature.data);
                 return(-1);
             }
-        
+
             memcpy(xmlSecBufferGetData(out), signature.data, signature.len);
 
             ret = xmlSecBufferSetSize(out, outSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferSetSize",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -436,19 +436,19 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
         transform->status = xmlSecTransformStatusFinished;
     }
-    
+
     if((transform->status == xmlSecTransformStatusWorking) || (transform->status == xmlSecTransformStatusFinished)) {
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
                     "status=%d", transform->status);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -467,7 +467,7 @@ static xmlSecTransformKlass xmlSecNssDsaSha1Klass = {
     xmlSecNameDsaSha1,                          /* const xmlChar* name; */
     xmlSecHrefDsaSha1,                          /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-    
+
     xmlSecNssSignatureInitialize,       /* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssSignatureFinalize,         /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -481,19 +481,19 @@ static xmlSecTransformKlass xmlSecNssDsaSha1Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssSignatureExecute,          /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecNssTransformDsaSha1GetKlass:
- * 
+ *
  * The DSA-SHA1 signature transform klass.
  *
  * Returns: DSA-SHA1 signature transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecNssTransformDsaSha1GetKlass(void) {
     return(&xmlSecNssDsaSha1Klass);
 }
@@ -514,7 +514,7 @@ static xmlSecTransformKlass xmlSecNssRsaSha1Klass = {
     xmlSecNameRsaSha1,                          /* const xmlChar* name; */
     xmlSecHrefRsaSha1,                          /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-    
+
     xmlSecNssSignatureInitialize,       /* xmlSecTransformInitializeMethod initialize; */
     xmlSecNssSignatureFinalize,         /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -528,19 +528,19 @@ static xmlSecTransformKlass xmlSecNssRsaSha1Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecNssSignatureExecute,          /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
  * xmlSecNssTransformRsaSha1GetKlass:
- * 
+ *
  * The RSA-SHA1 signature transform klass.
  *
  * Returns: RSA-SHA1 signature transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecNssTransformRsaSha1GetKlass(void) {
     return(&xmlSecNssRsaSha1Klass);
 }

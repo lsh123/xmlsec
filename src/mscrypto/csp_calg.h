@@ -1,10 +1,10 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
- * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).  
+ *
+ * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  * All rights reserved.
  */
 #ifndef CRYPTOCOM_CSP_CALG_H
@@ -29,10 +29,10 @@
 #define ALG_SID_DH_EL_SF                                36
 #define ALG_SID_DH_EL_EPHEM                             37
 
-/*! \defgroup CALG_MAGPRO CALG_MAGPRO 
+/*! \defgroup CALG_MAGPRO CALG_MAGPRO
  *  \brief The description of CALG_MAGPRO
  *
- * @{ 
+ * @{
  */
 
 
@@ -67,10 +67,10 @@
 #define CALG_DH_EL_EPHEM                                (ALG_CLASS_KEY_EXCHANGE | ALG_TYPE_DH | ALG_SID_DH_EL_EPHEM)
 
 /*! @} */
-/*! \defgroup PROV_TYPE PROV_TYPE 
+/*! \defgroup PROV_TYPE PROV_TYPE
  *  \brief The description of PROV_MAGPRO_GOST
  *
- * @{ 
+ * @{
  */
 
 #define PROV_MAGPRO_GOST 501
@@ -78,9 +78,9 @@
 #define PROV_CRYPTOPRO_GOST 75
 
 /*! @} */
-/*! \defgroup PP_MAGPRO PP_MAGPRO 
+/*! \defgroup PP_MAGPRO PP_MAGPRO
  *
- * @{ 
+ * @{
  */
 
 #define PP_RNGTYPE                      201

@@ -3,7 +3,7 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2007 Roumen Petrov.
  */
 

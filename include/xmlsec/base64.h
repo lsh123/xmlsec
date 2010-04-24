@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Base64 encode/decode transform and utility functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_BASE64_H__
-#define __XMLSEC_BASE64_H__    
+#define __XMLSEC_BASE64_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 
@@ -32,19 +32,19 @@ XMLSEC_EXPORT void              xmlSecBase64SetDefaultLineSize  (int columns);
 
 
 /* Base64 Context */
-typedef struct _xmlSecBase64Ctx                                 xmlSecBase64Ctx, 
+typedef struct _xmlSecBase64Ctx                                 xmlSecBase64Ctx,
                                                                 *xmlSecBase64CtxPtr;
 
-XMLSEC_EXPORT xmlSecBase64CtxPtr xmlSecBase64CtxCreate          (int encode, 
+XMLSEC_EXPORT xmlSecBase64CtxPtr xmlSecBase64CtxCreate          (int encode,
                                                                  int columns);
 XMLSEC_EXPORT void              xmlSecBase64CtxDestroy          (xmlSecBase64CtxPtr ctx);
 XMLSEC_EXPORT int               xmlSecBase64CtxInitialize       (xmlSecBase64CtxPtr ctx,
-                                                                 int encode, 
+                                                                 int encode,
                                                                  int columns);
 XMLSEC_EXPORT void              xmlSecBase64CtxFinalize         (xmlSecBase64CtxPtr ctx);
 XMLSEC_EXPORT int               xmlSecBase64CtxUpdate           (xmlSecBase64CtxPtr ctx,
-                                                                 const xmlSecByte *in, 
-                                                                 xmlSecSize inSize, 
+                                                                 const xmlSecByte *in,
+                                                                 xmlSecSize inSize,
                                                                  xmlSecByte *out,
                                                                  xmlSecSize outSize);
 XMLSEC_EXPORT int               xmlSecBase64CtxFinal            (xmlSecBase64CtxPtr ctx,

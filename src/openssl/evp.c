@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -29,11 +29,11 @@
  * Internal OpenSSL EVP key CTX
  *
  *************************************************************************/
-typedef struct _xmlSecOpenSSLEvpKeyDataCtx      xmlSecOpenSSLEvpKeyDataCtx, 
+typedef struct _xmlSecOpenSSLEvpKeyDataCtx      xmlSecOpenSSLEvpKeyDataCtx,
                                                 *xmlSecOpenSSLEvpKeyDataCtxPtr;
 struct _xmlSecOpenSSLEvpKeyDataCtx {
     EVP_PKEY*           pKey;
-};          
+};
 
 /******************************************************************************
  *
@@ -43,7 +43,7 @@ struct _xmlSecOpenSSLEvpKeyDataCtx {
  *
  *****************************************************************************/
 #define xmlSecOpenSSLEvpKeyDataSize     \
-    (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLEvpKeyDataCtx))        
+    (sizeof(xmlSecKeyData) + sizeof(xmlSecOpenSSLEvpKeyDataCtx))
 #define xmlSecOpenSSLEvpKeyDataGetCtx(data) \
     ((xmlSecOpenSSLEvpKeyDataCtxPtr)(((xmlSecByte*)(data)) + sizeof(xmlSecKeyData)))
 
@@ -61,17 +61,17 @@ static void             xmlSecOpenSSLEvpKeyDataFinalize         (xmlSecKeyDataPt
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize), -1);
     xmlSecAssert2(pKey != NULL, -1);
-    
+
     ctx = xmlSecOpenSSLEvpKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     if(ctx->pKey != NULL) {
         EVP_PKEY_free(ctx->pKey);
     }
@@ -87,7 +87,7 @@ xmlSecOpenSSLEvpKeyDataAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
  *
  * Returns: pointer to EVP_PKEY or NULL if an error occurs.
  */
-EVP_PKEY* 
+EVP_PKEY*
 xmlSecOpenSSLEvpKeyDataGetEvp(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
 
@@ -141,8 +141,8 @@ xmlSecOpenSSLEvpKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
-    } 
+        }
+    }
 
     return(0);
 }
@@ -150,13 +150,13 @@ xmlSecOpenSSLEvpKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 static void
 xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
     xmlSecOpenSSLEvpKeyDataCtxPtr ctx;
-    
+
     xmlSecAssert(xmlSecKeyDataIsValid(data));
     xmlSecAssert(xmlSecKeyDataCheckSize(data, xmlSecOpenSSLEvpKeyDataSize));
 
     ctx = xmlSecOpenSSLEvpKeyDataGetCtx(data);
     xmlSecAssert(ctx != NULL);
-    
+
     if(ctx->pKey != NULL) {
         EVP_PKEY_free(ctx->pKey);
     }
@@ -176,12 +176,12 @@ xmlSecOpenSSLEvpKeyDataFinalize(xmlSecKeyDataPtr data) {
  *
  * Returns: pointer to newly created EVP_PKEY object or NULL if an error occurs.
  */
-EVP_PKEY* 
+EVP_PKEY*
 xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
     int ret;
 
     xmlSecAssert2(pKey != NULL, NULL);
-    
+
     ret = CRYPTO_add(&pKey->references,1,CRYPTO_LOCK_EVP_PKEY);
     if(ret <= 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -189,9 +189,9 @@ xmlSecOpenSSLEvpKeyDup(EVP_PKEY* pKey) {
                     "CRYPTO_add",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);                   
+        return(NULL);
     }
-    
+
     return(pKey);
 }
 
@@ -207,11 +207,11 @@ xmlSecKeyDataPtr
 xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
     xmlSecKeyDataPtr data = NULL;
     int ret;
-    
+
     xmlSecAssert2(pKey != NULL, NULL);
 
-    switch(pKey->type) {        
-#ifndef XMLSEC_NO_RSA    
+    switch(pKey->type) {
+#ifndef XMLSEC_NO_RSA
     case EVP_PKEY_RSA:
         data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataRsaId);
         if(data == NULL) {
@@ -220,11 +220,11 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
                         "xmlSecKeyDataCreate",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "xmlSecOpenSSLKeyDataRsaId");
-            return(NULL);           
+            return(NULL);
         }
         break;
-#endif /* XMLSEC_NO_RSA */      
-#ifndef XMLSEC_NO_DSA   
+#endif /* XMLSEC_NO_RSA */
+#ifndef XMLSEC_NO_DSA
     case EVP_PKEY_DSA:
         data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataDsaId);
         if(data == NULL) {
@@ -233,11 +233,11 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
                         "xmlSecKeyDataCreate",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "xmlSecOpenSSLKeyDataDsaId");
-            return(NULL);           
+            return(NULL);
         }
         break;
-#endif /* XMLSEC_NO_DSA */      
-    default:    
+#endif /* XMLSEC_NO_DSA */
+    default:
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
@@ -246,21 +246,21 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
         return(NULL);
     }
 
-    xmlSecAssert2(data != NULL, NULL);    
+    xmlSecAssert2(data != NULL, NULL);
     ret = xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey);
-    if(ret < 0) {       
+    if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecOpenSSLEvpKeyDataAdoptEvp",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDataDestroy(data);
-        return(NULL);       
+        return(NULL);
     }
     return(data);
 }
 
-#ifndef XMLSEC_NO_DSA    
+#ifndef XMLSEC_NO_DSA
 /**************************************************************************
  *
  * <dsig:DSAKeyValue> processing
@@ -268,57 +268,57 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
  *
  * The DSAKeyValue Element (http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue)
  *
- * DSA keys and the DSA signature algorithm are specified in [DSS]. 
+ * DSA keys and the DSA signature algorithm are specified in [DSS].
  * DSA public key values can have the following fields:
- *      
- *   * P - a prime modulus meeting the [DSS] requirements 
- *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime 
- *         divisor of P-1 
- *   * G - an integer with certain properties with respect to P and Q 
- *   * Y - G**X mod P (where X is part of the private key and not made 
- *         public) 
- *   * J - (P - 1) / Q 
- *   * seed - a DSA prime generation seed 
+ *
+ *   * P - a prime modulus meeting the [DSS] requirements
+ *   * Q - an integer in the range 2**159 < Q < 2**160 which is a prime
+ *         divisor of P-1
+ *   * G - an integer with certain properties with respect to P and Q
+ *   * Y - G**X mod P (where X is part of the private key and not made
+ *         public)
+ *   * J - (P - 1) / Q
+ *   * seed - a DSA prime generation seed
  *   * pgenCounter - a DSA prime generation counter
  *
- * Parameter J is available for inclusion solely for efficiency as it is 
- * calculatable from P and Q. Parameters seed and pgenCounter are used in the 
- * DSA prime number generation algorithm specified in [DSS]. As such, they are 
- * optional but must either both be present or both be absent. This prime 
- * generation algorithm is designed to provide assurance that a weak prime is 
- * not being used and it yields a P and Q value. Parameters P, Q, and G can be 
- * public and common to a group of users. They might be known from application 
- * context. As such, they are optional but P and Q must either both appear or 
- * both be absent. If all of P, Q, seed, and pgenCounter are present, 
- * implementations are not required to check if they are consistent and are 
- * free to use either P and Q or seed and pgenCounter. All parameters are 
+ * Parameter J is available for inclusion solely for efficiency as it is
+ * calculatable from P and Q. Parameters seed and pgenCounter are used in the
+ * DSA prime number generation algorithm specified in [DSS]. As such, they are
+ * optional but must either both be present or both be absent. This prime
+ * generation algorithm is designed to provide assurance that a weak prime is
+ * not being used and it yields a P and Q value. Parameters P, Q, and G can be
+ * public and common to a group of users. They might be known from application
+ * context. As such, they are optional but P and Q must either both appear or
+ * both be absent. If all of P, Q, seed, and pgenCounter are present,
+ * implementations are not required to check if they are consistent and are
+ * free to use either P and Q or seed and pgenCounter. All parameters are
  * encoded as base64 [MIME] values.
- *     
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are 
+ *
+ * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
  * represented in XML as octet strings as defined by the ds:CryptoBinary type.
- *     
+ *
  * Schema Definition:
- *     
- * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/> 
- * <complexType name="DSAKeyValueType"> 
+ *
+ * <element name="DSAKeyValue" type="ds:DSAKeyValueType"/>
+ * <complexType name="DSAKeyValueType">
  *   <sequence>
  *     <sequence minOccurs="0">
- *        <element name="P" type="ds:CryptoBinary"/> 
+ *        <element name="P" type="ds:CryptoBinary"/>
  *        <element name="Q" type="ds:CryptoBinary"/>
  *     </sequence>
- *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/> 
- *     <element name="Y" type="ds:CryptoBinary"/> 
+ *     <element name="G" type="ds:CryptoBinary" minOccurs="0"/>
+ *     <element name="Y" type="ds:CryptoBinary"/>
  *     <element name="J" type="ds:CryptoBinary" minOccurs="0"/>
  *     <sequence minOccurs="0">
- *       <element name="Seed" type="ds:CryptoBinary"/> 
- *       <element name="PgenCounter" type="ds:CryptoBinary"/> 
+ *       <element name="Seed" type="ds:CryptoBinary"/>
+ *       <element name="PgenCounter" type="ds:CryptoBinary"/>
  *     </sequence>
  *   </sequence>
  * </complexType>
- *     
+ *
  * DTD Definition:
- *     
- *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) > 
+ *
+ *  <!ELEMENT DSAKeyValue ((P, Q)?, G?, Y, J?, (Seed, PgenCounter)?) >
  *  <!ELEMENT P (#PCDATA) >
  *  <!ELEMENT Q (#PCDATA) >
  *  <!ELEMENT G (#PCDATA) >
@@ -328,7 +328,7 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
  *  <!ELEMENT PgenCounter (#PCDATA) >
  *
  * ============================================================================
- * 
+ *
  * To support reading/writing private keys an X element added (before Y).
  * todo: The current implementation does not support Seed and PgenCounter!
  * by this the P, Q and G are *required*!
@@ -363,22 +363,22 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaKlass = {
 
     /* data */
     xmlSecNameDSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefDSAKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeDSAKeyValue,                      /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecOpenSSLKeyDataDsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataDsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecOpenSSLKeyDataDsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataDsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecOpenSSLKeyDataDsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecOpenSSLKeyDataDsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */    
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecOpenSSLKeyDataDsaXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -397,12 +397,12 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataDsaKlass = {
 
 /**
  * xmlSecOpenSSLKeyDataDsaGetKlass:
- * 
+ *
  * The DSA key data klass.
  *
  * Returns: pointer to DSA key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecOpenSSLKeyDataDsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataDsaKlass);
 }
@@ -415,14 +415,14 @@ xmlSecOpenSSLKeyDataDsaGetKlass(void) {
  * Sets the value of DSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
- */ 
+ */
 int
 xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
     EVP_PKEY* pKey = NULL;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
-    
+
     /* construct new EVP_PKEY */
     if(dsa != NULL) {
         pKey = EVP_PKEY_new();
@@ -434,7 +434,7 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
-        
+
         ret = EVP_PKEY_assign_DSA(pKey, dsa);
         if(ret != 1) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -443,9 +443,9 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
+        }
     }
-    
+
     ret = xmlSecOpenSSLKeyDataDsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -458,7 +458,7 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
         }
         return(-1);
     }
-    return(0);    
+    return(0);
 }
 
 /**
@@ -469,19 +469,19 @@ xmlSecOpenSSLKeyDataDsaAdoptDsa(xmlSecKeyDataPtr data, DSA* dsa) {
  *
  * Returns: pointer to OpenSSL DSA key or NULL if an error occurs.
  */
-DSA* 
+DSA*
 xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), NULL);
-    
+
     pKey = xmlSecOpenSSLKeyDataDsaGetEvp(data);
     xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_DSA), NULL);
-    
+
     return((pKey != NULL) ? pKey->pkey.dsa : (DSA*)NULL);
 }
 
-/** 
+/**
  * xmlSecOpenSSLKeyDataDsaAdoptEvp:
  * @data:               the pointer to DSA key data.
  * @pKey:               the pointer to OpenSSL EVP key.
@@ -490,12 +490,12 @@ xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyDataPtr data) {
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(pKey != NULL, -1);
     xmlSecAssert2(pKey->type == EVP_PKEY_DSA, -1);
-    
+
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
 
@@ -507,7 +507,7 @@ xmlSecOpenSSLKeyDataDsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
  *
  * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
  */
-EVP_PKEY* 
+EVP_PKEY*
 xmlSecOpenSSLKeyDataDsaGetEvp(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), NULL);
 
@@ -532,7 +532,7 @@ xmlSecOpenSSLKeyDataDsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
 static void
 xmlSecOpenSSLKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
-    
+
     xmlSecOpenSSLEvpKeyDataFinalize(data);
 }
 
@@ -555,7 +555,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);     
+        return(-1);
     }
 
     dsa = DSA_new();
@@ -567,7 +567,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     cur = xmlSecGetNextElementNode(node->children);
 
     /* first is P node. It is REQUIRED because we do not support Seed and PgenCounter*/
@@ -576,17 +576,17 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                     XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAP));
-        DSA_free(dsa);  
+        DSA_free(dsa);
         return(-1);
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(dsa->p)) == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecOpenSSLNodeGetBNValue",                  
+                    "xmlSecOpenSSLNodeGetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAP));
         DSA_free(dsa);
         return(-1);
@@ -599,7 +599,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                     XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAQ));
         DSA_free(dsa);
         return(-1);
@@ -609,7 +609,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeGetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAQ));
         DSA_free(dsa);
         return(-1);
@@ -622,7 +622,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                     XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAG));
         DSA_free(dsa);
         return(-1);
@@ -632,7 +632,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeGetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAG));
         DSA_free(dsa);
         return(-1);
@@ -647,7 +647,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                         "xmlSecOpenSSLNodeGetBNValue",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeDSAX));
             DSA_free(dsa);
             return(-1);
@@ -661,7 +661,7 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                     XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAY));
         DSA_free(dsa);
         return(-1);
@@ -679,17 +679,17 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     /* todo: add support for J */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAJ, xmlSecDSigNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);  
+        cur = xmlSecGetNextElementNode(cur->next);
     }
-    
+
     /* todo: add support for seed */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSASeed, xmlSecDSigNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);  
+        cur = xmlSecGetNextElementNode(cur->next);
     }
 
     /* todo: add support for pgencounter */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDSAPgenCounter, xmlSecDSigNs))) {
-        cur = xmlSecGetNextElementNode(cur->next);  
+        cur = xmlSecGetNextElementNode(cur->next);
     }
 
     if(cur != NULL) {
@@ -733,19 +733,19 @@ xmlSecOpenSSLKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDataDestroy(data);
-        return(-1);     
+        return(-1);
     }
 
     return(0);
 }
 
-static int 
+static int
 xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                                 xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
     DSA* dsa;
     int ret;
-    
+
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataDsaId, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataDsaId), -1);
@@ -754,12 +754,12 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(xmlSecKeyGetValue(key));
     xmlSecAssert2(dsa != NULL, -1);
-    
+
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can have only private key or public key */
         return(0);
-    }    
-    
+    }
+
     /* first is P node */
     xmlSecAssert2(dsa->p != NULL, -1);
     cur = xmlSecAddChild(node, xmlSecNodeDSAP, xmlSecDSigNs);
@@ -768,9 +768,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAP));
-        return(-1);     
+        return(-1);
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->p, 1);
     if(ret < 0) {
@@ -778,10 +778,10 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeSetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAP));
         return(-1);
-    }    
+    }
 
     /* next is Q node. */
     xmlSecAssert2(dsa->q != NULL, -1);
@@ -791,9 +791,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAQ));
-        return(-1);     
+        return(-1);
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->q, 1);
     if(ret < 0) {
@@ -801,7 +801,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeSetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAQ));
         return(-1);
     }
@@ -814,9 +814,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAG));
-        return(-1);     
+        return(-1);
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->g, 1);
     if(ret < 0) {
@@ -824,7 +824,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeSetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAG));
         return(-1);
     }
@@ -837,9 +837,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                         "xmlSecAddChild",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeDSAX));
-            return(-1); 
+            return(-1);
         }
         ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->priv_key, 1);
         if(ret < 0) {
@@ -847,7 +847,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                         "xmlSecOpenSSLNodeSetBNValue",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeDSAX));
             return(-1);
         }
@@ -861,9 +861,9 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAY));
-        return(-1);     
+        return(-1);
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, dsa->pub_key, 1);
     if(ret < 0) {
@@ -871,7 +871,7 @@ xmlSecOpenSSLKeyDataDsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeSetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDSAY));
         return(-1);
     }
@@ -884,18 +884,18 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
     int counter_ret;
     unsigned long h_ret;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    dsa = DSA_generate_parameters(sizeBits, NULL, 0, &counter_ret, &h_ret, NULL, NULL); 
+    dsa = DSA_generate_parameters(sizeBits, NULL, 0, &counter_ret, &h_ret, NULL, NULL);
     if(dsa == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "DSA_generate_parameters",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "size=%d", sizeBits);
-        return(-1);    
+        return(-1);
     }
 
     ret = DSA_generate_key(dsa);
@@ -906,7 +906,7 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         DSA_free(dsa);
-        return(-1);    
+        return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataDsaAdoptDsa(data, dsa);
@@ -926,13 +926,13 @@ xmlSecOpenSSLKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     DSA* dsa;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId), xmlSecKeyDataTypeUnknown);
-    
+
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(data);
-    if((dsa != NULL) && (dsa->p != NULL) && (dsa->q != NULL) && 
+    if((dsa != NULL) && (dsa->p != NULL) && (dsa->q != NULL) &&
        (dsa->g != NULL) && (dsa->pub_key != NULL)) {
-       
+
         if(dsa->priv_key != NULL) {
             return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
         } else if(dsa->engine != NULL) {
@@ -951,7 +951,7 @@ xmlSecOpenSSLKeyDataDsaGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypeUnknown);
 }
 
-static xmlSecSize 
+static xmlSecSize
 xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     DSA* dsa;
 
@@ -960,16 +960,16 @@ xmlSecOpenSSLKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
     dsa = xmlSecOpenSSLKeyDataDsaGetDsa(data);
     if((dsa != NULL) && (dsa->p != NULL)) {
         return(BN_num_bits(dsa->p));
-    }    
+    }
     return(0);
 }
 
-static void 
+static void
 xmlSecOpenSSLKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     xmlSecAssert(output != NULL);
-    
-    fprintf(output, "=== dsa key: size = %d\n", 
+
+    fprintf(output, "=== dsa key: size = %d\n",
             xmlSecOpenSSLKeyDataDsaGetSize(data));
 }
 
@@ -977,8 +977,8 @@ static void
 xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataDsaId));
     xmlSecAssert(output != NULL);
-        
-    fprintf(output, "<DSAKeyValue size=\"%d\" />\n", 
+
+    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
             xmlSecOpenSSLKeyDataDsaGetSize(data));
 }
 
@@ -1002,27 +1002,27 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
  *   <Exponent>AQAB</Exponent>
  * </RSAKeyValue>
  *
- * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are 
+ * Arbitrary-length integers (e.g. "bignums" such as RSA moduli) are
  * represented in XML as octet strings as defined by the ds:CryptoBinary type.
  *
  * Schema Definition:
- * 
+ *
  * <element name="RSAKeyValue" type="ds:RSAKeyValueType"/>
  * <complexType name="RSAKeyValueType">
  *   <sequence>
- *     <element name="Modulus" type="ds:CryptoBinary"/> 
+ *     <element name="Modulus" type="ds:CryptoBinary"/>
  *     <element name="Exponent" type="ds:CryptoBinary"/>
  *   </sequence>
  * </complexType>
  *
  * DTD Definition:
- * 
- * <!ELEMENT RSAKeyValue (Modulus, Exponent) > 
+ *
+ * <!ELEMENT RSAKeyValue (Modulus, Exponent) >
  * <!ELEMENT Modulus (#PCDATA) >
  * <!ELEMENT Exponent (#PCDATA) >
  *
  * ============================================================================
- * 
+ *
  * To support reading/writing private keys an PrivateExponent element is added
  * to the end
  *
@@ -1056,22 +1056,22 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaKlass = {
 
     /* data */
     xmlSecNameRSAKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml, 
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
                                                 /* xmlSecKeyDataUsage usage; */
     xmlSecHrefRSAKeyValue,                      /* const xmlChar* href; */
     xmlSecNodeRSAKeyValue,                      /* const xmlChar* dataNodeName; */
     xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
-    
+
     /* constructors/destructor */
     xmlSecOpenSSLKeyDataRsaInitialize,          /* xmlSecKeyDataInitializeMethod initialize; */
     xmlSecOpenSSLKeyDataRsaDuplicate,           /* xmlSecKeyDataDuplicateMethod duplicate; */
     xmlSecOpenSSLKeyDataRsaFinalize,            /* xmlSecKeyDataFinalizeMethod finalize; */
     xmlSecOpenSSLKeyDataRsaGenerate,            /* xmlSecKeyDataGenerateMethod generate; */
-    
+
     /* get info */
     xmlSecOpenSSLKeyDataRsaGetType,             /* xmlSecKeyDataGetTypeMethod getType; */
     xmlSecOpenSSLKeyDataRsaGetSize,             /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */    
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
 
     /* read/write */
     xmlSecOpenSSLKeyDataRsaXmlRead,             /* xmlSecKeyDataXmlReadMethod xmlRead; */
@@ -1088,14 +1088,14 @@ static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataRsaKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLKeyDataRsaGetKlass:
  *
  * The OpenSSL RSA key data klass.
  *
  * Returns: pointer to OpenSSL RSA key data klass.
  */
-xmlSecKeyDataId 
+xmlSecKeyDataId
 xmlSecOpenSSLKeyDataRsaGetKlass(void) {
     return(&xmlSecOpenSSLKeyDataRsaKlass);
 }
@@ -1108,14 +1108,14 @@ xmlSecOpenSSLKeyDataRsaGetKlass(void) {
  * Sets the value of RSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
- */ 
+ */
 int
 xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
     EVP_PKEY* pKey = NULL;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
-    
+
     /* construct new EVP_PKEY */
     if(rsa != NULL) {
         pKey = EVP_PKEY_new();
@@ -1127,7 +1127,7 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
-        
+
         ret = EVP_PKEY_assign_RSA(pKey, rsa);
         if(ret != 1) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1136,9 +1136,9 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
+        }
     }
-    
+
     ret = xmlSecOpenSSLKeyDataRsaAdoptEvp(data, pKey);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1151,7 +1151,7 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
         }
         return(-1);
     }
-    return(0);    
+    return(0);
 }
 
 /**
@@ -1162,19 +1162,19 @@ xmlSecOpenSSLKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
  *
  * Returns: pointer to OpenSSL RSA key or NULL if an error occurs.
  */
-RSA* 
+RSA*
 xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
     EVP_PKEY* pKey;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), NULL);
-    
+
     pKey = xmlSecOpenSSLKeyDataRsaGetEvp(data);
     xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_RSA), NULL);
-    
+
     return((pKey != NULL) ? pKey->pkey.rsa : (RSA*)NULL);
 }
 
-/** 
+/**
  * xmlSecOpenSSLKeyDataRsaAdoptEvp:
  * @data:               the pointer to RSA key data.
  * @pKey:               the pointer to OpenSSL EVP key.
@@ -1183,12 +1183,12 @@ xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(pKey != NULL, -1);
     xmlSecAssert2(pKey->type == EVP_PKEY_RSA, -1);
-    
+
     return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
 }
 
@@ -1200,7 +1200,7 @@ xmlSecOpenSSLKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
  *
  * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
  */
-EVP_PKEY* 
+EVP_PKEY*
 xmlSecOpenSSLKeyDataRsaGetEvp(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), NULL);
 
@@ -1245,10 +1245,10 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     if(xmlSecKeyGetValue(key) != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,                   
+                    NULL,
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA,
                     "key already has a value");
-        return(-1);     
+        return(-1);
     }
 
     rsa = RSA_new();
@@ -1262,16 +1262,16 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     }
 
     cur = xmlSecGetNextElementNode(node->children);
-    
+
     /* first is Modulus node. It is REQUIRED because we do not support Seed and PgenCounter*/
     if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                     XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
-        RSA_free(rsa);  
+        RSA_free(rsa);
         return(-1);
     }
     if(xmlSecOpenSSLNodeGetBNValue(cur, &(rsa->n)) == NULL) {
@@ -1279,7 +1279,7 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeGetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
         RSA_free(rsa);
         return(-1);
@@ -1292,7 +1292,7 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
                     XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
         RSA_free(rsa);
         return(-1);
@@ -1302,7 +1302,7 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeGetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
         RSA_free(rsa);
         return(-1);
@@ -1317,7 +1317,7 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                         "xmlSecOpenSSLNodeGetBNValue",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
             RSA_free(rsa);
             return(-1);
@@ -1366,19 +1366,19 @@ xmlSecOpenSSLKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecKeyDataDestroy(data);
-        return(-1);     
+        return(-1);
     }
 
     return(0);
 }
 
-static int 
+static int
 xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                             xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlNodePtr cur;
     RSA* rsa;
     int ret;
-    
+
     xmlSecAssert2(id == xmlSecOpenSSLKeyDataRsaId, -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecOpenSSLKeyDataRsaId), -1);
@@ -1387,11 +1387,11 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
 
     rsa = xmlSecOpenSSLKeyDataRsaGetRsa(xmlSecKeyGetValue(key));
     xmlSecAssert2(rsa != NULL, -1);
-    
+
     if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
         /* we can have only private key or public key */
         return(0);
-    }    
+    }
 
     /* first is Modulus node */
     cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
@@ -1400,9 +1400,9 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
-        return(-1);     
+        return(-1);
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, rsa->n, 1);
     if(ret < 0) {
@@ -1410,10 +1410,10 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeSetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
         return(-1);
-    }    
+    }
 
     /* next is Exponent node. */
     cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
@@ -1422,9 +1422,9 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
-        return(-1);     
+        return(-1);
     }
     ret = xmlSecOpenSSLNodeSetBNValue(cur, rsa->e, 1);
     if(ret < 0) {
@@ -1432,7 +1432,7 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                     "xmlSecOpenSSLNodeSetBNValue",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
         return(-1);
     }
@@ -1445,9 +1445,9 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                         "xmlSecAddChild",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
-            return(-1); 
+            return(-1);
         }
         ret = xmlSecOpenSSLNodeSetBNValue(cur, rsa->d, 1);
         if(ret < 0) {
@@ -1455,12 +1455,12 @@ xmlSecOpenSSLKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
                         "xmlSecOpenSSLNodeSetBNValue",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s", 
+                        "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
             return(-1);
         }
     }
-    
+
     return(0);
 }
 
@@ -1468,18 +1468,18 @@ static int
 xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     RSA* rsa;
     int ret;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    rsa = RSA_generate_key(sizeBits, 3, NULL, NULL); 
+    rsa = RSA_generate_key(sizeBits, 3, NULL, NULL);
     if(rsa == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "RSA_generate_key",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "sizeBits=%d", sizeBits);
-        return(-1);    
+        return(-1);
     }
 
     ret = xmlSecOpenSSLKeyDataRsaAdoptRsa(data, rsa);
@@ -1499,9 +1499,9 @@ xmlSecOpenSSLKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlS
 static xmlSecKeyDataType
 xmlSecOpenSSLKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     RSA* rsa;
-    
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId), xmlSecKeyDataTypeUnknown);
-    
+
     rsa = xmlSecOpenSSLKeyDataRsaGetRsa(data);
     if((rsa != NULL) && (rsa->n != NULL) && (rsa->e != NULL)) {
         if(rsa->d != NULL) {
@@ -1522,7 +1522,7 @@ xmlSecOpenSSLKeyDataRsaGetType(xmlSecKeyDataPtr data) {
     return(xmlSecKeyDataTypeUnknown);
 }
 
-static xmlSecSize 
+static xmlSecSize
 xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     RSA* rsa;
 
@@ -1531,16 +1531,16 @@ xmlSecOpenSSLKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
     rsa = xmlSecOpenSSLKeyDataRsaGetRsa(data);
     if((rsa != NULL) && (rsa->n != NULL)) {
         return(BN_num_bits(rsa->n));
-    }    
+    }
     return(0);
 }
 
-static void 
+static void
 xmlSecOpenSSLKeyDataRsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     xmlSecAssert(output != NULL);
-    
-    fprintf(output, "=== rsa key: size = %d\n", 
+
+    fprintf(output, "=== rsa key: size = %d\n",
             xmlSecOpenSSLKeyDataRsaGetSize(data));
 }
 
@@ -1548,11 +1548,11 @@ static void
 xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
     xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataRsaId));
     xmlSecAssert(output != NULL);
-        
-    fprintf(output, "<RSAKeyValue size=\"%d\" />\n", 
+
+    fprintf(output, "<RSAKeyValue size=\"%d\" />\n",
             xmlSecOpenSSLKeyDataRsaGetSize(data));
 }
-    
+
 #endif /* XMLSEC_NO_RSA */
 
 

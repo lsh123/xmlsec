@@ -1,4 +1,4 @@
-/** 
+/**
  * XMLSec library
  *
  * X509 support
@@ -6,7 +6,7 @@
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (c) 2003 America Online, Inc.  All rights reserved.
  */
 #include "globals.h"
@@ -40,11 +40,11 @@
  * Internal NSS X509 store CTX
  *
  *************************************************************************/
-typedef struct _xmlSecNssX509StoreCtx           xmlSecNssX509StoreCtx, 
+typedef struct _xmlSecNssX509StoreCtx           xmlSecNssX509StoreCtx,
                                                 *xmlSecNssX509StoreCtxPtr;
 struct _xmlSecNssX509StoreCtx {
     CERTCertList* certsList; /* just keeping a reference to destroy later */
-};          
+};
 
 /****************************************************************************
  *
@@ -58,16 +58,16 @@ struct _xmlSecNssX509StoreCtx {
                                     sizeof(xmlSecKeyDataStoreKlass)))
 #define xmlSecNssX509StoreSize  \
     (sizeof(xmlSecKeyDataStoreKlass) + sizeof(xmlSecNssX509StoreCtx))
- 
+
 static int              xmlSecNssX509StoreInitialize    (xmlSecKeyDataStorePtr store);
 static void             xmlSecNssX509StoreFinalize      (xmlSecKeyDataStorePtr store);
-static int              xmlSecNssX509NameStringRead     (xmlSecByte **str, 
-                                                         int *strLen, 
-                                                         xmlSecByte *res, 
+static int              xmlSecNssX509NameStringRead     (xmlSecByte **str,
+                                                         int *strLen,
+                                                         xmlSecByte *res,
                                                          int resLen,
-                                                         xmlSecByte delim, 
+                                                         xmlSecByte delim,
                                                          int ingoreTrailingSpaces);
-static xmlSecByte *     xmlSecNssX509NameRead           (xmlSecByte *str, 
+static xmlSecByte *     xmlSecNssX509NameRead           (xmlSecByte *str,
                                                          int len);
 
 static void             xmlSecNssNumToItem(SECItem *it, unsigned long num);
@@ -78,8 +78,8 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
     xmlSecNssX509StoreSize,
 
     /* data */
-    xmlSecNameX509Store,                        /* const xmlChar* name; */ 
-        
+    xmlSecNameX509Store,                        /* const xmlChar* name; */
+
     /* constructors/destructor */
     xmlSecNssX509StoreInitialize,               /* xmlSecKeyDataStoreInitializeMethod initialize; */
     xmlSecNssX509StoreFinalize,                 /* xmlSecKeyDataStoreFinalizeMethod finalize; */
@@ -95,14 +95,14 @@ static CERTCertificate*         xmlSecNssX509FindCert(xmlChar *subjectName,
                                                       xmlChar *ski);
 
 
-/** 
+/**
  * xmlSecNssX509StoreGetKlass:
- * 
+ *
  * The NSS X509 certificates key data store klass.
  *
  * Returns: pointer to NSS X509 certificates key data store klass.
  */
-xmlSecKeyDataStoreId 
+xmlSecKeyDataStoreId
 xmlSecNssX509StoreGetKlass(void) {
     return(&xmlSecNssX509StoreKlass);
 }
@@ -126,7 +126,7 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
                                 xmlChar *issuerName, xmlChar *issuerSerial,
                                 xmlChar *ski, xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecNssX509StoreCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecNssX509StoreId), NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
@@ -145,8 +145,8 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
  * Verifies @certs list.
  *
  * Returns: pointer to the first verified certificate from @certs.
- */ 
-CERTCertificate *       
+ */
+CERTCertificate *
 xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
                              xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecNssX509StoreCtxPtr ctx;
@@ -179,9 +179,9 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             timeboundary = PR_Now();
         }
 
-        /* if cert is the issuer of any other cert in the list, then it is 
+        /* if cert is the issuer of any other cert in the list, then it is
          * to be skipped */
-        for (head1 = CERT_LIST_HEAD(certs); 
+        for (head1 = CERT_LIST_HEAD(certs);
              !CERT_LIST_END(head1, certs);
              head1 = CERT_LIST_NEXT(head1)) {
 
@@ -200,8 +200,8 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
             continue;
         }
 
-        status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(), 
-                                        cert, PR_FALSE, 
+        status = CERT_VerifyCertificate(CERT_GetDefaultCertDB(),
+                                        cert, PR_FALSE,
                                         (SECCertificateUsage)0,
                                         timeboundary , NULL, NULL, NULL);
         if (status == SECSuccess) {
@@ -212,7 +212,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
     if (status == SECSuccess) {
         return (cert);
     }
-    
+
     switch(PORT_GetError()) {
         case SEC_ERROR_EXPIRED_ISSUER_CERTIFICATE:
         case SEC_ERROR_CA_CERT_INVALID:
@@ -250,7 +250,7 @@ xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
                         PORT_GetError());
             break;
     }
-   
+
     return (NULL);
 }
 
@@ -310,7 +310,7 @@ xmlSecNssX509StoreInitialize(xmlSecKeyDataStorePtr store) {
 
     memset(ctx, 0, sizeof(xmlSecNssX509StoreCtx));
 
-    return(0);    
+    return(0);
 }
 
 static void
@@ -320,7 +320,7 @@ xmlSecNssX509StoreFinalize(xmlSecKeyDataStorePtr store) {
 
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert(ctx != NULL);
-    
+
     if (ctx->certsList) {
         CERT_DestroyCertList(ctx->certsList);
         ctx->certsList = NULL;
@@ -335,8 +335,8 @@ xmlSecNssX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
-static CERTCertificate*         
-xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName, 
+static CERTCertificate*
+xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                       xmlChar *issuerSerial, xmlChar *ski) {
     CERTCertificate *cert = NULL;
     xmlChar         *p = NULL;
@@ -444,7 +444,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
         /* TBD: serial num can be arbitrarily long */
         xmlSecNssNumToItem(&issuerAndSN.serialNumber, PORT_Atoi((char *)issuerSerial));
 
-        cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(), 
+        cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(),
                                           &issuerAndSN);
         SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
         goto done;
@@ -468,7 +468,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
         memset(&subjKeyID, 0, sizeof(subjKeyID));
         subjKeyID.data = ski;
         subjKeyID.len = xmlStrlen(ski);
-        cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(), 
+        cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
                                            &subjKeyID);
     }
 
@@ -495,7 +495,7 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
     int nameLen, valueLen;
 
     xmlSecAssert2(str != NULL, NULL);
-    
+
     /* return string should be no longer than input string */
     retval = (xmlSecByte *)PORT_Alloc(len+1);
     if(retval == NULL) {
@@ -507,14 +507,14 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
         return(NULL);
     }
     p = retval;
-    
+
     while(len > 0) {
         /* skip spaces after comma or semicolon */
         while((len > 0) && isspace(*str)) {
             ++str; --len;
         }
 
-        nameLen = xmlSecNssX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);  
+        nameLen = xmlSecNssX509NameStringRead(&str, &len, name, sizeof(name), '=', 0);
         if(nameLen < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -529,8 +529,8 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
         if(len > 0) {
             ++str; --len;
             if((*str) == '\"') {
-                valueLen = xmlSecNssX509NameStringRead(&str, &len, 
-                                        value, sizeof(value), '"', 1);  
+                valueLen = xmlSecNssX509NameStringRead(&str, &len,
+                                        value, sizeof(value), '"', 1);
                 if(valueLen < 0) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
@@ -567,8 +567,8 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                             "reading octect values is not implemented yet");
                 goto done;
             } else {
-                valueLen = xmlSecNssX509NameStringRead(&str, &len, 
-                                        value, sizeof(value), ',', 1);  
+                valueLen = xmlSecNssX509NameStringRead(&str, &len,
+                                        value, sizeof(value), ',', 1);
                 if(valueLen < 0) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
@@ -581,44 +581,44 @@ xmlSecNssX509NameRead(xmlSecByte *str, int len) {
                 p+=valueLen;
                 if (len > 0)
                     *p++=',';
-            }                   
+            }
         } else {
             valueLen = 0;
         }
         if(len > 0) {
             ++str; --len;
-        }       
+        }
     }
 
     *p = 0;
     return(retval);
-    
+
 done:
     PORT_Free(retval);
     return (NULL);
 }
 
-static int 
-xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen, 
+static int
+xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                             xmlSecByte *res, int resLen,
                             xmlSecByte delim, int ingoreTrailingSpaces) {
-    xmlSecByte *p, *q, *nonSpace; 
+    xmlSecByte *p, *q, *nonSpace;
 
     xmlSecAssert2(str != NULL, -1);
     xmlSecAssert2(strLen != NULL, -1);
     xmlSecAssert2(res != NULL, -1);
-    
+
     p = (*str);
     nonSpace = q = res;
-    while(((p - (*str)) < (*strLen)) && ((*p) != delim) && ((q - res) < resLen)) { 
+    while(((p - (*str)) < (*strLen)) && ((*p) != delim) && ((q - res) < resLen)) {
         if((*p) != '\\') {
             if(ingoreTrailingSpaces && !isspace(*p)) {
-                nonSpace = q;   
+                nonSpace = q;
             }
             *(q++) = *(p++);
         } else {
             ++p;
-            nonSpace = q;    
+            nonSpace = q;
             if(xmlSecIsHex((*p))) {
                 if((p - (*str) + 1) >= (*strLen)) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
@@ -639,9 +639,9 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
                                 "escaped symbol missed");
                     return(-1);
                 }
-                *(q++) = *(p++); 
+                *(q++) = *(p++);
             }
-        }           
+        }
     }
     if(((p - (*str)) < (*strLen)) && ((*p) != delim)) {
         xmlSecError(XMLSEC_ERRORS_HERE,

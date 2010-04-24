@@ -1,26 +1,26 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Encryption" implementation
  *  http://www.w3.org/TR/xmlenc-core
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_XMLENC_H__
-#define __XMLSEC_XMLENC_H__    
+#define __XMLSEC_XMLENC_H__
 
 #ifndef XMLSEC_NO_XMLENC
-        
+
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
-#include <stdio.h>              
+#endif /* __cplusplus */
+#include <stdio.h>
 
 #include <libxml/tree.h>
-#include <libxml/parser.h> 
+#include <libxml/parser.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -29,8 +29,8 @@ extern "C" {
 #include <xmlsec/keyinfo.h>
 #include <xmlsec/transforms.h>
 
-/** 
- * xmlEncCtxMode: 
+/**
+ * xmlEncCtxMode:
  * @xmlEncCtxModeEncryptedData: the <enc:EncryptedData/> element procesing.
  * @xmlEncCtxModeEncryptedKey:  the <enc:EncryptedKey/> element processing.
  *
@@ -49,7 +49,7 @@ typedef enum {
  */
 #define XMLSEC_ENC_RETURN_REPLACED_NODE                 0x00000001
 
-/** 
+/**
  * xmlSecEncCtx:
  * @userData:                   the pointer to user data (xmlsec and xmlsec-crypto libraries
  *                              never touches this).
@@ -77,7 +77,7 @@ typedef enum {
  * @mimeType:                   the MimeType attribute of <enc:EncryptedData/>
  *                              or <enc:EncryptedKey/> node.
  * @encoding:                   the Encoding attributeof <enc:EncryptedData/>
- *                              or <enc:EncryptedKey/> node. 
+ *                              or <enc:EncryptedKey/> node.
  * @recipient:                  the Recipient attribute of <enc:EncryptedKey/> node..
  * @carriedKeyName:             the CarriedKeyName attribute of <enc:EncryptedKey/> node.
  * @encDataNode:                the pointer to <enc:EncryptedData/>
@@ -86,14 +86,14 @@ typedef enum {
  * @keyInfoNode:                the pointer to <enc:KeyInfo/> node.
  * @cipherValueNode:            the pointer to <enc:CipherValue/> node.
  * @reserved1:                  reserved for the future.
- * 
+ *
  * XML Encrypiton context.
  */
 struct _xmlSecEncCtx {
     /* these data user can set before performing the operation */
     void*                       userData;
     unsigned int                flags;
-    unsigned int                flags2;    
+    unsigned int                flags2;
     xmlEncCtxMode               mode;
     xmlSecKeyInfoCtx            keyInfoReadCtx;
     xmlSecKeyInfoCtx            keyInfoWriteCtx;
@@ -107,8 +107,8 @@ struct _xmlSecEncCtx {
     int                         resultBase64Encoded;
     int                         resultReplaced;
     xmlSecTransformPtr          encMethod;
-                
-    /* attributes from EncryptedData or EncryptedKey */    
+
+    /* attributes from EncryptedData or EncryptedKey */
     xmlChar*                    id;
     xmlChar*                    type;
     xmlChar*                    mimeType;
@@ -121,7 +121,7 @@ struct _xmlSecEncCtx {
     xmlNodePtr                  encMethodNode;
     xmlNodePtr                  keyInfoNode;
     xmlNodePtr                  cipherValueNode;
-        
+
     xmlNodePtr                  replacedNodeList; /* the pointer to the replaced node */
     void*                       reserved1;        /* reserved for future */
 };

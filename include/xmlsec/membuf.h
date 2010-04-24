@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Memory buffer transform
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_MEMBUF_H__
-#define __XMLSEC_MEMBUF_H__    
+#define __XMLSEC_MEMBUF_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 
@@ -23,12 +23,12 @@ extern "C" {
 
 /********************************************************************
  *
- * Memory Buffer transform 
+ * Memory Buffer transform
  *
  *******************************************************************/
 /**
  * xmlSecTransformMemBufId:
- * 
+ *
  * The Memory Buffer transform klass.
  */
 #define xmlSecTransformMemBufId \

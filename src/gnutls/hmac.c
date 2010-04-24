@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef XMLSEC_NO_HMAC
@@ -35,10 +35,10 @@
 static int g_xmlsec_gnutls_hmac_min_length = XMLSEC_GNUTLS_MIN_HMAC_SIZE;
 
 /**
- * xmlSecGnuTLSHmacGetMinOutputLength: 
- * 
+ * xmlSecGnuTLSHmacGetMinOutputLength:
+ *
  * Gets the value of min HMAC length.
- * 
+ *
  * Returns: the min HMAC output length
  */
 int xmlSecGnuTLSHmacGetMinOutputLength(void)
@@ -47,9 +47,9 @@ int xmlSecGnuTLSHmacGetMinOutputLength(void)
 }
 
 /**
- * xmlSecGnuTLSHmacSetMinOutputLength: 
- * @min_length: the new min length 
- * 
+ * xmlSecGnuTLSHmacSetMinOutputLength:
+ * @min_length: the new min length
+ *
  * Sets the min HMAC output length
  */
 void xmlSecGnuTLSHmacSetMinOutputLength(int min_length)
@@ -68,7 +68,7 @@ struct _xmlSecGnuTLSHmacCtx {
     GcryMDHd            digestCtx;
     xmlSecByte          dgst[XMLSEC_GNUTLS_MAX_HMAC_SIZE / 8];
     xmlSecSize          dgstSize;       /* dgst size in bits */
-};          
+};
 
 /******************************************************************************
  *
@@ -91,19 +91,19 @@ static void     xmlSecGnuTLSHmacFinalize                (xmlSecTransformPtr tran
 static int      xmlSecGnuTLSHmacNodeRead                (xmlSecTransformPtr transform,
                                                          xmlNodePtr node,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecGnuTLSHmacSetKeyReq               (xmlSecTransformPtr transform, 
+static int      xmlSecGnuTLSHmacSetKeyReq               (xmlSecTransformPtr transform,
                                                          xmlSecKeyReqPtr keyReq);
-static int      xmlSecGnuTLSHmacSetKey                  (xmlSecTransformPtr transform, 
+static int      xmlSecGnuTLSHmacSetKey                  (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
-static int      xmlSecGnuTLSHmacVerify                  (xmlSecTransformPtr transform, 
-                                                         const xmlSecByte* data, 
+static int      xmlSecGnuTLSHmacVerify                  (xmlSecTransformPtr transform,
+                                                         const xmlSecByte* data,
                                                          xmlSecSize dataSize,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecGnuTLSHmacExecute                 (xmlSecTransformPtr transform, 
-                                                         int last, 
+static int      xmlSecGnuTLSHmacExecute                 (xmlSecTransformPtr transform,
+                                                         int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 
-static int 
+static int
 xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSHmacCtxPtr ctx;
 #ifndef XMLSEC_GNUTLS_OLD
@@ -115,7 +115,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecGnuTLSHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    
+
     memset(ctx, 0, sizeof(xmlSecGnuTLSHmacCtx));
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha1Id)) {
         ctx->digest = GCRY_MD_SHA1;
@@ -124,14 +124,14 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacRipemd160Id)) {
         ctx->digest = GCRY_MD_RMD160;
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
 #ifndef XMLSEC_GNUTLS_OLD
     ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(ret != GPG_ERR_NO_ERROR) {
@@ -139,22 +139,22 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     ctx->digestCtx = gcry_md_open(ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(ctx->digestCtx == NULL) {
 #endif /* XMLSEC_GNUTLS_OLD */
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_open",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     return(0);
 }
 
-static void 
+static void
 xmlSecGnuTLSHmacFinalize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSHmacCtxPtr ctx;
 
-    xmlSecAssert(xmlSecGnuTLSHmacCheckId(transform));    
+    xmlSecAssert(xmlSecGnuTLSHmacCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize));
 
     ctx = xmlSecGnuTLSHmacGetCtx(transform);
@@ -171,21 +171,21 @@ xmlSecGnuTLSHmacFinalize(xmlSecTransformPtr transform) {
  *
  * HMAC (http://www.w3.org/TR/xmldsig-core/#sec-HMAC):
  *
- * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits 
- * as a parameter; if the parameter is not specified then all the bits of the 
- * hash are output. An example of an HMAC SignatureMethod element:  
+ * The HMAC algorithm (RFC2104 [HMAC]) takes the truncation length in bits
+ * as a parameter; if the parameter is not specified then all the bits of the
+ * hash are output. An example of an HMAC SignatureMethod element:
  * <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#hmac-sha1">
  *   <HMACOutputLength>128</HMACOutputLength>
  * </SignatureMethod>
- * 
+ *
  * Schema Definition:
- * 
+ *
  * <simpleType name="HMACOutputLengthType">
  *   <restriction base="integer"/>
  * </simpleType>
- *     
+ *
  * DTD:
- *     
+ *
  * <!ELEMENT HMACOutputLength (#PCDATA)>
  */
 static int
@@ -201,18 +201,18 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
     ctx = xmlSecGnuTLSHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    cur = xmlSecGetNextElementNode(node->children); 
-    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {  
+    cur = xmlSecGetNextElementNode(node->children);
+    if((cur != NULL) && xmlSecCheckNodeName(cur, xmlSecNodeHMACOutputLength, xmlSecDSigNs)) {
         xmlChar *content;
-        
+
         content = xmlNodeGetContent(cur);
         if(content != NULL) {
-            ctx->dgstSize = atoi((char*)content);           
+            ctx->dgstSize = atoi((char*)content);
             xmlFree(content);
         }
-        
+
         /* Ensure that HMAC length is greater than min specified.
-           Otherwise, an attacker can set this lenght to 0 or very 
+           Otherwise, an attacker can set this lenght to 0 or very
            small value
         */
         if((int)ctx->dgstSize < xmlSecGnuTLSHmacGetMinOutputLength()) {
@@ -226,7 +226,7 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
 
         cur = xmlSecGetNextElementNode(cur->next);
     }
-    
+
     if(cur != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -235,11 +235,11 @@ xmlSecGnuTLSHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTr
                     "no nodes expected");
         return(-1);
     }
-    return(0); 
+    return(0);
 }
 
 
-static int  
+static int
 xmlSecGnuTLSHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
     xmlSecGnuTLSHmacCtxPtr ctx;
 
@@ -258,7 +258,7 @@ xmlSecGnuTLSHmacSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq)
     } else {
         keyReq->keyUsage = xmlSecKeyUsageVerify;
     }
-    
+
     return(0);
 }
 
@@ -266,9 +266,9 @@ static int
 xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
-    xmlSecBufferPtr buffer;    
+    xmlSecBufferPtr buffer;
     int ret;
-    
+
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
@@ -277,7 +277,7 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     ctx = xmlSecGnuTLSHmacGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
-    
+
     value = xmlSecKeyGetValue(key);
     xmlSecAssert2(xmlSecKeyDataCheckId(value, xmlSecGnuTLSKeyDataHmacId), -1);
 
@@ -285,18 +285,18 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecAssert2(buffer != NULL, -1);
 
     if(xmlSecBufferGetSize(buffer) == 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
                     "key is empty");
-        return(-1);    
+        return(-1);
     }
-    
-    ret = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer), 
+
+    ret = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer),
                         xmlSecBufferGetSize(buffer));
     if(ret != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_setkey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -307,15 +307,15 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform, 
+xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
-    static xmlSecByte last_byte_masks[] =       
+    static xmlSecByte last_byte_masks[] =
                 { 0xFF, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
 
     xmlSecGnuTLSHmacCtxPtr ctx;
     xmlSecByte mask;
-        
+
     xmlSecAssert2(xmlSecTransformIsValid(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -327,10 +327,10 @@ xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digestCtx != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
-    
+
     /* compare the digest size in bytes */
     if(dataSize != ((ctx->dgstSize + 7) / 8)){
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
@@ -344,7 +344,7 @@ xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
     xmlSecAssert2(dataSize > 0, -1);
     mask = last_byte_masks[ctx->dgstSize % 8];
     if((ctx->dgst[dataSize - 1] & mask) != (data[dataSize - 1]  & mask)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_DATA_NOT_MATCH,
@@ -355,7 +355,7 @@ xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
 
     /* now check the rest of the digest */
     if((dataSize > 1) && (memcmp(ctx->dgst, data, dataSize - 1) != 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_DATA_NOT_MATCH,
@@ -363,19 +363,19 @@ xmlSecGnuTLSHmacVerify(xmlSecTransformPtr transform,
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
-    
+
     transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 
-static int 
+static int
 xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecByte* dgst;
     xmlSecSize dgstSize;
     int ret;
-    
+
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
@@ -391,17 +391,17 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
     }
-    
+
     if(transform->status == xmlSecTransformStatusWorking) {
         xmlSecSize inSize;
 
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
             gcry_md_write(ctx->digestCtx, xmlSecBufferGetData(in), inSize);
-            
+
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferRemoveHead",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -409,19 +409,19 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
                 return(-1);
             }
         }
-        if(last) {          
+        if(last) {
             /* get the final digest */
             gcry_md_final(ctx->digestCtx);
             dgst = gcry_md_read(ctx->digestCtx, ctx->digest);
             if(dgst == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "gcry_md_read",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
             }
-            
+
             /* copy it to our internal buffer */
             dgstSize = gcry_md_get_algo_dlen(ctx->digest);
             xmlSecAssert2(dgstSize > 0, -1);
@@ -434,7 +434,7 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             } else if(ctx->dgstSize <= 8 * dgstSize) {
                 dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             NULL,
                             XMLSEC_ERRORS_R_INVALID_SIZE,
@@ -446,7 +446,7 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, dgstSize);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecError(XMLSEC_ERRORS_HERE,
                                 xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                                 "xmlSecBufferAppend",
                                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -460,18 +460,18 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
                     "size=%d", transform->status);
         return(-1);
     }
-    
+
     return(0);
 }
 
-/** 
+/**
  * HMAC SHA1
  */
 static xmlSecTransformKlass xmlSecGnuTLSHmacSha1Klass = {
@@ -482,7 +482,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacSha1Klass = {
     xmlSecNameHmacSha1,                         /* const xmlChar* name; */
     xmlSecHrefHmacSha1,                         /* const xmlChar *href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-    
+
     xmlSecGnuTLSHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGnuTLSHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
@@ -496,24 +496,24 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacSha1Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSHmacExecute,                    /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecGnuTLSTransformHmacSha1GetKlass:
  *
  * The HMAC-SHA1 transform klass.
  *
  * Returns: the HMAC-SHA1 transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
     return(&xmlSecGnuTLSHmacSha1Klass);
 }
 
-/** 
+/**
  * HMAC Ripemd160
  */
 static xmlSecTransformKlass xmlSecGnuTLSHmacRipemd160Klass = {
@@ -524,7 +524,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacRipemd160Klass = {
     xmlSecNameHmacRipemd160,                    /* const xmlChar* name; */
     xmlSecHrefHmacRipemd160,                    /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-    
+
     xmlSecGnuTLSHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGnuTLSHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
@@ -538,24 +538,24 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacRipemd160Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSHmacExecute,                    /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecGnuTLSTransformHmacRipemd160GetKlass:
  *
  * The HMAC-RIPEMD160 transform klass.
  *
  * Returns: the HMAC-RIPEMD160 transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecGnuTLSTransformHmacRipemd160GetKlass(void) {
     return(&xmlSecGnuTLSHmacRipemd160Klass);
 }
 
-/** 
+/**
  * HMAC Md5
  */
 static xmlSecTransformKlass xmlSecGnuTLSHmacMd5Klass = {
@@ -566,7 +566,7 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacMd5Klass = {
     xmlSecNameHmacMd5,                          /* const xmlChar* name; */
     xmlSecHrefHmacMd5,                          /* const xmlChar* href; */
     xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
-    
+
     xmlSecGnuTLSHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
     xmlSecGnuTLSHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
     xmlSecGnuTLSHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
@@ -580,19 +580,19 @@ static xmlSecTransformKlass xmlSecGnuTLSHmacMd5Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecGnuTLSHmacExecute,                    /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecGnuTLSTransformHmacMd5GetKlass:
  *
  * The HMAC-MD5 transform klass.
  *
  * Returns: the HMAC-MD5 transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecGnuTLSTransformHmacMd5GetKlass(void) {
     return(&xmlSecGnuTLSHmacMd5Klass);
 }

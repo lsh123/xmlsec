@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Common XML utility functions
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_TREE_H__
-#define __XMLSEC_TREE_H__    
+#define __XMLSEC_TREE_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <stdio.h>
 
@@ -31,28 +31,28 @@ extern "C" {
     (((node)) ? ((const char*)((node)->name)) : NULL)
 
 XMLSEC_EXPORT const xmlChar*    xmlSecGetNodeNsHref     (const xmlNodePtr cur);
-XMLSEC_EXPORT int               xmlSecCheckNodeName     (const xmlNodePtr cur, 
-                                                         const xmlChar *name, 
+XMLSEC_EXPORT int               xmlSecCheckNodeName     (const xmlNodePtr cur,
+                                                         const xmlChar *name,
                                                          const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr        xmlSecGetNextElementNode(xmlNodePtr cur);
 XMLSEC_EXPORT xmlNodePtr        xmlSecFindChild         (const xmlNodePtr parent,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
-XMLSEC_EXPORT xmlNodePtr        xmlSecFindParent        (const xmlNodePtr cur, 
-                                                         const xmlChar *name, 
+XMLSEC_EXPORT xmlNodePtr        xmlSecFindParent        (const xmlNodePtr cur,
+                                                         const xmlChar *name,
                                                          const xmlChar *ns);
 XMLSEC_EXPORT xmlNodePtr        xmlSecFindNode          (const xmlNodePtr parent,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
-XMLSEC_EXPORT xmlNodePtr        xmlSecAddChild          (xmlNodePtr parent, 
+XMLSEC_EXPORT xmlNodePtr        xmlSecAddChild          (xmlNodePtr parent,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
-XMLSEC_EXPORT xmlNodePtr        xmlSecAddChildNode      (xmlNodePtr parent, 
+XMLSEC_EXPORT xmlNodePtr        xmlSecAddChildNode      (xmlNodePtr parent,
                                                          xmlNodePtr child);
-XMLSEC_EXPORT xmlNodePtr        xmlSecAddNextSibling    (xmlNodePtr node, 
+XMLSEC_EXPORT xmlNodePtr        xmlSecAddNextSibling    (xmlNodePtr node,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
-XMLSEC_EXPORT xmlNodePtr        xmlSecAddPrevSibling    (xmlNodePtr node, 
+XMLSEC_EXPORT xmlNodePtr        xmlSecAddPrevSibling    (xmlNodePtr node,
                                                          const xmlChar *name,
                                                          const xmlChar *ns);
 
@@ -69,11 +69,11 @@ XMLSEC_EXPORT int               xmlSecReplaceContentAndReturn
                                                          xmlNodePtr newNode,
                                                          xmlNodePtr* replaced);
 XMLSEC_EXPORT int               xmlSecReplaceNodeBuffer (xmlNodePtr node,
-                                                         const xmlSecByte *buffer, 
+                                                         const xmlSecByte *buffer,
                                                          xmlSecSize size);
 XMLSEC_EXPORT int               xmlSecReplaceNodeBufferAndReturn
                                                         (xmlNodePtr node,
-                                                         const xmlSecByte *buffer, 
+                                                         const xmlSecByte *buffer,
                                                          xmlSecSize size,
                                                          xmlNodePtr* replaced);
 XMLSEC_EXPORT int               xmlSecNodeEncodeAndSetContent
@@ -104,7 +104,7 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
 /**
  * xmlSecIsHex:
  * @c:                  the character.
- * 
+ *
  * Macro. Returns 1 if @c is a hex digit or 0 other wise.
  */
 #define xmlSecIsHex(c) \
@@ -129,12 +129,12 @@ XMLSEC_EXPORT int               xmlSecPrintXmlString    (FILE * fd,
  *
  ************************************************************************/
 
-/** 
+/**
  * xmlSecQName2IntegerInfo:
  * @qnameHref:          the QName href
  * @qnameLocalPart:     the QName local
  * @intValue:           the integer value
- * 
+ *
  * QName <-> Integer conversion definition.
  */
 typedef struct _xmlSecQName2IntegerInfo         xmlSecQName2IntegerInfo, *xmlSecQName2IntegerInfoPtr;
@@ -151,14 +151,14 @@ struct _xmlSecQName2IntegerInfo {
  */
 typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;
 
-XMLSEC_EXPORT xmlSecQName2IntegerInfoConstPtr xmlSecQName2IntegerGetInfo        
+XMLSEC_EXPORT xmlSecQName2IntegerInfoConstPtr xmlSecQName2IntegerGetInfo
                                                                 (xmlSecQName2IntegerInfoConstPtr info,
                                                                  int intValue);
 XMLSEC_EXPORT int               xmlSecQName2IntegerGetInteger   (xmlSecQName2IntegerInfoConstPtr info,
                                                                  const xmlChar* qnameHref,
                                                                  const xmlChar* qnameLocalPart,
                                                                  int* intValue);
-XMLSEC_EXPORT int               xmlSecQName2IntegerGetIntegerFromString 
+XMLSEC_EXPORT int               xmlSecQName2IntegerGetIntegerFromString
                                                                 (xmlSecQName2IntegerInfoConstPtr info,
                                                                  xmlNodePtr node,
                                                                  const xmlChar* qname,
@@ -198,19 +198,19 @@ XMLSEC_EXPORT void              xmlSecQName2IntegerDebugXmlDump(xmlSecQName2Inte
  *
  ************************************************************************/
 
-/** 
+/**
  * xmlSecBitMask:
- * 
+ *
  * Bitmask datatype.
  */
 typedef unsigned int                                    xmlSecBitMask;
 
-/** 
+/**
  * xmlSecQName2BitMaskInfo:
  * @qnameHref:          the QName href
  * @qnameLocalPart:     the QName local
  * @mask:               the bitmask value
- * 
+ *
  * QName <-> Bitmask conversion definition.
  */
 typedef struct _xmlSecQName2BitMaskInfo         xmlSecQName2BitMaskInfo, *xmlSecQName2BitMaskInfoPtr;
@@ -221,14 +221,14 @@ struct _xmlSecQName2BitMaskInfo {
     xmlSecBitMask       mask;
 };
 
-/** 
+/**
  * xmlSecQName2BitMaskInfoConstPtr:
- * 
+ *
  * Pointer to constant QName <-> Bitmask conversion definition.
  */
 typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;
 
-XMLSEC_EXPORT xmlSecQName2BitMaskInfoConstPtr xmlSecQName2BitMaskGetInfo        
+XMLSEC_EXPORT xmlSecQName2BitMaskInfoConstPtr xmlSecQName2BitMaskGetInfo
                                                                 (xmlSecQName2BitMaskInfoConstPtr info,
                                                                  xmlSecBitMask mask);
 XMLSEC_EXPORT int               xmlSecQName2BitMaskGetBitMask   (xmlSecQName2BitMaskInfoConstPtr info,
@@ -241,7 +241,7 @@ XMLSEC_EXPORT int               xmlSecQName2BitMaskNodesRead    (xmlSecQName2Bit
                                                                  const xmlChar* nodeNs,
                                                                  int stopOnUnknown,
                                                                  xmlSecBitMask* mask);
-XMLSEC_EXPORT int               xmlSecQName2BitMaskGetBitMaskFromString 
+XMLSEC_EXPORT int               xmlSecQName2BitMaskGetBitMaskFromString
                                                                 (xmlSecQName2BitMaskInfoConstPtr info,
                                                                  xmlNodePtr node,
                                                                  const xmlChar* qname,
@@ -264,7 +264,7 @@ XMLSEC_EXPORT void              xmlSecQName2BitMaskDebugXmlDump(xmlSecQName2BitM
                                                                  const xmlChar* name,
                                                                  FILE* output);
 
-                                                                 
+
 
 
 #ifdef __cplusplus

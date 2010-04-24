@@ -1,25 +1,25 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_DL_H__
-#define __XMLSEC_DL_H__    
+#define __XMLSEC_DL_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 typedef struct _xmlSecCryptoDLFunctions         xmlSecCryptoDLFunctions,
                                                 *xmlSecCryptoDLFunctionsPtr;
 
 XMLSEC_EXPORT int                               xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms
                                                                             (xmlSecCryptoDLFunctionsPtr functions);
-                                                                                
+
 #ifndef XMLSEC_NO_CRYPTO_DYNAMIC_LOADING
 
 #include <libxml/tree.h>
@@ -43,7 +43,7 @@ XMLSEC_EXPORT int                               xmlSecCryptoDLUnloadLibrary     
 
 XMLSEC_EXPORT int                               xmlSecCryptoDLSetFunctions      (xmlSecCryptoDLFunctionsPtr functions);
 XMLSEC_EXPORT xmlSecCryptoDLFunctionsPtr        xmlSecCryptoDLGetFunctions      (void);
-                                        
+
 #endif /* XMLSEC_NO_CRYPTO_DYNAMIC_LOADING */
 
 #ifdef __cplusplus

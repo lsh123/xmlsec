@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -31,7 +31,7 @@ struct _xmlSecOpenSSLDigestCtx {
     EVP_MD_CTX          digestCtx;
     xmlSecByte          dgst[EVP_MAX_MD_SIZE];
     xmlSecSize          dgstSize;       /* dgst size in bytes */
-};          
+};
 
 /******************************************************************************
  *
@@ -41,18 +41,18 @@ struct _xmlSecOpenSSLDigestCtx {
  *
  *****************************************************************************/
 #define xmlSecOpenSSLEvpDigestSize      \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLDigestCtx))  
+    (sizeof(xmlSecTransform) + sizeof(xmlSecOpenSSLDigestCtx))
 #define xmlSecOpenSSLEvpDigestGetCtx(transform) \
     ((xmlSecOpenSSLDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
 
 static int      xmlSecOpenSSLEvpDigestInitialize        (xmlSecTransformPtr transform);
 static void     xmlSecOpenSSLEvpDigestFinalize          (xmlSecTransformPtr transform);
-static int      xmlSecOpenSSLEvpDigestVerify            (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLEvpDigestVerify            (xmlSecTransformPtr transform,
                                                          const xmlSecByte* data,
                                                          xmlSecSize dataSize,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecOpenSSLEvpDigestExecute           (xmlSecTransformPtr transform, 
+static int      xmlSecOpenSSLEvpDigestExecute           (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecOpenSSLEvpDigestCheckId           (xmlSecTransformPtr transform);
@@ -64,56 +64,56 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMd5Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_MD5 */    
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_RIPEMD160 */    
+#endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA1 */    
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha224Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA224 */    
-    
+#endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha256Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA256 */    
+#endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha384Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA384 */    
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha512Id)) {
         return(1);
     } else
-#endif /* XMLSEC_NO_SHA512 */    
+#endif /* XMLSEC_NO_SHA512 */
 
 
     {
         return(0);
     }
-    
+
     return(0);
 }
 
-static int 
+static int
 xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLDigestCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
 
@@ -126,47 +126,47 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_MD5
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformMd5Id)) {
         ctx->digest = EVP_md5();
-    } else 
+    } else
 #endif /* XMLSEC_NO_MD5 */
-    
-#ifndef XMLSEC_NO_RIPEMD160 
+
+#ifndef XMLSEC_NO_RIPEMD160
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformRipemd160Id)) {
         ctx->digest = EVP_ripemd160();
-    } else 
+    } else
 #endif /* XMLSEC_NO_RIPEMD160 */
-    
+
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha1Id)) {
         ctx->digest = EVP_sha1();
-    } else 
-#endif /* XMLSEC_NO_SHA1 */    
+    } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha224Id)) {
         ctx->digest = EVP_sha224();
-    } else 
-#endif /* XMLSEC_NO_SHA224 */    
+    } else
+#endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha256Id)) {
         ctx->digest = EVP_sha256();
-    } else 
-#endif /* XMLSEC_NO_SHA256 */    
-    
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha384Id)) {
         ctx->digest = EVP_sha384();
-    } else 
-#endif /* XMLSEC_NO_SHA384 */    
+    } else
+#endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformSha512Id)) {
         ctx->digest = EVP_sha512();
-    } else 
-#endif /* XMLSEC_NO_SHA512 */    
+    } else
+#endif /* XMLSEC_NO_SHA512 */
 
     {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_TRANSFORM,
@@ -177,11 +177,11 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_init(&(ctx->digestCtx));
 #endif /* XMLSEC_OPENSSL_096 */
-    
+
     return(0);
 }
 
-static void 
+static void
 xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
     xmlSecOpenSSLDigestCtxPtr ctx;
 
@@ -190,7 +190,7 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
 
     ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
     xmlSecAssert(ctx != NULL);
-    
+
 #ifndef XMLSEC_OPENSSL_096
     EVP_MD_CTX_cleanup(&(ctx->digestCtx));
 #endif /* XMLSEC_OPENSSL_096 */
@@ -198,11 +198,11 @@ xmlSecOpenSSLEvpDigestFinalize(xmlSecTransformPtr transform) {
 }
 
 static int
-xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform, 
+xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
                         const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLDigestCtxPtr ctx;
-    
+
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
     xmlSecAssert2(transform->operation == xmlSecTransformOperationVerify, -1);
@@ -213,20 +213,20 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
     ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->dgstSize > 0, -1);
-    
+
     if(dataSize != ctx->dgstSize) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "data_size=%d;dgst_size=%d", 
+                    "data_size=%d;dgst_size=%d",
                     dataSize, ctx->dgstSize);
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
-    
+
     if(memcmp(ctx->dgst, data, ctx->dgstSize) != 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_DATA,
@@ -234,17 +234,17 @@ xmlSecOpenSSLEvpDigestVerify(xmlSecTransformPtr transform,
         transform->status = xmlSecTransformStatusFail;
         return(0);
     }
-    
+
     transform->status = xmlSecTransformStatusOk;
     return(0);
 }
 
-static int 
+static int
 xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLDigestCtxPtr ctx;
     xmlSecBufferPtr in, out;
     int ret;
-    
+
     xmlSecAssert2(xmlSecOpenSSLEvpDigestCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecOpenSSLEvpDigestSize), -1);
@@ -259,12 +259,12 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
     ctx = xmlSecOpenSSLEvpDigestGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->digest != NULL, -1);
-    
+
     if(transform->status == xmlSecTransformStatusNone) {
 #ifndef XMLSEC_OPENSSL_096
         ret = EVP_DigestInit(&(ctx->digestCtx), ctx->digest);
         if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "EVP_DigestInit",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -276,16 +276,16 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 #endif /* XMLSEC_OPENSSL_096 */
         transform->status = xmlSecTransformStatusWorking;
     }
-    
+
     if(transform->status == xmlSecTransformStatusWorking) {
         xmlSecSize inSize;
-        
+
         inSize = xmlSecBufferGetSize(in);
         if(inSize > 0) {
 #ifndef XMLSEC_OPENSSL_096
             ret = EVP_DigestUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
             if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "EVP_DigestUpdate",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -295,10 +295,10 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
 #else /* XMLSEC_OPENSSL_096 */
             EVP_DigestUpdate(&(ctx->digestCtx), xmlSecBufferGetData(in), inSize);
 #endif /* XMLSEC_OPENSSL_096 */
-            
+
             ret = xmlSecBufferRemoveHead(in, inSize);
             if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferRemoveHead",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -308,11 +308,11 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         }
         if(last) {
             xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
-                
+
 #ifndef XMLSEC_OPENSSL_096
             ret = EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
             if(ret != 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE, 
+                xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "EVP_DigestFinal",
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
@@ -323,12 +323,12 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
             EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
 #endif /* XMLSEC_OPENSSL_096 */
             xmlSecAssert2(ctx->dgstSize > 0, -1);
-            
+
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);
                 if(ret < 0) {
-                    xmlSecError(XMLSEC_ERRORS_HERE, 
+                    xmlSecError(XMLSEC_ERRORS_HERE,
                                 xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                                 "xmlSecBufferAppend",
                                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -342,14 +342,14 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(in) == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,
                     "status=%d", transform->status);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -368,7 +368,7 @@ static xmlSecTransformKlass xmlSecOpenSSLMd5Klass = {
     xmlSecNameMd5,                              /* const xmlChar* name; */
     xmlSecHrefMd5,                              /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -382,19 +382,19 @@ static xmlSecTransformKlass xmlSecOpenSSLMd5Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformMd5GetKlass:
  *
  * MD5 digest transform klass.
  *
  * Returns: pointer to MD5 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformMd5GetKlass(void) {
     return(&xmlSecOpenSSLMd5Klass);
 }
@@ -414,7 +414,7 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     xmlSecNameRipemd160,                        /* const xmlChar* name; */
     xmlSecHrefRipemd160,                        /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -428,19 +428,19 @@ static xmlSecTransformKlass xmlSecOpenSSLRipemd160Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformRipemd160GetKlass:
  *
  * RIPEMD-160 digest transform klass.
  *
  * Returns: pointer to RIPEMD-160 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformRipemd160GetKlass(void) {
     return(&xmlSecOpenSSLRipemd160Klass);
 }
@@ -461,7 +461,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     xmlSecNameSha1,                             /* const xmlChar* name; */
     xmlSecHrefSha1,                             /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -475,19 +475,19 @@ static xmlSecTransformKlass xmlSecOpenSSLSha1Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformSha1GetKlass:
  *
  * SHA-1 digest transform klass.
  *
  * Returns: pointer to SHA-1 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformSha1GetKlass(void) {
     return(&xmlSecOpenSSLSha1Klass);
 }
@@ -507,7 +507,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha224Klass = {
     xmlSecNameSha224,                           /* const xmlChar* name; */
     xmlSecHrefSha224,                           /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -521,19 +521,19 @@ static xmlSecTransformKlass xmlSecOpenSSLSha224Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformSha224GetKlass:
  *
  * SHA-224 digest transform klass.
  *
  * Returns: pointer to SHA-224 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformSha224GetKlass(void) {
     return(&xmlSecOpenSSLSha224Klass);
 }
@@ -553,7 +553,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha256Klass = {
     xmlSecNameSha256,                           /* const xmlChar* name; */
     xmlSecHrefSha256,                           /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -567,19 +567,19 @@ static xmlSecTransformKlass xmlSecOpenSSLSha256Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformSha256GetKlass:
  *
  * SHA-256 digest transform klass.
  *
  * Returns: pointer to SHA-256 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformSha256GetKlass(void) {
     return(&xmlSecOpenSSLSha256Klass);
 }
@@ -599,7 +599,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha384Klass = {
     xmlSecNameSha384,                           /* const xmlChar* name; */
     xmlSecHrefSha384,                           /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -613,19 +613,19 @@ static xmlSecTransformKlass xmlSecOpenSSLSha384Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformSha384GetKlass:
  *
  * SHA-384 digest transform klass.
  *
  * Returns: pointer to SHA-384 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformSha384GetKlass(void) {
     return(&xmlSecOpenSSLSha384Klass);
 }
@@ -645,7 +645,7 @@ static xmlSecTransformKlass xmlSecOpenSSLSha512Klass = {
     xmlSecNameSha512,                           /* const xmlChar* name; */
     xmlSecHrefSha512,                           /* const xmlChar* href; */
     xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
-    
+
     xmlSecOpenSSLEvpDigestInitialize,           /* xmlSecTransformInitializeMethod initialize; */
     xmlSecOpenSSLEvpDigestFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
@@ -659,19 +659,19 @@ static xmlSecTransformKlass xmlSecOpenSSLSha512Klass = {
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
     xmlSecOpenSSLEvpDigestExecute,              /* xmlSecTransformExecuteMethod execute; */
-    
+
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
-/** 
+/**
  * xmlSecOpenSSLTransformSha512GetKlass:
  *
  * SHA-512 digest transform klass.
  *
  * Returns: pointer to SHA-512 digest transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecOpenSSLTransformSha512GetKlass(void) {
     return(&xmlSecOpenSSLSha512Klass);
 }

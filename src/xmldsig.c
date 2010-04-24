@@ -1,13 +1,13 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * "XML Digital Signature" implementation
  *  http://www.w3.org/TR/xmldsig-core/
  *  http://www.w3.org/Signature/Overview.html
- * 
+ *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -19,7 +19,7 @@
 #include <string.h>
 
 #include <libxml/tree.h>
-#include <libxml/parser.h> 
+#include <libxml/parser.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/buffer.h>
@@ -36,15 +36,15 @@
  * xmlSecDSigCtx
  *
  *************************************************************************/
-static int      xmlSecDSigCtxProcessSignatureNode       (xmlSecDSigCtxPtr dsigCtx, 
+static int      xmlSecDSigCtxProcessSignatureNode       (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
-static int      xmlSecDSigCtxProcessSignedInfoNode      (xmlSecDSigCtxPtr dsigCtx, 
+static int      xmlSecDSigCtxProcessSignedInfoNode      (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
-static int      xmlSecDSigCtxProcessKeyInfoNode         (xmlSecDSigCtxPtr dsigCtx, 
+static int      xmlSecDSigCtxProcessKeyInfoNode         (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
-static int      xmlSecDSigCtxProcessObjectNode          (xmlSecDSigCtxPtr dsigCtx, 
+static int      xmlSecDSigCtxProcessObjectNode          (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
-static int      xmlSecDSigCtxProcessManifestNode        (xmlSecDSigCtxPtr dsigCtx, 
+static int      xmlSecDSigCtxProcessManifestNode        (xmlSecDSigCtxPtr dsigCtx,
                                                          xmlNodePtr node);
 
 /* The ID attribute in XMLDSig is 'Id' */
@@ -55,28 +55,28 @@ static const xmlChar*           xmlSecDSigIds[] = { xmlSecAttrId, NULL };
  * @keysMngr:           the pointer to keys manager.
  *
  * Creates <dsig:Signature/> element processing context.
- * The caller is responsible for destroying returend object by calling 
+ * The caller is responsible for destroying returend object by calling
  * #xmlSecDSigCtxDestroy function.
  *
  * Returns: pointer to newly allocated context object or NULL if an error
  * occurs.
  */
-xmlSecDSigCtxPtr        
+xmlSecDSigCtxPtr
 xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
     xmlSecDSigCtxPtr dsigCtx;
     int ret;
-    
+
     dsigCtx = (xmlSecDSigCtxPtr) xmlMalloc(sizeof(xmlSecDSigCtx));
     if(dsigCtx == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecDSigCtx)=%d", 
+                    "sizeof(xmlSecDSigCtx)=%d",
                     sizeof(xmlSecDSigCtx));
         return(NULL);
     }
-    
+
     ret = xmlSecDSigCtxInitialize(dsigCtx, keysMngr);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -85,9 +85,9 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecDSigCtxDestroy(dsigCtx);
-        return(NULL);   
+        return(NULL);
     }
-    return(dsigCtx);    
+    return(dsigCtx);
 }
 
 /**
@@ -96,10 +96,10 @@ xmlSecDSigCtxCreate(xmlSecKeysMngrPtr keysMngr) {
  *
  * Destroy context object created with #xmlSecDSigCtxCreate function.
  */
-void  
+void
 xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert(dsigCtx != NULL);
-    
+
     xmlSecDSigCtxFinalize(dsigCtx);
     xmlFree(dsigCtx);
 }
@@ -110,17 +110,17 @@ xmlSecDSigCtxDestroy(xmlSecDSigCtxPtr dsigCtx) {
  * @keysMngr:           the pointer to keys manager.
  *
  * Initializes <dsig:Signature/> element processing context.
- * The caller is responsible for cleaing up returend object by calling 
+ * The caller is responsible for cleaing up returend object by calling
  * #xmlSecDSigCtxFinalize function.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
-    
+
     memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 
     /* initialize key info */
@@ -131,10 +131,10 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
                     "xmlSecKeyInfoCtxInitialize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);   
+        return(-1);
     }
     dsigCtx->keyInfoReadCtx.mode = xmlSecKeyInfoModeRead;
-    
+
     ret = xmlSecKeyInfoCtxInitialize(&(dsigCtx->keyInfoWriteCtx), keysMngr);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -142,7 +142,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
                     "xmlSecKeyInfoCtxInitialize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);   
+        return(-1);
     }
     dsigCtx->keyInfoWriteCtx.mode = xmlSecKeyInfoModeWrite;
     /* it's not wise to write private key :) */
@@ -156,14 +156,14 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
                     "xmlSecTransformCtxInitialize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);   
+        return(-1);
     }
 
     /* references lists from SignedInfo and Manifest elements */
-    xmlSecPtrListInitialize(&(dsigCtx->signedInfoReferences), 
+    xmlSecPtrListInitialize(&(dsigCtx->signedInfoReferences),
                             xmlSecDSigReferenceCtxListId);
-    xmlSecPtrListInitialize(&(dsigCtx->manifestReferences), 
-                            xmlSecDSigReferenceCtxListId);    
+    xmlSecPtrListInitialize(&(dsigCtx->manifestReferences),
+                            xmlSecDSigReferenceCtxListId);
 
     dsigCtx->enabledReferenceUris = xmlSecTransformUriTypeAny;
     return(0);
@@ -175,7 +175,7 @@ xmlSecDSigCtxInitialize(xmlSecDSigCtxPtr dsigCtx, xmlSecKeysMngrPtr keysMngr) {
  *
  * Cleans up @dsigCtx object initialized with #xmlSecDSigCtxInitialize function.
  */
-void 
+void
 xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert(dsigCtx != NULL);
 
@@ -186,14 +186,14 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecPtrListFinalize(&(dsigCtx->manifestReferences));
 
     if(dsigCtx->enabledReferenceTransforms != NULL) {
-        xmlSecPtrListDestroy(dsigCtx->enabledReferenceTransforms);      
+        xmlSecPtrListDestroy(dsigCtx->enabledReferenceTransforms);
     }
     if(dsigCtx->signKey != NULL) {
         xmlSecKeyDestroy(dsigCtx->signKey);
     }
     if(dsigCtx->id != NULL) {
         xmlFree(dsigCtx->id);
-    }   
+    }
     memset(dsigCtx, 0, sizeof(xmlSecDSigCtx));
 }
 
@@ -206,10 +206,10 @@ xmlSecDSigCtxFinalize(xmlSecDSigCtxPtr dsigCtx) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformId transformId) {
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->result == NULL, -1);
     xmlSecAssert2(transformId != xmlSecTransformIdUnknown, -1);
@@ -222,10 +222,10 @@ xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
                         "xmlSecPtrListCreate",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);   
+            return(-1);
         }
-    }   
-        
+    }
+
     ret = xmlSecPtrListAdd(dsigCtx->enabledReferenceTransforms, (void*)transformId);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -233,7 +233,7 @@ xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
                     "xmlSecPtrListAdd",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);   
+        return(-1);
     }
     return(0);
 }
@@ -247,7 +247,7 @@ xmlSecDSigCtxEnableReferenceTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformId transformId) {
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->result == NULL, -1);
@@ -259,18 +259,18 @@ xmlSecDSigCtxEnableSignatureTransform(xmlSecDSigCtxPtr dsigCtx, xmlSecTransformI
 /**
  * xmlSecDSigCtxGetPreSignBuffer:
  * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
- * 
+ *
  * Gets pointer to the buffer with serialized <dsig:SignedInfo/> element
- * just before signature claculation (valid if and only if 
+ * just before signature claculation (valid if and only if
  * #XMLSEC_DSIG_FLAGS_STORE_SIGNATURE context flag is set.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-xmlSecBufferPtr 
+xmlSecBufferPtr
 xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
     xmlSecAssert2(dsigCtx != NULL, NULL);
-    
-    return((dsigCtx->preSignMemBufMethod != NULL) ? 
+
+    return((dsigCtx->preSignMemBufMethod != NULL) ?
             xmlSecTransformMemBufGetBuffer(dsigCtx->preSignMemBufMethod) : NULL);
 }
 
@@ -283,10 +283,10 @@ xmlSecDSigCtxGetPreSignBuffer(xmlSecDSigCtxPtr dsigCtx) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->result == NULL, -1);
     xmlSecAssert2(tmpl != NULL, -1);
@@ -330,27 +330,27 @@ xmlSecDSigCtxSign(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr tmpl) {
     xmlNodeSetContentLen(dsigCtx->signValueNode,
                             xmlSecBufferGetData(dsigCtx->result),
                             xmlSecBufferGetSize(dsigCtx->result));
-    
+
     /* set success status and we are done */
     dsigCtx->status = xmlSecDSigStatusSucceeded;
-    return(0);    
+    return(0);
 }
 
 /**
  * xmlSecDSigCtxVerify:
  * @dsigCtx:            the pointer to <dsig:Signature/> processing context.
  * @node:               the pointer with <dsig:Signature/> node.
- * 
+ *
  * Vaidates signature in the @node. The verification result is returned
  * in #status member of the @dsigCtx object.
  *
- * Returns: 0 on success (check #status member of @dsigCtx to get 
+ * Returns: 0 on success (check #status member of @dsigCtx to get
  * signature verification result) or a negative value if an error occurs.
  */
-int 
+int
 xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(node != NULL, -1);
     xmlSecAssert2(node->doc != NULL, -1);
@@ -359,7 +359,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     dsigCtx->operation  = xmlSecTransformOperationVerify;
     dsigCtx->status     = xmlSecDSigStatusUnknown;
     xmlSecAddIDs(node->doc, node, xmlSecDSigIds);
-    
+
     /* read siganture info */
     ret = xmlSecDSigCtxProcessSignatureNode(dsigCtx, node);
     if(ret < 0) {
@@ -389,7 +389,7 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     /* set status and we are done */
     if(dsigCtx->signMethod->status == xmlSecTransformStatusOk) {
         dsigCtx->status = xmlSecDSigStatusSucceeded;
@@ -404,47 +404,47 @@ xmlSecDSigCtxVerify(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
  *
  * The Signature  element (http://www.w3.org/TR/xmldsig-core/#sec-Signature)
  *
- * The Signature element is the root element of an XML Signature. 
- * Implementation MUST generate laxly schema valid [XML-schema] Signature 
+ * The Signature element is the root element of an XML Signature.
+ * Implementation MUST generate laxly schema valid [XML-schema] Signature
  * elements as specified by the following schema:
- * The way in which the SignedInfo element is presented to the 
- * canonicalization method is dependent on that method. The following 
+ * The way in which the SignedInfo element is presented to the
+ * canonicalization method is dependent on that method. The following
  * applies to algorithms which process XML as nodes or characters:
  *
- *  - XML based canonicalization implementations MUST be provided with 
- *  a [XPath] node-set originally formed from the document containing 
+ *  - XML based canonicalization implementations MUST be provided with
+ *  a [XPath] node-set originally formed from the document containing
  *  the SignedInfo and currently indicating the SignedInfo, its descendants,
- *  and the attribute and namespace nodes of SignedInfo and its descendant 
+ *  and the attribute and namespace nodes of SignedInfo and its descendant
  *  elements.
  *
- *  - Text based canonicalization algorithms (such as CRLF and charset 
- *  normalization) should be provided with the UTF-8 octets that represent 
- *  the well-formed SignedInfo element, from the first character to the 
- *  last character of the XML representation, inclusive. This includes 
- *  the entire text of the start and end tags of the SignedInfo element 
- *  as well as all descendant markup and character data (i.e., the text) 
- *  between those tags. Use of text based canonicalization of SignedInfo 
- *  is NOT RECOMMENDED.              
+ *  - Text based canonicalization algorithms (such as CRLF and charset
+ *  normalization) should be provided with the UTF-8 octets that represent
+ *  the well-formed SignedInfo element, from the first character to the
+ *  last character of the XML representation, inclusive. This includes
+ *  the entire text of the start and end tags of the SignedInfo element
+ *  as well as all descendant markup and character data (i.e., the text)
+ *  between those tags. Use of text based canonicalization of SignedInfo
+ *  is NOT RECOMMENDED.
  *
  *  =================================
- *  we do not support any non XML based C14N 
+ *  we do not support any non XML based C14N
  *
  * Schema Definition:
  *
  *  <element name="Signature" type="ds:SignatureType"/>
  *  <complexType name="SignatureType">
- *  <sequence> 
- *     <element ref="ds:SignedInfo"/> 
- *     <element ref="ds:SignatureValue"/> 
- *     <element ref="ds:KeyInfo" minOccurs="0"/> 
- *     <element ref="ds:Object" minOccurs="0" maxOccurs="unbounded"/> 
+ *  <sequence>
+ *     <element ref="ds:SignedInfo"/>
+ *     <element ref="ds:SignatureValue"/>
+ *     <element ref="ds:KeyInfo" minOccurs="0"/>
+ *     <element ref="ds:Object" minOccurs="0" maxOccurs="unbounded"/>
  *     </sequence> <attribute name="Id" type="ID" use="optional"/>
  *  </complexType>
- *    
+ *
  * DTD:
- *    
+ *
  *  <!ELEMENT Signature (SignedInfo, SignatureValue, KeyInfo?, Object*)  >
- *  <!ATTLIST Signature  
+ *  <!ATTLIST Signature
  *      xmlns   CDATA   #FIXED 'http://www.w3.org/2000/09/xmldsig#'
  *      Id      ID  #IMPLIED >
  *
@@ -456,7 +456,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlNodePtr keyInfoNode = NULL;
     xmlNodePtr cur;
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2((dsigCtx->operation == xmlSecTransformOperationSign) || (dsigCtx->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
@@ -472,7 +472,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     XMLSEC_ERRORS_R_INVALID_NODE,
                     "expected=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignature));
-        return(-1);         
+        return(-1);
     }
 
     /* read node data */
@@ -480,7 +480,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     dsigCtx->id = xmlGetProp(node, xmlSecAttrId);
 
     /* first node is required SignedInfo */
-    cur = xmlSecGetNextElementNode(node->children);    
+    cur = xmlSecGetNextElementNode(node->children);
     if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeSignedInfo, xmlSecDSigNs))) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -513,7 +513,7 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     } else {
         keyInfoNode = NULL;
     }
-    
+
     /* next nodes are optional Object nodes */
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeObject, xmlSecDSigNs))) {
         /* read manifests from objects */
@@ -525,12 +525,12 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                             "xmlSecDSigCtxProcessObjectNode",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);                 
+                return(-1);
             }
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
-    
+
     /* if there is something left than it's an error */
     if(cur != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -549,14 +549,14 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     "xmlSecDSigCtxProcessSignedInfoNode",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);     
-    }                           
+        return(-1);
+    }
     /* references processing might change the status */
     if(dsigCtx->status != xmlSecDSigStatusUnknown) {
         return(0);
     }
-    
-    /* as the result, we should have sign and c14n methods set */    
+
+    /* as the result, we should have sign and c14n methods set */
     xmlSecAssert2(dsigCtx->signMethod != NULL, -1);
     xmlSecAssert2(dsigCtx->c14nMethod != NULL, -1);
 
@@ -567,17 +567,17 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     "xmlSecDSigCtxProcessKeyInfoNode",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);     
-    }                           
+        return(-1);
+    }
     /* as the result, we should have a key */
     xmlSecAssert2(dsigCtx->signKey != NULL, -1);
 
     /* if we need to write result to xml node then we need base64 encode result */
-    if(dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigCtx->operation == xmlSecTransformOperationSign) {
         xmlSecTransformPtr base64Encode;
-        
+
         /* we need to add base64 encode transform */
-        base64Encode = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), 
+        base64Encode = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                          xmlSecTransformBase64Id);
         if(base64Encode == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -590,8 +590,8 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
         base64Encode->operation = xmlSecTransformOperationEncode;
     }
 
-    firstType = xmlSecTransformGetDataType(dsigCtx->transformCtx.first, 
-                                           xmlSecTransformModePush, 
+    firstType = xmlSecTransformGetDataType(dsigCtx->transformCtx.first,
+                                           xmlSecTransformModePush,
                                            &(dsigCtx->transformCtx));
     if((firstType & xmlSecTransformDataTypeXml) != 0) {
         xmlSecNodeSetPtr nodeset = NULL;
@@ -632,58 +632,58 @@ xmlSecDSigCtxProcessSignatureNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     return(0);
 }
 
-/** 
+/**
  * xmlSecDSigCtxProcessSignedInfoNode:
  *
  * The SignedInfo Element (http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo)
- * 
- * The structure of SignedInfo includes the canonicalization algorithm, 
- * a result algorithm, and one or more references. The SignedInfo element 
- * may contain an optional ID attribute that will allow it to be referenced by 
+ *
+ * The structure of SignedInfo includes the canonicalization algorithm,
+ * a result algorithm, and one or more references. The SignedInfo element
+ * may contain an optional ID attribute that will allow it to be referenced by
  * other signatures and objects.
  *
  * SignedInfo does not include explicit result or digest properties (such as
- * calculation time, cryptographic device serial number, etc.). If an 
- * application needs to associate properties with the result or digest, 
- * it may include such information in a SignatureProperties element within 
+ * calculation time, cryptographic device serial number, etc.). If an
+ * application needs to associate properties with the result or digest,
+ * it may include such information in a SignatureProperties element within
  * an Object element.
  *
  * Schema Definition:
  *
- *  <element name="SignedInfo" type="ds:SignedInfoType"/> 
+ *  <element name="SignedInfo" type="ds:SignedInfoType"/>
  *  <complexType name="SignedInfoType">
- *    <sequence> 
+ *    <sequence>
  *      <element ref="ds:CanonicalizationMethod"/>
- *      <element ref="ds:SignatureMethod"/> 
- *      <element ref="ds:Reference" maxOccurs="unbounded"/> 
- *    </sequence> 
- *    <attribute name="Id" type="ID" use="optional"/> 
+ *      <element ref="ds:SignatureMethod"/>
+ *      <element ref="ds:Reference" maxOccurs="unbounded"/>
+ *    </sequence>
+ *    <attribute name="Id" type="ID" use="optional"/>
  *  </complexType>
- *    
+ *
  * DTD:
- *    
+ *
  *  <!ELEMENT SignedInfo (CanonicalizationMethod, SignatureMethod,  Reference+) >
  *  <!ATTLIST SignedInfo  Id   ID      #IMPLIED>
- * 
+ *
  */
-static int 
+static int
 xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlSecDSigReferenceCtxPtr dsigRefCtx;
     xmlNodePtr cur;
     int ret;
-    
-    xmlSecAssert2(dsigCtx != NULL, -1); 
+
+    xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
     xmlSecAssert2(dsigCtx->signMethod == NULL, -1);
     xmlSecAssert2(dsigCtx->c14nMethod == NULL, -1);
     xmlSecAssert2((dsigCtx->operation == xmlSecTransformOperationSign) || (dsigCtx->operation == xmlSecTransformOperationVerify), -1);
     xmlSecAssert2(xmlSecPtrListGetSize(&(dsigCtx->signedInfoReferences)) == 0, -1);
     xmlSecAssert2(node != NULL, -1);
-    
+
     /* first node is required CanonicalizationMethod. */
     cur = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs))) {
-        dsigCtx->c14nMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx), 
+        dsigCtx->c14nMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageC14NMethod);
         if(dsigCtx->c14nMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -692,13 +692,13 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1); 
-        }       
+            return(-1);
+        }
     } else if(dsigCtx->defC14NMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require CanonicalizationMethod node
          * to be present but in some case it application might decide to
          * minimize traffic */
-        dsigCtx->c14nMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), 
+        dsigCtx->c14nMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                               dsigCtx->defC14NMethodId);
         if(dsigCtx->c14nMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -717,11 +717,11 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
         return(-1);
     }
-    
+
     /* insert membuf if requested */
     if((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) {
         xmlSecAssert2(dsigCtx->preSignMemBufMethod == NULL, -1);
-        dsigCtx->preSignMemBufMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), 
+        dsigCtx->preSignMemBufMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                 xmlSecTransformMemBufId);
         if(dsigCtx->preSignMemBufMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -732,11 +732,11 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         xmlSecErrorsSafeString(xmlSecTransformKlassGetName(xmlSecTransformMemBufId)));
         }
     }
-        
+
     /* next node is required SignatureMethod. */
     cur = xmlSecGetNextElementNode( ((cur != NULL) ? cur->next : node->children) );
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeSignatureMethod, xmlSecDSigNs))) {
-        dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx), 
+        dsigCtx->signMethod = xmlSecTransformCtxNodeRead(&(dsigCtx->transformCtx),
                                         cur, xmlSecTransformUsageSignatureMethod);
         if(dsigCtx->signMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -745,13 +745,13 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1); 
-        }       
+            return(-1);
+        }
     } else if(dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require SignatureMethod node
          * to be present but in some case it application might decide to
          * minimize traffic */
-        dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx), 
+        dsigCtx->signMethod = xmlSecTransformCtxCreateAndAppend(&(dsigCtx->transformCtx),
                                                               dsigCtx->defSignMethodId);
         if(dsigCtx->signMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -769,9 +769,9 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     "expected=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
         return(-1);
-    }   
+    }
     dsigCtx->signMethod->operation = dsigCtx->operation;
-    
+
     /* calculate references */
     cur = xmlSecGetNextElementNode(cur->next);
     while((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeReference, xmlSecDSigNs))) {
@@ -783,7 +783,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         "xmlSecDSigReferenceCtxCreate",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);     
+            return(-1);
         }
 
         /* add to the list */
@@ -795,7 +795,7 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecDSigReferenceCtxDestroy(dsigRefCtx);
-            return(-1);     
+            return(-1);
         }
 
         /* process */
@@ -807,13 +807,13 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1);     
+            return(-1);
         }
 
         /* bail out if next Reference processing failed */
         if(dsigRefCtx->status != xmlSecDSigStatusSucceeded) {
             dsigCtx->status = xmlSecDSigStatusInvalid;
-            return(0); 
+            return(0);
         }
         cur = xmlSecGetNextElementNode(cur->next);
     }
@@ -840,10 +840,10 @@ xmlSecDSigCtxProcessSignedInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     return(0);
 }
 
-static int 
+static int
 xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->signMethod != NULL, -1);
 
@@ -857,15 +857,15 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     "transform=%s",
                     xmlSecErrorsSafeString(xmlSecTransformGetName(dsigCtx->signMethod)));
         return(-1);
-    }   
-    
+    }
+
     /* ignore <dsig:KeyInfo /> if there is the key is already set */
     /* todo: throw an error if key is set and node != NULL? */
-    if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL) 
-                        && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {        
+    if((dsigCtx->signKey == NULL) && (dsigCtx->keyInfoReadCtx.keysMngr != NULL)
+                        && (dsigCtx->keyInfoReadCtx.keysMngr->getKey != NULL)) {
         dsigCtx->signKey = (dsigCtx->keyInfoReadCtx.keysMngr->getKey)(node, &(dsigCtx->keyInfoReadCtx));
     }
-    
+
     /* check that we have exactly what we want */
     if((dsigCtx->signKey == NULL) || (!xmlSecKeyMatch(dsigCtx->signKey, NULL, &(dsigCtx->keyInfoReadCtx.keyReq)))) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -875,7 +875,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     /* set the key to the transform */
     ret = xmlSecTransformSetKey(dsigCtx->signMethod, dsigCtx->signKey);
     if(ret < 0) {
@@ -889,7 +889,7 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     }
 
     /* if we are signing document, update <dsig:KeyInfo/> node */
-    if((node != NULL) && (dsigCtx->operation == xmlSecTransformOperationSign)) {        
+    if((node != NULL) && (dsigCtx->operation == xmlSecTransformOperationSign)) {
         ret = xmlSecKeyInfoNodeWrite(node, dsigCtx->signKey, &(dsigCtx->keyInfoWriteCtx));
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -898,38 +898,38 @@ xmlSecDSigCtxProcessKeyInfoNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
-        }       
+        }
     }
-    
+
     return(0);
 }
 
 /**
  * xmlSecDSigCtxProcessObjectNode:
- *      
+ *
  * The Object Element (http://www.w3.org/TR/xmldsig-core/#sec-Object)
- * 
- * Object is an optional element that may occur one or more times. When 
- * present, this element may contain any data. The Object element may include 
+ *
+ * Object is an optional element that may occur one or more times. When
+ * present, this element may contain any data. The Object element may include
  * optional MIME type, ID, and encoding attributes.
- *     
+ *
  * Schema Definition:
- *     
- * <element name="Object" type="ds:ObjectType"/> 
+ *
+ * <element name="Object" type="ds:ObjectType"/>
  * <complexType name="ObjectType" mixed="true">
  *   <sequence minOccurs="0" maxOccurs="unbounded">
  *     <any namespace="##any" processContents="lax"/>
  *   </sequence>
- *   <attribute name="Id" type="ID" use="optional"/> 
+ *   <attribute name="Id" type="ID" use="optional"/>
  *   <attribute name="MimeType" type="string" use="optional"/>
- *   <attribute name="Encoding" type="anyURI" use="optional"/> 
+ *   <attribute name="Encoding" type="anyURI" use="optional"/>
  * </complexType>
- *      
+ *
  * DTD:
- *      
+ *
  * <!ELEMENT Object (#PCDATA|Signature|SignatureProperties|Manifest %Object.ANY;)* >
- * <!ATTLIST Object  Id  ID  #IMPLIED 
- *                   MimeType    CDATA   #IMPLIED 
+ * <!ATTLIST Object  Id  ID  #IMPLIED
+ *                   MimeType    CDATA   #IMPLIED
  *                   Encoding    CDATA   #IMPLIED >
  */
 static int
@@ -937,10 +937,10 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(dsigCtx != NULL, -1); 
+    xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
     xmlSecAssert2(node != NULL, -1);
-    
+
     /* we care about Manifest nodes only; ignore everything else */
     cur = xmlSecGetNextElementNode(node->children);
     while(cur != NULL) {
@@ -952,7 +952,7 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                             "xmlSecDSigCtxProcessManifestNode",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);         
+                return(-1);
             }
         }
         cur = xmlSecGetNextElementNode(cur->next);
@@ -961,30 +961,30 @@ xmlSecDSigCtxProcessObjectNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
 }
 
 /**
- * xmlSecDSigCtxProcessManifestNode: 
+ * xmlSecDSigCtxProcessManifestNode:
  *
  * The Manifest  Element (http://www.w3.org/TR/xmldsig-core/#sec-Manifest)
  *
- * The Manifest element provides a list of References. The difference from 
- * the list in SignedInfo is that it is application defined which, if any, of 
- * the digests are actually checked against the objects referenced and what to 
- * do if the object is inaccessible or the digest compare fails. If a Manifest 
- * is pointed to from SignedInfo, the digest over the Manifest itself will be 
- * checked by the core result validation behavior. The digests within such 
- * a Manifest are checked at the application's discretion. If a Manifest is 
- * referenced from another Manifest, even the overall digest of this two level 
+ * The Manifest element provides a list of References. The difference from
+ * the list in SignedInfo is that it is application defined which, if any, of
+ * the digests are actually checked against the objects referenced and what to
+ * do if the object is inaccessible or the digest compare fails. If a Manifest
+ * is pointed to from SignedInfo, the digest over the Manifest itself will be
+ * checked by the core result validation behavior. The digests within such
+ * a Manifest are checked at the application's discretion. If a Manifest is
+ * referenced from another Manifest, even the overall digest of this two level
  * deep Manifest might not be checked.
- *     
+ *
  * Schema Definition:
- *     
- * <element name="Manifest" type="ds:ManifestType"/> 
+ *
+ * <element name="Manifest" type="ds:ManifestType"/>
  * <complexType name="ManifestType">
  *   <sequence>
- *     <element ref="ds:Reference" maxOccurs="unbounded"/> 
- *   </sequence> 
- *   <attribute name="Id" type="ID" use="optional"/> 
+ *     <element ref="ds:Reference" maxOccurs="unbounded"/>
+ *   </sequence>
+ *   <attribute name="Id" type="ID" use="optional"/>
  *  </complexType>
- *      
+ *
  * DTD:
  *
  * <!ELEMENT Manifest (Reference+)  >
@@ -996,7 +996,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
     xmlNodePtr cur;
     int ret;
 
-    xmlSecAssert2(dsigCtx != NULL, -1); 
+    xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigCtx->status == xmlSecDSigStatusUnknown, -1);
     xmlSecAssert2(node != NULL, -1);
 
@@ -1011,7 +1011,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         "xmlSecDSigReferenceCtxCreate",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);     
+            return(-1);
         }
 
         /* add to the list */
@@ -1023,7 +1023,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecDSigReferenceCtxDestroy(dsigRefCtx);
-            return(-1);     
+            return(-1);
         }
 
         /* process */
@@ -1035,7 +1035,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1);     
+            return(-1);
         }
 
         /* we don;t care if Reference processing failed because
@@ -1051,7 +1051,7 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
                     XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
-    }    
+    }
     return(0);
 }
 
@@ -1062,12 +1062,12 @@ xmlSecDSigCtxProcessManifestNode(xmlSecDSigCtxPtr dsigCtx, xmlNodePtr node) {
  *
  * Prints the debug information about @dsigCtx to @output.
  */
-void 
+void
 xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(dsigCtx != NULL);
     xmlSecAssert(output != NULL);
 
-    if(dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigCtx->operation == xmlSecTransformOperationSign) {
         fprintf(output, "= SIGNATURE CONTEXT\n");
     } else {
         fprintf(output, "= VERIFICATION CONTEXT\n");
@@ -1089,7 +1089,7 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     if(dsigCtx->id != NULL) {
         fprintf(output, "== Id: \"%s\"\n", dsigCtx->id);
     }
-    
+
     fprintf(output, "== Key Info Read Ctx:\n");
     xmlSecKeyInfoCtxDebugDump(&(dsigCtx->keyInfoReadCtx), output);
     fprintf(output, "== Key Info Write Ctx:\n");
@@ -1107,31 +1107,31 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
         fprintf(output, "== Signature Key:\n");
         xmlSecKeyDebugDump(dsigCtx->signKey, output);
     }
-    
+
     fprintf(output, "== SignedInfo References List:\n");
     xmlSecPtrListDebugDump(&(dsigCtx->signedInfoReferences), output);
 
     fprintf(output, "== Manifest References List:\n");
     xmlSecPtrListDebugDump(&(dsigCtx->manifestReferences), output);
-    
-    if((dsigCtx->result != NULL) && 
+
+    if((dsigCtx->result != NULL) &&
        (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
         fprintf(output, "== Result - start buffer:\n");
-        fwrite(xmlSecBufferGetData(dsigCtx->result), 
-               xmlSecBufferGetSize(dsigCtx->result), 
+        fwrite(xmlSecBufferGetData(dsigCtx->result),
+               xmlSecBufferGetSize(dsigCtx->result),
                1, output);
         fprintf(output, "\n== Result - end buffer\n");
     }
     if(((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) &&
        (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
-       
+
         fprintf(output, "== PreSigned data - start buffer:\n");
-        fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
-               xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
+        fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
+               xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
                1, output);
-        fprintf(output, "\n== PreSigned data - end buffer\n");       
+        fprintf(output, "\n== PreSigned data - end buffer\n");
     }
 }
 
@@ -1142,12 +1142,12 @@ xmlSecDSigCtxDebugDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
  *
  * Prints the debug information about @dsigCtx to @output in XML format.
  */
-void 
+void
 xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecAssert(dsigCtx != NULL);
     xmlSecAssert(output != NULL);
 
-    if(dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigCtx->operation == xmlSecTransformOperationSign) {
         fprintf(output, "<SignatureContext \n");
     } else {
         fprintf(output, "<VerificationContext \n");
@@ -1203,27 +1203,27 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
     xmlSecPtrListDebugXmlDump(&(dsigCtx->manifestReferences), output);
     fprintf(output, "</ManifestReferences>\n");
 
-    if((dsigCtx->result != NULL) && 
+    if((dsigCtx->result != NULL) &&
        (xmlSecBufferGetData(dsigCtx->result) != NULL)) {
 
         fprintf(output, "<Result>");
-        fwrite(xmlSecBufferGetData(dsigCtx->result), 
-               xmlSecBufferGetSize(dsigCtx->result), 
+        fwrite(xmlSecBufferGetData(dsigCtx->result),
+               xmlSecBufferGetSize(dsigCtx->result),
                1, output);
         fprintf(output, "</Result>\n");
     }
     if(((dsigCtx->flags & XMLSEC_DSIG_FLAGS_STORE_SIGNATURE) != 0) &&
        (xmlSecDSigCtxGetPreSignBuffer(dsigCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)) != NULL)) {
-       
+
         fprintf(output, "<PreSignedData>");
-        fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
-               xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)), 
+        fwrite(xmlSecBufferGetData(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
+               xmlSecBufferGetSize(xmlSecDSigCtxGetPreSignBuffer(dsigCtx)),
                1, output);
-        fprintf(output, "</PreSignedData>\n");       
+        fprintf(output, "</PreSignedData>\n");
     }
 
-    if(dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigCtx->operation == xmlSecTransformOperationSign) {
         fprintf(output, "</SignatureContext>\n");
     } else {
         fprintf(output, "</VerificationContext>\n");
@@ -1246,24 +1246,24 @@ xmlSecDSigCtxDebugXmlDump(xmlSecDSigCtxPtr dsigCtx, FILE* output) {
  *
  * Returns: pointer to newly created context or NULL if an error occurs.
  */
-xmlSecDSigReferenceCtxPtr       
+xmlSecDSigReferenceCtxPtr
 xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin origin) {
     xmlSecDSigReferenceCtxPtr dsigRefCtx;
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, NULL);
-    
+
     dsigRefCtx = (xmlSecDSigReferenceCtxPtr) xmlMalloc(sizeof(xmlSecDSigReferenceCtx));
     if(dsigRefCtx == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    "sizeof(xmlSecDSigReferenceCtx)=%d", 
+                    "sizeof(xmlSecDSigReferenceCtx)=%d",
                     sizeof(xmlSecDSigReferenceCtx));
         return(NULL);
     }
-    
+
     ret = xmlSecDSigReferenceCtxInitialize(dsigRefCtx, dsigCtx, origin);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1272,21 +1272,21 @@ xmlSecDSigReferenceCtxCreate(xmlSecDSigCtxPtr dsigCtx, xmlSecDSigReferenceOrigin
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         xmlSecDSigReferenceCtxDestroy(dsigRefCtx);
-        return(NULL);   
+        return(NULL);
     }
-    return(dsigRefCtx);    
+    return(dsigRefCtx);
 }
 
-/** 
+/**
  * xmlSecDSigReferenceCtxDestroy:
  * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
  *
  * Destroy context object created with #xmlSecDSigReferenceCtxCreate function.
  */
-void  
+void
 xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert(dsigRefCtx != NULL);
-    
+
     xmlSecDSigReferenceCtxFinalize(dsigRefCtx);
     xmlFree(dsigRefCtx);
 }
@@ -1303,19 +1303,19 @@ xmlSecDSigReferenceCtxDestroy(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  *
  * Returns: 0 on succes or aa negative value otherwise.
  */
-int 
+int
 xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSigCtxPtr dsigCtx,
                                 xmlSecDSigReferenceOrigin origin) {
     int ret;
-    
+
     xmlSecAssert2(dsigCtx != NULL, -1);
     xmlSecAssert2(dsigRefCtx != NULL, -1);
-    
+
     memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
-    
+
     dsigRefCtx->dsigCtx = dsigCtx;
     dsigRefCtx->origin = origin;
-    
+
     /* initializes transforms dsigRefCtx */
     ret = xmlSecTransformCtxInitialize(&(dsigRefCtx->transformCtx));
     if(ret < 0) {
@@ -1324,12 +1324,12 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
                     "xmlSecTransformCtxInitialize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);   
+        return(-1);
     }
-    
+
     /* copy enabled transforms */
     if(dsigCtx->enabledReferenceTransforms != NULL) {
-        ret = xmlSecPtrListCopy(&(dsigRefCtx->transformCtx.enabledTransforms), 
+        ret = xmlSecPtrListCopy(&(dsigRefCtx->transformCtx.enabledTransforms),
                                      dsigCtx->enabledReferenceTransforms);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1337,9 +1337,9 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
                         "xmlSecPtrListCopy",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);   
+            return(-1);
         }
-    }    
+    }
     dsigRefCtx->transformCtx.preExecCallback = dsigCtx->referencePreExecuteCallback;
     dsigRefCtx->transformCtx.enabledUris = dsigCtx->enabledReferenceUris;
 
@@ -1349,33 +1349,33 @@ xmlSecDSigReferenceCtxInitialize(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlSecDSi
     return(0);
 }
 
-/** 
+/**
  * xmlSecDSigReferenceCtxFinalize:
  * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
  *
  * Cleans up context object created with #xmlSecDSigReferenceCtxInitialize function.
  */
-void 
+void
 xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert(dsigRefCtx != NULL);
 
     xmlSecTransformCtxFinalize(&(dsigRefCtx->transformCtx));
     if(dsigRefCtx->id != NULL) {
         xmlFree(dsigRefCtx->id);
-    }   
+    }
     if(dsigRefCtx->uri != NULL) {
         xmlFree(dsigRefCtx->uri);
-    }   
+    }
     if(dsigRefCtx->type != NULL) {
         xmlFree(dsigRefCtx->type);
-    }   
+    }
     memset(dsigRefCtx, 0, sizeof(xmlSecDSigReferenceCtx));
 }
 
 /**
  * xmlSecDSigReferenceCtxGetPreDigestBuffer:
  * @dsigRefCtx:         the pointer to <dsig:Reference/> element processing context.
- * 
+ *
  * Gets the results of <dsig:Reference/> node processing just before digesting
  * (valid only if #XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES or
  * #XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES flas of signature context
@@ -1383,11 +1383,11 @@ xmlSecDSigReferenceCtxFinalize(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  *
  * Returns: pointer to the buffer or NULL if an error occurs.
  */
-xmlSecBufferPtr 
+xmlSecBufferPtr
 xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
     xmlSecAssert2(dsigRefCtx != NULL, NULL);
-    
-    return((dsigRefCtx->preDigestMemBufMethod != NULL) ? 
+
+    return((dsigRefCtx->preDigestMemBufMethod != NULL) ?
             xmlSecTransformMemBufGetBuffer(dsigRefCtx->preDigestMemBufMethod) : NULL);
 }
 
@@ -1397,27 +1397,27 @@ xmlSecDSigReferenceCtxGetPreDigestBuffer(xmlSecDSigReferenceCtxPtr dsigRefCtx) {
  * @node:               the pointer to <dsig:Reference/> node.
 
  * The Reference Element (http://www.w3.org/TR/xmldsig-core/#sec-Reference)
- * 
- * Reference is an element that may occur one or more times. It specifies 
- * a digest algorithm and digest value, and optionally an identifier of the 
- * object being signed, the type of the object, and/or a list of transforms 
- * to be applied prior to digesting. The identification (URI) and transforms 
- * describe how the digested content (i.e., the input to the digest method) 
- * was created. The Type attribute facilitates the processing of referenced 
- * data. For example, while this specification makes no requirements over 
- * external data, an application may wish to signal that the referent is a 
- * Manifest. An optional ID attribute permits a Reference to be referenced 
+ *
+ * Reference is an element that may occur one or more times. It specifies
+ * a digest algorithm and digest value, and optionally an identifier of the
+ * object being signed, the type of the object, and/or a list of transforms
+ * to be applied prior to digesting. The identification (URI) and transforms
+ * describe how the digested content (i.e., the input to the digest method)
+ * was created. The Type attribute facilitates the processing of referenced
+ * data. For example, while this specification makes no requirements over
+ * external data, an application may wish to signal that the referent is a
+ * Manifest. An optional ID attribute permits a Reference to be referenced
  * from elsewhere.
  *
  * Returns: 0 on succes or aa negative value otherwise.
  */
-int 
+int
 xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodePtr node) {
     xmlSecTransformCtxPtr transformCtx;
     xmlNodePtr digestValueNode;
     xmlNodePtr cur;
     int ret;
-    
+
     xmlSecAssert2(dsigRefCtx != NULL, -1);
     xmlSecAssert2(dsigRefCtx->dsigCtx != NULL, -1);
     xmlSecAssert2(dsigRefCtx->digestMethod == NULL, -1);
@@ -1448,7 +1448,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     /* first is optional Transforms node */
     cur  = xmlSecGetNextElementNode(node->children);
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeTransforms, xmlSecDSigNs))) {
-        ret = xmlSecTransformCtxNodesListRead(transformCtx, 
+        ret = xmlSecTransformCtxNodesListRead(transformCtx,
                                         cur, xmlSecTransformUsageDSigTransform);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1458,8 +1458,8 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
             return(-1);
-        }       
-        
+        }
+
         cur = xmlSecGetNextElementNode(cur->next);
     }
 
@@ -1471,7 +1471,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
 
         xmlSecAssert2(dsigRefCtx->preDigestMemBufMethod == NULL, -1);
         dsigRefCtx->preDigestMemBufMethod = xmlSecTransformCtxCreateAndAppend(
-                                                transformCtx, 
+                                                transformCtx,
                                                 xmlSecTransformMemBufId);
         if(dsigRefCtx->preDigestMemBufMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1483,10 +1483,10 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
             return(-1);
         }
     }
-        
+
     /* next node is required DigestMethod. */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDigestMethod, xmlSecDSigNs))) {
-        dsigRefCtx->digestMethod = xmlSecTransformCtxNodeRead(&(dsigRefCtx->transformCtx), 
+        dsigRefCtx->digestMethod = xmlSecTransformCtxNodeRead(&(dsigRefCtx->transformCtx),
                                         cur, xmlSecTransformUsageDigestMethod);
         if(dsigRefCtx->digestMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1495,15 +1495,15 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1); 
-        }       
-        
-        cur = xmlSecGetNextElementNode(cur->next);     
+            return(-1);
+        }
+
+        cur = xmlSecGetNextElementNode(cur->next);
     } else if(dsigRefCtx->dsigCtx->defSignMethodId != xmlSecTransformIdUnknown) {
         /* the dsig spec does require DigestMethod node
          * to be present but in some case it application might decide to
          * minimize traffic */
-        dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx), 
+        dsigRefCtx->digestMethod = xmlSecTransformCtxCreateAndAppend(&(dsigRefCtx->transformCtx),
                                                               dsigRefCtx->dsigCtx->defSignMethodId);
         if(dsigRefCtx->digestMethod == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1521,13 +1521,13 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                     "expected=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
         return(-1);
-    }   
+    }
     dsigRefCtx->digestMethod->operation = dsigRefCtx->dsigCtx->operation;
 
     /* last node is required DigestValue */
     if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeDigestValue, xmlSecDSigNs))) {
         digestValueNode = cur;
-        cur = xmlSecGetNextElementNode(cur->next);     
+        cur = xmlSecGetNextElementNode(cur->next);
     } else {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1549,9 +1549,9 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
     }
 
     /* if we need to write result to xml node then we need base64 encode result */
-    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {        
+    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {
         xmlSecTransformPtr base64Encode;
-        
+
         /* we need to add base64 encode transform */
         base64Encode = xmlSecTransformCtxCreateAndAppend(transformCtx, xmlSecTransformBase64Id);
         if(base64Encode == NULL) {
@@ -1574,10 +1574,10 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
-    }    
+    }
     dsigRefCtx->result = transformCtx->result;
 
-    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {        
+    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {
         if((dsigRefCtx->result == NULL) || (xmlSecBufferGetData(dsigRefCtx->result) == NULL)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -1586,17 +1586,17 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
-        
+
         /* write signed data to xml */
         xmlNodeSetContentLen(digestValueNode,
                             xmlSecBufferGetData(dsigRefCtx->result),
                             xmlSecBufferGetSize(dsigRefCtx->result));
-    
+
         /* set success status and we are done */
         dsigRefCtx->status = xmlSecDSigStatusSucceeded;
     } else {
         /* verify SignatureValue node content */
-        ret = xmlSecTransformVerifyNodeContent(dsigRefCtx->digestMethod, 
+        ret = xmlSecTransformVerifyNodeContent(dsigRefCtx->digestMethod,
                             digestValueNode, transformCtx);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1606,7 +1606,7 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
-    
+
         /* set status and we are done */
         if(dsigRefCtx->digestMethod->status == xmlSecTransformStatusOk) {
             dsigRefCtx->status = xmlSecDSigStatusSucceeded;
@@ -1625,13 +1625,13 @@ xmlSecDSigReferenceCtxProcessNode(xmlSecDSigReferenceCtxPtr dsigRefCtx, xmlNodeP
  *
  * Prints debug information about @dsigRefCtx to @output.
  */
-void 
+void
 xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
     xmlSecAssert(dsigRefCtx != NULL);
     xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
     xmlSecAssert(output != NULL);
 
-    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {
         fprintf(output, "= REFERENCE CALCULATION CONTEXT\n");
     } else {
         fprintf(output, "= REFERENCE VERIFICATION CONTEXT\n");
@@ -1667,19 +1667,19 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
 
     if((xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
-       
+
         fprintf(output, "== PreDigest data - start buffer:\n");
-        fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
-               xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
+        fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
+               xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
                1, output);
-        fprintf(output, "\n== PreDigest data - end buffer\n");       
+        fprintf(output, "\n== PreDigest data - end buffer\n");
     }
 
-    if((dsigRefCtx->result != NULL) && 
+    if((dsigRefCtx->result != NULL) &&
        (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
         fprintf(output, "== Result - start buffer:\n");
-        fwrite(xmlSecBufferGetData(dsigRefCtx->result), 
+        fwrite(xmlSecBufferGetData(dsigRefCtx->result),
                xmlSecBufferGetSize(dsigRefCtx->result), 1,
                output);
         fprintf(output, "\n== Result - end buffer\n");
@@ -1693,13 +1693,13 @@ xmlSecDSigReferenceCtxDebugDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* outp
  *
  * Prints debug information about @dsigRefCtx to @output in output format.
  */
-void 
+void
 xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* output) {
     xmlSecAssert(dsigRefCtx != NULL);
     xmlSecAssert(dsigRefCtx->dsigCtx != NULL);
     xmlSecAssert(output != NULL);
 
-    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {
         fprintf(output, "<ReferenceCalculationContext ");
     } else {
         fprintf(output, "<ReferenceVerificationContext ");
@@ -1738,11 +1738,11 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
         fprintf(output, "</DigestMethod>\n");
     }
 
-    if((dsigRefCtx->result != NULL) && 
+    if((dsigRefCtx->result != NULL) &&
        (xmlSecBufferGetData(dsigRefCtx->result) != NULL)) {
 
         fprintf(output, "<Result>");
-        fwrite(xmlSecBufferGetData(dsigRefCtx->result), 
+        fwrite(xmlSecBufferGetData(dsigRefCtx->result),
                xmlSecBufferGetSize(dsigRefCtx->result), 1,
                output);
         fprintf(output, "</Result>\n");
@@ -1750,14 +1750,14 @@ xmlSecDSigReferenceCtxDebugXmlDump(xmlSecDSigReferenceCtxPtr dsigRefCtx, FILE* o
 
     if((xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx) != NULL) &&
        (xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)) != NULL)) {
-       
+
         fprintf(output, "<PreDigestData>");
-        fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
-               xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)), 
+        fwrite(xmlSecBufferGetData(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
+               xmlSecBufferGetSize(xmlSecDSigReferenceCtxGetPreDigestBuffer(dsigRefCtx)),
                1, output);
-        fprintf(output, "</PreDigestData>\n");       
+        fprintf(output, "</PreDigestData>\n");
     }
-    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {    
+    if(dsigRefCtx->dsigCtx->operation == xmlSecTransformOperationSign) {
         fprintf(output, "</ReferenceCalculationContext>\n");
     } else {
         fprintf(output, "</ReferenceVerificationContext>\n");
@@ -1785,7 +1785,7 @@ static xmlSecPtrListKlass xmlSecDSigReferenceCtxListKlass = {
  *
  * Returns: <dsig:Reference/> element processing context list klass.
  */
-xmlSecPtrListId 
+xmlSecPtrListId
 xmlSecDSigReferenceCtxListGetKlass(void) {
     return(&xmlSecDSigReferenceCtxListKlass);
 }

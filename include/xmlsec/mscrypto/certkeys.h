@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_CERTKEYS_H__
-#define __XMLSEC_MSCRYPTO_CERTKEYS_H__    
+#define __XMLSEC_MSCRYPTO_CERTKEYS_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <windows.h>
 #include <wincrypt.h>
@@ -21,7 +21,7 @@ extern "C" {
 #include <xmlsec/transforms.h>
 
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoKeyDataGetCert    (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT HCRYPTKEY          xmlSecMSCryptoKeyDataGetKey     (xmlSecKeyDataPtr data, 
+XMLSEC_CRYPTO_EXPORT HCRYPTKEY          xmlSecMSCryptoKeyDataGetKey     (xmlSecKeyDataPtr data,
                                                                          xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT HCRYPTKEY  xmlSecMSCryptoKeyDataGetDecryptKey(xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoCertDup           (PCCERT_CONTEXT pCert);

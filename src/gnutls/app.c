@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -23,9 +23,9 @@
 /**
  * xmlSecGnuTLSAppInit:
  * @config:             the path to GnuTLS configuration (unused).
- * 
+ *
  * General crypto engine initialization. This function is used
- * by XMLSec command line utility and called before 
+ * by XMLSec command line utility and called before
  * @xmlSecInit function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -48,9 +48,9 @@ xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
 
 /**
  * xmlSecGnuTLSAppShutdown:
- * 
+ *
  * General crypto engine shutdown. This function is used
- * by XMLSec command line utility and called after 
+ * by XMLSec command line utility and called after
  * @xmlSecShutdown function.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -80,7 +80,7 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                         void* pwdCallbackCtx) {
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
-    
+
 
     if (format == xmlSecKeyDataFormatPkcs12) {
         return (xmlSecGnuTLSAppPkcs12Load(filename, pwd, pwdCallback,
@@ -110,14 +110,14 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  * Returns: pointer to the key or NULL if an error occurs.
  */
 xmlSecKeyPtr
-xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
-                        xmlSecKeyDataFormat format, const char *pwd, 
+xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
+                        xmlSecKeyDataFormat format, const char *pwd,
                         void* pwdCallback, void* pwdCallbackCtx) {
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
     if (format == xmlSecKeyDataFormatPkcs12) {
-        return (xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd, 
+        return (xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd,
                                         pwdCallback, pwdCallbackCtx));
     }
 
@@ -139,16 +139,16 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  *
  * Reads the certificate from $@filename and adds it to key
  * (not implemented yet).
- * 
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-int             
-xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename, 
+int
+xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
                           xmlSecKeyDataFormat format) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
-    
+
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
                 NULL,
@@ -166,11 +166,11 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * @format:             the certificate file format.
  *
  * Reads the certificate from memory buffer and adds it to key (not implemented yet).
- * 
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-int             
-xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize, 
+int
+xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
                                 xmlSecKeyDataFormat format) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -199,10 +199,10 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSe
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
-xmlSecKeyPtr    
-xmlSecGnuTLSAppPkcs12Load(const char *filename, 
+xmlSecKeyPtr
+xmlSecGnuTLSAppPkcs12Load(const char *filename,
                           const char *pwd ATTRIBUTE_UNUSED,
-                          void* pwdCallback ATTRIBUTE_UNUSED, 
+                          void* pwdCallback ATTRIBUTE_UNUSED,
                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(filename != NULL, NULL);
 
@@ -212,7 +212,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
                 "xmlSecGnuTLSAppPkcs12Load",
                 XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
                 XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL); 
+    return(NULL);
 }
 
 /**
@@ -229,9 +229,9 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
-xmlSecKeyPtr    
-xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize, 
-                           const char *pwd, void* pwdCallback, 
+xmlSecKeyPtr
+xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
+                           const char *pwd, void* pwdCallback,
                            void* pwdCallbackCtx) {
     xmlSecAssert2(data != NULL, NULL);
     /* TODO */
@@ -240,7 +240,7 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                 "xmlSecGnuTLSAppPkcs12LoadMemory",
                 XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
                 XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL); 
+    return(NULL);
 }
 
 /**
@@ -250,15 +250,15 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @format:             the certificate file format.
  * @type:               the flag that indicates is the certificate in @filename
  *                      trusted or not.
- * 
+ *
  * Reads cert from @filename and adds to the list of trusted or known
  * untrusted certs in @store (not implemented yet).
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename, 
-                                xmlSecKeyDataFormat format, 
+xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
+                                xmlSecKeyDataFormat format,
                                 xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
@@ -280,7 +280,7 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * @dataSize:           the certificate binary data size.
  * @format:             the certificate file format.
  * @type:               the flag that indicates is the certificate trusted or not.
- * 
+ *
  * Reads cert from binary buffer @data and adds to the list of trusted or known
  * untrusted certs in @store (not implemented yet).
  *
@@ -288,7 +288,7 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  */
 int
 xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
-                                    xmlSecSize dataSize, xmlSecKeyDataFormat format, 
+                                    xmlSecSize dataSize, xmlSecKeyDataFormat format,
                                     xmlSecKeyDataType type) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
@@ -313,14 +313,14 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* 
  * and a default GnuTLS crypto key data stores.
  *
  * Returns: 0 on success or a negative value otherwise.
- */ 
+ */
 int
 xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
 
-    /* create simple keys store if needed */        
+    /* create simple keys store if needed */
     if(xmlSecKeysMngrGetKeysStore(mngr) == NULL) {
         xmlSecKeyStorePtr keysStore;
 
@@ -333,7 +333,7 @@ xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
                         "xmlSecSimpleKeysStoreId");
             return(-1);
         }
-        
+
         ret = xmlSecKeysMngrAdoptKeysStore(mngr, keysStore);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -342,20 +342,20 @@ xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecKeyStoreDestroy(keysStore);
-            return(-1);        
+            return(-1);
         }
     }
 
-    ret = xmlSecGnuTLSKeysMngrInit(mngr);    
+    ret = xmlSecGnuTLSKeysMngrInit(mngr);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecGnuTLSKeysMngrInit",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1); 
+        return(-1);
     }
-    
+
     /* TODO */
     mngr->getKey = xmlSecKeysMngrGetKey;
     return(0);
@@ -368,17 +368,17 @@ xmlSecGnuTLSAppDefaultKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  *
  * Adds @key to the keys manager @mngr created with #xmlSecGnuTLSAppDefaultKeysMngrInit
  * function.
- *  
+ *
  * Returns: 0 on success or a negative value otherwise.
- */ 
-int 
+ */
+int
 xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key) {
     xmlSecKeyStorePtr store;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(key != NULL, -1);
-    
+
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -388,7 +388,7 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecSimpleKeysStoreAdoptKey(store, key);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -398,7 +398,7 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -407,19 +407,19 @@ xmlSecGnuTLSAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr, xmlSecKeyPtr key)
  * @mngr:               the pointer to keys manager.
  * @uri:                the uri.
  *
- * Loads XML keys file from @uri to the keys manager @mngr created 
+ * Loads XML keys file from @uri to the keys manager @mngr created
  * with #xmlSecGnuTLSAppDefaultKeysMngrInit function.
- *  
+ *
  * Returns: 0 on success or a negative value otherwise.
- */ 
-int 
+ */
+int
 xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
     xmlSecKeyStorePtr store;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(uri != NULL, -1);
-    
+
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -429,7 +429,7 @@ xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecSimpleKeysStoreLoad(store, uri, mngr);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -439,7 +439,7 @@ xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
                     "uri=%s", xmlSecErrorsSafeString(uri));
         return(-1);
     }
-    
+
     return(0);
 }
 
@@ -450,17 +450,17 @@ xmlSecGnuTLSAppDefaultKeysMngrLoad(xmlSecKeysMngrPtr mngr, const char* uri) {
  * @type:               the type of keys to save (public/private/symmetric).
  *
  * Saves keys from @mngr to  XML keys file.
- *  
+ *
  * Returns: 0 on success or a negative value otherwise.
- */ 
-int 
+ */
+int
 xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename, xmlSecKeyDataType type) {
     xmlSecKeyStorePtr store;
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
-    
+
     store = xmlSecKeysMngrGetKeysStore(mngr);
     if(store == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -470,18 +470,18 @@ xmlSecGnuTLSAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecSimpleKeysStoreSave(store, filename, type);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecSimpleKeysStoreSave",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "filename=%s", 
+                    "filename=%s",
                     xmlSecErrorsSafeString(filename));
         return(-1);
     }
-    
+
     return(0);
 }
 

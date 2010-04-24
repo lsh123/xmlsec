@@ -1,18 +1,18 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Creating signature and encryption templates.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 
 #include <stdlib.h>
 #include <string.h>
- 
+
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
@@ -24,14 +24,14 @@
 #include <xmlsec/errors.h>
 
 
-static xmlNodePtr       xmlSecTmplAddReference          (xmlNodePtr parentNode, 
+static xmlNodePtr       xmlSecTmplAddReference          (xmlNodePtr parentNode,
                                                          xmlSecTransformId digestMethodId,
-                                                         const xmlChar *id, 
-                                                         const xmlChar *uri, 
+                                                         const xmlChar *id,
+                                                         const xmlChar *uri,
                                                          const xmlChar *type);
-static int              xmlSecTmplPrepareEncData        (xmlNodePtr parentNode, 
+static int              xmlSecTmplPrepareEncData        (xmlNodePtr parentNode,
                                                          xmlSecTransformId encMethodId);
-static int              xmlSecTmplNodeWriteNsList       (xmlNodePtr parentNode, 
+static int              xmlSecTmplNodeWriteNsList       (xmlNodePtr parentNode,
                                                          const xmlChar** namespaces);
 /**************************************************************************
  *
@@ -40,21 +40,21 @@ static int              xmlSecTmplNodeWriteNsList       (xmlNodePtr parentNode,
  **************************************************************************/
 /**
  * xmlSecTmplSignatureCreate:
- * @doc:                the pointer to signature document or NULL; in the 
+ * @doc:                the pointer to signature document or NULL; in the
  *                      second case, application must later call @xmlSetTreeDoc
- *                      to ensure that all the children nodes have correct 
+ *                      to ensure that all the children nodes have correct
  *                      pointer to XML document.
  * @c14nMethodId:       the signature canonicalization method.
  * @signMethodId:       the signature  method.
  * @id:                 the node id (may be NULL).
  *
- * Creates new <dsig:Signature/> node with the mandatory <dsig:SignedInfo/>, 
- * <dsig:CanonicalizationMethod/>, <dsig:SignatureMethod/> and 
- * <dsig:SignatureValue/> children and sub-children. 
+ * Creates new <dsig:Signature/> node with the mandatory <dsig:SignedInfo/>,
+ * <dsig:CanonicalizationMethod/>, <dsig:SignatureMethod/> and
+ * <dsig:SignatureValue/> children and sub-children.
  * The application is responsible for inserting the returned node
- * in the XML document. 
+ * in the XML document.
  *
- * Returns: the pointer to newly created <dsig:Signature/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:Signature/> node or NULL if an
  * error occurs.
  */
 xmlNodePtr
@@ -65,14 +65,14 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
 
 /**
  * xmlSecTmplSignatureCreateNsPref:
- * @doc:                the pointer to signature document or NULL; in the 
+ * @doc:                the pointer to signature document or NULL; in the
  *                      second case, application must later call @xmlSetTreeDoc
- *                      to ensure that all the children nodes have correct 
+ *                      to ensure that all the children nodes have correct
  *                      pointer to XML document.
  * @c14nMethodId:       the signature canonicalization method.
  * @signMethodId:       the signature  method.
  * @id:                 the node id (may be NULL).
- * @nsPrefix:   the namespace prefix for the signature element (e.g. "dsig"), or NULL 
+ * @nsPrefix:   the namespace prefix for the signature element (e.g. "dsig"), or NULL
  *
  * Creates new <dsig:Signature/> node with the mandatory
  * <dsig:SignedInfo/>, <dsig:CanonicalizationMethod/>,
@@ -83,7 +83,7 @@ xmlSecTmplSignatureCreate(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * appropriate child nodes.  The application is responsible for
  * inserting the returned node in the XML document.
  *
- * Returns: the pointer to newly created <dsig:Signature/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:Signature/> node or NULL if an
  * error occurs.
  */
 xmlNodePtr
@@ -94,12 +94,12 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
     xmlNodePtr signedInfoNode;
     xmlNodePtr cur;
     xmlNsPtr ns;
-    
+
     xmlSecAssert2(c14nMethodId != NULL, NULL);
     xmlSecAssert2(c14nMethodId->href != NULL, NULL);
     xmlSecAssert2(signMethodId != NULL, NULL);
     xmlSecAssert2(signMethodId->href != NULL, NULL);
-    
+
     /* create Signature node itself */
     signNode = xmlNewDocNode(doc, NULL, xmlSecNodeSignature, NULL);
     if(signNode == NULL) {
@@ -109,9 +109,9 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     XMLSEC_ERRORS_R_XML_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignature));
-        return(NULL);               
+        return(NULL);
     }
-    
+
     ns = xmlNewNs(signNode, xmlSecDSigNs, nsPrefix);
     if(ns == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -121,15 +121,15 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     "ns=%s",
                     xmlSecErrorsSafeString(xmlSecDSigNs));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
     xmlSetNs(signNode, ns);
-    
+
     if(id != NULL) {
         xmlSetProp(signNode, BAD_CAST "Id", id);
     }
 
-    /* add SignedInfo node */    
+    /* add SignedInfo node */
     signedInfoNode = xmlSecAddChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -139,10 +139,10 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignedInfo));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
 
-    /* add SignatureValue node */    
+    /* add SignatureValue node */
     cur = xmlSecAddChild(signNode, xmlSecNodeSignatureValue, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -152,7 +152,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignatureValue));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
 
     /* add CanonicaizationMethod node to SignedInfo */
@@ -165,7 +165,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeCanonicalizationMethod));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, c14nMethodId->href) == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -176,7 +176,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
                     xmlSecErrorsSafeString(c14nMethodId->href));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
 
     /* add SignatureMethod node to SignedInfo */
@@ -189,7 +189,7 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignatureMethod));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, signMethodId->href) == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -200,9 +200,9 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
                     xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
                     xmlSecErrorsSafeString(signMethodId->href));
         xmlFreeNode(signNode);
-        return(NULL);                   
+        return(NULL);
     }
-        
+
     return(signNode);
 }
 
@@ -211,22 +211,22 @@ xmlSecTmplSignatureCreateNsPref(xmlDocPtr doc, xmlSecTransformId c14nMethodId,
  * @signNode:           the  pointer to <dsig:Signature/> node.
  * @id:                 the node id (may be NULL).
  *
- * Adds (if necessary) <dsig:KeyInfo/> node to the <dsig:Signature/> 
- * node @signNode. 
+ * Adds (if necessary) <dsig:KeyInfo/> node to the <dsig:Signature/>
+ * node @signNode.
  *
- * Returns: the pointer to newly created <dsig:KeyInfo/> node or NULL if an 
+ * Returns: the pointer to newly created <dsig:KeyInfo/> node or NULL if an
  * error occurs.
  */
 xmlNodePtr
 xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
     xmlNodePtr res;
-    
+
     xmlSecAssert2(signNode != NULL, NULL);
 
     res = xmlSecFindChild(signNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
     if(res == NULL) {
         xmlNodePtr signValueNode;
-    
+
         signValueNode = xmlSecFindChild(signNode, xmlSecNodeSignatureValue, xmlSecDSigNs);
         if(signValueNode == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -234,7 +234,7 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
                         xmlSecErrorsSafeString(xmlSecNodeSignatureValue),
                         XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);       
+            return(NULL);
         }
 
         res = xmlSecAddNextSibling(signValueNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
@@ -245,14 +245,14 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
-            return(NULL);                       
+            return(NULL);
         }
     }
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
     }
-    return(res);        
-}         
+    return(res);
+}
 
 /**
  * xmlSecTmplSignatureAddReference:
@@ -262,18 +262,18 @@ xmlSecTmplSignatureEnsureKeyInfo(xmlNodePtr signNode, const xmlChar *id) {
  * @uri:                the reference node uri (may be NULL).
  * @type:               the reference node type (may be NULL).
  *
- * Adds <dsig:Reference/> node with given URI (@uri), Id (@id) and 
+ * Adds <dsig:Reference/> node with given URI (@uri), Id (@id) and
  * Type (@type) attributes and the required children <dsig:DigestMethod/> and
- * <dsig:DigestValue/> to the <dsig:SignedInfo/> child of @signNode. 
+ * <dsig:DigestValue/> to the <dsig:SignedInfo/> child of @signNode.
  *
- * Returns: the pointer to newly created <dsig:Reference/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Reference/> node or NULL
  * if an error occurs.
  */
-xmlNodePtr      
+xmlNodePtr
 xmlSecTmplSignatureAddReference(xmlNodePtr signNode, xmlSecTransformId digestMethodId,
                     const xmlChar *id, const xmlChar *uri, const xmlChar *type) {
     xmlNodePtr signedInfoNode;
-    
+
     xmlSecAssert2(signNode != NULL, NULL);
     xmlSecAssert2(digestMethodId != NULL, NULL);
     xmlSecAssert2(digestMethodId->href != NULL, NULL);
@@ -285,18 +285,18 @@ xmlSecTmplSignatureAddReference(xmlNodePtr signNode, xmlSecTransformId digestMet
                     xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
                     XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
-    
+
     return(xmlSecTmplAddReference(signedInfoNode, digestMethodId, id, uri, type));
 }
 
-static xmlNodePtr 
+static xmlNodePtr
 xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
-                    const xmlChar *id, const xmlChar *uri, const xmlChar *type) {    
+                    const xmlChar *id, const xmlChar *uri, const xmlChar *type) {
     xmlNodePtr res;
     xmlNodePtr cur;
-    
+
     xmlSecAssert2(parentNode != NULL, NULL);
     xmlSecAssert2(digestMethodId != NULL, NULL);
     xmlSecAssert2(digestMethodId->href != NULL, NULL);
@@ -324,7 +324,7 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
         xmlSetProp(res, xmlSecAttrURI, uri);
     }
 
-    /* add DigestMethod node and set algorithm */    
+    /* add DigestMethod node and set algorithm */
     cur = xmlSecAddChild(res, xmlSecNodeDigestMethod, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -335,7 +335,7 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
                     xmlSecErrorsSafeString(xmlSecNodeDigestMethod));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
-        return(NULL);                   
+        return(NULL);
     }
     if(xmlSetProp(cur, xmlSecAttrAlgorithm, digestMethodId->href) == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -347,10 +347,10 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
                     xmlSecErrorsSafeString(digestMethodId->href));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
-        return(NULL);                   
+        return(NULL);
     }
 
-    /* add DigestValue node */    
+    /* add DigestValue node */
     cur = xmlSecAddChild(res, xmlSecNodeDigestValue, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -361,10 +361,10 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
                     xmlSecErrorsSafeString(xmlSecNodeDigestValue));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
-        return(NULL);                   
+        return(NULL);
     }
-    
-    return(res);    
+
+    return(res);
 }
 
 /**
@@ -374,18 +374,18 @@ xmlSecTmplAddReference(xmlNodePtr parentNode, xmlSecTransformId digestMethodId,
  * @mimeType:           the object mime type (may be NULL).
  * @encoding:           the object encoding (may be NULL).
  *
- * Adds <dsig:Object/> node to the <dsig:Signature/> node @signNode. 
+ * Adds <dsig:Object/> node to the <dsig:Signature/> node @signNode.
  *
- * Returns: the pointer to newly created <dsig:Object/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Object/> node or NULL
  * if an error occurs.
  */
 xmlNodePtr
-xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id, 
+xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
                          const xmlChar *mimeType, const xmlChar *encoding) {
     xmlNodePtr res;
 
     xmlSecAssert2(signNode != NULL, NULL);
-    
+
     res = xmlSecAddChild(signNode, xmlSecNodeObject, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -394,7 +394,7 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeObject));
-        return(NULL);                   
+        return(NULL);
     }
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
@@ -405,10 +405,10 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
     if(encoding != NULL) {
         xmlSetProp(res, xmlSecAttrEncoding, encoding);
     }
-    return(res);        
+    return(res);
 }
 
-/** 
+/**
  * xmlSecTmplSignatureGetSignMethodNode:
  * @signNode:           the pointer to <dsig:Signature /> node.
  *
@@ -416,12 +416,12 @@ xmlSecTmplSignatureAddObject(xmlNodePtr signNode, const xmlChar *id,
  *
  * Returns: pointer to <dsig:SignatureMethod /> node or NULL if an error occurs.
  */
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
     xmlNodePtr signedInfoNode;
-    
+
     xmlSecAssert2(signNode != NULL, NULL);
-    
+
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -429,12 +429,12 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
                     xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
                     XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
     return(xmlSecFindChild(signedInfoNode, xmlSecNodeSignatureMethod, xmlSecDSigNs));
 }
 
-/** 
+/**
  * xmlSecTmplSignatureGetC14NMethodNode:
  * @signNode:           the pointer to <dsig:Signature /> node.
  *
@@ -442,12 +442,12 @@ xmlSecTmplSignatureGetSignMethodNode(xmlNodePtr signNode) {
  *
  * Returns: pointer to <dsig:CanonicalizationMethod /> node or NULL if an error occurs.
  */
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
     xmlNodePtr signedInfoNode;
-    
+
     xmlSecAssert2(signNode != NULL, NULL);
-    
+
     signedInfoNode = xmlSecFindChild(signNode, xmlSecNodeSignedInfo, xmlSecDSigNs);
     if(signedInfoNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -455,7 +455,7 @@ xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
                     xmlSecErrorsSafeString(xmlSecNodeSignedInfo),
                     XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
     return(xmlSecFindChild(signedInfoNode, xmlSecNodeCanonicalizationMethod, xmlSecDSigNs));
 }
@@ -466,15 +466,15 @@ xmlSecTmplSignatureGetC14NMethodNode(xmlNodePtr signNode) {
  * @transformId:                the transform method id.
  *
  * Adds <dsig:Transform/> node to the <dsig:Reference/> node @referenceNode.
- * 
- * Returns: the pointer to newly created <dsig:Transform/> node or NULL if an 
+ *
+ * Returns: the pointer to newly created <dsig:Transform/> node or NULL if an
  * error occurs.
  */
 xmlNodePtr
 xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId transformId) {
     xmlNodePtr transformsNode;
     xmlNodePtr res;
-    
+
     xmlSecAssert2(referenceNode != NULL, NULL);
     xmlSecAssert2(transformId != NULL, NULL);
     xmlSecAssert2(transformId->href != NULL, NULL);
@@ -483,13 +483,13 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
     transformsNode = xmlSecFindChild(referenceNode, xmlSecNodeTransforms, xmlSecDSigNs);
     if(transformsNode == NULL) {
         xmlNodePtr tmp;
-        
+
         tmp = xmlSecGetNextElementNode(referenceNode->children);
         if(tmp == NULL) {
             transformsNode = xmlSecAddChild(referenceNode, xmlSecNodeTransforms, xmlSecDSigNs);
         } else {
             transformsNode = xmlSecAddPrevSibling(tmp, xmlSecNodeTransforms, xmlSecDSigNs);
-        }   
+        }
         if(transformsNode == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -497,7 +497,7 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeTransforms));
-            return(NULL);                       
+            return(NULL);
         }
     }
 
@@ -509,7 +509,7 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeTransform));
-        return(NULL);                   
+        return(NULL);
     }
 
     if(xmlSetProp(res, xmlSecAttrAlgorithm, transformId->href) == NULL) {
@@ -522,10 +522,10 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
                     xmlSecErrorsSafeString(transformId->href));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
-        return(NULL);                   
+        return(NULL);
     }
 
-    return(res);    
+    return(res);
 }
 
 /**
@@ -536,10 +536,10 @@ xmlSecTmplReferenceAddTransform(xmlNodePtr referenceNode, xmlSecTransformId tran
  *
  * Adds <dsig:SignatureProperties/> node to the <dsig:Object/> node @objectNode.
  *
- * Returns: the pointer to newly created <dsig:SignatureProperties/> node or NULL 
+ * Returns: the pointer to newly created <dsig:SignatureProperties/> node or NULL
  * if an error occurs.
  */
-xmlNodePtr              
+xmlNodePtr
 xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, const xmlChar *target) {
     xmlNodePtr res;
 
@@ -553,7 +553,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeSignatureProperties));
-        return(NULL);                   
+        return(NULL);
     }
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
@@ -571,7 +571,7 @@ xmlSecTmplObjectAddSignProperties(xmlNodePtr objectNode, const xmlChar *id, cons
  *
  * Adds <dsig:Manifest/> node to the <dsig:Object/> node @objectNode.
  *
- * Returns: the pointer to newly created <dsig:Manifest/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Manifest/> node or NULL
  * if an error occurs.
  */
 xmlNodePtr
@@ -588,7 +588,7 @@ xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeManifest));
-        return(NULL);                   
+        return(NULL);
     }
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
@@ -604,14 +604,14 @@ xmlSecTmplObjectAddManifest(xmlNodePtr objectNode,  const xmlChar *id) {
  * @uri:                the reference node uri (may be NULL).
  * @type:               the reference node type (may be NULL).
  *
- * Adds <dsig:Reference/> node with specified URI (@uri), Id (@id) and 
+ * Adds <dsig:Reference/> node with specified URI (@uri), Id (@id) and
  * Type (@type) attributes and the required children <dsig:DigestMethod/> and
  * <dsig:DigestValue/> to the <dsig:Manifest/> node @manifestNode.
  *
- * Returns: the pointer to newly created <dsig:Reference/> node or NULL 
+ * Returns: the pointer to newly created <dsig:Reference/> node or NULL
  * if an error occurs.
  */
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digestMethodId,
                               const xmlChar *id, const xmlChar *uri, const xmlChar *type) {
     return(xmlSecTmplAddReference(manifestNode, digestMethodId, id, uri, type));
@@ -622,10 +622,10 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  * <enc:EncryptedData/> node
  *
  **************************************************************************/
-/** 
+/**
  * xmlSecTmplEncDataCreate:
  * @doc:                the pointer to signature document or NULL; in the later
- *                      case, application must later call @xmlSetTreeDoc to ensure 
+ *                      case, application must later call @xmlSetTreeDoc to ensure
  *                      that all the children nodes have correct pointer to XML document.
  * @encMethodId:        the encryption method (may be NULL).
  * @id:                 the Id attribute (optional).
@@ -633,18 +633,18 @@ xmlSecTmplManifestAddReference(xmlNodePtr manifestNode, xmlSecTransformId digest
  * @mimeType:           the MimeType attribute (optional)
  * @encoding:           the Encoding attribute (optional)
  *
- * Creates new <enc:EncryptedData /> node for encryption template. 
+ * Creates new <enc:EncryptedData /> node for encryption template.
  *
- * Returns: the pointer newly created  <enc:EncryptedData/> node or NULL 
+ * Returns: the pointer newly created  <enc:EncryptedData/> node or NULL
  * if an error occurs.
  */
-xmlNodePtr              
+xmlNodePtr
 xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
                             const xmlChar *id, const xmlChar *type,
                             const xmlChar *mimeType, const xmlChar *encoding) {
     xmlNodePtr encNode;
     xmlNsPtr ns;
-    
+
     encNode = xmlNewDocNode(doc, NULL, xmlSecNodeEncryptedData, NULL);
     if(encNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -653,9 +653,9 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
                     XMLSEC_ERRORS_R_XML_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeEncryptedData));
-        return(NULL);           
+        return(NULL);
     }
-    
+
     ns = xmlNewNs(encNode, xmlSecEncNs, NULL);
     if(ns == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -664,10 +664,10 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
                     XMLSEC_ERRORS_R_XML_FAILED,
                     "ns=%s",
                     xmlSecErrorsSafeString(xmlSecEncNs));
-        return(NULL);                   
+        return(NULL);
     }
     xmlSetNs(encNode, ns);
-    
+
     if(id != NULL) {
         xmlSetProp(encNode, xmlSecAttrId, id);
     }
@@ -680,7 +680,7 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
     if(encoding != NULL) {
         xmlSetProp(encNode, xmlSecAttrEncoding, encoding);
     }
-    
+
     if(xmlSecTmplPrepareEncData(encNode, encMethodId) < 0) {
         xmlFreeNode(encNode);
         return(NULL);
@@ -688,13 +688,13 @@ xmlSecTmplEncDataCreate(xmlDocPtr doc, xmlSecTransformId encMethodId,
     return(encNode);
 }
 
-static int  
+static int
 xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
     xmlNodePtr cur;
-    
+
     xmlSecAssert2(parentNode != NULL, -1);
     xmlSecAssert2((encMethodId == NULL) || (encMethodId->href != NULL), -1);
-    
+
     /* add EncryptionMethod node if requested */
     if(encMethodId != NULL) {
         cur = xmlSecAddChild(parentNode, xmlSecNodeEncryptionMethod, xmlSecEncNs);
@@ -705,7 +705,7 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeEncryptionMethod));
-            return(-1);         
+            return(-1);
         }
         if(xmlSetProp(cur, xmlSecAttrAlgorithm, encMethodId->href) == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -715,10 +715,10 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
                         "name=%s,value=%s",
                         xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
                         xmlSecErrorsSafeString(encMethodId->href));
-            return(-1);         
-        }       
+            return(-1);
+        }
     }
-        
+
     /* and CipherData node */
     cur = xmlSecAddChild(parentNode, xmlSecNodeCipherData, xmlSecEncNs);
     if(cur == NULL) {
@@ -728,33 +728,33 @@ xmlSecTmplPrepareEncData(xmlNodePtr parentNode, xmlSecTransformId encMethodId) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeCipherData));
-        return(-1);                     
+        return(-1);
     }
-    
+
     return(0);
 }
 
 
-/** 
+/**
  * xmlSecTmplEncDataEnsureKeyInfo:
  * @encNode:            the pointer to <enc:EncryptedData/> node.
  * @id:                 the Id attrbibute (optional).
  *
  * Adds <dsig:KeyInfo/> to the  <enc:EncryptedData/> node @encNode.
  *
- * Returns: the pointer to newly created <dsig:KeyInfo/> node or 
+ * Returns: the pointer to newly created <dsig:KeyInfo/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
     xmlNodePtr res;
-    
+
     xmlSecAssert2(encNode != NULL, NULL);
 
     res = xmlSecFindChild(encNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
     if(res == NULL) {
         xmlNodePtr cipherDataNode;
-    
+
         cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
         if(cipherDataNode == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -762,7 +762,7 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
                         xmlSecErrorsSafeString(xmlSecNodeCipherData),
                         XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                         XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);       
+            return(NULL);
         }
 
         res = xmlSecAddPrevSibling(cipherDataNode, xmlSecNodeKeyInfo, xmlSecDSigNs);
@@ -773,24 +773,24 @@ xmlSecTmplEncDataEnsureKeyInfo(xmlNodePtr encNode, const xmlChar* id) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeKeyInfo));
-            return(NULL);                       
+            return(NULL);
         }
     }
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
     }
-    return(res);        
+    return(res);
 }
 
-/** 
+/**
  * xmlSecTmplEncDataEnsureEncProperties:
  * @encNode:            the pointer to <enc:EncryptedData/> node.
  * @id:                 the Id attribute (optional).
  *
- * Adds <enc:EncryptionProperties/> node to the <enc:EncryptedData/> 
+ * Adds <enc:EncryptionProperties/> node to the <enc:EncryptedData/>
  * node @encNode.
  *
- * Returns: the pointer to newly created <enc:EncryptionProperties/> node or 
+ * Returns: the pointer to newly created <enc:EncryptionProperties/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -809,35 +809,35 @@ xmlSecTmplEncDataEnsureEncProperties(xmlNodePtr encNode, const xmlChar *id) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeEncryptionProperties));
-            return(NULL);                       
+            return(NULL);
         }
     }
 
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
     }
-    
+
     return(res);
 }
 
-/** 
+/**
  * xmlSecTmplEncDataAddEncProperty:
  * @encNode:            the pointer to <enc:EncryptedData/> node.
  * @id:                 the Id attribute (optional).
  * @target:             the Target attribute (optional).
  *
- * Adds <enc:EncryptionProperty/> node (and the parent 
- * <enc:EncryptionProperties/> node if required) to the 
+ * Adds <enc:EncryptionProperty/> node (and the parent
+ * <enc:EncryptionProperties/> node if required) to the
  * <enc:EncryptedData/> node @encNode.
  *
- * Returns: the pointer to newly created <enc:EncryptionProperty/> node or 
+ * Returns: the pointer to newly created <enc:EncryptionProperty/> node or
  * NULL if an error occurs.
  */
-xmlNodePtr      
+xmlNodePtr
 xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xmlChar *target) {
     xmlNodePtr encProps;
     xmlNodePtr res;
-        
+
     xmlSecAssert2(encNode != NULL, NULL);
 
     encProps = xmlSecTmplEncDataEnsureEncProperties(encNode, NULL);
@@ -847,7 +847,7 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
                     "xmlSecTmplEncDataEnsureEncProperties",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
 
     res = xmlSecAddChild(encProps, xmlSecNodeEncryptionProperty, xmlSecEncNs);
@@ -858,7 +858,7 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeEncryptionProperty));
-        return(NULL);   
+        return(NULL);
     }
     if(id != NULL) {
         xmlSetProp(res, xmlSecAttrId, id);
@@ -866,24 +866,24 @@ xmlSecTmplEncDataAddEncProperty(xmlNodePtr encNode, const xmlChar *id, const xml
     if(target != NULL) {
         xmlSetProp(res, xmlSecAttrTarget, target);
     }
-    
+
     return(res);
 }
 
-/** 
+/**
  * xmlSecTmplEncDataEnsureCipherValue:
  * @encNode:            the pointer to <enc:EncryptedData/> node.
  *
  * Adds <enc:CipherValue/> to the <enc:EncryptedData/> node @encNode.
  *
- * Returns: the pointer to newly created <enc:CipherValue/> node or 
+ * Returns: the pointer to newly created <enc:CipherValue/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
     xmlNodePtr cipherDataNode;
     xmlNodePtr res, tmp;
-        
+
     xmlSecAssert2(encNode != NULL, NULL);
 
     cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
@@ -893,7 +893,7 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
                     xmlSecErrorsSafeString(xmlSecNodeCipherData),
                     XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
 
     /* check that we don;t have CipherReference node */
@@ -904,7 +904,7 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
                     xmlSecErrorsSafeString(xmlSecNodeCipherReference),
                     XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
 
     res = xmlSecFindChild(cipherDataNode, xmlSecNodeCipherValue, xmlSecEncNs);
@@ -917,14 +917,14 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeCipherValue));
-            return(NULL);                       
+            return(NULL);
         }
     }
-        
+
     return(res);
 }
 
-/** 
+/**
  * xmlSecTmplEncDataEnsureCipherReference:
  * @encNode:            the pointer to <enc:EncryptedData/> node.
  * @uri:                the URI attribute (may be NULL).
@@ -932,14 +932,14 @@ xmlSecTmplEncDataEnsureCipherValue(xmlNodePtr encNode) {
  * Adds <enc:CipherReference/> node with specified URI attribute @uri
  * to the <enc:EncryptedData/> node @encNode.
  *
- * Returns: the pointer to newly created <enc:CipherReference/> node or 
+ * Returns: the pointer to newly created <enc:CipherReference/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
 xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
     xmlNodePtr cipherDataNode;
     xmlNodePtr res, tmp;
-        
+
     xmlSecAssert2(encNode != NULL, NULL);
 
     cipherDataNode = xmlSecFindChild(encNode, xmlSecNodeCipherData, xmlSecEncNs);
@@ -949,7 +949,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
                     xmlSecErrorsSafeString(xmlSecNodeCipherData),
                     XMLSEC_ERRORS_R_NODE_NOT_FOUND,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
 
     /* check that we don;t have CipherValue node */
@@ -960,7 +960,7 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
                     xmlSecErrorsSafeString(xmlSecNodeCipherValue),
                     XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(NULL);   
+        return(NULL);
     }
 
     res = xmlSecFindChild(cipherDataNode, xmlSecNodeCipherReference, xmlSecEncNs);
@@ -973,18 +973,18 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeCipherReference));
-            return(NULL);                       
+            return(NULL);
         }
     }
-    
+
     if(uri != NULL) {
         xmlSetProp(res, xmlSecAttrURI, uri);
     }
-    
+
     return(res);
 }
 
-/** 
+/**
  * xmlSecTmplEncDataGetEncMethodNode:
  * @encNode:            the pointer to <enc:EcnryptedData /> node.
  *
@@ -992,14 +992,14 @@ xmlSecTmplEncDataEnsureCipherReference(xmlNodePtr encNode, const xmlChar *uri) {
  *
  * Returns: pointer to <enc:EncryptionMethod /> node or NULL if an error occurs.
  */
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
     xmlSecAssert2(encNode != NULL, NULL);
 
     return(xmlSecFindChild(encNode, xmlSecNodeEncryptionMethod, xmlSecEncNs));
 }
 
-/** 
+/**
  * xmlSecTmplCipherReferenceAddTransform:
  * @cipherReferenceNode:        the pointer to <enc:CipherReference/> node.
  * @transformId:                the transform id.
@@ -1008,18 +1008,18 @@ xmlSecTmplEncDataGetEncMethodNode(xmlNodePtr encNode) {
  * with specified transform methods @transform to the <enc:CipherReference/>
  * child node of the <enc:EncryptedData/> node @encNode.
  *
- * Returns: the pointer to newly created <dsig:Transform/> node or 
+ * Returns: the pointer to newly created <dsig:Transform/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
-xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode, 
+xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
                                   xmlSecTransformId transformId) {
     xmlNodePtr transformsNode;
     xmlNodePtr res;
 
     xmlSecAssert2(cipherReferenceNode != NULL, NULL);
-    xmlSecAssert2(transformId != NULL, NULL);    
-    xmlSecAssert2(transformId->href != NULL, NULL);    
+    xmlSecAssert2(transformId != NULL, NULL);
+    xmlSecAssert2(transformId->href != NULL, NULL);
 
     transformsNode = xmlSecFindChild(cipherReferenceNode, xmlSecNodeTransforms, xmlSecEncNs);
     if(transformsNode == NULL) {
@@ -1031,10 +1031,10 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeTransforms));
-            return(NULL);       
+            return(NULL);
         }
     }
-    
+
     res = xmlSecAddChild(transformsNode,  xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1043,9 +1043,9 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeTransform));
-        return(NULL);   
+        return(NULL);
     }
-    
+
     if(xmlSetProp(res, xmlSecAttrAlgorithm, transformId->href) == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1056,9 +1056,9 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
                     xmlSecErrorsSafeString(transformId->href));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
-        return(NULL);                   
+        return(NULL);
     }
-    
+
     return(res);
 }
 
@@ -1067,16 +1067,16 @@ xmlSecTmplCipherReferenceAddTransform(xmlNodePtr cipherReferenceNode,
  *
  * <enc:EncryptedKey> node
  *
- **********************************************************************/ 
+ **********************************************************************/
 
-/** 
+/**
  * xmlSecTmplReferenceListAddDataReference:
  * @encNode:                    the pointer to <enc:EncryptedKey/> node.
  * @uri:                        uri to reference (optional)
  *
  * Adds <enc:DataReference/> and the parent <enc:ReferenceList/> node (if needed).
  *
- * Returns: the pointer to newly created <enc:DataReference/> node or 
+ * Returns: the pointer to newly created <enc:DataReference/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1084,7 +1084,7 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
     xmlNodePtr refListNode, res;
 
     xmlSecAssert2(encNode != NULL, NULL);
-    
+
     refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
     if(refListNode == NULL) {
         refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
@@ -1095,10 +1095,10 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeReferenceList));
-            return(NULL);       
+            return(NULL);
         }
     }
-    
+
     res = xmlSecAddChild(refListNode,  xmlSecNodeDataReference, xmlSecEncNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1107,9 +1107,9 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeDataReference));
-        return(NULL);   
+        return(NULL);
     }
- 
+
     if(uri != NULL) {
         if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1121,21 +1121,21 @@ xmlSecTmplReferenceListAddDataReference(xmlNodePtr encNode, const xmlChar *uri) 
                         xmlSecErrorsSafeString(uri));
             xmlUnlinkNode(res);
             xmlFreeNode(res);
-            return(NULL);                       
+            return(NULL);
         }
     }
 
     return(res);
 }
 
-/** 
+/**
  * xmlSecTmplReferenceListAddKeyReference:
  * @encNode:                    the pointer to <enc:EncryptedKey/> node.
  * @uri:                        uri to reference (optional)
  *
  * Adds <enc:KeyReference/> and the parent <enc:ReferenceList/> node (if needed).
  *
- * Returns: the pointer to newly created <enc:KeyReference/> node or 
+ * Returns: the pointer to newly created <enc:KeyReference/> node or
  * NULL if an error occurs.
  */
 xmlNodePtr
@@ -1143,7 +1143,7 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
     xmlNodePtr refListNode, res;
 
     xmlSecAssert2(encNode != NULL, NULL);
-    
+
     refListNode = xmlSecFindChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
     if(refListNode == NULL) {
         refListNode = xmlSecAddChild(encNode, xmlSecNodeReferenceList, xmlSecEncNs);
@@ -1154,10 +1154,10 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeReferenceList));
-            return(NULL);       
+            return(NULL);
         }
     }
-    
+
     res = xmlSecAddChild(refListNode,  xmlSecNodeKeyReference, xmlSecEncNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1166,9 +1166,9 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeKeyReference));
-        return(NULL);   
+        return(NULL);
     }
- 
+
     if(uri != NULL) {
         if(xmlSetProp(res, xmlSecAttrURI, uri) == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1180,7 +1180,7 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
                         xmlSecErrorsSafeString(uri));
             xmlUnlinkNode(res);
             xmlFreeNode(res);
-            return(NULL);                       
+            return(NULL);
         }
     }
 
@@ -1197,20 +1197,20 @@ xmlSecTmplReferenceListAddKeyReference(xmlNodePtr encNode, const xmlChar *uri) {
 /**
  * xmlSecTmplKeyInfoAddKeyName:
  * @keyInfoNode:        the pointer to <dsig:KeyInfo/> node.
- * @name:               the key name (optional).        
+ * @name:               the key name (optional).
  *
  * Adds <dsig:KeyName/> node to the <dsig:KeyInfo/> node @keyInfoNode.
  *
  * Returns: the pointer to the newly created <dsig:KeyName/> node or
  * NULL if an error occurs.
  */
-xmlNodePtr      
+xmlNodePtr
 xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
     xmlNodePtr res;
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
-        
-    res = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyName, xmlSecDSigNs); 
+
+    res = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyName, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1218,7 +1218,7 @@ xmlSecTmplKeyInfoAddKeyName(xmlNodePtr keyInfoNode, const xmlChar* name) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeKeyName));
-        return(NULL);   
+        return(NULL);
     }
     if(name != NULL) {
         xmlSecNodeEncodeAndSetContent(res, name);
@@ -1240,8 +1240,8 @@ xmlSecTmplKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
     xmlNodePtr res;
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
-        
-    res = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyValue, xmlSecDSigNs); 
+
+    res = xmlSecAddChild(keyInfoNode, xmlSecNodeKeyValue, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1249,9 +1249,9 @@ xmlSecTmplKeyInfoAddKeyValue(xmlNodePtr keyInfoNode) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeKeyValue));
-        return(NULL);   
+        return(NULL);
     }
-    
+
     return(res);
 }
 
@@ -1269,8 +1269,8 @@ xmlSecTmplKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
     xmlNodePtr res;
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
-        
-    res = xmlSecAddChild(keyInfoNode, xmlSecNodeX509Data, xmlSecDSigNs); 
+
+    res = xmlSecAddChild(keyInfoNode, xmlSecNodeX509Data, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1278,9 +1278,9 @@ xmlSecTmplKeyInfoAddX509Data(xmlNodePtr keyInfoNode) {
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509Data));
-        return(NULL);   
+        return(NULL);
     }
-    
+
     return(res);
 }
 
@@ -1301,8 +1301,8 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
     xmlNodePtr res;
 
     xmlSecAssert2(keyInfoNode != NULL, NULL);
-        
-    res = xmlSecAddChild(keyInfoNode, xmlSecNodeRetrievalMethod, xmlSecDSigNs); 
+
+    res = xmlSecAddChild(keyInfoNode, xmlSecNodeRetrievalMethod, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1310,9 +1310,9 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRetrievalMethod));
-        return(NULL);   
+        return(NULL);
     }
-    
+
     if(uri != NULL) {
         xmlSetProp(res, xmlSecAttrURI, uri);
     }
@@ -1326,7 +1326,7 @@ xmlSecTmplKeyInfoAddRetrievalMethod(xmlNodePtr keyInfoNode, const xmlChar *uri,
  * xmlSecTmplRetrievalMethodAddTransform:
  * @retrMethodNode:     the pointer to <dsig:RetrievalMethod/> node.
  * @transformId:        the transform id.
- * 
+ *
  * Adds <dsig:Transform/> node (and the parent <dsig:Transforms/> node
  * if required) to the <dsig:RetrievalMethod/> node @retrMethod.
  *
@@ -1339,8 +1339,8 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
     xmlNodePtr res;
 
     xmlSecAssert2(retrMethodNode != NULL, NULL);
-    xmlSecAssert2(transformId != NULL, NULL);    
-    xmlSecAssert2(transformId->href != NULL, NULL);    
+    xmlSecAssert2(transformId != NULL, NULL);
+    xmlSecAssert2(transformId->href != NULL, NULL);
 
     transformsNode = xmlSecFindChild(retrMethodNode, xmlSecNodeTransforms, xmlSecDSigNs);
     if(transformsNode == NULL) {
@@ -1352,10 +1352,10 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "node=%s",
                         xmlSecErrorsSafeString(xmlSecNodeTransforms));
-            return(NULL);       
+            return(NULL);
         }
     }
-    
+
     res = xmlSecAddChild(transformsNode,  xmlSecNodeTransform, xmlSecDSigNs);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1364,9 +1364,9 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeTransform));
-        return(NULL);   
+        return(NULL);
     }
-    
+
     if(xmlSetProp(res, xmlSecAttrAlgorithm, transformId->href) == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1377,9 +1377,9 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
                     xmlSecErrorsSafeString(transformId->href));
         xmlUnlinkNode(res);
         xmlFreeNode(res);
-        return(NULL);                   
+        return(NULL);
     }
-    
+
     return(res);
 }
 
@@ -1389,16 +1389,16 @@ xmlSecTmplRetrievalMethodAddTransform(xmlNodePtr retrMethodNode, xmlSecTransform
  * @keyInfoNode:        the pointer to <dsig:KeyInfo/> node.
  * @encMethodId:        the encryption method (optional).
  * @id:                 the Id attribute (optional).
- * @type:               the Type attribute (optional). 
- * @recipient:          the Recipient attribute (optional). 
+ * @type:               the Type attribute (optional).
+ * @recipient:          the Recipient attribute (optional).
  *
- * Adds <enc:EncryptedKey/> node with given attributes to 
+ * Adds <enc:EncryptedKey/> node with given attributes to
  * the <dsig:KeyInfo/> node @keyInfoNode.
  *
  * Returns: the pointer to the newly created <enc:EncryptedKey/> node or
  * NULL if an error occurs.
  */
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMethodId,
                          const xmlChar* id, const xmlChar* type, const xmlChar* recipient) {
     xmlNodePtr encKeyNode;
@@ -1406,17 +1406,17 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
     xmlSecAssert2(keyInfoNode != NULL, NULL);
 
     /* we allow multiple encrypted key elements */
-    encKeyNode = xmlSecAddChild(keyInfoNode, xmlSecNodeEncryptedKey, xmlSecEncNs); 
+    encKeyNode = xmlSecAddChild(keyInfoNode, xmlSecNodeEncryptedKey, xmlSecEncNs);
     if(encKeyNode == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeEncryptedKey));
-        return(NULL);   
+        return(NULL);
     }
-    
+
     if(id != NULL) {
         xmlSetProp(encKeyNode, xmlSecAttrId, id);
     }
@@ -1430,27 +1430,27 @@ xmlSecTmplKeyInfoAddEncryptedKey(xmlNodePtr keyInfoNode, xmlSecTransformId encMe
     if(xmlSecTmplPrepareEncData(encKeyNode, encMethodId) < 0) {
         xmlUnlinkNode(encKeyNode);
         xmlFreeNode(encKeyNode);
-        return(NULL);                   
-    }    
-    return(encKeyNode);    
+        return(NULL);
+    }
+    return(encKeyNode);
 }
 
 /***********************************************************************
  *
  * <dsig:X509Data> node
  *
- **********************************************************************/ 
+ **********************************************************************/
 /**
  * xmlSecTmplX509DataAddIssuerSerial:
  * @x509DataNode:       the pointer to <dsig:X509Data/> node.
- * 
+ *
  * Adds <dsig:X509IssuerSerial/> node to the given <dsig:X509Data/> node.
  *
  * Returns: the pointer to the newly created <dsig:X509IssuerSerial/> node or
  * NULL if an error occurs.
  */
 
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
@@ -1465,25 +1465,25 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509IssuerSerial, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509IssuerSerial));
         return(NULL);
-    }    
-    
+    }
+
     return (cur);
 }
 
 /**
  * xmlSecTmplX509IssuerSerialAddIssuerName:
  * @x509IssuerSerialNode:       the pointer to <dsig:X509IssuerSerial/> node.
- * @issuerName:         the issuer name (optional).     
+ * @issuerName:         the issuer name (optional).
  *
  * Adds <dsig:X509IssuerName/> node to the <dsig:X509IssuerSerial/> node @x509IssuerSerialNode.
  *
@@ -1493,9 +1493,9 @@ xmlSecTmplX509DataAddIssuerSerial(xmlNodePtr x509DataNode) {
 xmlNodePtr
 xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const xmlChar* issuerName) {
         xmlNodePtr res;
-        
+
         xmlSecAssert2(x509IssuerSerialNode != NULL, NULL);
-        
+
   if(xmlSecFindChild(x509IssuerSerialNode, xmlSecNodeX509IssuerName,
                                 xmlSecDSigNs) != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1514,7 +1514,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509IssuerName));
-        return(NULL);   
+        return(NULL);
     }
 
                 if (issuerName != NULL) {
@@ -1526,7 +1526,7 @@ xmlSecTmplX509IssuerSerialAddIssuerName(xmlNodePtr x509IssuerSerialNode, const x
 /**
  * xmlSecTmplX509IssuerSerialAddSerialNumber:
  * @x509IssuerSerialNode:       the pointer to <dsig:X509IssuerSerial/> node.
- * @serial:             the serial number (optional).   
+ * @serial:             the serial number (optional).
  *
  * Adds <dsig:X509SerialNumber/> node to the <dsig:X509IssuerSerial/> node @x509IssuerSerialNode.
  *
@@ -1557,7 +1557,7 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
                                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                                 "node=%s",
                                 xmlSecErrorsSafeString(xmlSecNodeX509SerialNumber));
-                return(NULL);   
+                return(NULL);
         }
 
         if (serial != NULL) {
@@ -1569,14 +1569,14 @@ xmlSecTmplX509IssuerSerialAddSerialNumber(xmlNodePtr x509IssuerSerialNode, const
 /**
  * xmlSecTmplX509DataAddSubjectName:
  * @x509DataNode:       the pointer to <dsig:X509Data/> node.
- * 
+ *
  * Adds <dsig:X509SubjectName/> node to the given <dsig:X509Data/> node.
  *
  * Returns: the pointer to the newly created <dsig:X509SubjectName/> node or
  * NULL if an error occurs.
  */
 
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
@@ -1591,32 +1591,32 @@ xmlSecTmplX509DataAddSubjectName(xmlNodePtr x509DataNode) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SubjectName, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509SubjectName));
         return(NULL);
-    }    
-    
+    }
+
     return (cur);
 }
 
 /**
  * xmlSecTmplX509DataAddSKI:
  * @x509DataNode:       the pointer to <dsig:X509Data/> node.
- * 
+ *
  * Adds <dsig:X509SKI/> node to the given <dsig:X509Data/> node.
  *
  * Returns: the pointer to the newly created <dsig:X509SKI/> node or
  * NULL if an error occurs.
  */
 
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
@@ -1631,18 +1631,18 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509SKI, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509SKI));
         return(NULL);
-    }    
-    
+    }
+
     return (cur);
 }
 
@@ -1650,14 +1650,14 @@ xmlSecTmplX509DataAddSKI(xmlNodePtr x509DataNode) {
 /**
  * xmlSecTmplX509DataAddCertificate:
  * @x509DataNode:       the pointer to <dsig:X509Data/> node.
- * 
+ *
  * Adds <dsig:X509Certificate/> node to the given <dsig:X509Data/> node.
  *
  * Returns: the pointer to the newly created <dsig:X509Certificate/> node or
  * NULL if an error occurs.
  */
 
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
@@ -1672,32 +1672,32 @@ xmlSecTmplX509DataAddCertificate(xmlNodePtr x509DataNode) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509Certificate, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509Certificate));
         return(NULL);
-    }    
-    
+    }
+
     return (cur);
 }
 
 /**
  * xmlSecTmplX509DataAddCRL:
  * @x509DataNode:       the pointer to <dsig:X509Data/> node.
- * 
+ *
  * Adds <dsig:X509CRL/> node to the given <dsig:X509Data/> node.
  *
  * Returns: the pointer to the newly created <dsig:X509CRL/> node or
  * NULL if an error occurs.
  */
 
-xmlNodePtr 
+xmlNodePtr
 xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
     xmlNodePtr cur;
 
@@ -1712,18 +1712,18 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
     }
-    
+
     cur = xmlSecAddChild(x509DataNode, xmlSecNodeX509CRL, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeX509CRL));
         return(NULL);
-    }    
-    
+    }
+
     return (cur);
 }
 
@@ -1738,7 +1738,7 @@ xmlSecTmplX509DataAddCRL(xmlNodePtr x509DataNode) {
  * @transformNode:      the pointer to <dsig:Transform/> node
  * @bitsLen:            the required length in bits
  *
- * Creates <dsig:HMACOutputLength/> child for the HMAC transform 
+ * Creates <dsig:HMACOutputLength/> child for the HMAC transform
  * node @node.
  *
  * Returns: 0 on success and a negatie value otherwise.
@@ -1760,18 +1760,18 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     cur = xmlSecAddChild(transformNode, xmlSecNodeHMACOutputLength, xmlSecDSigNs);
     if(cur == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeHMACOutputLength));
         return(-1);
-    }    
-    
+    }
+
     sprintf(buf, "%u", bitsLen);
     xmlNodeSetContent(cur, BAD_CAST buf);
     return(0);
@@ -1782,13 +1782,13 @@ xmlSecTmplTransformAddHmacOutputLength(xmlNodePtr transformNode, xmlSecSize bits
  * @transformNode:      the pointer to <dsig:Transform/> node.
  * @buf:                the OAEP param buffer.
  * @size:               the OAEP param buffer size.
- * 
+ *
  * Creates <enc:OAEPParam/> child node in the @node.
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int     
-xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode, 
+int
+xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
                         const xmlSecByte *buf, xmlSecSize size) {
     xmlNodePtr oaepParamNode;
     xmlChar *base64;
@@ -1804,7 +1804,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
                     xmlSecErrorsSafeString(xmlSecNodeRsaOAEPparams),
                     XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);    
+        return(-1);
     }
 
     oaepParamNode = xmlSecAddChild(transformNode, xmlSecNodeRsaOAEPparams, xmlSecEncNs);
@@ -1813,11 +1813,11 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
                     NULL,
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s", 
+                    "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeRsaOAEPparams));
-        return(-1);    
+        return(-1);
     }
-    
+
     base64 = xmlSecBase64Encode(buf, size, 0);
     if(base64 == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1825,9 +1825,9 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
                     "xmlSecBase64Encode",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", size);
-        return(-1);    
+        return(-1);
     }
-    
+
     xmlNodeSetContent(oaepParamNode, base64);
     xmlFree(base64);
     return(0);
@@ -1837,7 +1837,7 @@ xmlSecTmplTransformAddRsaOaepParam(xmlNodePtr transformNode,
  * xmlSecTmplTransformAddXsltStylesheet:
  * @transformNode:      the pointer to <dsig:Transform/> node.
  * @xslt:               the XSLT transform exspression.
- * 
+ *
  * Writes the XSLT transform expression to the @node.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -1846,10 +1846,10 @@ int
 xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xslt) {
     xmlDocPtr xsltDoc;
     int ret;
-        
-    xmlSecAssert2(transformNode != NULL, -1);    
-    xmlSecAssert2(xslt != NULL, -1);    
-    
+
+    xmlSecAssert2(transformNode != NULL, -1);
+    xmlSecAssert2(xslt != NULL, -1);
+
     xsltDoc = xmlParseMemory((const char*)xslt, xmlStrlen(xslt));
     if(xsltDoc == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1859,7 +1859,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     ret = xmlSecReplaceContent(transformNode, xmlDocGetRootElement(xsltDoc));
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1870,7 +1870,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
         xmlFreeDoc(xsltDoc);
         return(-1);
     }
-    
+
     xmlFreeDoc(xsltDoc);
     return(0);
 }
@@ -1878,7 +1878,7 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
 /**
  * xmlSecTmplTransformAddC14NInclNamespaces:
  * @transformNode:      the pointer to <dsig:Transform/> node.
- * @prefixList:         the white space delimited  list of namespace prefixes, 
+ * @prefixList:         the white space delimited  list of namespace prefixes,
  *                      where "#default" indicates the default namespace
  *                      (optional).
  *
@@ -1886,36 +1886,36 @@ xmlSecTmplTransformAddXsltStylesheet(xmlNodePtr transformNode, const xmlChar *xs
  *
  * Returns: 0 if success or a negative value otherwise.
  */
-int             
-xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode, 
+int
+xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
                                          const xmlChar *prefixList) {
     xmlNodePtr cur;
 
-    xmlSecAssert2(transformNode != NULL, -1);    
+    xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(prefixList != NULL, -1);
 
     cur = xmlSecFindChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces),
                     XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     cur = xmlSecAddChild(transformNode, xmlSecNodeInclusiveNamespaces, xmlSecNsExcC14N);
     if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecNodeGetName(transformNode)),
                     "xmlSecAddChild",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeInclusiveNamespaces));
         return(-1);
-    }    
-    
-    xmlSetProp(cur, xmlSecAttrPrefixList, prefixList);    
+    }
+
+    xmlSetProp(cur, xmlSecAttrPrefixList, prefixList);
     return(0);
 }
 
@@ -1926,19 +1926,19 @@ xmlSecTmplTransformAddC14NInclNamespaces(xmlNodePtr transformNode,
  * @nsList:             the NULL terminated list of namespace prefix/href pairs
  *                      (optional).
  *
- * Writes XPath transform infromation to the <dsig:Transform/> node 
+ * Writes XPath transform infromation to the <dsig:Transform/> node
  * @node.
  *
  * Returns: 0 for success or a negative value otherwise.
  */
-int     
+int
 xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
                          const xmlChar **nsList) {
     xmlNodePtr xpathNode;
-    
+
     xmlSecAssert2(transformNode != NULL, -1);
     xmlSecAssert2(expression != NULL, -1);
-    
+
     xpathNode = xmlSecFindChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
     if(xpathNode != NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1946,7 +1946,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
                     xmlSecErrorsSafeString(xmlSecNodeXPath),
                     XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);    
+        return(-1);
     }
 
     xpathNode = xmlSecAddChild(transformNode, xmlSecNodeXPath, xmlSecDSigNs);
@@ -1957,9 +1957,9 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeXPath));
-        return(-1);    
+        return(-1);
     }
-    
+
     xmlSecNodeEncodeAndSetContent(xpathNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpathNode, nsList) : 0);
 }
@@ -1972,7 +1972,7 @@ xmlSecTmplTransformAddXPath(xmlNodePtr transformNode, const xmlChar *expression,
  * @nsList:             the NULL terminated list of namespace prefix/href pairs.
  *                      (optional).
  *
- * Writes XPath2 transform infromation to the <dsig:Transform/> node 
+ * Writes XPath2 transform infromation to the <dsig:Transform/> node
  * @node.
  *
  * Returns: 0 for success or a negative value otherwise.
@@ -1994,10 +1994,10 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeXPath));
-        return(-1);    
+        return(-1);
     }
     xmlSetProp(xpathNode, xmlSecAttrFilter, type);
-    
+
     xmlSecNodeEncodeAndSetContent(xpathNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpathNode, nsList) : 0);
 }
@@ -2009,12 +2009,12 @@ xmlSecTmplTransformAddXPath2(xmlNodePtr transformNode, const xmlChar* type,
  * @nsList:             the NULL terminated list of namespace prefix/href pairs.
  *                      (optional).
  *
- * Writes XPoniter transform infromation to the <dsig:Transform/> node 
+ * Writes XPoniter transform infromation to the <dsig:Transform/> node
  * @node.
  *
  * Returns: 0 for success or a negative value otherwise.
  */
-int     
+int
 xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expression,
                          const xmlChar **nsList) {
     xmlNodePtr xpointerNode;
@@ -2029,7 +2029,7 @@ xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expressi
                     xmlSecErrorsSafeString(xmlSecNodeXPointer),
                     XMLSEC_ERRORS_R_NODE_ALREADY_PRESENT,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);    
+        return(-1);
     }
 
     xpointerNode = xmlSecAddChild(transformNode, xmlSecNodeXPointer, xmlSecXPointerNs);
@@ -2040,15 +2040,15 @@ xmlSecTmplTransformAddXPointer(xmlNodePtr transformNode, const xmlChar *expressi
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "node=%s",
                     xmlSecErrorsSafeString(xmlSecNodeXPointer));
-        return(-1);    
+        return(-1);
     }
-    
-    
+
+
     xmlSecNodeEncodeAndSetContent(xpointerNode, expression);
     return((nsList != NULL) ? xmlSecTmplNodeWriteNsList(xpointerNode, nsList) : 0);
 }
 
-static int 
+static int
 xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
     xmlNsPtr ns;
     const xmlChar *prefix;
@@ -2057,7 +2057,7 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
 
     xmlSecAssert2(parentNode != NULL, -1);
     xmlSecAssert2(nsList != NULL, -1);
-        
+
     ptr = nsList;
     while((*ptr) != NULL) {
         if(xmlStrEqual(BAD_CAST "#default", (*ptr))) {
@@ -2081,7 +2081,7 @@ xmlSecTmplNodeWriteNsList(xmlNodePtr parentNode, const xmlChar** nsList) {
                         NULL,
                         "xmlNewNs",
                         XMLSEC_ERRORS_R_XML_FAILED,
-                        "href=%s;prefix=%s", 
+                        "href=%s;prefix=%s",
                         xmlSecErrorsSafeString(href),
                         xmlSecErrorsSafeString(prefix));
             return(-1);

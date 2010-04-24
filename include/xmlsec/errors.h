@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Error codes and error reporting functions.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_ERRORS_H__
-#define __XMLSEC_ERRORS_H__    
+#define __XMLSEC_ERRORS_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 /***************************************************************
  *
@@ -44,7 +44,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_CRYPTO_FAILED:
  *
- * Crypto (OpenSSL) function failed (error subject is the failed function). 
+ * Crypto (OpenSSL) function failed (error subject is the failed function).
  */
 #define XMLSEC_ERRORS_R_CRYPTO_FAILED                   4
 
@@ -57,7 +57,7 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_XSLT_FAILED:
- * 
+ *
  * LibXSLT function failed (error subject is the failed function).
  */
 #define XMLSEC_ERRORS_R_XSLT_FAILED                     6
@@ -108,14 +108,14 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_INVALID_TYPE:
- * 
+ *
  * Invalid type.
  */
 #define XMLSEC_ERRORS_R_INVALID_TYPE                    14
 
 /**
  * XMLSEC_ERRORS_R_INVALID_OPERATION:
- * 
+ *
  * Invalid operation.
  */
 #define XMLSEC_ERRORS_R_INVALID_OPERATION               15
@@ -143,7 +143,7 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_INVALID_NODE:
- * 
+ *
  * Invalid node (error subject is the node name).
  */
 #define XMLSEC_ERRORS_R_INVALID_NODE                    21
@@ -178,7 +178,7 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_UNEXPECTED_NODE:
- * 
+ *
  * Unexpected node (error subject is the node name).
  */
 #define XMLSEC_ERRORS_R_UNEXPECTED_NODE                 27
@@ -192,21 +192,21 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM:
- * 
+ *
  * This transform is invlaid here.
  */
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM               31
 
 /**
  * XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY:
- * 
+ *
  * Key is invalid for this transform.
  */
 #define XMLSEC_ERRORS_R_INVALID_TRANSFORM_KEY           32
 
 /**
  * XMLSEC_ERRORS_R_INVALID_URI_TYPE:
- * 
+ *
  * Invalid URI type.
  */
 #define XMLSEC_ERRORS_R_INVALID_URI_TYPE                33
@@ -255,12 +255,12 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_KEY_NOT_FOUND:
- * 
+ *
  * Key not found.
  */
 #define XMLSEC_ERRORS_R_KEY_NOT_FOUND                   45
 
-/** 
+/**
  * XMLSEC_ERRORS_R_KEYDATA_DISABLED:
  *
  * The key data type disabled.
@@ -277,7 +277,7 @@ extern "C" {
 /**
  * XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH:
  *
- * The retrieved key data type does not match the one specified 
+ * The retrieved key data type does not match the one specified
  * in the <dsig:RetrievalMethod/> node.
  */
 #define XMLSEC_ERRORS_R_MAX_RETRIEVAL_TYPE_MISMATCH     52
@@ -305,7 +305,7 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_R_CERT_REVOKED:
- * 
+ *
  * The certificate is revoked.
  */
 #define XMLSEC_ERRORS_R_CERT_REVOKED                    73
@@ -354,7 +354,7 @@ extern "C" {
 
 /**
  * XMLSEC_ERRORS_MAX_NUMBER:
- * 
+ *
  * The maximum xmlsec errors number.
  */
 #define XMLSEC_ERRORS_MAX_NUMBER                        256
@@ -365,37 +365,37 @@ extern "C" {
  *
  * Error functions
  *
- *******************************************************************/ 
+ *******************************************************************/
 /**
  * xmlSecErrorsCallback:
  * @file:               the error location file name (__FILE__ macro).
  * @line:               the error location line number (__LINE__ macro).
  * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object 
+ * @errorObject:        the error specific error object
  * @errorSubject:       the error specific error subject.
  * @reason:             the error code.
  * @msg:                the additional error message.
  *
  * The errors reporting callback function.
  */
-typedef void (*xmlSecErrorsCallback)                            (const char* file, 
-                                                                 int line, 
+typedef void (*xmlSecErrorsCallback)                            (const char* file,
+                                                                 int line,
                                                                  const char* func,
                                                                  const char* errorObject,
                                                                  const char* errorSubject,
-                                                                 int reason, 
+                                                                 int reason,
                                                                  const char* msg);
 
 
 XMLSEC_EXPORT void              xmlSecErrorsInit                (void);
 XMLSEC_EXPORT void              xmlSecErrorsShutdown            (void);
 XMLSEC_EXPORT void              xmlSecErrorsSetCallback         (xmlSecErrorsCallback callback);
-XMLSEC_EXPORT void              xmlSecErrorsDefaultCallback     (const char* file, 
-                                                                 int line, 
+XMLSEC_EXPORT void              xmlSecErrorsDefaultCallback     (const char* file,
+                                                                 int line,
                                                                  const char* func,
                                                                  const char* errorObject,
                                                                  const char* errorSubject,
-                                                                 int reason, 
+                                                                 int reason,
                                                                  const char* msg);
 XMLSEC_EXPORT void              xmlSecErrorsDefaultCallbackEnableOutput
                                                                 (int enabled);
@@ -406,7 +406,7 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 
 
 /* __FUNCTION__ is defined for MSC compiler < MS VS .NET 2003 */
-#if defined(_MSC_VER) && (_MSC_VER >= 1300) 
+#if defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define __XMLSEC_FUNCTION__  __FUNCTION__
 #endif /* _MSC_VER */
 
@@ -414,8 +414,8 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 #if !defined(__XMLSEC_FUNCTION__)
 #define __XMLSEC_FUNCTION__  ""
 #endif /*!defined(__XMLSEC_FUNCTION__) */
- 
-/** 
+
+/**
  * XMLSEC_ERRORS_HERE:
  *
  * The macro that specifies the location (file, line and function)
@@ -425,35 +425,35 @@ XMLSEC_EXPORT const char*       xmlSecErrorsGetMsg              (xmlSecSize pos)
 #ifdef __GNUC__
 #define XMLSEC_ERRORS_PRINTF_ATTRIBUTE          __attribute__ ((format (printf, 7, 8)))
 #else /* __GNUC__ */
-#define XMLSEC_ERRORS_PRINTF_ATTRIBUTE          
+#define XMLSEC_ERRORS_PRINTF_ATTRIBUTE
 #endif /* __GNUC__ */
 
 /**
  * xmlSecErrorsSafeString:
  * @str:                the string.
- * 
+ *
  * Macro. Returns @str if it is not NULL or pointer to "NULL" otherwise.
  */
 #define xmlSecErrorsSafeString(str) \
         (((str) != NULL) ? ((char*)(str)) : (char*)"NULL")
 
-/** 
+/**
  * XMLSEC_ERRORS_NO_MESSAGE:
- * 
+ *
  * Empty error message " ".
  */
 #define XMLSEC_ERRORS_NO_MESSAGE                " "
 
 
-XMLSEC_EXPORT void xmlSecError                          (const char* file, 
-                                                         int line, 
+XMLSEC_EXPORT void xmlSecError                          (const char* file,
+                                                         int line,
                                                          const char* func,
                                                          const char* errorObject,
                                                          const char* errorSubject,
                                                          int reason,
                                                          const char* msg, ...) XMLSEC_ERRORS_PRINTF_ATTRIBUTE;
-                                                 
-                                                
+
+
 
 /**********************************************************************
  *
@@ -474,7 +474,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                         XMLSEC_ERRORS_R_ASSERTION, \
                         XMLSEC_ERRORS_NO_MESSAGE); \
             return; \
-        } 
+        }
 
 /**
  * xmlSecAssert2:
@@ -491,7 +491,7 @@ XMLSEC_EXPORT void xmlSecError                          (const char* file,
                         XMLSEC_ERRORS_R_ASSERTION, \
                         XMLSEC_ERRORS_NO_MESSAGE); \
             return(ret); \
-        } 
+        }
 
 
 

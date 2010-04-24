@@ -1,9 +1,9 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
@@ -40,7 +40,7 @@ static xmlChar* gXmlSecOpenSSLTrustedCertsFolder = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_openssl(void) {
     static xmlSecCryptoDLFunctions functions;
-    
+
     if(gXmlSecOpenSSLFunctions != NULL) {
         return(gXmlSecOpenSSLFunctions);
     }
@@ -48,7 +48,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecOpenSSLFunctions = &functions;
 
-    /**  
+    /**
      * Crypto Init/shutdown
      */
     gXmlSecOpenSSLFunctions->cryptoInit                 = xmlSecOpenSSLInit;
@@ -58,21 +58,21 @@ xmlSecCryptoGetFunctions_openssl(void) {
     /**
      * Key data ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->keyDataAesGetKlass         = xmlSecOpenSSLKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecOpenSSLFunctions->keyDataDesGetKlass         = xmlSecOpenSSLKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_DSA
     gXmlSecOpenSSLFunctions->keyDataDsaGetKlass         = xmlSecOpenSSLKeyDataDsaGetKlass;
-#endif /* XMLSEC_NO_DSA */    
+#endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_HMAC  
+#ifndef XMLSEC_NO_HMAC
     gXmlSecOpenSSLFunctions->keyDataHmacGetKlass        = xmlSecOpenSSLKeyDataHmacGetKlass;
-#endif /* XMLSEC_NO_HMAC */    
+#endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecOpenSSLFunctions->keyDataRsaGetKlass         = xmlSecOpenSSLKeyDataRsaGetKlass;
@@ -94,7 +94,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
      * Crypto transforms ids
      */
     /******************************* AES ********************************/
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->transformAes128CbcGetKlass         = xmlSecOpenSSLTransformAes128CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes192CbcGetKlass         = xmlSecOpenSSLTransformAes192CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformAes256CbcGetKlass         = xmlSecOpenSSLTransformAes256CbcGetKlass;
@@ -104,7 +104,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_AES */
 
     /******************************* DES ********************************/
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecOpenSSLFunctions->transformDes3CbcGetKlass           = xmlSecOpenSSLTransformDes3CbcGetKlass;
     gXmlSecOpenSSLFunctions->transformKWDes3GetKlass            = xmlSecOpenSSLTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
@@ -112,7 +112,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformDsaSha1GetKlass           = xmlSecOpenSSLTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 #endif /* XMLSEC_NO_DSA */
@@ -127,7 +127,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformHmacRipemd160GetKlass     = xmlSecOpenSSLTransformHmacRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformHmacSha1GetKlass          = xmlSecOpenSSLTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
@@ -170,19 +170,19 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformRsaRipemd160GetKlass      = xmlSecOpenSSLTransformRsaRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformRsaSha1GetKlass           = xmlSecOpenSSLTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifndef XMLSEC_NO_SHA224    
+#ifndef XMLSEC_NO_SHA224
     gXmlSecOpenSSLFunctions->transformRsaSha224GetKlass         = xmlSecOpenSSLTransformRsaSha224GetKlass;
 #endif /* XMLSEC_NO_SHA224 */
 
-#ifndef XMLSEC_NO_SHA256    
+#ifndef XMLSEC_NO_SHA256
     gXmlSecOpenSSLFunctions->transformRsaSha256GetKlass         = xmlSecOpenSSLTransformRsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
-#ifndef XMLSEC_NO_SHA384    
+#ifndef XMLSEC_NO_SHA384
     gXmlSecOpenSSLFunctions->transformRsaSha384GetKlass         = xmlSecOpenSSLTransformRsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
@@ -195,7 +195,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_RSA */
 
     /******************************* SHA ********************************/
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformSha1GetKlass              = xmlSecOpenSSLTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 #ifndef XMLSEC_NO_SHA224
@@ -213,7 +213,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /**
      * High level routines form xmlsec command line utility
-     */ 
+     */
     gXmlSecOpenSSLFunctions->cryptoAppInit                      = xmlSecOpenSSLAppInit;
     gXmlSecOpenSSLFunctions->cryptoAppShutdown                  = xmlSecOpenSSLAppShutdown;
     gXmlSecOpenSSLFunctions->cryptoAppDefaultKeysMngrInit       = xmlSecOpenSSLAppDefaultKeysMngrInit;
@@ -223,13 +223,13 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoad          = xmlSecOpenSSLAppKeysMngrCertLoad;
     gXmlSecOpenSSLFunctions->cryptoAppKeysMngrCertLoadMemory    = xmlSecOpenSSLAppKeysMngrCertLoadMemory;
-    gXmlSecOpenSSLFunctions->cryptoAppPkcs12Load                = xmlSecOpenSSLAppPkcs12Load; 
-    gXmlSecOpenSSLFunctions->cryptoAppPkcs12LoadMemory          = xmlSecOpenSSLAppPkcs12LoadMemory; 
+    gXmlSecOpenSSLFunctions->cryptoAppPkcs12Load                = xmlSecOpenSSLAppPkcs12Load;
+    gXmlSecOpenSSLFunctions->cryptoAppPkcs12LoadMemory          = xmlSecOpenSSLAppPkcs12LoadMemory;
     gXmlSecOpenSSLFunctions->cryptoAppKeyCertLoad               = xmlSecOpenSSLAppKeyCertLoad;
     gXmlSecOpenSSLFunctions->cryptoAppKeyCertLoadMemory         = xmlSecOpenSSLAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecOpenSSLFunctions->cryptoAppKeyLoad                   = xmlSecOpenSSLAppKeyLoad; 
-    gXmlSecOpenSSLFunctions->cryptoAppKeyLoadMemory             = xmlSecOpenSSLAppKeyLoadMemory; 
+    gXmlSecOpenSSLFunctions->cryptoAppKeyLoad                   = xmlSecOpenSSLAppKeyLoad;
+    gXmlSecOpenSSLFunctions->cryptoAppKeyLoadMemory             = xmlSecOpenSSLAppKeyLoadMemory;
     gXmlSecOpenSSLFunctions->cryptoAppDefaultPwdCallback        = (void*)xmlSecOpenSSLAppGetDefaultPwdCallback();
 
     return(gXmlSecOpenSSLFunctions);
@@ -237,12 +237,12 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
 /**
  * xmlSecOpenSSLInit:
- * 
- * XMLSec library specific crypto engine initialization. 
+ *
+ * XMLSec library specific crypto engine initialization.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecOpenSSLInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
@@ -272,18 +272,18 @@ xmlSecOpenSSLInit (void)  {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    
+
     return(0);
 }
 
 /**
  * xmlSecOpenSSLShutdown:
- * 
- * XMLSec library specific crypto engine shutdown. 
+ *
+ * XMLSec library specific crypto engine shutdown.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecOpenSSLShutdown(void) {
     xmlSecOpenSSLSetDefaultTrustedCertsFolder(NULL);
     return(0);
@@ -300,7 +300,7 @@ xmlSecOpenSSLShutdown(void) {
 int
 xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
-    
+
     xmlSecAssert2(mngr != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
@@ -315,9 +315,9 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
                         "xmlSecKeyDataStoreCreate",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "xmlSecOpenSSLX509StoreId");
-            return(-1);   
+            return(-1);
         }
-    
+
         ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -326,10 +326,10 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             xmlSecKeyDataStoreDestroy(x509Store);
-            return(-1); 
+            return(-1);
         }
     }
-#endif /* XMLSEC_NO_X509 */    
+#endif /* XMLSEC_NO_X509 */
     return(0);
 }
 
@@ -343,32 +343,32 @@ xmlSecOpenSSLKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {  
+xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     int ret;
-    
+
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     "size=%d", size);
         return(-1);
     }
-        
+
     /* get random data */
     ret = RAND_bytes((xmlSecByte*)xmlSecBufferGetData(buffer), size);
     if(ret != 1) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "RAND_bytes",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     "size=%d", size);
-        return(-1);    
-    }   
+        return(-1);
+    }
     return(0);
 }
 
@@ -377,33 +377,33 @@ xmlSecOpenSSLGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
  * @file:               the error location file name (__FILE__ macro).
  * @line:               the error location line number (__LINE__ macro).
  * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object 
+ * @errorObject:        the error specific error object
  * @errorSubject:       the error specific error subject.
  * @reason:             the error code.
  * @msg:                the additional error message.
  *
  * The default OpenSSL errors reporting callback function.
  */
-void 
+void
 xmlSecOpenSSLErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
 
-    ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB, 
-                XMLSEC_OPENSSL_ERRORS_FUNCTION, 
+    ERR_put_error(XMLSEC_OPENSSL_ERRORS_LIB,
+                XMLSEC_OPENSSL_ERRORS_FUNCTION,
                 reason, file, line);
-    xmlSecErrorsDefaultCallback(file, line, func, 
-                errorObject, errorSubject, 
+    xmlSecErrorsDefaultCallback(file, line, func,
+                errorObject, errorSubject,
                 reason, msg);
 }
 
-static int 
+static int
 xmlSecOpenSSLErrorsInit(void) {
     static ERR_STRING_DATA xmlSecOpenSSLStrReasons[XMLSEC_ERRORS_MAX_NUMBER + 1];
     static ERR_STRING_DATA xmlSecOpenSSLStrLib[]= {
         { ERR_PACK(XMLSEC_OPENSSL_ERRORS_LIB,0,0),      "xmlsec routines"},
         { 0,                                            NULL}
-    }; 
+    };
     static ERR_STRING_DATA xmlSecOpenSSLStrDefReason[]= {
         { XMLSEC_OPENSSL_ERRORS_LIB,                    "xmlsec lib"},
         { 0,                                            NULL}
@@ -416,15 +416,15 @@ xmlSecOpenSSLErrorsInit(void) {
         xmlSecOpenSSLStrReasons[pos].error  = xmlSecErrorsGetCode(pos);
         xmlSecOpenSSLStrReasons[pos].string = xmlSecErrorsGetMsg(pos);
     }
-    
+
     /* finally load xmlsec strings in OpenSSL */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrLib); /* define xmlsec lib name */
     ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrDefReason); /* define default reason */
-    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);     
-    
+    ERR_load_strings(XMLSEC_OPENSSL_ERRORS_LIB, xmlSecOpenSSLStrReasons);
+
     /* and set default errors callback for xmlsec to us */
     xmlSecErrorsSetCallback(xmlSecOpenSSLErrorsDefaultCallback);
-    
+
     return(0);
 }
 
@@ -436,7 +436,7 @@ xmlSecOpenSSLErrorsInit(void) {
  *
  * Returns: 0 on success or a negative value if an error occurs.
  */
-int 
+int
 xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
     if(gXmlSecOpenSSLTrustedCertsFolder != NULL) {
         xmlFree(gXmlSecOpenSSLTrustedCertsFolder);
@@ -454,18 +454,18 @@ xmlSecOpenSSLSetDefaultTrustedCertsFolder(const xmlChar* path) {
             return(-1);
         }
     }
-    
+
     return(0);
 }
 
 /**
  * xmlSecOpenSSLGetDefaultTrustedCertsFolder:
- * 
+ *
  * Gets the default trusted certs folder.
  *
  * Returns: the default trusted cert folder.
  */
-const xmlChar*  
+const xmlChar*
 xmlSecOpenSSLGetDefaultTrustedCertsFolder(void) {
     return(gXmlSecOpenSSLTrustedCertsFolder);
 }

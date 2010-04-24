@@ -1,12 +1,12 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  * Copyright (C) 2003 Aleksey Sanin <aleksey@aleksey.com>
- * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).  
+ * Copyright (c) 2005-2006 Cryptocom LTD (http://www.cryptocom.ru).
  */
 #include "globals.h"
 
@@ -40,7 +40,7 @@ static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 xmlSecCryptoDLFunctionsPtr
 xmlSecCryptoGetFunctions_mscrypto(void) {
     static xmlSecCryptoDLFunctions functions;
-    
+
     if(gXmlSecMSCryptoFunctions != NULL) {
         return(gXmlSecMSCryptoFunctions);
     }
@@ -48,7 +48,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecMSCryptoFunctions = &functions;
 
-    /**  
+    /**
      * Crypto Init/shutdown
      */
     gXmlSecMSCryptoFunctions->cryptoInit                        = xmlSecMSCryptoInit;
@@ -58,11 +58,11 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     /**
      * Key data ids
      */
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->keyDataDesGetKlass                = xmlSecMSCryptoKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecMSCryptoFunctions->keyDataAesGetKlass                = xmlSecMSCryptoKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
@@ -93,13 +93,13 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     /**
      * Crypto transforms ids
      */
-#ifndef XMLSEC_NO_AES    
+#ifndef XMLSEC_NO_AES
     gXmlSecMSCryptoFunctions->transformAes128CbcGetKlass        = xmlSecMSCryptoTransformAes128CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformAes192CbcGetKlass        = xmlSecMSCryptoTransformAes192CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformAes256CbcGetKlass        = xmlSecMSCryptoTransformAes256CbcGetKlass;
 #endif /* XMLSEC_NO_AES */
 
-#ifndef XMLSEC_NO_DES    
+#ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->transformDes3CbcGetKlass          = xmlSecMSCryptoTransformDes3CbcGetKlass;
 #endif /* XMLSEC_NO_DES */
 
@@ -116,17 +116,17 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecMSCryptoTransformGost2001GostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
-#ifndef XMLSEC_NO_SHA1    
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformSha1GetKlass             = xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifndef XMLSEC_NO_GOST    
+#ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass             = xmlSecMSCryptoTransformGostR3411_94GetKlass;
 #endif /* XMLSEC_NO_GOST */
 
     /**
      * High level routines form xmlsec command line utility
-     */ 
+     */
     gXmlSecMSCryptoFunctions->cryptoAppInit                     = xmlSecMSCryptoAppInit;
     gXmlSecMSCryptoFunctions->cryptoAppShutdown                 = xmlSecMSCryptoAppShutdown;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecMSCryptoAppDefaultKeysMngrInit;
@@ -136,13 +136,13 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #ifndef XMLSEC_NO_X509
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoad         = xmlSecMSCryptoAppKeysMngrCertLoad;
     gXmlSecMSCryptoFunctions->cryptoAppKeysMngrCertLoadMemory   = xmlSecMSCryptoAppKeysMngrCertLoadMemory;
-    gXmlSecMSCryptoFunctions->cryptoAppPkcs12Load               = xmlSecMSCryptoAppPkcs12Load; 
-    gXmlSecMSCryptoFunctions->cryptoAppPkcs12LoadMemory         = xmlSecMSCryptoAppPkcs12LoadMemory; 
+    gXmlSecMSCryptoFunctions->cryptoAppPkcs12Load               = xmlSecMSCryptoAppPkcs12Load;
+    gXmlSecMSCryptoFunctions->cryptoAppPkcs12LoadMemory         = xmlSecMSCryptoAppPkcs12LoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoad              = xmlSecMSCryptoAppKeyCertLoad;
     gXmlSecMSCryptoFunctions->cryptoAppKeyCertLoadMemory        = xmlSecMSCryptoAppKeyCertLoadMemory;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecMSCryptoFunctions->cryptoAppKeyLoad                  = xmlSecMSCryptoAppKeyLoad; 
-    gXmlSecMSCryptoFunctions->cryptoAppKeyLoadMemory            = xmlSecMSCryptoAppKeyLoadMemory; 
+    gXmlSecMSCryptoFunctions->cryptoAppKeyLoad                  = xmlSecMSCryptoAppKeyLoad;
+    gXmlSecMSCryptoFunctions->cryptoAppKeyLoadMemory            = xmlSecMSCryptoAppKeyLoadMemory;
     gXmlSecMSCryptoFunctions->cryptoAppDefaultPwdCallback       = (void*)xmlSecMSCryptoAppGetDefaultPwdCallback();
 
     return(gXmlSecMSCryptoFunctions);
@@ -150,12 +150,12 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 /**
  * xmlSecMSCryptoInit:
- * 
- * XMLSec library specific crypto engine initialization. 
+ *
+ * XMLSec library specific crypto engine initialization.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecMSCryptoInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
@@ -184,12 +184,12 @@ xmlSecMSCryptoInit (void)  {
 
 /**
  * xmlSecMSCryptoShutdown:
- * 
- * XMLSec library specific crypto engine shutdown. 
+ *
+ * XMLSec library specific crypto engine shutdown.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecMSCryptoShutdown(void) {
     /* TODO: if necessary, do additional shutdown here */
     return(0);
@@ -203,10 +203,10 @@ xmlSecMSCryptoShutdown(void) {
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-int 
+int
 xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     int ret;
-   
+
     xmlSecAssert2(mngr != NULL, -1);
 
 #ifndef XMLSEC_NO_X509
@@ -252,16 +252,16 @@ xmlSecMSCryptoKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {     
+xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     HCRYPTPROV hProv = 0;
     int ret;
-    
+
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2(size > 0, -1);
 
     ret = xmlSecBufferSetSize(buffer, size);
     if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecBufferSetSize",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
@@ -296,14 +296,14 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
  * @file:               the error location file name (__FILE__ macro).
  * @line:               the error location line number (__LINE__ macro).
  * @func:               the error location function name (__FUNCTION__ macro).
- * @errorObject:        the error specific error object 
+ * @errorObject:        the error specific error object
  * @errorSubject:       the error specific error subject.
  * @reason:             the error code.
  * @msg:                the additional error message.
  *
  * The default errors reporting callback function.
  */
-void 
+void
 xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func,
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
@@ -312,8 +312,8 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
     xmlChar buf[500];
 
     dwError = GetLastError();
-    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-                  FORMAT_MESSAGE_FROM_SYSTEM | 
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                  FORMAT_MESSAGE_FROM_SYSTEM |
                   FORMAT_MESSAGE_IGNORE_INSERTS,
                   NULL,
                   dwError,
@@ -326,8 +326,8 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
     } else {
         xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "last error=%d (0x%08x);last error msg=%s", dwError, dwError, (LPTSTR)lpMsgBuf);
     }
-    xmlSecErrorsDefaultCallback(file, line, func, 
-                errorObject, errorSubject, 
+    xmlSecErrorsDefaultCallback(file, line, func,
+                errorObject, errorSubject,
                 reason, (char*)buf);
 
     LocalFree(lpMsgBuf);
@@ -344,21 +344,21 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
  *
  * Returns: a pointer to newly allocated string or NULL if an error occurs.
  */
-BYTE* 
+BYTE*
 xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwStrType, DWORD* len) {
-    BYTE* str = NULL; 
+    BYTE* str = NULL;
     LPCTSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, 
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, NULL, len, &ppszError)) {
         /* this might not be an error, string might just not exist */
                 DWORD dw = GetLastError();
         return(NULL);
     }
-        
+
     str = (BYTE *)xmlMalloc((*len) + 1);
     if(str == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -369,8 +369,8 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
         return(NULL);
     }
     memset(str, 0, (*len) + 1);
-        
-    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType, 
+
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, str, len, NULL)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -395,21 +395,21 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPCTSTR pszX500, DWORD dwS
  *
  * Returns: a pointer to newly allocated string or NULL if an error occurs.
  */
-BYTE* 
+BYTE*
 xmlSecMSCryptoCertStrToNameW(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwStrType, DWORD* len) {
-    BYTE* str = NULL; 
+    BYTE* str = NULL;
     LPCWSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType, 
+    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType,
                         NULL, NULL, len, &ppszError)) {
         /* this might not be an error, string might just not exist */
                 DWORD dw = GetLastError();
         return(NULL);
     }
-        
+
     str = (BYTE *)xmlMalloc((*len) + 1);
     if(str == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -420,8 +420,8 @@ xmlSecMSCryptoCertStrToNameW(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwS
         return(NULL);
     }
     memset(str, 0, (*len) + 1);
-        
-    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType, 
+
+    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType,
                         NULL, str, len, NULL)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -443,7 +443,7 @@ xmlSecMSCryptoCertStrToNameW(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwS
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-LPWSTR 
+LPWSTR
 xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
     LPWSTR res = NULL;
     int len;
@@ -488,7 +488,7 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
  *
  * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
  */
-LPWSTR 
+LPWSTR
 xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
         LPWSTR res = NULL;
         int len;

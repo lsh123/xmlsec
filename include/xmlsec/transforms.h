@@ -1,19 +1,19 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
- * The transforms engine 
+ * The transforms engine
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef __XMLSEC_TRANSFORMS_H__
-#define __XMLSEC_TRANSFORMS_H__    
+#define __XMLSEC_TRANSFORMS_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
@@ -24,13 +24,13 @@ extern "C" {
 #include <xmlsec/nodeset.h>
 #include <xmlsec/keys.h>
 
-typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass, 
+typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
                                                         *xmlSecTransformId;
 
 /**
  * XMLSEC_TRANSFORM_BINARY_CHUNK:
  *
- * The binary data chunks size. XMLSec processes binary data one chunk 
+ * The binary data chunks size. XMLSec processes binary data one chunk
  * at a time. Changing this impacts xmlsec memory usage and performance.
  */
 #define XMLSEC_TRANSFORM_BINARY_CHUNK                   64
@@ -67,7 +67,7 @@ typedef enum  {
 /**
  * xmlSecTransformMode:
  * @xmlSecTransformModeNone:            the mode is unknown.
- * @xmlSecTransformModePush:            pushing data thru transform. 
+ * @xmlSecTransformModePush:            pushing data thru transform.
  * @xmlSecTransformModePop:             popping data from transform.
  *
  * The transform operation mode
@@ -81,13 +81,13 @@ typedef enum  {
 /**
  * xmlSecTransformOperation:
  * @xmlSecTransformOperationNone:       the operation is unknown.
- * @xmlSecTransformOperationEncode:     the encode operation (for base64 transform).    
+ * @xmlSecTransformOperationEncode:     the encode operation (for base64 transform).
  * @xmlSecTransformOperationDecode:     the decode operation (for base64 transform).
  * @xmlSecTransformOperationSign:       the sign or digest operation.
  * @xmlSecTransformOperationVerify:     the verification of signature or digest operation.
  * @xmlSecTransformOperationEncrypt:    the encryption operation.
  * @xmlSecTransformOperationDecrypt:    the decryption operation.
- * 
+ *
  * The transform operation.
  */
 typedef enum  {
@@ -131,7 +131,7 @@ typedef unsigned int                            xmlSecTransformUriType;
  *
  * The smae document ("#...") but not empty ("") URI type.
  */
-#define xmlSecTransformUriTypeSameDocument      0x0002          
+#define xmlSecTransformUriTypeSameDocument      0x0002
 
 /**
  * xmlSecTransformUriTypeLocal:
@@ -163,9 +163,9 @@ XMLSEC_EXPORT int                       xmlSecTransformUriTypeCheck     (xmlSecT
  *************************************************************************/
 /**
  * xmlSecTransformDataType:
- * 
+ *
  * Transform data type bit mask.
- */ 
+ */
 typedef xmlSecByte                              xmlSecTransformDataType;
 
 /**
@@ -229,8 +229,8 @@ typedef unsigned int                            xmlSecTransformUsage;
  */
 #define xmlSecTransformUsageDigestMethod        0x0004
 
-/** 
- * xmlSecTransformUsageSignatureMethod: 
+/**
+ * xmlSecTransformUsageSignatureMethod:
  *
  * Transform could be used in <dsig:SignatureMethod>.
  */
@@ -257,7 +257,7 @@ typedef unsigned int                            xmlSecTransformUsage;
  *************************************************************************/
 /**
  * xmlSecTransformCtxPreExecuteCallback:
- * @transformCtx:       the pointer to transform's context. 
+ * @transformCtx:       the pointer to transform's context.
  *
  * The callback called after creating transforms chain but before
  * starting data processing. Application can use this callback to
@@ -267,24 +267,24 @@ typedef unsigned int                            xmlSecTransformUsage;
  * Returns: 0 on success and a negative value otherwise (in this case,
  * transforms chain will not be executed and xmlsec processing stops).
  */
-typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecTransformCtxPtr transformCtx); 
+typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecTransformCtxPtr transformCtx);
 
 /**
  * XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK:
  *
  * If this flag is set then URI ID references are resolved directly
  * without using XPointers. This allows one to sign/verify Visa3D
- * documents that don't follow XML, XPointer and XML DSig specifications. 
+ * documents that don't follow XML, XPointer and XML DSig specifications.
  */
 #define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK               0x00000001
 
 /**
  * xmlSecTransformCtx:
- * @userData:           the pointer to user data (xmlsec and xmlsec-crypto never 
+ * @userData:           the pointer to user data (xmlsec and xmlsec-crypto never
  *                      touch this).
- * @flags:              the bit mask flags to control transforms execution 
+ * @flags:              the bit mask flags to control transforms execution
  *                      (reserved for the future).
- * @flags2:             the bit mask flags to control transforms execution 
+ * @flags2:             the bit mask flags to control transforms execution
  *                      (reserved for the future).
  * @enabledUris:        the allowed transform data source uri types.
  * @enabledTransforms:  the list of enabled transforms; if list is empty (default)
@@ -293,7 +293,7 @@ typedef int             (*xmlSecTransformCtxPreExecuteCallback)         (xmlSecT
  *                      and right before actual data processing; application
  *                      can use this callback to change transforms parameters,
  *                      insert additional transforms in the chain or do
- *                      additional validation (and abort transform execution 
+ *                      additional validation (and abort transform execution
  *                      if needed).
  * @result:             the pointer to transforms result buffer.
  * @status:             the transforms chain processng status.
@@ -314,7 +314,7 @@ struct _xmlSecTransformCtx {
     xmlSecTransformUriType                      enabledUris;
     xmlSecPtrList                               enabledTransforms;
     xmlSecTransformCtxPreExecuteCallback        preExecCallback;
-    
+
     /* results */
     xmlSecBufferPtr                             result;
     xmlSecTransformStatus                       status;
@@ -354,12 +354,12 @@ XMLSEC_EXPORT int                       xmlSecTransformCtxNodesListRead (xmlSecT
                                                                          xmlSecTransformUsage usage);
 XMLSEC_EXPORT int                       xmlSecTransformCtxPrepare       (xmlSecTransformCtxPtr ctx,
                                                                          xmlSecTransformDataType inputDataType);
-XMLSEC_EXPORT int                       xmlSecTransformCtxBinaryExecute (xmlSecTransformCtxPtr ctx, 
-                                                                         const xmlSecByte* data, 
+XMLSEC_EXPORT int                       xmlSecTransformCtxBinaryExecute (xmlSecTransformCtxPtr ctx,
+                                                                         const xmlSecByte* data,
                                                                          xmlSecSize dataSize);
-XMLSEC_EXPORT int                       xmlSecTransformCtxUriExecute    (xmlSecTransformCtxPtr ctx, 
+XMLSEC_EXPORT int                       xmlSecTransformCtxUriExecute    (xmlSecTransformCtxPtr ctx,
                                                                          const xmlChar* uri);
-XMLSEC_EXPORT int                       xmlSecTransformCtxXmlExecute    (xmlSecTransformCtxPtr ctx, 
+XMLSEC_EXPORT int                       xmlSecTransformCtxXmlExecute    (xmlSecTransformCtxPtr ctx,
                                                                          xmlSecNodeSetPtr nodes);
 XMLSEC_EXPORT int                       xmlSecTransformCtxExecute       (xmlSecTransformCtxPtr ctx,
                                                                          xmlDocPtr doc);
@@ -367,7 +367,7 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugDump     (xmlSecT
                                                                         FILE* output);
 XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecTransformCtxPtr ctx,
                                                                          FILE* output);
-        
+
 /**************************************************************************
  *
  * xmlSecTransform
@@ -391,7 +391,7 @@ XMLSEC_EXPORT void                      xmlSecTransformCtxDebugXmlDump  (xmlSecT
  * The transform structure.
  */
 struct _xmlSecTransform {
-    xmlSecTransformId                   id; 
+    xmlSecTransformId                   id;
     xmlSecTransformOperation            operation;
     xmlSecTransformStatus               status;
     xmlNodePtr                          hereNode;
@@ -403,56 +403,56 @@ struct _xmlSecTransform {
     /* binary data */
     xmlSecBuffer                        inBuf;
     xmlSecBuffer                        outBuf;
-        
+
     /* xml data */
     xmlSecNodeSetPtr                    inNodes;
     xmlSecNodeSetPtr                    outNodes;
 
-    /* reserved for the future */    
+    /* reserved for the future */
     void*                               reserved0;
     void*                               reserved1;
 };
 
 XMLSEC_EXPORT xmlSecTransformPtr        xmlSecTransformCreate   (xmlSecTransformId id);
 XMLSEC_EXPORT void                      xmlSecTransformDestroy  (xmlSecTransformPtr transform);
-XMLSEC_EXPORT xmlSecTransformPtr        xmlSecTransformNodeRead (xmlNodePtr node, 
+XMLSEC_EXPORT xmlSecTransformPtr        xmlSecTransformNodeRead (xmlNodePtr node,
                                                                  xmlSecTransformUsage usage,
                                                                  xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT int                       xmlSecTransformPump     (xmlSecTransformPtr left,
                                                                  xmlSecTransformPtr right,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformSetKey   (xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformSetKey   (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-XMLSEC_EXPORT int                       xmlSecTransformSetKeyReq(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformSetKeyReq(xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-XMLSEC_EXPORT int                       xmlSecTransformVerify   (xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformVerify   (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformVerifyNodeContent(xmlSecTransformPtr transform,
                                                                  xmlNodePtr node,
                                                                  xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT xmlSecTransformDataType   xmlSecTransformGetDataType(xmlSecTransformPtr transform,
                                                                  xmlSecTransformMode mode,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformPushBin  (xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformPushBin  (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  int final,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformPopBin   (xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformPopBin   (xmlSecTransformPtr transform,
                                                                  xmlSecByte* data,
                                                                  xmlSecSize maxDataSize,
                                                                  xmlSecSize* dataSize,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformPushXml  (xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformPushXml  (xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformPopXml   (xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformPopXml   (xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr* nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformExecute  (xmlSecTransformPtr transform, 
-                                                                 int last, 
+XMLSEC_EXPORT int                       xmlSecTransformExecute  (xmlSecTransformPtr transform,
+                                                                 int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
 XMLSEC_EXPORT void                      xmlSecTransformDebugDump(xmlSecTransformPtr transform,
                                                                  FILE* output);
@@ -480,13 +480,13 @@ XMLSEC_EXPORT void                      xmlSecTransformDebugXmlDump(xmlSecTransf
          (( transform )->id->klassSize >= sizeof(xmlSecTransformKlass)) && \
          (( transform )->id->objSize >= sizeof(xmlSecTransform)) && \
          (( transform )->id->name != NULL))
- 
+
 /**
  * xmlSecTransformCheckType:
  * @transform:          the pointer to transform.
  * @t:                  the transform type.
  *
- * Macro. Returns 1 if the @transform is valid and has specified type @t 
+ * Macro. Returns 1 if the @transform is valid and has specified type @t
  * or 0 otherwise.
  */
 #define xmlSecTransformCheckType(transform, t) \
@@ -498,7 +498,7 @@ XMLSEC_EXPORT void                      xmlSecTransformDebugXmlDump(xmlSecTransf
  * @transform:          the pointer to transform.
  * @i:                  the transform id.
  *
- * Macro. Returns 1 if the @transform is valid and has specified id @i 
+ * Macro. Returns 1 if the @transform is valid and has specified id @i
  * or 0 otherwise.
  */
 #define xmlSecTransformCheckId(transform, i) \
@@ -522,7 +522,7 @@ XMLSEC_EXPORT void                      xmlSecTransformDebugXmlDump(xmlSecTransf
  *
  * Operations on transforms chain
  *
- ************************************************************************/ 
+ ************************************************************************/
 XMLSEC_EXPORT int                       xmlSecTransformConnect  (xmlSecTransformPtr left,
                                                                  xmlSecTransformPtr right,
                                                                  xmlSecTransformCtxPtr transformCtx);
@@ -532,24 +532,24 @@ XMLSEC_EXPORT void                      xmlSecTransformRemove   (xmlSecTransform
  *
  * Default callbacks, most of the transforms can use them
  *
- ************************************************************************/ 
+ ************************************************************************/
 XMLSEC_EXPORT xmlSecTransformDataType   xmlSecTransformDefaultGetDataType(xmlSecTransformPtr transform,
                                                                  xmlSecTransformMode mode,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformDefaultPushBin(xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  int final,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformDefaultPopBin(xmlSecTransformPtr transform,
                                                                  xmlSecByte* data,
                                                                  xmlSecSize maxDataSize,
                                                                  xmlSecSize* dataSize,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformDefaultPushXml(xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT int                       xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT int                       xmlSecTransformDefaultPopXml(xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr* nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
@@ -557,17 +557,17 @@ XMLSEC_EXPORT int                       xmlSecTransformDefaultPopXml(xmlSecTrans
  *
  * IO buffers for transforms
  *
- ************************************************************************/ 
-XMLSEC_EXPORT xmlOutputBufferPtr        xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform, 
+ ************************************************************************/
+XMLSEC_EXPORT xmlOutputBufferPtr        xmlSecTransformCreateOutputBuffer(xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
-XMLSEC_EXPORT xmlParserInputBufferPtr   xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform, 
+XMLSEC_EXPORT xmlParserInputBufferPtr   xmlSecTransformCreateInputBuffer(xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
 /************************************************************************
  *
  * Transform Klass
  *
- ************************************************************************/ 
+ ************************************************************************/
 /**
  * xmlSecTransformInitializeMethod:
  * @transform:                  the pointer to transform object.
@@ -607,7 +607,7 @@ typedef xmlSecTransformDataType (*xmlSecTransformGetDataTypeMethod)(xmlSecTransf
  * @node:                       the pointer to <dsig:Transform/> node.
  * @transformCtx:               the pointer to transform context object.
  *
- * The transform specific method to read the transform data from 
+ * The transform specific method to read the transform data from
  * the @node.
  *
  * Returns: 0 on success or a negative value otherwise.
@@ -636,10 +636,10 @@ typedef int             (*xmlSecTransformNodeWriteMethod)       (xmlSecTransform
  * @keyReq:                     the pointer to key requirements structure.
  *
  * Transform specific method to set transform's key requirements.
- * 
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformSetKeyRequirementsMethod)(xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformSetKeyRequirementsMethod)(xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
 
 /**
@@ -648,10 +648,10 @@ typedef int             (*xmlSecTransformSetKeyRequirementsMethod)(xmlSecTransfo
  * @key:                        the pointer to key.
  *
  * The transform specific method to set the key for use.
- * 
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformSetKeyMethod)          (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformSetKeyMethod)          (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
 
 /**
@@ -665,10 +665,10 @@ typedef int             (*xmlSecTransformSetKeyMethod)          (xmlSecTransform
  * (used by digest and signature transforms). This method sets @status
  * member of the #xmlSecTransform structure to either #xmlSecTransformStatusOk
  * if verification succeeded or #xmlSecTransformStatusFail otherwise.
- * 
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformVerifyMethod)          (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformVerifyMethod)          (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  xmlSecTransformCtxPtr transformCtx);
@@ -686,7 +686,7 @@ typedef int             (*xmlSecTransformVerifyMethod)          (xmlSecTransform
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformPushBinMethod)         (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformPushBinMethod)         (xmlSecTransformPtr transform,
                                                                  const xmlSecByte* data,
                                                                  xmlSecSize dataSize,
                                                                  int final,
@@ -699,13 +699,13 @@ typedef int             (*xmlSecTransformPushBinMethod)         (xmlSecTransform
  * @dataSize:                   the pointer to returned data size.
  * @transformCtx:               the pointer to transform context object.
  *
- * The transform specific method to pop data from previous transform 
+ * The transform specific method to pop data from previous transform
  * in the chain and return result in the @data buffer. The size of returned
  * data is placed in the @dataSize.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformPopBinMethod)          (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformPopBinMethod)          (xmlSecTransformPtr transform,
                                                                  xmlSecByte* data,
                                                                  xmlSecSize maxDataSize,
                                                                  xmlSecSize* dataSize,
@@ -716,12 +716,12 @@ typedef int             (*xmlSecTransformPopBinMethod)          (xmlSecTransform
  * @nodes:                      the input nodes.
  * @transformCtx:               the pointer to transform context object.
  *
- * The transform specific method to process @nodes and push result to the next 
+ * The transform specific method to process @nodes and push result to the next
  * transform in the chain.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformPushXmlMethod)         (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformPushXmlMethod)         (xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
 /**
@@ -732,10 +732,10 @@ typedef int             (*xmlSecTransformPushXmlMethod)         (xmlSecTransform
  *
  * The transform specific method to pop data from previous transform in the chain,
  * process the data and return result in @nodes.
- * 
+ *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformPopXmlMethod)          (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformPopXmlMethod)          (xmlSecTransformPtr transform,
                                                                  xmlSecNodeSetPtr* nodes,
                                                                  xmlSecTransformCtxPtr transformCtx);
 /**
@@ -748,7 +748,7 @@ typedef int             (*xmlSecTransformPopXmlMethod)          (xmlSecTransform
  *
  * Returns: 0 on success or a negative value otherwise.
  */
-typedef int             (*xmlSecTransformExecuteMethod)         (xmlSecTransformPtr transform, 
+typedef int             (*xmlSecTransformExecuteMethod)         (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
@@ -775,7 +775,7 @@ typedef int             (*xmlSecTransformExecuteMethod)         (xmlSecTransform
  *                              implementations of @pushBin, @popBin, @pushXml and @popXml.
  * @reserved0:                  reserved for the future.
  * @reserved1:                  reserved for the future.
- * 
+ *
  * The transform klass desccription structure.
  */
 struct _xmlSecTransformKlass {
@@ -802,11 +802,11 @@ struct _xmlSecTransformKlass {
     xmlSecTransformPopBinMethod         popBin;
     xmlSecTransformPushXmlMethod        pushXml;
     xmlSecTransformPopXmlMethod         popXml;
-    
+
     /* low level method */
     xmlSecTransformExecuteMethod        execute;
 
-    /* reserved for future */ 
+    /* reserved for future */
     void*                               reserved0;
     void*                               reserved1;
 };
@@ -846,7 +846,7 @@ XMLSEC_EXPORT void              xmlSecTransformIdListDebugXmlDump(xmlSecPtrListP
                                                                  FILE* output);
 
 
-/******************************************************************** 
+/********************************************************************
  *
  * XML Sec Library Transform Ids
  *
@@ -862,7 +862,7 @@ XMLSEC_EXPORT void              xmlSecTransformIdListDebugXmlDump(xmlSecPtrListP
  * xmlSecTransformBase64Id:
  *
  * The base64 encode transform klass.
- */ 
+ */
 #define xmlSecTransformBase64Id \
         xmlSecTransformBase64GetKlass()
 XMLSEC_EXPORT xmlSecTransformId xmlSecTransformBase64GetKlass           (void);
@@ -870,7 +870,7 @@ XMLSEC_EXPORT void              xmlSecTransformBase64SetLineSize        (xmlSecT
                                                                          xmlSecSize lineSize);
 /**
  * xmlSecTransformInclC14NId:
- * 
+ *
  * The regular (inclusive) C14N without comments transform klass.
  */
 #define xmlSecTransformInclC14NId \
@@ -879,7 +879,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14NGetKlass         (void);
 
 /**
  * xmlSecTransformInclC14NWithCommentsId:
- * 
+ *
  * The regular (inclusive) C14N with comments transform klass.
  */
 #define xmlSecTransformInclC14NWithCommentsId \
@@ -888,7 +888,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14NWithCommentsGetKlass(void
 
 /**
  * xmlSecTransformInclC14N11Id:
- * 
+ *
  * The regular (inclusive) C14N 1.1 without comments transform klass.
  */
 #define xmlSecTransformInclC14N11Id \
@@ -897,7 +897,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14N11GetKlass       (void);
 
 /**
  * xmlSecTransformInclC14N11WithCommentsId:
- * 
+ *
  * The regular (inclusive) C14N 1.1 with comments transform klass.
  */
 #define xmlSecTransformInclC14N11WithCommentsId \
@@ -906,7 +906,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformInclC14N11WithCommentsGetKlass(vo
 
 /**
  * xmlSecTransformExclC14NId
- * 
+ *
  * The exclusive C14N without comments transform klass.
  */
 #define xmlSecTransformExclC14NId \
@@ -915,7 +915,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformExclC14NGetKlass         (void);
 
 /**
  * xmlSecTransformExclC14NWithCommentsId:
- * 
+ *
  * The exclusive C14N with comments transform klass.
  */
 #define xmlSecTransformExclC14NWithCommentsId \
@@ -924,7 +924,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformExclC14NWithCommentsGetKlass(void
 
 /**
  * xmlSecTransformEnvelopedId:
- * 
+ *
  * The "enveloped" transform klass.
  */
 #define xmlSecTransformEnvelopedId \
@@ -933,7 +933,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformEnvelopedGetKlass        (void);
 
 /**
  * xmlSecTransformXPathId:
- * 
+ *
  * The XPath transform klass.
  */
 #define xmlSecTransformXPathId \
@@ -942,7 +942,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXPathGetKlass            (void);
 
 /**
  * xmlSecTransformXPath2Id:
- * 
+ *
  * The XPath2 transform klass.
  */
 #define xmlSecTransformXPath2Id \
@@ -951,7 +951,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXPath2GetKlass           (void);
 
 /**
  * xmlSecTransformXPointerId:
- * 
+ *
  * The XPointer transform klass.
  */
 #define xmlSecTransformXPointerId \
@@ -964,7 +964,7 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
 #ifndef XMLSEC_NO_XSLT
 /**
  * xmlSecTransformXsltId:
- * 
+ *
  * The XSLT transform klass.
  */
 #define xmlSecTransformXsltId \
@@ -974,7 +974,7 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXsltGetKlass             (void);
 
 /**
  * xmlSecTransformRemoveXmlTagsC14NId:
- * 
+ *
  * The "remove all xml tags" transform klass (used before base64 transforms).
  */
 #define xmlSecTransformRemoveXmlTagsC14NId \
@@ -984,9 +984,9 @@ XMLSEC_EXPORT xmlSecTransformId xmlSecTransformRemoveXmlTagsC14NGetKlass(void);
 /**
  * xmlSecTransformVisa3DHackId:
  *
- * Selects node subtree by given node id string. The only reason why we need this 
- * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
- * invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+ * Selects node subtree by given node id string. The only reason why we need this
+ * is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
+ * invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
  * such expressions thru XPath/XPointer engine, we need to have this hack here.
  */
 #define xmlSecTransformVisa3DHackId \

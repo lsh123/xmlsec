@@ -1,17 +1,17 @@
-/** 
+/**
  * XMLSec library
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2003 Cordys R&D BV, All rights reserved.
  */
 #ifndef __XMLSEC_MSCRYPTO_APP_H__
-#define __XMLSEC_MSCRYPTO_APP_H__    
+#define __XMLSEC_MSCRYPTO_APP_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif /* __cplusplus */ 
+#endif /* __cplusplus */
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -28,7 +28,7 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppInit                           
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppShutdown                       (void);
 XMLSEC_CRYPTO_EXPORT const char*xmlSecMSCryptoAppGetCertStoreName               (void);
 
-/** 
+/**
  * Keys Manager
  */
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrInit(
@@ -58,7 +58,7 @@ XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(
                                     HCERTSTORE keyStore);
 
 XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(
-                                    xmlSecKeysMngrPtr mngr, 
+                                    xmlSecKeysMngrPtr mngr,
                                     HCERTSTORE trustedStore);
 
 XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(
@@ -66,50 +66,50 @@ XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(
                                     HCERTSTORE untrustedStore);
 
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoad(
-                                    xmlSecKeysMngrPtr mngr, 
-                                                                        const char *filename, 
-                                                                        xmlSecKeyDataFormat format, 
+                                    xmlSecKeysMngrPtr mngr,
+                                                                        const char *filename,
+                                                                        xmlSecKeyDataFormat format,
                                                                         xmlSecKeyDataType type);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoadMemory(
-                                    xmlSecKeysMngrPtr mngr, 
+                                    xmlSecKeysMngrPtr mngr,
                                                                         const xmlSecByte* data,
-                                                                        xmlSecSize dataSize, 
+                                                                        xmlSecSize dataSize,
                                                                         xmlSecKeyDataFormat format,
                                                                         xmlSecKeyDataType type);
 
 #endif /* XMLSEC_NO_X509 */
 
 
-/** 
+/**
  * Keys
  */
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoad              (const char *filename, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoad              (const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
                                                                          void *pwdCallback,
                                                                          void* pwdCallbackCtx);
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory        (const xmlSecByte* data, 
-                                                                         xmlSecSize dataSize, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoadMemory        (const xmlSecByte* data,
+                                                                         xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,
-                                                                         void* pwdCallback, 
+                                                                         void* pwdCallback,
                                                                          void* pwdCallbackCtx);
 #ifndef XMLSEC_NO_X509
-XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12Load           (const char *filename, 
+XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12Load           (const char *filename,
                                                                          const char *pwd,
-                                                                         void* pwdCallback, 
+                                                                         void* pwdCallback,
                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppPkcs12LoadMemory     (const xmlSecByte* data,
-                                                                         xmlSecSize dataSize, 
+                                                                         xmlSecSize dataSize,
                                                                          const char* pwd,
-                                                                         void* pwdCallback, 
+                                                                         void* pwdCallback,
                                                                          void* pwdCallbackCtx);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeyCertLoad            (xmlSecKeyPtr key,
                                                                          const char* filename,
                                                                          xmlSecKeyDataFormat format);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeyCertLoadMemory      (xmlSecKeyPtr key,
                                                                          const xmlSecByte* data,
-                                                                         xmlSecSize dataSize, 
+                                                                         xmlSecSize dataSize,
                                                                          xmlSecKeyDataFormat format);
 #endif /* XMLSEC_NO_X509 */
 XMLSEC_CRYPTO_EXPORT void*      xmlSecMSCryptoAppGetDefaultPwdCallback  (void);

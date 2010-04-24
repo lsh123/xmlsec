@@ -1,18 +1,18 @@
-/** 
+/**
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * Memory buffer transform
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
- * 
+ *
  * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
  */
 #include "globals.h"
 
 #include <stdlib.h>
 #include <string.h>
- 
+
 #include <libxml/tree.h>
 
 #include <xmlsec/xmlsec.h>
@@ -28,9 +28,9 @@
 /*****************************************************************************
  *
  * Memory Buffer Transform
- * 
+ *
  * xmlSecBuffer is located after xmlSecTransform
- * 
+ *
  ****************************************************************************/
 #define xmlSecTransformMemBufSize \
         (sizeof(xmlSecTransform) + sizeof(xmlSecBuffer))
@@ -41,7 +41,7 @@
 
 static int              xmlSecTransformMemBufInitialize         (xmlSecTransformPtr transform);
 static void             xmlSecTransformMemBufFinalize           (xmlSecTransformPtr transform);
-static int              xmlSecTransformMemBufExecute            (xmlSecTransformPtr transform, 
+static int              xmlSecTransformMemBufExecute            (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
 static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
@@ -73,12 +73,12 @@ static xmlSecTransformKlass xmlSecTransformMemBufKlass = {
 
 /**
  * xmlSecTransformMemBufGetKlass:
- * 
+ *
  * The memory buffer transorm (used to store the data that go through it).
  *
  * Returns: memory buffer transform klass.
  */
-xmlSecTransformId 
+xmlSecTransformId
 xmlSecTransformMemBufGetKlass(void) {
     return(&xmlSecTransformMemBufKlass);
 }
@@ -86,20 +86,20 @@ xmlSecTransformMemBufGetKlass(void) {
 /**
  * xmlSecTransformMemBufGetBuffer:
  * @transform:          the pointer to memory buffer transform.
- * 
- * Gets the pointer to memory buffer transform buffer. 
  *
- * Returns: pointer to the transform's #xmlSecBuffer. 
+ * Gets the pointer to memory buffer transform buffer.
+ *
+ * Returns: pointer to the transform's #xmlSecBuffer.
  */
 xmlSecBufferPtr
 xmlSecTransformMemBufGetBuffer(xmlSecTransformPtr transform) {
     xmlSecBufferPtr buffer;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), NULL);
-    
+
     buffer = xmlSecTransformMemBufGetBuf(transform);
     xmlSecAssert2(buffer != NULL, NULL);
-    
+
     return(buffer);
 }
 
@@ -107,7 +107,7 @@ static int
 xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
     xmlSecBufferPtr buffer;
     int ret;
-    
+
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformMemBufId), -1);
 
     buffer = xmlSecTransformMemBufGetBuf(transform);
@@ -122,7 +122,7 @@ xmlSecTransformMemBufInitialize(xmlSecTransformPtr transform) {
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-    return(0);    
+    return(0);
 }
 
 static void
@@ -133,11 +133,11 @@ xmlSecTransformMemBufFinalize(xmlSecTransformPtr transform) {
 
     buffer = xmlSecTransformMemBufGetBuf(transform);
     xmlSecAssert(buffer != NULL);
-    
-    xmlSecBufferFinalize(xmlSecTransformMemBufGetBuf(transform)); 
+
+    xmlSecBufferFinalize(xmlSecTransformMemBufGetBuf(transform));
 }
 
-static int 
+static int
 xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecBufferPtr buffer;
     xmlSecBufferPtr in, out;
@@ -149,47 +149,47 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
     buffer = xmlSecTransformMemBufGetBuf(transform);
     xmlSecAssert2(buffer != NULL, -1);
-    
+
     in = &(transform->inBuf);
-    out = &(transform->outBuf);    
+    out = &(transform->outBuf);
     inSize = xmlSecBufferGetSize(in);
 
     if(transform->status == xmlSecTransformStatusNone) {
         transform->status = xmlSecTransformStatusWorking;
     }
-    
-    if(transform->status == xmlSecTransformStatusWorking) {     
+
+    if(transform->status == xmlSecTransformStatusWorking) {
         /* just copy everything from in to our buffer and out */
         ret = xmlSecBufferAppend(buffer, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferAppend",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "size=%d", inSize);
             return(-1);
         }
-        
+
         ret = xmlSecBufferAppend(out, xmlSecBufferGetData(in), inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferAppend",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "size=%d", inSize);
             return(-1);
         }
-        
+
         ret = xmlSecBufferRemoveHead(in, inSize);
         if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE, 
+            xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "xmlSecBufferRemoveHead",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "size=%d", inSize);
             return(-1);
         }
-            
+
         if(last != 0) {
             transform->status = xmlSecTransformStatusFinished;
         }
@@ -197,7 +197,7 @@ xmlSecTransformMemBufExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
         /* the only way we can get here is if there is no input */
         xmlSecAssert2(inSize == 0, -1);
     } else {
-        xmlSecError(XMLSEC_ERRORS_HERE, 
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
                     XMLSEC_ERRORS_R_INVALID_STATUS,

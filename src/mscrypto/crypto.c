@@ -28,6 +28,8 @@
 #  include "xmlsec-mingw.h"
 #endif
 
+#define XMLSEC_CONTAINER_NAME "xmlsec-key-container"
+
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 
 /**
@@ -68,6 +70,17 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecMSCryptoFunctions->keyDataRsaGetKlass                = xmlSecMSCryptoKeyDataRsaGetKlass;
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCryptoFunctions->transformRsaSha256GetKlass       = xmlSecMSCryptoTransformRsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecMSCryptoFunctions->transformRsaSha384GetKlass       = xmlSecMSCryptoTransformRsaSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecMSCryptoFunctions->transformRsaSha512GetKlass       = xmlSecMSCryptoTransformRsaSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_RSA */
 
 #ifndef XMLSEC_NO_DSA
@@ -119,6 +132,15 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformSha1GetKlass             = xmlSecMSCryptoTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA256    
+    gXmlSecMSCryptoFunctions->transformSha256GetKlass          = xmlSecMSCryptoTransformSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+#ifndef XMLSEC_NO_SHA384    
+    gXmlSecMSCryptoFunctions->transformSha384GetKlass          = xmlSecMSCryptoTransformSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+#ifndef XMLSEC_NO_SHA512    
+    gXmlSecMSCryptoFunctions->transformSha512GetKlass          = xmlSecMSCryptoTransformSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass             = xmlSecMSCryptoTransformGostR3411_94GetKlass;
@@ -423,6 +445,91 @@ xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
         return(res);
 }
 
+/**
+ * xmlSecMSCryptoFindProvider:
+ * @providers:           the pointer to list of providers, last provider should have NULL for name.
+ * @pszContainer:        the container name for CryptAcquireContext call
+ * @dwFlags:             the flags for CryptAcquireContext call
+ * @bUseXmlSecContainer: the flag to indicate whether we should try to use XmlSec container if default fails
+ *
+ * Finds the first provider from the list
+ *
+ * Returns: provider handle on success or NULL for error.
+ */
+HCRYPTPROV 
+xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers, 
+                           LPCTSTR pszContainer, 
+                           DWORD dwFlags, 
+                           BOOL bUseXmlSecContainer) 
+{
+    HCRYPTPROV res = 0;
+    DWORD dwLastError;
+    BOOL ret;
+    int ii;
+
+    xmlSecAssert2(providers != NULL, 0);
+    
+    for(ii = 0; (res == 0) && (providers[ii].providerName != NULL) && (providers[ii].providerType != 0); ++ii) {
+        /* first try */
+        ret = CryptAcquireContext(&res, 
+                    pszContainer, 
+                    providers[ii].providerName, 
+                    providers[ii].providerType, 
+                    dwFlags);
+        if((ret == TRUE) && (res != 0)) {
+            return (res);
+        } 
+            
+        /* check errors */
+        dwLastError = GetLastError();
+        switch(dwLastError) {
+        case NTE_BAD_KEYSET:
+            /* This error can indicate that a newly installed provider
+             * does not have a usable key container yet. It needs to be
+             * created, and then we have to try again CryptAcquireContext.
+             * This is also referenced in
+             * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
+             */
+            ret = CryptAcquireContext(&res, 
+                        pszContainer, 
+                        providers[ii].providerName, 
+                        providers[ii].providerType, 
+                        CRYPT_NEWKEYSET | dwFlags);
+            if((ret == TRUE) && (res != 0)) {
+                return (res);
+            }
+            break;
+
+        case NTE_EXISTS:
+            /* If we can, try our container */
+            if(bUseXmlSecContainer == TRUE) {
+                ret = CryptAcquireContext(&res, 
+                            XMLSEC_CONTAINER_NAME, 
+                            providers[ii].providerName, 
+                            providers[ii].providerType, 
+                            CRYPT_NEWKEYSET | dwFlags);
+                if((ret == TRUE) && (res != 0)) {
+                    /* ALEKSEY TODO - NEED TO DELETE ALL THE TEMP CONTEXTS ON SHUTDOWN 
+
+                        CryptAcquireContext(&tmp, XMLSEC_CONTAINER_NAME,
+                            providers[ii].providerName, 
+                            providers[ii].providerType, 
+                            CRYPT_DELETEKEYSET);
+
+                     */
+                    return (res);
+                }
+            }                    
+            break;
+
+        default:
+            /* ignore */
+            break;
+        }
+    }
+
+    return (0);
+}
 
 
 

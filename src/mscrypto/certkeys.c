@@ -42,7 +42,6 @@
 #endif
 #endif
 
-#define XMLSEC_CONTAINER_NAME "xmlsec-key-container"
 
 /**************************************************************************
  *
@@ -84,17 +83,16 @@ struct _mscrypt_prov {
  */
 struct _xmlSecMSCryptoKeyDataCtx {
 #ifndef XMLSEC_MSCRYPTO_NT4
-    HCRYPTPROV          hProv;
-    BOOL                    fCallerFreeProv;
-    HCRYPTKEY           hKey;
+    HCRYPTPROV                          hProv;
+    BOOL                                fCallerFreeProv;
+    HCRYPTKEY                           hKey;
 #else /* XMLSEC_MSCRYPTO_NT4 */
-        struct _mscrypt_prov* p_prov ;
-    struct _mscrypt_key*  p_key ;
+    struct _mscrypt_prov*               p_prov ;
+    struct _mscrypt_key*                p_key ;
 #endif /* XMLSEC_MSCRYPTO_NT4 */
-    PCCERT_CONTEXT      pCert;
-    LPCTSTR                 providerName;
-    DWORD                   providerType;
-    DWORD                   dwKeySpec;
+    PCCERT_CONTEXT                      pCert;
+    const xmlSecMSCryptoProviderInfo  * providers;
+    DWORD                               dwKeySpec;
     xmlSecKeyDataType   type;
 };
 
@@ -154,6 +152,7 @@ xmlSecMSCryptoKeyDataCtxDuplicateProvider(xmlSecMSCryptoKeyDataCtxPtr ctxDst, xm
     }
     return(0);
 }
+
 
 /******************************** Key *****************************************/
 #define xmlSecMSCryptoKeyDataCtxGetKey(ctx)            ((ctx)->hKey)
@@ -444,7 +443,7 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
         BOOL fCallerFreeProv = FALSE;
 
         if (!CryptAcquireCertificatePrivateKey(pCert,
-                                               CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
+                                               CRYPT_ACQUIRE_SILENT_FLAG | CRYPT_ACQUIRE_COMPARE_KEY_FLAG,
                                                NULL,
                                                &hProv,
                                                &(ctx->dwKeySpec),
@@ -455,31 +454,29 @@ xmlSecMSCryptoKeyDataAdoptCert(xmlSecKeyDataPtr data, PCCERT_CONTEXT pCert, xmlS
                             XMLSEC_ERRORS_R_CRYPTO_FAILED,
                             XMLSEC_ERRORS_NO_MESSAGE);
                 return(-1);
-            }
+        }
         xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, fCallerFreeProv);
     } else if((type & xmlSecKeyDataTypePublic) != 0){
-        HCRYPTPROV hProv = 0;
-        if (!CryptAcquireContext(&hProv,
-                                    NULL,
-                                    NULL, /* ctx->providerName, */
-                                    ctx->providerType,
-                                    CRYPT_VERIFYCONTEXT)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);
-            }
-        xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
-            ctx->dwKeySpec = 0;
-    } else {
+        HCRYPTPROV hProv;
+
+        hProv = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, FALSE);
+        if (hProv == 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        NULL,
+                        "xmlSecMSCryptoFindProvider",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "Unsupported keytype");
+                        XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
+        }
+        xmlSecMSCryptoKeyDataCtxSetProvider(ctx, hProv, TRUE);
+        ctx->dwKeySpec = 0;
+    } else {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "Unsupported keytype");
+        return(-1);
     }
 
     /* CryptImportPublicKeyInfo is only needed when a real key handle
@@ -609,6 +606,14 @@ xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
     return(xmlSecMSCryptoKeyDataCtxGetCert(ctx));
 }
 
+/**
+ * xmlSecMSCryptoKeyDataGetMSCryptoProvider:
+ * @data:              the key data 
+ *
+ * Gets crypto provider handle
+ *
+ * Returns the crypto provider handler or 0 if there is an error.
+ */
 HCRYPTPROV
 xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
@@ -622,6 +627,14 @@ xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
     return(xmlSecMSCryptoKeyDataCtxGetProvider(ctx));
 }
 
+/**
+ * xmlSecMSCryptoKeyDataGetMSCryptoKeySpec:
+ * @data:              the key data 
+ *
+ * Gets key spec info.
+ *
+ * Returns the key spec info from key data
+ */
 DWORD
 xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
@@ -679,8 +692,7 @@ xmlSecMSCryptoKeyDataDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
     }
 
     ctxDst->dwKeySpec       = ctxSrc->dwKeySpec;
-    ctxDst->providerName    = ctxSrc->providerName;
-    ctxDst->providerType    = ctxSrc->providerType;
+    ctxDst->providers       = ctxSrc->providers;
     ctxDst->type            = ctxSrc->type;
 
     return(0);
@@ -985,6 +997,19 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataRsaKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
+/* Ordered list of providers to search for algorithm implementation using 
+ * xmlSecMSCryptoFindProvider() function
+ * 
+ * MUST END with { NULL, 0 } !!! 
+ */
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Rsa[] = {
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},      
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },    
+    { MS_STRONG_PROV,               PROV_RSA_FULL }, 
+    { MS_ENHANCED_PROV,             PROV_RSA_FULL }, 
+    { NULL, 0 }
+};
+
 /**
  * xmlSecMSCryptoKeyDataRsaGetKlass:
  *
@@ -1008,9 +1033,7 @@ xmlSecMSCryptoKeyDataRsaInitialize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ctx->providerName = MS_ENHANCED_PROV;
-    ctx->providerType = PROV_RSA_FULL;
-
+    ctx->providers = xmlSecMSCryptoProviderInfo_Rsa;
     return(0);
 }
 
@@ -1197,26 +1220,16 @@ xmlSecMSCryptoKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     memcpy(modulusBlob, xmlSecBnGetData(&modulus), xmlSecBnGetSize(&modulus));
 
     /* Now that we have the blob, import */
-    if (!CryptAcquireContext(&hProv, NULL, MS_ENHANCED_PROV, PROV_RSA_FULL, 0)) {
-        if(NTE_BAD_KEYSET == GetLastError()) {
-            if(!CryptAcquireContext(&hProv, NULL, MS_ENHANCED_PROV, PROV_RSA_FULL, CRYPT_NEWKEYSET)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-                goto done;
-            }
-        } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "CryptAcquireContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
-        }
+    hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Rsa, NULL, 0, TRUE);
+    if(hProv == 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecMSCryptoFindProvider",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
     }
-
+    
     if (!CryptImportKey(hProv, xmlSecBufferGetData(&blob), xmlSecBufferGetSize(&blob), 0, 0, &hKey)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
@@ -1469,26 +1482,15 @@ xmlSecMSCryptoKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits,
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if (!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, MS_STRONG_PROV, PROV_RSA_FULL, 0)) {
-        if (NTE_BAD_KEYSET == GetLastError()) {
-            if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, MS_STRONG_PROV, PROV_RSA_FULL, CRYPT_NEWKEYSET)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-
-                return(-1);
-            }
-        } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-
-            return(-1);
-        }
+    /* get provider */
+    hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Rsa, NULL, 0, TRUE);
+    if(hProv == 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecMSCryptoFindProvider",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
     }
 
     dwKeySpec = AT_KEYEXCHANGE | AT_SIGNATURE;
@@ -1696,6 +1698,17 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDsaKlass = {
     NULL,                               /* void* reserved1; */
 };
 
+/* Ordered list of providers to search for algorithm implementation using 
+ * xmlSecMSCryptoFindProvider() function
+ * 
+ * MUST END with { NULL, 0 } !!! 
+ */
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Dss[] = {
+    { MS_DEF_DSS_PROV,              PROV_DSS }, 
+    { NULL, 0 }
+};
+
+
 /**
  * xmlSecMSCryptoKeyDataDsaGetKlass:
  *
@@ -1720,9 +1733,7 @@ xmlSecMSCryptoKeyDataDsaInitialize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    ctx->providerName = MS_DEF_DSS_PROV;
-    ctx->providerType = PROV_DSS;
-
+    ctx->providers = xmlSecMSCryptoProviderInfo_Dss;
     return(0);
 }
 
@@ -2049,24 +2060,14 @@ xmlSecMSCryptoKeyDataDsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     memset(seed, 0, sizeof(*seed));
     seed->counter = 0xFFFFFFFF; /* SEED Counter set to 0xFFFFFFFF will cause seed to be ignored */
 
-    if (!CryptAcquireContext(&hProv, NULL, MS_DEF_DSS_PROV, PROV_DSS, 0)) {
-        if (NTE_BAD_KEYSET == GetLastError()) {
-            if (!CryptAcquireContext(&hProv, NULL, MS_DEF_DSS_PROV, PROV_DSS, CRYPT_NEWKEYSET)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-                goto done;
-            }
-        } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "CryptAcquireContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
-        }
+    hProv = xmlSecMSCryptoFindProvider(xmlSecMSCryptoProviderInfo_Dss, NULL, 0, TRUE);
+    if(hProv == 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecMSCryptoFindProvider",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
     }
 
     /* import the key blob */
@@ -2380,24 +2381,14 @@ xmlSecMSCryptoKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xml
 
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
 
-    if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, 0)) {
-            if (NTE_BAD_KEYSET == GetLastError()) {
-                if(!CryptAcquireContext(&hProv, XMLSEC_CONTAINER_NAME, ctx->providerName, ctx->providerType, CRYPT_NEWKEYSET)) {
-                        xmlSecError(XMLSEC_ERRORS_HERE,
-                                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                                    "CryptAcquireContext",
-                                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                    XMLSEC_ERRORS_NO_MESSAGE);
-                        return(-1);
-                }
-            } else {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);
-            }
+    hProv = xmlSecMSCryptoFindProvider(ctx->providers, NULL, 0, TRUE);
+    if(hProv == 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecMSCryptoFindProvider",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
     }
 
     dwKeySpec = AT_SIGNATURE;
@@ -2539,6 +2530,17 @@ static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataGost2001Klass = {
     NULL,                               /* void* reserved1; */
 };
 
+/* Ordered list of providers to search for algorithm implementation using 
+ * xmlSecMSCryptoFindProvider() function
+ * 
+ * MUST END with { NULL, 0 } !!! 
+ */
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
+    { MAGPRO_CSP,                   PROV_MAGPRO_GOST }, 
+    { CRYPTOPRO_CSP,                PROV_CRYPTOPRO_GOST }, 
+    { NULL, 0 }
+};
+
 /**
  * xmlSecMSCryptoKeyDataGost2001GetKlass:
  *
@@ -2555,7 +2557,6 @@ xmlSecMSCryptoKeyDataGost2001GetKlass(void) {
 static int
 xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
     xmlSecMSCryptoKeyDataCtxPtr ctx;
-    HCRYPTPROV tmp_ctx = 0;
 
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataGost2001Id), xmlSecKeyDataTypeUnknown);
 
@@ -2564,24 +2565,7 @@ xmlSecMSCryptoKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
     ctx = xmlSecMSCryptoKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
 
-    /* GOST Algorithm is provided by several CSP's, so we try to find any installed */
-    if (CryptAcquireContext(&tmp_ctx, NULL, NULL, PROV_MAGPRO_GOST, CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {
-      ctx->providerName = "MagPro CSP";
-      ctx->providerType = PROV_MAGPRO_GOST;
-    } else {
-      if (CryptAcquireContext(&tmp_ctx, NULL, NULL, PROV_CRYPTOPRO_GOST, CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {
-        ctx->providerName = "CryptoPro CSP";
-        ctx->providerType = PROV_CRYPTOPRO_GOST;
-      } else {
-          xmlSecError(XMLSEC_ERRORS_HERE,
-                      xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                      "xmlSecMSCryptoKeyDataGost2001Initialize",
-                      XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                      XMLSEC_ERRORS_NO_MESSAGE);
-                    return -1;
-     }
-    }
-    CryptReleaseContext(tmp_ctx, 0);
+    ctx->providers = xmlSecMSCryptoProviderInfo_Gost;
     return(0);
 }
 

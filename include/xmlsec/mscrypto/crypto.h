@@ -48,6 +48,38 @@ XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (con
 XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
 
 
+/**
+ * Crypto Providers
+ */
+
+/* We need to redefine both to ensure that we can pick the right one at runtime (instead of compile time) */
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A     "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W     L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+#ifdef UNICODE
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W
+#else
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A
+#endif
+
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_A               "Microsoft Enhanced RSA and AES Cryptographic Provider"
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_W               L"Microsoft Enhanced RSA and AES Cryptographic Provider"
+#ifdef UNICODE
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_W
+#else
+#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_A
+#endif
+
+typedef struct _xmlSecMSCryptoProviderInfo {
+    LPCTSTR                 providerName;
+    DWORD                   providerType;
+} xmlSecMSCryptoProviderInfo;
+
+XMLSEC_CRYPTO_EXPORT HCRYPTPROV         xmlSecMSCryptoFindProvider      (const xmlSecMSCryptoProviderInfo * providers,
+                                                                         LPCTSTR pszContainer,
+                                                                         DWORD dwFlags,
+                                                                         BOOL bUseXmlSecContainer);
+
+
 
 /********************************************************************
  *
@@ -131,6 +163,36 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId xmlSecMSCryptoKeyDataRsaGetKlass(void);
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha1GetKlass(void);
 
 /**
+ * xmlSecMSCryptoTransformRsaSha256Id:
+ * 
+ * The RSA-SHA256 signature transform klass.
+ */
+
+#define xmlSecMSCryptoTransformRsaSha256Id     \
+       xmlSecMSCryptoTransformRsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha256GetKlass(void);
+
+/**
+ * xmlSecMSCryptoTransformRsaSha384Id:
+ * 
+ * The RSA-SHA384 signature transform klass.
+ */
+
+#define xmlSecMSCryptoTransformRsaSha384Id     \
+       xmlSecMSCryptoTransformRsaSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha384GetKlass(void);
+
+/**
+ * xmlSecMSCryptoTransformRsaSha512Id:
+ * 
+ * The RSA-SHA512 signature transform klass.
+ */
+
+#define xmlSecMSCryptoTransformRsaSha512Id     \
+       xmlSecMSCryptoTransformRsaSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaSha512GetKlass(void);
+
+/**
  * xmlSecMSCryptoTransformRsaPkcs1Id:
  *
  * The RSA PKCS1 key transport transform klass.
@@ -167,6 +229,57 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(vo
         xmlSecMSCryptoTransformSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha1GetKlass(void);
 #endif /* XMLSEC_NO_SHA1 */
+
+/********************************************************************
+ *
+ * SHA256 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA256
+
+/**
+ * xmlSecMSCryptoTransformSha256Id:
+ * 
+ * The SHA256 digest transform klass.
+ */
+#define xmlSecMSCryptoTransformSha256Id \
+       xmlSecMSCryptoTransformSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+/********************************************************************
+ *
+ * SHA384 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA384
+
+/**
+ * xmlSecMSCryptoTransformSha384Id:
+ * 
+ * The SHA384 digest transform klass.
+ */
+#define xmlSecMSCryptoTransformSha384Id \
+       xmlSecMSCryptoTransformSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+/********************************************************************
+ *
+ * SHA512 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA512
+
+/**
+ * xmlSecMSCryptoTransformSha512Id:
+ * 
+ * The SHA512 digest transform klass.
+ */
+#define xmlSecMSCryptoTransformSha512Id \
+       xmlSecMSCryptoTransformSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
 
 /********************************************************************
  *

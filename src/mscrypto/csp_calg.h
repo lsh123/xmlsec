@@ -72,10 +72,11 @@
  *
  * @{
  */
+#define MAGPRO_CSP                  "MagPro CSP"
+#define PROV_MAGPRO_GOST            501
 
-#define PROV_MAGPRO_GOST 501
-
-#define PROV_CRYPTOPRO_GOST 75
+#define CRYPTOPRO_CSP               "CryptoPro CSP"
+#define PROV_CRYPTOPRO_GOST         75
 
 /*! @} */
 /*! \defgroup PP_MAGPRO PP_MAGPRO

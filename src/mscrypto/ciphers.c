@@ -25,9 +25,6 @@
 #  include "xmlsec-mingw.h"
 #endif
 
-#ifndef MS_ENH_RSA_AES_PROV_PROTO
-#define MS_ENH_RSA_AES_PROV_PROTO "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-#endif /* MS_ENH_RSA_AES_PROV_PROTO */
 
 static BOOL xmlSecMSCryptoCreatePrivateExponentOneKey   (HCRYPTPROV hProv,
                                                          HCRYPTKEY *hPrivateKey);
@@ -46,17 +43,16 @@ static BOOL xmlSecMSCryptoImportPlainSessionBlob        (HCRYPTPROV hProv,
 typedef struct _xmlSecMSCryptoBlockCipherCtx            xmlSecMSCryptoBlockCipherCtx,
                                                         *xmlSecMSCryptoBlockCipherCtxPtr;
 struct _xmlSecMSCryptoBlockCipherCtx {
-    ALG_ID              algorithmIdentifier;
-    int                 mode;
-    HCRYPTPROV          cryptProvider;
-    HCRYPTKEY           cryptKey;
-    HCRYPTKEY           pubPrivKey;
-    xmlSecKeyDataId     keyId;
-    LPCTSTR             providerName;
-    int                 providerType;
-    int                 keyInitialized;
-    int                 ctxInitialized;
-    xmlSecSize          keySize;
+    ALG_ID                              algorithmIdentifier;
+    int                                 mode;
+    HCRYPTPROV                          cryptProvider;
+    HCRYPTKEY                           cryptKey;
+    HCRYPTKEY                           pubPrivKey;
+    xmlSecKeyDataId                     keyId;
+    const xmlSecMSCryptoProviderInfo  * providers;
+    int                                 keyInitialized;
+    int                                 ctxInitialized;
+    xmlSecSize                          keySize;
 };
 /* function declarations */
 static int      xmlSecMSCryptoBlockCipherCtxUpdate      (xmlSecMSCryptoBlockCipherCtxPtr ctx,
@@ -469,6 +465,29 @@ static int      xmlSecMSCryptoBlockCipherExecute        (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 static int      xmlSecMSCryptoBlockCipherCheckId        (xmlSecTransformPtr transform);
 
+
+
+/* Ordered list of providers to search for algorithm implementation using 
+ * xmlSecMSCryptoFindProvider() function
+ * 
+ * MUST END with { NULL, 0 } !!! 
+ */
+#ifndef XMLSEC_NO_DES
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Des[] = {
+    { MS_STRONG_PROV,               PROV_RSA_FULL }, 
+    { MS_ENHANCED_PROV,             PROV_RSA_FULL }, 
+    { NULL, 0 }
+};
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_AES
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Aes[] = {
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV,    PROV_RSA_AES},      
+    { XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE,       PROV_RSA_AES },
+    { NULL, 0 }
+};
+#endif /* XMLSEC_NO_AES */
+
 static int
 xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_DES
@@ -505,8 +524,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecMSCryptoTransformDes3CbcId) {
         ctx->algorithmIdentifier    = CALG_3DES;
         ctx->keyId                  = xmlSecMSCryptoKeyDataDesId;
-        ctx->providerName           = MS_ENHANCED_PROV;
-        ctx->providerType           = PROV_RSA_FULL;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Des;
         ctx->keySize                = 24;
     } else
 #endif /* XMLSEC_NO_DES */
@@ -515,25 +533,22 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     if(transform->id == xmlSecMSCryptoTransformAes128CbcId) {
         ctx->algorithmIdentifier    = CALG_AES_128;
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
-        ctx->providerName           = MS_ENH_RSA_AES_PROV_PROTO;
-        ctx->providerType           = PROV_RSA_AES;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 16;
     } else if(transform->id == xmlSecMSCryptoTransformAes192CbcId) {
         ctx->algorithmIdentifier    = CALG_AES_192;
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
-        ctx->providerName           = MS_ENH_RSA_AES_PROV_PROTO;
-        ctx->providerType           = PROV_RSA_AES;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 24;
     } else if(transform->id == xmlSecMSCryptoTransformAes256CbcId) {
         ctx->algorithmIdentifier    = CALG_AES_256;
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
-        ctx->providerName           = MS_ENH_RSA_AES_PROV_PROTO;
-        ctx->providerType           = PROV_RSA_AES;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 32;
     } else
 #endif /* XMLSEC_NO_AES */
 
-    if(1) {
+    {
         xmlSecError(XMLSEC_ERRORS_HERE,
             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
             NULL,
@@ -542,44 +557,15 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    if(!CryptAcquireContext(&ctx->cryptProvider, NULL /*"xmlSecMSCryptoTempContainer"*/,
-                             ctx->providerName, ctx->providerType, 0)) {
-        DWORD dwError = GetLastError();
-        if (dwError == NTE_EXISTS) {
-            if (!CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer",
-                                     ctx->providerName, ctx->providerType, 0)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "CryptAcquireContext",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-
-                return(-1);
-            }
-        } else if (dwError == NTE_BAD_KEYSET) {
-          /* This error can indicate that a newly installed provider
-           * does not have a usable key container yet. It needs to be
-           * created, and then we have to try again CryptAcquireContext.
-           * This is also referenced in
-           * http://www.microsoft.com/mind/0697/crypto.asp (inituser)
-           */
-            if(!CryptAcquireContext(&ctx->cryptProvider, NULL, ctx->providerName,
-                                    ctx->providerType, CRYPT_NEWKEYSET)) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
+    ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, 0, TRUE);
+    if(ctx->cryptProvider == 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "CryptAcquireContext",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "xmlSecMSCryptoFindProvider",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-                return(-1);
-            }
-        } else {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "CryptAcquireContext",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);
-        }
+
+        return(-1);
     }
 
     /* Create dummy key to be able to import plain session keys */
@@ -615,8 +601,6 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     }
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
-        CryptAcquireContext(&ctx->cryptProvider, "xmlSecMSCryptoTempContainer",
-                            MS_ENHANCED_PROV, ctx->providerType, CRYPT_DELETEKEYSET);
     }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));

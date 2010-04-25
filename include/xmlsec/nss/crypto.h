@@ -206,6 +206,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataHmacGetKlass    (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecKeyDataPtr data,
                                                                          const xmlSecByte* buf,
                                                                          xmlSecSize bufSize);
+#ifndef XMLSEC_NO_MD5
 /**
  * xmlSecNssTransformHmacMd5Id:
  *
@@ -214,7 +215,9 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecNssKeyDataHmacSet         (xmlSecK
 #define xmlSecNssTransformHmacMd5Id \
         xmlSecNssTransformHmacMd5GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
 
+#ifndef XMLSEC_NO_RIPEMD160
 /**
  * xmlSecNssTransformHmacRipemd160Id:
  *
@@ -223,7 +226,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacMd5GetKlass(void);
 #define xmlSecNssTransformHmacRipemd160Id \
         xmlSecNssTransformHmacRipemd160GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(void);
+#endif /* XMLSEC_NO_RIPEMD160 */
 
+#ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecNssTransformHmacSha1Id:
  *
@@ -232,6 +237,40 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacRipemd160GetKlass(v
 #define xmlSecNssTransformHmacSha1Id \
         xmlSecNssTransformHmacSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecNssTransformHmacSha256Id:
+ *
+ * The HMAC with SHA256 signature transform klass.
+ */
+#define xmlSecNssTransformHmacSha256Id \
+        xmlSecNssTransformHmacSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecNssTransformHmacSha384Id:
+ *
+ * The HMAC with SHA384 signature transform klass.
+ */
+#define xmlSecNssTransformHmacSha384Id \
+        xmlSecNssTransformHmacSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecNssTransformHmacSha512Id:
+ *
+ * The HMAC with SHA512 signature transform klass.
+ */
+#define xmlSecNssTransformHmacSha512Id \
+        xmlSecNssTransformHmacSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
 
 
 #endif /* XMLSEC_NO_HMAC */
@@ -253,6 +292,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha1GetKlass(void);
         xmlSecNssKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRsaGetKlass     (void);
 
+#ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecNssTransformRsaSha1Id:
  *
@@ -261,6 +301,41 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRsaGetKlass     (void);
 #define xmlSecNssTransformRsaSha1Id     \
         xmlSecNssTransformRsaSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecNssTransformRsaSha256Id:
+ *
+ * The RSA-SHA256 signature transform klass.
+ */
+#define xmlSecNssTransformRsaSha256Id       \
+        xmlSecNssTransformRsaSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecNssTransformRsaSha384Id:
+ *
+ * The RSA-SHA384 signature transform klass.
+ */
+#define xmlSecNssTransformRsaSha384Id       \
+        xmlSecNssTransformRsaSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecNssTransformRsaSha512Id:
+ *
+ * The RSA-SHA512 signature transform klass.
+ */
+#define xmlSecNssTransformRsaSha512Id       \
+        xmlSecNssTransformRsaSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
 
 /**
  * xmlSecNssTransformRsaPkcs1Id:
@@ -303,6 +378,55 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
         xmlSecNssTransformSha1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha1GetKlass   (void);
 #endif /* XMLSEC_NO_SHA1 */
+
+/********************************************************************
+ *
+ * SHA256 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA256
+/**
+ * xmlSecNssTransformSha256Id:
+ *
+ * The SHA256 digest transform klass.
+ */
+#define xmlSecNssTransformSha256Id \
+        xmlSecNssTransformSha256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha256GetKlass(void);
+#endif /* XMLSEC_NO_SHA256 */
+
+/********************************************************************
+ *
+ * SHA384 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA384
+/**
+ * xmlSecNssTransformSha384Id:
+ *
+ * The SHA384 digest transform klass.
+ */
+#define xmlSecNssTransformSha384Id \
+        xmlSecNssTransformSha384GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha384GetKlass(void);
+#endif /* XMLSEC_NO_SHA384 */
+
+/********************************************************************
+ *
+ * SHA512 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_SHA512
+/**
+ * xmlSecNssTransformSha512Id:
+ *
+ * The SHA512 digest transform klass.
+ */
+#define xmlSecNssTransformSha512Id \
+        xmlSecNssTransformSha512GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha512GetKlass(void);
+#endif /* XMLSEC_NO_SHA512 */
+
 
 #ifdef __cplusplus
 }

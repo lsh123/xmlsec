@@ -94,6 +94,8 @@ xmlSecCryptoGetFunctions_nss(void) {
     /**
      * Crypto transforms ids
      */
+
+    /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecNssFunctions->transformAes128CbcGetKlass     = xmlSecNssTransformAes128CbcGetKlass;
     gXmlSecNssFunctions->transformAes192CbcGetKlass     = xmlSecNssTransformAes192CbcGetKlass;
@@ -103,23 +105,65 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->transformKWAes256GetKlass      = xmlSecNssTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
+    /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecNssFunctions->transformDes3CbcGetKlass       = xmlSecNssTransformDes3CbcGetKlass;
     gXmlSecNssFunctions->transformKWDes3GetKlass        = xmlSecNssTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
+    /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
     gXmlSecNssFunctions->transformDsaSha1GetKlass       = xmlSecNssTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+    /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
-    gXmlSecNssFunctions->transformHmacSha1GetKlass      = xmlSecNssTransformHmacSha1GetKlass;
-    gXmlSecNssFunctions->transformHmacRipemd160GetKlass = xmlSecNssTransformHmacRipemd160GetKlass;
+
+#ifndef XMLSEC_NO_MD5
     gXmlSecNssFunctions->transformHmacMd5GetKlass       = xmlSecNssTransformHmacMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_RIPEMD160
+    gXmlSecNssFunctions->transformHmacRipemd160GetKlass = xmlSecNssTransformHmacRipemd160GetKlass;
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecNssFunctions->transformHmacSha1GetKlass      = xmlSecNssTransformHmacSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecNssFunctions->transformHmacSha256GetKlass    = xmlSecNssTransformHmacSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecNssFunctions->transformHmacSha384GetKlass    = xmlSecNssTransformHmacSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecNssFunctions->transformHmacSha512GetKlass    = xmlSecNssTransformHmacSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_HMAC */
 
+    /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformRsaSha1GetKlass       = xmlSecNssTransformRsaSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecNssFunctions->transformRsaSha256GetKlass     = xmlSecNssTransformRsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecNssFunctions->transformRsaSha384GetKlass     = xmlSecNssTransformRsaSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecNssFunctions->transformRsaSha512GetKlass     = xmlSecNssTransformRsaSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
 
 /* RSA OAEP is not supported by NSS yet */
@@ -129,9 +173,20 @@ xmlSecCryptoGetFunctions_nss(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
+    /******************************* SHA ********************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformSha1GetKlass          = xmlSecNssTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecNssFunctions->transformSha256GetKlass        = xmlSecNssTransformSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecNssFunctions->transformSha384GetKlass        = xmlSecNssTransformSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecNssFunctions->transformSha512GetKlass        = xmlSecNssTransformSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 
     /**
      * High level routines form xmlsec command line utility

@@ -24,7 +24,7 @@
 #include <xmlsec/nss/app.h>
 #include <xmlsec/nss/crypto.h>
 
-#define XMLSEC_NSS_MAX_DIGEST_SIZE              32
+#define XMLSEC_NSS_MAX_DIGEST_SIZE              64
 
 /**************************************************************************
  *
@@ -51,6 +51,7 @@ struct _xmlSecNssDigestCtx {
 #define xmlSecNssDigestGetCtx(transform) \
     ((xmlSecNssDigestCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
+static int      xmlSecNssDigestCheckId                  (xmlSecTransformPtr transform);
 static int      xmlSecNssDigestInitialize               (xmlSecTransformPtr transform);
 static void     xmlSecNssDigestFinalize                 (xmlSecTransformPtr transform);
 static int      xmlSecNssDigestVerify                   (xmlSecTransformPtr transform,
@@ -60,7 +61,6 @@ static int      xmlSecNssDigestVerify                   (xmlSecTransformPtr tran
 static int      xmlSecNssDigestExecute                  (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecNssDigestCheckId                  (xmlSecTransformPtr transform);
 
 static int
 xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
@@ -70,6 +70,24 @@ xmlSecNssDigestCheckId(xmlSecTransformPtr transform) {
         return(1);
     }
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha256Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha384Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha512Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_SHA512 */
 
     return(0);
 }
@@ -92,6 +110,24 @@ xmlSecNssDigestInitialize(xmlSecTransformPtr transform) {
         ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA1);
     } else
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha256Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA256);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha384Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA384);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformSha512Id)) {
+        ctx->digest = SECOID_FindOIDByTag(SEC_OID_SHA512);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
 
     if(1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -328,4 +364,148 @@ xmlSecNssTransformSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 
+#ifndef XMLSEC_NO_SHA256
+/******************************************************************************
+ *
+ * SHA256 Digest transforms
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecNssSha256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
+
+    /* data */
+    xmlSecNameSha256,                           /* const xmlChar* name; */
+    xmlSecHrefSha256,                           /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    /* methods */
+    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformSha256GetKlass:
+ *
+ * SHA256 digest transform klass.
+ *
+ * Returns: pointer to SHA256 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha256GetKlass(void) {
+    return(&xmlSecNssSha256Klass);
+}
+#endif /* XMLSEC_NO_SHA256 */
+
+
+#ifndef XMLSEC_NO_SHA384
+/******************************************************************************
+ *
+ * SHA384 Digest transforms
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecNssSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
+
+    /* data */
+    xmlSecNameSha384,                           /* const xmlChar* name; */
+    xmlSecHrefSha384,                           /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    /* methods */
+    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformSha384GetKlass:
+ *
+ * SHA384 digest transform klass.
+ *
+ * Returns: pointer to SHA384 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha384GetKlass(void) {
+    return(&xmlSecNssSha384Klass);
+}
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/******************************************************************************
+ *
+ * SHA512 Digest transforms
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecNssSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecNssDigestSize,                        /* xmlSecSize objSize */
+
+    /* data */
+    xmlSecNameSha512,                           /* const xmlChar* name; */
+    xmlSecHrefSha512,                           /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+
+    /* methods */
+    xmlSecNssDigestInitialize,                  /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssDigestFinalize,                    /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssDigestVerify,                      /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecNssDigestExecute,                     /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecNssTransformSha512GetKlass:
+ *
+ * SHA512 digest transform klass.
+ *
+ * Returns: pointer to SHA512 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecNssTransformSha512GetKlass(void) {
+    return(&xmlSecNssSha512Klass);
+}
+#endif /* XMLSEC_NO_SHA512 */
 

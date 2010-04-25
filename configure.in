@@ -546,8 +546,8 @@ dnl ==========================================================================
     
 XMLSEC_NO_NSS="1"
 MOZILLA_MIN_VERSION="1.4"
-NSS_MIN_VERSION="3.2"
-NSPR_MIN_VERSION="4.0"
+NSS_MIN_VERSION="3.8"
+NSPR_MIN_VERSION="4.3"
 NSS_CFLAGS=""
 NSS_LIBS=""
 NSS_LIBS_LIST="-lnss3 -lsmime3"

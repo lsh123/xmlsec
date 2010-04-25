@@ -143,6 +143,7 @@ static const char helpCheckTransforms[] =
 #define xmlSecAppCmdLineTopicKeysMngr           0x1000
 #define xmlSecAppCmdLineTopicX509Certs          0x2000
 #define xmlSecAppCmdLineTopicVersion            0x4000
+#define xmlSecAppCmdLineTopicCryptoConfig       0x8000
 #define xmlSecAppCmdLineTopicAll                0xFFFF
 
 /****************************************************************
@@ -163,7 +164,7 @@ static xmlSecAppCmdLineParam helpParam = {
 
 #if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
 static xmlSecAppCmdLineParam cryptoParam = { 
-    xmlSecAppCmdLineTopicGeneral,
+    xmlSecAppCmdLineTopicCryptoConfig,
     "--crypto",
     NULL,
     "--crypto <name>"
@@ -173,11 +174,11 @@ static xmlSecAppCmdLineParam cryptoParam = {
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
-};    
+};
 #endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 
 static xmlSecAppCmdLineParam cryptoConfigParam = { 
-    xmlSecAppCmdLineTopicGeneral,
+    xmlSecAppCmdLineTopicCryptoConfig,
     "--crypto-config",
     NULL,
     "--crypto-config <path>"
@@ -185,7 +186,7 @@ static xmlSecAppCmdLineParam cryptoConfigParam = {
     xmlSecAppCmdLineParamTypeString,
     xmlSecAppCmdLineParamFlagNone,
     NULL
-};    
+};
 
 
 static xmlSecAppCmdLineParam repeatParam = { 
@@ -1007,7 +1008,7 @@ int main(int argc, const char **argv) {
     xmlSecAppCommand command, subCommand;
     int pos, i;
     int res = 1;
-            
+
     /* read the command (first argument) */
     if(argc < 2) {
         xmlSecAppPrintUsage();
@@ -2728,27 +2729,29 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     } else 
 
     if((strcmp(cmd, "list-key-data") == 0) || (strcmp(cmd, "--list-key-data") == 0)) {
-        (*cmdLineTopics) = 0;
+        (*cmdLineTopics) = xmlSecAppCmdLineTopicCryptoConfig;
         return(xmlSecAppCommandListKeyData);
     } else 
 
     if((strcmp(cmd, "check-key-data") == 0) || (strcmp(cmd, "--check-key-data") == 0)) {
-        (*cmdLineTopics) = 0;
+        (*cmdLineTopics) = xmlSecAppCmdLineTopicCryptoConfig;
         return(xmlSecAppCommandCheckKeyData);
     } else 
 
     if((strcmp(cmd, "list-transforms") == 0) || (strcmp(cmd, "--list-transforms") == 0)) {
-        (*cmdLineTopics) = 0;
+        (*cmdLineTopics) = xmlSecAppCmdLineTopicCryptoConfig;
         return(xmlSecAppCommandListTransforms);
     } else 
 
     if((strcmp(cmd, "check-transforms") == 0) || (strcmp(cmd, "--check-transforms") == 0)) {
-        (*cmdLineTopics) = 0;
+        (*cmdLineTopics) = xmlSecAppCmdLineTopicCryptoConfig;
         return(xmlSecAppCommandCheckTransforms);
     } else 
     
     if((strcmp(cmd, "keys") == 0) || (strcmp(cmd, "--keys") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral | 
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral | 
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicKeysMngr |
                         xmlSecAppCmdLineTopicX509Certs;
         return(xmlSecAppCommandKeys);
@@ -2756,7 +2759,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     
 #ifndef XMLSEC_NO_XMLDSIG
     if((strcmp(cmd, "sign") == 0) || (strcmp(cmd, "--sign") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicDSigCommon |
                         xmlSecAppCmdLineTopicDSigSign |
                         xmlSecAppCmdLineTopicKeysMngr |
@@ -2765,7 +2770,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     } else 
     
     if((strcmp(cmd, "verify") == 0) || (strcmp(cmd, "--verify") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicDSigCommon |
                         xmlSecAppCmdLineTopicDSigVerify |
                         xmlSecAppCmdLineTopicKeysMngr |
@@ -2774,7 +2781,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     } else 
 #ifndef XMLSEC_NO_TMPL_TEST
     if((strcmp(cmd, "sign-tmpl") == 0) || (strcmp(cmd, "--sign-tmpl") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicDSigCommon |
                         xmlSecAppCmdLineTopicDSigSign |
                         xmlSecAppCmdLineTopicKeysMngr |
@@ -2787,7 +2796,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 
 #ifndef XMLSEC_NO_XMLENC
     if((strcmp(cmd, "encrypt") == 0) || (strcmp(cmd, "--encrypt") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicEncCommon |
                         xmlSecAppCmdLineTopicEncEncrypt |
                         xmlSecAppCmdLineTopicKeysMngr |
@@ -2796,7 +2807,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
     } else 
 
     if((strcmp(cmd, "decrypt") == 0) || (strcmp(cmd, "--decrypt") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicEncCommon |
                         xmlSecAppCmdLineTopicEncDecrypt |
                         xmlSecAppCmdLineTopicKeysMngr |
@@ -2806,7 +2819,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 
 #ifndef XMLSEC_NO_TMPL_TEST
     if((strcmp(cmd, "encrypt-tmpl") == 0) || (strcmp(cmd, "--encrypt-tmpl") == 0)) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicEncCommon |
                         xmlSecAppCmdLineTopicEncEncrypt |
                         xmlSecAppCmdLineTopicKeysMngr |
@@ -2818,7 +2833,9 @@ xmlSecAppParseCommand(const char* cmd, xmlSecAppCmdLineParamTopic* cmdLineTopics
 
 #ifndef XMLSEC_NO_XKMS
     if(strcmp(cmd, "--xkms-server-request") == 0) {
-        (*cmdLineTopics) = xmlSecAppCmdLineTopicGeneral |
+        (*cmdLineTopics) = 
+                        xmlSecAppCmdLineTopicGeneral |
+                        xmlSecAppCmdLineTopicCryptoConfig |
                         xmlSecAppCmdLineTopicXkmsCommon |
                         xmlSecAppCmdLineTopicKeysMngr |
                         xmlSecAppCmdLineTopicX509Certs;

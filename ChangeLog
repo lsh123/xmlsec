@@ -1,3 +1,20 @@
+2010-04-23  Aleksey Sanin  <aleksey@aleksey.com>
+	Enable RSA/SHA2 support in xmlsec-mscrypto
+	Misc. cleanups in xmlsec-mscrypto
+	Fix PK_CONFIG problem (reported by Roumen)
+
+2010-04-23  Aleksey Sanin  <aleksey@aleksey.com>
+	Fix search for certificates with UTF-8 subject on Windows in xmlsec-mscrypto
+	Remove spaces at the end of lines
+
+2010-04-22  Aleksey Sanin  <aleksey@aleksey.com>
+	Fix search for certificates with Unicode subject on Windows in xmlsec-mscrypto
+	Copy *.manifest files to installation for Windows builds
+	Convert tabs to spaces
+
+2010-04-21  Aleksey Sanin  <aleksey@aleksey.com>
+	* Fix key name conversion to unicode problem in xmlsec-mscrypto
+
 2010-04-20  Aleksey Sanin  <aleksey@aleksey.com>
 	* Fix compile warnings in xmlsec-openssl
 	* Fix linking order issue (based on patch from Roumen)

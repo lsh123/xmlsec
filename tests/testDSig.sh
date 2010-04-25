@@ -1,6 +1,7 @@
 #!/bin/sh 
 
 OS_ARCH=`uname -o`
+OS_KERNEL=`uname -s`
 
 if [ "z$OS_ARCH" = "zCygwin" ] ; then
 	topfolder=`cygpath -wa $2`
@@ -16,6 +17,20 @@ pub_key_format=$file_format
 cert_format=$file_format
 priv_key_option="--pkcs12"
 priv_key_format="p12"
+
+# On Windows, one needs to specify Crypto Service Provider (CSP)
+# in the pkcs12 file to ensure it is loaded correctly to be used
+# with SHA2 algorithms. Worse, the CSP is different for XP and older 
+# versions
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+	if [ "z$OS_KERNEL" = "zCYGWIN_NT-5.1" ] ; then
+		priv_key_suffix="-winxp"
+	else
+		priv_key_suffix="-win"
+	fi
+else
+	priv_key_suffix=""
+fi
 
 if [ "z$TMPFOLDER" = "z" ] ; then
     TMPFOLDER=/tmp
@@ -313,25 +328,25 @@ execDSigTest "" "aleksey-xmldsig-01/enveloping-sha1-rsa-sha1" \
 execDSigTest "" "aleksey-xmldsig-01/enveloping-sha224-rsa-sha224" \
     "sha224 rsa-sha224" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest "" "aleksey-xmldsig-01/enveloping-sha256-rsa-sha256" \
     "sha256 rsa-sha256" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey$priv_key_suffix.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest "" "aleksey-xmldsig-01/enveloping-sha384-rsa-sha384" \
     "sha384 rsa-sha384" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 execDSigTest "" "aleksey-xmldsig-01/enveloping-sha512-rsa-sha512" \
     "sha512 rsa-sha512" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/keys/largersakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/largersakey$priv_key_suffix.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --enabled-key-data x509"
 
 #

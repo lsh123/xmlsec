@@ -181,3 +181,23 @@ README
        # (used in above step)
        > pk12util -d <nss_config_dir> -i keycert.p12
     
+6. On Windows, one needs to specify Crypto Service Provider (CSP) in the 
+pkcs12 file to ensure it is loaded correctly to be used with SHA2 algorithms. 
+Worse, the CSP is different for XP and older versions
+
+
+   Input: DSA/RSA private key in PEM or DER format
+   Output: A PKCS12 file containing the private key, and a self-signed 
+           certificate with the corresponding public key. Plus the CSP 
+           name to be used for this key/cert.
+
+
+    > cat rsakey.pem rsacert.pem ca2cert.pem cacert.pem > allrsa.pem
+    > openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+    > openssl pkcs12 -export -in allrsa.pem -name TestRsaKey -out rsakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+
+
+    > cat largersakey.pem largersacert.pem ca2cert.pem cacert.pem > alllargersa.pem
+    > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-winxp.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+    > openssl pkcs12 -export -in alllargersa.pem -name TestLargeRsaKey -out largersakey-win.p12 -CSP "Microsoft Enhanced RSA and AES Cryptographic Provider"
+

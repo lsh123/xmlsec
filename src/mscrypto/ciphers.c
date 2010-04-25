@@ -557,7 +557,7 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, 0, TRUE);
+    ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->cryptProvider == 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

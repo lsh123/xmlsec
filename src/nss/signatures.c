@@ -106,15 +106,8 @@ xmlSecNssSignatureInitialize(xmlSecTransformPtr transform) {
 #ifndef XMLSEC_NO_DSA
     if(xmlSecTransformCheckId(transform, xmlSecNssTransformDsaSha1Id)) {
         ctx->keyId      = xmlSecNssKeyDataDsaId;
-
         /* This creates a signature which is ASN1 encoded */
-        /*ctx->alg      = SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST;*/
-
-        /* Fortezza uses the same DSA signature format as XML does.
-         * DSA and FORTEZZA keys are treated as equivalent keys for doing
-         * DSA signatures (which is how they are supposed to be treated).
-         */
-        ctx->alg        = SEC_OID_MISSI_DSS;
+        ctx->alg        = SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST;
     } else
 #endif /* XMLSEC_NO_DSA */
 
@@ -275,19 +268,40 @@ xmlSecNssSignatureVerify(xmlSecTransformPtr transform,
 
     signature.data = (unsigned char *)data;
     signature.len = dataSize;
-    status = VFY_EndWithSignature(ctx->u.vfy.vfyctx, &signature);
+
+    if(ctx->alg == SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST) {
+        /* This creates a signature which is ASN1 encoded */
+        SECItem   signatureDer;
+        SECStatus statusDer;
+
+        statusDer = DSAU_EncodeDerSig(&signatureDer, &signature);
+        if(statusDer != SECSuccess) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "DSAU_EncodeDerSig",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "error code=%d", 
+                    PORT_GetError());
+            return(-1);
+        }
+        status = VFY_EndWithSignature(ctx->u.vfy.vfyctx, &signatureDer);
+        SECITEM_FreeItem(&signatureDer, PR_FALSE);
+    } else {
+        status = VFY_EndWithSignature(ctx->u.vfy.vfyctx, &signature);
+    }
 
     if (status != SECSuccess) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "VFY_Update, VFY_End",
+                    "VFY_EndWithSignature",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "error code=%d", PORT_GetError());
+                    "error code=%d", 
+                    PORT_GetError());
 
         if (PORT_GetError() == SEC_ERROR_PKCS7_BAD_SIGNATURE) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "VFY_End",
+                        "VFY_EndWithSignature",
                         XMLSEC_ERRORS_R_DATA_NOT_MATCH,
                         "signature does not verify");
             transform->status = xmlSecTransformStatusFail;
@@ -408,37 +422,59 @@ xmlSecNssSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
 
-            outSize = signature.len;
-            ret = xmlSecBufferSetMaxSize(out, outSize);
-            if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
+            if(ctx->alg == SEC_OID_ANSIX9_DSA_SIGNATURE_WITH_SHA1_DIGEST) {
+                /* This creates a signature which is ASN1 encoded */
+                SECItem * signatureClr;
+
+                signatureClr = DSAU_DecodeDerSig(&signature);
+                if(signatureClr == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "DSAU_EncodeDerSig",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "error code=%d", 
+                        PORT_GetError());
+                    SECITEM_FreeItem(&signature, PR_FALSE);
+                    return(-1);
+                }
+
+                ret = xmlSecBufferSetData(out, signatureClr->data, signatureClr->len);
+                if(ret < 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetMaxSize",
+                            "xmlSecBufferSetData",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
-                PR_Free(signature.data);
-                return(-1);
+                            "size=%d",
+                            signatureClr->len);
+                    SECITEM_FreeItem(&signature, PR_FALSE);
+                    return(-1);
+                }
+
+                SECITEM_FreeItem(signatureClr, PR_TRUE);
+            } else {
+                /* This signature is used as-is */
+                ret = xmlSecBufferSetData(out, signature.data, signature.len);
+                if(ret < 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecBufferSetData",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            "size=%d",
+                            signature.len);
+                    SECITEM_FreeItem(&signature, PR_FALSE);
+                    return(-1);
+                }
             }
 
-            memcpy(xmlSecBufferGetData(out), signature.data, signature.len);
-
-            ret = xmlSecBufferSetSize(out, outSize);
-            if(ret < 0) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "xmlSecBufferSetSize",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
-                PR_Free(signature.data);
-                return(-1);
-            }
-            PR_Free(signature.data);
+            /* cleanup */
+            SECITEM_FreeItem(&signature, PR_FALSE);
         }
         transform->status = xmlSecTransformStatusFinished;
     }
 
+
     if((transform->status == xmlSecTransformStatusWorking) || (transform->status == xmlSecTransformStatusFinished)) {
-        /* the only way we can get here is if there is no input */
+            /* the only way we can get here is if there is no input */
         xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
     } else {
         xmlSecError(XMLSEC_ERRORS_HERE,

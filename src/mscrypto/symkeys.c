@@ -592,14 +592,15 @@ done:
 BOOL
 xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
                                      ALG_ID dwAlgId, LPBYTE pbKeyMaterial,
-                                     DWORD dwKeyMaterial, HCRYPTKEY *hSessionKey) {
+                                     DWORD dwKeyMaterial, BOOL bCheckKeyLength,
+                                     HCRYPTKEY *hSessionKey) {
     ALG_ID dwPrivKeyAlg;
     LPBYTE keyBlob = NULL;
     DWORD keyBlobLen, rndBlobSize, dwSize, n;
     PUBLICKEYSTRUC* pubKeyStruc;
     ALG_ID* algId;
     DWORD dwPublicKeySize;
-    DWORD dwProvSessionKeySize;
+    DWORD dwProvSessionKeySize = 0;
     LPBYTE pbPtr;
     DWORD dwFlags;
     PROV_ENUMALGS_EX ProvEnum;
@@ -634,39 +635,43 @@ xmlSecMSCryptoImportPlainSessionBlob(HCRYPTPROV hProv, HCRYPTKEY hPrivateKey,
         goto done;
     }
 
-    /* We have to get the key size(including padding) from an HCRYPTKEY handle.
-     * PP_ENUMALGS_EX contains the key size without the padding so we can't use it.
-     */
-    if(!CryptGenKey(hProv, dwAlgId, 0, &hTempKey)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGenKey",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "algId=%d", dwAlgId);
-        goto done;
-    }
+    if(bCheckKeyLength) {
+        /* We have to get the key size(including padding) from an HCRYPTKEY handle.
+         * PP_ENUMALGS_EX contains the key size without the padding so we can't use it.
+         */
+        if(!CryptGenKey(hProv, dwAlgId, 0, &hTempKey)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "CryptGenKey",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "algId=%d", dwAlgId);
+            goto done;
+        }
 
-    dwSize = sizeof(DWORD);
-    if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "CryptGetKeyParam(KP_KEYLEN)",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "algId=%d", dwAlgId);
-        goto done;
-    }
-    CryptDestroyKey(hTempKey);
-    hTempKey = 0;
+        dwSize = sizeof(DWORD);
+        if(!CryptGetKeyParam(hTempKey, KP_KEYLEN, (LPBYTE)&dwProvSessionKeySize, &dwSize, 0)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "CryptGetKeyParam(KP_KEYLEN)",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "algId=%d", dwAlgId);
+            goto done;
+        }
+        CryptDestroyKey(hTempKey);
+        hTempKey = 0;
 
-    /* Our key is too big, leave */
-    if ((dwKeyMaterial * 8) > dwProvSessionKeySize) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_SIZE,
-                    "dwKeyMaterial=%ld;dwProvSessionKeySize=%ld",
-                    dwKeyMaterial, dwProvSessionKeySize);
-        goto done;
+        /* yell if key is too big */
+        if ((dwKeyMaterial * 8) > dwProvSessionKeySize) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
+                        "dwKeyMaterial=%ld;dwProvSessionKeySize=%ld",
+                        dwKeyMaterial, dwProvSessionKeySize);
+            goto done;
+        }
+    } else {
+        dwProvSessionKeySize = dwKeyMaterial * 8;
     }
 
     /* Get private key's algorithm */

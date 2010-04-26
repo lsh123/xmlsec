@@ -48,6 +48,7 @@ XMLSEC_CRYPTO_EXPORT BOOL               xmlSecMSCryptoImportPlainSessionBlob (HC
                                                                          ALG_ID dwAlgId,
                                                                          LPBYTE pbKeyMaterial,
                                                                          DWORD dwKeyMaterial,
+                                                                         BOOL bCheckKeyLength,
                                                                          HCRYPTKEY *hSessionKey);
 
 #ifdef __cplusplus

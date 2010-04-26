@@ -664,6 +664,7 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         ctx->algorithmIdentifier,
         bufData,
         ctx->keySize,
+        TRUE,
         &(ctx->cryptKey)))  {
 
         xmlSecError(XMLSEC_ERRORS_HERE,

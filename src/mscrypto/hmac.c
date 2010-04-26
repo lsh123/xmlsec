@@ -388,14 +388,16 @@ xmlSecMSCryptoHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
      * 
      * HACK!!! HACK!!! HACK!!! 
      * 
-     * Using CALG_RC2 instead of CALG_HMAC for the key algorithm
+     * Using CALG_RC2 instead of CALG_HMAC for the key algorithm so we don't want to check key length
      */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->provider,
         ctx->pubPrivKey,
         CALG_RC2,
         xmlSecBufferGetData(buffer),
         xmlSecBufferGetSize(buffer),
-        &(ctx->cryptKey)) || (ctx->cryptKey == 0))  {
+        FALSE,
+        &(ctx->cryptKey)
+        ) || (ctx->cryptKey == 0))  {
 
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

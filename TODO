@@ -10,7 +10,7 @@ General
 Tests status
 -------------------------------------------------
 
-* xmlsec-nss (April 25, 2010)
+* xmlsec-nss (April 25, 2010 using NSS 3.12.6)
 
 ** Skipped tests (missing transforms: RIPEMD160, SHA224, RSA/OAEP, GOST)
 
@@ -30,9 +30,7 @@ merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
 
 ** Failed tests
 
-aleksey-xmldsig-01/x509data-test
 aleksey-xmldsig-01/x509data-sn-test
-merlin-xmldsig-twenty-three/signature-x509-is
 merlin-xmldsig-twenty-three/signature-x509-ski
 phaos-xmldsig-three/signature-rsa-manifest-x509-data-ski
 merlin-xmldsig-twenty-three/signature-x509-crt-crl

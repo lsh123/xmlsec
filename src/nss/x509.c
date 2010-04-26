@@ -1980,12 +1980,34 @@ xmlSecNssX509NameWrite(CERTName* nm) {
 static xmlChar*
 xmlSecNssASN1IntegerWrite(SECItem *num) {
     xmlChar *res = NULL;
+    int resLen = 64; /* not more than 64 chars */
+    PRUint64 val = 0;
+    unsigned int ii = 0;
+    int shift = 0;
 
     xmlSecAssert2(num != NULL, NULL);
+    xmlSecAssert2(num->type == siBuffer, NULL);
+    xmlSecAssert2(num->len <= 9, NULL);
+    xmlSecAssert2(num->data != NULL, NULL);
 
-    /* TODO : to be implemented after
+    /* HACK : to be fixed after
      * NSS bug http://bugzilla.mozilla.org/show_bug.cgi?id=212864 is fixed
      */
+    for(ii = num->len; ii > 0; --ii, shift += 8) {
+        val |= (num->data[ii - 1]) << shift;
+    }
+
+    res = (xmlChar*)xmlMalloc(resLen + 1);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlStrdup",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return (NULL);
+    }
+
+    PR_snprintf((char*)res, resLen, "%llu", val);
     return(res);
 }
 

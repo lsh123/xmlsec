@@ -4,6 +4,7 @@
 	* Added support for MD5 for digest and RSA in xmlsec-nss
 	* Minor fixes to xmlsec-nss (xmlsec bug #118630), bumping nss min 
 	version to 3.9 + nspr 4.4.1 or greater
+	Other minor fixes for xmlsec-nss
 
 2010-04-24  Aleksey Sanin  <aleksey@aleksey.com>
 	* Fix PK_CONFIG problem (reported by Roumen)

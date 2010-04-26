@@ -70,7 +70,8 @@ static int              xmlSecNssX509NameStringRead     (xmlSecByte **str,
 static xmlSecByte *     xmlSecNssX509NameRead           (xmlSecByte *str,
                                                          int len);
 
-static void             xmlSecNssNumToItem(SECItem *it, unsigned long num);
+static int              xmlSecNssNumToItem              (SECItem *it, 
+                                                         PRUint64 num);
 
 
 static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
@@ -399,6 +400,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
     CERTName *name = NULL;
     SECItem *nameitem = NULL;
     PRArenaPool *arena = NULL;
+    int rv;
 
     if (subjectName != NULL) {
         name = xmlSecNssGetCertName(subjectName);
@@ -439,6 +441,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
 
     if((issuerName != NULL) && (issuerSerial != NULL)) {
         CERTIssuerAndSN issuerAndSN;
+        PRUint64 issuerSN = 0;
 
         name = xmlSecNssGetCertName(issuerName);
         if (name == NULL) {
@@ -467,8 +470,8 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "SEC_ASN1EncodeItem",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                                "error code=%d", PORT_GetError());
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "error code=%d", PORT_GetError());
             goto done;
         }
 
@@ -477,11 +480,28 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
         issuerAndSN.derIssuer.data = nameitem->data;
         issuerAndSN.derIssuer.len = nameitem->len;
 
-        /* TBD: serial num can be arbitrarily long */
-        xmlSecNssNumToItem(&issuerAndSN.serialNumber, PORT_Atoi((char *)issuerSerial));
 
-        cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(),
-                                          &issuerAndSN);
+        /* TBD: serial num can be arbitrarily long */
+        if(PR_sscanf((char *)issuerSerial, "%llu", &issuerSN) != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "PR_sscanf",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "error code=%d", PR_GetError());
+            goto done;
+        }
+
+        rv = xmlSecNssNumToItem(&issuerAndSN.serialNumber, issuerSN);
+        if(rv <= 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecNssNumToItem",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "error code=%d", PR_GetError());
+            goto done;
+        }
+
+        cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(), &issuerAndSN);
         SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
         goto done;
     }
@@ -690,47 +710,40 @@ xmlSecNssX509NameStringRead(xmlSecByte **str, int *strLen,
 }
 
 /* code lifted from NSS */
-static void
-xmlSecNssNumToItem(SECItem *it, unsigned long ui)
+static int
+xmlSecNssNumToItem(SECItem *it, PRUint64 ui)
 {
-    unsigned char bb[5];
-    int len;
+    unsigned char bb[9];
+    unsigned int zeros_len;
 
-    bb[0] = 0;
-    bb[1] = (unsigned char) (ui >> 24);
-    bb[2] = (unsigned char) (ui >> 16);
-    bb[3] = (unsigned char) (ui >> 8);
-    bb[4] = (unsigned char) (ui);
+    xmlSecAssert2(it != NULL, -1);
+
+    bb[0] = 0; /* important: we should have 0 at the beginning! */
+    bb[1] = (unsigned char) (ui >> 56);
+    bb[2] = (unsigned char) (ui >> 48);
+    bb[3] = (unsigned char) (ui >> 40);
+    bb[4] = (unsigned char) (ui >> 32);
+    bb[5] = (unsigned char) (ui >> 24);
+    bb[6] = (unsigned char) (ui >> 16);
+    bb[7] = (unsigned char) (ui >> 8);
+    bb[8] = (unsigned char) (ui);
 
     /*
     ** Small integers are encoded in a single byte. Larger integers
-    ** require progressively more space.
+    ** require progressively more space. Start from 1 because byte at 
+    ** position 0 is zero
     */
-    if (ui > 0x7f) {
-        if (ui > 0x7fff) {
-            if (ui > 0x7fffffL) {
-                if (ui >= 0x80000000L) {
-                    len = 5;
-                } else {
-                    len = 4;
-                }
-            } else {
-                len = 3;
-            }
-        } else {
-            len = 2;
-        }
-    } else {
-        len = 1;
-    }
+    for(zeros_len = 1; (zeros_len < sizeof(bb)) && (bb[zeros_len] == 0); ++zeros_len);
 
-    it->data = (unsigned char *)PORT_Alloc(len);
+    it->len = sizeof(bb) - (zeros_len - 1);
+    it->data = (unsigned char *)PORT_Alloc(it->len);
     if (it->data == NULL) {
-        return;
+        it->len = 0;
+        return (-1);
     }
 
-    it->len = len;
-    PORT_Memcpy(it->data, bb + (sizeof(bb) - len), len);
+    PORT_Memcpy(it->data, bb + (zeros_len - 1), it->len);
+    return(it->len);
 }
 #endif /* XMLSEC_NO_X509 */
 

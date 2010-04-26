@@ -335,21 +335,77 @@ xmlSecNssX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
+static CERTName *
+xmlSecNssGetCertName(const xmlChar * name) {
+    xmlChar *tmp, *name2;
+    xmlChar *p;
+    CERTName *res;
+
+    xmlSecAssert2(name != NULL, NULL);
+
+    /* nss doesn't support emailAddress (see https://bugzilla.mozilla.org/show_bug.cgi?id=561689)
+     * This code is not bullet proof and may produce incorrect results if someone has
+     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix 
+     * this problem.
+     */
+    name2 = xmlStrdup(name);
+    if(name2 == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "xmlStrlen(name)=%d",
+                    xmlStrlen(name));
+        return(NULL);
+    }
+    while( (p = (xmlChar*)xmlStrstr(name2, BAD_CAST "emailAddress=")) != NULL) {
+        memcpy(p, "        mail=", 13);
+    }
+
+    tmp = xmlSecNssX509NameRead(name2, xmlStrlen(name2));
+    if(tmp == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecNssX509NameRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "name2=\"%s\"",
+                    xmlSecErrorsSafeString(name2));
+        xmlFree(name2);
+        return(NULL);
+    }
+
+    res = CERT_AsciiToName((char*)tmp);
+    if (name == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "CERT_AsciiToName",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "ascii=\"%s\", error code=%d",
+                    xmlSecErrorsSafeString((char*)tmp),
+                    PORT_GetError());
+        PORT_Free(tmp);
+        xmlFree(name2);
+        return(NULL);
+    }
+
+    PORT_Free(tmp);
+    return(res);
+}
+
 static CERTCertificate*
 xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                       xmlChar *issuerSerial, xmlChar *ski) {
     CERTCertificate *cert = NULL;
-    xmlChar         *p = NULL;
     CERTName *name = NULL;
     SECItem *nameitem = NULL;
     PRArenaPool *arena = NULL;
 
     if (subjectName != NULL) {
-        p = xmlSecNssX509NameRead(subjectName, xmlStrlen(subjectName));
-        if (p == NULL) {
+        name = xmlSecNssGetCertName(subjectName);
+        if (name == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "xmlSecNssX509NameRead",
+                        "xmlSecNssGetCertName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "subject=%s",
                         xmlSecErrorsSafeString(subjectName));
@@ -366,16 +422,6 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
             goto done;
         }
 
-        name = CERT_AsciiToName((char*)p);
-        if (name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CERT_AsciiToName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
-        }
-
         nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
                                       SEC_ASN1_GET(CERT_NameTemplate));
         if (nameitem == NULL) {
@@ -383,7 +429,7 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "SEC_ASN1EncodeItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                                                "error code=%d", PORT_GetError());
+                        "error code=%d", PORT_GetError());
             goto done;
         }
 
@@ -394,11 +440,11 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
     if((issuerName != NULL) && (issuerSerial != NULL)) {
         CERTIssuerAndSN issuerAndSN;
 
-        p = xmlSecNssX509NameRead(issuerName, xmlStrlen(issuerName));
-        if (p == NULL) {
+        name = xmlSecNssGetCertName(issuerName);
+        if (name == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "xmlSecNssX509NameRead",
+                        "xmlSecNssGetCertName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "issuer=%s",
                         xmlSecErrorsSafeString(issuerName));
@@ -411,16 +457,6 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
                         NULL,
                         "PORT_NewArena",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
-        }
-
-        name = CERT_AsciiToName((char*)p);
-        if (name == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "CERT_AsciiToName",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             goto done;
         }
@@ -473,9 +509,6 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
     }
 
 done:
-    if (p != NULL) {
-        PORT_Free(p);
-    }
     if (arena != NULL) {
         PORT_FreeArena(arena, PR_FALSE);
     }

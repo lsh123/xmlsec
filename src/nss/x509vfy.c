@@ -43,6 +43,15 @@
 typedef struct _xmlSecNssX509StoreCtx           xmlSecNssX509StoreCtx,
                                                 *xmlSecNssX509StoreCtxPtr;
 struct _xmlSecNssX509StoreCtx {
+    /* Two uses:
+     *
+     * 1) Just keeping a reference to destroy later.
+     *
+     * 2) NSS doesn't update it's cache correctly when new certs are added 
+     *          https://bugzilla.mozilla.org/show_bug.cgi?id=211051
+     *    we use this list to perform search ourselves.
+     */
+
     CERTCertList* certsList; /* just keeping a reference to destroy later */
 };
 
@@ -90,9 +99,10 @@ static xmlSecKeyDataStoreKlass xmlSecNssX509StoreKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
-static CERTCertificate*         xmlSecNssX509FindCert(xmlChar *subjectName,
-                                                      xmlChar *issuerName,
-                                                      xmlChar *issuerSerial,
+static CERTCertificate*         xmlSecNssX509FindCert(CERTCertList* certsList,
+                                                      const xmlChar *subjectName,
+                                                      const xmlChar *issuerName,
+                                                      const xmlChar *issuerSerial,
                                                       xmlChar *ski);
 
 
@@ -134,7 +144,7 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
     ctx = xmlSecNssX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
-    return(xmlSecNssX509FindCert(subjectName, issuerName, issuerSerial, ski));
+    return xmlSecNssX509FindCert(ctx->certsList, subjectName, issuerName, issuerSerial, ski);
 }
 
 /**
@@ -149,7 +159,7 @@ xmlSecNssX509StoreFindCert(xmlSecKeyDataStorePtr store, xmlChar *subjectName,
  */
 CERTCertificate *
 xmlSecNssX509StoreVerify(xmlSecKeyDataStorePtr store, CERTCertList* certs,
-                             xmlSecKeyInfoCtx* keyInfoCtx) {
+                         xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecNssX509StoreCtxPtr ctx;
     CERTCertListNode*       head;
     CERTCertificate*       cert = NULL;
@@ -394,15 +404,19 @@ xmlSecNssGetCertName(const xmlChar * name) {
 }
 
 static CERTCertificate*
-xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
-                      xmlChar *issuerSerial, xmlChar *ski) {
+xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
+                      const xmlChar *issuerName, const xmlChar *issuerSerial,
+                      xmlChar *ski) {
     CERTCertificate *cert = NULL;
     CERTName *name = NULL;
     SECItem *nameitem = NULL;
+    CERTCertListNode* head;
+    SECItem tmpitem;
+    SECStatus status;
     PRArenaPool *arena = NULL;
     int rv;
 
-    if (subjectName != NULL) {
+    if ((cert == NULL) && (subjectName != NULL)) {
         name = xmlSecNssGetCertName(subjectName);
         if (name == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -436,10 +450,9 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
         }
 
         cert = CERT_FindCertByName(CERT_GetDefaultCertDB(), nameitem);
-        goto done;
     }
 
-    if((issuerName != NULL) && (issuerSerial != NULL)) {
+    if((cert == NULL) && (issuerName != NULL) && (issuerSerial != NULL)) {
         CERTIssuerAndSN issuerAndSN;
         PRUint64 issuerSN = 0;
 
@@ -503,10 +516,9 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
 
         cert = CERT_FindCertByIssuerAndSN(CERT_GetDefaultCertDB(), &issuerAndSN);
         SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
-        goto done;
     }
 
-    if(ski != NULL) {
+    if((cert == NULL) && (ski != NULL)) {
         SECItem subjKeyID;
         int len;
 
@@ -523,9 +535,50 @@ xmlSecNssX509FindCert(xmlChar *subjectName, xmlChar *issuerName,
 
         memset(&subjKeyID, 0, sizeof(subjKeyID));
         subjKeyID.data = ski;
-        subjKeyID.len = xmlStrlen(ski);
+        subjKeyID.len = len;
         cert = CERT_FindCertBySubjectKeyID(CERT_GetDefaultCertDB(),
                                            &subjKeyID);
+
+        /* try to search in our list - NSS doesn't update it's cache correctly
+         * when new certs are added https://bugzilla.mozilla.org/show_bug.cgi?id=211051
+         */
+        if((cert == NULL) && (certsList != NULL)) {
+
+            for(head = CERT_LIST_HEAD(certsList);
+                (cert == NULL) && !CERT_LIST_END(head, certsList) &&
+                (head != NULL) && (head->cert != NULL);
+                head = CERT_LIST_NEXT(head)
+            ) {
+
+                memset(&tmpitem, 0, sizeof(tmpitem));
+                status = CERT_FindSubjectKeyIDExtension(head->cert, &tmpitem);
+                if (status != SECSuccess)  {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "CERT_FindSubjectKeyIDExtension",
+                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                                "ski");
+                    SECITEM_FreeItem(&tmpitem, PR_FALSE);
+                    goto done;
+                }
+
+                if((tmpitem.len == subjKeyID.len) &&
+                   (memcmp(tmpitem.data, subjKeyID.data, subjKeyID.len) == 0)
+                ) {
+                    cert = CERT_DupCertificate(head->cert);
+                    if(cert == NULL) {
+                        xmlSecError(XMLSEC_ERRORS_HERE,
+                                    NULL,
+                                    "CERT_DupCertificate",
+                                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                                    "error code=%d", PORT_GetError());
+                        SECITEM_FreeItem(&tmpitem, PR_FALSE);
+                        goto done;
+                    }
+                }
+                SECITEM_FreeItem(&tmpitem, PR_FALSE);
+            }
+        }
     }
 
 done:

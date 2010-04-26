@@ -51,116 +51,132 @@ struct _xmlSecNssKeyTransportCtx {
         xmlSecBufferPtr                 material ; /* to be encrypted/decrypted material */
 } ;
 
-static int              xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform);
-static void     xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform);
-static int      xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,
+static int      xmlSecNssKeyTransportInitialize         (xmlSecTransformPtr transform);
+static void     xmlSecNssKeyTransportFinalize           (xmlSecTransformPtr transform);
+static int      xmlSecNssKeyTransportSetKeyReq          (xmlSecTransformPtr transform,
                                                          xmlSecKeyReqPtr keyReq);
-static int      xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform,
+static int      xmlSecNssKeyTransportSetKey             (xmlSecTransformPtr transform,
                                                          xmlSecKeyPtr key);
-static int      xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform,
+static int      xmlSecNssKeyTransportExecute            (xmlSecTransformPtr transform,
                                                          int last,
                                                          xmlSecTransformCtxPtr transformCtx);
 
 static int
 xmlSecNssKeyTransportCheckId(xmlSecTransformPtr transform) {
+
 #ifndef XMLSEC_NO_RSA
-        if( xmlSecTransformCheckId( transform, xmlSecNssTransformRsaPkcs1Id )
-/* RSA OAEP is not supported by NSS yet */
-#ifdef TODO
-        || xmlSecTransformCheckId( transform, xmlSecNssTransformRsaOaepId )
-#endif /* TODO: RSA OAEP is not supported by NSS yet */
-
-        ) {
-
-                return(1);
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaPkcs1Id)) {
+        return(1);
     }
 #endif /* XMLSEC_NO_RSA */
 
+/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
+   it doesn't implement the SHA1 OAEP PKCS we need
+
+   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
+*/
+#ifdef XMLSEC_NSS_RSA_OAEP_TODO
+#ifndef XMLSEC_NO_RSA
+    if(xmlSecTransformCheckId(transform, xmlSecNssTransformRsaOaepId)) {
+        return (1);
+    }
+#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
+
+    /* not found */
     return(0);
 }
 
 static int
 xmlSecNssKeyTransportInitialize(xmlSecTransformPtr transform) {
-        xmlSecNssKeyTransportCtxPtr context ;
+    xmlSecNssKeyTransportCtxPtr context ;
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
 
-        context = xmlSecNssKeyTransportGetCtx( transform ) ;
-        xmlSecAssert2( context != NULL , -1 ) ;
+    context = xmlSecNssKeyTransportGetCtx( transform ) ;
+    xmlSecAssert2( context != NULL , -1 ) ;
+
+    /* initialize context */
+    memset(context, 0, sizeof(xmlSecNssKeyTransportCtx));
 
 #ifndef XMLSEC_NO_RSA
-        if( transform->id == xmlSecNssTransformRsaPkcs1Id ) {
-                context->cipher = CKM_RSA_PKCS ;
-                context->keyId = xmlSecNssKeyDataRsaId ;
-/* RSA OAEP is not supported by NSS yet */
-#ifdef TODO
-        } else if( transform->id == xmlSecNssTransformRsaOaepId ) {
-                context->cipher = CKM_RSA_PKCS_OAEP ;
-                context->keyId = xmlSecNssKeyDataRsaId ;
-#endif /* TODO: RSA OAEP is not supported by NSS yet */
-        } else
-#endif          /* XMLSEC_NO_RSA */
+    if(transform->id == xmlSecNssTransformRsaPkcs1Id) {
+        context->cipher = CKM_RSA_PKCS;
+        context->keyId = xmlSecNssKeyDataRsaId;
+    } else
+#endif /* XMLSEC_NO_RSA */
 
-        if( 1 ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
+/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
+   it doesn't implement the SHA1 OAEP PKCS we need
+
+   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
+*/
+#ifdef XMLSEC_NSS_RSA_OAEP_TODO
+#ifndef XMLSEC_NO_RSA
+    if(transform->id == xmlSecNssTransformRsaOaepId) {
+        context->cipher = CKM_RSA_PKCS_OAEP;
+        context->keyId = xmlSecNssKeyDataRsaId;
+    } else
+#endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
+
+    /* not found */
+    {
+        xmlSecError(XMLSEC_ERRORS_HERE ,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL ,
                     XMLSEC_ERRORS_R_CRYPTO_FAILED ,
                     XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1);
-        }
-
-        context->pubkey = NULL ;
-        context->prikey = NULL ;
-        context->material = NULL ;
+        return(-1);
+    }
 
     return(0);
 }
 
 static void
 xmlSecNssKeyTransportFinalize(xmlSecTransformPtr transform) {
-        xmlSecNssKeyTransportCtxPtr context ;
+    xmlSecNssKeyTransportCtxPtr context ;
 
     xmlSecAssert(xmlSecNssKeyTransportCheckId(transform));
     xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize));
 
-        context = xmlSecNssKeyTransportGetCtx( transform ) ;
-        xmlSecAssert( context != NULL ) ;
+    context = xmlSecNssKeyTransportGetCtx( transform ) ;
+    xmlSecAssert( context != NULL ) ;
 
-        if( context->pubkey != NULL ) {
-                SECKEY_DestroyPublicKey( context->pubkey ) ;
-                context->pubkey = NULL ;
-        }
+    if( context->pubkey != NULL ) {
+        SECKEY_DestroyPublicKey( context->pubkey ) ;
+        context->pubkey = NULL ;
+    }
 
-        if( context->prikey != NULL ) {
-                SECKEY_DestroyPrivateKey( context->prikey ) ;
-                context->prikey = NULL ;
-        }
+    if( context->prikey != NULL ) {
+        SECKEY_DestroyPrivateKey( context->prikey ) ;
+        context->prikey = NULL ;
+    }
 
-        if( context->material != NULL ) {
-                xmlSecBufferDestroy(context->material);
-                context->material = NULL ;
-        }
+    if( context->material != NULL ) {
+        xmlSecBufferDestroy(context->material);
+        context->material = NULL ;
+    }
 }
 
 static int
 xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-        xmlSecNssKeyTransportCtxPtr context ;
+    xmlSecNssKeyTransportCtxPtr context ;
 
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-        context = xmlSecNssKeyTransportGetCtx( transform ) ;
-        xmlSecAssert2( context != NULL , -1 ) ;
+    context = xmlSecNssKeyTransportGetCtx( transform ) ;
+    xmlSecAssert2( context != NULL , -1 ) ;
 
     keyReq->keyId        = context->keyId;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-                keyReq->keyUsage = xmlSecKeyUsageEncrypt;
+        keyReq->keyUsage = xmlSecKeyUsageEncrypt;
         keyReq->keyType  = xmlSecKeyDataTypePublic;
     } else {
-                keyReq->keyUsage = xmlSecKeyUsageDecrypt;
+        keyReq->keyUsage = xmlSecKeyUsageDecrypt;
         keyReq->keyType  = xmlSecKeyDataTypePrivate;
     }
 
@@ -169,62 +185,62 @@ xmlSecNssKeyTransportSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr ke
 
 static int
 xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-        xmlSecNssKeyTransportCtxPtr context = NULL ;
-        xmlSecKeyDataPtr        keyData = NULL ;
-        SECKEYPublicKey*        pubkey = NULL ;
-        SECKEYPrivateKey*       prikey = NULL ;
+    xmlSecNssKeyTransportCtxPtr context = NULL ;
+    xmlSecKeyDataPtr        keyData = NULL ;
+    SECKEYPublicKey*        pubkey = NULL ;
+    SECKEYPrivateKey*       prikey = NULL ;
 
     xmlSecAssert2(xmlSecNssKeyTransportCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecNssKeyTransportSize), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
     xmlSecAssert2(key != NULL, -1);
 
-        context = xmlSecNssKeyTransportGetCtx( transform ) ;
-        if( (context == NULL) || (context->keyId == NULL) || (context->pubkey != NULL) ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
+    context = xmlSecNssKeyTransportGetCtx( transform ) ;
+    if( (context == NULL) || (context->keyId == NULL) || (context->pubkey != NULL) ) {
+        xmlSecError( XMLSEC_ERRORS_HERE ,
                     xmlSecErrorsSafeString( xmlSecTransformGetName( transform ) ) ,
                     "xmlSecNssKeyTransportGetCtx" ,
                     XMLSEC_ERRORS_R_CRYPTO_FAILED ,
                     XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1);
-        }
-        xmlSecAssert2( xmlSecKeyCheckId( key, context->keyId ), -1 ) ;
+        return(-1);
+    }
+    xmlSecAssert2( xmlSecKeyCheckId( key, context->keyId ), -1 ) ;
 
-        keyData = xmlSecKeyGetValue( key ) ;
-        if( keyData == NULL ) {
-                xmlSecError( XMLSEC_ERRORS_HERE ,
+    keyData = xmlSecKeyGetValue( key ) ;
+    if( keyData == NULL ) {
+        xmlSecError( XMLSEC_ERRORS_HERE ,
                     xmlSecErrorsSafeString( xmlSecKeyGetName( key ) ) ,
                     "xmlSecKeyGetValue" ,
                     XMLSEC_ERRORS_R_CRYPTO_FAILED ,
                     XMLSEC_ERRORS_NO_MESSAGE ) ;
-                return(-1);
-        }
+        return(-1);
+    }
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-                if( ( pubkey = xmlSecNssPKIKeyDataGetPubKey( keyData ) ) == NULL ) {
-                        xmlSecError( XMLSEC_ERRORS_HERE ,
+        if( ( pubkey = xmlSecNssPKIKeyDataGetPubKey( keyData ) ) == NULL ) {
+                xmlSecError( XMLSEC_ERRORS_HERE ,
                             xmlSecErrorsSafeString( xmlSecKeyDataGetName( keyData ) ) ,
                             "xmlSecNssPKIKeyDataGetPubKey" ,
                             XMLSEC_ERRORS_R_CRYPTO_FAILED ,
                             XMLSEC_ERRORS_NO_MESSAGE ) ;
-                        return(-1);
-                }
+                return(-1);
+        }
 
-                context->pubkey = pubkey ;
-        } else {
-                if( ( prikey = xmlSecNssPKIKeyDataGetPrivKey( keyData ) ) == NULL ) {
-                        xmlSecError( XMLSEC_ERRORS_HERE ,
+        context->pubkey = pubkey ;
+    } else {
+        if( ( prikey = xmlSecNssPKIKeyDataGetPrivKey( keyData ) ) == NULL ) {
+                xmlSecError( XMLSEC_ERRORS_HERE ,
                             xmlSecErrorsSafeString( xmlSecKeyDataGetName( keyData ) ) ,
                             "xmlSecNssPKIKeyDataGetPrivKey" ,
                             XMLSEC_ERRORS_R_CRYPTO_FAILED ,
                             XMLSEC_ERRORS_NO_MESSAGE ) ;
-                        return(-1);
-                }
-
-                context->prikey = prikey ;
+                return(-1);
         }
 
-        return(0) ;
+        context->prikey = prikey ;
+    }
+
+    return(0) ;
 }
 
 /**
@@ -422,7 +438,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
                 SECItem                         wrpskv ;
 
                 /* Create template symmetric key from material */
-        slot = ctx->pubkey->pkcs11Slot;
+                slot = ctx->pubkey->pkcs11Slot;
                 if( slot == NULL ) {
                         slot = PK11_GetBestSlot( ctx->cipher, NULL ) ;
                         if( slot == NULL ) {
@@ -494,7 +510,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
                 SECItem*                        keyItem ;
 
                 /* pay attention to mechanism */
-        symKey = PK11_PubUnwrapSymKey( ctx->prikey, &oriskv, ctx->cipher, CKA_UNWRAP, 0 );
+                symKey = PK11_PubUnwrapSymKey( ctx->prikey, &oriskv, ctx->cipher, CKA_UNWRAP, 0 );
                 if( symKey == NULL ) {
                         xmlSecError( XMLSEC_ERRORS_HERE ,
                                 NULL ,
@@ -517,7 +533,7 @@ xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr 
                         return(-1);
                 }
 
-        keyItem = PK11_GetKeyData( symKey );
+                keyItem = PK11_GetKeyData( symKey );
                 if( keyItem == NULL ) {
                         xmlSecError( XMLSEC_ERRORS_HERE ,
                                 NULL ,
@@ -566,7 +582,7 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
         xmlSecAssert2( xmlSecNssKeyTransportCheckId( transform ), -1 ) ;
         xmlSecAssert2( xmlSecTransformCheckSize( transform, xmlSecNssKeyTransportSize ), -1 ) ;
-    xmlSecAssert2( ( transform->operation == xmlSecTransformOperationEncrypt ) || ( transform->operation == xmlSecTransformOperationDecrypt ), -1 ) ;
+        xmlSecAssert2( ( transform->operation == xmlSecTransformOperationEncrypt ) || ( transform->operation == xmlSecTransformOperationDecrypt ), -1 ) ;
         xmlSecAssert2( transformCtx != NULL , -1 ) ;
 
         context = xmlSecNssKeyTransportGetCtx( transform ) ;
@@ -656,29 +672,28 @@ xmlSecNssKeyTransportExecute(xmlSecTransformPtr transform, int last, xmlSecTrans
 
 
 #ifndef XMLSEC_NO_RSA
-
 static xmlSecTransformKlass xmlSecNssRsaPkcs1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssKeyTransportSize,                          /* xmlSecSize objSize */
+    xmlSecNssKeyTransportSize,                  /* xmlSecSize objSize */
 
     xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
     xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecNssKeyTransportInitialize,                    /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssKeyTransportFinalize,                      /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssKeyTransportInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKeyTransportSetKeyReq,                     /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssKeyTransportSetKey,                        /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssKeyTransportExecute,                       /* xmlSecTransformExecuteMethod execute; */
+    xmlSecNssKeyTransportExecute,               /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -695,33 +710,37 @@ xmlSecTransformId
 xmlSecNssTransformRsaPkcs1GetKlass(void) {
     return(&xmlSecNssRsaPkcs1Klass);
 }
+#endif /* XMLSEC_NO_RSA */
 
+/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
+   it doesn't implement the SHA1 OAEP PKCS we need
 
-/* RSA OAEP is not supported by NSS yet */
-#ifdef TODO
-
+   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
+*/
+#ifdef XMLSEC_NSS_RSA_OAEP_TODO
+#ifndef XMLSEC_NO_RSA
 static xmlSecTransformKlass xmlSecNssRsaOaepKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecNssKeyTransportSize,                          /* xmlSecSize objSize */
+    xmlSecNssKeyTransportSize,                  /* xmlSecSize objSize */
 
     xmlSecNameRsaOaep,                          /* const xmlChar* name; */
     xmlSecHrefRsaOaep,                          /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecNssKeyTransportInitialize,                    /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecNssKeyTransportFinalize,                      /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecNssKeyTransportInitialize,            /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecNssKeyTransportFinalize,              /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecNssKeyTransportSetKeyReq,                     /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecNssKeyTransportSetKey,                        /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecNssKeyTransportSetKeyReq,             /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecNssKeyTransportSetKey,                /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecNssKeyTransportExecute,                       /* xmlSecTransformExecuteMethod execute; */
+    xmlSecNssKeyTransportExecute,               /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -738,7 +757,6 @@ xmlSecTransformId
 xmlSecNssTransformRsaOaepGetKlass(void) {
     return(&xmlSecNssRsaOaepKlass);
 }
-#endif /* TODO: RSA OAEP is not supported by NSS yet */
-
 #endif /* XMLSEC_NO_RSA */
+#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
 

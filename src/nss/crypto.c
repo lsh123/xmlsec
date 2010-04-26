@@ -166,10 +166,14 @@ xmlSecCryptoGetFunctions_nss(void) {
 
     gXmlSecNssFunctions->transformRsaPkcs1GetKlass      = xmlSecNssTransformRsaPkcs1GetKlass;
 
-/* RSA OAEP is not supported by NSS yet */
-#ifdef TODO
+/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
+   it doesn't implement the SHA1 OAEP PKCS we need
+
+   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
+*/
+#ifdef XMLSEC_NSS_RSA_OAEP_TODO
     gXmlSecNssFunctions->transformRsaOaepGetKlass       = xmlSecNssTransformRsaOaepGetKlass;
-#endif /* TODO: RSA OAEP is not supported by NSS yet */
+#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
 
 #endif /* XMLSEC_NO_RSA */
 

@@ -336,7 +336,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha384GetKlass(void)
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
-
 /**
  * xmlSecNssTransformRsaPkcs1Id:
  *
@@ -346,19 +345,21 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaSha512GetKlass(void)
         xmlSecNssTransformRsaPkcs1GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaPkcs1GetKlass(void);
 
+/* aleksey, April 2010: NSS 3.12.6 has CKM_RSA_PKCS_OAEP algorithm but
+   it doesn't implement the SHA1 OAEP PKCS we need
 
-/* RSA OAEP is not supported by NSS yet */
-#ifdef TODO
+   https://bugzilla.mozilla.org/show_bug.cgi?id=158747
+*/
+#ifdef XMLSEC_NSS_RSA_OAEP_TODO
 /**
  * xmlSecNssTransformRsaOaepId:
  *
  * The RSA OAEP key transport transform klass.
  */
-
 #define xmlSecNssTransformRsaOaepId \
         xmlSecNssTransformRsaOaepGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaOaepGetKlass(void);
-#endif /* TODO: RSA OAEP is not supported by NSS yet */
+#endif /* XMLSEC_NSS_RSA_OAEP_TODO */
 
 #endif /* XMLSEC_NO_RSA */
 

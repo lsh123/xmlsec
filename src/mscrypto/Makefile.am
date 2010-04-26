@@ -25,6 +25,7 @@ libxmlsec1_mscrypto_la_SOURCES =\
 	ciphers.c \
 	crypto.c \
 	digests.c \
+	hmac.c \
 	keysstore.c \
 	kt_rsa.c \
 	signatures.c \

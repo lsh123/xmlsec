@@ -80,6 +80,13 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Sha2[] = {
     { NULL, 0 }
 };
 
+static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {
+    { MS_STRONG_PROV,                                   PROV_RSA_FULL },
+    { MS_ENHANCED_PROV,                                 PROV_RSA_FULL },
+    { MS_DEF_PROV,                                      PROV_RSA_FULL },
+    { NULL, 0 }
+};
+
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
     { MAGPRO_CSP,                                       PROV_MAGPRO_GOST },
     { CRYPTOPRO_CSP,                                    PROV_CRYPTOPRO_GOST },
@@ -88,6 +95,13 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
 
 static int
 xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformMd5Id)) {
+        return(1);
+    }
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha1Id)) {
         return(1);
@@ -134,9 +148,16 @@ xmlSecMSCryptoDigestInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecMSCryptoDigestCtx));
 
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformMd5Id)) {
+        ctx->alg_id = CALG_MD5;
+        ctx->providers = xmlSecMSCryptoProviderInfo_Md5;
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformSha1Id)) {
-        ctx->alg_id = CALG_SHA;
+        ctx->alg_id = CALG_SHA1;
         ctx->providers = xmlSecMSCryptoProviderInfo_Sha1;
     } else
 #endif /* XMLSEC_NO_SHA1 */
@@ -203,7 +224,9 @@ static void xmlSecMSCryptoDigestFinalize(xmlSecTransformPtr transform) {
     if(ctx->mscHash != 0) {
         CryptDestroyHash(ctx->mscHash);
     }
-    CryptReleaseContext(ctx->provider, 0);
+    if(ctx->provider != 0) {
+        CryptReleaseContext(ctx->provider, 0);
+    }
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoDigestCtx));
 }
@@ -375,6 +398,50 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
     return(0);
 }
 
+
+#ifndef XMLSEC_NO_MD5
+/******************************************************************************
+ *
+ * MD5
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecMSCryptoMd5Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* size_t klassSize */
+    xmlSecMSCryptoDigestSize,                   /* size_t objSize */
+
+    xmlSecNameMd5,                              /* const xmlChar* name; */
+    xmlSecHrefMd5,                              /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+    xmlSecMSCryptoDigestInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoDigestFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoDigestVerify,                 /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformMd5GetKlass:
+ *
+ * SHA-1 digest transform klass.
+ *
+ * Returns: pointer to SHA-1 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformMd5GetKlass(void) {
+    return(&xmlSecMSCryptoMd5Klass);
+}
+#endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
 /******************************************************************************

@@ -70,18 +70,11 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 
 #ifndef XMLSEC_NO_RSA
     gXmlSecMSCryptoFunctions->keyDataRsaGetKlass                = xmlSecMSCryptoKeyDataRsaGetKlass;
-
-#ifndef XMLSEC_NO_SHA256
-    gXmlSecMSCryptoFunctions->transformRsaSha256GetKlass       = xmlSecMSCryptoTransformRsaSha256GetKlass;
-#endif /* XMLSEC_NO_SHA256 */
-#ifndef XMLSEC_NO_SHA384
-    gXmlSecMSCryptoFunctions->transformRsaSha384GetKlass       = xmlSecMSCryptoTransformRsaSha384GetKlass;
-#endif /* XMLSEC_NO_SHA384 */
-#ifndef XMLSEC_NO_SHA512
-    gXmlSecMSCryptoFunctions->transformRsaSha512GetKlass       = xmlSecMSCryptoTransformRsaSha512GetKlass;
-#endif /* XMLSEC_NO_SHA512 */
-
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_HMAC
+    gXmlSecMSCryptoFunctions->keyDataHmacGetKlass               = xmlSecMSCryptoKeyDataHmacGetKlass;
+#endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_DSA
     gXmlSecMSCryptoFunctions->keyDataDsaGetKlass                = xmlSecMSCryptoKeyDataDsaGetKlass;
@@ -117,7 +110,27 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_SMD5
+    gXmlSecMSCryptoFunctions->transformRsaMd5GetKlass          = xmlSecMSCryptoTransformRsaMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
     gXmlSecMSCryptoFunctions->transformRsaSha1GetKlass          = xmlSecMSCryptoTransformRsaSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCryptoFunctions->transformRsaSha256GetKlass       = xmlSecMSCryptoTransformRsaSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecMSCryptoFunctions->transformRsaSha384GetKlass       = xmlSecMSCryptoTransformRsaSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecMSCryptoFunctions->transformRsaSha512GetKlass       = xmlSecMSCryptoTransformRsaSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
     gXmlSecMSCryptoFunctions->transformRsaPkcs1GetKlass         = xmlSecMSCryptoTransformRsaPkcs1GetKlass;
 #endif /* XMLSEC_NO_RSA */
 
@@ -141,6 +154,36 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecMSCryptoFunctions->transformSha512GetKlass          = xmlSecMSCryptoTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
+
+
+    /******************************* MD5 ********************************/
+#ifndef XMLSEC_NO_MD5
+    gXmlSecMSCryptoFunctions->transformMd5GetKlass             = xmlSecMSCryptoTransformMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
+    /******************************* HMAC ********************************/
+#ifndef XMLSEC_NO_HMAC
+#ifndef XMLSEC_NO_MD5
+    gXmlSecMSCryptoFunctions->transformHmacMd5GetKlass         = xmlSecMSCryptoTransformHmacMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecMSCryptoFunctions->transformHmacSha1GetKlass        = xmlSecMSCryptoTransformHmacSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecMSCryptoFunctions->transformHmacSha256GetKlass      = xmlSecMSCryptoTransformHmacSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecMSCryptoFunctions->transformHmacSha384GetKlass      = xmlSecMSCryptoTransformHmacSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecMSCryptoFunctions->transformHmacSha512GetKlass      = xmlSecMSCryptoTransformHmacSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+#endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_GOST
     gXmlSecMSCryptoFunctions->transformGostR3411_94GetKlass             = xmlSecMSCryptoTransformGostR3411_94GetKlass;

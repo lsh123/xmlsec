@@ -1,3 +1,7 @@
+2010-04-26  Aleksey Sanin  <aleksey@aleksey.com>
+	* Added support for HMAC with MD5, SHA1, SHA256/384/512 in xmlsec-mscrypto
+	* Added support for MD5 RSA/MD5 in xmlsec-mscrypto
+
 2010-04-25  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added support for SHA256/384/512 for digest, HMAC and RSA in xmlsec-nss
 	(requires nss 3.8 + nspr 4.3 or greater)

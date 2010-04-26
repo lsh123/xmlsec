@@ -38,6 +38,18 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoKeysStoreSave     (xmlSecK
                                                                          const char *filename,
                                                                          xmlSecKeyDataType type);
 
+
+/* keys */
+XMLSEC_CRYPTO_EXPORT BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey   (HCRYPTPROV hProv,
+                                                                         HCRYPTKEY *hPrivateKey);
+
+XMLSEC_CRYPTO_EXPORT BOOL               xmlSecMSCryptoImportPlainSessionBlob (HCRYPTPROV hProv,
+                                                                         HCRYPTKEY hPrivateKey,
+                                                                         ALG_ID dwAlgId,
+                                                                         LPBYTE pbKeyMaterial,
+                                                                         DWORD dwKeyMaterial,
+                                                                         HCRYPTKEY *hSessionKey);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

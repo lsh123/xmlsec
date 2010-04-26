@@ -262,6 +262,7 @@ XMLSEC_MSCRYPTO_OBJS = \
 	$(XMLSEC_MSCRYPTO_INTDIR)\crypto.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\ciphers.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\digests.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\hmac.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\symkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\strings.obj \
@@ -275,6 +276,7 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\crypto.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\ciphers.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\digests.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\hmac.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\symkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\strings.obj \

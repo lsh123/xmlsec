@@ -83,32 +83,51 @@ static int xmlSecMSCryptoSignatureCheckId(xmlSecTransformPtr transform) {
     }
 #endif /* XMLSEC_NO_DSA */
 
-#ifndef XMLSEC_NO_GOST
-    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
-        return(1);
-    }
-#endif /* XMLSEC_NO_GOST*/
-
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
         return(1);
-    }
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
        return(1);
-    }
+    } else
 #endif /* XMLSEC_NO_SHA256 */
+
 #ifndef XMLSEC_NO_SHA384
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha384Id)) {
        return(1);
-    }
+    } else
 #endif /* XMLSEC_NO_SHA384 */
+
 #ifndef XMLSEC_NO_SHA512
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha512Id)) {
        return(1);
-    }
+    } else
 #endif /* XMLSEC_NO_SHA512 */
+
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformGost2001GostR3411_94Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST*/
+
+
+    /* not found */
+    {
+        return(0);
+    }
 
     return(0);
 }
@@ -124,11 +143,29 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoSignatureCtx));
 
+
+#ifndef XMLSEC_NO_DSA
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id)) {
+        ctx->digestAlgId    = CALG_SHA1;
+        ctx->keyId          = xmlSecMSCryptoKeyDataDsaId;
+    } else
+#endif /* XMLSEC_NO_DSA */
+
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
+        ctx->digestAlgId    = CALG_MD5;
+        ctx->keyId          = xmlSecMSCryptoKeyDataRsaId;
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
         ctx->digestAlgId    = CALG_SHA1;
         ctx->keyId          = xmlSecMSCryptoKeyDataRsaId;
     } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
@@ -160,14 +197,8 @@ static int xmlSecMSCryptoSignatureInitialize(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_GOST*/
 
-#ifndef XMLSEC_NO_DSA
-    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformDsaSha1Id)) {
-        ctx->digestAlgId    = CALG_SHA1;
-        ctx->keyId          = xmlSecMSCryptoKeyDataDsaId;
-    } else
-#endif /* XMLSEC_NO_DSA */
-
-    if(1) {
+    /* not found */
+    {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
@@ -308,9 +339,18 @@ static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
     /* Reverse the sig - Windows stores integers as octet streams in little endian
      * order.  The I2OSP algorithm used by XMLDSig to store integers is big endian */
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+    if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
+        ConvertEndian(data, tmpBuf, dataSize);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
         ConvertEndian(data, tmpBuf, dataSize);
     } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
     if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
@@ -529,9 +569,18 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
             /* Reverse the sig - Windows stores integers as octet streams in little endian
              * order.  The I2OSP algorithm used by XMLDSig to store integers is big endian */
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+            if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaMd5Id)) {
+                ConvertEndian(tmpBuf, outBuf, outSize);
+            } else
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha1Id)) {
                 ConvertEndian(tmpBuf, outBuf, outSize);
             } else
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
             if (xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaSha256Id)) {
@@ -550,7 +599,6 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
                 ConvertEndian(tmpBuf, outBuf, outSize);
             } else
 #endif /* XMLSEC_NO_SHA512 */
-
 
 #endif /* XMLSEC_NO_RSA*/
 
@@ -599,6 +647,54 @@ xmlSecMSCryptoSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
 
 
 #ifndef XMLSEC_NO_RSA
+
+#ifndef XMLSEC_NO_MD5
+/****************************************************************************
+ *
+ * RSA-MD5 signature transform
+ *
+ ***************************************************************************/
+static xmlSecTransformKlass xmlSecMSCryptoRsaMd5Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameRsaMd5,                          /* const xmlChar* name; */
+    xmlSecHrefRsaMd5,                          /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecMSCryptoSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecMSCryptoSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecMSCryptoSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformRsaMd5GetKlass:
+ *
+ * The RSA-MD5 signature transform klass.
+ *
+ * Returns: RSA-MD5 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformRsaMd5GetKlass(void) {
+    return(&xmlSecMSCryptoRsaMd5Klass);
+}
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_SHA1
 /****************************************************************************
  *
  * RSA-SHA1 signature transform
@@ -642,6 +738,7 @@ xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha1GetKlass(void) {
     return(&xmlSecMSCryptoRsaSha1Klass);
 }
+#endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
 /****************************************************************************

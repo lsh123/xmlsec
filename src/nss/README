@@ -124,3 +124,5 @@ Aleksey: Not sure that I understand this point but thats what Tej wrote.
 that needs to be removed in xmlSecNssX509FindCert function (x509vfy.c):
 
 https://bugzilla.mozilla.org/show_bug.cgi?id=561689
+
+12) CRLs from xml document support is not working at all.

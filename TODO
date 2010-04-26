@@ -28,9 +28,8 @@ merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
 01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1
 01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
 
-** Failed tests
+** Failed tests due to no support for CRLs in XML document
 
-aleksey-xmldsig-01/x509data-sn-test
 merlin-xmldsig-twenty-three/signature-x509-crt-crl
 
 * xmlsec-mscrypto (April 25, 2010)

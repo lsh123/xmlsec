@@ -12,7 +12,7 @@ Tests status
 
 * xmlsec-nss (April 25, 2010 using NSS 3.12.6)
 
-** Skipped tests (missing transforms: RIPEMD160, SHA224, RSA/OAEP, GOST)
+** Skipped tests due to missing transforms: RIPEMD160, SHA224, RSA/OAEP, GOST
 
 aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160
 aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64

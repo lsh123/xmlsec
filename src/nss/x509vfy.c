@@ -370,7 +370,7 @@ xmlSecNssGetCertName(const xmlChar * name) {
         return(NULL);
     }
     while( (p = (xmlChar*)xmlStrstr(name2, BAD_CAST "emailAddress=")) != NULL) {
-        memcpy(p, "        mail=", 13);
+        memcpy(p, "           E=", 13);
     }
 
     tmp = xmlSecNssX509NameRead(name2, xmlStrlen(name2));
@@ -428,14 +428,16 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
             goto done;
         }
 
-        arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
-        if (arena == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "PORT_NewArena",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
+        if(arena == NULL) {
+            arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
+            if (arena == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "PORT_NewArena",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                goto done;
+            }
         }
 
         nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
@@ -467,14 +469,16 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
             goto done;
         }
 
-        arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
-        if (arena == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        "PORT_NewArena",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
+        if(arena == NULL) {
+            arena = PORT_NewArena(DER_DEFAULT_CHUNKSIZE);
+            if (arena == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "PORT_NewArena",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                goto done;
+            }
         }
 
         nameitem = SEC_ASN1EncodeItem(arena, NULL, (void *)name,
@@ -493,7 +497,6 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
         issuerAndSN.derIssuer.data = nameitem->data;
         issuerAndSN.derIssuer.len = nameitem->len;
 
-
         /* TBD: serial num can be arbitrarily long */
         if(PR_sscanf((char *)issuerSerial, "%llu", &issuerSN) != 1) {
             xmlSecError(XMLSEC_ERRORS_HERE,
@@ -501,6 +504,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
                         "PR_sscanf",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "error code=%d", PR_GetError());
+            SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
             goto done;
         }
 
@@ -511,6 +515,7 @@ xmlSecNssX509FindCert(CERTCertList* certsList, const xmlChar *subjectName,
                         "xmlSecNssNumToItem",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "error code=%d", PR_GetError());
+            SECITEM_FreeItem(&issuerAndSN.serialNumber, PR_FALSE);
             goto done;
         }
 

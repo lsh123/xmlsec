@@ -1994,7 +1994,7 @@ xmlSecNssASN1IntegerWrite(SECItem *num) {
      * NSS bug http://bugzilla.mozilla.org/show_bug.cgi?id=212864 is fixed
      */
     for(ii = num->len; ii > 0; --ii, shift += 8) {
-        val |= (num->data[ii - 1]) << shift;
+        val |= ((PRUint64)num->data[ii - 1]) << shift;
     }
 
     res = (xmlChar*)xmlMalloc(resLen + 1);

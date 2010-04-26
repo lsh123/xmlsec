@@ -162,6 +162,7 @@ xmlSecCryptoGetFunctions_openssl(void) {
 
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
+
 #ifndef XMLSEC_NO_MD5
     gXmlSecOpenSSLFunctions->transformRsaMd5GetKlass            = xmlSecOpenSSLTransformRsaMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */

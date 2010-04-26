@@ -148,6 +148,10 @@ xmlSecCryptoGetFunctions_nss(void) {
     /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
 
+#ifndef XMLSEC_NO_MD5
+    gXmlSecNssFunctions->transformRsaMd5GetKlass        = xmlSecNssTransformRsaMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecNssFunctions->transformRsaSha1GetKlass       = xmlSecNssTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
@@ -190,6 +194,11 @@ xmlSecCryptoGetFunctions_nss(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecNssFunctions->transformSha512GetKlass        = xmlSecNssTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
+
+    /******************************* MD5 ********************************/
+#ifndef XMLSEC_NO_MD5
+    gXmlSecNssFunctions->transformMd5GetKlass           = xmlSecNssTransformMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
 
 
     /**

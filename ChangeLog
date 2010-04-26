@@ -1,6 +1,7 @@
 2010-04-25  Aleksey Sanin  <aleksey@aleksey.com>
-	* Added support for SHA256/384/512 for digest, HMAC and RSA 
+	* Added support for SHA256/384/512 for digest, HMAC and RSA in xmlsec-nss
 	(requires nss 3.8 + nspr 4.3 or greater)
+	* Added support for MD5 for digest and RSA in xmlsec-nss
 
 2010-04-24  Aleksey Sanin  <aleksey@aleksey.com>
 	* Fix PK_CONFIG problem (reported by Roumen)

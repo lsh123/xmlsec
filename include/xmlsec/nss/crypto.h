@@ -292,6 +292,17 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformHmacSha512GetKlass(void
         xmlSecNssKeyDataRsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecNssKeyDataRsaGetKlass     (void);
 
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecNssTransformRsaMd5Id:
+ *
+ * The RSA-MD5 signature transform klass.
+ */
+#define xmlSecNssTransformRsaMd5Id  \
+        xmlSecNssTransformRsaMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformRsaMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecNssTransformRsaSha1Id:
@@ -427,6 +438,24 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha384GetKlass(void);
         xmlSecNssTransformSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
+
+/********************************************************************
+ *
+ * Md5 transforms
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_MD5
+/**
+ * xmlSecNssTransformMd5Id:
+ *
+ * The MD5 digest transform klass.
+ */
+#define xmlSecNssTransformMd5Id \
+        xmlSecNssTransformMd5GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformMd5GetKlass(void);
+#endif /* XMLSEC_NO_MD5 */
+
+
 
 
 #ifdef __cplusplus

@@ -1,6 +1,42 @@
-- Unify password callback (one of parameters: filename)
-- get key usage from certs
-- extend keys manager to return more info when key is found or not found
-(what cheks were performed, etc.)
+General
+-------------------------------------------------
 
-    
+* Unify password callback (one of parameters: filename)
+* Get key usage from certs
+* Extend keys manager to return more info when key is found or not found 
+  (what cheks were performed, etc.)
+
+
+Tests status
+-------------------------------------------------
+
+* xmlsec-nss (April 25, 2010)
+
+** Skipped tests (missing transforms: RIPEMD160, SHA224, RSA/OAEP, GOST)
+
+aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160
+aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64
+aleksey-xmldsig-01/enveloping-sha224-hmac-sha224
+aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64
+aleksey-xmldsig-01/enveloping-ripemd160-rsa-ripemd160
+aleksey-xmldsig-01/enveloping-sha224-rsa-sha224
+aleksey-xmldsig-01/enveloped-gost
+merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes
+merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
+01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1
+01-phaos-xmlenc-3/enc-element-aes128-kt-rsa_oaep_sha1
+01-phaos-xmlenc-3/enc-element-aes192-kt-rsa_oaep_sha1
+01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
+
+** Failed tests
+
+aleksey-xmldsig-01/x509data-test
+aleksey-xmldsig-01/x509data-sn-test
+merlin-xmldsig-twenty-three/signature-x509-is
+merlin-xmldsig-twenty-three/signature-x509-ski
+phaos-xmldsig-three/signature-rsa-manifest-x509-data-ski
+merlin-xmldsig-twenty-three/signature-x509-crt-crl
+
+* xmlsec-mscrypto (April 25, 2010)
+
+

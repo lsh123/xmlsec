@@ -617,11 +617,7 @@ xmlSecNssKeyDataX509Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
             return(-1);
         }
 
-        /* TBD: SEC_DupCrl isn't exported by NSS yet */
-        /*crlDst = SEC_DupCrl(crlSrc);*/
-        crlDst = crlSrc;
-        PR_AtomicIncrement(&(crlSrc->referenceCount));
-
+        crlDst = SEC_DupCrl(crlSrc);
         if(crlDst == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(dst)),

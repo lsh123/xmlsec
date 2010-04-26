@@ -63,16 +63,7 @@ that is missing from xmlsec-nss.
 
 4) There are 2 fixes in NSS that will be rolled into the next release (3.9).
 They are:
-    - http://bugzilla.mozilla.org/show_bug.cgi?id=208194
-    Once available, need to change src/nss/x509.c. Replace
-        PR_AtomicIncrement(&(crlSrc->referenceCount));
-    with
-        SEC_DupCrl(crlSrc);
-    (there is a comment there that already has the correct line)
 
-    - http://bugzilla.mozilla.org/show_bug.cgi?id=211384
-    No changes required. The "NSS_Shutdown failed" in some of the
-    current tests will go away
 
 xmlsec bug: http://bugzilla.gnome.org/show_bug.cgi?id=118630
 

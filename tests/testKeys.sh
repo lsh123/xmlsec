@@ -63,8 +63,8 @@ execKeysTest() {
 
     if [ -n "$req_key_data" ] ; then
 	printf "    Checking $req_key_data key data presense                      "
-        echo "$xmlsec_app check-key-data $req_key_data" >> $logfile
-	$xmlsec_app check-key-data $req_key_data >> $logfile 2>> $logfile
+        echo "$xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $logfile
+	$xmlsec_app check-key-data $xmlsec_params $req_key_data >> $logfile 2>> $logfile
 	res=$?
 	if [ $res = 0 ]; then
     	    echo "   OK"	    

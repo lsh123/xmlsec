@@ -68,8 +68,8 @@ execEncTest() {
 
     if [ -n "$req_transforms" ] ; then
 	printf "    Checking required transforms                         "
-        echo "$xmlsec_app check-transforms $req_transforms" >> $logfile
-	$xmlsec_app check-transforms $req_transforms >> $logfile 2>> $logfile
+        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $logfile
+	$xmlsec_app check-transforms $xmlsec_params $req_transforms >> $logfile 2>> $logfile
 	res=$?
 	if [ $res = 0 ]; then
     	    echo "   OK"	    

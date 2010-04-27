@@ -47,6 +47,8 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(cons
 XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (const xmlChar* str);
 XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
 
+XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertUnicodeToUtf8  (LPCWSTR str);
+
 
 /**
  * Crypto Providers

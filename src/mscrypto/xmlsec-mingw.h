@@ -140,6 +140,16 @@ BOOL            WINAPI CertStrToNameW(DWORD,LPCWSTR,DWORD,void*,BYTE*,DWORD*,LPC
 #else
 #define CertStrToName  CertStrToNameA
 #endif
+
+DWORD          WINAPI CertNameToStrA(DWORD,PCERT_NAME_BLOB,DWORD,LPCSTR,DWORD);
+DWORD          WINAPI CertNameToStrW(DWORD,PCERT_NAME_BLOB,DWORD,LPCWSTR,DWORD);
+#ifdef UNICODE
+#define CertNameToStr  CertNameToStrA
+#else
+#define CertNameToStr  CertNameToStrW
+#endif
+
+
 BOOL            WINAPI CertCompareCertificateName(DWORD,PCERT_NAME_BLOB,PCERT_NAME_BLOB);
 
 BOOL            WINAPI CertAddStoreToCollection(HCERTSTORE,HCERTSTORE,DWORD,DWORD);

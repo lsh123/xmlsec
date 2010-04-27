@@ -21,9 +21,11 @@ IMPORTS
   CertGetNameStringA@24				= crypt32.CertGetNameStringA
   CertGetPublicKeyLength@8			= crypt32.CertGetPublicKeyLength
   CertNameToStrA@20				= crypt32.CertNameToStrA
+  CertNameToStrW@20				= crypt32.CertNameToStrW
   CertOpenStore@20				= crypt32.CertOpenStore
   CertOpenSystemStoreA@8			= crypt32.CertOpenSystemStoreA
   CertStrToNameA@28				= crypt32.CertStrToNameA
+  CertStrToNameW@28				= crypt32.CertStrToNameW
   CertVerifySubjectCertificateContext@12	= crypt32.CertVerifySubjectCertificateContext
   CryptAcquireCertificatePrivateKey@24		= crypt32.CryptAcquireCertificatePrivateKey
   CryptImportPublicKeyInfo@16			= crypt32.CryptImportPublicKeyInfo

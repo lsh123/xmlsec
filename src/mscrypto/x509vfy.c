@@ -1155,6 +1155,48 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
     return (res);
 }
 
+static LPWSTR 
+xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
+    xmlChar *name2 = NULL;
+    xmlChar *p = NULL;
+    LPWSTR res = NULL;
+
+    xmlSecAssert2(name != 0, NULL);
+
+    /* MSCrypto doesn't support "emailAddress" attribute (see NSS as well). 
+     * This code is not bullet proof and may produce incorrect results if someone has
+     * "emailAddress=" string in one of the fields, but it is best I can suggest to fix 
+     * this problem.
+     */
+    name2 = xmlStrdup(name);
+    if(name2 == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "xmlStrlen(name)=%d",
+                    xmlStrlen(name));
+        return(NULL);
+    }
+    while( (p = (xmlChar*)xmlStrstr(name2, BAD_CAST "emailAddress=")) != NULL) {
+        memcpy(p, "           E=", 13);
+    }
+
+    /* get unicode name */
+    res = xmlSecMSCryptoConvertUtf8ToUnicode(name2);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecMSCryptoConvertUtf8ToUnicode",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+
+    /* done */
+    return(res);
+}
+
 static PCCERT_CONTEXT
 xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                 const xmlChar *subjectName,
@@ -1170,11 +1212,11 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         LPWSTR wcSubjectName = NULL;
 
         /* get unicode subject name */
-        wcSubjectName = xmlSecMSCryptoConvertUtf8ToUnicode(subjectName);
+        wcSubjectName = xmlSecMSCryptoX509GetCertName(subjectName);
         if(wcSubjectName == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "xmlSecMSCryptoConvertUtf8ToUnicode",
+                        "xmlSecMSCryptoX509GetCertName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "wcSubjectName");
             return(NULL);
@@ -1232,11 +1274,11 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
         }
 
         /* get issuer name */
-        wcIssuerName = xmlSecMSCryptoConvertUtf8ToUnicode(issuerName);
+        wcIssuerName = xmlSecMSCryptoX509GetCertName(issuerName);
         if(wcIssuerName == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "xmlSecMSCryptoConvertUtf8ToUnicode",
+                        "xmlSecMSCryptoX509GetCertName",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         "wcIssuerName");
             xmlSecBnFinalize(&issuerSerialBn);
@@ -1250,56 +1292,6 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
                         X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
 
         xmlFree(wcIssuerName);
-
-        /* aleksey: for some unknown to me reasons, mscrypto wants Email
-        * instead of emailAddress. This code is not bullet proof and may
-        * produce incorrect results if someone has "emailAddress=" string
-        * in one of the fields, but it is best I can suggest to fix this problem.
-        * Also see xmlSecMSCryptoX509NameWrite function.
-        */
-        if(pCert == NULL) {
-            xmlChar * issuerName2 = NULL;
-            LPWSTR wcIssuerName2 = NULL;
-            xmlChar * p;
-
-            /* replace "emailAddress=" with "Email" */
-            issuerName2 = xmlStrdup(issuerName);
-            if(issuerName2 == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            NULL,
-                            XMLSEC_ERRORS_R_MALLOC_FAILED,
-                            "xmlStrlen(issuerName)=%d",
-                            xmlStrlen(issuerName));
-                xmlSecBnFinalize(&issuerSerialBn);
-                return(NULL);
-            }
-            while( (p = (xmlChar*)xmlStrstr(issuerName2, BAD_CAST "emailAddress=")) != NULL) {
-                memcpy(p, "       Email=", 13);
-            }
-
-            /* get issuer name */
-            wcIssuerName2 = xmlSecMSCryptoConvertUtf8ToUnicode(issuerName2);
-            if(wcIssuerName2 == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlSecMSCryptoConvertUtf8ToUnicode",
-                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "wcIssuerName2");
-                xmlFree(issuerName2);
-                xmlSecBnFinalize(&issuerSerialBn);
-                return(NULL);
-            }
-
-            /* search */
-            pCert = xmlSecMSCryptoX509FindCertByIssuer(store,
-                            wcIssuerName2,
-                            &issuerSerialBn,
-                            X509_ASN_ENCODING | PKCS_7_ASN_ENCODING);
-
-            xmlFree(issuerName2);
-            xmlFree(wcIssuerName2);
-        }
 
         /* cleanup */
         xmlSecBnFinalize(&issuerSerialBn);

@@ -426,7 +426,7 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
     if(ret <= 0) {
         return(NULL);
     }
-    len = ret;
+    len = ret + 1;
 
     /* allocate buffer */
     res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
@@ -435,15 +435,60 @@ xmlSecMSCryptoConvertUtf8ToUnicode(const xmlChar* str) {
                     NULL,
                     NULL,
                     XMLSEC_ERRORS_R_MALLOC_FAILED,
-                XMLSEC_ERRORS_NO_MESSAGE);
+                    "size=%d", sizeof(WCHAR) * len);
         return(NULL);
     }
 
     /* convert */
     ret = MultiByteToWideChar(CP_UTF8, 0, str, -1, res, len);
     if(ret <= 0) {
-            xmlFree(res);
-            return(NULL);
+        xmlFree(res);
+        return(NULL);
+    }
+
+    /* done */
+    return(res);
+}
+
+/**
+ * xmlSecMSCryptoConvertUnicodeToUtf8:
+ * @str:         the string to convert.
+ *
+ * Converts input string from Unicode to UTF8.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+xmlChar* 
+xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
+    xmlChar * res = NULL;
+    int len;
+    int ret;
+
+    xmlSecAssert2(str != NULL, NULL);
+
+    /* call WideCharToMultiByte first to get the buffer size */
+    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, NULL, 0, NULL, NULL);
+    if(ret <= 0) {
+        return(NULL);
+    }
+    len = ret + 1;
+
+    /* allocate buffer */
+    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", sizeof(xmlChar) * len);
+        return(NULL);
+    }
+
+    /* convert */
+    ret = WideCharToMultiByte(CP_UTF8, 0, str, -1, res, len, NULL, NULL);
+    if(ret <= 0) {
+        xmlFree(res);
+        return(NULL);
     }
 
     /* done */

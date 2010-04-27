@@ -1881,68 +1881,56 @@ xmlSecMSCryptoX509CrlBase64DerWrite(PCCRL_CONTEXT crl, int base64LineWrap) {
 
 static xmlChar*
 xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
+    LPWSTR resW = NULL;
     xmlChar *res = NULL;
-    char *str;
     DWORD csz;
 
 
     xmlSecAssert2(nm->pbData != NULL, NULL);
     xmlSecAssert2(nm->cbData > 0, NULL);
 
-    csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, NULL, 0);
-    str = (char *)xmlMalloc(csz);
-    if (NULL == str) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlMalloc",
-                    XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return (NULL);
-    }
-
-    csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, str, csz);
-    if (csz < 1) {
+    csz = CertNameToStrW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, NULL, 0);
+    if(csz <= 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CertNameToStr",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        xmlFree(str);
         return(NULL);
     }
 
-    /* aleksey: this is a hack, but mscrypto can not read E= flag and wants Email= instead.
-     * don't ask me how is it possible not to read something you wrote yourself but also
-     * see comment in the xmlSecMSCryptoX509FindCert function.
-     */
-    if(strncmp(str, "E=", 2) == 0) {
-        res = xmlMalloc(strlen(str) + 13 + 1);
-        if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlMalloc",
-                            XMLSEC_ERRORS_R_MALLOC_FAILED,
-                            "size=%d",
-                    strlen(str) + 13 + 1);
-            xmlFree(str);
-            return(NULL);
-        }
-
-        memcpy(res, "emailAddress=", 13);
-        strcpy(res + 13, BAD_CAST (str + 2));
-    } else {
-        res = xmlStrdup(BAD_CAST str);
-        if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                            NULL,
-                            "xmlStrdup",
-                            XMLSEC_ERRORS_R_MALLOC_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-            xmlFree(str);
-            return(NULL);
-        }
+    resW = (LPWSTR)xmlMalloc(sizeof(WCHAR) * (csz + 1));
+    if (NULL == resW) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlMalloc",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", sizeof(WCHAR) * (csz + 1));
+        return (NULL);
     }
-    xmlFree(str);
+
+    csz = CertNameToStrW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, resW, csz + 1);
+    if (csz <= 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "CertNameToStr",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(resW);
+        return(NULL);
+    }
+
+    res = xmlSecMSCryptoConvertUnicodeToUtf8(resW);
+    if (NULL == res) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecMSCryptoConvertUnicodeToUtf8",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(resW);
+        return(NULL);
+    }
+
     return(res);
 }
 

@@ -65,7 +65,7 @@ void xmlSecGnuTLSHmacSetMinOutputLength(int min_length)
 typedef struct _xmlSecGnuTLSHmacCtx             xmlSecGnuTLSHmacCtx, *xmlSecGnuTLSHmacCtxPtr;
 struct _xmlSecGnuTLSHmacCtx {
     int                 digest;
-    GcryMDHd            digestCtx;
+    gcry_md_hd_t        digestCtx;
     xmlSecByte          dgst[XMLSEC_GNUTLS_MAX_HMAC_SIZE / 8];
     xmlSecSize          dgstSize;       /* dgst size in bits */
 };
@@ -106,9 +106,7 @@ static int      xmlSecGnuTLSHmacExecute                 (xmlSecTransformPtr tran
 static int
 xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSHmacCtxPtr ctx;
-#ifndef XMLSEC_GNUTLS_OLD
     gpg_err_code_t ret;
-#endif /* XMLSEC_GNUTLS_OLD */
 
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
@@ -132,13 +130,8 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-#ifndef XMLSEC_GNUTLS_OLD
     ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(ret != GPG_ERR_NO_ERROR) {
-#else /* XMLSEC_GNUTLS_OLD */
-    ctx->digestCtx = gcry_md_open(ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
-    if(ctx->digestCtx == NULL) {
-#endif /* XMLSEC_GNUTLS_OLD */
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_open",

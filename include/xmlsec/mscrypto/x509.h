@@ -97,8 +97,14 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrust
  * Util functions
  */
 XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject     (HCERTSTORE store,
-                                                                                 const LPWSTR wcSubject,
+                                                                                 const LPTSTR wcSubject,
                                                                                  DWORD dwCertEncodingType);
+
+XMLSEC_CRYPTO_EXPORT xmlChar *          xmlSecMSCryptoX509GetNameString         (PCCERT_CONTEXT pCertContext,
+                                                                                 DWORD dwType,
+                                                                                 DWORD dwFlags,
+                                                                                 void *pvTypePara);
+
 
 #endif /* XMLSEC_NO_X509 */
 

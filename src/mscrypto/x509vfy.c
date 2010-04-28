@@ -199,7 +199,7 @@ xmlSecMSCryptoCheckRevocation(HCERTSTORE hStore, PCCERT_CONTEXT pCert) {
 
 static void
 xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cert, DWORD flags) {
-    LPSTR subject;
+    xmlChar * subject = NULL;
     DWORD dwSize;
 
     xmlSecAssert(xmlSecKeyDataStoreCheckId(store, xmlSecMSCryptoX509StoreId));
@@ -207,19 +207,14 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
     xmlSecAssert(flags != 0);
 
     /* get certs subject */
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
-    subject = xmlMalloc(dwSize + 1);
+    subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
     if(subject == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
+            "xmlSecMSCryptoX509GetNameString",
             NULL,
-            NULL,
-            XMLSEC_ERRORS_R_MALLOC_FAILED,
+            XMLSEC_ERRORS_R_XMLSEC_FAILED,
             XMLSEC_ERRORS_NO_MESSAGE);
         return;
-    }
-    memset(subject, 0, dwSize + 1);
-    if(dwSize > 0) {
-        CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
     }
 
     /* print error */
@@ -256,6 +251,7 @@ xmlSecMSCryptoX509StoreCertError(xmlSecKeyDataStorePtr store, PCCERT_CONTEXT cer
                 XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
                 XMLSEC_ERRORS_NO_MESSAGE);
     }
+
     xmlFree(subject);
 }
 
@@ -896,21 +892,21 @@ xmlSecMSCryptoX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Returns: a pointer to newly allocated string or NULL if an error occurs.
  */
 static BYTE*
-xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwStrType, DWORD* len) {
+xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPTSTR pszX500, DWORD dwStrType, DWORD* len) {
     BYTE* str = NULL;
-    LPCWSTR ppszError = NULL;
+    LPCTSTR ppszError = NULL;
 
     xmlSecAssert2(pszX500 != NULL, NULL);
     xmlSecAssert2(len != NULL, NULL);
 
-    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType,
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, NULL, len, &ppszError)) {
         /* this might not be an error, string might just not exist */
-                DWORD dw = GetLastError();
+        DWORD dw = GetLastError();
         return(NULL);
     }
 
-    str = (BYTE *)xmlMalloc((*len) + 1);
+    str = (BYTE *)xmlMalloc(sizeof(TCHAR) * ((*len) + 1));
     if(str == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -921,7 +917,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwSt
     }
     memset(str, 0, (*len) + 1);
 
-    if (!CertStrToNameW(dwCertEncodingType, pszX500, dwStrType,
+    if (!CertStrToName(dwCertEncodingType, pszX500, dwStrType,
                         NULL, str, len, NULL)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -947,7 +943,7 @@ xmlSecMSCryptoCertStrToName(DWORD dwCertEncodingType, LPWSTR pszX500, DWORD dwSt
  * Returns: cert handle on success or NULL otherwise
  */
 PCCERT_CONTEXT
-xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DWORD dwCertEncodingType) {
+xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPTSTR wcSubject, DWORD dwCertEncodingType) {
     PCCERT_CONTEXT res = NULL;
     CERT_NAME_BLOB cnb;
     BYTE* bdata;
@@ -1053,7 +1049,7 @@ xmlSecMSCryptoX509FindCertBySubject(HCERTSTORE store, const LPWSTR wcSubject, DW
  * Returns: cert handle on success or NULL otherwise
  */
 static PCCERT_CONTEXT
-xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
+xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
                                    xmlSecBnPtr issuerSerialBn, DWORD dwCertEncodingType) {
 
     PCCERT_CONTEXT res = NULL;
@@ -1155,11 +1151,11 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPWSTR wcIssuer,
     return (res);
 }
 
-static LPWSTR 
+static LPTSTR 
 xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     xmlChar *name2 = NULL;
     xmlChar *p = NULL;
-    LPWSTR res = NULL;
+    LPTSTR res = NULL;
 
     xmlSecAssert2(name != 0, NULL);
 
@@ -1182,12 +1178,12 @@ xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
         memcpy(p, "           E=", 13);
     }
 
-    /* get unicode name */
-    res = xmlSecMSCryptoConvertUtf8ToUnicode(name2);
+    /* get name */
+    res = xmlSecMSCryptoConvertUtf8ToTstr(name2);
     if(res == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecMSCryptoConvertUtf8ToUnicode",
+                    "xmlSecMSCryptoConvertUtf8ToTstr",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(NULL);
@@ -1209,7 +1205,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
     xmlSecAssert2(store != 0, NULL);
 
     if((pCert == NULL) && (NULL != subjectName)) {
-        LPWSTR wcSubjectName = NULL;
+        LPTSTR wcSubjectName = NULL;
 
         /* get unicode subject name */
         wcSubjectName = xmlSecMSCryptoX509GetCertName(subjectName);
@@ -1234,7 +1230,7 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
 
     if((pCert == NULL) && (NULL != issuerName) && (NULL != issuerSerial)) {
         xmlSecBn issuerSerialBn;
-        LPWSTR wcIssuerName = NULL;
+        LPTSTR wcIssuerName = NULL;
 
         /* get serial number */
         ret = xmlSecBnInitialize(&issuerSerialBn, 0);
@@ -1339,6 +1335,74 @@ xmlSecMSCryptoX509FindCert(HCERTSTORE store,
     return(pCert);
 }
 
+
+/**
+ * xmlSecMSCryptoX509GetNameString:
+ * @pCertContext:   the pointer to cert
+ * @dwType:         the type (see CertGetNameString description in MSDN)
+ * @dwFlags:        the flags (see CertGetNameString description in MSDN)
+ * @pvTypePara:     the type parameter (see CertGetNameString description in MSDN)
+ *
+ * Gets the name string for certificate (see CertGetNameString description in MSDN).
+ *
+ * Returns: name string (should be freed with xmlFree) or NULL if failed.
+ */
+xmlChar *
+xmlSecMSCryptoX509GetNameString(PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara) {
+    LPTSTR name = NULL;
+    xmlChar * res = NULL;
+    DWORD dwSize;
+
+    xmlSecAssert2(pCertContext != NULL, NULL);
+
+    /* get size first */
+    dwSize = CertGetNameString(pCertContext, dwType, dwFlags, pvTypePara, NULL, 0);
+    if(dwSize <= 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "CertGetNameString",
+                    NULL,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return (NULL);
+    }
+
+    /* allocate buffer */
+    name = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (dwSize + 1));
+    if(name == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return (NULL);
+    }
+
+    /* actually get the name */
+    dwSize = CertGetNameString(pCertContext, dwType, dwFlags, pvTypePara, name, dwSize);
+    if(dwSize <= 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "CertGetNameString",
+                    NULL,
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(name);
+        return (NULL);
+    }
+
+    res = xmlSecMSCryptoConvertTstrToUtf8(name);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "xmlSecMSCryptoConvertTstrToUtf8",
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(name);
+        return (NULL);
+    }
+    /* done */
+    xmlFree(name);
+    return (res);
+}
 
 #endif /* XMLSEC_NO_X509 */
 

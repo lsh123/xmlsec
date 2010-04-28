@@ -33,7 +33,7 @@
 /* I don't see any other way then to use a global var to get the
  * config info to the mscrypto keysstore :(  WK
  */
-static char *gXmlSecMSCryptoAppCertStoreName = NULL;
+static LPTSTR gXmlSecMSCryptoAppCertStoreName = NULL;
 
 /**
  * xmlSecMSCryptoAppInit:
@@ -53,7 +53,7 @@ xmlSecMSCryptoAppInit(const char* config) {
      * then the default (MY)
      */
     if (NULL != config && strlen(config) > 0) {
-        if (gXmlSecMSCryptoAppCertStoreName) {
+        if (gXmlSecMSCryptoAppCertStoreName != NULL) {
             /* This should not happen, initialize twice */
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -63,7 +63,30 @@ xmlSecMSCryptoAppInit(const char* config) {
                         xmlSecErrorsSafeString(config));
             return (-1);
         }
+
+#ifdef UNICODE
+        gXmlSecMSCryptoAppCertStoreName = xmlSecMSCryptoConvertLocaleToUnicode(config);
+        if (gXmlSecMSCryptoAppCertStoreName == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        "xmlSecMSCryptoConvertLocaleToUnicode",
+                        NULL,
+                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        "config=%s",
+                        xmlSecErrorsSafeString(config));
+            return (-1);
+        }
+#else  /* UNICODE */
         gXmlSecMSCryptoAppCertStoreName = xmlStrdup(config);
+        if (gXmlSecMSCryptoAppCertStoreName == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        "xmlStrdup",
+                        NULL,
+                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        "config=%s",
+                        xmlSecErrorsSafeString(config));
+            return (-1);
+        }
+#endif /* UNICODE */
     }
 
     return(0);
@@ -95,7 +118,7 @@ xmlSecMSCryptoAppShutdown(void) {
  *
  * Returns: the MS Crypto certs name used by xmlsec-mscrypto.
  */
-const char*
+LPCTSTR
 xmlSecMSCryptoAppGetCertStoreName(void) {
     return(gXmlSecMSCryptoAppCertStoreName);
 }

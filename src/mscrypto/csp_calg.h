@@ -72,11 +72,23 @@
  *
  * @{
  */
-#define MAGPRO_CSP                  "MagPro CSP"
 #define PROV_MAGPRO_GOST            501
+#define MAGPRO_CSP_A                "MagPro CSP"
+#define MAGPRO_CSP_W                L"MagPro CSP"
+#ifdef UNICODE
+#define MAGPRO_CSP MAGPRO_CSP_W
+#else
+#define MAGPRO_CSP MAGPRO_CSP_A
+#endif
 
-#define CRYPTOPRO_CSP               "CryptoPro CSP"
 #define PROV_CRYPTOPRO_GOST         75
+#define CRYPTOPRO_CSP_A             "CryptoPro CSP"
+#define CRYPTOPRO_CSP_W             L"CryptoPro CSP"
+#ifdef UNICODE
+#define CRYPTOPRO_CSP CRYPTOPRO_CSP_W
+#else
+#define CRYPTOPRO_CSP CRYPTOPRO_CSP_A
+#endif
 
 /*! @} */
 /*! \defgroup PP_MAGPRO PP_MAGPRO

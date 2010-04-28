@@ -30,6 +30,7 @@ AUTOCONF = .\configure.txt
 #XMLSEC_MINOR_VERSION = 0 # set this to the right value.
 #XMLSEC_MICRO_VERSION = 0 # set this to the right value.
 #WITH_XMLSEC_DEBUG = 1
+#UNICODE = 1
 #DEBUG = 0
 #WITH_CRYPTO=openssl
 #WITH_CRYPTO=openssl
@@ -304,6 +305,10 @@ CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\"
 CFLAGS 			= $(CFLAGS) /D "HAVE_STDIO_H" /D "HAVE_STDLIB_H"
 CFLAGS 			= $(CFLAGS) /D "HAVE_STRING_H" /D "HAVE_CTYPE_H"
 CFLAGS 			= $(CFLAGS) /D "HAVE_MALLOC_H" /D "HAVE_MEMORY_H"
+
+!if "$(UNICODE)" == "1"
+CFLAGS 			= $(CFLAGS) /D "UNICODE" /D "_UNICODE"
+!endif
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"

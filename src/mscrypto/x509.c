@@ -1881,7 +1881,7 @@ xmlSecMSCryptoX509CrlBase64DerWrite(PCCRL_CONTEXT crl, int base64LineWrap) {
 
 static xmlChar*
 xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
-    LPWSTR resW = NULL;
+    LPTSTR resT = NULL;
     xmlChar *res = NULL;
     DWORD csz;
 
@@ -1889,7 +1889,7 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
     xmlSecAssert2(nm->pbData != NULL, NULL);
     xmlSecAssert2(nm->cbData > 0, NULL);
 
-    csz = CertNameToStrW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, NULL, 0);
+    csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, NULL, 0);
     if(csz <= 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1899,8 +1899,8 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
         return(NULL);
     }
 
-    resW = (LPWSTR)xmlMalloc(sizeof(WCHAR) * (csz + 1));
-    if (NULL == resW) {
+    resT = (LPTSTR)xmlMalloc(sizeof(TCHAR) * (csz + 1));
+    if (NULL == resT) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlMalloc",
@@ -1909,25 +1909,25 @@ xmlSecMSCryptoX509NameWrite(PCERT_NAME_BLOB nm) {
         return (NULL);
     }
 
-    csz = CertNameToStrW(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, resW, csz + 1);
+    csz = CertNameToStr(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, nm, CERT_X500_NAME_STR | CERT_NAME_STR_REVERSE_FLAG, resT, csz + 1);
     if (csz <= 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CertNameToStr",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        xmlFree(resW);
+        xmlFree(resT);
         return(NULL);
     }
 
-    res = xmlSecMSCryptoConvertUnicodeToUtf8(resW);
+    res = xmlSecMSCryptoConvertTstrToUtf8(resT);
     if (NULL == res) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecMSCryptoConvertUnicodeToUtf8",
+                    "xmlSecMSCryptoConvertTstrToUtf8",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
-        xmlFree(resW);
+        xmlFree(resT);
         return(NULL);
     }
 
@@ -2056,27 +2056,40 @@ static void
 xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
     PCRYPT_INTEGER_BLOB sn;
     unsigned int i;
-    LPSTR subject, issuer;
-    DWORD dwSize;
-
+    xmlChar * subject = NULL;
+    xmlChar * issuer = NULL;
+    
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    /* todo: add error checks */
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
-    subject = (LPSTR)xmlMalloc(dwSize);
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, NULL, 0);
-    issuer = (LPSTR)xmlMalloc(dwSize);
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, issuer, dwSize);
-
     fprintf(output, "=== X509 Certificate\n");
-    fprintf(output, "==== Subject Name: %s\n", subject);
-    fprintf(output, "==== Issuer Name: %s\n", issuer);
-    if (subject) xmlFree(subject);
-    if (issuer) xmlFree(issuer);
-    sn = &(cert->pCertInfo->SerialNumber);
 
+    /* subject */
+    subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
+    if(subject == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "xmlSecMSCryptoX509GetNameString",
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "subject");
+        goto done;
+    }
+    fprintf(output, "==== Subject Name: %s\n", subject);
+
+    /* issuer */
+    issuer = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL);
+    if(issuer == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "xmlSecMSCryptoX509GetNameString",
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "issuer");
+        goto done;
+    }
+    fprintf(output, "==== Issuer Name: %s\n", issuer);
+
+    /* serial number */
+    sn = &(cert->pCertInfo->SerialNumber);
     for (i = 0; i < sn->cbData; i++) {
         if (i != sn->cbData - 1) {
             fprintf(output, "%02x:", sn->pbData[i]);
@@ -2085,6 +2098,10 @@ xmlSecMSCryptoX509CertDebugDump(PCCERT_CONTEXT cert, FILE* output) {
         }
     }
     fprintf(output, "\n");
+
+done:
+    if (subject) xmlFree(subject);
+    if (issuer) xmlFree(issuer);
 }
 
 
@@ -2092,34 +2109,39 @@ static void
 xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
     PCRYPT_INTEGER_BLOB sn;
     unsigned int i;
-    LPSTR subject, issuer;
-    DWORD dwSize;
+    xmlChar * subject = NULL;
+    xmlChar * issuer = NULL;
 
     xmlSecAssert(cert != NULL);
     xmlSecAssert(output != NULL);
 
-    /* todo: add error checks */
-
     /* subject */
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, NULL, 0);
-    subject = (LPSTR)xmlMalloc(dwSize);
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL, subject, dwSize);
-
+    subject = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, 0, NULL);
+    if(subject == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "xmlSecMSCryptoX509GetNameString",
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "subject");
+        goto done;
+    }
     fprintf(output, "<SubjectName>");
     xmlSecPrintXmlString(output, BAD_CAST subject);
     fprintf(output, "</SubjectName>\n");
-    xmlFree(subject);
-
 
     /* issuer */
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, NULL, 0);
-    issuer = (LPSTR)xmlMalloc(dwSize);
-    dwSize = CertGetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL, issuer, dwSize);
-
+    issuer = xmlSecMSCryptoX509GetNameString(cert, CERT_NAME_RDN_TYPE, CERT_NAME_ISSUER_FLAG, NULL);
+    if(issuer == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    "xmlSecMSCryptoX509GetNameString",
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "issuer");
+        goto done;
+    }
     fprintf(output, "<IssuerName>");
     xmlSecPrintXmlString(output, BAD_CAST issuer);
     fprintf(output, "</IssuerName>\n");
-    xmlFree(issuer);
 
     /* serial */
     fprintf(output, "<SerialNumber>");
@@ -2132,6 +2154,10 @@ xmlSecMSCryptoX509CertDebugXmlDump(PCCERT_CONTEXT cert, FILE* output) {
         }
     }
     fprintf(output, "</SerialNumber>\n");
+
+done:
+    xmlFree(subject);
+    xmlFree(issuer);
 }
 
 

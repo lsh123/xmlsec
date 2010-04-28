@@ -26,7 +26,7 @@ extern "C" {
  */
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppInit                           (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppShutdown                       (void);
-XMLSEC_CRYPTO_EXPORT const char*xmlSecMSCryptoAppGetCertStoreName               (void);
+XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCryptoAppGetCertStoreName               (void);
 
 /**
  * Keys Manager

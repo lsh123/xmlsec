@@ -1,4 +1,8 @@
 2010-04-26  Aleksey Sanin  <aleksey@aleksey.com>
+	* Converted xmlsec-mscrypto to unicode and provided a compile time 
+	option to switch between unicode/non-unicode builds
+
+2010-04-26  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added support for HMAC with MD5, SHA1, SHA256/384/512 in xmlsec-mscrypto
 	* Added support for MD5 RSA/MD5 in xmlsec-mscrypto
 

@@ -43,7 +43,13 @@
 #  include "xmlsec-mingw.h"
 #endif
 
-#define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME     "MY"
+#define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_A     "MY"
+#define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_W     L"MY"
+#ifdef UNICODE
+#define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_W
+#else  /* UNICODE */
+#define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_A
+#endif /* UNICODE */
 
 /****************************************************************************
  *
@@ -305,10 +311,10 @@ xmlSecMSCryptoKeysStoreFinalize(xmlSecKeyStorePtr store) {
 static PCCERT_CONTEXT
 xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
                                 xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    const char* storeName;
+    LPCTSTR storeName;
     HCERTSTORE hStoreHandle = NULL;
     PCCERT_CONTEXT pCertContext = NULL;
-    LPWSTR wcName = NULL;
+    LPTSTR wcName = NULL;
 
     xmlSecAssert2(xmlSecKeyStoreCheckId(store, xmlSecMSCryptoKeysStoreId), NULL);
     xmlSecAssert2(name != NULL, NULL);
@@ -331,7 +337,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
     }
 
     /* convert name to unicode */
-    wcName = xmlSecMSCryptoConvertUtf8ToUnicode(name);
+    wcName = xmlSecMSCryptoConvertUtf8ToTstr(name);
     if(wcName == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecKeyStoreGetName(store)),
@@ -388,7 +394,7 @@ xmlSecMSCryptoKeysStoreFindCert(xmlSecKeyStorePtr store, const xmlChar* name,
             }
 
             /* Compare FriendlyName to name */
-            if (!wcscmp(wcName, (const wchar_t *)pbFriendlyName)) {
+            if (!lstrcmp(wcName, (LPCTSTR)pbFriendlyName)) {
               pCertContext = pCertCtxIter;
               xmlFree(pbFriendlyName);
               break;

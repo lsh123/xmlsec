@@ -28,7 +28,14 @@
 #  include "xmlsec-mingw.h"
 #endif
 
-#define XMLSEC_CONTAINER_NAME "xmlsec-key-container"
+#define XMLSEC_CONTAINER_NAME_A "xmlsec-key-container"
+#define XMLSEC_CONTAINER_NAME_W L"xmlsec-key-container"
+#ifdef UNICODE
+#define XMLSEC_CONTAINER_NAME XMLSEC_CONTAINER_NAME_W
+#else
+#define XMLSEC_CONTAINER_NAME XMLSEC_CONTAINER_NAME_A
+#endif
+
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecMSCryptoFunctions = NULL;
 
@@ -363,6 +370,8 @@ xmlSecMSCryptoGenerateRandom(xmlSecBufferPtr buffer, size_t size) {
     return(0);
 }
 
+#define XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE       4096
+
 /**
  * xmlSecMSCryptoErrorsDefaultCallback:
  * @file:               the error location file name (__FILE__ macro).
@@ -380,29 +389,52 @@ xmlSecMSCryptoErrorsDefaultCallback(const char* file, int line, const char* func
                                 const char* errorObject, const char* errorSubject,
                                 int reason, const char* msg) {
     DWORD dwError;
-    LPVOID lpMsgBuf;
-    xmlChar buf[500];
+    TCHAR errorT[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+    WCHAR errorW[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+    CHAR  errorUTF8[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+    xmlChar buf[XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE];
+    DWORD rc;
+    int ret;
 
     dwError = GetLastError();
-    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                  FORMAT_MESSAGE_FROM_SYSTEM |
-                  FORMAT_MESSAGE_IGNORE_INSERTS,
+    rc = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
                   NULL,
                   dwError,
                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), /* Default language */
-                  (LPTSTR) &lpMsgBuf,
-                  0,
+                  errorT,
+                  XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE,
                   NULL);
+    
+#ifdef UNICODE
+    if(rc <= 0) {
+        wcscpy_s(errorT, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, L"");
+    }
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorT, -1, errorUTF8, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, NULL, NULL);
+    if(ret <= 0) {
+        strcpy_s(errorUTF8, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, "");
+    }
+#else /* UNICODE */
+    if(rc <= 0) {
+        strcpy_s(errorT, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, "");
+    }
+    ret = MultiByteToWideChar(CP_ACP, 0, errorT, -1, errorW, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE);
+    if(ret <= 0) {
+        wcscpy_s(errorW, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, L"");
+    }
+    ret = WideCharToMultiByte(CP_UTF8, 0, errorW, -1, errorUTF8, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, NULL, NULL);
+    if(ret <= 0) {
+        strcpy_s(errorUTF8, XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE, "");
+    }
+#endif /* UNICODE */
+
     if((msg != NULL) && ((*msg) != '\0')) {
-        xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "%s;last error=%d (0x%08x);last error msg=%s", msg, dwError, dwError, (LPTSTR)lpMsgBuf);
+        xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "%s;last error=%d (0x%08x);last error msg=%s", msg, dwError, dwError, errorUTF8);
     } else {
-        xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "last error=%d (0x%08x);last error msg=%s", dwError, dwError, (LPTSTR)lpMsgBuf);
+        xmlSecStrPrintf(buf, sizeof(buf), BAD_CAST "last error=%d (0x%08x);last error msg=%s", dwError, dwError, errorUTF8);
     }
     xmlSecErrorsDefaultCallback(file, line, func,
                 errorObject, errorSubject,
                 reason, (char*)buf);
-
-    LocalFree(lpMsgBuf);
 }
 
 /**
@@ -505,39 +537,183 @@ xmlSecMSCryptoConvertUnicodeToUtf8(LPCWSTR str) {
  */
 LPWSTR
 xmlSecMSCryptoConvertLocaleToUnicode(const char* str) {
-        LPWSTR res = NULL;
-        int len;
-        int ret;
+    LPWSTR res = NULL;
+    int len;
+    int ret;
 
     xmlSecAssert2(str != NULL, NULL);
 
-        /* call MultiByteToWideChar first to get the buffer size */
-        ret = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
-        if(ret <= 0) {
+    /* call MultiByteToWideChar first to get the buffer size */
+    ret = MultiByteToWideChar(CP_ACP, 0, str, -1, NULL, 0);
+    if(ret <= 0) {
+        return(NULL);
+    }
+    len = ret;
+
+    /* allocate buffer */
+    res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+
+    /* convert */
+    ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
+    if(ret <= 0) {
+            xmlFree(res);
             return(NULL);
-        }
-        len = ret;
+    }
 
-        /* allocate buffer */
-        res = (LPWSTR)xmlMalloc(sizeof(WCHAR) * len);
-        if(res == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        NULL,
-                        NULL,
-                        XMLSEC_ERRORS_R_MALLOC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-            return(NULL);
-        }
+    /* done */
+    return(res);
+}
 
-        /* convert */
-        ret = MultiByteToWideChar(CP_ACP, 0, str, -1, res, len);
-        if(ret <= 0) {
-                xmlFree(res);
-                return(NULL);
-        }
+/**
+ * xmlSecMSCryptoConvertLocaleToUtf8:
+ * @str:         the string to convert.
+ *
+ * Converts input string from locale to UTF8.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+xmlChar* 
+xmlSecMSCryptoConvertLocaleToUtf8(const char * str) {
+    LPWSTR strW = NULL;
+    xmlChar * res = NULL;
+    int len;
+    int ret;
 
-        /* done */
-        return(res);
+    xmlSecAssert2(str != NULL, NULL);
+
+    strW = xmlSecMSCryptoConvertLocaleToUnicode(str);
+    if(strW == NULL) {
+        return(NULL);
+    }
+
+    /* call WideCharToMultiByte first to get the buffer size */
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, NULL, 0, NULL, NULL);
+    if(ret <= 0) {
+        xmlFree(strW);
+        return(NULL);
+    }
+    len = ret + 1;
+
+    /* allocate buffer */
+    res = (xmlChar*)xmlMalloc(sizeof(xmlChar) * len);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", sizeof(xmlChar) * len);
+        xmlFree(strW);
+        return(NULL);
+    }
+
+    /* convert */
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, res, len, NULL, NULL);
+    if(ret <= 0) {
+        xmlFree(strW);
+        xmlFree(res);
+        return(NULL);
+    }
+
+    /* done */
+    xmlFree(strW);
+    return(res);
+}
+
+/**
+ * xmlSecMSCryptoConvertUtf8ToLocale:
+ * @str:         the string to convert.
+ *
+ * Converts input string from UTF8 to locale.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+char * 
+xmlSecMSCryptoConvertUtf8ToLocale(const xmlChar* str) {
+    LPWSTR strW = NULL;
+    char * res = NULL;
+    int len;
+    int ret;
+
+    xmlSecAssert2(str != NULL, NULL);
+
+    strW = xmlSecMSCryptoConvertUtf8ToUnicode(str);
+    if(strW == NULL) {
+        return(NULL);
+    }
+
+    /* call WideCharToMultiByte first to get the buffer size */
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, NULL, 0, NULL, NULL);
+    if(ret <= 0) {
+        xmlFree(strW);
+        return(NULL);
+    }
+    len = ret + 1;
+
+    /* allocate buffer */
+    res = (char*)xmlMalloc(sizeof(char) * len);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", sizeof(xmlChar) * len);
+        xmlFree(strW);
+        return(NULL);
+    }
+
+    /* convert */
+    ret = WideCharToMultiByte(CP_ACP, 0, strW, -1, res, len, NULL, NULL);
+    if(ret <= 0) {
+        xmlFree(strW);
+        xmlFree(res);
+        return(NULL);
+    }
+
+    /* done */
+    xmlFree(strW);
+    return(res);
+}
+
+/**
+ * xmlSecMSCryptoConvertTstrToUtf8:
+ * @str:         the string to convert.
+ *
+ * Converts input string from TSTR (locale or Unicode) to UTF8.
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+xmlChar* 
+xmlSecMSCryptoConvertTstrToUtf8(LPCTSTR str) {
+#ifdef UNICODE
+    return xmlSecMSCryptoConvertUnicodeToUtf8(str);
+#else  /* UNICODE */
+    return xmlSecMSCryptoConvertLocaleToUtf8(str);
+#endif /* UNICODE */
+}
+
+/**
+ * xmlSecMSCryptoConvertUtf8ToTstr:
+ * @str:         the string to convert.
+ *
+ * Converts input string from UTF8 to TSTR (locale or Unicode).
+ *
+ * Returns: a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.
+ */
+LPTSTR
+xmlSecMSCryptoConvertUtf8ToTstr(const xmlChar*  str) {
+#ifdef UNICODE
+    return xmlSecMSCryptoConvertUtf8ToUnicode(str);
+#else  /* UNICODE */
+    return xmlSecMSCryptoConvertUtf8ToLocale(str);
+#endif /* UNICODE */
 }
 
 /**

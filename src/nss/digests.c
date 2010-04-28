@@ -289,7 +289,9 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
             }
         }
         if(last) {
-            rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &ctx->dgstSize, sizeof(ctx->dgst));
+            unsigned int dgstSize;
+
+            rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -298,7 +300,8 @@ xmlSecNssDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCt
                             "error code=%d", PORT_GetError());
                 return(-1);
             }
-            xmlSecAssert2(ctx->dgstSize > 0, -1);
+            xmlSecAssert2(dgstSize > 0, -1);
+            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize);
 
             if(transform->operation == xmlSecTransformOperationSign) {
                 ret = xmlSecBufferAppend(out, ctx->dgst, ctx->dgstSize);

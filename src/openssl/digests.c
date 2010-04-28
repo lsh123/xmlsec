@@ -307,10 +307,12 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
             }
         }
         if(last) {
+            unsigned int dgstSize;
+
             xmlSecAssert2((xmlSecSize)EVP_MD_size(ctx->digest) <= sizeof(ctx->dgst), -1);
 
 #ifndef XMLSEC_OPENSSL_096
-            ret = EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
+            ret = EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &dgstSize);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -320,9 +322,10 @@ xmlSecOpenSSLEvpDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTran
                 return(-1);
             }
 #else /* XMLSEC_OPENSSL_096 */
-            EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &ctx->dgstSize);
+            EVP_DigestFinal(&(ctx->digestCtx), ctx->dgst, &dgstSize);
 #endif /* XMLSEC_OPENSSL_096 */
-            xmlSecAssert2(ctx->dgstSize > 0, -1);
+            xmlSecAssert2(dgstSize > 0, -1);
+            ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize);
 
             /* copy result to output */
             if(transform->operation == xmlSecTransformOperationSign) {

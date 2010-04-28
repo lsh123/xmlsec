@@ -360,7 +360,8 @@ static int
 xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
     xmlSecOpenSSLEvpSignatureCtxPtr ctx;
     xmlSecBufferPtr in, out;
-    xmlSecSize inSize, outSize;
+    xmlSecSize inSize;
+    xmlSecSize outSize;
     int ret;
 
     xmlSecAssert2(xmlSecOpenSSLEvpSignatureCheckId(transform), -1);
@@ -463,27 +464,29 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
     if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
         if(transform->operation == xmlSecTransformOperationSign) {
+            unsigned int signSize;
+
             /* this is a hack: for rsa signatures
              * we get size from EVP_PKEY_size(),
              * for dsa signature we use a fixed constant */
-            outSize = EVP_PKEY_size(ctx->pKey);
+            signSize = EVP_PKEY_size(ctx->pKey);
 #ifndef XMLSEC_NO_DSA
-            if(outSize < XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
-                outSize = XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE;
+            if(signSize < XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE) {
+                signSize = XMLSEC_OPENSSL_DSA_SIGNATURE_SIZE;
             }
 #endif /* XMLSEC_NO_DSA */
 
-            ret = xmlSecBufferSetMaxSize(out, outSize);
+            ret = xmlSecBufferSetMaxSize(out, signSize);
             if(ret < 0) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferSetMaxSize",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
+                            "size=%u", signSize);
                 return(-1);
             }
 
-            ret = EVP_SignFinal(&(ctx->digestCtx), xmlSecBufferGetData(out), &outSize, ctx->pKey);
+            ret = EVP_SignFinal(&(ctx->digestCtx), xmlSecBufferGetData(out), &signSize, ctx->pKey);
             if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -493,13 +496,13 @@ xmlSecOpenSSLEvpSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecT
                 return(-1);
             }
 
-            ret = xmlSecBufferSetSize(out, outSize);
+            ret = xmlSecBufferSetSize(out, signSize);
             if(ret < 0) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                             "xmlSecBufferSetSize",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", outSize);
+                            "size=%u", signSize);
                 return(-1);
             }
         }

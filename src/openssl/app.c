@@ -236,7 +236,7 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         /* try to read private key first */
             pKey = PEM_read_bio_PrivateKey(bio, NULL,
             (pwd != NULL) ? xmlSecOpenSSLDummyPasswordCallback : (pem_password_cb*)pwdCallback,
-            (pwd != NULL) ? pwd : pwdCallbackCtx);
+            (pwd != NULL) ? (void*)pwd : pwdCallbackCtx);
         if(pKey == NULL) {
             /* go to start of the file and try to read public key */
             BIO_reset(bio);

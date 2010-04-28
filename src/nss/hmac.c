@@ -517,7 +517,7 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
             }
         }
         if(last) {
-            xmlSecSize dgstSize;
+            unsigned int dgstSize;
 
             rv = PK11_DigestFinal(ctx->digestCtx, ctx->dgst, &dgstSize, sizeof(ctx->dgst));
             if(rv != SECSuccess) {
@@ -532,8 +532,8 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 
             /* check/set the result digest size */
             if(ctx->dgstSize == 0) {
-                ctx->dgstSize = dgstSize * 8; /* no dgst size specified, use all we have */
-            } else if(ctx->dgstSize <= 8 * dgstSize) {
+                ctx->dgstSize = XMLSEC_SIZE_BAD_CAST(dgstSize * 8); /* no dgst size specified, use all we have */
+            } else if(ctx->dgstSize <= XMLSEC_SIZE_BAD_CAST(8 * dgstSize)) {
                 dgstSize = ((ctx->dgstSize + 7) / 8); /* we need to truncate result digest */
             } else {
                 xmlSecError(XMLSEC_ERRORS_HERE,

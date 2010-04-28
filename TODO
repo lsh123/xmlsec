@@ -102,18 +102,8 @@ RSA PKCS/OAEP, X509
 
 aleksey-xmldsig-01/enveloping-dsa-x509chain
 aleksey-xmldsig-01/enveloping-rsa-x509chain
-aleksey-xmldsig-01/enveloping-md5-hmac-md5
-aleksey-xmldsig-01/enveloping-md5-hmac-md5-64
-aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160
-aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64
 aleksey-xmldsig-01/enveloping-sha224-hmac-sha224
 aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64
-aleksey-xmldsig-01/enveloping-sha256-hmac-sha256
-aleksey-xmldsig-01/enveloping-sha256-hmac-sha256-64
-aleksey-xmldsig-01/enveloping-sha384-hmac-sha384
-aleksey-xmldsig-01/enveloping-sha384-hmac-sha384-64
-aleksey-xmldsig-01/enveloping-sha512-hmac-sha512
-aleksey-xmldsig-01/enveloping-sha512-hmac-sha512-64
 aleksey-xmldsig-01/enveloping-md5-rsa-md5
 aleksey-xmldsig-01/enveloping-ripemd160-rsa-ripemd160
 aleksey-xmldsig-01/enveloping-sha1-rsa-sha1
@@ -151,7 +141,6 @@ phaos-xmldsig-three/signature-dsa-detached
 phaos-xmldsig-three/signature-dsa-enveloped
 phaos-xmldsig-three/signature-dsa-enveloping
 phaos-xmldsig-three/signature-dsa-manifest
-phaos-xmldsig-three/signature-hmac-md5-c14n-enveloping
 phaos-xmldsig-three/signature-rsa-detached-b64-transform
 phaos-xmldsig-three/signature-rsa-detached
 phaos-xmldsig-three/signature-rsa-detached-xpath-transform

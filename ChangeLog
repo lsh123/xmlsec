@@ -2,6 +2,7 @@
 	* Converted xmlsec-mscrypto to unicode and provided a compile time 
 	option to switch between unicode/non-unicode builds
 	* Deleted support for old gnutls, new required version 2.8.0
+	* Added SHA256/384/512 support for xmlsec-gnutls
 
 2010-04-26  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added support for HMAC with MD5, SHA1, SHA256/384/512 in xmlsec-mscrypto

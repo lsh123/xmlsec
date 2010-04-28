@@ -157,10 +157,12 @@ xmlSecOpenSSLHmacCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_MD5 */
 
+    /* not found */
     {
         return(0);
     }
 
+    /* just in case */
     return(0);
 }
 

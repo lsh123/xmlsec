@@ -81,11 +81,8 @@ struct _xmlSecGnuTLSHmacCtx {
     ((xmlSecGnuTLSHmacCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 #define xmlSecGnuTLSHmacSize    \
     (sizeof(xmlSecTransform) + sizeof(xmlSecGnuTLSHmacCtx))
-#define xmlSecGnuTLSHmacCheckId(transform) \
-    (xmlSecTransformCheckId((transform), xmlSecGnuTLSTransformHmacSha1Id) || \
-     xmlSecTransformCheckId((transform), xmlSecGnuTLSTransformHmacMd5Id) || \
-     xmlSecTransformCheckId((transform), xmlSecGnuTLSTransformHmacRipemd160Id))
 
+static int      xmlSecGnuTLSHmacCheckId                 (xmlSecTransformPtr transform);
 static int      xmlSecGnuTLSHmacInitialize              (xmlSecTransformPtr transform);
 static void     xmlSecGnuTLSHmacFinalize                (xmlSecTransformPtr transform);
 static int      xmlSecGnuTLSHmacNodeRead                (xmlSecTransformPtr transform,
@@ -104,6 +101,55 @@ static int      xmlSecGnuTLSHmacExecute                 (xmlSecTransformPtr tran
                                                          xmlSecTransformCtxPtr transformCtx);
 
 static int
+xmlSecGnuTLSHmacCheckId(xmlSecTransformPtr transform) {
+
+#ifndef XMLSEC_NO_SHA1
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha1Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha256Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha384Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha512Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_RIPEMD160
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacRipemd160Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacMd5Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+    /* not found */
+    {
+        return(0);
+    }
+
+    /* just in case */
+    return(0);
+}
+
+
+static int
 xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     gpg_err_code_t ret;
@@ -115,13 +161,45 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecGnuTLSHmacCtx));
+
+#ifndef XMLSEC_NO_SHA1
     if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha1Id)) {
         ctx->digest = GCRY_MD_SHA1;
-    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacMd5Id)) {
-        ctx->digest = GCRY_MD_MD5;
-    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacRipemd160Id)) {
+    } else
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha256Id)) {
+        ctx->digest = GCRY_MD_SHA256;
+    } else
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha384Id)) {
+        ctx->digest = GCRY_MD_SHA384;
+    } else
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacSha512Id)) {
+        ctx->digest = GCRY_MD_SHA512;
+    } else
+#endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_RIPEMD160
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacRipemd160Id)) {
         ctx->digest = GCRY_MD_RMD160;
-    } else {
+    } else
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_MD5
+    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformHmacMd5Id)) {
+        ctx->digest = GCRY_MD_MD5;
+    } else
+#endif /* XMLSEC_NO_MD5 */
+
+    /* not found */
+    {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     NULL,
@@ -130,6 +208,7 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    /* open context */
     ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
     if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -464,6 +543,7 @@ xmlSecGnuTLSHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformC
     return(0);
 }
 
+#ifndef XMLSEC_NO_SHA1
 /**
  * HMAC SHA1
  */
@@ -505,7 +585,142 @@ xmlSecTransformId
 xmlSecGnuTLSTransformHmacSha1GetKlass(void) {
     return(&xmlSecGnuTLSHmacSha1Klass);
 }
+#endif /* XMLSEC_NO_SHA1 */
 
+#ifndef XMLSEC_NO_SHA256
+/**
+ * HMAC SHA256
+ */
+static xmlSecTransformKlass xmlSecGnuTLSHmacSha256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSHmacSize,                       /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha256,                       /* const xmlChar* name; */
+    xmlSecHrefHmacSha256,                       /* const xmlChar *href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGnuTLSHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSHmacExecute,                    /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformHmacSha256GetKlass:
+ *
+ * The HMAC-SHA256 transform klass.
+ *
+ * Returns: the HMAC-SHA256 transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformHmacSha256GetKlass(void) {
+    return(&xmlSecGnuTLSHmacSha256Klass);
+}
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+/**
+ * HMAC SHA384
+ */
+static xmlSecTransformKlass xmlSecGnuTLSHmacSha384Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSHmacSize,                       /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha384,                       /* const xmlChar* name; */
+    xmlSecHrefHmacSha384,                       /* const xmlChar *href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGnuTLSHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSHmacExecute,                    /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformHmacSha384GetKlass:
+ *
+ * The HMAC-SHA384 transform klass.
+ *
+ * Returns: the HMAC-SHA384 transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformHmacSha384GetKlass(void) {
+    return(&xmlSecGnuTLSHmacSha384Klass);
+}
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+/**
+ * HMAC SHA512
+ */
+static xmlSecTransformKlass xmlSecGnuTLSHmacSha512Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSHmacSize,                       /* xmlSecSize objSize */
+
+    xmlSecNameHmacSha512,                       /* const xmlChar* name; */
+    xmlSecHrefHmacSha512,                       /* const xmlChar *href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecGnuTLSHmacInitialize,                 /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSHmacFinalize,                   /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGnuTLSHmacNodeRead,                   /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSHmacSetKeyReq,                  /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecGnuTLSHmacSetKey,                     /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGnuTLSHmacVerify,                     /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSHmacExecute,                    /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformHmacSha512GetKlass:
+ *
+ * The HMAC-SHA512 transform klass.
+ *
+ * Returns: the HMAC-SHA512 transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformHmacSha512GetKlass(void) {
+    return(&xmlSecGnuTLSHmacSha512Klass);
+}
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#ifndef XMLSEC_NO_RIPEMD160
 /**
  * HMAC Ripemd160
  */
@@ -547,7 +762,9 @@ xmlSecTransformId
 xmlSecGnuTLSTransformHmacRipemd160GetKlass(void) {
     return(&xmlSecGnuTLSHmacRipemd160Klass);
 }
+#endif /* XMLSEC_NO_RIPEMD160 */
 
+#ifndef XMLSEC_NO_MD5
 /**
  * HMAC Md5
  */
@@ -589,6 +806,7 @@ xmlSecTransformId
 xmlSecGnuTLSTransformHmacMd5GetKlass(void) {
     return(&xmlSecGnuTLSHmacMd5Klass);
 }
+#endif /* XMLSEC_NO_MD5 */
 
 
 #endif /* XMLSEC_NO_HMAC */

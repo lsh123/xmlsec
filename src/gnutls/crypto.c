@@ -72,25 +72,77 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     /**
      * Crypto transforms ids
      */
+
+    /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecGnuTLSFunctions->transformAes128CbcGetKlass          = xmlSecGnuTLSTransformAes128CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass          = xmlSecGnuTLSTransformAes192CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes256CbcGetKlass          = xmlSecGnuTLSTransformAes256CbcGetKlass;
 #endif /* XMLSEC_NO_AES */
 
+    /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecGnuTLSFunctions->transformDes3CbcGetKlass            = xmlSecGnuTLSTransformDes3CbcGetKlass;
 #endif /* XMLSEC_NO_DES */
 
+    /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
-    gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass           = xmlSecGnuTLSTransformHmacSha1GetKlass;
-    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass      = xmlSecGnuTLSTransformHmacRipemd160GetKlass;
-    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass            = xmlSecGnuTLSTransformHmacMd5GetKlass;
-#endif /* XMLSEC_NO_HMAC */
+#ifndef XMLSEC_NO_MD5
+    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass           = xmlSecGnuTLSTransformHmacMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
+#ifndef XMLSEC_NO_RIPEMD160
+    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass     = xmlSecGnuTLSTransformHmacRipemd160GetKlass;
+#endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformSha1GetKlass               = xmlSecGnuTLSTransformSha1GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass          = xmlSecGnuTLSTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGnuTLSFunctions->transformHmacSha256GetKlass        = xmlSecGnuTLSTransformHmacSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGnuTLSFunctions->transformHmacSha384GetKlass        = xmlSecGnuTLSTransformHmacSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGnuTLSFunctions->transformHmacSha512GetKlass        = xmlSecGnuTLSTransformHmacSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
+
+#endif /* XMLSEC_NO_HMAC */
+
+    /******************************* MD5 ********************************/
+#ifndef XMLSEC_NO_MD5
+    gXmlSecGnuTLSFunctions->transformMd5GetKlass               = xmlSecGnuTLSTransformMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
+    /******************************* RIPEMD160 ********************************/
+#ifndef XMLSEC_NO_RIPEMD160
+    gXmlSecGnuTLSFunctions->transformRipemd160GetKlass         = xmlSecGnuTLSTransformRipemd160GetKlass;
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+
+
+    /******************************* SHA ********************************/
+#ifndef XMLSEC_NO_SHA1
+    gXmlSecGnuTLSFunctions->transformSha1GetKlass              = xmlSecGnuTLSTransformSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_SHA256
+    gXmlSecGnuTLSFunctions->transformSha256GetKlass            = xmlSecGnuTLSTransformSha256GetKlass;
+#endif /* XMLSEC_NO_SHA256 */
+
+#ifndef XMLSEC_NO_SHA384
+    gXmlSecGnuTLSFunctions->transformSha384GetKlass            = xmlSecGnuTLSTransformSha384GetKlass;
+#endif /* XMLSEC_NO_SHA384 */
+
+#ifndef XMLSEC_NO_SHA512
+    gXmlSecGnuTLSFunctions->transformSha512GetKlass            = xmlSecGnuTLSTransformSha512GetKlass;
+#endif /* XMLSEC_NO_SHA512 */
+
 
     /**
      * High level routines form xmlsec command line utility

@@ -199,15 +199,19 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformSha1GetKlass              = xmlSecOpenSSLTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
 #ifndef XMLSEC_NO_SHA224
     gXmlSecOpenSSLFunctions->transformSha224GetKlass            = xmlSecOpenSSLTransformSha224GetKlass;
 #endif /* XMLSEC_NO_SHA224 */
+
 #ifndef XMLSEC_NO_SHA256
     gXmlSecOpenSSLFunctions->transformSha256GetKlass            = xmlSecOpenSSLTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
+
 #ifndef XMLSEC_NO_SHA384
     gXmlSecOpenSSLFunctions->transformSha384GetKlass            = xmlSecOpenSSLTransformSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
+
 #ifndef XMLSEC_NO_SHA512
     gXmlSecOpenSSLFunctions->transformSha512GetKlass            = xmlSecOpenSSLTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */

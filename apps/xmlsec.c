@@ -190,7 +190,7 @@ static xmlSecAppCmdLineParam cryptoConfigParam = {
 
 
 static xmlSecAppCmdLineParam repeatParam = { 
-    xmlSecAppCmdLineTopicGeneral,
+    xmlSecAppCmdLineTopicCryptoConfig,
     "--repeat",
     "-r",
     "--repeat <number>"
@@ -198,7 +198,7 @@ static xmlSecAppCmdLineParam repeatParam = {
     xmlSecAppCmdLineParamTypeNumber,
     xmlSecAppCmdLineParamFlagNone,
     NULL
-};    
+};
 
 
 static xmlSecAppCmdLineParam disableErrorMsgsParam = { 

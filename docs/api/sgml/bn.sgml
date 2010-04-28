@@ -100,17 +100,17 @@ The big numbers formats.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecBnBase64" role="constant">
 <term><literal>xmlSecBnBase64</literal></term>
-<listitem><simpara>		the base64 decoded binary blob.
+<listitem><simpara>             the base64 decoded binary blob.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecBnHex" role="constant">
 <term><literal>xmlSecBnHex</literal></term>
-<listitem><simpara>		the hex number.
+<listitem><simpara>                the hex number.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecBnDec" role="constant">
 <term><literal>xmlSecBnDec</literal></term>
-<listitem><simpara>		the decimal number.
+<listitem><simpara>                the decimal number.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -123,7 +123,7 @@ by calling <parameter>xmlSecBnDestroy</parameter> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>	the initial allocated BN size.
+<listitem><simpara>       the initial allocated BN size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the newly BN or a NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -136,7 +136,7 @@ Destroys <parameter>bn</parameter> object created with <parameter>xmlSecBnCreate
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBnInitialize" role="function">
@@ -149,10 +149,10 @@ by calling <parameter>xmlSecBnFinalize</parameter> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>	the initial allocated BN size.
+<listitem><simpara>       the initial allocated BN size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -165,7 +165,7 @@ Destroys <parameter>bn</parameter> object created with <parameter>xmlSecBnInitia
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBnGetData" role="function">
@@ -176,7 +176,7 @@ Gets pointer to the binary <parameter>bn</parameter> representation.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to binary BN data or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -191,13 +191,13 @@ Sets the value of <parameter>bn</parameter> to <parameter>data</parameter>.</par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to new BN binary data.
+<listitem><simpara>       the pointer to new BN binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>	the size of new BN data.
+<listitem><simpara>       the size of new BN data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -210,7 +210,7 @@ Gets the size of binary data in <parameter>bn</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the size of binary data.
 </simpara></listitem></varlistentry>
@@ -223,7 +223,7 @@ Sets the value of <parameter>bn</parameter> to zero.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBnFromString" role="function">
@@ -236,13 +236,13 @@ Reads <parameter>bn</parameter> from string <parameter>str</parameter> assuming 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>	the string with BN.
+<listitem><simpara>        the string with BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>base</parameter>&#160;:</term>
-<listitem><simpara>	the base for <parameter>str</parameter>.
+<listitem><simpara>       the base for <parameter>str</parameter>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -252,15 +252,15 @@ Reads <parameter>bn</parameter> from string <parameter>str</parameter> assuming 
 <indexterm zone="xmlSecBnToString"><primary sortas="xmlSecBnToString">xmlSecBnToString</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*            xmlSecBnToString                    (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn,
                                                          <link linkend="xmlSecSize">xmlSecSize</link> base);</programlisting>
 <para>
-Writes <parameter>bn</parameter> to string with base <parameter>base</parameter>. Caller is responsible for 
+Writes <parameter>bn</parameter> to string with base <parameter>base</parameter>. Caller is responsible for
 freeing returned string with <parameter>xmlFree</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>base</parameter>&#160;:</term>
-<listitem><simpara>	the base for returned string.
+<listitem><simpara>       the base for returned string.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the string represenataion if BN or a NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -274,10 +274,10 @@ Reads <parameter>bn</parameter> from hex string <parameter>str</parameter>.</par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>	the string with BN.
+<listitem><simpara>        the string with BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -286,12 +286,12 @@ Reads <parameter>bn</parameter> from hex string <parameter>str</parameter>.</par
 <title>xmlSecBnToHexString ()</title>
 <indexterm zone="xmlSecBnToHexString"><primary sortas="xmlSecBnToHexString">xmlSecBnToHexString</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*            xmlSecBnToHexString                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
-Writes <parameter>bn</parameter> to hex string. Caller is responsible for 
+Writes <parameter>bn</parameter> to hex string. Caller is responsible for
 freeing returned string with <parameter>xmlFree</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the string represenataion if BN or a NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -305,10 +305,10 @@ Reads <parameter>bn</parameter> from decimal string <parameter>str</parameter>.<
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>	the string with BN.
+<listitem><simpara>        the string with BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -317,12 +317,12 @@ Reads <parameter>bn</parameter> from decimal string <parameter>str</parameter>.<
 <title>xmlSecBnToDecString ()</title>
 <indexterm zone="xmlSecBnToDecString"><primary sortas="xmlSecBnToDecString">xmlSecBnToDecString</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*            xmlSecBnToDecString                 (<link linkend="xmlSecBn">xmlSecBnPtr</link> bn);</programlisting>
 <para>
-Writes <parameter>bn</parameter> to decimal string. Caller is responsible for 
+Writes <parameter>bn</parameter> to decimal string. Caller is responsible for
 freeing returned string with <parameter>xmlFree</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the string represenataion if BN or a NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -336,10 +336,10 @@ Multiplies <parameter>bn</parameter> with <parameter>multiplier</parameter>.</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to BN.
+<listitem><simpara>                 the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>multiplier</parameter>&#160;:</term>
-<listitem><simpara>		the multiplier.
+<listitem><simpara>         the multiplier.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -354,13 +354,13 @@ Divides <parameter>bn</parameter> by <parameter>divider</parameter> and places m
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>divider</parameter>&#160;:</term>
-<listitem><simpara>	the divider
+<listitem><simpara>    the divider
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mod</parameter>&#160;:</term>
-<listitem><simpara>	the pointer for modulus result.
+<listitem><simpara>        the pointer for modulus result.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -374,10 +374,10 @@ Adds <parameter>delta</parameter> to <parameter>bn</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>delta</parameter>&#160;:</term>
-<listitem><simpara>	the delta.
+<listitem><simpara>      the delta.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -390,7 +390,7 @@ Reverses bytes order in <parameter>bn</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -405,13 +405,13 @@ Compares the <parameter>bn</parameter> with <parameter>data</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>	the data to compare BN to.
+<listitem><simpara>       the data to compare BN to.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>	the <parameter>data</parameter> size.
+<listitem><simpara>   the <parameter>data</parameter> size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if data is equal, negative value if <parameter>bn</parameter> is less or positive value if <parameter>bn</parameter>
 is greater than <parameter>data</parameter>.
@@ -427,13 +427,13 @@ Compares the <parameter>bn</parameter> with reverse <parameter>data</parameter>.
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>	the data to compare BN to.
+<listitem><simpara>       the data to compare BN to.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>	the <parameter>data</parameter> size.
+<listitem><simpara>   the <parameter>data</parameter> size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if data is equal, negative value if <parameter>bn</parameter> is less or positive value if <parameter>bn</parameter>
 is greater than <parameter>data</parameter>.
@@ -450,16 +450,16 @@ Converts the node content from <parameter>format</parameter> to <parameter>bn</p
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to BN.
+<listitem><simpara>         the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>	the poitner to an XML node.
+<listitem><simpara>        the poitner to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>	the BN format.
+<listitem><simpara>     the BN format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>reverse</parameter>&#160;:</term>
-<listitem><simpara>	if set then reverse read buffer after reading.
+<listitem><simpara>    if set then reverse read buffer after reading.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative values if an error occurs.
 </simpara></listitem></varlistentry>
@@ -476,19 +476,19 @@ Converts the <parameter>bn</parameter> and sets it to node content.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bn</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to BN.
+<listitem><simpara>                 the pointer to BN.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>		the poitner to an XML node.
+<listitem><simpara>                the poitner to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the BN format.
+<listitem><simpara>             the BN format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>reverse</parameter>&#160;:</term>
-<listitem><simpara>		the flag that indicates whether to reverse the buffer before writing.
+<listitem><simpara>            the flag that indicates whether to reverse the buffer before writing.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>addLineBreaks</parameter>&#160;:</term>
-<listitem><simpara>  	the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
+<listitem><simpara>      the flag; it is equal to 1 then linebreaks will be added before and after new buffer content.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative values if an error occurs.
 </simpara></listitem></varlistentry>
@@ -506,24 +506,24 @@ Converts the <parameter>blob</parameter> and sets it to node content.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to BN blob.
+<listitem><simpara>       the pointer to BN blob.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>	the size of BN blob.
+<listitem><simpara>   the size of BN blob.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>	the poitner to an XML node.
+<listitem><simpara>        the poitner to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>	the BN format.
+<listitem><simpara>     the BN format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>reverse</parameter>&#160;:</term>
-<listitem><simpara>	the flag that indicates whether to reverse the buffer before writing.
+<listitem><simpara>    the flag that indicates whether to reverse the buffer before writing.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>addLineBreaks</parameter>&#160;:</term>
-<listitem><simpara>  if the flag is equal to 1 then 
-	linebreaks will be added before and after
-	new buffer content.
+<listitem><simpara>  if the flag is equal to 1 then
+             linebreaks will be added before and after
+             new buffer content.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative values if an error occurs.
 </simpara></listitem></varlistentry>

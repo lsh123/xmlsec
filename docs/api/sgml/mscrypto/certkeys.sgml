@@ -45,12 +45,12 @@ MS Crypto certificates helper functions.
 <title>xmlSecMSCryptoKeyDataGetCert ()</title>
 <indexterm zone="xmlSecMSCryptoKeyDataGetCert"><primary sortas="xmlSecMSCryptoKeyDataGetCert">xmlSecMSCryptoKeyDataGetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoKeyDataGetCert        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-Native MSCrypto certificate retrieval from xmlsec keydata. The 
+Native MSCrypto certificate retrieval from xmlsec keydata. The
 returned PCCERT_CONTEXT must not be released by the caller.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the key data to retrieve certificate from.
+<listitem><simpara>               the key data to retrieve certificate from.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> PCCERT_CONTEXT on success or NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -60,12 +60,12 @@ returned PCCERT_CONTEXT must not be released by the caller.</para>
 <indexterm zone="xmlSecMSCryptoKeyDataGetKey"><primary sortas="xmlSecMSCryptoKeyDataGetKey">xmlSecMSCryptoKeyDataGetKey</primary></indexterm><programlisting><link linkend="HCRYPTKEY--CAPS">HCRYPTKEY</link>           xmlSecMSCryptoKeyDataGetKey         (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
                                                          <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
 <para>
-Native MSCrypto key retrieval from xmlsec keydata. The 
+Native MSCrypto key retrieval from xmlsec keydata. The
 returned HKEY must not be destroyed by the caller.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the key data to retrieve certificate from.
+<listitem><simpara>               the key data to retrieve certificate from.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
 <listitem><simpara>              type of key requested (public/private)
@@ -82,7 +82,7 @@ returned HKEY must not be destroyed by the caller.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 	the key data pointer
+<listitem><simpara>       the key data pointer
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> HKEY on success or NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -95,9 +95,9 @@ Duplicates the <parameter>pCert</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>pCert</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to cert.
+<listitem><simpara>              the pointer to cert.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created PCCERT_CONTEXT object or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created PCCERT_CONTEXT object or
 NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -110,10 +110,10 @@ Creates key data value from the cert.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>pCert</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to cert.
+<listitem><simpara>              the pointer to cert.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the expected key type.
+<listitem><simpara>               the expected key type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created xmlsec key or NULL if an error occurs.
 </simpara></listitem></varlistentry>

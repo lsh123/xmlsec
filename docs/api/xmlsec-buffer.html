@@ -147,13 +147,13 @@ struct              <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a>;
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECALLOCMODEEXACT"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecAllocModeExact</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 	the memory allocation mode that minimizes total 
-			allocated memory size.</p></td>
+<td align="LEFT" valign="TOP"><p>       the memory allocation mode that minimizes total
+                             allocated memory size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECALLOCMODEDOUBLE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecAllocModeDouble</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the memory allocation mode that tries to minimize
-			the number of malloc calls.</p></td>
+<td align="LEFT" valign="TOP"><p>      the memory allocation mode that tries to minimize
+                             the number of malloc calls.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -161,10 +161,10 @@ struct              <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a>;
 <div class="REFSECT2">
 <a name="XMLSECBUFFER"></a><h3>struct xmlSecBuffer</h3>
 <pre class="PROGRAMLISTING">struct xmlSecBuffer {
-    xmlSecByte* 	data;
-    xmlSecSize 		size;
-    xmlSecSize		maxSize;
-    xmlSecAllocMode 	allocMode;
+    xmlSecByte*         data;
+    xmlSecSize          size;
+    xmlSecSize          maxSize;
+    xmlSecAllocMode     allocMode;
 };</pre>
 <p>Binary data buffer.</p>
 <p></p>
@@ -199,11 +199,11 @@ struct              <a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a>;
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3804"><span style="white-space: nowrap"><code class="PARAMETER">defAllocMode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the new default buffer allocation mode.</p></td>
+<td align="LEFT" valign="TOP"><p>       the new default buffer allocation mode.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3809"><span style="white-space: nowrap"><code class="PARAMETER">defInitialSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the new default buffer minimal intial size.</p></td>
+<td align="LEFT" valign="TOP"><p>     the new default buffer minimal intial size.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -219,7 +219,7 @@ to free the buffer.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3826"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the intial size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the intial size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3831"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -236,7 +236,7 @@ to free the buffer.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN3848"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -251,11 +251,11 @@ to free the buffer.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3867"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3872"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the initial buffer size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the initial buffer size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3877"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -273,7 +273,7 @@ function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN3894"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -286,7 +286,7 @@ function.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3909"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3914"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -306,15 +306,15 @@ function.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3932"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3937"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data.</p></td>
+<td align="LEFT" valign="TOP"><p>               the data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3942"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3947"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -332,7 +332,7 @@ function.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3962"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3967"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -345,18 +345,18 @@ function.</p>
 <a name="XMLSECBUFFERSETSIZE"></a><h3>xmlSecBufferSetSize ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecBufferSetSize                 (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre>
-<p>Sets new buffer data size. If necessary, buffer grows to 
+<p>Sets new buffer data size. If necessary, buffer grows to
 have at least <code class="PARAMETER">size</code> bytes.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3984"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3989"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new data size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the new data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN3994"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -374,7 +374,7 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4009"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4014"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -387,18 +387,18 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <a name="XMLSECBUFFERSETMAXSIZE"></a><h3>xmlSecBufferSetMaxSize ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecBufferSetMaxSize              (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf,
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> size);</pre>
-<p>Sets new buffer maximum size. If necessary, buffer grows to 
+<p>Sets new buffer maximum size. If necessary, buffer grows to
 have at least <code class="PARAMETER">size</code> bytes.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4031"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4036"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new maximum size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the new maximum size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4041"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -415,7 +415,7 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN4056"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -430,15 +430,15 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4074"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4079"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data.</p></td>
+<td align="LEFT" valign="TOP"><p>               the data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4084"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4089"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -458,15 +458,15 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4107"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4112"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data.</p></td>
+<td align="LEFT" valign="TOP"><p>               the data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4117"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4122"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -485,11 +485,11 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4139"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4144"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the number of bytes to be removed.</p></td>
+<td align="LEFT" valign="TOP"><p>               the number of bytes to be removed.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4149"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -508,11 +508,11 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4166"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4171"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the number of bytes to be removed.</p></td>
+<td align="LEFT" valign="TOP"><p>               the number of bytes to be removed.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4176"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -531,11 +531,11 @@ have at least <code class="PARAMETER">size</code> bytes.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4193"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4198"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the filename.</p></td>
+<td align="LEFT" valign="TOP"><p>           the filename.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4203"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -555,11 +555,11 @@ result in the buffer.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4220"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4225"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to node.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4230"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -579,15 +579,15 @@ result in the buffer.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4248"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4253"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to a node.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to a node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4258"><span style="white-space: nowrap"><code class="PARAMETER">columns</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the max line size fro base64 encoded data.</p></td>
+<td align="LEFT" valign="TOP"><p>            the max line size fro base64 encoded data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4263"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -599,14 +599,14 @@ result in the buffer.</p>
 <div class="REFSECT2">
 <a name="XMLSECBUFFERCREATEOUTPUTBUFFER"></a><h3>xmlSecBufferCreateOutputBuffer ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlOutputBufferPtr</font>  xmlSecBufferCreateOutputBuffer      (<a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> buf);</pre>
-<p>Creates new LibXML output buffer to store data in the <code class="PARAMETER">buf</code>. Caller is 
+<p>Creates new LibXML output buffer to store data in the <code class="PARAMETER">buf</code>. Caller is
 responsible for destroying <code class="PARAMETER">buf</code> when processing is done.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4280"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to buffer.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to buffer.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4285"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>

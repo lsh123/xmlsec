@@ -106,7 +106,7 @@ Gets the certificate from which the key was extracted.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key's certificate or NULL if key data was not used for key
 extraction or an error occurs.
@@ -122,10 +122,10 @@ Sets the key's certificate in <parameter>data</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to MSCRYPTO X509 certificate.
+<listitem><simpara>               the pointer to MSCRYPTO X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -139,10 +139,10 @@ Adds certificate to the X509 key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to MSCRYPTO X509 certificate.
+<listitem><simpara>               the pointer to MSCRYPTO X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -156,12 +156,12 @@ Gets a certificate from X509 key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>		the desired certificate position.
+<listitem><simpara>                the desired certificate position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the
 number of certificates in <parameter>data</parameter> or an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -174,7 +174,7 @@ Gets the number of certificates in <parameter>data</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> te number of certificates in <parameter>data</parameter>.
 </simpara></listitem></varlistentry>
@@ -188,10 +188,10 @@ Adds CRL to the X509 key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>crl</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to MSCrypto X509 CRL.
+<listitem><simpara>                the pointer to MSCrypto X509 CRL.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

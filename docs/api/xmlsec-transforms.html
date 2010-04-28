@@ -349,8 +349,8 @@ struct              <a href="xmlsec-transforms.html#XMLSECTRANSFORMKLASS">xmlSec
 <a name="XMLSEC-TRANSFORMS.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
 <a name="XMLSEC-TRANSFORM-BINARY-CHUNK--CAPS"></a><h3>XMLSEC_TRANSFORM_BINARY_CHUNK</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORM_BINARY_CHUNK			64</pre>
-<p>The binary data chunks size. XMLSec processes binary data one chunk 
+<pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORM_BINARY_CHUNK                   64</pre>
+<p>The binary data chunks size. XMLSec processes binary data one chunk
 at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <p></p>
 </div>
@@ -370,7 +370,7 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMIDSINIT"></a><h3>xmlSecTransformIdsInit ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformIdsInit              (void);</pre>
-<p>Initializes the transform klasses. This function is called from the 
+<p>Initializes the transform klasses. This function is called from the
 <a href="xmlsec-xmlsec.html#XMLSECINIT"><span class="TYPE">xmlSecInit</span></a> function and the application should not call it directly.</p>
 <p></p>
 <p></p>
@@ -383,7 +383,7 @@ at a time. Changing this impacts xmlsec memory usage and performance.</p>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMIDSSHUTDOWN"></a><h3>xmlSecTransformIdsShutdown ()</h3>
 <pre class="PROGRAMLISTING"><font>void</font>                xmlSecTransformIdsShutdown          (void);</pre>
-<p>Shuts down the keys data klasses. This function is called from the 
+<p>Shuts down the keys data klasses. This function is called from the
 <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN"><span class="TYPE">xmlSecShutdown</span></a> function and the application should not call it directly.</p>
 <p></p>
 </div>
@@ -410,7 +410,7 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14298"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the transform klass.</p></td>
+<td align="LEFT" valign="TOP"><p>                 the transform klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14303"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -434,23 +434,23 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMSTATUSNONE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformStatusNone</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the status unknown.</p></td>
+<td align="LEFT" valign="TOP"><p>          the status unknown.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMSTATUSWORKING"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformStatusWorking</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 	the transform is executed.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform is executed.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMSTATUSFINISHED"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformStatusFinished</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 	the transform finished</p></td>
+<td align="LEFT" valign="TOP"><p>      the transform finished</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMSTATUSOK"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformStatusOk</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the transform succeeded.</p></td>
+<td align="LEFT" valign="TOP"><p>            the transform succeeded.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMSTATUSFAIL"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformStatusFail</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the transform failed (an error occur).</p></td>
+<td align="LEFT" valign="TOP"><p>          the transform failed (an error occur).</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -468,15 +468,15 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMMODENONE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformModeNone</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the mode is unknown.</p></td>
+<td align="LEFT" valign="TOP"><p>            the mode is unknown.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMMODEPUSH"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformModePush</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 		pushing data thru transform. </p></td>
+<td align="LEFT" valign="TOP"><p>            pushing data thru transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMMODEPOP"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformModePop</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p> 		popping data from transform.</p></td>
+<td align="LEFT" valign="TOP"><p>             popping data from transform.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -498,80 +498,80 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONNONE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationNone</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the operation is unknown.</p></td>
+<td align="LEFT" valign="TOP"><p>       the operation is unknown.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONENCODE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationEncode</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the encode operation (for base64 transform).	</p></td>
+<td align="LEFT" valign="TOP"><p>     the encode operation (for base64 transform).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONDECODE"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationDecode</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the decode operation (for base64 transform).</p></td>
+<td align="LEFT" valign="TOP"><p>     the decode operation (for base64 transform).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONSIGN"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationSign</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the sign or digest operation.</p></td>
+<td align="LEFT" valign="TOP"><p>       the sign or digest operation.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONVERIFY"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationVerify</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the verification of signature or digest operation.</p></td>
+<td align="LEFT" valign="TOP"><p>     the verification of signature or digest operation.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONENCRYPT"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationEncrypt</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the encryption operation.</p></td>
+<td align="LEFT" valign="TOP"><p>    the encryption operation.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="XMLSECTRANSFORMOPERATIONDECRYPT"><span style="white-space: nowrap"><tt class="LITERAL">xmlSecTransformOperationDecrypt</tt></span></a></td>
-<td align="LEFT" valign="TOP"><p>	the decryption operation.</p></td>
+<td align="LEFT" valign="TOP"><p>    the decryption operation.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPE"></a><h3>xmlSecTransformUriType</h3>
-<pre class="PROGRAMLISTING">typedef unsigned int				xmlSecTransformUriType;</pre>
+<pre class="PROGRAMLISTING">typedef unsigned int                            xmlSecTransformUriType;</pre>
 <p>URI transform type bit mask.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPENONE"></a><h3>xmlSecTransformUriTypeNone</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeNone		0x0000</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeNone              0x0000</pre>
 <p>The URI type is unknown or not set.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPEEMPTY"></a><h3>xmlSecTransformUriTypeEmpty</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeEmpty		0x0001</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeEmpty             0x0001</pre>
 <p>The empty URI ("") type.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPESAMEDOCUMENT"></a><h3>xmlSecTransformUriTypeSameDocument</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeSameDocument	0x0002		</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeSameDocument      0x0002</pre>
 <p>The smae document ("#...") but not empty ("") URI type.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPELOCAL"></a><h3>xmlSecTransformUriTypeLocal</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeLocal		0x0004</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeLocal             0x0004</pre>
 <p>The local URI ("file:///....") type.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPEREMOTE"></a><h3>xmlSecTransformUriTypeRemote</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeRemote		0x0008</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeRemote            0x0008</pre>
 <p>The remote URI type.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMURITYPEANY"></a><h3>xmlSecTransformUriTypeAny</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeAny		0xFFFF</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUriTypeAny               0xFFFF</pre>
 <p>Any URI type.</p>
 <p></p>
 </div>
@@ -586,11 +586,11 @@ transform klasses: XPath transform, Base64 transform, ...</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14469"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the expected URI type.</p></td>
+<td align="LEFT" valign="TOP"><p>               the expected URI type.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14474"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the uri for checking.</p></td>
+<td align="LEFT" valign="TOP"><p>                the uri for checking.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14479"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -602,84 +602,84 @@ if an error occurs.</p></td>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMDATATYPE"></a><h3>xmlSecTransformDataType</h3>
-<pre class="PROGRAMLISTING">typedef xmlSecByte				xmlSecTransformDataType;</pre>
+<pre class="PROGRAMLISTING">typedef xmlSecByte                              xmlSecTransformDataType;</pre>
 <p>Transform data type bit mask.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMDATATYPEUNKNOWN"></a><h3>xmlSecTransformDataTypeUnknown</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeUnknown		0x0000</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeUnknown          0x0000</pre>
 <p>The transform data type is unknown or nor data expected.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMDATATYPEBIN"></a><h3>xmlSecTransformDataTypeBin</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeBin		0x0001</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeBin              0x0001</pre>
 <p>The binary transform data.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMDATATYPEXML"></a><h3>xmlSecTransformDataTypeXml</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeXml		0x0002</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformDataTypeXml              0x0002</pre>
 <p>The xml transform data.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGE"></a><h3>xmlSecTransformUsage</h3>
-<pre class="PROGRAMLISTING">typedef unsigned int				xmlSecTransformUsage;</pre>
+<pre class="PROGRAMLISTING">typedef unsigned int                            xmlSecTransformUsage;</pre>
 <p>The transform usage bit mask.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGEUNKNOWN"></a><h3>xmlSecTransformUsageUnknown</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageUnknown		0x0000</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageUnknown             0x0000</pre>
 <p>Transforms usage is unknown or undefined.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGEDSIGTRANSFORM"></a><h3>xmlSecTransformUsageDSigTransform</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageDSigTransform	0x0001</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageDSigTransform       0x0001</pre>
 <p>Transform could be used in &lt;dsig:Transform&gt;.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGEC14NMETHOD"></a><h3>xmlSecTransformUsageC14NMethod</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageC14NMethod		0x0002</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageC14NMethod          0x0002</pre>
 <p>Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGEDIGESTMETHOD"></a><h3>xmlSecTransformUsageDigestMethod</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageDigestMethod	0x0004</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageDigestMethod        0x0004</pre>
 <p>Transform could be used in &lt;dsig:DigestMethod&gt;.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGESIGNATUREMETHOD"></a><h3>xmlSecTransformUsageSignatureMethod</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageSignatureMethod	0x0008</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageSignatureMethod     0x0008</pre>
 <p>Transform could be used in &lt;dsig:SignatureMethod&gt;.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGEENCRYPTIONMETHOD"></a><h3>xmlSecTransformUsageEncryptionMethod</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageEncryptionMethod	0x0010</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageEncryptionMethod    0x0010</pre>
 <p>Transform could be used in &lt;enc:EncryptionMethod&gt;.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMUSAGEANY"></a><h3>xmlSecTransformUsageAny</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformUsageAny			0xFFFF</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformUsageAny                 0xFFFF</pre>
 <p>Transform could be used for operation.</p>
 <p></p>
 </div>
@@ -697,7 +697,7 @@ aborting transforms execution (if necessary).</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14580"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform's context. </p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform's context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14585"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -709,7 +709,7 @@ transforms chain will not be executed and xmlsec processing stops).</p></td>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK--CAPS"></a><h3>XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK		0x00000001</pre>
+<pre class="PROGRAMLISTING">#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK               0x00000001</pre>
 <p>If this flag is set then URI ID references are resolved directly
 without using XPointers. This allows one to sign/verify Visa3D
 documents that don't follow XML, XPointer and XML DSig specifications.</p>
@@ -720,24 +720,24 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 <a name="XMLSECTRANSFORMCTX"></a><h3>struct xmlSecTransformCtx</h3>
 <pre class="PROGRAMLISTING">struct xmlSecTransformCtx {
     /* user settings */
-    void*					userData;
-    unsigned int				flags;
-    unsigned int				flags2;
-    xmlSecTransformUriType			enabledUris;
-    xmlSecPtrList				enabledTransforms;
-    xmlSecTransformCtxPreExecuteCallback	preExecCallback;
-    
+    void*                                       userData;
+    unsigned int                                flags;
+    unsigned int                                flags2;
+    xmlSecTransformUriType                      enabledUris;
+    xmlSecPtrList                               enabledTransforms;
+    xmlSecTransformCtxPreExecuteCallback        preExecCallback;
+
     /* results */
-    xmlSecBufferPtr				result;
-    xmlSecTransformStatus			status;
-    xmlChar*					uri;
-    xmlChar*					xptrExpr;
-    xmlSecTransformPtr				first;
-    xmlSecTransformPtr				last;
+    xmlSecBufferPtr                             result;
+    xmlSecTransformStatus                       status;
+    xmlChar*                                    uri;
+    xmlChar*                                    xptrExpr;
+    xmlSecTransformPtr                          first;
+    xmlSecTransformPtr                          last;
 
     /* for the future */
-    void*					reserved0;
-    void*					reserved1;
+    void*                                       reserved0;
+    void*                                       reserved1;
 };</pre>
 <p>The transform execution context.</p>
 <p></p>
@@ -745,68 +745,68 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14605"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">userData</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to user data (xmlsec and xmlsec-crypto never 
-		touch this).</p></td>
+<td align="LEFT" valign="TOP"><p>           the pointer to user data (xmlsec and xmlsec-crypto never
+                     touch this).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14611"><span style="white-space: nowrap">unsigned <font>int</font> <code class="STRUCTFIELD">flags</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the bit mask flags to control transforms execution 
-		(reserved for the future).</p></td>
+<td align="LEFT" valign="TOP"><p>              the bit mask flags to control transforms execution
+                     (reserved for the future).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14617"><span style="white-space: nowrap">unsigned <font>int</font> <code class="STRUCTFIELD">flags2</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the bit mask flags to control transforms execution 
-			(reserved for the future).</p></td>
+<td align="LEFT" valign="TOP"><p>             the bit mask flags to control transforms execution
+                     (reserved for the future).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14623"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMURITYPE">xmlSecTransformUriType</a> <code class="STRUCTFIELD">enabledUris</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 	the allowed transform data source uri types.</p></td>
+<td align="LEFT" valign="TOP"><p>        the allowed transform data source uri types.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14629"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <code class="STRUCTFIELD">enabledTransforms</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 	the list of enabled transforms; if list is empty (default)
-		then all registered transforms are enabled.</p></td>
+<td align="LEFT" valign="TOP"><p>  the list of enabled transforms; if list is empty (default)
+                     then all registered transforms are enabled.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14635"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREEXECUTECALLBACK">xmlSecTransformCtxPreExecuteCallback</a> <code class="STRUCTFIELD">preExecCallback</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the callback called after preparing transform chain
-		and right before actual data processing; application
-		can use this callback to change transforms parameters,
-		insert additional transforms in the chain or do
-		additional validation (and abort transform execution 
-		if needed).</p></td>
+<td align="LEFT" valign="TOP"><p>    the callback called after preparing transform chain
+                     and right before actual data processing; application
+                     can use this callback to change transforms parameters,
+                     insert additional transforms in the chain or do
+                     additional validation (and abort transform execution
+                     if needed).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14641"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBufferPtr</a> <code class="STRUCTFIELD">result</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms result buffer.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to transforms result buffer.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14647"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <code class="STRUCTFIELD">status</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the transforms chain processng status.</p></td>
+<td align="LEFT" valign="TOP"><p>             the transforms chain processng status.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14653"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">uri</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data source URI without xpointer expression.</p></td>
+<td align="LEFT" valign="TOP"><p>                the data source URI without xpointer expression.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14659"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">xptrExpr</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the xpointer expression from data source URI (if any).</p></td>
+<td align="LEFT" valign="TOP"><p>           the xpointer expression from data source URI (if any).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14665"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <code class="STRUCTFIELD">first</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the first transform in the chain.</p></td>
+<td align="LEFT" valign="TOP"><p>              the first transform in the chain.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14671"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <code class="STRUCTFIELD">last</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the last transform in the chain.</p></td>
+<td align="LEFT" valign="TOP"><p>               the last transform in the chain.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14677"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14683"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -815,7 +815,7 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 <a name="XMLSECTRANSFORMCTXCREATE"></a><h3>xmlSecTransformCtxCreate ()</h3>
 <pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a>  xmlSecTransformCtxCreate         (void);</pre>
 <p>Creates transforms chain processing context.
-The caller is responsible for destroying returend object by calling 
+The caller is responsible for destroying returend object by calling
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXDESTROY"><span class="TYPE">xmlSecTransformCtxDestroy</span></a> function.</p>
 <p></p>
 <p></p>
@@ -834,7 +834,7 @@ occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN14717"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -842,14 +842,14 @@ occurs.</p></td>
 <a name="XMLSECTRANSFORMCTXINITIALIZE"></a><h3>xmlSecTransformCtxInitialize ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformCtxInitialize        (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx);</pre>
 <p>Initializes transforms chain processing context.
-The caller is responsible for cleaing up returend object by calling 
+The caller is responsible for cleaing up returend object by calling
 <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXFINALIZE"><span class="TYPE">xmlSecTransformCtxFinalize</span></a> function.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14734"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14739"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -866,7 +866,7 @@ The caller is responsible for cleaing up returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN14757"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -878,7 +878,7 @@ The caller is responsible for cleaing up returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN14772"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -892,11 +892,11 @@ The caller is responsible for cleaing up returend object by calling
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14790"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to destination transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to destination transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14795"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to source transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to source transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14800"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -912,42 +912,42 @@ The caller is responsible for cleaing up returend object by calling
                                                          <font>xmlNodePtr</font> hereNode);</pre>
 <p>Parses uri and adds xpointer transforms if required.</p>
 <p>The following examples demonstrate what the URI attribute identifies and
-how it is dereferenced 
+how it is dereferenced
 (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-REFERENCEPROCESSINGMODEL"><span class="TYPE">sec-ReferenceProcessingModel</span></gtkdoclink>):</p>
 <p>- URI="http://example.com/bar.xml"
-identifies the octets that represent the external resource 
-'http://example.com/bar.xml', that is probably an XML document given 
-its file extension. </p>
+identifies the octets that represent the external resource
+'http://example.com/bar.xml', that is probably an XML document given
+its file extension.</p>
 <p>- URI="http://example.com/bar.xml<gtkdoclink href="CHAPTER1"><span class="TYPE">chapter1</span></gtkdoclink>"
-identifies the element with ID attribute value 'chapter1' of the 
-external XML resource 'http://example.com/bar.xml', provided as an 
-octet stream. Again, for the sake of interoperability, the element 
-identified as 'chapter1' should be obtained using an XPath transform 
-rather than a URI fragment (barename XPointer resolution in external 
-resources is not REQUIRED in this specification). </p>
+identifies the element with ID attribute value 'chapter1' of the
+external XML resource 'http://example.com/bar.xml', provided as an
+octet stream. Again, for the sake of interoperability, the element
+identified as 'chapter1' should be obtained using an XPath transform
+rather than a URI fragment (barename XPointer resolution in external
+resources is not REQUIRED in this specification).</p>
 <p>- URI=""
-identifies the node-set (minus any comment nodes) of the XML resource 
-containing the signature </p>
+identifies the node-set (minus any comment nodes) of the XML resource
+containing the signature</p>
 <p>- URI="<gtkdoclink href="CHAPTER1"><span class="TYPE">chapter1</span></gtkdoclink>"
-identifies a node-set containing the element with ID attribute value 
-'chapter1' of the XML resource containing the signature. XML Signature 
-(and its applications) modify this node-set to include the element plus 
+identifies a node-set containing the element with ID attribute value
+'chapter1' of the XML resource containing the signature. XML Signature
+(and its applications) modify this node-set to include the element plus
 all descendents including namespaces and attributes -- but not comments.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14828"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14833"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the URI.</p></td>
+<td align="LEFT" valign="TOP"><p>                the URI.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14838"><span style="white-space: nowrap"><code class="PARAMETER">hereNode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to "here" node required by some 
-		XML transforms (may be NULL).</p></td>
+<td align="LEFT" valign="TOP"><p>           the pointer to "here" node required by some
+                     XML transforms (may be NULL).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14843"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -960,18 +960,18 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <a name="XMLSECTRANSFORMCTXAPPEND"></a><h3>xmlSecTransformCtxAppend ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformCtxAppend            (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
-<p>Connects the <code class="PARAMETER">transform</code> to the end of the chain of transforms in the <code class="PARAMETER">ctx</code> 
+<p>Connects the <code class="PARAMETER">transform</code> to the end of the chain of transforms in the <code class="PARAMETER">ctx</code>
 (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14863"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14868"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to new transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to new transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14873"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -984,18 +984,18 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <a name="XMLSECTRANSFORMCTXPREPEND"></a><h3>xmlSecTransformCtxPrepend ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformCtxPrepend           (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform);</pre>
-<p>Connects the <code class="PARAMETER">transform</code> to the beggining of the chain of transforms in the <code class="PARAMETER">ctx</code> 
+<p>Connects the <code class="PARAMETER">transform</code> to the beggining of the chain of transforms in the <code class="PARAMETER">ctx</code>
 (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14893"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14898"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to new transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to new transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14903"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1008,18 +1008,18 @@ all descendents including namespaces and attributes -- but not comments.</p>
 <a name="XMLSECTRANSFORMCTXCREATEANDAPPEND"></a><h3>xmlSecTransformCtxCreateAndAppend ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font>  xmlSecTransformCtxCreateAndAppend   (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                                          <font>xmlSecTransformId</font> id);</pre>
-<p>Creaeates new transform and connects it to the end of the chain of 
+<p>Creaeates new transform and connects it to the end of the chain of
 transforms in the <code class="PARAMETER">ctx</code> (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14922"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14927"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the new transform klass.</p></td>
+<td align="LEFT" valign="TOP"><p>                 the new transform klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14932"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1032,18 +1032,18 @@ transforms in the <code class="PARAMETER">ctx</code> (see <a href="xmlsec-transf
 <a name="XMLSECTRANSFORMCTXCREATEANDPREPEND"></a><h3>xmlSecTransformCtxCreateAndPrepend ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font>  xmlSecTransformCtxCreateAndPrepend  (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                                          <font>xmlSecTransformId</font> id);</pre>
-<p>Creaeates new transform and connects it to the end of the chain of 
+<p>Creaeates new transform and connects it to the end of the chain of
 transforms in the <code class="PARAMETER">ctx</code> (see <a href="xmlsec-transforms.html#XMLSECTRANSFORMCONNECT"><span class="TYPE">xmlSecTransformConnect</span></a> function for details).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14951"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14956"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the new transform klass.</p></td>
+<td align="LEFT" valign="TOP"><p>                 the new transform klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14961"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1057,22 +1057,22 @@ transforms in the <code class="PARAMETER">ctx</code> (see <a href="xmlsec-transf
 <pre class="PROGRAMLISTING"><font>xmlSecTransformPtr</font>  xmlSecTransformCtxNodeRead          (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                                          <font>xmlNodePtr</font> node,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre>
-<p>Reads the transform from the <code class="PARAMETER">node</code> and appends it to the current chain 
+<p>Reads the transform from the <code class="PARAMETER">node</code> and appends it to the current chain
 of transforms in <code class="PARAMETER">ctx</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14980"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14985"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform's node.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform's node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14990"><span style="white-space: nowrap"><code class="PARAMETER">usage</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the transform's usage (signature, encryption, etc.).</p></td>
+<td align="LEFT" valign="TOP"><p>              the transform's usage (signature, encryption, etc.).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN14995"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1086,22 +1086,22 @@ of transforms in <code class="PARAMETER">ctx</code>.</p>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformCtxNodesListRead     (<a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> ctx,
                                                          <font>xmlNodePtr</font> node,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> usage);</pre>
-<p>Reads transforms from the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> children of the <code class="PARAMETER">node</code> and 
+<p>Reads transforms from the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> children of the <code class="PARAMETER">node</code> and
 appends them to the current transforms chain in <code class="PARAMETER">ctx</code> object.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15015"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15020"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> nodes parent node.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> nodes parent node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15026"><span style="white-space: nowrap"><code class="PARAMETER">usage</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the transform's usage (signature, encryption, etc.).</p></td>
+<td align="LEFT" valign="TOP"><p>              the transform's usage (signature, encryption, etc.).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15031"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1120,11 +1120,11 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15048"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15053"><span style="white-space: nowrap"><code class="PARAMETER">inputDataType</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the expected input type.</p></td>
+<td align="LEFT" valign="TOP"><p>      the expected input type.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15058"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1144,15 +1144,15 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15076"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15081"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input binary data buffer.</p></td>
+<td align="LEFT" valign="TOP"><p>               the input binary data buffer.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15086"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input data size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the input data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15091"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1171,11 +1171,11 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15108"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15113"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the URI.</p></td>
+<td align="LEFT" valign="TOP"><p>                the URI.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15118"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1194,11 +1194,11 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15136"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15141"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input node set.</p></td>
+<td align="LEFT" valign="TOP"><p>              the input node set.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15146"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1217,11 +1217,11 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15163"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15168"><span style="white-space: nowrap"><code class="PARAMETER">doc</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to input document.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to input document.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15173"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1240,11 +1240,11 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15190"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15195"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1259,11 +1259,11 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15212"><span style="white-space: nowrap"><code class="PARAMETER">ctx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transforms chain processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to transforms chain processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15217"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1271,26 +1271,26 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORM"></a><h3>struct xmlSecTransform</h3>
 <pre class="PROGRAMLISTING">struct xmlSecTransform {
-    xmlSecTransformId 			id; 
-    xmlSecTransformOperation		operation;
-    xmlSecTransformStatus		status;
-    xmlNodePtr				hereNode;
+    xmlSecTransformId                   id;
+    xmlSecTransformOperation            operation;
+    xmlSecTransformStatus               status;
+    xmlNodePtr                          hereNode;
 
     /* transforms chain */
-    xmlSecTransformPtr			next;
-    xmlSecTransformPtr			prev;
+    xmlSecTransformPtr                  next;
+    xmlSecTransformPtr                  prev;
 
     /* binary data */
-    xmlSecBuffer			inBuf;
-    xmlSecBuffer			outBuf;
-        
-    /* xml data */
-    xmlSecNodeSetPtr			inNodes;
-    xmlSecNodeSetPtr			outNodes;
+    xmlSecBuffer                        inBuf;
+    xmlSecBuffer                        outBuf;
 
-    /* reserved for the future */    
-    void*				reserved0;
-    void*				reserved1;
+    /* xml data */
+    xmlSecNodeSetPtr                    inNodes;
+    xmlSecNodeSetPtr                    outNodes;
+
+    /* reserved for the future */
+    void*                               reserved0;
+    void*                               reserved1;
 };</pre>
 <p>The transform structure.</p>
 <p></p>
@@ -1298,51 +1298,51 @@ appends them to the current transforms chain in <code class="PARAMETER">ctx</cod
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15230"><span style="white-space: nowrap"><font>xmlSecTransformId</font> <code class="STRUCTFIELD">id</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the transform id (pointer to <gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink>).</p></td>
+<td align="LEFT" valign="TOP"><p>                 the transform id (pointer to <gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink>).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15238"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMOPERATION">xmlSecTransformOperation</a> <code class="STRUCTFIELD">operation</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the transform's opertaion.</p></td>
+<td align="LEFT" valign="TOP"><p>          the transform's opertaion.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15244"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMSTATUS">xmlSecTransformStatus</a> <code class="STRUCTFIELD">status</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the current status.</p></td>
+<td align="LEFT" valign="TOP"><p>             the current status.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15250"><span style="white-space: nowrap"><font>xmlNodePtr</font> <code class="STRUCTFIELD">hereNode</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform's <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20" target="_top">&lt;dsig:Transform /&gt;</a> node.</p></td>
+<td align="LEFT" valign="TOP"><p>           the pointer to transform's <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform%20" target="_top">&lt;dsig:Transform /&gt;</a> node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15257"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <code class="STRUCTFIELD">next</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to next transform in the chain.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to next transform in the chain.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15263"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> <code class="STRUCTFIELD">prev</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to previous transform in the chain.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to previous transform in the chain.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15269"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a> <code class="STRUCTFIELD">inBuf</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input binary data buffer.</p></td>
+<td align="LEFT" valign="TOP"><p>              the input binary data buffer.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15275"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER">xmlSecBuffer</a> <code class="STRUCTFIELD">outBuf</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the output binary data buffer.</p></td>
+<td align="LEFT" valign="TOP"><p>             the output binary data buffer.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15281"><span style="white-space: nowrap"><a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> <code class="STRUCTFIELD">inNodes</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input XML nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>            the input XML nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15287"><span style="white-space: nowrap"><a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> <code class="STRUCTFIELD">outNodes</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the output XML nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>           the output XML nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15293"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15299"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for the future.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1357,7 +1357,7 @@ destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFO
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15318"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the transform id to create.</p></td>
+<td align="LEFT" valign="TOP"><p>                 the transform id to create.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15323"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1374,7 +1374,7 @@ destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFO
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN15340"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -1393,15 +1393,15 @@ destroying returned tansform using <a href="xmlsec-transforms.html#XMLSECTRANSFO
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15362"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to the transform's node.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to the transform's node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15367"><span style="white-space: nowrap"><code class="PARAMETER">usage</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the transform usage (signature, encryption, ...).</p></td>
+<td align="LEFT" valign="TOP"><p>              the transform usage (signature, encryption, ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15372"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15377"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1422,15 +1422,15 @@ no more data is available.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15396"><span style="white-space: nowrap"><code class="PARAMETER">left</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the source pumping transform.</p></td>
+<td align="LEFT" valign="TOP"><p>               the source pumping transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15401"><span style="white-space: nowrap"><code class="PARAMETER">right</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the destination pumping transform.</p></td>
+<td align="LEFT" valign="TOP"><p>              the destination pumping transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15406"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15411"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1449,11 +1449,11 @@ no more data is available.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15427"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15432"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to key. </p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15437"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1472,11 +1472,11 @@ no more data is available.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15455"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15460"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to keys requirements object. </p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to keys requirements object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15465"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1499,19 +1499,19 @@ result is stored in the <gtkdoclink href="STATUS"><span class="TYPE">status</spa
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15487"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15492"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the binary data for verification.</p></td>
+<td align="LEFT" valign="TOP"><p>               the binary data for verification.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15497"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15502"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15507"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1532,15 +1532,15 @@ function to verify binary results.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15527"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15532"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to node.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15537"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15542"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1554,22 +1554,22 @@ function to verify binary results.</p>
 <pre class="PROGRAMLISTING"><a href="xmlsec-transforms.html#XMLSECTRANSFORMDATATYPE">xmlSecTransformDataType</a>  xmlSecTransformGetDataType     (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Gets transform input (<code class="PARAMETER">mode</code> is "push") or output (<code class="PARAMETER">mode</code> is "pop") data 
+<p>Gets transform input (<code class="PARAMETER">mode</code> is "push") or output (<code class="PARAMETER">mode</code> is "pop") data
 type (binary or XML).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15561"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15566"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data mode (push or pop).</p></td>
+<td align="LEFT" valign="TOP"><p>               the data mode (push or pop).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15571"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15576"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1591,24 +1591,24 @@ type (binary or XML).</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15597"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15602"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input binary data,</p></td>
+<td align="LEFT" valign="TOP"><p>               the input binary data,</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15607"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input data size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the input data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15612"><span style="white-space: nowrap"><code class="PARAMETER">final</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the flag: if set to 1 then it's the last
-		data chunk.</p></td>
+<td align="LEFT" valign="TOP"><p>              the flag: if set to 1 then it's the last
+                     data chunk.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15617"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15622"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1624,31 +1624,31 @@ type (binary or XML).</p>
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> maxDataSize,
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> *dataSize,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Pops data from previous transform in the chain, processes data and 
-returns result in the <code class="PARAMETER">data</code> buffer. The size of returned data is 
+<p>Pops data from previous transform in the chain, processes data and
+returns result in the <code class="PARAMETER">data</code> buffer. The size of returned data is
 placed in the <code class="PARAMETER">dataSize</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15643"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15648"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the buffer to store result data.</p></td>
+<td align="LEFT" valign="TOP"><p>               the buffer to store result data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15653"><span style="white-space: nowrap"><code class="PARAMETER">maxDataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the size of the buffer <gtkdoclink href="DATA"><span class="TYPE">data</span></gtkdoclink>.</p></td>
+<td align="LEFT" valign="TOP"><p>        the size of the buffer <gtkdoclink href="DATA"><span class="TYPE">data</span></gtkdoclink>.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15660"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to returned data size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the pointer to returned data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15665"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15670"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1668,15 +1668,15 @@ placed in the <code class="PARAMETER">dataSize</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15688"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15693"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>              the input nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15698"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15703"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1690,22 +1690,22 @@ placed in the <code class="PARAMETER">dataSize</code>.</p>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformPopXml               (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Pops data from previous transform in the chain, processes the data and 
+<p>Pops data from previous transform in the chain, processes the data and
 returns result in <code class="PARAMETER">nodes</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15721"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15726"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to store popinter to result nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to store popinter to result nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15731"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15736"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1725,15 +1725,15 @@ returns result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15753"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15758"><span style="white-space: nowrap"><code class="PARAMETER">last</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the flag: if set to 1 then it's the last data chunk.</p></td>
+<td align="LEFT" valign="TOP"><p>               the flag: if set to 1 then it's the last data chunk.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15763"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15768"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1752,11 +1752,11 @@ returns result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15785"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15790"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1771,11 +1771,11 @@ returns result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15807"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15812"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1788,7 +1788,7 @@ returns result in <code class="PARAMETER">nodes</code>.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN15825"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -1800,25 +1800,25 @@ returns result in <code class="PARAMETER">nodes</code>.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN15839"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMCHECKTYPE"></a><h3>xmlSecTransformCheckType()</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecTransformCheckType(transform, t)</pre>
-<p>Macro. Returns 1 if the <code class="PARAMETER">transform</code> is valid and has specified type <code class="PARAMETER">t</code> 
+<p>Macro. Returns 1 if the <code class="PARAMETER">transform</code> is valid and has specified type <code class="PARAMETER">t</code>
 or 0 otherwise.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15854"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15859"><span style="white-space: nowrap"><code class="PARAMETER">t</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 			the transform type.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the transform type.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1826,18 +1826,18 @@ or 0 otherwise.</p>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMCHECKID"></a><h3>xmlSecTransformCheckId()</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecTransformCheckId(transform, i)</pre>
-<p>Macro. Returns 1 if the <code class="PARAMETER">transform</code> is valid and has specified id <code class="PARAMETER">i</code> 
+<p>Macro. Returns 1 if the <code class="PARAMETER">transform</code> is valid and has specified id <code class="PARAMETER">i</code>
 or 0 otherwise.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15874"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15879"><span style="white-space: nowrap"><code class="PARAMETER">i</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the transform id.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the transform id.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1852,11 +1852,11 @@ bytes or 0 otherwise.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15894"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15899"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the transform object size.</p></td>
+<td align="LEFT" valign="TOP"><p>               the transform object size.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1866,39 +1866,39 @@ bytes or 0 otherwise.</p>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformConnect              (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> left,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> right,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>If the data object is a node-set and the next transform requires octets, 
-the signature application MUST attempt to convert the node-set to an octet 
-stream using Canonical XML [XML-C14N].  </p>
+<p>If the data object is a node-set and the next transform requires octets,
+the signature application MUST attempt to convert the node-set to an octet
+stream using Canonical XML [XML-C14N].</p>
 <p>The story is different if the right transform is base64 decode
 (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-BASE-64"><span class="TYPE">sec-Base-64</span></gtkdoclink>):</p>
-<p>This transform requires an octet stream for input. If an XPath node-set 
-(or sufficiently functional alternative) is given as input, then it is 
-converted to an octet stream by performing operations logically equivalent 
-to 1) applying an XPath transform with expression self::<gtkdoclink href="TEXT"><code class="FUNCTION">text()</code></gtkdoclink>, then 2) 
-taking the string-value of the node-set. Thus, if an XML element is 
-identified by a barename XPointer in the Reference URI, and its content 
-consists solely of base64 encoded character data, then this transform 
-automatically strips away the start and end tags of the identified element 
-and any of its descendant elements as well as any descendant comments and 
+<p>This transform requires an octet stream for input. If an XPath node-set
+(or sufficiently functional alternative) is given as input, then it is
+converted to an octet stream by performing operations logically equivalent
+to 1) applying an XPath transform with expression self::<gtkdoclink href="TEXT"><code class="FUNCTION">text()</code></gtkdoclink>, then 2)
+taking the string-value of the node-set. Thus, if an XML element is
+identified by a barename XPointer in the Reference URI, and its content
+consists solely of base64 encoded character data, then this transform
+automatically strips away the start and end tags of the identified element
+and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15922"><span style="white-space: nowrap"><code class="PARAMETER">left</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to left (prev) transform.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to left (prev) transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15927"><span style="white-space: nowrap"><code class="PARAMETER">right</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to right (next) transform.</p></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to right (next) transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15932"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15937"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs. </p></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1921,7 +1921,7 @@ processing instructions. The output of this transform is an octet stream.</p>
                                                         (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMMODE">xmlSecTransformMode</a> mode,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Gets transform input (<code class="PARAMETER">mode</code> is "push") or output (<code class="PARAMETER">mode</code> is "pop") data 
+<p>Gets transform input (<code class="PARAMETER">mode</code> is "push") or output (<code class="PARAMETER">mode</code> is "pop") data
 type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
 methods.</p>
 <p></p>
@@ -1929,15 +1929,15 @@ methods.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15974"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15979"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the data mode (push or pop).</p></td>
+<td align="LEFT" valign="TOP"><p>               the data mode (push or pop).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15984"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform's chaing processing context.</p></td>
+<td align="LEFT" valign="TOP"><p>       the transform's chaing processing context.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN15989"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1953,31 +1953,31 @@ methods.</p>
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> dataSize,
                                                          <font>int</font> final,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Process binary <code class="PARAMETER">data</code> by calling transform's execute method and pushes 
+<p>Process binary <code class="PARAMETER">data</code> by calling transform's execute method and pushes
 results to next transform.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16010"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16015"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input binary data,</p></td>
+<td align="LEFT" valign="TOP"><p>               the input binary data,</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16020"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input data size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the input data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16025"><span style="white-space: nowrap"><code class="PARAMETER">final</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the flag: if set to 1 then it's the last
-		data chunk.</p></td>
+<td align="LEFT" valign="TOP"><p>              the flag: if set to 1 then it's the last
+                     data chunk.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16030"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16035"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1994,30 +1994,30 @@ results to next transform.</p>
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> *dataSize,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
 <p>Pops data from previous transform in the chain, processes data by calling
-transform's execute method and returns result in the <code class="PARAMETER">data</code> buffer. The 
+transform's execute method and returns result in the <code class="PARAMETER">data</code> buffer. The
 size of returned data is placed in the <code class="PARAMETER">dataSize</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16056"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16061"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the buffer to store result data.</p></td>
+<td align="LEFT" valign="TOP"><p>               the buffer to store result data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16066"><span style="white-space: nowrap"><code class="PARAMETER">maxDataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the size of the buffer <gtkdoclink href="DATA"><span class="TYPE">data</span></gtkdoclink>.</p></td>
+<td align="LEFT" valign="TOP"><p>        the size of the buffer <gtkdoclink href="DATA"><span class="TYPE">data</span></gtkdoclink>.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16073"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to returned data size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the pointer to returned data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16078"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16083"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2031,22 +2031,22 @@ size of returned data is placed in the <code class="PARAMETER">dataSize</code>.<
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformDefaultPushXml       (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Processes <code class="PARAMETER">nodes</code> by calling transform's execute method and pushes 
+<p>Processes <code class="PARAMETER">nodes</code> by calling transform's execute method and pushes
 result to the next transform in the chain.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16101"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16106"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>              the input nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16111"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16116"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2060,22 +2060,22 @@ result to the next transform in the chain.</p>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecTransformDefaultPopXml        (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> *nodes,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>Pops data from previous transform in the chain, processes the data 
+<p>Pops data from previous transform in the chain, processes the data
 by calling transform's execute method and returns result in <code class="PARAMETER">nodes</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16134"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16139"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to store popinter to result nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to store popinter to result nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16144"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16149"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2094,11 +2094,11 @@ by calling transform's execute method and returns result in <code class="PARAMET
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16166"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16171"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16176"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2118,11 +2118,11 @@ by calling transform's execute method and returns result in <code class="PARAMET
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16193"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16198"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>       the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16203"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2140,7 +2140,7 @@ by calling transform's execute method and returns result in <code class="PARAMET
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16218"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16223"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2157,7 +2157,7 @@ by calling transform's execute method and returns result in <code class="PARAMET
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN16238"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -2174,15 +2174,15 @@ data type in specified mode <code class="PARAMETER">mode</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16256"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16261"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the mode.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the mode.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16266"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16271"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2196,22 +2196,22 @@ data type in specified mode <code class="PARAMETER">mode</code>.</p>
 <pre class="PROGRAMLISTING"><font>int</font>                 (*xmlSecTransformNodeReadMethod)    (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <font>xmlNodePtr</font> node,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>The transform specific method to read the transform data from 
+<p>The transform specific method to read the transform data from
 the <code class="PARAMETER">node</code>.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16289"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16294"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16300"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16305"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2231,15 +2231,15 @@ the <code class="PARAMETER">node</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16323"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16328"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Transform" target="_top">&lt;dsig:Transform/&gt;</a> node.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16334"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16339"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2259,11 +2259,11 @@ the <code class="PARAMETER">node</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16355"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16360"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to key requirements structure.</p></td>
+<td align="LEFT" valign="TOP"><p>                     the pointer to key requirements structure.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16365"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2282,11 +2282,11 @@ the <code class="PARAMETER">node</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16381"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16386"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 			the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                        the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16391"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2310,19 +2310,19 @@ if verification succeeded or <a href="xmlsec-transforms.html#XMLSECTRANSFORMSTAT
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16416"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16421"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the input buffer.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the input buffer.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16426"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the size of input buffer <code class="PARAMETER">data</code>.</p></td>
+<td align="LEFT" valign="TOP"><p>                   the size of input buffer <code class="PARAMETER">data</code>.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16432"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16437"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2345,24 +2345,24 @@ result to the next transform in the chain.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16457"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16462"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the input binary data,</p></td>
+<td align="LEFT" valign="TOP"><p>                       the input binary data,</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16467"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the input data size.</p></td>
+<td align="LEFT" valign="TOP"><p>                   the input data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16472"><span style="white-space: nowrap"><code class="PARAMETER">final</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the flag: if set to 1 then it's the last
-			data chunk.</p></td>
+<td align="LEFT" valign="TOP"><p>                      the flag: if set to 1 then it's the last
+                             data chunk.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16477"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16482"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2378,7 +2378,7 @@ result to the next transform in the chain.</p>
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> maxDataSize,
                                                          <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> *dataSize,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>The transform specific method to pop data from previous transform 
+<p>The transform specific method to pop data from previous transform
 in the chain and return result in the <code class="PARAMETER">data</code> buffer. The size of returned
 data is placed in the <code class="PARAMETER">dataSize</code>.</p>
 <p></p>
@@ -2386,23 +2386,23 @@ data is placed in the <code class="PARAMETER">dataSize</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16503"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16508"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the buffer to store result data.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the buffer to store result data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16513"><span style="white-space: nowrap"><code class="PARAMETER">maxDataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the size of the buffer <code class="PARAMETER">data</code>.</p></td>
+<td align="LEFT" valign="TOP"><p>                the size of the buffer <code class="PARAMETER">data</code>.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16519"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to returned data size.</p></td>
+<td align="LEFT" valign="TOP"><p>                   the pointer to returned data size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16524"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16529"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2416,22 +2416,22 @@ data is placed in the <code class="PARAMETER">dataSize</code>.</p>
 <pre class="PROGRAMLISTING"><font>int</font>                 (*xmlSecTransformPushXmlMethod)     (<a href="xmlsec-transforms.html#XMLSECTRANSFORM">xmlSecTransformPtr</a> transform,
                                                          <a href="xmlsec-nodeset.html#XMLSECNODESET">xmlSecNodeSetPtr</a> nodes,
                                                          <a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX">xmlSecTransformCtxPtr</a> transformCtx);</pre>
-<p>The transform specific method to process <code class="PARAMETER">nodes</code> and push result to the next 
+<p>The transform specific method to process <code class="PARAMETER">nodes</code> and push result to the next
 transform in the chain.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16547"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16552"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the input nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>                      the input nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16557"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16562"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2452,15 +2452,15 @@ process the data and return result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16580"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16585"><span style="white-space: nowrap"><code class="PARAMETER">nodes</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to store popinter to result nodes.</p></td>
+<td align="LEFT" valign="TOP"><p>                      the pointer to store popinter to result nodes.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16590"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16595"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2480,15 +2480,15 @@ process the data and return result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16612"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the pointer to transform object.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the pointer to transform object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16617"><span style="white-space: nowrap"><code class="PARAMETER">last</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the flag: if set to 1 then it's the last data chunk.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the flag: if set to 1 then it's the last data chunk.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16622"><span style="white-space: nowrap"><code class="PARAMETER">transformCtx</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform context object.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform context object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16627"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2501,35 +2501,35 @@ process the data and return result in <code class="PARAMETER">nodes</code>.</p>
 <a name="XMLSECTRANSFORMKLASS"></a><h3>struct xmlSecTransformKlass</h3>
 <pre class="PROGRAMLISTING">struct xmlSecTransformKlass {
     /* data */
-    xmlSecSize				klassSize;
-    xmlSecSize				objSize;
-    const xmlChar*			name;
-    const xmlChar*			href;
-    xmlSecTransformUsage		usage;
+    xmlSecSize                          klassSize;
+    xmlSecSize                          objSize;
+    const xmlChar*                      name;
+    const xmlChar*                      href;
+    xmlSecTransformUsage                usage;
 
     /* methods */
-    xmlSecTransformInitializeMethod	initialize;
-    xmlSecTransformFinalizeMethod	finalize;
+    xmlSecTransformInitializeMethod     initialize;
+    xmlSecTransformFinalizeMethod       finalize;
 
-    xmlSecTransformNodeReadMethod	readNode;
-    xmlSecTransformNodeWriteMethod	writeNode;
+    xmlSecTransformNodeReadMethod       readNode;
+    xmlSecTransformNodeWriteMethod      writeNode;
 
-    xmlSecTransformSetKeyRequirementsMethod	setKeyReq;
-    xmlSecTransformSetKeyMethod		setKey;
-    xmlSecTransformVerifyMethod		verify;
-    xmlSecTransformGetDataTypeMethod	getDataType;
+    xmlSecTransformSetKeyRequirementsMethod     setKeyReq;
+    xmlSecTransformSetKeyMethod         setKey;
+    xmlSecTransformVerifyMethod         verify;
+    xmlSecTransformGetDataTypeMethod    getDataType;
 
-    xmlSecTransformPushBinMethod	pushBin;
-    xmlSecTransformPopBinMethod		popBin;
-    xmlSecTransformPushXmlMethod	pushXml;
-    xmlSecTransformPopXmlMethod		popXml;
-    
+    xmlSecTransformPushBinMethod        pushBin;
+    xmlSecTransformPopBinMethod         popBin;
+    xmlSecTransformPushXmlMethod        pushXml;
+    xmlSecTransformPopXmlMethod         popXml;
+
     /* low level method */
-    xmlSecTransformExecuteMethod	execute;
+    xmlSecTransformExecuteMethod        execute;
 
-    /* reserved for future */ 
-    void* 				reserved0;
-    void* 				reserved1;
+    /* reserved for future */
+    void*                               reserved0;
+    void*                               reserved1;
 };</pre>
 <p>The transform klass desccription structure.</p>
 <p></p>
@@ -2537,84 +2537,84 @@ process the data and return result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16640"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">klassSize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the transform klass structure size.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the transform klass structure size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16646"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">objSize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the transform object size.</p></td>
+<td align="LEFT" valign="TOP"><p>                    the transform object size.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16652"><span style="white-space: nowrap">const <font>xmlChar</font> *<code class="STRUCTFIELD">name</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the transform's name.</p></td>
+<td align="LEFT" valign="TOP"><p>                       the transform's name.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16658"><span style="white-space: nowrap">const <font>xmlChar</font> *<code class="STRUCTFIELD">href</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the transform's identification string (href).</p></td>
+<td align="LEFT" valign="TOP"><p>                       the transform's identification string (href).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16664"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMUSAGE">xmlSecTransformUsage</a> <code class="STRUCTFIELD">usage</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the allowed transforms usages.</p></td>
+<td align="LEFT" valign="TOP"><p>                      the allowed transforms usages.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16670"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMINITIALIZEMETHOD">xmlSecTransformInitializeMethod</a> <code class="STRUCTFIELD">initialize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the initialization method.</p></td>
+<td align="LEFT" valign="TOP"><p>                 the initialization method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16676"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMFINALIZEMETHOD">xmlSecTransformFinalizeMethod</a> <code class="STRUCTFIELD">finalize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the finmalization (destroy) function.</p></td>
+<td align="LEFT" valign="TOP"><p>                   the finmalization (destroy) function.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16682"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEREADMETHOD">xmlSecTransformNodeReadMethod</a> <code class="STRUCTFIELD">readNode</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the XML node read method.</p></td>
+<td align="LEFT" valign="TOP"><p>                   the XML node read method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16688"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMNODEWRITEMETHOD">xmlSecTransformNodeWriteMethod</a> <code class="STRUCTFIELD">writeNode</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the XML node write method.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the XML node write method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16694"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYREQUIREMENTSMETHOD">xmlSecTransformSetKeyRequirementsMethod</a> <code class="STRUCTFIELD">setKeyReq</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the set key requirements method.</p></td>
+<td align="LEFT" valign="TOP"><p>                  the set key requirements method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16700"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMSETKEYMETHOD">xmlSecTransformSetKeyMethod</a> <code class="STRUCTFIELD">setKey</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the set key method.</p></td>
+<td align="LEFT" valign="TOP"><p>                     the set key method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16706"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMVERIFYMETHOD">xmlSecTransformVerifyMethod</a> <code class="STRUCTFIELD">verify</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the verify method (for digest and signature transforms).</p></td>
+<td align="LEFT" valign="TOP"><p>                     the verify method (for digest and signature transforms).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16712"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMGETDATATYPEMETHOD">xmlSecTransformGetDataTypeMethod</a> <code class="STRUCTFIELD">getDataType</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the input/output data type query method.</p></td>
+<td align="LEFT" valign="TOP"><p>                the input/output data type query method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16718"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHBINMETHOD">xmlSecTransformPushBinMethod</a> <code class="STRUCTFIELD">pushBin</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the binary data "push thru chain" processing method.</p></td>
+<td align="LEFT" valign="TOP"><p>                    the binary data "push thru chain" processing method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16724"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPBINMETHOD">xmlSecTransformPopBinMethod</a> <code class="STRUCTFIELD">popBin</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the binary data "pop from chain" procesing method.</p></td>
+<td align="LEFT" valign="TOP"><p>                     the binary data "pop from chain" procesing method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16730"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPUSHXMLMETHOD">xmlSecTransformPushXmlMethod</a> <code class="STRUCTFIELD">pushXml</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the XML data "push thru chain" processing method.</p></td>
+<td align="LEFT" valign="TOP"><p>                    the XML data "push thru chain" processing method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16736"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMPOPXMLMETHOD">xmlSecTransformPopXmlMethod</a> <code class="STRUCTFIELD">popXml</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the XML data "pop from chain" procesing method.</p></td>
+<td align="LEFT" valign="TOP"><p>                     the XML data "pop from chain" procesing method.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16742"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMEXECUTEMETHOD">xmlSecTransformExecuteMethod</a> <code class="STRUCTFIELD">execute</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the low level data processing method used  by default
-			implementations of <code class="PARAMETER">pushBin</code>, <code class="PARAMETER">popBin</code>, <code class="PARAMETER">pushXml</code> and <code class="PARAMETER">popXml</code>.</p></td>
+<td align="LEFT" valign="TOP"><p>                    the low level data processing method used  by default
+                             implementations of <code class="PARAMETER">pushBin</code>, <code class="PARAMETER">popBin</code>, <code class="PARAMETER">pushXml</code> and <code class="PARAMETER">popXml</code>.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16752"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><p>                  reserved for the future.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16758"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>			reserved for the future.</p></td>
+<td align="LEFT" valign="TOP"><p>                  reserved for the future.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -2627,13 +2627,13 @@ process the data and return result in <code class="PARAMETER">nodes</code>.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN16772"><span style="white-space: nowrap"><code class="PARAMETER">klass</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the transofrm's klass.</p></td>
+<td align="LEFT" valign="TOP"><p>              the transofrm's klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMIDLISTID"></a><h3>xmlSecTransformIdListId</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformIdListId xmlSecTransformIdListGetKlass()</pre>
 <p>Transform klasses list klass.</p>
 <p></p>
 </div>
@@ -2660,11 +2660,11 @@ process the data and return result in <code class="PARAMETER">nodes</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16811"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform ids list.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform ids list.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16816"><span style="white-space: nowrap"><code class="PARAMETER">transformId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the transform klass.</p></td>
+<td align="LEFT" valign="TOP"><p>        the transform klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16821"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2685,15 +2685,15 @@ value if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16843"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform ids list.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform ids list.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16848"><span style="white-space: nowrap"><code class="PARAMETER">href</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired transform klass href.</p></td>
+<td align="LEFT" valign="TOP"><p>               the desired transform klass href.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16853"><span style="white-space: nowrap"><code class="PARAMETER">usage</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired transform usage.</p></td>
+<td align="LEFT" valign="TOP"><p>              the desired transform usage.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16858"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2713,15 +2713,15 @@ value if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16878"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform ids list.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform ids list.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16883"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired transform klass name.</p></td>
+<td align="LEFT" valign="TOP"><p>               the desired transform klass name.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16888"><span style="white-space: nowrap"><code class="PARAMETER">usage</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired transform usage.</p></td>
+<td align="LEFT" valign="TOP"><p>              the desired transform usage.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16893"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -2740,11 +2740,11 @@ value if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16910"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform ids list.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform ids list.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16915"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -2759,18 +2759,18 @@ value if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16932"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to transform ids list.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to transform ids list.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16937"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMIDUNKNOWN"></a><h3>xmlSecTransformIdUnknown</h3>
-<pre class="PROGRAMLISTING">#define xmlSecTransformIdUnknown			((xmlSecTransformId)NULL)</pre>
+<pre class="PROGRAMLISTING">#define xmlSecTransformIdUnknown                        ((xmlSecTransformId)NULL)</pre>
 <p>The "unknown" transform id (NULL).</p>
 <p></p>
 </div>
@@ -2787,9 +2787,9 @@ value if an error occurs.</p></td>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformBase64GetKlass       (void);</pre>
 <p>The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-BASE-64"><span class="TYPE">sec-Base-64</span></gtkdoclink>).
 The normative specification for base64 decoding transforms is RFC 2045
-(http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has 
-no content. The input is decoded by the algorithms. This transform is 
-useful if an application needs to sign the raw data associated with 
+(http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has
+no content. The input is decoded by the algorithms. This transform is
+useful if an application needs to sign the raw data associated with
 the encoded content of an element.</p>
 <p></p>
 <p></p>
@@ -2809,11 +2809,11 @@ the encoded content of an element.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16984"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to BASE64 encode transform.</p></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to BASE64 encode transform.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN16989"><span style="white-space: nowrap"><code class="PARAMETER">lineSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the new max line size.</p></td>
+<td align="LEFT" valign="TOP"><p>           the new max line size.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -2829,7 +2829,7 @@ the encoded content of an element.</p>
 <a name="XMLSECTRANSFORMINCLC14NGETKLASS"></a><h3>xmlSecTransformInclC14NGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformInclC14NGetKlass     (void);</pre>
 <p>Inclusive (regular) canonicalization that omits comments transform klass
-(http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-C14NALG"><span class="TYPE">sec-c14nAlg</span></gtkdoclink> and 
+(http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-C14NALG"><span class="TYPE">sec-c14nAlg</span></gtkdoclink> and
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <p></p>
 <p></p>
@@ -2851,7 +2851,7 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformInclC14NWithCommentsGetKlass
                                                         (void);</pre>
 <p>Inclusive (regular) canonicalization that includes comments transform klass
-(http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-C14NALG"><span class="TYPE">sec-c14nAlg</span></gtkdoclink> and 
+(http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-C14NALG"><span class="TYPE">sec-c14nAlg</span></gtkdoclink> and
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <p></p>
 <p></p>
@@ -2952,28 +2952,27 @@ http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</p>
 <a name="XMLSECTRANSFORMENVELOPEDGETKLASS"></a><h3>xmlSecTransformEnvelopedGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformEnvelopedGetKlass    (void);</pre>
 <p>The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-ENVELOPEDSIGNATURE"><span class="TYPE">sec-EnvelopedSignature</span></gtkdoclink>):</p>
-<p>An enveloped signature transform T removes the whole Signature element 
-containing T from the digest calculation of the Reference element 
-containing T. The entire string of characters used by an XML processor 
-to match the Signature with the XML production element is removed. 
-The output of the transform is equivalent to the output that would 
-result from replacing T with an XPath transform containing the following 
+<p>An enveloped signature transform T removes the whole Signature element
+containing T from the digest calculation of the Reference element
+containing T. The entire string of characters used by an XML processor
+to match the Signature with the XML production element is removed.
+The output of the transform is equivalent to the output that would
+result from replacing T with an XPath transform containing the following
 XPath parameter element:</p>
 <p>&lt;XPath xmlns:dsig="&amp;dsig;"&gt;
   count(ancestor-or-self::dsig:Signature |
   <gtkdoclink href="HERE"><code class="FUNCTION">here()</code></gtkdoclink>/ancestor::dsig:Signature[1]) &gt;
-  count(ancestor-or-self::dsig:Signature)&lt;/XPath&gt;
-   
-The input and output requirements of this transform are identical to 
-those of the XPath transform, but may only be applied to a node-set from 
-its parent XML document. Note that it is not necessary to use an XPath 
-expression evaluator to create this transform. However, this transform 
-MUST produce output in exactly the same manner as the XPath transform 
+  count(ancestor-or-self::dsig:Signature)&lt;/XPath&gt;</p>
+<p>The input and output requirements of this transform are identical to
+those of the XPath transform, but may only be applied to a node-set from
+its parent XML document. Note that it is not necessary to use an XPath
+expression evaluator to create this transform. However, this transform
+MUST produce output in exactly the same manner as the XPath transform
 parameterized by the XPath expression above.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17146"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17147"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> enveloped transform id.</p></td>
 </tr></tbody></table>
 </div>
@@ -2988,13 +2987,13 @@ parameterized by the XPath expression above.</p>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMXPATHGETKLASS"></a><h3>xmlSecTransformXPathGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformXPathGetKlass        (void);</pre>
-<p>The XPath transform evaluates given XPath expression and 
-intersects the result with the previous nodes set. See 
+<p>The XPath transform evaluates given XPath expression and
+intersects the result with the previous nodes set. See
 http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-XPATH"><span class="TYPE">sec-XPath</span></gtkdoclink> for more details.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17169"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17170"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> XPath transform id.</p></td>
 </tr></tbody></table>
 </div>
@@ -3013,7 +3012,7 @@ http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-XPATH"><span class="TYPE
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17190"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17191"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> XPath2 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -3028,12 +3027,12 @@ http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-XPATH"><span class="TYPE
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMXPOINTERGETKLASS"></a><h3>xmlSecTransformXPointerGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformXPointerGetKlass     (void);</pre>
-<p>The XPointer transform klass 
+<p>The XPointer transform klass
 (http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17211"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17212"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> XPointer transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -3049,23 +3048,23 @@ http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-XPATH"><span class="TYPE
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17230"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to XPointer transform.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN17231"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to XPointer transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17235"><span style="white-space: nowrap"><code class="PARAMETER">expr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the XPointer expression.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN17236"><span style="white-space: nowrap"><code class="PARAMETER">expr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the XPointer expression.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17240"><span style="white-space: nowrap"><code class="PARAMETER">nodeSetType</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the type of evaluated XPointer expression.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN17241"><span style="white-space: nowrap"><code class="PARAMETER">nodeSetType</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>        the type of evaluated XPointer expression.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17245"><span style="white-space: nowrap"><code class="PARAMETER">hereNode</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to "here" node.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN17246"><span style="white-space: nowrap"><code class="PARAMETER">hereNode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>           the pointer to "here" node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17250"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17251"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -3082,32 +3081,32 @@ http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-XPATH"><span class="TYPE
 <a name="XMLSECTRANSFORMXSLTGETKLASS"></a><h3>xmlSecTransformXsltGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformXsltGetKlass         (void);</pre>
 <p>XSLT transform klass (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-XSLT"><span class="TYPE">sec-XSLT</span></gtkdoclink>):</p>
-<p>The normative specification for XSL Transformations is [XSLT]. 
-Specification of a namespace-qualified stylesheet element, which MUST be 
-the sole child of the Transform element, indicates that the specified style 
-sheet should be used. Whether this instantiates in-line processing of local 
-XSLT declarations within the resource is determined by the XSLT processing 
-model; the ordered application of multiple stylesheet may require multiple 
-Transforms. No special provision is made for the identification of a remote 
-stylesheet at a given URI because it can be communicated via an  xsl:include 
+<p>The normative specification for XSL Transformations is [XSLT].
+Specification of a namespace-qualified stylesheet element, which MUST be
+the sole child of the Transform element, indicates that the specified style
+sheet should be used. Whether this instantiates in-line processing of local
+XSLT declarations within the resource is determined by the XSLT processing
+model; the ordered application of multiple stylesheet may require multiple
+Transforms. No special provision is made for the identification of a remote
+stylesheet at a given URI because it can be communicated via an  xsl:include
 or  xsl:import within the stylesheet child of the Transform.</p>
-<p>This transform requires an octet stream as input. If the actual input is an 
-XPath node-set, then the signature application should attempt to convert it 
-to octets (apply Canonical XML]) as described in the Reference Processing 
+<p>This transform requires an octet stream as input. If the actual input is an
+XPath node-set, then the signature application should attempt to convert it
+to octets (apply Canonical XML]) as described in the Reference Processing
 Model (section 4.3.3.2).]</p>
-<p>The output of this transform is an octet stream. The processing rules for 
+<p>The output of this transform is an octet stream. The processing rules for
 the XSL style sheet or transform element are stated in the XSLT specification
-[XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml 
-for XML and HTML. As XSLT implementations do not produce consistent 
-serializations of their output, we further RECOMMEND inserting a transform 
-after the XSLT transform to canonicalize the output. These steps will help 
-to ensure interoperability of the resulting signatures among applications 
-that support the XSLT transform. Note that if the output is actually HTML, 
+[XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml
+for XML and HTML. As XSLT implementations do not produce consistent
+serializations of their output, we further RECOMMEND inserting a transform
+after the XSLT transform to canonicalize the output. These steps will help
+to ensure interoperability of the resulting signatures among applications
+that support the XSLT transform. Note that if the output is actually HTML,
 then the result of these steps is logically equivalent [XHTML].</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17276"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17277"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to XSLT transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -3124,20 +3123,20 @@ then the result of these steps is logically equivalent [XHTML].</p>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformRemoveXmlTagsC14NGetKlass
                                                         (void);</pre>
 <p>The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/<gtkdoclink href="SEC-BASE-64"><span class="TYPE">sec-Base-64</span></gtkdoclink>):
-Base64 transform requires an octet stream for input. If an XPath node-set 
-(or sufficiently functional alternative) is given as input, then it is 
-converted to an octet stream by performing operations logically equivalent 
-to 1) applying an XPath transform with expression self::<gtkdoclink href="TEXT"><code class="FUNCTION">text()</code></gtkdoclink>, then 2) 
-taking the string-value of the node-set. Thus, if an XML element is 
-identified by a barename XPointer in the Reference URI, and its content 
-consists solely of base64 encoded character data, then this transform 
-automatically strips away the start and end tags of the identified element 
-and any of its descendant elements as well as any descendant comments and 
+Base64 transform requires an octet stream for input. If an XPath node-set
+(or sufficiently functional alternative) is given as input, then it is
+converted to an octet stream by performing operations logically equivalent
+to 1) applying an XPath transform with expression self::<gtkdoclink href="TEXT"><code class="FUNCTION">text()</code></gtkdoclink>, then 2)
+taking the string-value of the node-set. Thus, if an XML element is
+identified by a barename XPointer in the Reference URI, and its content
+consists solely of base64 encoded character data, then this transform
+automatically strips away the start and end tags of the identified element
+and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17301"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17302"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> "remove xml tags" transform id.</p></td>
 </tr></tbody></table>
 </div>
@@ -3145,9 +3144,9 @@ processing instructions. The output of this transform is an octet stream.</p>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMVISA3DHACKID"></a><h3>xmlSecTransformVisa3DHackId</h3>
 <pre class="PROGRAMLISTING">#define             xmlSecTransformVisa3DHackId</pre>
-<p>Selects node subtree by given node id string. The only reason why we need this 
-is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+<p>Selects node subtree by given node id string. The only reason why we need this
+is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
+invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
 such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 <p></p>
 </div>
@@ -3155,14 +3154,14 @@ such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 <div class="REFSECT2">
 <a name="XMLSECTRANSFORMVISA3DHACKGETKLASS"></a><h3>xmlSecTransformVisa3DHackGetKlass ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecTransformVisa3DHackGetKlass   (void);</pre>
-<p>The Visa3DHack transform klass. The only reason why we need this 
-is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+<p>The Visa3DHack transform klass. The only reason why we need this
+is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
+invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
 such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN17322"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17323"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> Visa3DHack transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -3176,15 +3175,15 @@ such expressions thru XPath/XPointer engine, we need to have this hack here.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17339"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to Visa3DHack transform.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN17340"><span style="white-space: nowrap"><code class="PARAMETER">transform</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>          the pointer to Visa3DHack transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17344"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>			the ID value.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN17345"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                 the ID value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN17349"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN17350"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>

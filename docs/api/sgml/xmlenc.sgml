@@ -76,18 +76,18 @@ The <link linkend="xmlSecEncCtx"><type>xmlSecEncCtx</type></link> mode.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlEncCtxModeEncryptedData" role="constant">
 <term><literal>xmlEncCtxModeEncryptedData</literal></term>
-<listitem><simpara>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element procesing.
+<listitem><simpara> the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element procesing.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlEncCtxModeEncryptedKey" role="constant">
 <term><literal>xmlEncCtxModeEncryptedKey</literal></term>
-<listitem><simpara>	the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing.
+<listitem><simpara>  the <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> element processing.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="XMLSEC-ENC-RETURN-REPLACED-NODE--CAPS" role="macro">
 <title>XMLSEC_ENC_RETURN_REPLACED_NODE</title>
-<indexterm zone="XMLSEC-ENC-RETURN-REPLACED-NODE--CAPS"><primary sortas="XMLSEC_ENC_RETURN_REPLACED_NODE">XMLSEC_ENC_RETURN_REPLACED_NODE</primary></indexterm><programlisting>#define XMLSEC_ENC_RETURN_REPLACED_NODE			0x00000001
+<indexterm zone="XMLSEC-ENC-RETURN-REPLACED-NODE--CAPS"><primary sortas="XMLSEC_ENC_RETURN_REPLACED_NODE">XMLSEC_ENC_RETURN_REPLACED_NODE</primary></indexterm><programlisting>#define XMLSEC_ENC_RETURN_REPLACED_NODE                 0x00000001
 </programlisting>
 <para>
 If this flag is set, then the replaced node will be returned in the replacedNodeList</para>
@@ -97,39 +97,39 @@ If this flag is set, then the replaced node will be returned in the replacedNode
 <title>struct xmlSecEncCtx</title>
 <indexterm zone="xmlSecEncCtx"><primary sortas="xmlSecEncCtx">xmlSecEncCtx</primary></indexterm><programlisting>struct xmlSecEncCtx {
     /* these data user can set before performing the operation */
-    void*			userData;
-    unsigned int		flags;
-    unsigned int		flags2;    
-    xmlEncCtxMode		mode;
-    xmlSecKeyInfoCtx		keyInfoReadCtx;
-    xmlSecKeyInfoCtx		keyInfoWriteCtx;
-    xmlSecTransformCtx		transformCtx;
-    xmlSecTransformId		defEncMethodId;
+    void*                       userData;
+    unsigned int                flags;
+    unsigned int                flags2;
+    xmlEncCtxMode               mode;
+    xmlSecKeyInfoCtx            keyInfoReadCtx;
+    xmlSecKeyInfoCtx            keyInfoWriteCtx;
+    xmlSecTransformCtx          transformCtx;
+    xmlSecTransformId           defEncMethodId;
 
     /* these data are returned */
-    xmlSecKeyPtr		encKey;
-    xmlSecTransformOperation	operation;
-    xmlSecBufferPtr		result;
-    int				resultBase64Encoded;
-    int				resultReplaced;
-    xmlSecTransformPtr		encMethod;
-		
-    /* attributes from EncryptedData or EncryptedKey */    
-    xmlChar*			id;
-    xmlChar*			type;
-    xmlChar*			mimeType;
-    xmlChar*			encoding;
-    xmlChar*			recipient;
-    xmlChar*			carriedKeyName;
+    xmlSecKeyPtr                encKey;
+    xmlSecTransformOperation    operation;
+    xmlSecBufferPtr             result;
+    int                         resultBase64Encoded;
+    int                         resultReplaced;
+    xmlSecTransformPtr          encMethod;
+
+    /* attributes from EncryptedData or EncryptedKey */
+    xmlChar*                    id;
+    xmlChar*                    type;
+    xmlChar*                    mimeType;
+    xmlChar*                    encoding;
+    xmlChar*                    recipient;
+    xmlChar*                    carriedKeyName;
 
     /* these are internal data, nobody should change that except us */
-    xmlNodePtr			encDataNode;
-    xmlNodePtr			encMethodNode;
-    xmlNodePtr			keyInfoNode;
-    xmlNodePtr			cipherValueNode;
-        
-    xmlNodePtr			replacedNodeList; /* the pointer to the replaced node */
-    void*			reserved1;	  /* reserved for future */
+    xmlNodePtr                  encDataNode;
+    xmlNodePtr                  encMethodNode;
+    xmlNodePtr                  keyInfoNode;
+    xmlNodePtr                  cipherValueNode;
+
+    xmlNodePtr                  replacedNodeList; /* the pointer to the replaced node */
+    void*                       reserved1;        /* reserved for future */
 };
 </programlisting>
 <para>
@@ -138,131 +138,131 @@ XML Encrypiton context.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>userData</structfield>;</term>
-<listitem><simpara>			the pointer to user data (xmlsec and xmlsec-crypto libraries
-			never touches this).
+<listitem><simpara>                   the pointer to user data (xmlsec and xmlsec-crypto libraries
+                             never touches this).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>unsigned&#160;<link linkend="int">int</link>&#160;<structfield>flags</structfield>;</term>
-<listitem><simpara>			the XML Encryption processing flags.
+<listitem><simpara>                      the XML Encryption processing flags.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>unsigned&#160;<link linkend="int">int</link>&#160;<structfield>flags2</structfield>;</term>
-<listitem><simpara>			the XML Encryption processing flags.
+<listitem><simpara>                     the XML Encryption processing flags.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlEncCtxMode">xmlEncCtxMode</link>&#160;<structfield>mode</structfield>;</term>
-<listitem><simpara>			the mode.
+<listitem><simpara>                       the mode.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>&#160;<structfield>keyInfoReadCtx</structfield>;</term>
-<listitem><simpara>		the reading key context.
+<listitem><simpara>             the reading key context.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>&#160;<structfield>keyInfoWriteCtx</structfield>;</term>
-<listitem><simpara>		the writing key context (not used for signature verification).
+<listitem><simpara>            the writing key context (not used for signature verification).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>&#160;<structfield>transformCtx</structfield>;</term>
-<listitem><simpara>		the transforms processing context.
+<listitem><simpara>               the transforms processing context.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformId">xmlSecTransformId</link>&#160;<structfield>defEncMethodId</structfield>;</term>
-<listitem><simpara>		the default encryption method (used if
-			<ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node is not present).
+<listitem><simpara>             the default encryption method (used if
+                             <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node is not present).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKey">xmlSecKeyPtr</link>&#160;<structfield>encKey</structfield>;</term>
-<listitem><simpara>			the signature key; application may set <link linkend="encKey"><type>encKey</type></link>
-			before calling encryption/decryption functions.
+<listitem><simpara>                     the signature key; application may set <link linkend="encKey"><type>encKey</type></link>
+                             before calling encryption/decryption functions.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link>&#160;<structfield>operation</structfield>;</term>
-<listitem><simpara>			the operation: encrypt or decrypt.
+<listitem><simpara>                  the operation: encrypt or decrypt.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecBuffer">xmlSecBufferPtr</link>&#160;<structfield>result</structfield>;</term>
-<listitem><simpara>			the pointer to signature (not valid for signature verificaction).
+<listitem><simpara>                     the pointer to signature (not valid for signature verificaction).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link>&#160;<structfield>resultBase64Encoded</structfield>;</term>
-<listitem><simpara>	the flag: if set then result in <link linkend="result"><type>result</type></link> is base64 encoded.
+<listitem><simpara>        the flag: if set then result in <link linkend="result"><type>result</type></link> is base64 encoded.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link>&#160;<structfield>resultReplaced</structfield>;</term>
-<listitem><simpara>		the flag: if set then resulted <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node is added to the document.
+<listitem><simpara>             the flag: if set then resulted <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+                             or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node is added to the document.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>encMethod</structfield>;</term>
-<listitem><simpara>			the pointer to encryption transform.
+<listitem><simpara>                  the pointer to encryption transform.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>id</structfield>;</term>
-<listitem><simpara>				the ID attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+<listitem><simpara>                         the ID attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+                             or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>type</structfield>;</term>
-<listitem><simpara>			the Type attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+<listitem><simpara>                       the Type attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+                             or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>mimeType</structfield>;</term>
-<listitem><simpara>			the MimeType attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+<listitem><simpara>                   the MimeType attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+                             or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>encoding</structfield>;</term>
-<listitem><simpara>			the Encoding attributeof <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node. 
+<listitem><simpara>                   the Encoding attributeof <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+                             or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>recipient</structfield>;</term>
-<listitem><simpara>			the Recipient attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node..
+<listitem><simpara>                  the Recipient attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node..
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>carriedKeyName</structfield>;</term>
-<listitem><simpara>		the CarriedKeyName attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+<listitem><simpara>             the CarriedKeyName attribute of <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link>&#160;<structfield>encDataNode</structfield>;</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
-			or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
+<listitem><simpara>                the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink>
+                             or <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedKey">&lt;enc:EncryptedKey/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link>&#160;<structfield>encMethodNode</structfield>;</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node.
+<listitem><simpara>              the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptionMethod">&lt;enc:EncryptionMethod/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link>&#160;<structfield>keyInfoNode</structfield>;</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyInfo">&lt;enc:KeyInfo/&gt;</ulink> node.
+<listitem><simpara>                the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-KeyInfo">&lt;enc:KeyInfo/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link>&#160;<structfield>cipherValueNode</structfield>;</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node.
+<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-CipherValue">&lt;enc:CipherValue/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
@@ -272,7 +272,7 @@ XML Encrypiton context.</para>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>			reserved for the future.
+<listitem><simpara>                  reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -281,12 +281,12 @@ XML Encrypiton context.</para>
 <indexterm zone="xmlSecEncCtxCreate"><primary sortas="xmlSecEncCtxCreate">xmlSecEncCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecEncCtxPtr">xmlSecEncCtxPtr</link>     xmlSecEncCtxCreate                  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
-The caller is responsible for destroying returend object by calling 
+The caller is responsible for destroying returend object by calling
 <link linkend="xmlSecEncCtxDestroy"><type>xmlSecEncCtxDestroy</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>           the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated context object or NULL if an error
 occurs.
@@ -300,7 +300,7 @@ Destroy context object created with <link linkend="xmlSecEncCtxCreate"><type>xml
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecEncCtxInitialize" role="function">
@@ -309,15 +309,15 @@ Destroy context object created with <link linkend="xmlSecEncCtxCreate"><type>xml
                                                          <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
 <para>
 Initializes <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
-The caller is responsible for cleaing up returend object by calling 
+The caller is responsible for cleaing up returend object by calling
 <link linkend="xmlSecEncCtxFinalize"><type>xmlSecEncCtxFinalize</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>           the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -330,7 +330,7 @@ Cleans up <parameter>encCtx</parameter> object.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecEncCtxCopyUserPref" role="function">
@@ -342,10 +342,10 @@ Copies user preference from <parameter>src</parameter> context to <parameter>dst
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to destination context.
+<listitem><simpara>                the pointer to destination context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to source context.
+<listitem><simpara>                the pointer to source context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -358,7 +358,7 @@ Resets <parameter>encCtx</parameter> object, user settings are not touched.</par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecEncCtxBinaryEncrypt" role="function">
@@ -372,16 +372,16 @@ Encrypts <parameter>data</parameter> according to template <parameter>tmpl</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tmpl</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer for binary buffer.
+<listitem><simpara>               the pointer for binary buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the <parameter>data</parameter> buffer size.
+<listitem><simpara>           the <parameter>data</parameter> buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -397,13 +397,13 @@ with result <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tmpl</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to node for encryption.
+<listitem><simpara>               the pointer to node for encryption.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -418,13 +418,13 @@ Encrypts data from <parameter>uri</parameter> according to template <parameter>t
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tmpl</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> template node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the URI.
+<listitem><simpara>                the URI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -438,10 +438,10 @@ Decrypts <parameter>node</parameter> and if necessary replaces <parameter>node</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -455,10 +455,10 @@ Decrypts <parameter>node</parameter> data to the <parameter>encCtx</parameter> b
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -472,10 +472,10 @@ Prints the debug information about <parameter>encCtx</parameter> to <parameter>o
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecEncCtxDebugXmlDump" role="function">
@@ -487,10 +487,10 @@ Prints the debug information about <parameter>encCtx</parameter> to <parameter>o
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
+<listitem><simpara>             the pointer to <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

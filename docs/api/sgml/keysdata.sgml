@@ -202,7 +202,7 @@ Crypto key data object definition.
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecKeyDataUsage" role="typedef">
 <title>xmlSecKeyDataUsage</title>
-<indexterm zone="xmlSecKeyDataUsage"><primary sortas="xmlSecKeyDataUsage">xmlSecKeyDataUsage</primary></indexterm><programlisting>typedef unsigned int					xmlSecKeyDataUsage;
+<indexterm zone="xmlSecKeyDataUsage"><primary sortas="xmlSecKeyDataUsage">xmlSecKeyDataUsage</primary></indexterm><programlisting>typedef unsigned int                                    xmlSecKeyDataUsage;
 </programlisting>
 <para>
 The bits mask that determines possible keys data usage.</para>
@@ -210,7 +210,7 @@ The bits mask that determines possible keys data usage.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageUnknown" role="macro">
 <title>xmlSecKeyDataUsageUnknown</title>
-<indexterm zone="xmlSecKeyDataUsageUnknown"><primary sortas="xmlSecKeyDataUsageUnknown">xmlSecKeyDataUsageUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataUsageUnknown			0x00000
+<indexterm zone="xmlSecKeyDataUsageUnknown"><primary sortas="xmlSecKeyDataUsageUnknown">xmlSecKeyDataUsageUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataUsageUnknown                       0x00000
 </programlisting>
 <para>
 The key data usage is unknown.</para>
@@ -218,7 +218,7 @@ The key data usage is unknown.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageKeyInfoNodeRead" role="macro">
 <title>xmlSecKeyDataUsageKeyInfoNodeRead</title>
-<indexterm zone="xmlSecKeyDataUsageKeyInfoNodeRead"><primary sortas="xmlSecKeyDataUsageKeyInfoNodeRead">xmlSecKeyDataUsageKeyInfoNodeRead</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyInfoNodeRead		0x00001
+<indexterm zone="xmlSecKeyDataUsageKeyInfoNodeRead"><primary sortas="xmlSecKeyDataUsageKeyInfoNodeRead">xmlSecKeyDataUsageKeyInfoNodeRead</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyInfoNodeRead               0x00001
 </programlisting>
 <para>
 The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> child.</para>
@@ -226,7 +226,7 @@ The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageKeyInfoNodeWrite" role="macro">
 <title>xmlSecKeyDataUsageKeyInfoNodeWrite</title>
-<indexterm zone="xmlSecKeyDataUsageKeyInfoNodeWrite"><primary sortas="xmlSecKeyDataUsageKeyInfoNodeWrite">xmlSecKeyDataUsageKeyInfoNodeWrite</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyInfoNodeWrite		0x00002
+<indexterm zone="xmlSecKeyDataUsageKeyInfoNodeWrite"><primary sortas="xmlSecKeyDataUsageKeyInfoNodeWrite">xmlSecKeyDataUsageKeyInfoNodeWrite</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyInfoNodeWrite              0x00002
 </programlisting>
 <para>
 The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo ">&lt;dsig:KeyInfo /&gt;</ulink> child.</para>
@@ -234,7 +234,7 @@ The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageKeyValueNodeRead" role="macro">
 <title>xmlSecKeyDataUsageKeyValueNodeRead</title>
-<indexterm zone="xmlSecKeyDataUsageKeyValueNodeRead"><primary sortas="xmlSecKeyDataUsageKeyValueNodeRead">xmlSecKeyDataUsageKeyValueNodeRead</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyValueNodeRead		0x00004
+<indexterm zone="xmlSecKeyDataUsageKeyValueNodeRead"><primary sortas="xmlSecKeyDataUsageKeyValueNodeRead">xmlSecKeyDataUsageKeyValueNodeRead</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyValueNodeRead              0x00004
 </programlisting>
 <para>
 The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
@@ -242,7 +242,7 @@ The key data could be read from a <ulink URL="http://www.w3.org/TR/xmldsig-core/
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageKeyValueNodeWrite" role="macro">
 <title>xmlSecKeyDataUsageKeyValueNodeWrite</title>
-<indexterm zone="xmlSecKeyDataUsageKeyValueNodeWrite"><primary sortas="xmlSecKeyDataUsageKeyValueNodeWrite">xmlSecKeyDataUsageKeyValueNodeWrite</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyValueNodeWrite		0x00008
+<indexterm zone="xmlSecKeyDataUsageKeyValueNodeWrite"><primary sortas="xmlSecKeyDataUsageKeyValueNodeWrite">xmlSecKeyDataUsageKeyValueNodeWrite</primary></indexterm><programlisting>#define xmlSecKeyDataUsageKeyValueNodeWrite             0x00008
 </programlisting>
 <para>
 The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue ">&lt;dsig:KeyValue /&gt;</ulink> child.</para>
@@ -250,7 +250,7 @@ The key data could be written to a <ulink URL="http://www.w3.org/TR/xmldsig-core
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageRetrievalMethodNodeXml" role="macro">
 <title>xmlSecKeyDataUsageRetrievalMethodNodeXml</title>
-<indexterm zone="xmlSecKeyDataUsageRetrievalMethodNodeXml"><primary sortas="xmlSecKeyDataUsageRetrievalMethodNodeXml">xmlSecKeyDataUsageRetrievalMethodNodeXml</primary></indexterm><programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeXml	0x00010
+<indexterm zone="xmlSecKeyDataUsageRetrievalMethodNodeXml"><primary sortas="xmlSecKeyDataUsageRetrievalMethodNodeXml">xmlSecKeyDataUsageRetrievalMethodNodeXml</primary></indexterm><programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeXml        0x00010
 </programlisting>
 <para>
 The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
@@ -259,7 +259,7 @@ in XML format.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageRetrievalMethodNodeBin" role="macro">
 <title>xmlSecKeyDataUsageRetrievalMethodNodeBin</title>
-<indexterm zone="xmlSecKeyDataUsageRetrievalMethodNodeBin"><primary sortas="xmlSecKeyDataUsageRetrievalMethodNodeBin">xmlSecKeyDataUsageRetrievalMethodNodeBin</primary></indexterm><programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeBin	0x00020
+<indexterm zone="xmlSecKeyDataUsageRetrievalMethodNodeBin"><primary sortas="xmlSecKeyDataUsageRetrievalMethodNodeBin">xmlSecKeyDataUsageRetrievalMethodNodeBin</primary></indexterm><programlisting>#define xmlSecKeyDataUsageRetrievalMethodNodeBin        0x00020
 </programlisting>
 <para>
 The key data could be retrieved using <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-RetrievalMethod ">&lt;dsig:RetrievalMethod /&gt;</ulink> node
@@ -268,7 +268,7 @@ in binary format.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataUsageAny" role="macro">
 <title>xmlSecKeyDataUsageAny</title>
-<indexterm zone="xmlSecKeyDataUsageAny"><primary sortas="xmlSecKeyDataUsageAny">xmlSecKeyDataUsageAny</primary></indexterm><programlisting>#define xmlSecKeyDataUsageAny				0xFFFFF
+<indexterm zone="xmlSecKeyDataUsageAny"><primary sortas="xmlSecKeyDataUsageAny">xmlSecKeyDataUsageAny</primary></indexterm><programlisting>#define xmlSecKeyDataUsageAny                           0xFFFFF
 </programlisting>
 <para>
 Any key data usage.</para>
@@ -298,7 +298,7 @@ in any format.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataType" role="typedef">
 <title>xmlSecKeyDataType</title>
-<indexterm zone="xmlSecKeyDataType"><primary sortas="xmlSecKeyDataType">xmlSecKeyDataType</primary></indexterm><programlisting>typedef unsigned int				xmlSecKeyDataType;
+<indexterm zone="xmlSecKeyDataType"><primary sortas="xmlSecKeyDataType">xmlSecKeyDataType</primary></indexterm><programlisting>typedef unsigned int                            xmlSecKeyDataType;
 </programlisting>
 <para>
 The key data type (public/private, session/permanet, etc.).</para>
@@ -306,7 +306,7 @@ The key data type (public/private, session/permanet, etc.).</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypeUnknown" role="macro">
 <title>xmlSecKeyDataTypeUnknown</title>
-<indexterm zone="xmlSecKeyDataTypeUnknown"><primary sortas="xmlSecKeyDataTypeUnknown">xmlSecKeyDataTypeUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataTypeUnknown			0x0000
+<indexterm zone="xmlSecKeyDataTypeUnknown"><primary sortas="xmlSecKeyDataTypeUnknown">xmlSecKeyDataTypeUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataTypeUnknown                        0x0000
 </programlisting>
 <para>
 The key data type is unknown (same as <link linkend="xmlSecKeyDataTypeNone"><type>xmlSecKeyDataTypeNone</type></link>).</para>
@@ -314,7 +314,7 @@ The key data type is unknown (same as <link linkend="xmlSecKeyDataTypeNone"><typ
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypeNone" role="macro">
 <title>xmlSecKeyDataTypeNone</title>
-<indexterm zone="xmlSecKeyDataTypeNone"><primary sortas="xmlSecKeyDataTypeNone">xmlSecKeyDataTypeNone</primary></indexterm><programlisting>#define xmlSecKeyDataTypeNone				xmlSecKeyDataTypeUnknown
+<indexterm zone="xmlSecKeyDataTypeNone"><primary sortas="xmlSecKeyDataTypeNone">xmlSecKeyDataTypeNone</primary></indexterm><programlisting>#define xmlSecKeyDataTypeNone                           xmlSecKeyDataTypeUnknown
 </programlisting>
 <para>
 The key data type is unknown (same as <link linkend="xmlSecKeyDataTypeUnknown"><type>xmlSecKeyDataTypeUnknown</type></link>).</para>
@@ -322,7 +322,7 @@ The key data type is unknown (same as <link linkend="xmlSecKeyDataTypeUnknown"><
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypePublic" role="macro">
 <title>xmlSecKeyDataTypePublic</title>
-<indexterm zone="xmlSecKeyDataTypePublic"><primary sortas="xmlSecKeyDataTypePublic">xmlSecKeyDataTypePublic</primary></indexterm><programlisting>#define xmlSecKeyDataTypePublic				0x0001
+<indexterm zone="xmlSecKeyDataTypePublic"><primary sortas="xmlSecKeyDataTypePublic">xmlSecKeyDataTypePublic</primary></indexterm><programlisting>#define xmlSecKeyDataTypePublic                         0x0001
 </programlisting>
 <para>
 The key data contain a public key.</para>
@@ -330,7 +330,7 @@ The key data contain a public key.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypePrivate" role="macro">
 <title>xmlSecKeyDataTypePrivate</title>
-<indexterm zone="xmlSecKeyDataTypePrivate"><primary sortas="xmlSecKeyDataTypePrivate">xmlSecKeyDataTypePrivate</primary></indexterm><programlisting>#define xmlSecKeyDataTypePrivate			0x0002
+<indexterm zone="xmlSecKeyDataTypePrivate"><primary sortas="xmlSecKeyDataTypePrivate">xmlSecKeyDataTypePrivate</primary></indexterm><programlisting>#define xmlSecKeyDataTypePrivate                        0x0002
 </programlisting>
 <para>
 The key data contain a private key.</para>
@@ -338,7 +338,7 @@ The key data contain a private key.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypeSymmetric" role="macro">
 <title>xmlSecKeyDataTypeSymmetric</title>
-<indexterm zone="xmlSecKeyDataTypeSymmetric"><primary sortas="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</primary></indexterm><programlisting>#define xmlSecKeyDataTypeSymmetric			0x0004
+<indexterm zone="xmlSecKeyDataTypeSymmetric"><primary sortas="xmlSecKeyDataTypeSymmetric">xmlSecKeyDataTypeSymmetric</primary></indexterm><programlisting>#define xmlSecKeyDataTypeSymmetric                      0x0004
 </programlisting>
 <para>
 The key data contain a symmetric key.</para>
@@ -346,7 +346,7 @@ The key data contain a symmetric key.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypeSession" role="macro">
 <title>xmlSecKeyDataTypeSession</title>
-<indexterm zone="xmlSecKeyDataTypeSession"><primary sortas="xmlSecKeyDataTypeSession">xmlSecKeyDataTypeSession</primary></indexterm><programlisting>#define xmlSecKeyDataTypeSession			0x0008
+<indexterm zone="xmlSecKeyDataTypeSession"><primary sortas="xmlSecKeyDataTypeSession">xmlSecKeyDataTypeSession</primary></indexterm><programlisting>#define xmlSecKeyDataTypeSession                        0x0008
 </programlisting>
 <para>
 The key data contain session key (one time key, not stored in keys manager).</para>
@@ -354,7 +354,7 @@ The key data contain session key (one time key, not stored in keys manager).</pa
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypePermanent" role="macro">
 <title>xmlSecKeyDataTypePermanent</title>
-<indexterm zone="xmlSecKeyDataTypePermanent"><primary sortas="xmlSecKeyDataTypePermanent">xmlSecKeyDataTypePermanent</primary></indexterm><programlisting>#define xmlSecKeyDataTypePermanent			0x0010
+<indexterm zone="xmlSecKeyDataTypePermanent"><primary sortas="xmlSecKeyDataTypePermanent">xmlSecKeyDataTypePermanent</primary></indexterm><programlisting>#define xmlSecKeyDataTypePermanent                      0x0010
 </programlisting>
 <para>
 The key data contain permanent key (stored in keys manager).</para>
@@ -362,7 +362,7 @@ The key data contain permanent key (stored in keys manager).</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypeTrusted" role="macro">
 <title>xmlSecKeyDataTypeTrusted</title>
-<indexterm zone="xmlSecKeyDataTypeTrusted"><primary sortas="xmlSecKeyDataTypeTrusted">xmlSecKeyDataTypeTrusted</primary></indexterm><programlisting>#define xmlSecKeyDataTypeTrusted			0x0100
+<indexterm zone="xmlSecKeyDataTypeTrusted"><primary sortas="xmlSecKeyDataTypeTrusted">xmlSecKeyDataTypeTrusted</primary></indexterm><programlisting>#define xmlSecKeyDataTypeTrusted                        0x0100
 </programlisting>
 <para>
 The key data is trusted.</para>
@@ -370,7 +370,7 @@ The key data is trusted.</para>
 </para></refsect2>
 <refsect2 id="xmlSecKeyDataTypeAny" role="macro">
 <title>xmlSecKeyDataTypeAny</title>
-<indexterm zone="xmlSecKeyDataTypeAny"><primary sortas="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</primary></indexterm><programlisting>#define xmlSecKeyDataTypeAny				0xFFFF
+<indexterm zone="xmlSecKeyDataTypeAny"><primary sortas="xmlSecKeyDataTypeAny">xmlSecKeyDataTypeAny</primary></indexterm><programlisting>#define xmlSecKeyDataTypeAny                            0xFFFF
 </programlisting>
 <para>
 Any key data.</para>
@@ -396,47 +396,47 @@ The key data format (binary, der, pem, etc.).</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecKeyDataFormatUnknown" role="constant">
 <term><literal>xmlSecKeyDataFormatUnknown</literal></term>
-<listitem><simpara>		the key data format is unknown.
+<listitem><simpara>         the key data format is unknown.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatBinary" role="constant">
 <term><literal>xmlSecKeyDataFormatBinary</literal></term>
-<listitem><simpara>		the binary key data.
+<listitem><simpara>          the binary key data.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatPem" role="constant">
 <term><literal>xmlSecKeyDataFormatPem</literal></term>
-<listitem><simpara>		the PEM key data (cert or public/private key).
+<listitem><simpara>             the PEM key data (cert or public/private key).
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatDer" role="constant">
 <term><literal>xmlSecKeyDataFormatDer</literal></term>
-<listitem><simpara>		the DER key data (cert or public/private key).
+<listitem><simpara>             the DER key data (cert or public/private key).
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatPkcs8Pem" role="constant">
 <term><literal>xmlSecKeyDataFormatPkcs8Pem</literal></term>
-<listitem><simpara>	the PKCS8 PEM private key.
+<listitem><simpara>        the PKCS8 PEM private key.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatPkcs8Der" role="constant">
 <term><literal>xmlSecKeyDataFormatPkcs8Der</literal></term>
-<listitem><simpara>	the PKCS8 DER private key. 
+<listitem><simpara>        the PKCS8 DER private key.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatPkcs12" role="constant">
 <term><literal>xmlSecKeyDataFormatPkcs12</literal></term>
-<listitem><simpara>		the PKCS12 format (bag of keys and certs)
+<listitem><simpara>          the PKCS12 format (bag of keys and certs)
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatCertPem" role="constant">
 <term><literal>xmlSecKeyDataFormatCertPem</literal></term>
-<listitem><simpara>		the PEM cert.
+<listitem><simpara>         the PEM cert.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecKeyDataFormatCertDer" role="constant">
 <term><literal>xmlSecKeyDataFormatCertDer</literal></term>
-<listitem><simpara>		the DER cert.
+<listitem><simpara>         the DER cert.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -454,7 +454,7 @@ Gets global registered key data klasses list.</para>
 <title>xmlSecKeyDataIdsInit ()</title>
 <indexterm zone="xmlSecKeyDataIdsInit"><primary sortas="xmlSecKeyDataIdsInit">xmlSecKeyDataIdsInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyDataIdsInit                (void);</programlisting>
 <para>
-Initializes the key data klasses. This function is called from the 
+Initializes the key data klasses. This function is called from the
 <link linkend="xmlSecInit"><type>xmlSecInit</type></link> function and the application should not call it directly.</para>
 <para>
 </para><variablelist role="params">
@@ -465,7 +465,7 @@ Initializes the key data klasses. This function is called from the
 <title>xmlSecKeyDataIdsShutdown ()</title>
 <indexterm zone="xmlSecKeyDataIdsShutdown"><primary sortas="xmlSecKeyDataIdsShutdown">xmlSecKeyDataIdsShutdown</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecKeyDataIdsShutdown            (void);</programlisting>
 <para>
-Shuts down the keys data klasses. This function is called from the 
+Shuts down the keys data klasses. This function is called from the
 <link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function and the application should not call it directly.</para>
 <para>
 </para></refsect2>
@@ -474,7 +474,7 @@ Shuts down the keys data klasses. This function is called from the
 <indexterm zone="xmlSecKeyDataIdsRegisterDefault"><primary sortas="xmlSecKeyDataIdsRegisterDefault">xmlSecKeyDataIdsRegisterDefault</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecKeyDataIdsRegisterDefault     (void);</programlisting>
 <para>
 Registers default (implemented by XML Security Library)
-key data klasses: <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing klass, 
+key data klasses: <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyName">&lt;dsig:KeyName/&gt;</ulink> element processing klass,
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyValue">&lt;dsig:KeyValue/&gt;</ulink> element processing klass, ...</para>
 <para>
 </para><variablelist role="params">
@@ -489,7 +489,7 @@ Registers <parameter>id</parameter> in the global list of key data klasses.</par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the key data klass.
+<listitem><simpara>                 the key data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -497,9 +497,9 @@ Registers <parameter>id</parameter> in the global list of key data klasses.</par
 <refsect2 id="xmlSecKeyData" role="struct">
 <title>struct xmlSecKeyData</title>
 <indexterm zone="xmlSecKeyData"><primary sortas="xmlSecKeyData">xmlSecKeyData</primary></indexterm><programlisting>struct xmlSecKeyData {
-    xmlSecKeyDataId			id;
-    void*				reserved0;
-    void*				reserved1;
+    xmlSecKeyDataId                     id;
+    void*                               reserved0;
+    void*                               reserved1;
 };
 </programlisting>
 <para>
@@ -508,17 +508,17 @@ The key data: key value (crypto material), x509 data, pgp data, etc.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>&#160;<structfield>id</structfield>;</term>
-<listitem><simpara> 		the data id (<link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link>).
+<listitem><simpara>                 the data id (<link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara> 		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara> 		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -527,12 +527,12 @@ The key data: key value (crypto material), x509 data, pgp data, etc.</para>
 <indexterm zone="xmlSecKeyDataCreate"><primary sortas="xmlSecKeyDataCreate">xmlSecKeyDataCreate</primary></indexterm><programlisting><link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link>    xmlSecKeyDataCreate                 (<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link> id);</programlisting>
 <para>
 Allocates and initializes new key data of the specified type <parameter>id</parameter>.
-Caller is responsible for destroing returend object with 
+Caller is responsible for destroing returend object with
 <link linkend="xmlSecKeyDataDestroy"><type>xmlSecKeyDataDestroy</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data id.
+<listitem><simpara>                 the data id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated key data structure
 or NULL if an error occurs.
@@ -542,12 +542,12 @@ or NULL if an error occurs.
 <title>xmlSecKeyDataDuplicate ()</title>
 <indexterm zone="xmlSecKeyDataDuplicate"><primary sortas="xmlSecKeyDataDuplicate">xmlSecKeyDataDuplicate</primary></indexterm><programlisting><link linkend="xmlSecKeyDataPtr">xmlSecKeyDataPtr</link>    xmlSecKeyDataDuplicate              (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
 <para>
-Creates a duplicate of the given <parameter>data</parameter>. Caller is responsible for 
+Creates a duplicate of the given <parameter>data</parameter>. Caller is responsible for
 destroing returend object with <link linkend="xmlSecKeyDataDestroy"><type>xmlSecKeyDataDestroy</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to the key data.
+<listitem><simpara>               the pointer to the key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated key data structure
 or NULL if an error occurs.
@@ -561,7 +561,7 @@ Destroys the data and frees all allocated memory.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to the key data.
+<listitem><simpara>               the pointer to the key data.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataGenerate" role="function">
@@ -574,13 +574,13 @@ Generates new key data of given size and type.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>sizeBits</parameter>&#160;:</term>
-<listitem><simpara> 		the desired key data size (in bits).
+<listitem><simpara>           the desired key data size (in bits).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data type.
+<listitem><simpara>               the desired key data type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -593,7 +593,7 @@ Gets key data type.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key data type.
 </simpara></listitem></varlistentry>
@@ -606,7 +606,7 @@ Gets key data size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key data size (in bits).
 </simpara></listitem></varlistentry>
@@ -619,7 +619,7 @@ Gets key data identifier string.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key data id string.
 </simpara></listitem></varlistentry>
@@ -633,10 +633,10 @@ Prints key data debug info.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataDebugXmlDump" role="function">
@@ -648,10 +648,10 @@ Prints key data debug info in XML format.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataXmlRead" role="function">
@@ -665,16 +665,16 @@ Reads the key data of klass <parameter>id</parameter> from XML <parameter>node</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the destination key.
+<listitem><simpara>                the destination key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -690,16 +690,16 @@ Writes the key data of klass <parameter>id</parameter> from <parameter>key</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the source key.
+<listitem><simpara>                the source key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -716,19 +716,19 @@ Reads the key data of klass <parameter>id</parameter> from binary buffer <parame
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the destination key.
+<listitem><simpara>                the destination key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the input binary buffer.
+<listitem><simpara>                the input binary buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer size.
+<listitem><simpara>            the input buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>         the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -745,19 +745,19 @@ Writes the key data of klass <parameter>id</parameter> from the <parameter>key</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the source key.
+<listitem><simpara>                the source key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the output binary buffer.
+<listitem><simpara>                the output binary buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer size.
+<listitem><simpara>            the output buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>         the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -770,7 +770,7 @@ Macro. Returns the key data name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataIsValid" role="macro">
@@ -782,7 +782,7 @@ or 0 otherwise.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to data.
+<listitem><simpara>               the pointer to data.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataCheckId" role="macro">
@@ -793,10 +793,10 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to data.
+<listitem><simpara>               the pointer to data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara> 		the data Id.
+<listitem><simpara>             the data Id.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataCheckUsage" role="macro">
@@ -807,10 +807,10 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and could be used for <
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to data.
+<listitem><simpara>               the pointer to data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usg</parameter>&#160;:</term>
-<listitem><simpara> 		the data usage.
+<listitem><simpara>                the data usage.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataCheckSize" role="macro">
@@ -821,15 +821,15 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>data</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to data.
+<listitem><simpara>               the pointer to data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the expected size.
+<listitem><simpara>               the expected size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataIdUnknown" role="macro">
 <title>xmlSecKeyDataIdUnknown</title>
-<indexterm zone="xmlSecKeyDataIdUnknown"><primary sortas="xmlSecKeyDataIdUnknown">xmlSecKeyDataIdUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataIdUnknown 			((xmlSecKeyDataId)NULL)
+<indexterm zone="xmlSecKeyDataIdUnknown"><primary sortas="xmlSecKeyDataIdUnknown">xmlSecKeyDataIdUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataIdUnknown                  ((xmlSecKeyDataId)NULL)
 </programlisting>
 <para>
 The "unknown" id.</para>
@@ -843,7 +843,7 @@ Key data specific initialization method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -857,10 +857,10 @@ Key data specific duplication (copy) method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to destination key data.
+<listitem><simpara>                the pointer to destination key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara> 		the poiniter to source key data.
+<listitem><simpara>                the poiniter to source key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -874,7 +874,7 @@ by the key data object must be freed inside this method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the data.
+<listitem><simpara>               the data.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataXmlReadMethod" role="function">
@@ -888,16 +888,16 @@ Key data specific method for reading XML node.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data id.
+<listitem><simpara>                 the data id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the key.
+<listitem><simpara>                the key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to data's value XML node.
+<listitem><simpara>               the pointer to data's value XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>         the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -913,16 +913,16 @@ Key data specific method for writing XML node.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data id.
+<listitem><simpara>                 the data id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the key.
+<listitem><simpara>                the key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to data's value XML node.
+<listitem><simpara>               the pointer to data's value XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the &lt;dsig:KeyInfo&gt; node processing context.
+<listitem><simpara>         the &lt;dsig:KeyInfo&gt; node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -939,19 +939,19 @@ Key data specific method for reading binary buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data id.
+<listitem><simpara>                 the data id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the key.
+<listitem><simpara>                the key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer.
+<listitem><simpara>                the input buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the buffer size.
+<listitem><simpara>            the buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>         the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -968,19 +968,19 @@ Key data specific method for reading binary buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data id.
+<listitem><simpara>                 the data id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the key.
+<listitem><simpara>                the key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer.
+<listitem><simpara>                the output buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara> 		the buffer size.
+<listitem><simpara>            the buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>         the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -995,13 +995,13 @@ Key data specific method for generating new key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>sizeBits</parameter>&#160;:</term>
-<listitem><simpara> 		the key data specific size.
+<listitem><simpara>           the key data specific size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the required key type (session/permanent, etc.)
+<listitem><simpara>               the required key type (session/permanent, etc.)
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1014,7 +1014,7 @@ Key data specific method to get the key type.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		 the data.
+<listitem><simpara>                the data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key type.
 </simpara></listitem></varlistentry>
@@ -1027,7 +1027,7 @@ Key data specific method to get the key size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key size in bits.
 </simpara></listitem></varlistentry>
@@ -1041,7 +1041,7 @@ X509 data identifier is the subject of the verified cert).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key data.
+<listitem><simpara>               the pointer to key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the identifier string or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1055,49 +1055,49 @@ Key data specific method for printing debug info.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the data.
+<listitem><simpara>               the data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara> 		the FILE to print debug info (should be open for writing).
+<listitem><simpara>             the FILE to print debug info (should be open for writing).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataKlass" role="struct">
 <title>struct xmlSecKeyDataKlass</title>
 <indexterm zone="xmlSecKeyDataKlass"><primary sortas="xmlSecKeyDataKlass">xmlSecKeyDataKlass</primary></indexterm><programlisting>struct xmlSecKeyDataKlass {
-    xmlSecSize				klassSize;
-    xmlSecSize				objSize;
+    xmlSecSize                          klassSize;
+    xmlSecSize                          objSize;
 
     /* data */
-    const xmlChar*			name;    
-    xmlSecKeyDataUsage			usage;
-    const xmlChar*			href;
-    const xmlChar*			dataNodeName;
-    const xmlChar*			dataNodeNs;
-    
+    const xmlChar*                      name;
+    xmlSecKeyDataUsage                  usage;
+    const xmlChar*                      href;
+    const xmlChar*                      dataNodeName;
+    const xmlChar*                      dataNodeNs;
+
     /* constructors/destructor */
-    xmlSecKeyDataInitMethod		initialize;
-    xmlSecKeyDataDuplicateMethod	duplicate;
-    xmlSecKeyDataFinalizeMethod		finalize;
-    xmlSecKeyDataGenerateMethod		generate;
-    
+    xmlSecKeyDataInitMethod             initialize;
+    xmlSecKeyDataDuplicateMethod        duplicate;
+    xmlSecKeyDataFinalizeMethod         finalize;
+    xmlSecKeyDataGenerateMethod         generate;
+
     /* get info */
-    xmlSecKeyDataGetTypeMethod		getType;
-    xmlSecKeyDataGetSizeMethod		getSize;
-    xmlSecKeyDataGetIdentifierMethod	getIdentifier;
+    xmlSecKeyDataGetTypeMethod          getType;
+    xmlSecKeyDataGetSizeMethod          getSize;
+    xmlSecKeyDataGetIdentifierMethod    getIdentifier;
 
     /* read/write */
-    xmlSecKeyDataXmlReadMethod		xmlRead;
-    xmlSecKeyDataXmlWriteMethod		xmlWrite;
-    xmlSecKeyDataBinReadMethod		binRead;
-    xmlSecKeyDataBinWriteMethod		binWrite;
+    xmlSecKeyDataXmlReadMethod          xmlRead;
+    xmlSecKeyDataXmlWriteMethod         xmlWrite;
+    xmlSecKeyDataBinReadMethod          binRead;
+    xmlSecKeyDataBinWriteMethod         binWrite;
 
     /* debug */
-    xmlSecKeyDataDebugDumpMethod	debugDump;
-    xmlSecKeyDataDebugDumpMethod	debugXmlDump;
+    xmlSecKeyDataDebugDumpMethod        debugDump;
+    xmlSecKeyDataDebugDumpMethod        debugXmlDump;
 
     /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    void*                               reserved0;
+    void*                               reserved1;
 };
 </programlisting>
 <para>
@@ -1106,112 +1106,112 @@ The data id (klass).</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>klassSize</structfield>;</term>
-<listitem><simpara>		the klass size.
+<listitem><simpara>          the klass size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>objSize</structfield>;</term>
-<listitem><simpara>		the object size.
+<listitem><simpara>            the object size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>name</structfield>;</term>
-<listitem><simpara>		the object name.
+<listitem><simpara>               the object name.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link>&#160;<structfield>usage</structfield>;</term>
-<listitem><simpara>		the allowed data usage.
+<listitem><simpara>              the allowed data usage.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>href</structfield>;</term>
-<listitem><simpara>		the identification string (href).
+<listitem><simpara>               the identification string (href).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>dataNodeName</structfield>;</term>
-<listitem><simpara>	the data's XML node name.
+<listitem><simpara>       the data's XML node name.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>dataNodeNs</structfield>;</term>
-<listitem><simpara>		the data's XML node namespace.
+<listitem><simpara>         the data's XML node namespace.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataInitMethod">xmlSecKeyDataInitMethod</link>&#160;<structfield>initialize</structfield>;</term>
-<listitem><simpara>		the initialization method.  
+<listitem><simpara>         the initialization method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataDuplicateMethod">xmlSecKeyDataDuplicateMethod</link>&#160;<structfield>duplicate</structfield>;</term>
-<listitem><simpara>		the duplicate (copy) method.
+<listitem><simpara>          the duplicate (copy) method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataFinalizeMethod">xmlSecKeyDataFinalizeMethod</link>&#160;<structfield>finalize</structfield>;</term>
-<listitem><simpara>		the finalization (destroy) method.
+<listitem><simpara>           the finalization (destroy) method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataGenerateMethod">xmlSecKeyDataGenerateMethod</link>&#160;<structfield>generate</structfield>;</term>
-<listitem><simpara>		the new data generation method.
+<listitem><simpara>           the new data generation method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataGetTypeMethod">xmlSecKeyDataGetTypeMethod</link>&#160;<structfield>getType</structfield>;</term>
-<listitem><simpara>		the method to access data's type information.
+<listitem><simpara>            the method to access data's type information.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataGetSizeMethod">xmlSecKeyDataGetSizeMethod</link>&#160;<structfield>getSize</structfield>;</term>
-<listitem><simpara>		the method to access data's size.
+<listitem><simpara>            the method to access data's size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataGetIdentifierMethod">xmlSecKeyDataGetIdentifierMethod</link>&#160;<structfield>getIdentifier</structfield>;</term>
-<listitem><simpara>	the method to access data's string identifier.
+<listitem><simpara>      the method to access data's string identifier.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataXmlReadMethod">xmlSecKeyDataXmlReadMethod</link>&#160;<structfield>xmlRead</structfield>;</term>
-<listitem><simpara>		the method for reading data from XML node.
+<listitem><simpara>            the method for reading data from XML node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataXmlWriteMethod">xmlSecKeyDataXmlWriteMethod</link>&#160;<structfield>xmlWrite</structfield>;</term>
-<listitem><simpara>		the method for writing data to XML node.
+<listitem><simpara>           the method for writing data to XML node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataBinReadMethod">xmlSecKeyDataBinReadMethod</link>&#160;<structfield>binRead</structfield>;</term>
-<listitem><simpara>		the method for reading data from a binary buffer.
+<listitem><simpara>            the method for reading data from a binary buffer.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataBinWriteMethod">xmlSecKeyDataBinWriteMethod</link>&#160;<structfield>binWrite</structfield>;</term>
-<listitem><simpara>		the method for writing data to binary buffer.
+<listitem><simpara>           the method for writing data to binary buffer.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataDebugDumpMethod">xmlSecKeyDataDebugDumpMethod</link>&#160;<structfield>debugDump</structfield>;</term>
-<listitem><simpara> 		the method for printing debug data information.
+<listitem><simpara>          the method for printing debug data information.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataDebugDumpMethod">xmlSecKeyDataDebugDumpMethod</link>&#160;<structfield>debugXmlDump</structfield>;</term>
-<listitem><simpara>	the method for printing debug data information in XML format.
+<listitem><simpara>       the method for printing debug data information in XML format.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -1223,12 +1223,12 @@ Macro. Returns data klass name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>klass</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>              the data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataListId" role="macro">
 <title>xmlSecKeyDataListId</title>
-<indexterm zone="xmlSecKeyDataListId"><primary sortas="xmlSecKeyDataListId">xmlSecKeyDataListId</primary></indexterm><programlisting>#define xmlSecKeyDataListId	xmlSecKeyDataListGetKlass()
+<indexterm zone="xmlSecKeyDataListId"><primary sortas="xmlSecKeyDataListId">xmlSecKeyDataListId</primary></indexterm><programlisting>#define xmlSecKeyDataListId     xmlSecKeyDataListGetKlass()
 </programlisting>
 <para>
 The key data klasses list klass id.</para>
@@ -1246,7 +1246,7 @@ The key data list klass.</para>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataIdListId" role="macro">
 <title>xmlSecKeyDataIdListId</title>
-<indexterm zone="xmlSecKeyDataIdListId"><primary sortas="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</primary></indexterm><programlisting>#define xmlSecKeyDataIdListId	xmlSecKeyDataIdListGetKlass()
+<indexterm zone="xmlSecKeyDataIdListId"><primary sortas="xmlSecKeyDataIdListId">xmlSecKeyDataIdListId</primary></indexterm><programlisting>#define xmlSecKeyDataIdListId   xmlSecKeyDataIdListGetKlass()
 </programlisting>
 <para>
 The key data list klass id.</para>
@@ -1271,10 +1271,10 @@ Lookups <parameter>dataId</parameter> in <parameter>list</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key data ids list.
+<listitem><simpara>               the pointer to key data ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara>		the key data klass.
+<listitem><simpara>             the key data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>dataId</parameter> is found in the <parameter>list</parameter>, 0 if not and a negative
 value if an error occurs.
@@ -1287,21 +1287,21 @@ value if an error occurs.
                                                          const <link linkend="xmlChar">xmlChar</link> *nodeNs,
                                                          <link linkend="xmlSecKeyDataUsage">xmlSecKeyDataUsage</link> usage);</programlisting>
 <para>
-Lookups data klass in the list with given <parameter>nodeName</parameter>, <parameter>nodeNs</parameter> and 
+Lookups data klass in the list with given <parameter>nodeName</parameter>, <parameter>nodeNs</parameter> and
 <parameter>usage</parameter> in the <parameter>list</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key data ids list.
+<listitem><simpara>               the pointer to key data ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodeName</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data klass XML node name.
+<listitem><simpara>           the desired key data klass XML node name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodeNs</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data klass XML node namespace.
+<listitem><simpara>             the desired key data klass XML node namespace.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data usage.
+<listitem><simpara>              the desired key data usage.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key data klass is found and NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -1316,13 +1316,13 @@ Lookups data klass in the list with given <parameter>href</parameter> and <param
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key data ids list.
+<listitem><simpara>               the pointer to key data ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>href</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data klass href.
+<listitem><simpara>               the desired key data klass href.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data usage.
+<listitem><simpara>              the desired key data usage.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key data klass is found and NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -1337,13 +1337,13 @@ Lookups data klass in the list with given <parameter>name</parameter> and <param
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key data ids list.
+<listitem><simpara>               the pointer to key data ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data klass name.
+<listitem><simpara>               the desired key data klass name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the desired key data usage.
+<listitem><simpara>              the desired key data usage.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> key data klass is found and NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -1357,10 +1357,10 @@ Prints binary key data debug information to <parameter>output</parameter>.</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key data ids list.
+<listitem><simpara>               the pointer to key data ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataIdListDebugXmlDump" role="function">
@@ -1372,10 +1372,10 @@ Prints binary key data debug information to <parameter>output</parameter> in XML
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key data ids list.
+<listitem><simpara>               the pointer to key data ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataBinarySize" role="macro">
@@ -1393,7 +1393,7 @@ Initializes key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1407,10 +1407,10 @@ Copies binary key data from <parameter>src</parameter> to <parameter>dst</parame
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to destination binary key data.
+<listitem><simpara>                the pointer to destination binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to source binary key data.
+<listitem><simpara>                the pointer to source binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1423,7 +1423,7 @@ Cleans up binary key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataBinaryValueXmlRead" role="function">
@@ -1437,16 +1437,16 @@ Reads binary key data from <parameter>node</parameter> to the key by base64 deco
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to destination key.
+<listitem><simpara>                the pointer to destination key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1458,21 +1458,21 @@ Reads binary key data from <parameter>node</parameter> to the key by base64 deco
                                                          <link linkend="xmlNode">xmlNodePtr</link> node,
                                                          <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtxPtr</link> keyInfoCtx);</programlisting>
 <para>
-Base64 encodes binary key data of klass <parameter>id</parameter> from the <parameter>key</parameter> and 
+Base64 encodes binary key data of klass <parameter>id</parameter> from the <parameter>key</parameter> and
 sets to the <parameter>node</parameter> content.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to source key.
+<listitem><simpara>                the pointer to source key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1489,19 +1489,19 @@ Reads binary key data of the klass <parameter>id</parameter> from <parameter>buf
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to destination key.
+<listitem><simpara>                the pointer to destination key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the source binary buffer.
+<listitem><simpara>                the source binary buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the source binary buffer size.
+<listitem><simpara>            the source binary buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1518,19 +1518,19 @@ Writes binary key data of klass <parameter>id</parameter> from the <parameter>ke
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the data klass.
+<listitem><simpara>                 the data klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to source key.
+<listitem><simpara>                the pointer to source key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the destination binary buffer.
+<listitem><simpara>                the destination binary buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the destination binary buffer size.
+<listitem><simpara>            the destination binary buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara> 	the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1544,10 +1544,10 @@ Prints binary key data debug information to <parameter>output</parameter>.</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataBinaryValueDebugXmlDump" role="function">
@@ -1560,10 +1560,10 @@ Prints binary key data debug information to <parameter>output</parameter> in XML
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataBinaryValueGetSize" role="function">
@@ -1574,7 +1574,7 @@ Gets the binary key data size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> binary key data size in bits.
 </simpara></listitem></varlistentry>
@@ -1587,7 +1587,7 @@ Gets the binary key data buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to binary key data buffer.
 </simpara></listitem></varlistentry>
@@ -1602,13 +1602,13 @@ Sets the value of <parameter>data</parameter> to <parameter>buf</parameter>.</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary key data.
+<listitem><simpara>               the pointer to binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to binary buffer.
+<listitem><simpara>                the pointer to binary buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the binary buffer size.
+<listitem><simpara>            the binary buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1616,32 +1616,32 @@ Sets the value of <parameter>data</parameter> to <parameter>buf</parameter>.</pa
 <refsect2 id="xmlSecKeyDataStore" role="struct">
 <title>struct xmlSecKeyDataStore</title>
 <indexterm zone="xmlSecKeyDataStore"><primary sortas="xmlSecKeyDataStore">xmlSecKeyDataStore</primary></indexterm><programlisting>struct xmlSecKeyDataStore {
-    xmlSecKeyDataStoreId		id;
+    xmlSecKeyDataStoreId                id;
 
     /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    void*                               reserved0;
+    void*                               reserved1;
 };
 </programlisting>
 <para>
 The key data store. Key data store holds common key data specific information
-required for key data processing. For example, X509 data store may hold 
+required for key data processing. For example, X509 data store may hold
 information about trusted (root) certificates.</para>
 <para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>&#160;<structfield>id</structfield>;</term>
-<listitem><simpara> 		the store id (<link linkend="xmlSecKeyDataStoreId"><type>xmlSecKeyDataStoreId</type></link>).
+<listitem><simpara>                 the store id (<link linkend="xmlSecKeyDataStoreId"><type>xmlSecKeyDataStoreId</type></link>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -1654,7 +1654,7 @@ for freeng returned object with <link linkend="xmlSecKeyDataStoreDestroy"><type>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the store id.
+<listitem><simpara>                 the store id.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to newly allocated key data store structure
 or NULL if an error occurs.
@@ -1669,7 +1669,7 @@ function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to the key data store..
+<listitem><simpara>              the pointer to the key data store..
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStoreGetName" role="macro">
@@ -1680,7 +1680,7 @@ Macro. Returns key data store name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to store.
+<listitem><simpara>              the pointer to store.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStoreIsValid" role="macro">
@@ -1692,7 +1692,7 @@ or 0 otherwise.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to store.
+<listitem><simpara>              the pointer to store.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStoreCheckId" role="macro">
@@ -1703,10 +1703,10 @@ Macro. Returns 1 if <parameter>store</parameter> is valid and <parameter>store</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to store.
+<listitem><simpara>              the pointer to store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>storeId</parameter>&#160;:</term>
-<listitem><simpara> 		the store Id.
+<listitem><simpara>            the store Id.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStoreCheckSize" role="macro">
@@ -1717,15 +1717,15 @@ Macro. Returns 1 if <parameter>data</parameter> is valid and <parameter>stores</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to store.
+<listitem><simpara>              the pointer to store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the expected size.
+<listitem><simpara>               the expected size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStoreIdUnknown" role="macro">
 <title>xmlSecKeyDataStoreIdUnknown</title>
-<indexterm zone="xmlSecKeyDataStoreIdUnknown"><primary sortas="xmlSecKeyDataStoreIdUnknown">xmlSecKeyDataStoreIdUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataStoreIdUnknown 			NULL
+<indexterm zone="xmlSecKeyDataStoreIdUnknown"><primary sortas="xmlSecKeyDataStoreIdUnknown">xmlSecKeyDataStoreIdUnknown</primary></indexterm><programlisting>#define xmlSecKeyDataStoreIdUnknown                     NULL
 </programlisting>
 <para>
 The "unknown" id.</para>
@@ -1740,7 +1740,7 @@ Key data store specific initialization method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the data store.
+<listitem><simpara>              the data store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1753,25 +1753,25 @@ Key data store specific finalization (destroy) method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara> 		the data store.
+<listitem><simpara>              the data store.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStoreKlass" role="struct">
 <title>struct xmlSecKeyDataStoreKlass</title>
 <indexterm zone="xmlSecKeyDataStoreKlass"><primary sortas="xmlSecKeyDataStoreKlass">xmlSecKeyDataStoreKlass</primary></indexterm><programlisting>struct xmlSecKeyDataStoreKlass {
-    xmlSecSize				klassSize;
-    xmlSecSize				objSize;
+    xmlSecSize                          klassSize;
+    xmlSecSize                          objSize;
 
     /* data */
-    const xmlChar*			name;    
-        
+    const xmlChar*                      name;
+
     /* constructors/destructor */
-    xmlSecKeyDataStoreInitializeMethod	initialize;
-    xmlSecKeyDataStoreFinalizeMethod	finalize;
+    xmlSecKeyDataStoreInitializeMethod  initialize;
+    xmlSecKeyDataStoreFinalizeMethod    finalize;
 
     /* for the future */
-    void*				reserved0;
-    void*				reserved1;
+    void*                               reserved0;
+    void*                               reserved1;
 };
 </programlisting>
 <para>
@@ -1780,37 +1780,37 @@ The data store id (klass).</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>klassSize</structfield>;</term>
-<listitem><simpara>		the data store klass size.
+<listitem><simpara>          the data store klass size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>objSize</structfield>;</term>
-<listitem><simpara>		the data store obj size.
+<listitem><simpara>            the data store obj size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>name</structfield>;</term>
-<listitem><simpara>		the store's name.
+<listitem><simpara>               the store's name.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataStoreInitializeMethod">xmlSecKeyDataStoreInitializeMethod</link>&#160;<structfield>initialize</structfield>;</term>
-<listitem><simpara>		the store's initialization method.
+<listitem><simpara>         the store's initialization method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecKeyDataStoreFinalizeMethod">xmlSecKeyDataStoreFinalizeMethod</link>&#160;<structfield>finalize</structfield>;</term>
-<listitem><simpara>		the store's finalization (destroy) method.
+<listitem><simpara>           the store's finalization (destroy) method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -1822,12 +1822,12 @@ Macro. Returns store klass name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>klass</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to store klass.
+<listitem><simpara>              the pointer to store klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataStorePtrListId" role="macro">
 <title>xmlSecKeyDataStorePtrListId</title>
-<indexterm zone="xmlSecKeyDataStorePtrListId"><primary sortas="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</primary></indexterm><programlisting>#define xmlSecKeyDataStorePtrListId	xmlSecKeyDataStorePtrListGetKlass()
+<indexterm zone="xmlSecKeyDataStorePtrListId"><primary sortas="xmlSecKeyDataStorePtrListId">xmlSecKeyDataStorePtrListId</primary></indexterm><programlisting>#define xmlSecKeyDataStorePtrListId     xmlSecKeyDataStorePtrListGetKlass()
 </programlisting>
 <para>
 The data store list id (klass).</para>

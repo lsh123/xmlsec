@@ -97,7 +97,7 @@ Gets the Key Type from the key data.</para>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>               the pointer to NSS Key data.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Key Type 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Key Type
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssPKIKeyDataDuplicate" role="function">

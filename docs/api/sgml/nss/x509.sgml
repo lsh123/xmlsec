@@ -91,7 +91,7 @@ Gets the certificate from which the key was extracted.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key's certificate or NULL if key data was not used for key
 extraction or an error occurs.
@@ -106,10 +106,10 @@ Sets the key's certificate in <parameter>data</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to NSS X509 certificate.
+<listitem><simpara>               the pointer to NSS X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -123,10 +123,10 @@ Adds certificate to the X509 key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to NSS X509 certificate.
+<listitem><simpara>               the pointer to NSS X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -140,12 +140,12 @@ Gets a certificate from X509 key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>		the desired certificate position.
+<listitem><simpara>                the desired certificate position.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the
 number of certificates in <parameter>data</parameter> or an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -157,7 +157,7 @@ Gets the number of certificates in <parameter>data</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> te number of certificates in <parameter>data</parameter>.
 </simpara></listitem></varlistentry>
@@ -171,10 +171,10 @@ Adds CRL to the X509 key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data.
+<listitem><simpara>               the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>crl</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to NSS X509 CRL.
+<listitem><simpara>                the pointer to NSS X509 CRL.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -218,7 +218,7 @@ Extracts public key from the <parameter>cert</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>		the certificate.
+<listitem><simpara>               the certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> public key value or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -270,22 +270,22 @@ Searches <parameter>store</parameter> for a certificate that matches given crite
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data store klass.
+<listitem><simpara>              the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>subjectName</parameter>&#160;:</term>
-<listitem><simpara>	the desired certificate name.
+<listitem><simpara>        the desired certificate name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>issuerName</parameter>&#160;:</term>
-<listitem><simpara>		the desired certificate issuer name.
+<listitem><simpara>         the desired certificate issuer name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>issuerSerial</parameter>&#160;:</term>
-<listitem><simpara>	the desired certificate issuer serial number.
+<listitem><simpara>       the desired certificate issuer serial number.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ski</parameter>&#160;:</term>
-<listitem><simpara>		the desired certificate SKI.
+<listitem><simpara>                the desired certificate SKI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to found certificate or NULL if certificate is not found
 or an error occurs.
@@ -301,13 +301,13 @@ Verifies <parameter>certs</parameter> list.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to X509 key data store klass.
+<listitem><simpara>              the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>certs</parameter>&#160;:</term>
-<listitem><simpara>		the untrusted certificates stack.
+<listitem><simpara>              the untrusted certificates stack.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the first verified certificate from <parameter>certs</parameter>.
 </simpara></listitem></varlistentry>

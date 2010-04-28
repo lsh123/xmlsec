@@ -203,14 +203,14 @@ Adds crypto specific key data stores in keys manager.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataAesId" role="macro">
 <title>xmlSecKeyDataAesId</title>
-<indexterm zone="xmlSecKeyDataAesId"><primary sortas="xmlSecKeyDataAesId">xmlSecKeyDataAesId</primary></indexterm><programlisting>#define xmlSecKeyDataAesId			xmlSecKeyDataAesGetKlass()
+<indexterm zone="xmlSecKeyDataAesId"><primary sortas="xmlSecKeyDataAesId">xmlSecKeyDataAesId</primary></indexterm><programlisting>#define xmlSecKeyDataAesId                      xmlSecKeyDataAesGetKlass()
 </programlisting>
 <para>
 The AES key klass.</para>
@@ -230,7 +230,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataDesId" role="macro">
 <title>xmlSecKeyDataDesId</title>
-<indexterm zone="xmlSecKeyDataDesId"><primary sortas="xmlSecKeyDataDesId">xmlSecKeyDataDesId</primary></indexterm><programlisting>#define xmlSecKeyDataDesId			xmlSecKeyDataDesGetKlass()
+<indexterm zone="xmlSecKeyDataDesId"><primary sortas="xmlSecKeyDataDesId">xmlSecKeyDataDesId</primary></indexterm><programlisting>#define xmlSecKeyDataDesId                      xmlSecKeyDataDesGetKlass()
 </programlisting>
 <para>
 The DES key klass.</para>
@@ -250,7 +250,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataDsaId" role="macro">
 <title>xmlSecKeyDataDsaId</title>
-<indexterm zone="xmlSecKeyDataDsaId"><primary sortas="xmlSecKeyDataDsaId">xmlSecKeyDataDsaId</primary></indexterm><programlisting>#define xmlSecKeyDataDsaId			xmlSecKeyDataDsaGetKlass()
+<indexterm zone="xmlSecKeyDataDsaId"><primary sortas="xmlSecKeyDataDsaId">xmlSecKeyDataDsaId</primary></indexterm><programlisting>#define xmlSecKeyDataDsaId                      xmlSecKeyDataDsaGetKlass()
 </programlisting>
 <para>
 The DSA key klass.</para>
@@ -270,7 +270,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataGost2001Id" role="macro">
 <title>xmlSecKeyDataGost2001Id</title>
-<indexterm zone="xmlSecKeyDataGost2001Id"><primary sortas="xmlSecKeyDataGost2001Id">xmlSecKeyDataGost2001Id</primary></indexterm><programlisting>#define xmlSecKeyDataGost2001Id			xmlSecKeyDataGost2001GetKlass()
+<indexterm zone="xmlSecKeyDataGost2001Id"><primary sortas="xmlSecKeyDataGost2001Id">xmlSecKeyDataGost2001Id</primary></indexterm><programlisting>#define xmlSecKeyDataGost2001Id                 xmlSecKeyDataGost2001GetKlass()
 </programlisting>
 <para>
 The GOST2001 key klass.</para>
@@ -290,7 +290,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataHmacId" role="macro">
 <title>xmlSecKeyDataHmacId</title>
-<indexterm zone="xmlSecKeyDataHmacId"><primary sortas="xmlSecKeyDataHmacId">xmlSecKeyDataHmacId</primary></indexterm><programlisting>#define xmlSecKeyDataHmacId			xmlSecKeyDataHmacGetKlass()
+<indexterm zone="xmlSecKeyDataHmacId"><primary sortas="xmlSecKeyDataHmacId">xmlSecKeyDataHmacId</primary></indexterm><programlisting>#define xmlSecKeyDataHmacId                     xmlSecKeyDataHmacGetKlass()
 </programlisting>
 <para>
 The DHMAC key klass.</para>
@@ -310,7 +310,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataRsaId" role="macro">
 <title>xmlSecKeyDataRsaId</title>
-<indexterm zone="xmlSecKeyDataRsaId"><primary sortas="xmlSecKeyDataRsaId">xmlSecKeyDataRsaId</primary></indexterm><programlisting>#define xmlSecKeyDataRsaId			xmlSecKeyDataRsaGetKlass()
+<indexterm zone="xmlSecKeyDataRsaId"><primary sortas="xmlSecKeyDataRsaId">xmlSecKeyDataRsaId</primary></indexterm><programlisting>#define xmlSecKeyDataRsaId                      xmlSecKeyDataRsaGetKlass()
 </programlisting>
 <para>
 The RSA key klass.</para>
@@ -330,7 +330,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataX509Id" role="macro">
 <title>xmlSecKeyDataX509Id</title>
-<indexterm zone="xmlSecKeyDataX509Id"><primary sortas="xmlSecKeyDataX509Id">xmlSecKeyDataX509Id</primary></indexterm><programlisting>#define xmlSecKeyDataX509Id			xmlSecKeyDataX509GetKlass()
+<indexterm zone="xmlSecKeyDataX509Id"><primary sortas="xmlSecKeyDataX509Id">xmlSecKeyDataX509Id</primary></indexterm><programlisting>#define xmlSecKeyDataX509Id                     xmlSecKeyDataX509GetKlass()
 </programlisting>
 <para>
 The X509 data klass.</para>
@@ -350,7 +350,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecKeyDataRawX509CertId" role="macro">
 <title>xmlSecKeyDataRawX509CertId</title>
-<indexterm zone="xmlSecKeyDataRawX509CertId"><primary sortas="xmlSecKeyDataRawX509CertId">xmlSecKeyDataRawX509CertId</primary></indexterm><programlisting>#define xmlSecKeyDataRawX509CertId		xmlSecKeyDataRawX509CertGetKlass()
+<indexterm zone="xmlSecKeyDataRawX509CertId"><primary sortas="xmlSecKeyDataRawX509CertId">xmlSecKeyDataRawX509CertId</primary></indexterm><programlisting>#define xmlSecKeyDataRawX509CertId              xmlSecKeyDataRawX509CertGetKlass()
 </programlisting>
 <para>
 The  raw X509 certificate klass.</para>
@@ -370,7 +370,7 @@ klass is not implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecX509StoreId" role="macro">
 <title>xmlSecX509StoreId</title>
-<indexterm zone="xmlSecX509StoreId"><primary sortas="xmlSecX509StoreId">xmlSecX509StoreId</primary></indexterm><programlisting>#define xmlSecX509StoreId			xmlSecX509StoreGetKlass()
+<indexterm zone="xmlSecX509StoreId"><primary sortas="xmlSecX509StoreId">xmlSecX509StoreId</primary></indexterm><programlisting>#define xmlSecX509StoreId                       xmlSecX509StoreGetKlass()
 </programlisting>
 <para>
 The  X509 store klass.</para>
@@ -383,14 +383,14 @@ The  X509 store klass.</para>
 The X509 certificates key data store klass.</para>
 <para>
 </para><variablelist role="params">
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to X509 certificates key data store klass or NULL if 
-an error occurs (xmlsec-crypto library is not loaded or the raw X509 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to X509 certificates key data store klass or NULL if
+an error occurs (xmlsec-crypto library is not loaded or the raw X509
 cert key data klass is not implemented).
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformAes128CbcId" role="macro">
 <title>xmlSecTransformAes128CbcId</title>
-<indexterm zone="xmlSecTransformAes128CbcId"><primary sortas="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes128CbcId		xmlSecTransformAes128CbcGetKlass()
+<indexterm zone="xmlSecTransformAes128CbcId"><primary sortas="xmlSecTransformAes128CbcId">xmlSecTransformAes128CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes128CbcId              xmlSecTransformAes128CbcGetKlass()
 </programlisting>
 <para>
 The AES128 CBC cipher transform klass.</para>
@@ -410,7 +410,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformAes192CbcId" role="macro">
 <title>xmlSecTransformAes192CbcId</title>
-<indexterm zone="xmlSecTransformAes192CbcId"><primary sortas="xmlSecTransformAes192CbcId">xmlSecTransformAes192CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes192CbcId		xmlSecTransformAes192CbcGetKlass()
+<indexterm zone="xmlSecTransformAes192CbcId"><primary sortas="xmlSecTransformAes192CbcId">xmlSecTransformAes192CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes192CbcId              xmlSecTransformAes192CbcGetKlass()
 </programlisting>
 <para>
 The AES192 CBC cipher transform klass.</para>
@@ -430,7 +430,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformAes256CbcId" role="macro">
 <title>xmlSecTransformAes256CbcId</title>
-<indexterm zone="xmlSecTransformAes256CbcId"><primary sortas="xmlSecTransformAes256CbcId">xmlSecTransformAes256CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes256CbcId		xmlSecTransformAes256CbcGetKlass()
+<indexterm zone="xmlSecTransformAes256CbcId"><primary sortas="xmlSecTransformAes256CbcId">xmlSecTransformAes256CbcId</primary></indexterm><programlisting>#define xmlSecTransformAes256CbcId              xmlSecTransformAes256CbcGetKlass()
 </programlisting>
 <para>
 The AES256 CBC cipher transform klass.</para>
@@ -450,7 +450,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformKWAes128Id" role="macro">
 <title>xmlSecTransformKWAes128Id</title>
-<indexterm zone="xmlSecTransformKWAes128Id"><primary sortas="xmlSecTransformKWAes128Id">xmlSecTransformKWAes128Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes128Id		xmlSecTransformKWAes128GetKlass()
+<indexterm zone="xmlSecTransformKWAes128Id"><primary sortas="xmlSecTransformKWAes128Id">xmlSecTransformKWAes128Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes128Id               xmlSecTransformKWAes128GetKlass()
 </programlisting>
 <para>
 The AES 128 key wrap transform klass.</para>
@@ -470,7 +470,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformKWAes192Id" role="macro">
 <title>xmlSecTransformKWAes192Id</title>
-<indexterm zone="xmlSecTransformKWAes192Id"><primary sortas="xmlSecTransformKWAes192Id">xmlSecTransformKWAes192Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes192Id		xmlSecTransformKWAes192GetKlass()
+<indexterm zone="xmlSecTransformKWAes192Id"><primary sortas="xmlSecTransformKWAes192Id">xmlSecTransformKWAes192Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes192Id               xmlSecTransformKWAes192GetKlass()
 </programlisting>
 <para>
 The AES 192 key wrap transform klass.</para>
@@ -490,7 +490,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformKWAes256Id" role="macro">
 <title>xmlSecTransformKWAes256Id</title>
-<indexterm zone="xmlSecTransformKWAes256Id"><primary sortas="xmlSecTransformKWAes256Id">xmlSecTransformKWAes256Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes256Id		xmlSecTransformKWAes256GetKlass()
+<indexterm zone="xmlSecTransformKWAes256Id"><primary sortas="xmlSecTransformKWAes256Id">xmlSecTransformKWAes256Id</primary></indexterm><programlisting>#define xmlSecTransformKWAes256Id               xmlSecTransformKWAes256GetKlass()
 </programlisting>
 <para>
 The AES 256 key wrap transform klass.</para>
@@ -510,7 +510,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformDes3CbcId" role="macro">
 <title>xmlSecTransformDes3CbcId</title>
-<indexterm zone="xmlSecTransformDes3CbcId"><primary sortas="xmlSecTransformDes3CbcId">xmlSecTransformDes3CbcId</primary></indexterm><programlisting>#define xmlSecTransformDes3CbcId		xmlSecTransformDes3CbcGetKlass()
+<indexterm zone="xmlSecTransformDes3CbcId"><primary sortas="xmlSecTransformDes3CbcId">xmlSecTransformDes3CbcId</primary></indexterm><programlisting>#define xmlSecTransformDes3CbcId                xmlSecTransformDes3CbcGetKlass()
 </programlisting>
 <para>
 The Triple DES encryption transform klass.</para>
@@ -530,7 +530,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformKWDes3Id" role="macro">
 <title>xmlSecTransformKWDes3Id</title>
-<indexterm zone="xmlSecTransformKWDes3Id"><primary sortas="xmlSecTransformKWDes3Id">xmlSecTransformKWDes3Id</primary></indexterm><programlisting>#define xmlSecTransformKWDes3Id			xmlSecTransformKWDes3GetKlass()
+<indexterm zone="xmlSecTransformKWDes3Id"><primary sortas="xmlSecTransformKWDes3Id">xmlSecTransformKWDes3Id</primary></indexterm><programlisting>#define xmlSecTransformKWDes3Id                 xmlSecTransformKWDes3GetKlass()
 </programlisting>
 <para>
 The DES3 CBC cipher transform klass.</para>
@@ -550,7 +550,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformDsaSha1Id" role="macro">
 <title>xmlSecTransformDsaSha1Id</title>
-<indexterm zone="xmlSecTransformDsaSha1Id"><primary sortas="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</primary></indexterm><programlisting>#define xmlSecTransformDsaSha1Id		xmlSecTransformDsaSha1GetKlass()
+<indexterm zone="xmlSecTransformDsaSha1Id"><primary sortas="xmlSecTransformDsaSha1Id">xmlSecTransformDsaSha1Id</primary></indexterm><programlisting>#define xmlSecTransformDsaSha1Id                xmlSecTransformDsaSha1GetKlass()
 </programlisting>
 <para>
 The DSA-SHA1 signature transform klass.</para>
@@ -570,7 +570,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformGost2001GostR3411-94Id" role="macro">
 <title>xmlSecTransformGost2001GostR3411_94Id</title>
-<indexterm zone="xmlSecTransformGost2001GostR3411-94Id"><primary sortas="xmlSecTransformGost2001GostR3411_94Id">xmlSecTransformGost2001GostR3411_94Id</primary></indexterm><programlisting>#define xmlSecTransformGost2001GostR3411_94Id		xmlSecTransformGost2001GostR3411_94GetKlass()
+<indexterm zone="xmlSecTransformGost2001GostR3411-94Id"><primary sortas="xmlSecTransformGost2001GostR3411_94Id">xmlSecTransformGost2001GostR3411_94Id</primary></indexterm><programlisting>#define xmlSecTransformGost2001GostR3411_94Id           xmlSecTransformGost2001GostR3411_94GetKlass()
 </programlisting>
 <para>
 The GOST2001-GOSTR3411_94 signature transform klass.</para>
@@ -591,7 +591,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacMd5Id" role="macro">
 <title>xmlSecTransformHmacMd5Id</title>
-<indexterm zone="xmlSecTransformHmacMd5Id"><primary sortas="xmlSecTransformHmacMd5Id">xmlSecTransformHmacMd5Id</primary></indexterm><programlisting>#define xmlSecTransformHmacMd5Id		xmlSecTransformHmacMd5GetKlass()
+<indexterm zone="xmlSecTransformHmacMd5Id"><primary sortas="xmlSecTransformHmacMd5Id">xmlSecTransformHmacMd5Id</primary></indexterm><programlisting>#define xmlSecTransformHmacMd5Id                xmlSecTransformHmacMd5GetKlass()
 </programlisting>
 <para>
 The HMAC with MD5 signature transform klass.</para>
@@ -611,7 +611,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacRipemd160Id" role="macro">
 <title>xmlSecTransformHmacRipemd160Id</title>
-<indexterm zone="xmlSecTransformHmacRipemd160Id"><primary sortas="xmlSecTransformHmacRipemd160Id">xmlSecTransformHmacRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformHmacRipemd160Id		xmlSecTransformHmacRipemd160GetKlass()
+<indexterm zone="xmlSecTransformHmacRipemd160Id"><primary sortas="xmlSecTransformHmacRipemd160Id">xmlSecTransformHmacRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformHmacRipemd160Id          xmlSecTransformHmacRipemd160GetKlass()
 </programlisting>
 <para>
 The HMAC with RipeMD160 signature transform klass.</para>
@@ -632,7 +632,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacSha1Id" role="macro">
 <title>xmlSecTransformHmacSha1Id</title>
-<indexterm zone="xmlSecTransformHmacSha1Id"><primary sortas="xmlSecTransformHmacSha1Id">xmlSecTransformHmacSha1Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha1Id		xmlSecTransformHmacSha1GetKlass()
+<indexterm zone="xmlSecTransformHmacSha1Id"><primary sortas="xmlSecTransformHmacSha1Id">xmlSecTransformHmacSha1Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha1Id               xmlSecTransformHmacSha1GetKlass()
 </programlisting>
 <para>
 The HMAC with SHA1 signature transform klass.</para>
@@ -652,7 +652,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacSha224Id" role="macro">
 <title>xmlSecTransformHmacSha224Id</title>
-<indexterm zone="xmlSecTransformHmacSha224Id"><primary sortas="xmlSecTransformHmacSha224Id">xmlSecTransformHmacSha224Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha224Id		xmlSecTransformHmacSha224GetKlass()
+<indexterm zone="xmlSecTransformHmacSha224Id"><primary sortas="xmlSecTransformHmacSha224Id">xmlSecTransformHmacSha224Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha224Id             xmlSecTransformHmacSha224GetKlass()
 </programlisting>
 <para>
 The HMAC with SHA224 signature transform klass.</para>
@@ -672,7 +672,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacSha256Id" role="macro">
 <title>xmlSecTransformHmacSha256Id</title>
-<indexterm zone="xmlSecTransformHmacSha256Id"><primary sortas="xmlSecTransformHmacSha256Id">xmlSecTransformHmacSha256Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha256Id		xmlSecTransformHmacSha256GetKlass()
+<indexterm zone="xmlSecTransformHmacSha256Id"><primary sortas="xmlSecTransformHmacSha256Id">xmlSecTransformHmacSha256Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha256Id             xmlSecTransformHmacSha256GetKlass()
 </programlisting>
 <para>
 The HMAC with SHA256 signature transform klass.</para>
@@ -692,7 +692,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacSha384Id" role="macro">
 <title>xmlSecTransformHmacSha384Id</title>
-<indexterm zone="xmlSecTransformHmacSha384Id"><primary sortas="xmlSecTransformHmacSha384Id">xmlSecTransformHmacSha384Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha384Id		xmlSecTransformHmacSha384GetKlass()
+<indexterm zone="xmlSecTransformHmacSha384Id"><primary sortas="xmlSecTransformHmacSha384Id">xmlSecTransformHmacSha384Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha384Id             xmlSecTransformHmacSha384GetKlass()
 </programlisting>
 <para>
 The HMAC with SHA384 signature transform klass.</para>
@@ -712,7 +712,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformHmacSha512Id" role="macro">
 <title>xmlSecTransformHmacSha512Id</title>
-<indexterm zone="xmlSecTransformHmacSha512Id"><primary sortas="xmlSecTransformHmacSha512Id">xmlSecTransformHmacSha512Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha512Id		xmlSecTransformHmacSha512GetKlass()
+<indexterm zone="xmlSecTransformHmacSha512Id"><primary sortas="xmlSecTransformHmacSha512Id">xmlSecTransformHmacSha512Id</primary></indexterm><programlisting>#define xmlSecTransformHmacSha512Id             xmlSecTransformHmacSha512GetKlass()
 </programlisting>
 <para>
 The HMAC with SHA512 signature transform klass.</para>
@@ -732,7 +732,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformMd5Id" role="macro">
 <title>xmlSecTransformMd5Id</title>
-<indexterm zone="xmlSecTransformMd5Id"><primary sortas="xmlSecTransformMd5Id">xmlSecTransformMd5Id</primary></indexterm><programlisting>#define xmlSecTransformMd5Id			xmlSecTransformMd5GetKlass()
+<indexterm zone="xmlSecTransformMd5Id"><primary sortas="xmlSecTransformMd5Id">xmlSecTransformMd5Id</primary></indexterm><programlisting>#define xmlSecTransformMd5Id                    xmlSecTransformMd5GetKlass()
 </programlisting>
 <para>
 The MD5 digest transform klass.</para>
@@ -752,7 +752,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRipemd160Id" role="macro">
 <title>xmlSecTransformRipemd160Id</title>
-<indexterm zone="xmlSecTransformRipemd160Id"><primary sortas="xmlSecTransformRipemd160Id">xmlSecTransformRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformRipemd160Id		xmlSecTransformRipemd160GetKlass()
+<indexterm zone="xmlSecTransformRipemd160Id"><primary sortas="xmlSecTransformRipemd160Id">xmlSecTransformRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformRipemd160Id              xmlSecTransformRipemd160GetKlass()
 </programlisting>
 <para>
 The RIPEMD160 digest transform klass.</para>
@@ -772,7 +772,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaMd5Id" role="macro">
 <title>xmlSecTransformRsaMd5Id</title>
-<indexterm zone="xmlSecTransformRsaMd5Id"><primary sortas="xmlSecTransformRsaMd5Id">xmlSecTransformRsaMd5Id</primary></indexterm><programlisting>#define xmlSecTransformRsaMd5Id			xmlSecTransformRsaMd5GetKlass()
+<indexterm zone="xmlSecTransformRsaMd5Id"><primary sortas="xmlSecTransformRsaMd5Id">xmlSecTransformRsaMd5Id</primary></indexterm><programlisting>#define xmlSecTransformRsaMd5Id                 xmlSecTransformRsaMd5GetKlass()
 </programlisting>
 <para>
 The RSA-MD5 signature transform klass.</para>
@@ -792,7 +792,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaRipemd160Id" role="macro">
 <title>xmlSecTransformRsaRipemd160Id</title>
-<indexterm zone="xmlSecTransformRsaRipemd160Id"><primary sortas="xmlSecTransformRsaRipemd160Id">xmlSecTransformRsaRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformRsaRipemd160Id		xmlSecTransformRsaRipemd160GetKlass()
+<indexterm zone="xmlSecTransformRsaRipemd160Id"><primary sortas="xmlSecTransformRsaRipemd160Id">xmlSecTransformRsaRipemd160Id</primary></indexterm><programlisting>#define xmlSecTransformRsaRipemd160Id           xmlSecTransformRsaRipemd160GetKlass()
 </programlisting>
 <para>
 The RSA-RIPEMD160 signature transform klass.</para>
@@ -812,7 +812,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaSha1Id" role="macro">
 <title>xmlSecTransformRsaSha1Id</title>
-<indexterm zone="xmlSecTransformRsaSha1Id"><primary sortas="xmlSecTransformRsaSha1Id">xmlSecTransformRsaSha1Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha1Id		xmlSecTransformRsaSha1GetKlass()
+<indexterm zone="xmlSecTransformRsaSha1Id"><primary sortas="xmlSecTransformRsaSha1Id">xmlSecTransformRsaSha1Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha1Id                xmlSecTransformRsaSha1GetKlass()
 </programlisting>
 <para>
 The RSA-SHA1 signature transform klass.</para>
@@ -832,7 +832,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaSha224Id" role="macro">
 <title>xmlSecTransformRsaSha224Id</title>
-<indexterm zone="xmlSecTransformRsaSha224Id"><primary sortas="xmlSecTransformRsaSha224Id">xmlSecTransformRsaSha224Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha224Id		xmlSecTransformRsaSha224GetKlass()
+<indexterm zone="xmlSecTransformRsaSha224Id"><primary sortas="xmlSecTransformRsaSha224Id">xmlSecTransformRsaSha224Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha224Id              xmlSecTransformRsaSha224GetKlass()
 </programlisting>
 <para>
 The RSA-SHA224 signature transform klass.</para>
@@ -852,7 +852,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaSha256Id" role="macro">
 <title>xmlSecTransformRsaSha256Id</title>
-<indexterm zone="xmlSecTransformRsaSha256Id"><primary sortas="xmlSecTransformRsaSha256Id">xmlSecTransformRsaSha256Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha256Id		xmlSecTransformRsaSha256GetKlass()
+<indexterm zone="xmlSecTransformRsaSha256Id"><primary sortas="xmlSecTransformRsaSha256Id">xmlSecTransformRsaSha256Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha256Id              xmlSecTransformRsaSha256GetKlass()
 </programlisting>
 <para>
 The RSA-SHA256 signature transform klass.</para>
@@ -872,7 +872,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaSha384Id" role="macro">
 <title>xmlSecTransformRsaSha384Id</title>
-<indexterm zone="xmlSecTransformRsaSha384Id"><primary sortas="xmlSecTransformRsaSha384Id">xmlSecTransformRsaSha384Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha384Id		xmlSecTransformRsaSha384GetKlass()
+<indexterm zone="xmlSecTransformRsaSha384Id"><primary sortas="xmlSecTransformRsaSha384Id">xmlSecTransformRsaSha384Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha384Id              xmlSecTransformRsaSha384GetKlass()
 </programlisting>
 <para>
 The RSA-SHA384 signature transform klass.</para>
@@ -892,7 +892,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaSha512Id" role="macro">
 <title>xmlSecTransformRsaSha512Id</title>
-<indexterm zone="xmlSecTransformRsaSha512Id"><primary sortas="xmlSecTransformRsaSha512Id">xmlSecTransformRsaSha512Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha512Id		xmlSecTransformRsaSha512GetKlass()
+<indexterm zone="xmlSecTransformRsaSha512Id"><primary sortas="xmlSecTransformRsaSha512Id">xmlSecTransformRsaSha512Id</primary></indexterm><programlisting>#define xmlSecTransformRsaSha512Id              xmlSecTransformRsaSha512GetKlass()
 </programlisting>
 <para>
 The RSA-SHA512 signature transform klass.</para>
@@ -912,7 +912,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaPkcs1Id" role="macro">
 <title>xmlSecTransformRsaPkcs1Id</title>
-<indexterm zone="xmlSecTransformRsaPkcs1Id"><primary sortas="xmlSecTransformRsaPkcs1Id">xmlSecTransformRsaPkcs1Id</primary></indexterm><programlisting>#define xmlSecTransformRsaPkcs1Id		xmlSecTransformRsaPkcs1GetKlass()
+<indexterm zone="xmlSecTransformRsaPkcs1Id"><primary sortas="xmlSecTransformRsaPkcs1Id">xmlSecTransformRsaPkcs1Id</primary></indexterm><programlisting>#define xmlSecTransformRsaPkcs1Id               xmlSecTransformRsaPkcs1GetKlass()
 </programlisting>
 <para>
 The RSA PKCS1 key transport transform klass.</para>
@@ -932,7 +932,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRsaOaepId" role="macro">
 <title>xmlSecTransformRsaOaepId</title>
-<indexterm zone="xmlSecTransformRsaOaepId"><primary sortas="xmlSecTransformRsaOaepId">xmlSecTransformRsaOaepId</primary></indexterm><programlisting>#define xmlSecTransformRsaOaepId		xmlSecTransformRsaOaepGetKlass()
+<indexterm zone="xmlSecTransformRsaOaepId"><primary sortas="xmlSecTransformRsaOaepId">xmlSecTransformRsaOaepId</primary></indexterm><programlisting>#define xmlSecTransformRsaOaepId                xmlSecTransformRsaOaepGetKlass()
 </programlisting>
 <para>
 The RSA PKCS1 key transport transform klass.</para>
@@ -952,7 +952,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformGostR3411-94Id" role="macro">
 <title>xmlSecTransformGostR3411_94Id</title>
-<indexterm zone="xmlSecTransformGostR3411-94Id"><primary sortas="xmlSecTransformGostR3411_94Id">xmlSecTransformGostR3411_94Id</primary></indexterm><programlisting>#define xmlSecTransformGostR3411_94Id			xmlSecTransformGostR3411_94GetKlass()
+<indexterm zone="xmlSecTransformGostR3411-94Id"><primary sortas="xmlSecTransformGostR3411_94Id">xmlSecTransformGostR3411_94Id</primary></indexterm><programlisting>#define xmlSecTransformGostR3411_94Id                   xmlSecTransformGostR3411_94GetKlass()
 </programlisting>
 <para>
 The GOSTR3411_94 digest transform klass.</para>
@@ -972,7 +972,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformSha1Id" role="macro">
 <title>xmlSecTransformSha1Id</title>
-<indexterm zone="xmlSecTransformSha1Id"><primary sortas="xmlSecTransformSha1Id">xmlSecTransformSha1Id</primary></indexterm><programlisting>#define xmlSecTransformSha1Id			xmlSecTransformSha1GetKlass()
+<indexterm zone="xmlSecTransformSha1Id"><primary sortas="xmlSecTransformSha1Id">xmlSecTransformSha1Id</primary></indexterm><programlisting>#define xmlSecTransformSha1Id                   xmlSecTransformSha1GetKlass()
 </programlisting>
 <para>
 The SHA1 digest transform klass.</para>
@@ -992,7 +992,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformSha224Id" role="macro">
 <title>xmlSecTransformSha224Id</title>
-<indexterm zone="xmlSecTransformSha224Id"><primary sortas="xmlSecTransformSha224Id">xmlSecTransformSha224Id</primary></indexterm><programlisting>#define xmlSecTransformSha224Id			xmlSecTransformSha224GetKlass()
+<indexterm zone="xmlSecTransformSha224Id"><primary sortas="xmlSecTransformSha224Id">xmlSecTransformSha224Id</primary></indexterm><programlisting>#define xmlSecTransformSha224Id                 xmlSecTransformSha224GetKlass()
 </programlisting>
 <para>
 The SHA224 digest transform klass.</para>
@@ -1012,7 +1012,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformSha256Id" role="macro">
 <title>xmlSecTransformSha256Id</title>
-<indexterm zone="xmlSecTransformSha256Id"><primary sortas="xmlSecTransformSha256Id">xmlSecTransformSha256Id</primary></indexterm><programlisting>#define xmlSecTransformSha256Id			xmlSecTransformSha256GetKlass()
+<indexterm zone="xmlSecTransformSha256Id"><primary sortas="xmlSecTransformSha256Id">xmlSecTransformSha256Id</primary></indexterm><programlisting>#define xmlSecTransformSha256Id                 xmlSecTransformSha256GetKlass()
 </programlisting>
 <para>
 The SHA256 digest transform klass.</para>
@@ -1032,7 +1032,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformSha384Id" role="macro">
 <title>xmlSecTransformSha384Id</title>
-<indexterm zone="xmlSecTransformSha384Id"><primary sortas="xmlSecTransformSha384Id">xmlSecTransformSha384Id</primary></indexterm><programlisting>#define xmlSecTransformSha384Id			xmlSecTransformSha384GetKlass()
+<indexterm zone="xmlSecTransformSha384Id"><primary sortas="xmlSecTransformSha384Id">xmlSecTransformSha384Id</primary></indexterm><programlisting>#define xmlSecTransformSha384Id                 xmlSecTransformSha384GetKlass()
 </programlisting>
 <para>
 The SHA384 digest transform klass.</para>
@@ -1052,7 +1052,7 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformSha512Id" role="macro">
 <title>xmlSecTransformSha512Id</title>
-<indexterm zone="xmlSecTransformSha512Id"><primary sortas="xmlSecTransformSha512Id">xmlSecTransformSha512Id</primary></indexterm><programlisting>#define xmlSecTransformSha512Id			xmlSecTransformSha512GetKlass()
+<indexterm zone="xmlSecTransformSha512Id"><primary sortas="xmlSecTransformSha512Id">xmlSecTransformSha512Id</primary></indexterm><programlisting>#define xmlSecTransformSha512Id                 xmlSecTransformSha512GetKlass()
 </programlisting>
 <para>
 The SHA512 digest transform klass.</para>
@@ -1075,12 +1075,12 @@ implemented).
 <indexterm zone="xmlSecCryptoAppInit"><primary sortas="xmlSecCryptoAppInit">xmlSecCryptoAppInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoAppInit                 (const <link linkend="char">char</link> *config);</programlisting>
 <para>
 General crypto engine initialization. This function is used
-by XMLSec command line utility and called before 
+by XMLSec command line utility and called before
 <parameter>xmlSecInit</parameter> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>config</parameter>&#160;:</term>
-<listitem><simpara>		the path to crypto library configuration.
+<listitem><simpara>             the path to crypto library configuration.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1090,7 +1090,7 @@ by XMLSec command line utility and called before
 <indexterm zone="xmlSecCryptoAppShutdown"><primary sortas="xmlSecCryptoAppShutdown">xmlSecCryptoAppShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoAppShutdown             (void);</programlisting>
 <para>
 General crypto engine shutdown. This function is used
-by XMLSec command line utility and called after 
+by XMLSec command line utility and called after
 <parameter>xmlSecShutdown</parameter> function.</para>
 <para>
 </para><variablelist role="params">
@@ -1106,7 +1106,7 @@ and a default crypto key data stores.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1122,10 +1122,10 @@ function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1135,15 +1135,15 @@ function.</para>
 <indexterm zone="xmlSecCryptoAppDefaultKeysMngrLoad"><primary sortas="xmlSecCryptoAppDefaultKeysMngrLoad">xmlSecCryptoAppDefaultKeysMngrLoad</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoAppDefaultKeysMngrLoad  (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                                          const <link linkend="char">char</link> *uri);</programlisting>
 <para>
-Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
+Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created
 with <link linkend="xmlSecCryptoAppDefaultKeysMngrInit"><type>xmlSecCryptoAppDefaultKeysMngrInit</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the uri.
+<listitem><simpara>                the uri.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1158,13 +1158,13 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the destination filename.
+<listitem><simpara>           the destination filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the type of keys to save (public/private/symmetric).
+<listitem><simpara>               the type of keys to save (public/private/symmetric).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1181,17 +1181,17 @@ untrusted certs in <parameter>store</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the keys manager.
+<listitem><simpara>               the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara> 		the certificate file.
+<listitem><simpara>           the certificate file.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara> 		the flag that indicates is the certificate in <parameter>filename</parameter>
-   			trusted or not.
+<listitem><simpara>               the flag that indicates is the certificate in <parameter>filename</parameter>
+                     trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1210,19 +1210,19 @@ untrusted certs in <parameter>store</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the keys manager.
+<listitem><simpara>               the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data.
+<listitem><simpara>               the certificate binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data size.
+<listitem><simpara>           the certificate binary data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara> 		the flag that indicates is the certificate trusted or not.
+<listitem><simpara>               the flag that indicates is the certificate trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1239,19 +1239,19 @@ Reads key from the a file.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the key filename.
+<listitem><simpara>           the key filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the key file format.
+<listitem><simpara>             the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the key file password.
+<listitem><simpara>                the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the key password callback.
+<listitem><simpara>        the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1269,22 +1269,22 @@ Reads key from the memory buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the binary key data.
+<listitem><simpara>               the binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the size of binary key.
+<listitem><simpara>           the size of binary key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the key file format.
+<listitem><simpara>             the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the key file password.
+<listitem><simpara>                the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the key password callback.
+<listitem><simpara>        the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1302,16 +1302,16 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 key filename.
+<listitem><simpara>           the PKCS12 key filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 file password.
+<listitem><simpara>                the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the password callback.
+<listitem><simpara>        the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1330,19 +1330,19 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 binary data.
+<listitem><simpara>               the PKCS12 binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 binary data size.
+<listitem><simpara>           the PKCS12 binary data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 file password.
+<listitem><simpara>                the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the password callback.
+<listitem><simpara>        the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1357,13 +1357,13 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the certificate filename.
+<listitem><simpara>           the certificate filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1379,16 +1379,16 @@ Reads the certificate from memory buffer and adds it to key.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data.
+<listitem><simpara>               the certificate binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data size.
+<listitem><simpara>           the certificate binary data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>

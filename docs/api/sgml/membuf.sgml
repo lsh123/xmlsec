@@ -62,9 +62,9 @@ Gets the pointer to memory buffer transform buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to memory buffer transform.
+<listitem><simpara>          the pointer to memory buffer transform.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the transform's <link linkend="xmlSecBuffer"><type>xmlSecBuffer</type></link>. 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the transform's <link linkend="xmlSecBuffer"><type>xmlSecBuffer</type></link>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

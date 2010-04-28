@@ -85,24 +85,24 @@ The memory allocation mode (used by <parameter>xmlSecBuffer</parameter> and <par
 </para><variablelist role="enum">
 <varlistentry id="xmlSecAllocModeExact" role="constant">
 <term><literal>xmlSecAllocModeExact</literal></term>
-<listitem><simpara> 	the memory allocation mode that minimizes total 
-			allocated memory size.
+<listitem><simpara>       the memory allocation mode that minimizes total
+                             allocated memory size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecAllocModeDouble" role="constant">
 <term><literal>xmlSecAllocModeDouble</literal></term>
-<listitem><simpara>	the memory allocation mode that tries to minimize
-			the number of malloc calls.
+<listitem><simpara>      the memory allocation mode that tries to minimize
+                             the number of malloc calls.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBuffer" role="struct">
 <title>struct xmlSecBuffer</title>
 <indexterm zone="xmlSecBuffer"><primary sortas="xmlSecBuffer">xmlSecBuffer</primary></indexterm><programlisting>struct xmlSecBuffer {
-    xmlSecByte* 	data;
-    xmlSecSize 		size;
-    xmlSecSize		maxSize;
-    xmlSecAllocMode 	allocMode;
+    xmlSecByte*         data;
+    xmlSecSize          size;
+    xmlSecSize          maxSize;
+    xmlSecAllocMode     allocMode;
 };
 </programlisting>
 <para>
@@ -139,10 +139,10 @@ Sets new global default allocation mode and minimal intial size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>defAllocMode</parameter>&#160;:</term>
-<listitem><simpara>	the new default buffer allocation mode.
+<listitem><simpara>       the new default buffer allocation mode.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>defInitialSize</parameter>&#160;:</term>
-<listitem><simpara>	the new default buffer minimal intial size.
+<listitem><simpara>     the new default buffer minimal intial size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBufferCreate" role="function">
@@ -155,7 +155,7 @@ to free the buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the intial size.
+<listitem><simpara>               the intial size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated buffer or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -168,7 +168,7 @@ Desrtoys buffer object created with <link linkend="xmlSecBufferCreate"><type>xml
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBufferInitialize" role="function">
@@ -181,10 +181,10 @@ Initializes buffer object <parameter>buf</parameter>. Caller is responsible for 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the initial buffer size.
+<listitem><simpara>               the initial buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -198,7 +198,7 @@ function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBufferGetData" role="function">
@@ -209,7 +209,7 @@ Gets pointer to buffer's data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to buffer's data.
 </simpara></listitem></varlistentry>
@@ -224,13 +224,13 @@ Sets the value of the buffer to <parameter>data</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the data.
+<listitem><simpara>               the data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the data size.
+<listitem><simpara>               the data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -243,7 +243,7 @@ Gets the current buffer data size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the current data size.
 </simpara></listitem></varlistentry>
@@ -253,15 +253,15 @@ Gets the current buffer data size.</para>
 <indexterm zone="xmlSecBufferSetSize"><primary sortas="xmlSecBufferSetSize">xmlSecBufferSetSize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferSetSize                 (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
                                                          <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
-Sets new buffer data size. If necessary, buffer grows to 
+Sets new buffer data size. If necessary, buffer grows to
 have at least <parameter>size</parameter> bytes.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the new data size.
+<listitem><simpara>               the new data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -274,7 +274,7 @@ Gets the maximum (allocated) buffer size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the maximum (allocated) buffer size.
 </simpara></listitem></varlistentry>
@@ -284,15 +284,15 @@ Gets the maximum (allocated) buffer size.</para>
 <indexterm zone="xmlSecBufferSetMaxSize"><primary sortas="xmlSecBufferSetMaxSize">xmlSecBufferSetMaxSize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBufferSetMaxSize              (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf,
                                                          <link linkend="xmlSecSize">xmlSecSize</link> size);</programlisting>
 <para>
-Sets new buffer maximum size. If necessary, buffer grows to 
+Sets new buffer maximum size. If necessary, buffer grows to
 have at least <parameter>size</parameter> bytes.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the new maximum size.
+<listitem><simpara>               the new maximum size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -305,7 +305,7 @@ Empties the buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBufferAppend" role="function">
@@ -318,13 +318,13 @@ Appends the <parameter>data</parameter> after the current data stored in the buf
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the data.
+<listitem><simpara>               the data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the data size.
+<listitem><simpara>               the data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -339,13 +339,13 @@ Prepends the <parameter>data</parameter> before the current data stored in the b
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the data.
+<listitem><simpara>               the data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the data size.
+<listitem><simpara>               the data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -359,10 +359,10 @@ Removes <parameter>size</parameter> bytes from the beginning of the current buff
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the number of bytes to be removed.
+<listitem><simpara>               the number of bytes to be removed.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -376,10 +376,10 @@ Removes <parameter>size</parameter> bytes from the end of current buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the number of bytes to be removed.
+<listitem><simpara>               the number of bytes to be removed.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -393,10 +393,10 @@ Reads the content of the file <parameter>filename</parameter> in the buffer.</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the filename.
+<listitem><simpara>           the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -411,10 +411,10 @@ result in the buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to node.
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -429,13 +429,13 @@ Sets the content of the <parameter>node</parameter> to the base64 encoded buffer
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer object.
+<listitem><simpara>                the pointer to buffer object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to a node.
+<listitem><simpara>               the pointer to a node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara>		the max line size fro base64 encoded data.
+<listitem><simpara>            the max line size fro base64 encoded data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -444,12 +444,12 @@ Sets the content of the <parameter>node</parameter> to the base64 encoded buffer
 <title>xmlSecBufferCreateOutputBuffer ()</title>
 <indexterm zone="xmlSecBufferCreateOutputBuffer"><primary sortas="xmlSecBufferCreateOutputBuffer">xmlSecBufferCreateOutputBuffer</primary></indexterm><programlisting><link linkend="xmlOutputBufferPtr">xmlOutputBufferPtr</link>  xmlSecBufferCreateOutputBuffer      (<link linkend="xmlSecBuffer">xmlSecBufferPtr</link> buf);</programlisting>
 <para>
-Creates new LibXML output buffer to store data in the <parameter>buf</parameter>. Caller is 
+Creates new LibXML output buffer to store data in the <parameter>buf</parameter>. Caller is
 responsible for destroying <parameter>buf</parameter> when processing is done.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to buffer.
+<listitem><simpara>                the pointer to buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated output buffer or NULL if an error
 occurs.

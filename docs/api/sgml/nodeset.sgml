@@ -72,7 +72,7 @@ Nodeset object implementation.
     xmlSecNodeSetNormal = 0,
     xmlSecNodeSetInvert,
     xmlSecNodeSetTree,
-    xmlSecNodeSetTreeWithoutComments, 
+    xmlSecNodeSetTreeWithoutComments,
     xmlSecNodeSetTreeInvert,
     xmlSecNodeSetTreeWithoutCommentsInvert,
     xmlSecNodeSetList
@@ -84,41 +84,41 @@ The basic nodes sets types.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecNodeSetNormal" role="constant">
 <term><literal>xmlSecNodeSetNormal</literal></term>
-<listitem><simpara> 	nodes set = nodes in the list.
+<listitem><simpara>        nodes set = nodes in the list.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetInvert" role="constant">
 <term><literal>xmlSecNodeSetInvert</literal></term>
-<listitem><simpara>  	nodes set = all document nodes minus nodes in the list.
+<listitem><simpara>        nodes set = all document nodes minus nodes in the list.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetTree" role="constant">
 <term><literal>xmlSecNodeSetTree</literal></term>
-<listitem><simpara> 		nodes set = nodes in the list and all their subtress.
+<listitem><simpara>          nodes set = nodes in the list and all their subtress.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetTreeWithoutComments" role="constant">
 <term><literal>xmlSecNodeSetTreeWithoutComments</literal></term>
-<listitem><simpara> 		nodes set = nodes in the list and 
-			all their subtress but no comment nodes.
+<listitem><simpara>           nodes set = nodes in the list and
+                             all their subtress but no comment nodes.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetTreeInvert" role="constant">
 <term><literal>xmlSecNodeSetTreeInvert</literal></term>
-<listitem><simpara> 	nodes set = all document nodes minus nodes in the 
-				list and all their subtress.
+<listitem><simpara>    nodes set = all document nodes minus nodes in the
+                             list and all their subtress.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetTreeWithoutCommentsInvert" role="constant">
 <term><literal>xmlSecNodeSetTreeWithoutCommentsInvert</literal></term>
-<listitem><simpara> 	nodes set = all document nodes 
-				minus (nodes in the list and all their subtress 
-			plus all comment nodes).
+<listitem><simpara>     nodes set = all document nodes
+                             minus (nodes in the list and all their subtress
+                             plus all comment nodes).
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetList" role="constant">
 <term><literal>xmlSecNodeSetList</literal></term>
-<listitem><simpara> 		nodes set = all nodes in the chidren list of nodes sets.
+<listitem><simpara>          nodes set = all nodes in the chidren list of nodes sets.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -136,31 +136,31 @@ The simple nodes sets operations.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecNodeSetIntersection" role="constant">
 <term><literal>xmlSecNodeSetIntersection</literal></term>
-<listitem><simpara> 	intersection.
+<listitem><simpara>  intersection.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetSubtraction" role="constant">
 <term><literal>xmlSecNodeSetSubtraction</literal></term>
-<listitem><simpara> 	subtraction.
+<listitem><simpara>   subtraction.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecNodeSetUnion" role="constant">
 <term><literal>xmlSecNodeSetUnion</literal></term>
-<listitem><simpara> 	union.
+<listitem><simpara>         union.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSet" role="struct">
 <title>struct xmlSecNodeSet</title>
 <indexterm zone="xmlSecNodeSet"><primary sortas="xmlSecNodeSet">xmlSecNodeSet</primary></indexterm><programlisting>struct xmlSecNodeSet {
-    xmlNodeSetPtr	nodes;
-    xmlDocPtr		doc;
-    int			destroyDoc;
-    xmlSecNodeSetType	type;
-    xmlSecNodeSetOp	op;
-    xmlSecNodeSetPtr	next;
-    xmlSecNodeSetPtr	prev;
-    xmlSecNodeSetPtr	children;
+    xmlNodeSetPtr       nodes;
+    xmlDocPtr           doc;
+    int                 destroyDoc;
+    xmlSecNodeSetType   type;
+    xmlSecNodeSetOp     op;
+    xmlSecNodeSetPtr    next;
+    xmlSecNodeSetPtr    prev;
+    xmlSecNodeSetPtr    children;
 };
 </programlisting>
 <para>
@@ -169,44 +169,44 @@ The enchanced nodes set.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlNodeSet">xmlNodeSetPtr</link>&#160;<structfield>nodes</structfield>;</term>
-<listitem><simpara> 			the nodes list.
+<listitem><simpara>                      the nodes list.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlDoc">xmlDocPtr</link>&#160;<structfield>doc</structfield>;</term>
-<listitem><simpara> 			the parent XML document.
+<listitem><simpara>                        the parent XML document.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link>&#160;<structfield>destroyDoc</structfield>;</term>
-<listitem><simpara>			the flag: if set to 1 then <parameter>doc</parameter> will
-			be destroyed when node set is destroyed.
+<listitem><simpara>                 the flag: if set to 1 then <parameter>doc</parameter> will
+                             be destroyed when node set is destroyed.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSetType">xmlSecNodeSetType</link>&#160;<structfield>type</structfield>;</term>
-<listitem><simpara> 			the nodes set type.
+<listitem><simpara>                       the nodes set type.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSetOp">xmlSecNodeSetOp</link>&#160;<structfield>op</structfield>;</term>
-<listitem><simpara> 			the operation type.
+<listitem><simpara>                         the operation type.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>next</structfield>;</term>
-<listitem><simpara> 			the next nodes set.
+<listitem><simpara>                       the next nodes set.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>prev</structfield>;</term>
-<listitem><simpara> 			the previous nodes set.
+<listitem><simpara>                       the previous nodes set.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>children</structfield>;</term>
-<listitem><simpara> 			the children list (valid only if type 
-			equal to <link linkend="xmlSecNodeSetList"><type>xmlSecNodeSetList</type></link>).
+<listitem><simpara>                   the children list (valid only if type
+                             equal to <link linkend="xmlSecNodeSetList"><type>xmlSecNodeSetList</type></link>).
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -221,16 +221,16 @@ The callback function called once per each node in the nodes set.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 			the pointer to <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure.
+<listitem><simpara>                       the pointer to <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara> 			the pointer current XML node.
+<listitem><simpara>                        the pointer current XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara> 			the pointer to the <parameter>cur</parameter> parent node.
+<listitem><simpara>                     the pointer to the <parameter>cur</parameter> parent node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 			the pointer to application specific data.
+<listitem><simpara>                       the pointer to application specific data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs
 an walk procedure should be interrupted.
@@ -247,13 +247,13 @@ by calling <link linkend="xmlSecNodeSetDestroy"><type>xmlSecNodeSetDestroy</type
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to parent XML document.
+<listitem><simpara>                the pointer to parent XML document.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara> 		the list of nodes.
+<listitem><simpara>              the list of nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara> 		the nodes set type.
+<listitem><simpara>               the nodes set type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated node set or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -266,7 +266,7 @@ Destroys the nodes set created with <link linkend="xmlSecNodeSetCreate"><type>xm
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to node set.
+<listitem><simpara>               the pointer to node set.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetDocDestroy" role="function">
@@ -277,7 +277,7 @@ Instructs node set to destroy nodes parent doc when node set is destroyed.</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to node set.
+<listitem><simpara>               the pointer to node set.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNodeSetContains" role="function">
@@ -290,13 +290,13 @@ Checks whether the <parameter>node</parameter> is in the nodes set or not.</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to node set.
+<listitem><simpara>               the pointer to node set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to XML node to check.
+<listitem><simpara>               the pointer to XML node to check.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to <parameter>node</parameter> parent node.
+<listitem><simpara>             the pointer to <parameter>node</parameter> parent node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the <parameter>node</parameter> is in the nodes set <parameter>nset</parameter>, 0 if it is not
 and a negative value if an error occurs.
@@ -312,15 +312,15 @@ Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> using ope
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to currrent nodes set (or NULL).
+<listitem><simpara>               the pointer to currrent nodes set (or NULL).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>newNSet</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to new nodes set.
+<listitem><simpara>            the pointer to new nodes set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>op</parameter>&#160;:</term>
-<listitem><simpara> 		the operation type.
+<listitem><simpara>                 the operation type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to combined nodes set or NULL if an error 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to combined nodes set or NULL if an error
 occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -334,15 +334,15 @@ Adds <parameter>newNSet</parameter> to the <parameter>nset</parameter> as child 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to currrent nodes set (or NULL).
+<listitem><simpara>               the pointer to currrent nodes set (or NULL).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>newNSet</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to new nodes set.
+<listitem><simpara>            the pointer to new nodes set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>op</parameter>&#160;:</term>
-<listitem><simpara> 		the operation type.
+<listitem><simpara>                 the operation type.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to combined nodes set or NULL if an error 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to combined nodes set or NULL if an error
 occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -361,21 +361,21 @@ Creates a new nodes set that contains:
  - if <parameter>withComments</parameter> is not 0 and <parameter>invert</parameter> not is 0:
    all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree;
  - if <parameter>withComments</parameter> is 0 and <parameter>invert</parameter> is 0:
-   all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree 
+   all nodes in the <parameter>doc</parameter> except nodes in the <parameter>parent</parameter> subtree
    and comment nodes.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML document.
+<listitem><simpara>                the pointer to an XML document.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara>	 	the pointer to parent XML node or NULL if we want to include all document nodes.
+<listitem><simpara>             the pointer to parent XML node or NULL if we want to include all document nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>withComments</parameter>&#160;:</term>
-<listitem><simpara> 	the flag include  comments or not.
+<listitem><simpara>       the flag include  comments or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>invert</parameter>&#160;:</term>
-<listitem><simpara> 		the "invert" flag.
+<listitem><simpara>             the "invert" flag.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the newly created <link linkend="xmlSecNodeSet"><type>xmlSecNodeSet</type></link> structure
 or NULL if an error occurs.
@@ -388,18 +388,18 @@ or NULL if an error occurs.
                                                          <link linkend="void">void</link> *data);</programlisting>
 <para>
 Calls the function <parameter>walkFunc</parameter> once per each node in the nodes set <parameter>nset</parameter>.
-If the <parameter>walkFunc</parameter> returns a negative value, then the walk procedure 
+If the <parameter>walkFunc</parameter> returns a negative value, then the walk procedure
 is interrupted.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to node set.
+<listitem><simpara>               the pointer to node set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>walkFunc</parameter>&#160;:</term>
-<listitem><simpara> 		the callback functions.
+<listitem><simpara>           the callback functions.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara> 		the application specific data passed to the <parameter>walkFunc</parameter>.
+<listitem><simpara>               the application specific data passed to the <parameter>walkFunc</parameter>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -413,10 +413,10 @@ Dumps content of all the text nodes from <parameter>nset</parameter> to <paramet
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to node set.
+<listitem><simpara>               the pointer to node set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>out</parameter>&#160;:</term>
-<listitem><simpara>		the output buffer.
+<listitem><simpara>                the output buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -430,10 +430,10 @@ Prints information about <parameter>nset</parameter> to the <parameter>output</p
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>nset</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to node set.
+<listitem><simpara>               the pointer to node set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

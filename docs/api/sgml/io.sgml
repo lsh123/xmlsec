@@ -94,16 +94,16 @@ Register a new set of I/O callback for handling parser input.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>matchFunc</parameter>&#160;:</term>
-<listitem><simpara>  	the protocol match callback.
+<listitem><simpara>          the protocol match callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>openFunc</parameter>&#160;:</term>
-<listitem><simpara>  		the open stream callback.
+<listitem><simpara>           the open stream callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>readFunc</parameter>&#160;:</term>
-<listitem><simpara>  		the read from stream callback.
+<listitem><simpara>           the read from stream callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>closeFunc</parameter>&#160;:</term>
-<listitem><simpara>  	the close stream callback.
+<listitem><simpara>          the close stream callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -134,10 +134,10 @@ Opens the given <parameter>uri</parameter> for reading.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to IO transform.
+<listitem><simpara>          the pointer to IO transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara> 		the URL to open.
+<listitem><simpara>                the URL to open.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>

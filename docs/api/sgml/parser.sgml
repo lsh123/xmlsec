@@ -50,12 +50,12 @@ Parser transform implementation.
 <title>xmlSecParseFile ()</title>
 <indexterm zone="xmlSecParseFile"><primary sortas="xmlSecParseFile">xmlSecParseFile</primary></indexterm><programlisting><link linkend="xmlDoc">xmlDocPtr</link>           xmlSecParseFile                     (const <link linkend="char">char</link> *filename);</programlisting>
 <para>
-Loads XML Doc from file <parameter>filename</parameter>. We need a special version because of 
+Loads XML Doc from file <parameter>filename</parameter>. We need a special version because of
 c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData"><function>xmlSAXParseFileWithData()</function></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara> 		the filename.
+<listitem><simpara>           the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -66,18 +66,18 @@ c14n issue. The code is copied from <link linkend="xmlSAXParseFileWithData"><fun
                                                          <link linkend="xmlSecSize">xmlSecSize</link> size,
                                                          <link linkend="int">int</link> recovery);</programlisting>
 <para>
-Loads XML Doc from memory. We need a special version because of 
+Loads XML Doc from memory. We need a special version because of
 c14n issue. The code is copied from <link linkend="xmlSAXParseMemory"><function>xmlSAXParseMemory()</function></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer.
+<listitem><simpara>             the input buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer size.
+<listitem><simpara>               the input buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>recovery</parameter>&#160;:</term>
-<listitem><simpara> 		the flag.
+<listitem><simpara>           the flag.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -95,22 +95,22 @@ Loads XML Doc from 3 chunks of memory: <parameter>prefix</parameter>, <parameter
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>prefix</parameter>&#160;:</term>
-<listitem><simpara> 		the first part of the input.
+<listitem><simpara>             the first part of the input.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>prefixSize</parameter>&#160;:</term>
-<listitem><simpara> 	the size of the first part of the input.
+<listitem><simpara>         the size of the first part of the input.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara> 		the second part of the input.
+<listitem><simpara>             the second part of the input.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufferSize</parameter>&#160;:</term>
-<listitem><simpara> 	the size of the second part of the input.
+<listitem><simpara>         the size of the second part of the input.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>postfix</parameter>&#160;:</term>
-<listitem><simpara> 		the third part of the input.
+<listitem><simpara>            the third part of the input.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>postfixSize</parameter>&#160;:</term>
-<listitem><simpara> 	the size of the third part of the input.
+<listitem><simpara>        the size of the third part of the input.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the loaded XML document or NULL if an error occurs.
 </simpara></listitem></varlistentry>

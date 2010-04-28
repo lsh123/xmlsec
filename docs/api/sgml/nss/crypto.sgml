@@ -142,7 +142,7 @@ Adds NSS specific key data stores in keys manager.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -156,10 +156,10 @@ Generates <parameter>size</parameter> random bytes and puts result in <parameter
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>		the destination buffer.
+<listitem><simpara>             the destination buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the numer of bytes to generate.
+<listitem><simpara>               the numer of bytes to generate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -178,25 +178,25 @@ The default errors reporting callback function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>file</parameter>&#160;:</term>
-<listitem><simpara>		the error location file name (__FILE__ macro).
+<listitem><simpara>               the error location file name (__FILE__ macro).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>line</parameter>&#160;:</term>
-<listitem><simpara>		the error location line number (__LINE__ macro).
+<listitem><simpara>               the error location line number (__LINE__ macro).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>func</parameter>&#160;:</term>
-<listitem><simpara>		the error location function name (__FUNCTION__ macro).
+<listitem><simpara>               the error location function name (__FUNCTION__ macro).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
-<listitem><simpara>	the error specific error object 
+<listitem><simpara>        the error specific error object
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
-<listitem><simpara>	the error specific error subject.
+<listitem><simpara>       the error specific error subject.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>reason</parameter>&#160;:</term>
-<listitem><simpara>		the error code.
+<listitem><simpara>             the error code.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>msg</parameter>&#160;:</term>
-<listitem><simpara>		the additional error message.
+<listitem><simpara>                the additional error message.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssGetInternalKeySlot" role="function">
@@ -236,13 +236,13 @@ Sets the value of AES key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to AES key data.
+<listitem><simpara>               the pointer to AES key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key value.
+<listitem><simpara>                the pointer to key value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the key value size (in bytes).
+<listitem><simpara>            the key value size (in bytes).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -376,13 +376,13 @@ Sets the value of DES key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to DES key data.
+<listitem><simpara>               the pointer to DES key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key value.
+<listitem><simpara>                the pointer to key value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the key value size (in bytes).
+<listitem><simpara>            the key value size (in bytes).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -473,7 +473,7 @@ Sets the min HMAC output length</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>min_length</parameter>&#160;:</term>
-<listitem><simpara> the new min length 
+<listitem><simpara> the new min length
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssKeyDataHmacId" role="macro">
@@ -503,13 +503,13 @@ Sets the value of HMAC key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to HMAC key data.
+<listitem><simpara>               the pointer to HMAC key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key value.
+<listitem><simpara>                the pointer to key value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the key value size (in bytes).
+<listitem><simpara>            the key value size (in bytes).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

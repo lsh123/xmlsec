@@ -45,7 +45,7 @@
 <title role="details.title">Details</title>
 <refsect2 id="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS" role="macro">
 <title>XMLSEC_X509DATA_CERTIFICATE_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_CERTIFICATE_NODE">XMLSEC_X509DATA_CERTIFICATE_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CERTIFICATE_NODE			0x00000001
+<indexterm zone="XMLSEC-X509DATA-CERTIFICATE-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_CERTIFICATE_NODE">XMLSEC_X509DATA_CERTIFICATE_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CERTIFICATE_NODE                        0x00000001
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Certificate">&lt;dsig:X509Certificate/&gt;</ulink> node found or would be written back.</para>
@@ -53,7 +53,7 @@
 </para></refsect2>
 <refsect2 id="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS" role="macro">
 <title>XMLSEC_X509DATA_SUBJECTNAME_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_SUBJECTNAME_NODE">XMLSEC_X509DATA_SUBJECTNAME_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SUBJECTNAME_NODE			0x00000002
+<indexterm zone="XMLSEC-X509DATA-SUBJECTNAME-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_SUBJECTNAME_NODE">XMLSEC_X509DATA_SUBJECTNAME_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SUBJECTNAME_NODE                        0x00000002
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509SubjectName">&lt;dsig:X509SubjectName/&gt;</ulink> node found or would be written back.</para>
@@ -61,7 +61,7 @@
 </para></refsect2>
 <refsect2 id="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS" role="macro">
 <title>XMLSEC_X509DATA_ISSUERSERIAL_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_ISSUERSERIAL_NODE">XMLSEC_X509DATA_ISSUERSERIAL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE			0x00000004
+<indexterm zone="XMLSEC-X509DATA-ISSUERSERIAL-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_ISSUERSERIAL_NODE">XMLSEC_X509DATA_ISSUERSERIAL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_ISSUERSERIAL_NODE                       0x00000004
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509IssuerSerial">&lt;dsig:X509IssuerSerial/&gt;</ulink> node found or would be written back.</para>
@@ -69,7 +69,7 @@
 </para></refsect2>
 <refsect2 id="XMLSEC-X509DATA-SKI-NODE--CAPS" role="macro">
 <title>XMLSEC_X509DATA_SKI_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-SKI-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_SKI_NODE">XMLSEC_X509DATA_SKI_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SKI_NODE				0x00000008
+<indexterm zone="XMLSEC-X509DATA-SKI-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_SKI_NODE">XMLSEC_X509DATA_SKI_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_SKI_NODE                                0x00000008
 </programlisting>
 <para>
 &lt;dsig:/X509SKI&gt; node found or would be written back.</para>
@@ -77,7 +77,7 @@
 </para></refsect2>
 <refsect2 id="XMLSEC-X509DATA-CRL-NODE--CAPS" role="macro">
 <title>XMLSEC_X509DATA_CRL_NODE</title>
-<indexterm zone="XMLSEC-X509DATA-CRL-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_CRL_NODE">XMLSEC_X509DATA_CRL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CRL_NODE				0x00000010
+<indexterm zone="XMLSEC-X509DATA-CRL-NODE--CAPS"><primary sortas="XMLSEC_X509DATA_CRL_NODE">XMLSEC_X509DATA_CRL_NODE</primary></indexterm><programlisting>#define XMLSEC_X509DATA_CRL_NODE                                0x00000010
 </programlisting>
 <para>
 <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509CRL">&lt;dsig:X509CRL/&gt;</ulink> node found or would be written back.</para>
@@ -102,13 +102,13 @@ a bits mask.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>deleteChildren</parameter>&#160;:</term>
-<listitem><simpara>	the flag that indicates whether to remove node children after reading.
+<listitem><simpara>     the flag that indicates whether to remove node children after reading.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
+<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the bit mask representing the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-X509Data">&lt;dsig:X509Data/&gt;</ulink> node content
 or a negative value if an error occurs.

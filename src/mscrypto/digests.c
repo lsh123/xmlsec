@@ -523,7 +523,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha256Klass = {
  *
  * SHA-256 digest transform klass.
  *
- * Returns pointer to SHA-256 digest transform klass.
+ * Returns: pointer to SHA-256 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha256GetKlass(void) {
@@ -567,7 +567,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha384Klass = {
  *
  * SHA-384 digest transform klass.
  *
- * Returns pointer to SHA-384 digest transform klass.
+ * Returns: pointer to SHA-384 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha384GetKlass(void) {
@@ -611,7 +611,7 @@ static xmlSecTransformKlass xmlSecMSCryptoSha512Klass = {
  *
  * SHA-512 digest transform klass.
  *
- * Returns pointer to SHA-512 digest transform klass.
+ * Returns: pointer to SHA-512 digest transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformSha512GetKlass(void) {

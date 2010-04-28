@@ -28,10 +28,6 @@
                                                          const <link linkend="char">char</link> *errorSubject,
                                                          <link linkend="int">int</link> reason,
                                                          const <link linkend="char">char</link> *msg);
-<link linkend="BYTE--CAPS">BYTE</link>*               <link linkend="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</link>         (<link linkend="DWORD--CAPS">DWORD</link> dwCertEncodingType,
-                                                         <link linkend="LPCTSTR--CAPS">LPCTSTR</link> pszX500,
-                                                         <link linkend="DWORD--CAPS">DWORD</link> dwStrType,
-                                                         <link linkend="DWORD--CAPS">DWORD</link> *len);
 #define             <link linkend="xmlSecMSCryptoKeyDataDsaId">xmlSecMSCryptoKeyDataDsaId</link>
 <link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataDsaGetKlass">xmlSecMSCryptoKeyDataDsaGetKlass</link>    (void);
 #define             <link linkend="xmlSecMSCryptoTransformDsaSha1Id">xmlSecMSCryptoTransformDsaSha1Id</link>
@@ -134,7 +130,7 @@ Adds MSCrypto specific key data stores in keys manager.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -149,10 +145,10 @@ Generates <parameter>size</parameter> random bytes and puts result in <parameter
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara>		the destination buffer.
+<listitem><simpara>             the destination buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara>		the numer of bytes to generate.
+<listitem><simpara>               the numer of bytes to generate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -171,50 +167,25 @@ The default errors reporting callback function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>file</parameter>&#160;:</term>
-<listitem><simpara>		the error location file name (__FILE__ macro).
+<listitem><simpara>               the error location file name (__FILE__ macro).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>line</parameter>&#160;:</term>
-<listitem><simpara>		the error location line number (__LINE__ macro).
+<listitem><simpara>               the error location line number (__LINE__ macro).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>func</parameter>&#160;:</term>
-<listitem><simpara>		the error location function name (__FUNCTION__ macro).
+<listitem><simpara>               the error location function name (__FUNCTION__ macro).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>errorObject</parameter>&#160;:</term>
-<listitem><simpara>	the error specific error object 
+<listitem><simpara>        the error specific error object
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>errorSubject</parameter>&#160;:</term>
-<listitem><simpara>	the error specific error subject.
+<listitem><simpara>       the error specific error subject.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>reason</parameter>&#160;:</term>
-<listitem><simpara>		the error code.
+<listitem><simpara>             the error code.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>msg</parameter>&#160;:</term>
-<listitem><simpara>		the additional error message.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecMSCryptoCertStrToName" role="function">
-<title>xmlSecMSCryptoCertStrToName ()</title>
-<indexterm zone="xmlSecMSCryptoCertStrToName"><primary sortas="xmlSecMSCryptoCertStrToName">xmlSecMSCryptoCertStrToName</primary></indexterm><programlisting><link linkend="BYTE--CAPS">BYTE</link>*               xmlSecMSCryptoCertStrToName         (<link linkend="DWORD--CAPS">DWORD</link> dwCertEncodingType,
-                                                         <link linkend="LPCTSTR--CAPS">LPCTSTR</link> pszX500,
-                                                         <link linkend="DWORD--CAPS">DWORD</link> dwStrType,
-                                                         <link linkend="DWORD--CAPS">DWORD</link> *len);</programlisting>
-<para>
-Converts input string to name by calling <parameter>CertStrToName</parameter> function.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>dwCertEncodingType</parameter>&#160;:</term>
-<listitem><simpara>		the encoding used.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>pszX500</parameter>&#160;:</term>
-<listitem><simpara>			the string to convert.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>dwStrType</parameter>&#160;:</term>
-<listitem><simpara>			the string type.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>			the result len.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a pointer to newly allocated string or NULL if an error occurs.
+<listitem><simpara>                the additional error message.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataDsaId" role="macro">
@@ -403,13 +374,13 @@ Sets the value of AES key data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to AES key data.
+<listitem><simpara>               the pointer to AES key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key value.
+<listitem><simpara>                the pointer to key value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bufSize</parameter>&#160;:</term>
-<listitem><simpara>		the key value size (in bytes).
+<listitem><simpara>            the key value size (in bytes).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

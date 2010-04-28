@@ -49,7 +49,7 @@ Utility functions.
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecPtr" role="typedef">
 <title>xmlSecPtr</title>
-<indexterm zone="xmlSecPtr"><primary sortas="xmlSecPtr">xmlSecPtr</primary></indexterm><programlisting>typedef void*					xmlSecPtr;
+<indexterm zone="xmlSecPtr"><primary sortas="xmlSecPtr">xmlSecPtr</primary></indexterm><programlisting>typedef void*                                   xmlSecPtr;
 </programlisting>
 <para>
 Void pointer.</para>
@@ -65,7 +65,7 @@ but it will break ABI (todo).</para>
 </para></refsect2>
 <refsect2 id="xmlSecByte" role="macro">
 <title>xmlSecByte</title>
-<indexterm zone="xmlSecByte"><primary sortas="xmlSecByte">xmlSecByte</primary></indexterm><programlisting>#define xmlSecByte				unsigned char
+<indexterm zone="xmlSecByte"><primary sortas="xmlSecByte">xmlSecByte</primary></indexterm><programlisting>#define xmlSecByte                              unsigned char
 </programlisting>
 <para>
 One byte. Should be typedef instead of define
@@ -97,7 +97,7 @@ Clean ups the XML Security Library.</para>
 <title>xmlSecCheckVersionExact()</title>
 <indexterm zone="xmlSecCheckVersionExact"><primary sortas="xmlSecCheckVersionExact">xmlSecCheckVersionExact</primary></indexterm><programlisting>#define             xmlSecCheckVersionExact()</programlisting>
 <para>
-Macro. Returns 1 if the loaded xmlsec library version exactly matches 
+Macro. Returns 1 if the loaded xmlsec library version exactly matches
 the one used to compile the caller, 0 if it does not or a negative
 value if an error occurs.</para>
 <para>
@@ -124,12 +124,12 @@ The xmlsec library version mode.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecCheckVersionExactMatch" role="constant">
 <term><literal>xmlSecCheckVersionExactMatch</literal></term>
-<listitem><simpara>	the version should match exactly.
+<listitem><simpara>       the version should match exactly.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecCheckVersionABICompatible" role="constant">
 <term><literal>xmlSecCheckVersionABICompatible</literal></term>
-<listitem><simpara>	the version should be ABI compatible.
+<listitem><simpara>    the version should be ABI compatible.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -144,16 +144,16 @@ Checks if the loaded version of xmlsec library could be used.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>major</parameter>&#160;:</term>
-<listitem><simpara>		the major version number.
+<listitem><simpara>              the major version number.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>minor</parameter>&#160;:</term>
-<listitem><simpara>		the minor version number.
+<listitem><simpara>              the minor version number.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>subminor</parameter>&#160;:</term>
-<listitem><simpara>		the subminor version number.
+<listitem><simpara>           the subminor version number.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mode</parameter>&#160;:</term>
-<listitem><simpara>		the version check mode.
+<listitem><simpara>               the version check mode.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the loaded xmlsec library version is OK to use
 0 if it is not or a negative value if an error occurs.

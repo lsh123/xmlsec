@@ -75,12 +75,12 @@ Generic list structure implementation.
 <refsect2 id="xmlSecPtrList" role="struct">
 <title>struct xmlSecPtrList</title>
 <indexterm zone="xmlSecPtrList"><primary sortas="xmlSecPtrList">xmlSecPtrList</primary></indexterm><programlisting>struct xmlSecPtrList {
-    xmlSecPtrListId		id;        
+    xmlSecPtrListId             id;
 
-    xmlSecPtr*			data;
-    xmlSecSize			use;
-    xmlSecSize			max;
-    xmlSecAllocMode 		allocMode;
+    xmlSecPtr*                  data;
+    xmlSecSize                  use;
+    xmlSecSize                  max;
+    xmlSecAllocMode             allocMode;
 };
 </programlisting>
 <para>
@@ -89,27 +89,27 @@ The pointers list.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecPtrListId">xmlSecPtrListId</link>&#160;<structfield>id</structfield>;</term>
-<listitem><simpara>				the list items description.
+<listitem><simpara>                         the list items description.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSec">xmlSecPtr</link>&#160;*<structfield>data</structfield>;</term>
-<listitem><simpara>			the list data.
+<listitem><simpara>                       the list data.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>use</structfield>;</term>
-<listitem><simpara>			the current list size.
+<listitem><simpara>                        the current list size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>max</structfield>;</term>
-<listitem><simpara>			the max (allocated) list size.
+<listitem><simpara>                        the max (allocated) list size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecAllocMode">xmlSecAllocMode</link>&#160;<structfield>allocMode</structfield>;</term>
-<listitem><simpara>			the memory allocation mode.
+<listitem><simpara>                  the memory allocation mode.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -122,10 +122,10 @@ Sets new default allocation mode and minimal initial list size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>defAllocMode</parameter>&#160;:</term>
-<listitem><simpara>	the new default memory allocation mode.
+<listitem><simpara>       the new default memory allocation mode.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>defInitialSize</parameter>&#160;:</term>
-<listitem><simpara>	the new default minimal initial size.
+<listitem><simpara>     the new default minimal initial size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListInitialize" role="function">
@@ -133,15 +133,15 @@ Sets new default allocation mode and minimal initial list size.</para>
 <indexterm zone="xmlSecPtrListInitialize"><primary sortas="xmlSecPtrListInitialize">xmlSecPtrListInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecPtrListInitialize             (<link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> list,
                                                          <link linkend="xmlSecPtrListId">xmlSecPtrListId</link> id);</programlisting>
 <para>
-Initializes the list of given klass. Caller is responsible 
+Initializes the list of given klass. Caller is responsible
 for cleaning up by calling <link linkend="xmlSecPtrListFinalize"><type>xmlSecPtrListFinalize</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the list klass.
+<listitem><simpara>                 the list klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -155,7 +155,7 @@ function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListCreate" role="function">
@@ -167,7 +167,7 @@ by calling <link linkend="xmlSecPtrListDestroy"><type>xmlSecPtrListDestroy</type
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the list klass.
+<listitem><simpara>                 the list klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated list or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -180,7 +180,7 @@ Destroys <parameter>list</parameter> created with <link linkend="xmlSecPtrListCr
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListEmpty" role="function">
@@ -191,7 +191,7 @@ Remove all items from <parameter>list</parameter> (if any).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListCopy" role="function">
@@ -200,15 +200,15 @@ Remove all items from <parameter>list</parameter> (if any).</para>
                                                          <link linkend="xmlSecPtrList">xmlSecPtrListPtr</link> src);</programlisting>
 <para>
 Copies <parameter>src</parameter> list items to <parameter>dst</parameter> list using <link linkend="duplicateItem"><type>duplicateItem</type></link> method
-of the list klass. If <link linkend="duplicateItem"><type>duplicateItem</type></link> method is NULL then 
+of the list klass. If <link linkend="duplicateItem"><type>duplicateItem</type></link> method is NULL then
 we jsut copy pointers to items.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to destination list.
+<listitem><simpara>                the pointer to destination list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to source list.
+<listitem><simpara>                the pointer to source list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -221,7 +221,7 @@ Creates a new copy of <parameter>list</parameter> and all its items.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated list or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -234,7 +234,7 @@ Gets list size.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of itmes in <parameter>list</parameter>.
 </simpara></listitem></varlistentry>
@@ -248,10 +248,10 @@ Gets item from the list.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>		the item position.
+<listitem><simpara>                the item position.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the list item at position <parameter>pos</parameter> or NULL if <parameter>pos</parameter> is greater
 than the number of items in the list or an error occurs.
@@ -266,10 +266,10 @@ Adds <parameter>item</parameter> to the end of the <parameter>list</parameter>.<
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>item</parameter>&#160;:</term>
-<listitem><simpara>		the item.
+<listitem><simpara>               the item.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -285,13 +285,13 @@ is destroyed.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>item</parameter>&#160;:</term>
-<listitem><simpara>		the item.
+<listitem><simpara>               the item.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>		the pos.
+<listitem><simpara>                the pos.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -305,10 +305,10 @@ Destroys list item at the position <parameter>pos</parameter> and sets it value 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>		the position.
+<listitem><simpara>                the position.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -322,10 +322,10 @@ Prints debug information about <parameter>list</parameter> to the <parameter>out
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListDebugXmlDump" role="function">
@@ -337,10 +337,10 @@ Prints debug information about <parameter>list</parameter> to the <parameter>out
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListGetName" role="macro">
@@ -351,7 +351,7 @@ Macro. Returns lists's name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara> 		the ponter to list.
+<listitem><simpara>               the ponter to list.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListIsValid" role="macro">
@@ -363,7 +363,7 @@ or 0 otherwise.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListCheckId" role="macro">
@@ -374,15 +374,15 @@ Macro. Returns 1 if <parameter>list</parameter> is valid and <parameter>list</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to list.
+<listitem><simpara>               the pointer to list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataId</parameter>&#160;:</term>
-<listitem><simpara> 		the list Id.
+<listitem><simpara>             the list Id.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListIdUnknown" role="macro">
 <title>xmlSecPtrListIdUnknown</title>
-<indexterm zone="xmlSecPtrListIdUnknown"><primary sortas="xmlSecPtrListIdUnknown">xmlSecPtrListIdUnknown</primary></indexterm><programlisting>#define xmlSecPtrListIdUnknown 			NULL
+<indexterm zone="xmlSecPtrListIdUnknown"><primary sortas="xmlSecPtrListIdUnknown">xmlSecPtrListIdUnknown</primary></indexterm><programlisting>#define xmlSecPtrListIdUnknown                  NULL
 </programlisting>
 <para>
 The "unknown" id.</para>
@@ -396,7 +396,7 @@ Duplicates item <parameter>ptr</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ptr</parameter>&#160;:</term>
-<listitem><simpara>		the poinetr to list item.
+<listitem><simpara>                the poinetr to list item.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to new item copy or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -409,7 +409,7 @@ Destroys list item <parameter>ptr</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ptr</parameter>&#160;:</term>
-<listitem><simpara>		the poinetr to list item.
+<listitem><simpara>                the poinetr to list item.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrDebugDumpItemMethod" role="function">
@@ -421,20 +421,20 @@ Prints debug information about <parameter>item</parameter> to <parameter>output<
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ptr</parameter>&#160;:</term>
-<listitem><simpara>		the poinetr to list item.
+<listitem><simpara>                the poinetr to list item.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the output FILE.
+<listitem><simpara>             the output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListKlass" role="struct">
 <title>struct xmlSecPtrListKlass</title>
 <indexterm zone="xmlSecPtrListKlass"><primary sortas="xmlSecPtrListKlass">xmlSecPtrListKlass</primary></indexterm><programlisting>struct xmlSecPtrListKlass {
-    const xmlChar*			name;
-    xmlSecPtrDuplicateItemMethod	duplicateItem;
-    xmlSecPtrDestroyItemMethod		destroyItem;
-    xmlSecPtrDebugDumpItemMethod	debugDumpItem;
-    xmlSecPtrDebugDumpItemMethod	debugXmlDumpItem;
+    const xmlChar*                      name;
+    xmlSecPtrDuplicateItemMethod        duplicateItem;
+    xmlSecPtrDestroyItemMethod          destroyItem;
+    xmlSecPtrDebugDumpItemMethod        debugDumpItem;
+    xmlSecPtrDebugDumpItemMethod        debugXmlDumpItem;
 };
 </programlisting>
 <para>
@@ -443,27 +443,27 @@ List klass.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>name</structfield>;</term>
-<listitem><simpara>		the list klass name.
+<listitem><simpara>               the list klass name.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrDuplicateItemMethod">xmlSecPtrDuplicateItemMethod</link>&#160;<structfield>duplicateItem</structfield>;</term>
-<listitem><simpara>	the duplciate item method.
+<listitem><simpara>      the duplciate item method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrDestroyItemMethod">xmlSecPtrDestroyItemMethod</link>&#160;<structfield>destroyItem</structfield>;</term>
-<listitem><simpara>	the destroy item method.
+<listitem><simpara>        the destroy item method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link>&#160;<structfield>debugDumpItem</structfield>;</term>
-<listitem><simpara>	the debug dump item method.
+<listitem><simpara>      the debug dump item method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrDebugDumpItemMethod">xmlSecPtrDebugDumpItemMethod</link>&#160;<structfield>debugXmlDumpItem</structfield>;</term>
-<listitem><simpara>	the debug dump item in xml format method.
+<listitem><simpara>   the debug dump item in xml format method.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -475,7 +475,7 @@ Macro. Returns the list klass name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>klass</parameter>&#160;:</term>
-<listitem><simpara>		the list klass.
+<listitem><simpara>              the list klass.
 2
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>

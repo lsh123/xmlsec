@@ -46,7 +46,7 @@ Keys store implementation for MS Crypto.
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecMSCryptoKeysStoreId" role="macro">
 <title>xmlSecMSCryptoKeysStoreId</title>
-<indexterm zone="xmlSecMSCryptoKeysStoreId"><primary sortas="xmlSecMSCryptoKeysStoreId">xmlSecMSCryptoKeysStoreId</primary></indexterm><programlisting>#define xmlSecMSCryptoKeysStoreId	xmlSecMSCryptoKeysStoreGetKlass()
+<indexterm zone="xmlSecMSCryptoKeysStoreId"><primary sortas="xmlSecMSCryptoKeysStoreId">xmlSecMSCryptoKeysStoreId</primary></indexterm><programlisting>#define xmlSecMSCryptoKeysStoreId       xmlSecMSCryptoKeysStoreGetKlass()
 </programlisting>
 <para>
 A MSCrypto keys store klass id.</para>
@@ -71,10 +71,10 @@ Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to MSCrypto keys store.
+<listitem><simpara>              the pointer to MSCrypto keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -89,13 +89,13 @@ Reads keys from an XML file.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to MSCrypto keys store.
+<listitem><simpara>              the pointer to MSCrypto keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the filename.
+<listitem><simpara>                the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to associated keys manager. 
+<listitem><simpara>           the pointer to associated keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -110,13 +110,13 @@ Writes keys from <parameter>store</parameter> to an XML file.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to MSCrypto keys store.
+<listitem><simpara>              the pointer to MSCrypto keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the filename.
+<listitem><simpara>           the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the saved keys type (public, private, ...).
+<listitem><simpara>               the saved keys type (public, private, ...).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

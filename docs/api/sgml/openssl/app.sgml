@@ -113,12 +113,12 @@ Application functions implementation for OpenSSL.
 <indexterm zone="xmlSecOpenSSLAppInit"><primary sortas="xmlSecOpenSSLAppInit">xmlSecOpenSSLAppInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecOpenSSLAppInit                (const <link linkend="char">char</link> *config);</programlisting>
 <para>
 General crypto engine initialization. This function is used
-by XMLSec command line utility and called before 
+by XMLSec command line utility and called before
 <parameter>xmlSecInit</parameter> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>config</parameter>&#160;:</term>
-<listitem><simpara>		the path to certs.
+<listitem><simpara>             the path to certs.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -128,7 +128,7 @@ by XMLSec command line utility and called before
 <indexterm zone="xmlSecOpenSSLAppShutdown"><primary sortas="xmlSecOpenSSLAppShutdown">xmlSecOpenSSLAppShutdown</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecOpenSSLAppShutdown            (void);</programlisting>
 <para>
 General crypto engine shutdown. This function is used
-by XMLSec command line utility and called after 
+by XMLSec command line utility and called after
 <parameter>xmlSecShutdown</parameter> function.</para>
 <para>
 </para><variablelist role="params">
@@ -144,7 +144,7 @@ and a default OpenSSL crypto key data stores.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -160,10 +160,10 @@ function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -173,15 +173,15 @@ function.</para>
 <indexterm zone="xmlSecOpenSSLAppDefaultKeysMngrLoad"><primary sortas="xmlSecOpenSSLAppDefaultKeysMngrLoad">xmlSecOpenSSLAppDefaultKeysMngrLoad</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecOpenSSLAppDefaultKeysMngrLoad (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
                                                          const <link linkend="char">char</link> *uri);</programlisting>
 <para>
-Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created 
+Loads XML keys file from <parameter>uri</parameter> to the keys manager <parameter>mngr</parameter> created
 with <link linkend="xmlSecOpenSSLAppDefaultKeysMngrInit"><type>xmlSecOpenSSLAppDefaultKeysMngrInit</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the uri.
+<listitem><simpara>                the uri.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -196,13 +196,13 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys manager.
+<listitem><simpara>               the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the destination filename.
+<listitem><simpara>           the destination filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the type of keys to save (public/private/symmetric).
+<listitem><simpara>               the type of keys to save (public/private/symmetric).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -219,17 +219,17 @@ untrusted certs in <parameter>store</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the keys manager.
+<listitem><simpara>               the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara> 		the certificate file.
+<listitem><simpara>           the certificate file.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara> 		the flag that indicates is the certificate in <parameter>filename</parameter>
-   			trusted or not.
+<listitem><simpara>               the flag that indicates is the certificate in <parameter>filename</parameter>
+                     trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -248,19 +248,19 @@ untrusted certs in <parameter>store</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the keys manager.
+<listitem><simpara>               the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data.
+<listitem><simpara>               the certificate binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data size.
+<listitem><simpara>           the certificate binary data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara> 		the flag that indicates is the certificate trusted or not.
+<listitem><simpara>               the flag that indicates is the certificate trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -277,16 +277,16 @@ untrusted certs in <parameter>store</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the keys manager.
+<listitem><simpara>               the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bio</parameter>&#160;:</term>
-<listitem><simpara> 		the certificate BIO.
+<listitem><simpara>                the certificate BIO.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara> 		the flag that indicates is the certificate trusted or not.
+<listitem><simpara>               the flag that indicates is the certificate trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -301,10 +301,10 @@ Reads cert from <parameter>path</parameter> and adds to the list of trusted cert
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara> 		the keys manager.
+<listitem><simpara>               the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>path</parameter>&#160;:</term>
-<listitem><simpara>		the path to trusted certificates.
+<listitem><simpara>               the path to trusted certificates.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -340,19 +340,19 @@ Reads key from the a file.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the key filename.
+<listitem><simpara>           the key filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the key file format.
+<listitem><simpara>             the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the key file password.
+<listitem><simpara>                the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the key password callback.
+<listitem><simpara>        the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -370,22 +370,22 @@ Reads key from the memory buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the binary key data.
+<listitem><simpara>               the binary key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the size of binary key.
+<listitem><simpara>           the size of binary key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the key file format.
+<listitem><simpara>             the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the key file password.
+<listitem><simpara>                the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the key password callback.
+<listitem><simpara>        the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -402,19 +402,19 @@ Reads key from the an OpenSSL BIO object.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bio</parameter>&#160;:</term>
-<listitem><simpara>		the key BIO.
+<listitem><simpara>                the key BIO.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the key file format.
+<listitem><simpara>             the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the key file password.
+<listitem><simpara>                the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the key password callback.
+<listitem><simpara>        the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -432,16 +432,16 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 key filename.
+<listitem><simpara>           the PKCS12 key filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 file password.
+<listitem><simpara>                the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the password callback.
+<listitem><simpara>        the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -460,19 +460,19 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 binary data.
+<listitem><simpara>               the PKCS12 binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 binary data size.
+<listitem><simpara>           the PKCS12 binary data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 file password.
+<listitem><simpara>                the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the password callback.
+<listitem><simpara>        the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -490,16 +490,16 @@ in format=xmlSecKeyDataFormatPkcs12.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bio</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 key bio.
+<listitem><simpara>                the PKCS12 key bio.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>		the PKCS12 file password.
+<listitem><simpara>                the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>	the password callback.
+<listitem><simpara>        the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>	the user context for password callback.
+<listitem><simpara>     the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -514,13 +514,13 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key.<
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>		the certificate filename.
+<listitem><simpara>           the certificate filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -536,16 +536,16 @@ Reads the certificate from memory buffer and adds it to key.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data.
+<listitem><simpara>               the certificate binary data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the certificate binary data size.
+<listitem><simpara>           the certificate binary data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -560,13 +560,13 @@ Reads the certificate from memory buffer and adds it to key.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to key.
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>bio</parameter>&#160;:</term>
-<listitem><simpara>		the certificate bio.
+<listitem><simpara>                the certificate bio.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the certificate file format.
+<listitem><simpara>             the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -580,10 +580,10 @@ Loads public key from cert.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>bio</parameter>&#160;:</term>
-<listitem><simpara>		the BIO.
+<listitem><simpara>                the BIO.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>		the cert format.
+<listitem><simpara>             the cert format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to key or NULL if an error occurs.
 </simpara></listitem></varlistentry>

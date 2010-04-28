@@ -612,7 +612,7 @@ xmlSecMSCryptoKeyDataGetCert(xmlSecKeyDataPtr data) {
  *
  * Gets crypto provider handle
  *
- * Returns the crypto provider handler or 0 if there is an error.
+ * Returns: the crypto provider handler or 0 if there is an error.
  */
 HCRYPTPROV
 xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
@@ -633,7 +633,7 @@ xmlSecMSCryptoKeyDataGetMSCryptoProvider(xmlSecKeyDataPtr data) {
  *
  * Gets key spec info.
  *
- * Returns the key spec info from key data
+ * Returns: the key spec info from key data
  */
 DWORD
 xmlSecMSCryptoKeyDataGetMSCryptoKeySpec(xmlSecKeyDataPtr data) {

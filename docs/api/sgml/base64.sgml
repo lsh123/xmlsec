@@ -60,7 +60,7 @@ Base64 encoding/decoding functions.
 <title role="details.title">Details</title>
 <refsect2 id="XMLSEC-BASE64-LINESIZE--CAPS" role="macro">
 <title>XMLSEC_BASE64_LINESIZE</title>
-<indexterm zone="XMLSEC-BASE64-LINESIZE--CAPS"><primary sortas="XMLSEC_BASE64_LINESIZE">XMLSEC_BASE64_LINESIZE</primary></indexterm><programlisting>#define XMLSEC_BASE64_LINESIZE				64
+<indexterm zone="XMLSEC-BASE64-LINESIZE--CAPS"><primary sortas="XMLSEC_BASE64_LINESIZE">XMLSEC_BASE64_LINESIZE</primary></indexterm><programlisting>#define XMLSEC_BASE64_LINESIZE                          64
 </programlisting>
 <para>
 The default maximum base64 encoded line size.</para>
@@ -96,10 +96,10 @@ Allocates and initializes new base64 context.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>encode</parameter>&#160;:</term>
-<listitem><simpara>		the encode/decode flag (1 - encode, 0 - decode) 
+<listitem><simpara>             the encode/decode flag (1 - encode, 0 - decode)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara> 		the max line length.
+<listitem><simpara>            the max line length.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a pointer to newly created <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
 or NULL if an error occurs.
@@ -113,7 +113,7 @@ Destroys base64 context.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure.
+<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxInitialize" role="function">
@@ -126,13 +126,13 @@ Initializes new base64 context.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
+<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>encode</parameter>&#160;:</term>
-<listitem><simpara>		the encode/decode flag (1 - encode, 0 - decode) 
+<listitem><simpara>             the encode/decode flag (1 - encode, 0 - decode)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara> 		the max line length.
+<listitem><simpara>            the max line length.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -145,7 +145,7 @@ Frees all the resources allocated by <parameter>ctx</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
+<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxUpdate" role="function">
@@ -160,21 +160,21 @@ Encodes or decodes the next piece of data from input buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
+<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>in</parameter>&#160;:</term>
-<listitem><simpara>			the input buffer
+<listitem><simpara>                 the input buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>inSize</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer size
+<listitem><simpara>             the input buffer size
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>out</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer
+<listitem><simpara>                the output buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>outSize</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer size
+<listitem><simpara>            the output buffer size
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to output buffer or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to output buffer or
 -1 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -189,15 +189,15 @@ and finalizes the result.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
+<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>out</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer
+<listitem><simpara>                the output buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>outSize</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer size
+<listitem><simpara>            the output buffer size
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to output buffer or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to output buffer or
 -1 if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -213,16 +213,16 @@ The caller is responsible for freeing returned buffer using
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer.
+<listitem><simpara>                the input buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer size.
+<listitem><simpara>                the input buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara> 		the output max line length (if 0 then no line breaks
-         		would be inserted)
+<listitem><simpara>            the output max line length (if 0 then no line breaks
+                     would be inserted)
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> newly allocated string with base64 encoded data 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> newly allocated string with base64 encoded data
 or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -237,16 +237,16 @@ the output buffer.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara> 		the input buffer with base64 encoded string
+<listitem><simpara>                the input buffer with base64 encoded string
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer
+<listitem><simpara>                the output buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara> 		the output buffer size
+<listitem><simpara>                the output buffer size
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to the output buffer or 
-a negative value if an error occurs 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to the output buffer or
+a negative value if an error occurs
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

@@ -187,7 +187,7 @@ Macro. Returns node's name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to node.
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGetNodeNsHref" role="function">
@@ -198,7 +198,7 @@ Get's node's namespace href.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to node.
+<listitem><simpara>                the pointer to node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> node's namespace href.
 </simpara></listitem></varlistentry>
@@ -213,13 +213,13 @@ Checks that the node has a given name and a given namespace href.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the name,
+<listitem><simpara>               the name,
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the namespace href.
+<listitem><simpara>                 the namespace href.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if the node matches or 0 otherwise.
 </simpara></listitem></varlistentry>
@@ -232,7 +232,7 @@ Seraches for the next element node.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to next element node or NULL if it is not found.
 </simpara></listitem></varlistentry>
@@ -243,20 +243,20 @@ Seraches for the next element node.</para>
                                                          const <link linkend="xmlChar">xmlChar</link> *name,
                                                          const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Searches a direct child of the <parameter>parent</parameter> node having given name and 
+Searches a direct child of the <parameter>parent</parameter> node having given name and
 namespace href.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to XML node.
+<listitem><simpara>             the pointer to XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the name.
+<listitem><simpara>               the name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the namespace href (may be NULL).
+<listitem><simpara>                 the namespace href (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
 node is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -266,20 +266,20 @@ node is not found.
                                                          const <link linkend="xmlChar">xmlChar</link> *name,
                                                          const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Searches the ancestors axis of the <parameter>cur</parameter> node for a node having given name 
+Searches the ancestors axis of the <parameter>cur</parameter> node for a node having given name
 and namespace href.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the name.
+<listitem><simpara>               the name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the namespace href (may be NULL).
+<listitem><simpara>                 the namespace href (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
 node is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -289,20 +289,20 @@ node is not found.
                                                          const <link linkend="xmlChar">xmlChar</link> *name,
                                                          const <link linkend="xmlChar">xmlChar</link> *ns);</programlisting>
 <para>
-Searches all children of the <parameter>parent</parameter> node having given name and 
+Searches all children of the <parameter>parent</parameter> node having given name and
 namespace href.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to XML node.
+<listitem><simpara>             the pointer to XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the name.
+<listitem><simpara>               the name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the namespace href (may be NULL).
+<listitem><simpara>                 the namespace href (may be NULL).
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the found node or NULL if an error occurs or
 node is not found.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
@@ -316,13 +316,13 @@ Adds a child to the node <parameter>parent</parameter> with given <parameter>nam
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>             the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the new node name.
+<listitem><simpara>               the new node name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the new node namespace.
+<listitem><simpara>                 the new node namespace.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -336,10 +336,10 @@ Adds <parameter>child</parameter> node to the <parameter>parent</parameter> node
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>parent</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>             the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>child</parameter>&#160;:</term>
-<listitem><simpara> 		the new node.
+<listitem><simpara>              the new node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -354,13 +354,13 @@ Adds next sibling to the node <parameter>node</parameter> with given <parameter>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the new node name.
+<listitem><simpara>               the new node name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the new node namespace.
+<listitem><simpara>                 the new node namespace.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -375,13 +375,13 @@ Adds prev sibling to the node <parameter>node</parameter> with given <parameter>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>               the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the new node name.
+<listitem><simpara>               the new node name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ns</parameter>&#160;:</term>
-<listitem><simpara> 		the new node namespace.
+<listitem><simpara>                 the new node namespace.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the new node or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -395,10 +395,10 @@ Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the current node.
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara> 		the new node.
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -413,13 +413,13 @@ Swaps the <parameter>node</parameter> and <parameter>newNode</parameter> in the 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the current node.
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara> 		the new node.
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>replaced</parameter>&#160;:</term>
-<listitem><simpara>   	the replaced node, or release it if NULL is given
+<listitem><simpara>           the replaced node, or release it if NULL is given
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -433,10 +433,10 @@ Swaps the content of <parameter>node</parameter> and <parameter>newNode</paramet
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the current node.
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara> 		the new node.
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -451,13 +451,13 @@ Swaps the content of <parameter>node</parameter> and <parameter>newNode</paramet
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the current node.
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>newNode</parameter>&#160;:</term>
-<listitem><simpara> 		the new node.
+<listitem><simpara>            the new node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>replaced</parameter>&#160;:</term>
-<listitem><simpara>   	the replaced nodes, or release them if NULL is given
+<listitem><simpara>           the replaced nodes, or release them if NULL is given
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -472,13 +472,13 @@ Swaps the <parameter>node</parameter> and the parsed XML data from the <paramete
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the current node.
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara> 		the XML data.
+<listitem><simpara>             the XML data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the XML data size.
+<listitem><simpara>               the XML data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -494,16 +494,16 @@ Swaps the <parameter>node</parameter> and the parsed XML data from the <paramete
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the current node.
+<listitem><simpara>               the current node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara> 		the XML data.
+<listitem><simpara>             the XML data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the XML data size.
+<listitem><simpara>               the XML data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>replaced</parameter>&#160;:</term>
-<listitem><simpara> 		the replaced nodes, or release them if NULL is given
+<listitem><simpara>           the replaced nodes, or release them if NULL is given
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -518,10 +518,10 @@ as the node content.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		    the pointer to an XML node.
+<listitem><simpara>                   the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buffer</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to the node content.
+<listitem><simpara>             the pointer to the node content.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -532,18 +532,18 @@ as the node content.</para>
                                                          <link linkend="xmlNode">xmlNodePtr</link> cur,
                                                          const <link linkend="xmlChar">xmlChar</link> **ids);</programlisting>
 <para>
-Walks thru all children of the <parameter>cur</parameter> node and adds all attributes 
+Walks thru all children of the <parameter>cur</parameter> node and adds all attributes
 from the <parameter>ids</parameter> list to the <parameter>doc</parameter> document IDs attributes hash.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML document.
+<listitem><simpara>                the pointer to an XML document.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cur</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to an XML node.
+<listitem><simpara>                the pointer to an XML node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>ids</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to a NULL terminated list of ID attributes.
+<listitem><simpara>                the pointer to a NULL terminated list of ID attributes.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGenerateAndAddID" role="function">
@@ -558,16 +558,16 @@ and puts it in the attribute <parameter>attrName</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>			the node to ID attr to.
+<listitem><simpara>                       the node to ID attr to.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>attrName</parameter>&#160;:</term>
-<listitem><simpara>			the ID attr name.
+<listitem><simpara>                   the ID attr name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>prefix</parameter>&#160;:</term>
-<listitem><simpara>			the prefix to add to the generated ID (can be NULL).
+<listitem><simpara>                     the prefix to add to the generated ID (can be NULL).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>			the length of ID.
+<listitem><simpara>                        the length of ID.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -582,10 +582,10 @@ The caller is responsible for freeing returned string using <parameter>xmlFree</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>prefix</parameter>&#160;:</term>
-<listitem><simpara>			the prefix to add to the generated ID (can be NULL).
+<listitem><simpara>                     the prefix to add to the generated ID (can be NULL).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>			the length of ID.
+<listitem><simpara>                        the length of ID.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to generated ID string or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -599,10 +599,10 @@ Creates a new XML tree with one root node <parameter>rootNodeName</parameter>.</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>rootNodeName</parameter>&#160;:</term>
-<listitem><simpara>	the root node name.
+<listitem><simpara>       the root node name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>rootNodeNs</parameter>&#160;:</term>
-<listitem><simpara>		the root node namespace (otpional).
+<listitem><simpara>         the root node namespace (otpional).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the newly created tree or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -615,7 +615,7 @@ Checks whethere the <parameter>node</parameter> is empty (i.e. has only whitespa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the node to check
+<listitem><simpara>               the node to check
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>node</parameter> is empty, 0 otherwise or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -628,7 +628,7 @@ Checks whethere the <parameter>str</parameter> is empty (i.e. has only whitespac
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>		the string to check
+<listitem><simpara>                the string to check
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>str</parameter> is empty, 0 otherwise or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -644,13 +644,13 @@ Caller is responsible for freeing returned string with xmlFree.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the context node.
+<listitem><simpara>               the context node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>href</parameter>&#160;:</term>
-<listitem><simpara>		the QName href (can be NULL).
+<listitem><simpara>               the QName href (can be NULL).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>local</parameter>&#160;:</term>
-<listitem><simpara>		the QName local part.
+<listitem><simpara>              the QName local part.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> qname or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -680,7 +680,7 @@ Macro. Returns 1 if <parameter>c</parameter> is a hex digit or 0 other wise.</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>c</parameter>&#160;:</term>
-<listitem><simpara> 			the character.
+<listitem><simpara>                  the character.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecGetHex" role="macro">
@@ -691,7 +691,7 @@ Macro. Returns the hex value of the <parameter>c</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>c</parameter>&#160;:</term>
-<listitem><simpara> 			the character,
+<listitem><simpara>                  the character,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecQName2IntegerInfo" role="struct">
@@ -699,7 +699,7 @@ Macro. Returns the hex value of the <parameter>c</parameter>.</para>
 <indexterm zone="xmlSecQName2IntegerInfo"><primary sortas="xmlSecQName2IntegerInfo">xmlSecQName2IntegerInfo</primary></indexterm><programlisting>struct xmlSecQName2IntegerInfo {
     const xmlChar*      qnameHref;
     const xmlChar*      qnameLocalPart;
-    int       		intValue;
+    int                 intValue;
 };
 </programlisting>
 <para>
@@ -708,23 +708,23 @@ QName &lt;-&gt; Integer conversion definition.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>qnameHref</structfield>;</term>
-<listitem><simpara>		the QName href
+<listitem><simpara>          the QName href
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>qnameLocalPart</structfield>;</term>
-<listitem><simpara>	the QName local
+<listitem><simpara>     the QName local
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="int">int</link>&#160;<structfield>intValue</structfield>;</term>
-<listitem><simpara>		the integer value
+<listitem><simpara>           the integer value
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecQName2IntegerInfoConstPtr" role="typedef">
 <title>xmlSecQName2IntegerInfoConstPtr</title>
-<indexterm zone="xmlSecQName2IntegerInfoConstPtr"><primary sortas="xmlSecQName2IntegerInfoConstPtr">xmlSecQName2IntegerInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2IntegerInfo *		xmlSecQName2IntegerInfoConstPtr;
+<indexterm zone="xmlSecQName2IntegerInfoConstPtr"><primary sortas="xmlSecQName2IntegerInfoConstPtr">xmlSecQName2IntegerInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2IntegerInfo *         xmlSecQName2IntegerInfoConstPtr;
 </programlisting>
 <para>
 Pointer to constant QName &lt;-&gt; Integer conversion definition.</para>
@@ -829,7 +829,7 @@ is responsible for freeing returned string with <parameter>xmlFree</parameter>.<
                                                          <link linkend="xmlNode">xmlNodePtr</link> node,
                                                          <link linkend="int">int</link> *intValue);</programlisting>
 <para>
-Reads the content of <parameter>node</parameter> and converts it to an integer using mapping 
+Reads the content of <parameter>node</parameter> and converts it to an integer using mapping
 from <parameter>info</parameter>.</para>
 <para>
 </para><variablelist role="params">
@@ -889,7 +889,7 @@ according to <parameter>info</parameter>.</para>
 <listitem><simpara>               the qname&lt;-&gt;integer mapping information.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>               the element node. 
+<listitem><simpara>               the element node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>attrName</parameter>&#160;:</term>
 <listitem><simpara>           the attribute name.
@@ -907,7 +907,7 @@ according to <parameter>info</parameter>.</para>
                                                          const <link linkend="xmlChar">xmlChar</link> *attrName,
                                                          <link linkend="int">int</link> intValue);</programlisting>
 <para>
-Converts <parameter>intValue</parameter> to a qname and sets it to the value of 
+Converts <parameter>intValue</parameter> to a qname and sets it to the value of
 attribute <parameter>attrName</parameter> in <parameter>node</parameter>.</para>
 <para>
 </para><variablelist role="params">
@@ -943,7 +943,7 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter>.</para
 <listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the value name to print.
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
 <listitem><simpara>             the pointer to output FILE.
@@ -966,7 +966,7 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML
 <listitem><simpara>           the integer value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the value name to print.
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
 <listitem><simpara>             the pointer to output FILE.
@@ -974,7 +974,7 @@ Prints <parameter>intValue</parameter> into <parameter>output</parameter> in XML
 </variablelist></refsect2>
 <refsect2 id="xmlSecBitMask" role="typedef">
 <title>xmlSecBitMask</title>
-<indexterm zone="xmlSecBitMask"><primary sortas="xmlSecBitMask">xmlSecBitMask</primary></indexterm><programlisting>typedef unsigned int                            	xmlSecBitMask;
+<indexterm zone="xmlSecBitMask"><primary sortas="xmlSecBitMask">xmlSecBitMask</primary></indexterm><programlisting>typedef unsigned int                                    xmlSecBitMask;
 </programlisting>
 <para>
 Bitmask datatype.</para>
@@ -994,23 +994,23 @@ QName &lt;-&gt; Bitmask conversion definition.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>qnameHref</structfield>;</term>
-<listitem><simpara>		the QName href
+<listitem><simpara>          the QName href
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>qnameLocalPart</structfield>;</term>
-<listitem><simpara>	the QName local
+<listitem><simpara>     the QName local
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecBitMask">xmlSecBitMask</link>&#160;<structfield>mask</structfield>;</term>
-<listitem><simpara>		the bitmask value
+<listitem><simpara>               the bitmask value
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecQName2BitMaskInfoConstPtr" role="typedef">
 <title>xmlSecQName2BitMaskInfoConstPtr</title>
-<indexterm zone="xmlSecQName2BitMaskInfoConstPtr"><primary sortas="xmlSecQName2BitMaskInfoConstPtr">xmlSecQName2BitMaskInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2BitMaskInfo*		xmlSecQName2BitMaskInfoConstPtr;
+<indexterm zone="xmlSecQName2BitMaskInfoConstPtr"><primary sortas="xmlSecQName2BitMaskInfoConstPtr">xmlSecQName2BitMaskInfoConstPtr</primary></indexterm><programlisting>typedef const xmlSecQName2BitMaskInfo*          xmlSecQName2BitMaskInfoConstPtr;
 </programlisting>
 <para>
 Pointer to constant QName &lt;-&gt; Bitmask conversion definition.</para>
@@ -1086,8 +1086,8 @@ after all the &lt;<parameter>nodeNs</parameter>:<parameter>nodeName</parameter>&
 <listitem><simpara>             the mask nodes namespace.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>stopOnUnknown</parameter>&#160;:</term>
-<listitem><simpara>	if this flag is set then function exits if unknown
-		value was found.
+<listitem><simpara>      if this flag is set then function exits if unknown
+                     value was found.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mask</parameter>&#160;:</term>
 <listitem><simpara>               the pointer to result mask.
@@ -1190,7 +1190,7 @@ Prints debug information about <parameter>mask</parameter> to <parameter>output<
 <listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the value name to print.
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
 <listitem><simpara>             the pointer to output FILE.
@@ -1213,7 +1213,7 @@ Prints debug information about <parameter>mask</parameter> to <parameter>output<
 <listitem><simpara>               the bit mask.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara> 		the value name to print.
+<listitem><simpara>               the value name to print.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
 <listitem><simpara>             the pointer to output FILE.

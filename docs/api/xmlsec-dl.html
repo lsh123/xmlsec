@@ -117,7 +117,7 @@
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4338"><span style="white-space: nowrap"><code class="PARAMETER">functions</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the functions table.</p></td>
+<td align="LEFT" valign="TOP"><p>          the functions table.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4343"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -155,7 +155,7 @@ and should not be called by application directly.</p>
 <div class="REFSECT2">
 <a name="XMLSECCRYPTODLLOADLIBRARY"></a><h3>xmlSecCryptoDLLoadLibrary ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLLoadLibrary           (const <font>xmlChar</font> *crypto);</pre>
-<p>Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe, 
+<p>Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe,
 application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>,
 and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
 <p></p>
@@ -163,7 +163,7 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4392"><span style="white-space: nowrap"><code class="PARAMETER">crypto</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired crypto library name ("openssl", "nss", ...).</p></td>
+<td align="LEFT" valign="TOP"><p>             the desired crypto library name ("openssl", "nss", ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4397"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -176,15 +176,15 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 <a name="XMLSECCRYPTODLGETLIBRARYFUNCTIONS"></a><h3>xmlSecCryptoDLGetLibraryFunctions ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font>  xmlSecCryptoDLGetLibraryFunctions
                                                         (const <font>xmlChar</font> *crypto);</pre>
-<p>Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store 
-table. This function is NOT thread safe, application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, 
+<p>Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store
+table. This function is NOT thread safe, application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>,
 <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>, and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4418"><span style="white-space: nowrap"><code class="PARAMETER">crypto</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired crypto library name ("openssl", "nss", ...).</p></td>
+<td align="LEFT" valign="TOP"><p>             the desired crypto library name ("openssl", "nss", ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4423"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -197,7 +197,7 @@ table. This function is NOT thread safe, application MUST NOT call <a href="xmls
 <a name="XMLSECCRYPTODLUNLOADLIBRARY"></a><h3>xmlSecCryptoDLUnloadLibrary ()</h3>
 <pre class="PROGRAMLISTING"><font>int</font>                 xmlSecCryptoDLUnloadLibrary         (const <font>xmlChar</font> *crypto);</pre>
 <p>Unloads the xmlsec-&lt;crypto&gt; library. All pointers to this library
-functions tables became invalid. This function is NOT thread safe, 
+functions tables became invalid. This function is NOT thread safe,
 application MUST NOT call <a href="xmlsec-dl.html#XMLSECCRYPTODLLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLLoadLibrary</span></a>, <a href="xmlsec-dl.html#XMLSECCRYPTODLGETLIBRARYFUNCTIONS"><span class="TYPE">xmlSecCryptoDLGetLibraryFunctions</span></a>,
 and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlSecCryptoDLUnloadLibrary</span></a> functions from multiple threads.</p>
 <p></p>
@@ -205,7 +205,7 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4444"><span style="white-space: nowrap"><code class="PARAMETER">crypto</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired crypto library name ("openssl", "nss", ...).</p></td>
+<td align="LEFT" valign="TOP"><p>             the desired crypto library name ("openssl", "nss", ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4449"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -223,7 +223,7 @@ and <a href="xmlsec-dl.html#XMLSECCRYPTODLUNLOADLIBRARY"><span class="TYPE">xmlS
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4464"><span style="white-space: nowrap"><code class="PARAMETER">functions</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new table</p></td>
+<td align="LEFT" valign="TOP"><p>          the new table</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN4469"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>

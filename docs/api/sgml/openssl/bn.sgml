@@ -44,8 +44,8 @@ Big numbers helper functions.
 <indexterm zone="xmlSecOpenSSLNodeGetBNValue"><primary sortas="xmlSecOpenSSLNodeGetBNValue">xmlSecOpenSSLNodeGetBNValue</primary></indexterm><programlisting><link linkend="BIGNUM--CAPS">BIGNUM</link>*             xmlSecOpenSSLNodeGetBNValue         (const <link linkend="xmlNode">xmlNodePtr</link> cur,
                                                          <link linkend="BIGNUM--CAPS">BIGNUM</link> **a);</programlisting>
 <para>
-Converts the node content from CryptoBinary format 
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary"><type>sec-CryptoBinary</type></link>) 
+Converts the node content from CryptoBinary format
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary"><type>sec-CryptoBinary</type></link>)
 to a BIGNUM. If no BIGNUM buffer provided then a new
 BIGNUM is created (caller is responsible for freeing it).</para>
 <para>
@@ -67,9 +67,9 @@ or NULL if an error occurs.
                                                          <link linkend="int">int</link> addLineBreaks);</programlisting>
 <para>
 Converts BIGNUM to CryptoBinary string
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary"><type>sec-CryptoBinary</type></link>) 
-and sets it as the content of the given node. If the 
-addLineBreaks is set then line breaks are added 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-CryptoBinary"><type>sec-CryptoBinary</type></link>)
+and sets it as the content of the given node. If the
+addLineBreaks is set then line breaks are added
 before and after the CryptoBinary string.</para>
 <para>
 </para><variablelist role="params">
@@ -80,9 +80,9 @@ before and after the CryptoBinary string.</para>
 <listitem><simpara> the BIGNUM.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>addLineBreaks</parameter>&#160;:</term>
-<listitem><simpara> if the flag is equal to 1 then 
-	linebreaks will be added before and after
-	new buffer content.
+<listitem><simpara> if the flag is equal to 1 then
+             linebreaks will be added before and after
+             new buffer content.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or -1 otherwise.
 </simpara></listitem></varlistentry>

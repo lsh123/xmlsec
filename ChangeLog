@@ -1,4 +1,7 @@
-2010-04-26  Aleksey Sanin  <aleksey@aleksey.com>
+2010-04-28  Aleksey Sanin  <aleksey@aleksey.com>
+	* Preparation for 1.2.15 release
+
+2010-04-27  Aleksey Sanin  <aleksey@aleksey.com>
 	* Converted xmlsec-mscrypto to unicode and provided a compile time 
 	option to switch between unicode/non-unicode builds
 	* Deleted support for old gnutls, new required version 2.8.0
@@ -19,7 +22,6 @@
 2010-04-24  Aleksey Sanin  <aleksey@aleksey.com>
 	* Fix PK_CONFIG problem (reported by Roumen)
 	* Enable --crypto for transform checks
-	* Fix DSA support in xmlsec-nss (https://bugzilla.mozilla.org/show_bug.cgi?id=561598)
 
 2010-04-23  Aleksey Sanin  <aleksey@aleksey.com>
 	* Enable RSA/SHA2 support in xmlsec-mscrypto

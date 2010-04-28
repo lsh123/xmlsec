@@ -286,10 +286,10 @@ Transform object definition.
 <title role="details.title">Details</title>
 <refsect2 id="XMLSEC-TRANSFORM-BINARY-CHUNK--CAPS" role="macro">
 <title>XMLSEC_TRANSFORM_BINARY_CHUNK</title>
-<indexterm zone="XMLSEC-TRANSFORM-BINARY-CHUNK--CAPS"><primary sortas="XMLSEC_TRANSFORM_BINARY_CHUNK">XMLSEC_TRANSFORM_BINARY_CHUNK</primary></indexterm><programlisting>#define XMLSEC_TRANSFORM_BINARY_CHUNK			64
+<indexterm zone="XMLSEC-TRANSFORM-BINARY-CHUNK--CAPS"><primary sortas="XMLSEC_TRANSFORM_BINARY_CHUNK">XMLSEC_TRANSFORM_BINARY_CHUNK</primary></indexterm><programlisting>#define XMLSEC_TRANSFORM_BINARY_CHUNK                   64
 </programlisting>
 <para>
-The binary data chunks size. XMLSec processes binary data one chunk 
+The binary data chunks size. XMLSec processes binary data one chunk
 at a time. Changing this impacts xmlsec memory usage and performance.</para>
 <para>
 </para></refsect2>
@@ -307,7 +307,7 @@ Gets global registered transform klasses list.</para>
 <title>xmlSecTransformIdsInit ()</title>
 <indexterm zone="xmlSecTransformIdsInit"><primary sortas="xmlSecTransformIdsInit">xmlSecTransformIdsInit</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecTransformIdsInit              (void);</programlisting>
 <para>
-Initializes the transform klasses. This function is called from the 
+Initializes the transform klasses. This function is called from the
 <link linkend="xmlSecInit"><type>xmlSecInit</type></link> function and the application should not call it directly.</para>
 <para>
 </para><variablelist role="params">
@@ -318,7 +318,7 @@ Initializes the transform klasses. This function is called from the
 <title>xmlSecTransformIdsShutdown ()</title>
 <indexterm zone="xmlSecTransformIdsShutdown"><primary sortas="xmlSecTransformIdsShutdown">xmlSecTransformIdsShutdown</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecTransformIdsShutdown          (void);</programlisting>
 <para>
-Shuts down the keys data klasses. This function is called from the 
+Shuts down the keys data klasses. This function is called from the
 <link linkend="xmlSecShutdown"><type>xmlSecShutdown</type></link> function and the application should not call it directly.</para>
 <para>
 </para></refsect2>
@@ -341,7 +341,7 @@ Registers <parameter>id</parameter> in the global list of transform klasses.</pa
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the transform klass.
+<listitem><simpara>                 the transform klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -362,27 +362,27 @@ The transform execution status.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecTransformStatusNone" role="constant">
 <term><literal>xmlSecTransformStatusNone</literal></term>
-<listitem><simpara> 		the status unknown.
+<listitem><simpara>          the status unknown.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformStatusWorking" role="constant">
 <term><literal>xmlSecTransformStatusWorking</literal></term>
-<listitem><simpara> 	the transform is executed.
+<listitem><simpara>       the transform is executed.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformStatusFinished" role="constant">
 <term><literal>xmlSecTransformStatusFinished</literal></term>
-<listitem><simpara> 	the transform finished
+<listitem><simpara>      the transform finished
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformStatusOk" role="constant">
 <term><literal>xmlSecTransformStatusOk</literal></term>
-<listitem><simpara> 		the transform succeeded.
+<listitem><simpara>            the transform succeeded.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformStatusFail" role="constant">
 <term><literal>xmlSecTransformStatusFail</literal></term>
-<listitem><simpara> 		the transform failed (an error occur).
+<listitem><simpara>          the transform failed (an error occur).
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -400,17 +400,17 @@ The transform operation mode</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecTransformModeNone" role="constant">
 <term><literal>xmlSecTransformModeNone</literal></term>
-<listitem><simpara> 		the mode is unknown.
+<listitem><simpara>            the mode is unknown.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformModePush" role="constant">
 <term><literal>xmlSecTransformModePush</literal></term>
-<listitem><simpara> 		pushing data thru transform. 
+<listitem><simpara>            pushing data thru transform.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformModePop" role="constant">
 <term><literal>xmlSecTransformModePop</literal></term>
-<listitem><simpara> 		popping data from transform.
+<listitem><simpara>             popping data from transform.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -432,43 +432,43 @@ The transform operation.</para>
 </para><variablelist role="enum">
 <varlistentry id="xmlSecTransformOperationNone" role="constant">
 <term><literal>xmlSecTransformOperationNone</literal></term>
-<listitem><simpara>	the operation is unknown.
+<listitem><simpara>       the operation is unknown.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformOperationEncode" role="constant">
 <term><literal>xmlSecTransformOperationEncode</literal></term>
-<listitem><simpara>	the encode operation (for base64 transform).	
+<listitem><simpara>     the encode operation (for base64 transform).
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformOperationDecode" role="constant">
 <term><literal>xmlSecTransformOperationDecode</literal></term>
-<listitem><simpara>	the decode operation (for base64 transform).
+<listitem><simpara>     the decode operation (for base64 transform).
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformOperationSign" role="constant">
 <term><literal>xmlSecTransformOperationSign</literal></term>
-<listitem><simpara>	the sign or digest operation.
+<listitem><simpara>       the sign or digest operation.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformOperationVerify" role="constant">
 <term><literal>xmlSecTransformOperationVerify</literal></term>
-<listitem><simpara>	the verification of signature or digest operation.
+<listitem><simpara>     the verification of signature or digest operation.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformOperationEncrypt" role="constant">
 <term><literal>xmlSecTransformOperationEncrypt</literal></term>
-<listitem><simpara>	the encryption operation.
+<listitem><simpara>    the encryption operation.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecTransformOperationDecrypt" role="constant">
 <term><literal>xmlSecTransformOperationDecrypt</literal></term>
-<listitem><simpara>	the decryption operation.
+<listitem><simpara>    the decryption operation.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformUriType" role="typedef">
 <title>xmlSecTransformUriType</title>
-<indexterm zone="xmlSecTransformUriType"><primary sortas="xmlSecTransformUriType">xmlSecTransformUriType</primary></indexterm><programlisting>typedef unsigned int				xmlSecTransformUriType;
+<indexterm zone="xmlSecTransformUriType"><primary sortas="xmlSecTransformUriType">xmlSecTransformUriType</primary></indexterm><programlisting>typedef unsigned int                            xmlSecTransformUriType;
 </programlisting>
 <para>
 URI transform type bit mask.</para>
@@ -476,7 +476,7 @@ URI transform type bit mask.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUriTypeNone" role="macro">
 <title>xmlSecTransformUriTypeNone</title>
-<indexterm zone="xmlSecTransformUriTypeNone"><primary sortas="xmlSecTransformUriTypeNone">xmlSecTransformUriTypeNone</primary></indexterm><programlisting>#define xmlSecTransformUriTypeNone		0x0000
+<indexterm zone="xmlSecTransformUriTypeNone"><primary sortas="xmlSecTransformUriTypeNone">xmlSecTransformUriTypeNone</primary></indexterm><programlisting>#define xmlSecTransformUriTypeNone              0x0000
 </programlisting>
 <para>
 The URI type is unknown or not set.</para>
@@ -484,7 +484,7 @@ The URI type is unknown or not set.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUriTypeEmpty" role="macro">
 <title>xmlSecTransformUriTypeEmpty</title>
-<indexterm zone="xmlSecTransformUriTypeEmpty"><primary sortas="xmlSecTransformUriTypeEmpty">xmlSecTransformUriTypeEmpty</primary></indexterm><programlisting>#define xmlSecTransformUriTypeEmpty		0x0001
+<indexterm zone="xmlSecTransformUriTypeEmpty"><primary sortas="xmlSecTransformUriTypeEmpty">xmlSecTransformUriTypeEmpty</primary></indexterm><programlisting>#define xmlSecTransformUriTypeEmpty             0x0001
 </programlisting>
 <para>
 The empty URI ("") type.</para>
@@ -492,7 +492,7 @@ The empty URI ("") type.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUriTypeSameDocument" role="macro">
 <title>xmlSecTransformUriTypeSameDocument</title>
-<indexterm zone="xmlSecTransformUriTypeSameDocument"><primary sortas="xmlSecTransformUriTypeSameDocument">xmlSecTransformUriTypeSameDocument</primary></indexterm><programlisting>#define xmlSecTransformUriTypeSameDocument	0x0002		
+<indexterm zone="xmlSecTransformUriTypeSameDocument"><primary sortas="xmlSecTransformUriTypeSameDocument">xmlSecTransformUriTypeSameDocument</primary></indexterm><programlisting>#define xmlSecTransformUriTypeSameDocument      0x0002
 </programlisting>
 <para>
 The smae document ("#...") but not empty ("") URI type.</para>
@@ -500,7 +500,7 @@ The smae document ("#...") but not empty ("") URI type.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUriTypeLocal" role="macro">
 <title>xmlSecTransformUriTypeLocal</title>
-<indexterm zone="xmlSecTransformUriTypeLocal"><primary sortas="xmlSecTransformUriTypeLocal">xmlSecTransformUriTypeLocal</primary></indexterm><programlisting>#define xmlSecTransformUriTypeLocal		0x0004
+<indexterm zone="xmlSecTransformUriTypeLocal"><primary sortas="xmlSecTransformUriTypeLocal">xmlSecTransformUriTypeLocal</primary></indexterm><programlisting>#define xmlSecTransformUriTypeLocal             0x0004
 </programlisting>
 <para>
 The local URI ("file:///....") type.</para>
@@ -508,7 +508,7 @@ The local URI ("file:///....") type.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUriTypeRemote" role="macro">
 <title>xmlSecTransformUriTypeRemote</title>
-<indexterm zone="xmlSecTransformUriTypeRemote"><primary sortas="xmlSecTransformUriTypeRemote">xmlSecTransformUriTypeRemote</primary></indexterm><programlisting>#define xmlSecTransformUriTypeRemote		0x0008
+<indexterm zone="xmlSecTransformUriTypeRemote"><primary sortas="xmlSecTransformUriTypeRemote">xmlSecTransformUriTypeRemote</primary></indexterm><programlisting>#define xmlSecTransformUriTypeRemote            0x0008
 </programlisting>
 <para>
 The remote URI type.</para>
@@ -516,7 +516,7 @@ The remote URI type.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUriTypeAny" role="macro">
 <title>xmlSecTransformUriTypeAny</title>
-<indexterm zone="xmlSecTransformUriTypeAny"><primary sortas="xmlSecTransformUriTypeAny">xmlSecTransformUriTypeAny</primary></indexterm><programlisting>#define xmlSecTransformUriTypeAny		0xFFFF
+<indexterm zone="xmlSecTransformUriTypeAny"><primary sortas="xmlSecTransformUriTypeAny">xmlSecTransformUriTypeAny</primary></indexterm><programlisting>#define xmlSecTransformUriTypeAny               0xFFFF
 </programlisting>
 <para>
 Any URI type.</para>
@@ -531,10 +531,10 @@ Checks if <parameter>uri</parameter> matches expected type <parameter>type</para
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>		the expected URI type.
+<listitem><simpara>               the expected URI type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the uri for checking.
+<listitem><simpara>                the uri for checking.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>uri</parameter> matches <parameter>type</parameter>, 0 if not or a negative value
 if an error occurs.
@@ -542,7 +542,7 @@ if an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformDataType" role="typedef">
 <title>xmlSecTransformDataType</title>
-<indexterm zone="xmlSecTransformDataType"><primary sortas="xmlSecTransformDataType">xmlSecTransformDataType</primary></indexterm><programlisting>typedef xmlSecByte				xmlSecTransformDataType;
+<indexterm zone="xmlSecTransformDataType"><primary sortas="xmlSecTransformDataType">xmlSecTransformDataType</primary></indexterm><programlisting>typedef xmlSecByte                              xmlSecTransformDataType;
 </programlisting>
 <para>
 Transform data type bit mask.</para>
@@ -550,7 +550,7 @@ Transform data type bit mask.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformDataTypeUnknown" role="macro">
 <title>xmlSecTransformDataTypeUnknown</title>
-<indexterm zone="xmlSecTransformDataTypeUnknown"><primary sortas="xmlSecTransformDataTypeUnknown">xmlSecTransformDataTypeUnknown</primary></indexterm><programlisting>#define xmlSecTransformDataTypeUnknown		0x0000
+<indexterm zone="xmlSecTransformDataTypeUnknown"><primary sortas="xmlSecTransformDataTypeUnknown">xmlSecTransformDataTypeUnknown</primary></indexterm><programlisting>#define xmlSecTransformDataTypeUnknown          0x0000
 </programlisting>
 <para>
 The transform data type is unknown or nor data expected.</para>
@@ -558,7 +558,7 @@ The transform data type is unknown or nor data expected.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformDataTypeBin" role="macro">
 <title>xmlSecTransformDataTypeBin</title>
-<indexterm zone="xmlSecTransformDataTypeBin"><primary sortas="xmlSecTransformDataTypeBin">xmlSecTransformDataTypeBin</primary></indexterm><programlisting>#define xmlSecTransformDataTypeBin		0x0001
+<indexterm zone="xmlSecTransformDataTypeBin"><primary sortas="xmlSecTransformDataTypeBin">xmlSecTransformDataTypeBin</primary></indexterm><programlisting>#define xmlSecTransformDataTypeBin              0x0001
 </programlisting>
 <para>
 The binary transform data.</para>
@@ -566,7 +566,7 @@ The binary transform data.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformDataTypeXml" role="macro">
 <title>xmlSecTransformDataTypeXml</title>
-<indexterm zone="xmlSecTransformDataTypeXml"><primary sortas="xmlSecTransformDataTypeXml">xmlSecTransformDataTypeXml</primary></indexterm><programlisting>#define xmlSecTransformDataTypeXml		0x0002
+<indexterm zone="xmlSecTransformDataTypeXml"><primary sortas="xmlSecTransformDataTypeXml">xmlSecTransformDataTypeXml</primary></indexterm><programlisting>#define xmlSecTransformDataTypeXml              0x0002
 </programlisting>
 <para>
 The xml transform data.</para>
@@ -574,7 +574,7 @@ The xml transform data.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsage" role="typedef">
 <title>xmlSecTransformUsage</title>
-<indexterm zone="xmlSecTransformUsage"><primary sortas="xmlSecTransformUsage">xmlSecTransformUsage</primary></indexterm><programlisting>typedef unsigned int				xmlSecTransformUsage;
+<indexterm zone="xmlSecTransformUsage"><primary sortas="xmlSecTransformUsage">xmlSecTransformUsage</primary></indexterm><programlisting>typedef unsigned int                            xmlSecTransformUsage;
 </programlisting>
 <para>
 The transform usage bit mask.</para>
@@ -582,7 +582,7 @@ The transform usage bit mask.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageUnknown" role="macro">
 <title>xmlSecTransformUsageUnknown</title>
-<indexterm zone="xmlSecTransformUsageUnknown"><primary sortas="xmlSecTransformUsageUnknown">xmlSecTransformUsageUnknown</primary></indexterm><programlisting>#define xmlSecTransformUsageUnknown		0x0000
+<indexterm zone="xmlSecTransformUsageUnknown"><primary sortas="xmlSecTransformUsageUnknown">xmlSecTransformUsageUnknown</primary></indexterm><programlisting>#define xmlSecTransformUsageUnknown             0x0000
 </programlisting>
 <para>
 Transforms usage is unknown or undefined.</para>
@@ -590,7 +590,7 @@ Transforms usage is unknown or undefined.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageDSigTransform" role="macro">
 <title>xmlSecTransformUsageDSigTransform</title>
-<indexterm zone="xmlSecTransformUsageDSigTransform"><primary sortas="xmlSecTransformUsageDSigTransform">xmlSecTransformUsageDSigTransform</primary></indexterm><programlisting>#define xmlSecTransformUsageDSigTransform	0x0001
+<indexterm zone="xmlSecTransformUsageDSigTransform"><primary sortas="xmlSecTransformUsageDSigTransform">xmlSecTransformUsageDSigTransform</primary></indexterm><programlisting>#define xmlSecTransformUsageDSigTransform       0x0001
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:Transform&gt;.</para>
@@ -598,7 +598,7 @@ Transform could be used in &lt;dsig:Transform&gt;.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageC14NMethod" role="macro">
 <title>xmlSecTransformUsageC14NMethod</title>
-<indexterm zone="xmlSecTransformUsageC14NMethod"><primary sortas="xmlSecTransformUsageC14NMethod">xmlSecTransformUsageC14NMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageC14NMethod		0x0002
+<indexterm zone="xmlSecTransformUsageC14NMethod"><primary sortas="xmlSecTransformUsageC14NMethod">xmlSecTransformUsageC14NMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageC14NMethod          0x0002
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</para>
@@ -606,7 +606,7 @@ Transform could be used in &lt;dsig:CanonicalizationMethod&gt;.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageDigestMethod" role="macro">
 <title>xmlSecTransformUsageDigestMethod</title>
-<indexterm zone="xmlSecTransformUsageDigestMethod"><primary sortas="xmlSecTransformUsageDigestMethod">xmlSecTransformUsageDigestMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageDigestMethod	0x0004
+<indexterm zone="xmlSecTransformUsageDigestMethod"><primary sortas="xmlSecTransformUsageDigestMethod">xmlSecTransformUsageDigestMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageDigestMethod        0x0004
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:DigestMethod&gt;.</para>
@@ -614,7 +614,7 @@ Transform could be used in &lt;dsig:DigestMethod&gt;.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageSignatureMethod" role="macro">
 <title>xmlSecTransformUsageSignatureMethod</title>
-<indexterm zone="xmlSecTransformUsageSignatureMethod"><primary sortas="xmlSecTransformUsageSignatureMethod">xmlSecTransformUsageSignatureMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageSignatureMethod	0x0008
+<indexterm zone="xmlSecTransformUsageSignatureMethod"><primary sortas="xmlSecTransformUsageSignatureMethod">xmlSecTransformUsageSignatureMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageSignatureMethod     0x0008
 </programlisting>
 <para>
 Transform could be used in &lt;dsig:SignatureMethod&gt;.</para>
@@ -622,7 +622,7 @@ Transform could be used in &lt;dsig:SignatureMethod&gt;.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageEncryptionMethod" role="macro">
 <title>xmlSecTransformUsageEncryptionMethod</title>
-<indexterm zone="xmlSecTransformUsageEncryptionMethod"><primary sortas="xmlSecTransformUsageEncryptionMethod">xmlSecTransformUsageEncryptionMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageEncryptionMethod	0x0010
+<indexterm zone="xmlSecTransformUsageEncryptionMethod"><primary sortas="xmlSecTransformUsageEncryptionMethod">xmlSecTransformUsageEncryptionMethod</primary></indexterm><programlisting>#define xmlSecTransformUsageEncryptionMethod    0x0010
 </programlisting>
 <para>
 Transform could be used in &lt;enc:EncryptionMethod&gt;.</para>
@@ -630,7 +630,7 @@ Transform could be used in &lt;enc:EncryptionMethod&gt;.</para>
 </para></refsect2>
 <refsect2 id="xmlSecTransformUsageAny" role="macro">
 <title>xmlSecTransformUsageAny</title>
-<indexterm zone="xmlSecTransformUsageAny"><primary sortas="xmlSecTransformUsageAny">xmlSecTransformUsageAny</primary></indexterm><programlisting>#define xmlSecTransformUsageAny			0xFFFF
+<indexterm zone="xmlSecTransformUsageAny"><primary sortas="xmlSecTransformUsageAny">xmlSecTransformUsageAny</primary></indexterm><programlisting>#define xmlSecTransformUsageAny                 0xFFFF
 </programlisting>
 <para>
 Transform could be used for operation.</para>
@@ -648,7 +648,7 @@ aborting transforms execution (if necessary).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform's context. 
+<listitem><simpara>       the pointer to transform's context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative value otherwise (in this case,
 transforms chain will not be executed and xmlsec processing stops).
@@ -656,7 +656,7 @@ transforms chain will not be executed and xmlsec processing stops).
 </variablelist></refsect2>
 <refsect2 id="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK--CAPS" role="macro">
 <title>XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</title>
-<indexterm zone="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK--CAPS"><primary sortas="XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK">XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</primary></indexterm><programlisting>#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK		0x00000001
+<indexterm zone="XMLSEC-TRANSFORMCTX-FLAGS-USE-VISA3D-HACK--CAPS"><primary sortas="XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK">XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK</primary></indexterm><programlisting>#define XMLSEC_TRANSFORMCTX_FLAGS_USE_VISA3D_HACK               0x00000001
 </programlisting>
 <para>
 If this flag is set then URI ID references are resolved directly
@@ -668,24 +668,24 @@ documents that don't follow XML, XPointer and XML DSig specifications.</para>
 <title>struct xmlSecTransformCtx</title>
 <indexterm zone="xmlSecTransformCtx"><primary sortas="xmlSecTransformCtx">xmlSecTransformCtx</primary></indexterm><programlisting>struct xmlSecTransformCtx {
     /* user settings */
-    void*					userData;
-    unsigned int				flags;
-    unsigned int				flags2;
-    xmlSecTransformUriType			enabledUris;
-    xmlSecPtrList				enabledTransforms;
-    xmlSecTransformCtxPreExecuteCallback	preExecCallback;
-    
+    void*                                       userData;
+    unsigned int                                flags;
+    unsigned int                                flags2;
+    xmlSecTransformUriType                      enabledUris;
+    xmlSecPtrList                               enabledTransforms;
+    xmlSecTransformCtxPreExecuteCallback        preExecCallback;
+
     /* results */
-    xmlSecBufferPtr				result;
-    xmlSecTransformStatus			status;
-    xmlChar*					uri;
-    xmlChar*					xptrExpr;
-    xmlSecTransformPtr				first;
-    xmlSecTransformPtr				last;
+    xmlSecBufferPtr                             result;
+    xmlSecTransformStatus                       status;
+    xmlChar*                                    uri;
+    xmlChar*                                    xptrExpr;
+    xmlSecTransformPtr                          first;
+    xmlSecTransformPtr                          last;
 
     /* for the future */
-    void*					reserved0;
-    void*					reserved1;
+    void*                                       reserved0;
+    void*                                       reserved1;
 };
 </programlisting>
 <para>
@@ -694,81 +694,81 @@ The transform execution context.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>userData</structfield>;</term>
-<listitem><simpara> 		the pointer to user data (xmlsec and xmlsec-crypto never 
-		touch this).
+<listitem><simpara>           the pointer to user data (xmlsec and xmlsec-crypto never
+                     touch this).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>unsigned&#160;<link linkend="int">int</link>&#160;<structfield>flags</structfield>;</term>
-<listitem><simpara> 		the bit mask flags to control transforms execution 
-		(reserved for the future).
+<listitem><simpara>              the bit mask flags to control transforms execution
+                     (reserved for the future).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>unsigned&#160;<link linkend="int">int</link>&#160;<structfield>flags2</structfield>;</term>
-<listitem><simpara> 		the bit mask flags to control transforms execution 
-			(reserved for the future).
+<listitem><simpara>             the bit mask flags to control transforms execution
+                     (reserved for the future).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link>&#160;<structfield>enabledUris</structfield>;</term>
-<listitem><simpara> 	the allowed transform data source uri types.
+<listitem><simpara>        the allowed transform data source uri types.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecPtrList">xmlSecPtrList</link>&#160;<structfield>enabledTransforms</structfield>;</term>
-<listitem><simpara> 	the list of enabled transforms; if list is empty (default)
-		then all registered transforms are enabled.
+<listitem><simpara>  the list of enabled transforms; if list is empty (default)
+                     then all registered transforms are enabled.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link>&#160;<structfield>preExecCallback</structfield>;</term>
-<listitem><simpara>	the callback called after preparing transform chain
-		and right before actual data processing; application
-		can use this callback to change transforms parameters,
-		insert additional transforms in the chain or do
-		additional validation (and abort transform execution 
-		if needed).
+<listitem><simpara>    the callback called after preparing transform chain
+                     and right before actual data processing; application
+                     can use this callback to change transforms parameters,
+                     insert additional transforms in the chain or do
+                     additional validation (and abort transform execution
+                     if needed).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecBuffer">xmlSecBufferPtr</link>&#160;<structfield>result</structfield>;</term>
-<listitem><simpara>		the pointer to transforms result buffer.
+<listitem><simpara>             the pointer to transforms result buffer.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link>&#160;<structfield>status</structfield>;</term>
-<listitem><simpara>		the transforms chain processng status.
+<listitem><simpara>             the transforms chain processng status.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>uri</structfield>;</term>
-<listitem><simpara>		the data source URI without xpointer expression.
+<listitem><simpara>                the data source URI without xpointer expression.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>xptrExpr</structfield>;</term>
-<listitem><simpara>		the xpointer expression from data source URI (if any).
+<listitem><simpara>           the xpointer expression from data source URI (if any).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>first</structfield>;</term>
-<listitem><simpara>		the first transform in the chain.
+<listitem><simpara>              the first transform in the chain.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>last</structfield>;</term>
-<listitem><simpara>		the last transform in the chain.
+<listitem><simpara>               the last transform in the chain.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -777,7 +777,7 @@ The transform execution context.</para>
 <indexterm zone="xmlSecTransformCtxCreate"><primary sortas="xmlSecTransformCtxCreate">xmlSecTransformCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link>  xmlSecTransformCtxCreate         (void);</programlisting>
 <para>
 Creates transforms chain processing context.
-The caller is responsible for destroying returend object by calling 
+The caller is responsible for destroying returend object by calling
 <link linkend="xmlSecTransformCtxDestroy"><type>xmlSecTransformCtxDestroy</type></link> function.</para>
 <para>
 </para><variablelist role="params">
@@ -793,7 +793,7 @@ Destroy context object created with <link linkend="xmlSecTransformCtxCreate"><ty
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCtxInitialize" role="function">
@@ -801,12 +801,12 @@ Destroy context object created with <link linkend="xmlSecTransformCtxCreate"><ty
 <indexterm zone="xmlSecTransformCtxInitialize"><primary sortas="xmlSecTransformCtxInitialize">xmlSecTransformCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecTransformCtxInitialize        (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx);</programlisting>
 <para>
 Initializes transforms chain processing context.
-The caller is responsible for cleaing up returend object by calling 
+The caller is responsible for cleaing up returend object by calling
 <link linkend="xmlSecTransformCtxFinalize"><type>xmlSecTransformCtxFinalize</type></link> function.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -819,7 +819,7 @@ Cleans up <parameter>ctx</parameter> object initialized with <link linkend="xmlS
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCtxReset" role="function">
@@ -830,7 +830,7 @@ Resets transfroms context for new processing.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCtxCopyUserPref" role="function">
@@ -842,10 +842,10 @@ Copies user settings from <parameter>src</parameter> context to <parameter>dst</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>dst</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to destination transforms chain processing context.
+<listitem><simpara>                the pointer to destination transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>src</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to source transforms chain processing context.
+<listitem><simpara>                the pointer to source transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -860,46 +860,46 @@ Parses uri and adds xpointer transforms if required.
 </para>
 <para>
 The following examples demonstrate what the URI attribute identifies and
-how it is dereferenced 
+how it is dereferenced
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-ReferenceProcessingModel"><type>sec-ReferenceProcessingModel</type></link>):
 </para>
 <para>
 - URI="http://example.com/bar.xml"
-identifies the octets that represent the external resource 
-'http://example.com/bar.xml', that is probably an XML document given 
-its file extension. 
+identifies the octets that represent the external resource
+'http://example.com/bar.xml', that is probably an XML document given
+its file extension.
 </para>
 <para>
 - URI="http://example.com/bar.xml<link linkend="chapter1"><type>chapter1</type></link>"
-identifies the element with ID attribute value 'chapter1' of the 
-external XML resource 'http://example.com/bar.xml', provided as an 
-octet stream. Again, for the sake of interoperability, the element 
-identified as 'chapter1' should be obtained using an XPath transform 
-rather than a URI fragment (barename XPointer resolution in external 
-resources is not REQUIRED in this specification). 
+identifies the element with ID attribute value 'chapter1' of the
+external XML resource 'http://example.com/bar.xml', provided as an
+octet stream. Again, for the sake of interoperability, the element
+identified as 'chapter1' should be obtained using an XPath transform
+rather than a URI fragment (barename XPointer resolution in external
+resources is not REQUIRED in this specification).
 </para>
 <para>
 - URI=""
-identifies the node-set (minus any comment nodes) of the XML resource 
-containing the signature 
+identifies the node-set (minus any comment nodes) of the XML resource
+containing the signature
 </para>
 <para>
 - URI="<link linkend="chapter1"><type>chapter1</type></link>"
-identifies a node-set containing the element with ID attribute value 
-'chapter1' of the XML resource containing the signature. XML Signature 
-(and its applications) modify this node-set to include the element plus 
+identifies a node-set containing the element with ID attribute value
+'chapter1' of the XML resource containing the signature. XML Signature
+(and its applications) modify this node-set to include the element plus
 all descendents including namespaces and attributes -- but not comments.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the URI.
+<listitem><simpara>                the URI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>hereNode</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to "here" node required by some 
-		XML transforms (may be NULL).
+<listitem><simpara>           the pointer to "here" node required by some
+                     XML transforms (may be NULL).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -909,15 +909,15 @@ all descendents including namespaces and attributes -- but not comments.</para>
 <indexterm zone="xmlSecTransformCtxAppend"><primary sortas="xmlSecTransformCtxAppend">xmlSecTransformCtxAppend</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecTransformCtxAppend            (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                                          <link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
-Connects the <parameter>transform</parameter> to the end of the chain of transforms in the <parameter>ctx</parameter> 
+Connects the <parameter>transform</parameter> to the end of the chain of transforms in the <parameter>ctx</parameter>
 (see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to new transform.
+<listitem><simpara>          the pointer to new transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -927,15 +927,15 @@ Connects the <parameter>transform</parameter> to the end of the chain of transfo
 <indexterm zone="xmlSecTransformCtxPrepend"><primary sortas="xmlSecTransformCtxPrepend">xmlSecTransformCtxPrepend</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecTransformCtxPrepend           (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                                          <link linkend="xmlSecTransform">xmlSecTransformPtr</link> transform);</programlisting>
 <para>
-Connects the <parameter>transform</parameter> to the beggining of the chain of transforms in the <parameter>ctx</parameter> 
+Connects the <parameter>transform</parameter> to the beggining of the chain of transforms in the <parameter>ctx</parameter>
 (see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to new transform.
+<listitem><simpara>          the pointer to new transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -945,15 +945,15 @@ Connects the <parameter>transform</parameter> to the beggining of the chain of t
 <indexterm zone="xmlSecTransformCtxCreateAndAppend"><primary sortas="xmlSecTransformCtxCreateAndAppend">xmlSecTransformCtxCreateAndAppend</primary></indexterm><programlisting><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link>  xmlSecTransformCtxCreateAndAppend   (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                                          <link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
 <para>
-Creaeates new transform and connects it to the end of the chain of 
+Creaeates new transform and connects it to the end of the chain of
 transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the new transform klass.
+<listitem><simpara>                 the new transform klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created transform or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -963,15 +963,15 @@ transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransform
 <indexterm zone="xmlSecTransformCtxCreateAndPrepend"><primary sortas="xmlSecTransformCtxCreateAndPrepend">xmlSecTransformCtxCreateAndPrepend</primary></indexterm><programlisting><link linkend="xmlSecTransformPtr">xmlSecTransformPtr</link>  xmlSecTransformCtxCreateAndPrepend  (<link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> ctx,
                                                          <link linkend="xmlSecTransformId">xmlSecTransformId</link> id);</programlisting>
 <para>
-Creaeates new transform and connects it to the end of the chain of 
+Creaeates new transform and connects it to the end of the chain of
 transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransformConnect"><type>xmlSecTransformConnect</type></link> function for details).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the new transform klass.
+<listitem><simpara>                 the new transform klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created transform or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -982,18 +982,18 @@ transforms in the <parameter>ctx</parameter> (see <link linkend="xmlSecTransform
                                                          <link linkend="xmlNode">xmlNodePtr</link> node,
                                                          <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
 <para>
-Reads the transform from the <parameter>node</parameter> and appends it to the current chain 
+Reads the transform from the <parameter>node</parameter> and appends it to the current chain
 of transforms in <parameter>ctx</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform's node.
+<listitem><simpara>               the pointer to transform's node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the transform's usage (signature, encryption, etc.).
+<listitem><simpara>              the transform's usage (signature, encryption, etc.).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created transform or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1004,18 +1004,18 @@ of transforms in <parameter>ctx</parameter>.</para>
                                                          <link linkend="xmlNode">xmlNodePtr</link> node,
                                                          <link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link> usage);</programlisting>
 <para>
-Reads transforms from the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> children of the <parameter>node</parameter> and 
+Reads transforms from the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> children of the <parameter>node</parameter> and
 appends them to the current transforms chain in <parameter>ctx</parameter> object.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> nodes parent node.
+<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> nodes parent node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the transform's usage (signature, encryption, etc.).
+<listitem><simpara>              the transform's usage (signature, encryption, etc.).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1029,10 +1029,10 @@ Prepares the transform context for processing data of <parameter>inputDataType</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>inputDataType</parameter>&#160;:</term>
-<listitem><simpara>	the expected input type.
+<listitem><simpara>      the expected input type.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1047,13 +1047,13 @@ Processes binary data using transforms chain in the <parameter>ctx</parameter>.<
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the input binary data buffer.
+<listitem><simpara>               the input binary data buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the input data size.
+<listitem><simpara>           the input data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1067,10 +1067,10 @@ Process binary data from the URI using transforms chain in <parameter>ctx</param
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>		the URI.
+<listitem><simpara>                the URI.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1084,10 +1084,10 @@ Process <parameter>nodes</parameter> using transforms in the transforms chain in
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>		the input node set.
+<listitem><simpara>              the input node set.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1101,10 +1101,10 @@ Executes transforms chain in <parameter>ctx</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to input document.
+<listitem><simpara>                the pointer to input document.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1118,10 +1118,10 @@ Prints transforms context debug information to <parameter>output</parameter>.</p
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCtxDebugXmlDump" role="function">
@@ -1133,35 +1133,35 @@ Prints transforms context debug information to <parameter>output</parameter> in 
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transforms chain processing context.
+<listitem><simpara>                the pointer to transforms chain processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransform" role="struct">
 <title>struct xmlSecTransform</title>
 <indexterm zone="xmlSecTransform"><primary sortas="xmlSecTransform">xmlSecTransform</primary></indexterm><programlisting>struct xmlSecTransform {
-    xmlSecTransformId 			id; 
-    xmlSecTransformOperation		operation;
-    xmlSecTransformStatus		status;
-    xmlNodePtr				hereNode;
+    xmlSecTransformId                   id;
+    xmlSecTransformOperation            operation;
+    xmlSecTransformStatus               status;
+    xmlNodePtr                          hereNode;
 
     /* transforms chain */
-    xmlSecTransformPtr			next;
-    xmlSecTransformPtr			prev;
+    xmlSecTransformPtr                  next;
+    xmlSecTransformPtr                  prev;
 
     /* binary data */
-    xmlSecBuffer			inBuf;
-    xmlSecBuffer			outBuf;
-        
-    /* xml data */
-    xmlSecNodeSetPtr			inNodes;
-    xmlSecNodeSetPtr			outNodes;
+    xmlSecBuffer                        inBuf;
+    xmlSecBuffer                        outBuf;
 
-    /* reserved for the future */    
-    void*				reserved0;
-    void*				reserved1;
+    /* xml data */
+    xmlSecNodeSetPtr                    inNodes;
+    xmlSecNodeSetPtr                    outNodes;
+
+    /* reserved for the future */
+    void*                               reserved0;
+    void*                               reserved1;
 };
 </programlisting>
 <para>
@@ -1170,62 +1170,62 @@ The transform structure.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecTransformId">xmlSecTransformId</link>&#160;<structfield>id</structfield>;</term>
-<listitem><simpara> 		the transform id (pointer to <link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link>).
+<listitem><simpara>                 the transform id (pointer to <link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link>).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link>&#160;<structfield>operation</structfield>;</term>
-<listitem><simpara>		the transform's opertaion.
+<listitem><simpara>          the transform's opertaion.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformStatus">xmlSecTransformStatus</link>&#160;<structfield>status</structfield>;</term>
-<listitem><simpara> 		the current status.
+<listitem><simpara>             the current status.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlNode">xmlNodePtr</link>&#160;<structfield>hereNode</structfield>;</term>
-<listitem><simpara>		the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform ">&lt;dsig:Transform /&gt;</ulink> node.
+<listitem><simpara>           the pointer to transform's <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform ">&lt;dsig:Transform /&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>next</structfield>;</term>
-<listitem><simpara>		the pointer to next transform in the chain.
+<listitem><simpara>               the pointer to next transform in the chain.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>prev</structfield>;</term>
-<listitem><simpara>		the pointer to previous transform in the chain.
+<listitem><simpara>               the pointer to previous transform in the chain.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecBuffer">xmlSecBuffer</link>&#160;<structfield>inBuf</structfield>;</term>
-<listitem><simpara>		the input binary data buffer.
+<listitem><simpara>              the input binary data buffer.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecBuffer">xmlSecBuffer</link>&#160;<structfield>outBuf</structfield>;</term>
-<listitem><simpara>		the output binary data buffer.
+<listitem><simpara>             the output binary data buffer.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>inNodes</structfield>;</term>
-<listitem><simpara>		the input XML nodes.
+<listitem><simpara>            the input XML nodes.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link>&#160;<structfield>outNodes</structfield>;</term>
-<listitem><simpara> 		the output XML nodes.
+<listitem><simpara>           the output XML nodes.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>		reserved for the future.
+<listitem><simpara>          reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -1238,7 +1238,7 @@ destroying returned tansform using <link linkend="xmlSecTransformDestroy"><type>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara> 		the transform id to create.
+<listitem><simpara>                 the transform id to create.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created transform or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1251,7 +1251,7 @@ Destroys transform created with <link linkend="xmlSecTransformCreate"><type>xmlS
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformNodeRead" role="function">
@@ -1276,13 +1276,13 @@ Reads transform from the <parameter>node</parameter> as follows:
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to the transform's node.
+<listitem><simpara>               the pointer to the transform's node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the transform usage (signature, encryption, ...).
+<listitem><simpara>              the transform usage (signature, encryption, ...).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created transform or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1298,13 +1298,13 @@ no more data is available.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>left</parameter>&#160;:</term>
-<listitem><simpara>		the source pumping transform.
+<listitem><simpara>               the source pumping transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>right</parameter>&#160;:</term>
-<listitem><simpara>		the destination pumping transform.
+<listitem><simpara>              the destination pumping transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1318,10 +1318,10 @@ Sets the transform's key.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to key. 
+<listitem><simpara>                the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1335,10 +1335,10 @@ Sets the key requirements for <parameter>transform</parameter> in the <parameter
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to keys requirements object. 
+<listitem><simpara>             the pointer to keys requirements object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1356,16 +1356,16 @@ result is stored in the <link linkend="status"><type>status</type></link> member
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the binary data for verification.
+<listitem><simpara>               the binary data for verification.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the data size.
+<listitem><simpara>           the data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1381,13 +1381,13 @@ function to verify binary results.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to node.
+<listitem><simpara>               the pointer to node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1398,18 +1398,18 @@ function to verify binary results.</para>
                                                          <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Gets transform input (<parameter>mode</parameter> is "push") or output (<parameter>mode</parameter> is "pop") data 
+Gets transform input (<parameter>mode</parameter> is "push") or output (<parameter>mode</parameter> is "pop") data
 type (binary or XML).</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mode</parameter>&#160;:</term>
-<listitem><simpara>		the data mode (push or pop).
+<listitem><simpara>               the data mode (push or pop).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the transform's data type for the <parameter>mode</parameter> operation.
 </simpara></listitem></varlistentry>
@@ -1426,20 +1426,20 @@ Process binary <parameter>data</parameter> and pushes results to next transform.
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the input binary data,
+<listitem><simpara>               the input binary data,
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the input data size.
+<listitem><simpara>           the input data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>final</parameter>&#160;:</term>
-<listitem><simpara>		the flag: if set to 1 then it's the last
-		data chunk.
+<listitem><simpara>              the flag: if set to 1 then it's the last
+                     data chunk.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1452,25 +1452,25 @@ Process binary <parameter>data</parameter> and pushes results to next transform.
                                                          <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Pops data from previous transform in the chain, processes data and 
-returns result in the <parameter>data</parameter> buffer. The size of returned data is 
+Pops data from previous transform in the chain, processes data and
+returns result in the <parameter>data</parameter> buffer. The size of returned data is
 placed in the <parameter>dataSize</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the buffer to store result data.
+<listitem><simpara>               the buffer to store result data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>maxDataSize</parameter>&#160;:</term>
-<listitem><simpara>	the size of the buffer <link linkend="data"><type>data</type></link>.
+<listitem><simpara>        the size of the buffer <link linkend="data"><type>data</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to returned data size.
+<listitem><simpara>           the pointer to returned data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1485,13 +1485,13 @@ Processes <parameter>nodes</parameter> and pushes result to the next transform i
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>		the input nodes.
+<listitem><simpara>              the input nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1502,18 +1502,18 @@ Processes <parameter>nodes</parameter> and pushes result to the next transform i
                                                          <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Pops data from previous transform in the chain, processes the data and 
+Pops data from previous transform in the chain, processes the data and
 returns result in <parameter>nodes</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to store popinter to result nodes.
+<listitem><simpara>              the pointer to store popinter to result nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1528,13 +1528,13 @@ Executes transform (used by default popBin/pushBin/popXml/pushXml methods).</par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>last</parameter>&#160;:</term>
-<listitem><simpara>		the flag: if set to 1 then it's the last data chunk.
+<listitem><simpara>               the flag: if set to 1 then it's the last data chunk.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1548,10 +1548,10 @@ Prints transform's debug information to <parameter>output</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformDebugXmlDump" role="function">
@@ -1563,10 +1563,10 @@ Prints transform's debug information to <parameter>output</parameter> in XML for
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformGetName" role="macro">
@@ -1577,7 +1577,7 @@ Macro. Returns transform name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformIsValid" role="macro">
@@ -1588,37 +1588,37 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid or 0 otherwise
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCheckType" role="macro">
 <title>xmlSecTransformCheckType()</title>
 <indexterm zone="xmlSecTransformCheckType"><primary sortas="xmlSecTransformCheckType">xmlSecTransformCheckType</primary></indexterm><programlisting>#define             xmlSecTransformCheckType(transform, t)</programlisting>
 <para>
-Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified type <parameter>t</parameter> 
+Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified type <parameter>t</parameter>
 or 0 otherwise.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>t</parameter>&#160;:</term>
-<listitem><simpara> 			the transform type.
+<listitem><simpara>                  the transform type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCheckId" role="macro">
 <title>xmlSecTransformCheckId()</title>
 <indexterm zone="xmlSecTransformCheckId"><primary sortas="xmlSecTransformCheckId">xmlSecTransformCheckId</primary></indexterm><programlisting>#define             xmlSecTransformCheckId(transform, i)</programlisting>
 <para>
-Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified id <parameter>i</parameter> 
+Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified id <parameter>i</parameter>
 or 0 otherwise.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>i</parameter>&#160;:</term>
-<listitem><simpara>			the transform id.
+<listitem><simpara>                  the transform id.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCheckSize" role="macro">
@@ -1630,10 +1630,10 @@ bytes or 0 otherwise.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>size</parameter>&#160;:</term>
-<listitem><simpara> 		the transform object size.
+<listitem><simpara>               the transform object size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformConnect" role="function">
@@ -1642,37 +1642,37 @@ bytes or 0 otherwise.</para>
                                                          <link linkend="xmlSecTransform">xmlSecTransformPtr</link> right,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-If the data object is a node-set and the next transform requires octets, 
-the signature application MUST attempt to convert the node-set to an octet 
-stream using Canonical XML [XML-C14N].  
+If the data object is a node-set and the next transform requires octets,
+the signature application MUST attempt to convert the node-set to an octet
+stream using Canonical XML [XML-C14N].
 </para>
 <para>
 The story is different if the right transform is base64 decode
 (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64"><type>sec-Base-64</type></link>):
 </para>
 <para>
-This transform requires an octet stream for input. If an XPath node-set 
-(or sufficiently functional alternative) is given as input, then it is 
-converted to an octet stream by performing operations logically equivalent 
-to 1) applying an XPath transform with expression self::<link linkend="text"><function>text()</function></link>, then 2) 
-taking the string-value of the node-set. Thus, if an XML element is 
-identified by a barename XPointer in the Reference URI, and its content 
-consists solely of base64 encoded character data, then this transform 
-automatically strips away the start and end tags of the identified element 
-and any of its descendant elements as well as any descendant comments and 
+This transform requires an octet stream for input. If an XPath node-set
+(or sufficiently functional alternative) is given as input, then it is
+converted to an octet stream by performing operations logically equivalent
+to 1) applying an XPath transform with expression self::<link linkend="text"><function>text()</function></link>, then 2)
+taking the string-value of the node-set. Thus, if an XML element is
+identified by a barename XPointer in the Reference URI, and its content
+consists solely of base64 encoded character data, then this transform
+automatically strips away the start and end tags of the identified element
+and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>left</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to left (prev) transform.
+<listitem><simpara>               the pointer to left (prev) transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>right</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to right (next) transform.
+<listitem><simpara>              the pointer to right (next) transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs. 
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRemove" role="function">
@@ -1693,19 +1693,19 @@ Removes <parameter>transform</parameter> from the chain.</para>
                                                          <link linkend="xmlSecTransformMode">xmlSecTransformMode</link> mode,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Gets transform input (<parameter>mode</parameter> is "push") or output (<parameter>mode</parameter> is "pop") data 
+Gets transform input (<parameter>mode</parameter> is "push") or output (<parameter>mode</parameter> is "pop") data
 type (binary or XML) by analyzing available pushBin/popBin/pushXml/popXml
 methods.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mode</parameter>&#160;:</term>
-<listitem><simpara>		the data mode (push or pop).
+<listitem><simpara>               the data mode (push or pop).
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the transform's chaing processing context.
+<listitem><simpara>       the transform's chaing processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the transform's data type for the <parameter>mode</parameter> operation.
 </simpara></listitem></varlistentry>
@@ -1718,25 +1718,25 @@ methods.</para>
                                                          <link linkend="int">int</link> final,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Process binary <parameter>data</parameter> by calling transform's execute method and pushes 
+Process binary <parameter>data</parameter> by calling transform's execute method and pushes
 results to next transform.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the input binary data,
+<listitem><simpara>               the input binary data,
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the input data size.
+<listitem><simpara>           the input data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>final</parameter>&#160;:</term>
-<listitem><simpara>		the flag: if set to 1 then it's the last
-		data chunk.
+<listitem><simpara>              the flag: if set to 1 then it's the last
+                     data chunk.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1750,24 +1750,24 @@ results to next transform.</para>
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
 Pops data from previous transform in the chain, processes data by calling
-transform's execute method and returns result in the <parameter>data</parameter> buffer. The 
+transform's execute method and returns result in the <parameter>data</parameter> buffer. The
 size of returned data is placed in the <parameter>dataSize</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>		the buffer to store result data.
+<listitem><simpara>               the buffer to store result data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>maxDataSize</parameter>&#160;:</term>
-<listitem><simpara>	the size of the buffer <link linkend="data"><type>data</type></link>.
+<listitem><simpara>        the size of the buffer <link linkend="data"><type>data</type></link>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to returned data size.
+<listitem><simpara>           the pointer to returned data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1778,18 +1778,18 @@ size of returned data is placed in the <parameter>dataSize</parameter>.</para>
                                                          <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Processes <parameter>nodes</parameter> by calling transform's execute method and pushes 
+Processes <parameter>nodes</parameter> by calling transform's execute method and pushes
 result to the next transform in the chain.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>		the input nodes.
+<listitem><simpara>              the input nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1800,18 +1800,18 @@ result to the next transform in the chain.</para>
                                                          <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> *nodes,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-Pops data from previous transform in the chain, processes the data 
+Pops data from previous transform in the chain, processes the data
 by calling transform's execute method and returns result in <parameter>nodes</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform object.
+<listitem><simpara>          the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to store popinter to result nodes.
+<listitem><simpara>              the pointer to store popinter to result nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1825,10 +1825,10 @@ Creates output buffer to write data to <parameter>transform</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to new output buffer or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1843,10 +1843,10 @@ Creates input buffer to read data from <parameter>transform</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform.
+<listitem><simpara>          the pointer to transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>	the pointer to transform context object.
+<listitem><simpara>       the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to new input buffer or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -1859,7 +1859,7 @@ The transform specific initialization method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1872,7 +1872,7 @@ The transform specific destroy method.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformGetDataTypeMethod" role="function">
@@ -1887,13 +1887,13 @@ data type in specified mode <parameter>mode</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>mode</parameter>&#160;:</term>
-<listitem><simpara>			the mode.
+<listitem><simpara>                       the mode.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> transform data type.
 </simpara></listitem></varlistentry>
@@ -1904,18 +1904,18 @@ data type in specified mode <parameter>mode</parameter>.</para>
                                                          <link linkend="xmlNode">xmlNodePtr</link> node,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-The transform specific method to read the transform data from 
+The transform specific method to read the transform data from
 the <parameter>node</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<listitem><simpara>                       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1930,13 +1930,13 @@ The transform specific method to write transform information to an XML node <par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
+<listitem><simpara>                       the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Transform">&lt;dsig:Transform/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1951,10 +1951,10 @@ Transform specific method to set transform's key requirements.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyReq</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to key requirements structure.
+<listitem><simpara>                     the pointer to key requirements structure.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1968,10 +1968,10 @@ The transform specific method to set the key for use.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara> 			the pointer to key.
+<listitem><simpara>                        the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -1990,16 +1990,16 @@ if verification succeeded or <link linkend="xmlSecTransformStatusFail"><type>xml
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>			the input buffer.
+<listitem><simpara>                       the input buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>			the size of input buffer <parameter>data</parameter>.
+<listitem><simpara>                   the size of input buffer <parameter>data</parameter>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -2017,20 +2017,20 @@ result to the next transform in the chain.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>			the input binary data,
+<listitem><simpara>                       the input binary data,
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>			the input data size.
+<listitem><simpara>                   the input data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>final</parameter>&#160;:</term>
-<listitem><simpara>			the flag: if set to 1 then it's the last
-			data chunk.
+<listitem><simpara>                      the flag: if set to 1 then it's the last
+                             data chunk.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -2043,25 +2043,25 @@ result to the next transform in the chain.</para>
                                                          <link linkend="xmlSecSize">xmlSecSize</link> *dataSize,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-The transform specific method to pop data from previous transform 
+The transform specific method to pop data from previous transform
 in the chain and return result in the <parameter>data</parameter> buffer. The size of returned
 data is placed in the <parameter>dataSize</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>			the buffer to store result data.
+<listitem><simpara>                       the buffer to store result data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>maxDataSize</parameter>&#160;:</term>
-<listitem><simpara>		the size of the buffer <parameter>data</parameter>.
+<listitem><simpara>                the size of the buffer <parameter>data</parameter>.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to returned data size.
+<listitem><simpara>                   the pointer to returned data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -2072,18 +2072,18 @@ data is placed in the <parameter>dataSize</parameter>.</para>
                                                          <link linkend="xmlSecNodeSet">xmlSecNodeSetPtr</link> nodes,
                                                          <link linkend="xmlSecTransformCtx">xmlSecTransformCtxPtr</link> transformCtx);</programlisting>
 <para>
-The transform specific method to process <parameter>nodes</parameter> and push result to the next 
+The transform specific method to process <parameter>nodes</parameter> and push result to the next
 transform in the chain.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>			the input nodes.
+<listitem><simpara>                      the input nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -2099,13 +2099,13 @@ process the data and return result in <parameter>nodes</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodes</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to store popinter to result nodes.
+<listitem><simpara>                      the pointer to store popinter to result nodes.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -2120,13 +2120,13 @@ Transform specific method to process a chunk of data.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>			the pointer to transform object.
+<listitem><simpara>                  the pointer to transform object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>last</parameter>&#160;:</term>
-<listitem><simpara>			the flag: if set to 1 then it's the last data chunk.
+<listitem><simpara>                       the flag: if set to 1 then it's the last data chunk.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformCtx</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform context object.
+<listitem><simpara>               the pointer to transform context object.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
@@ -2135,35 +2135,35 @@ Transform specific method to process a chunk of data.</para>
 <title>struct xmlSecTransformKlass</title>
 <indexterm zone="xmlSecTransformKlass"><primary sortas="xmlSecTransformKlass">xmlSecTransformKlass</primary></indexterm><programlisting>struct xmlSecTransformKlass {
     /* data */
-    xmlSecSize				klassSize;
-    xmlSecSize				objSize;
-    const xmlChar*			name;
-    const xmlChar*			href;
-    xmlSecTransformUsage		usage;
+    xmlSecSize                          klassSize;
+    xmlSecSize                          objSize;
+    const xmlChar*                      name;
+    const xmlChar*                      href;
+    xmlSecTransformUsage                usage;
 
     /* methods */
-    xmlSecTransformInitializeMethod	initialize;
-    xmlSecTransformFinalizeMethod	finalize;
+    xmlSecTransformInitializeMethod     initialize;
+    xmlSecTransformFinalizeMethod       finalize;
 
-    xmlSecTransformNodeReadMethod	readNode;
-    xmlSecTransformNodeWriteMethod	writeNode;
+    xmlSecTransformNodeReadMethod       readNode;
+    xmlSecTransformNodeWriteMethod      writeNode;
 
-    xmlSecTransformSetKeyRequirementsMethod	setKeyReq;
-    xmlSecTransformSetKeyMethod		setKey;
-    xmlSecTransformVerifyMethod		verify;
-    xmlSecTransformGetDataTypeMethod	getDataType;
+    xmlSecTransformSetKeyRequirementsMethod     setKeyReq;
+    xmlSecTransformSetKeyMethod         setKey;
+    xmlSecTransformVerifyMethod         verify;
+    xmlSecTransformGetDataTypeMethod    getDataType;
 
-    xmlSecTransformPushBinMethod	pushBin;
-    xmlSecTransformPopBinMethod		popBin;
-    xmlSecTransformPushXmlMethod	pushXml;
-    xmlSecTransformPopXmlMethod		popXml;
-    
+    xmlSecTransformPushBinMethod        pushBin;
+    xmlSecTransformPopBinMethod         popBin;
+    xmlSecTransformPushXmlMethod        pushXml;
+    xmlSecTransformPopXmlMethod         popXml;
+
     /* low level method */
-    xmlSecTransformExecuteMethod	execute;
+    xmlSecTransformExecuteMethod        execute;
 
-    /* reserved for future */ 
-    void* 				reserved0;
-    void* 				reserved1;
+    /* reserved for future */
+    void*                               reserved0;
+    void*                               reserved1;
 };
 </programlisting>
 <para>
@@ -2172,103 +2172,103 @@ The transform klass desccription structure.</para>
 </para><variablelist role="struct">
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>klassSize</structfield>;</term>
-<listitem><simpara>			the transform klass structure size.
+<listitem><simpara>                  the transform klass structure size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecSize">xmlSecSize</link>&#160;<structfield>objSize</structfield>;</term>
-<listitem><simpara>			the transform object size.
+<listitem><simpara>                    the transform object size.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>name</structfield>;</term>
-<listitem><simpara>			the transform's name.
+<listitem><simpara>                       the transform's name.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term>const&#160;<link linkend="xmlChar">xmlChar</link>&#160;*<structfield>href</structfield>;</term>
-<listitem><simpara>			the transform's identification string (href).
+<listitem><simpara>                       the transform's identification string (href).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformUsage">xmlSecTransformUsage</link>&#160;<structfield>usage</structfield>;</term>
-<listitem><simpara>			the allowed transforms usages.
+<listitem><simpara>                      the allowed transforms usages.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformInitializeMethod">xmlSecTransformInitializeMethod</link>&#160;<structfield>initialize</structfield>;</term>
-<listitem><simpara>			the initialization method.
+<listitem><simpara>                 the initialization method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformFinalizeMethod">xmlSecTransformFinalizeMethod</link>&#160;<structfield>finalize</structfield>;</term>
-<listitem><simpara>			the finmalization (destroy) function.
+<listitem><simpara>                   the finmalization (destroy) function.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformNodeReadMethod">xmlSecTransformNodeReadMethod</link>&#160;<structfield>readNode</structfield>;</term>
-<listitem><simpara>			the XML node read method.
+<listitem><simpara>                   the XML node read method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformNodeWriteMethod">xmlSecTransformNodeWriteMethod</link>&#160;<structfield>writeNode</structfield>;</term>
-<listitem><simpara>			the XML node write method.
+<listitem><simpara>                  the XML node write method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformSetKeyRequirementsMethod">xmlSecTransformSetKeyRequirementsMethod</link>&#160;<structfield>setKeyReq</structfield>;</term>
-<listitem><simpara>			the set key requirements method.
+<listitem><simpara>                  the set key requirements method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformSetKeyMethod">xmlSecTransformSetKeyMethod</link>&#160;<structfield>setKey</structfield>;</term>
-<listitem><simpara>			the set key method.
+<listitem><simpara>                     the set key method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformVerifyMethod">xmlSecTransformVerifyMethod</link>&#160;<structfield>verify</structfield>;</term>
-<listitem><simpara>			the verify method (for digest and signature transforms).
+<listitem><simpara>                     the verify method (for digest and signature transforms).
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformGetDataTypeMethod">xmlSecTransformGetDataTypeMethod</link>&#160;<structfield>getDataType</structfield>;</term>
-<listitem><simpara>		the input/output data type query method.
+<listitem><simpara>                the input/output data type query method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformPushBinMethod">xmlSecTransformPushBinMethod</link>&#160;<structfield>pushBin</structfield>;</term>
-<listitem><simpara>			the binary data "push thru chain" processing method.
+<listitem><simpara>                    the binary data "push thru chain" processing method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformPopBinMethod">xmlSecTransformPopBinMethod</link>&#160;<structfield>popBin</structfield>;</term>
-<listitem><simpara>			the binary data "pop from chain" procesing method.
+<listitem><simpara>                     the binary data "pop from chain" procesing method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformPushXmlMethod">xmlSecTransformPushXmlMethod</link>&#160;<structfield>pushXml</structfield>;</term>
-<listitem><simpara>			the XML data "push thru chain" processing method.
+<listitem><simpara>                    the XML data "push thru chain" processing method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformPopXmlMethod">xmlSecTransformPopXmlMethod</link>&#160;<structfield>popXml</structfield>;</term>
-<listitem><simpara>			the XML data "pop from chain" procesing method.
+<listitem><simpara>                     the XML data "pop from chain" procesing method.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="xmlSecTransformExecuteMethod">xmlSecTransformExecuteMethod</link>&#160;<structfield>execute</structfield>;</term>
-<listitem><simpara>			the low level data processing method used  by default
-			implementations of <parameter>pushBin</parameter>, <parameter>popBin</parameter>, <parameter>pushXml</parameter> and <parameter>popXml</parameter>.
+<listitem><simpara>                    the low level data processing method used  by default
+                             implementations of <parameter>pushBin</parameter>, <parameter>popBin</parameter>, <parameter>pushXml</parameter> and <parameter>popXml</parameter>.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>			reserved for the future.
+<listitem><simpara>                  reserved for the future.
 </simpara></listitem>
 </varlistentry>
 <varlistentry>
 <term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>			reserved for the future.
+<listitem><simpara>                  reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
@@ -2280,12 +2280,12 @@ Macro. Returns transform klass name.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>klass</parameter>&#160;:</term>
-<listitem><simpara> 		the transofrm's klass.
+<listitem><simpara>              the transofrm's klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformIdListId" role="macro">
 <title>xmlSecTransformIdListId</title>
-<indexterm zone="xmlSecTransformIdListId"><primary sortas="xmlSecTransformIdListId">xmlSecTransformIdListId</primary></indexterm><programlisting>#define xmlSecTransformIdListId	xmlSecTransformIdListGetKlass()
+<indexterm zone="xmlSecTransformIdListId"><primary sortas="xmlSecTransformIdListId">xmlSecTransformIdListId</primary></indexterm><programlisting>#define xmlSecTransformIdListId xmlSecTransformIdListGetKlass()
 </programlisting>
 <para>
 Transform klasses list klass.</para>
@@ -2310,10 +2310,10 @@ Lookups <parameter>dataId</parameter> in <parameter>list</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform ids list.
+<listitem><simpara>               the pointer to transform ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformId</parameter>&#160;:</term>
-<listitem><simpara>	the transform klass.
+<listitem><simpara>        the transform klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 1 if <parameter>dataId</parameter> is found in the <parameter>list</parameter>, 0 if not and a negative
 value if an error occurs.
@@ -2329,13 +2329,13 @@ Lookups data klass in the list with given <parameter>href</parameter> and <param
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform ids list.
+<listitem><simpara>               the pointer to transform ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>href</parameter>&#160;:</term>
-<listitem><simpara>		the desired transform klass href.
+<listitem><simpara>               the desired transform klass href.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the desired transform usage.
+<listitem><simpara>              the desired transform usage.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> transform klass is found and NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -2350,13 +2350,13 @@ Lookups data klass in the list with given <parameter>name</parameter> and <param
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform ids list.
+<listitem><simpara>               the pointer to transform ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>name</parameter>&#160;:</term>
-<listitem><simpara>		the desired transform klass name.
+<listitem><simpara>               the desired transform klass name.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>usage</parameter>&#160;:</term>
-<listitem><simpara>		the desired transform usage.
+<listitem><simpara>              the desired transform usage.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> transform klass is found and NULL otherwise.
 </simpara></listitem></varlistentry>
@@ -2370,10 +2370,10 @@ Prints binary transform debug information to <parameter>output</parameter>.</par
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform ids list.
+<listitem><simpara>               the pointer to transform ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformIdListDebugXmlDump" role="function">
@@ -2385,15 +2385,15 @@ Prints binary transform debug information to <parameter>output</parameter> in XM
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>list</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to transform ids list.
+<listitem><simpara>               the pointer to transform ids list.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to output FILE.
+<listitem><simpara>             the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformIdUnknown" role="macro">
 <title>xmlSecTransformIdUnknown</title>
-<indexterm zone="xmlSecTransformIdUnknown"><primary sortas="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</primary></indexterm><programlisting>#define xmlSecTransformIdUnknown			((xmlSecTransformId)NULL)
+<indexterm zone="xmlSecTransformIdUnknown"><primary sortas="xmlSecTransformIdUnknown">xmlSecTransformIdUnknown</primary></indexterm><programlisting>#define xmlSecTransformIdUnknown                        ((xmlSecTransformId)NULL)
 </programlisting>
 <para>
 The "unknown" transform id (NULL).</para>
@@ -2412,9 +2412,9 @@ The base64 encode transform klass.</para>
 <para>
 The Base64 transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64"><type>sec-Base-64</type></link>).
 The normative specification for base64 decoding transforms is RFC 2045
-(http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has 
-no content. The input is decoded by the algorithms. This transform is 
-useful if an application needs to sign the raw data associated with 
+(http://www.ietf.org/rfc/rfc2045.txt). The base64 Transform element has
+no content. The input is decoded by the algorithms. This transform is
+useful if an application needs to sign the raw data associated with
 the encoded content of an element.</para>
 <para>
 </para><variablelist role="params">
@@ -2430,10 +2430,10 @@ Sets the max line size to <parameter>lineSize</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara> 		the pointer to BASE64 encode transform.
+<listitem><simpara>          the pointer to BASE64 encode transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>lineSize</parameter>&#160;:</term>
-<listitem><simpara> 		the new max line size.
+<listitem><simpara>           the new max line size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformInclC14NId" role="macro">
@@ -2448,7 +2448,7 @@ The regular (inclusive) C14N without comments transform klass.</para>
 <indexterm zone="xmlSecTransformInclC14NGetKlass"><primary sortas="xmlSecTransformInclC14NGetKlass">xmlSecTransformInclC14NGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformInclC14NGetKlass     (void);</programlisting>
 <para>
 Inclusive (regular) canonicalization that omits comments transform klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg"><type>sec-c14nAlg</type></link> and 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg"><type>sec-c14nAlg</type></link> and
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 <para>
 </para><variablelist role="params">
@@ -2468,7 +2468,7 @@ The regular (inclusive) C14N with comments transform klass.</para>
                                                         (void);</programlisting>
 <para>
 Inclusive (regular) canonicalization that includes comments transform klass
-(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg"><type>sec-c14nAlg</type></link> and 
+(http://www.w3.org/TR/xmldsig-core/<link linkend="sec-c14nAlg"><type>sec-c14nAlg</type></link> and
 http://www.w3.org/TR/2001/REC-xml-c14n-20010315).</para>
 <para>
 </para><variablelist role="params">
@@ -2561,12 +2561,12 @@ The "enveloped" transform klass.</para>
 The enveloped transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-EnvelopedSignature"><type>sec-EnvelopedSignature</type></link>):
 </para>
 <para>
-An enveloped signature transform T removes the whole Signature element 
-containing T from the digest calculation of the Reference element 
-containing T. The entire string of characters used by an XML processor 
-to match the Signature with the XML production element is removed. 
-The output of the transform is equivalent to the output that would 
-result from replacing T with an XPath transform containing the following 
+An enveloped signature transform T removes the whole Signature element
+containing T from the digest calculation of the Reference element
+containing T. The entire string of characters used by an XML processor
+to match the Signature with the XML production element is removed.
+The output of the transform is equivalent to the output that would
+result from replacing T with an XPath transform containing the following
 XPath parameter element:
 </para>
 <para>
@@ -2574,12 +2574,13 @@ XPath parameter element:
   count(ancestor-or-self::dsig:Signature |
   <link linkend="here"><function>here()</function></link>/ancestor::dsig:Signature[1]) &gt;
   count(ancestor-or-self::dsig:Signature)&lt;/XPath&gt;
-   
-The input and output requirements of this transform are identical to 
-those of the XPath transform, but may only be applied to a node-set from 
-its parent XML document. Note that it is not necessary to use an XPath 
-expression evaluator to create this transform. However, this transform 
-MUST produce output in exactly the same manner as the XPath transform 
+</para>
+<para>
+The input and output requirements of this transform are identical to
+those of the XPath transform, but may only be applied to a node-set from
+its parent XML document. Note that it is not necessary to use an XPath
+expression evaluator to create this transform. However, this transform
+MUST produce output in exactly the same manner as the XPath transform
 parameterized by the XPath expression above.</para>
 <para>
 </para><variablelist role="params">
@@ -2597,8 +2598,8 @@ The XPath transform klass.</para>
 <title>xmlSecTransformXPathGetKlass ()</title>
 <indexterm zone="xmlSecTransformXPathGetKlass"><primary sortas="xmlSecTransformXPathGetKlass">xmlSecTransformXPathGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformXPathGetKlass        (void);</programlisting>
 <para>
-The XPath transform evaluates given XPath expression and 
-intersects the result with the previous nodes set. See 
+The XPath transform evaluates given XPath expression and
+intersects the result with the previous nodes set. See
 http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XPath"><type>sec-XPath</type></link> for more details.</para>
 <para>
 </para><variablelist role="params">
@@ -2633,7 +2634,7 @@ The XPointer transform klass.</para>
 <title>xmlSecTransformXPointerGetKlass ()</title>
 <indexterm zone="xmlSecTransformXPointerGetKlass"><primary sortas="xmlSecTransformXPointerGetKlass">xmlSecTransformXPointerGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformXPointerGetKlass     (void);</programlisting>
 <para>
-The XPointer transform klass 
+The XPointer transform klass
 (http://www.ietf.org/internet-drafts/draft-eastlake-xmldsig-uri-02.txt).</para>
 <para>
 </para><variablelist role="params">
@@ -2651,16 +2652,16 @@ Sets the XPointer expression for an XPointer <parameter>transform</parameter>.</
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to XPointer transform.
+<listitem><simpara>          the pointer to XPointer transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>expr</parameter>&#160;:</term>
-<listitem><simpara>		the XPointer expression.
+<listitem><simpara>               the XPointer expression.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>nodeSetType</parameter>&#160;:</term>
-<listitem><simpara>	the type of evaluated XPointer expression.
+<listitem><simpara>        the type of evaluated XPointer expression.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>hereNode</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to "here" node.
+<listitem><simpara>           the pointer to "here" node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -2679,31 +2680,31 @@ The XSLT transform klass.</para>
 XSLT transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-XSLT"><type>sec-XSLT</type></link>):
 </para>
 <para>
-The normative specification for XSL Transformations is [XSLT]. 
-Specification of a namespace-qualified stylesheet element, which MUST be 
-the sole child of the Transform element, indicates that the specified style 
-sheet should be used. Whether this instantiates in-line processing of local 
-XSLT declarations within the resource is determined by the XSLT processing 
-model; the ordered application of multiple stylesheet may require multiple 
-Transforms. No special provision is made for the identification of a remote 
-stylesheet at a given URI because it can be communicated via an  xsl:include 
+The normative specification for XSL Transformations is [XSLT].
+Specification of a namespace-qualified stylesheet element, which MUST be
+the sole child of the Transform element, indicates that the specified style
+sheet should be used. Whether this instantiates in-line processing of local
+XSLT declarations within the resource is determined by the XSLT processing
+model; the ordered application of multiple stylesheet may require multiple
+Transforms. No special provision is made for the identification of a remote
+stylesheet at a given URI because it can be communicated via an  xsl:include
 or  xsl:import within the stylesheet child of the Transform.
 </para>
 <para>
-This transform requires an octet stream as input. If the actual input is an 
-XPath node-set, then the signature application should attempt to convert it 
-to octets (apply Canonical XML]) as described in the Reference Processing 
+This transform requires an octet stream as input. If the actual input is an
+XPath node-set, then the signature application should attempt to convert it
+to octets (apply Canonical XML]) as described in the Reference Processing
 Model (section 4.3.3.2).]
 </para>
 <para>
-The output of this transform is an octet stream. The processing rules for 
+The output of this transform is an octet stream. The processing rules for
 the XSL style sheet or transform element are stated in the XSLT specification
-[XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml 
-for XML and HTML. As XSLT implementations do not produce consistent 
-serializations of their output, we further RECOMMEND inserting a transform 
-after the XSLT transform to canonicalize the output. These steps will help 
-to ensure interoperability of the resulting signatures among applications 
-that support the XSLT transform. Note that if the output is actually HTML, 
+[XSLT]. We RECOMMEND that XSLT transform authors use an output method of xml
+for XML and HTML. As XSLT implementations do not produce consistent
+serializations of their output, we further RECOMMEND inserting a transform
+after the XSLT transform to canonicalize the output. These steps will help
+to ensure interoperability of the resulting signatures among applications
+that support the XSLT transform. Note that if the output is actually HTML,
 then the result of these steps is logically equivalent [XHTML].</para>
 <para>
 </para><variablelist role="params">
@@ -2723,15 +2724,15 @@ The "remove all xml tags" transform klass (used before base64 transforms).</para
                                                         (void);</programlisting>
 <para>
 The "remove xml tags" transform klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Base-64"><type>sec-Base-64</type></link>):
-Base64 transform requires an octet stream for input. If an XPath node-set 
-(or sufficiently functional alternative) is given as input, then it is 
-converted to an octet stream by performing operations logically equivalent 
-to 1) applying an XPath transform with expression self::<link linkend="text"><function>text()</function></link>, then 2) 
-taking the string-value of the node-set. Thus, if an XML element is 
-identified by a barename XPointer in the Reference URI, and its content 
-consists solely of base64 encoded character data, then this transform 
-automatically strips away the start and end tags of the identified element 
-and any of its descendant elements as well as any descendant comments and 
+Base64 transform requires an octet stream for input. If an XPath node-set
+(or sufficiently functional alternative) is given as input, then it is
+converted to an octet stream by performing operations logically equivalent
+to 1) applying an XPath transform with expression self::<link linkend="text"><function>text()</function></link>, then 2)
+taking the string-value of the node-set. Thus, if an XML element is
+identified by a barename XPointer in the Reference URI, and its content
+consists solely of base64 encoded character data, then this transform
+automatically strips away the start and end tags of the identified element
+and any of its descendant elements as well as any descendant comments and
 processing instructions. The output of this transform is an octet stream.</para>
 <para>
 </para><variablelist role="params">
@@ -2742,9 +2743,9 @@ processing instructions. The output of this transform is an octet stream.</para>
 <title>xmlSecTransformVisa3DHackId</title>
 <indexterm zone="xmlSecTransformVisa3DHackId"><primary sortas="xmlSecTransformVisa3DHackId">xmlSecTransformVisa3DHackId</primary></indexterm><programlisting>#define             xmlSecTransformVisa3DHackId</programlisting>
 <para>
-Selects node subtree by given node id string. The only reason why we need this 
-is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+Selects node subtree by given node id string. The only reason why we need this
+is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
+invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
 such expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 </para></refsect2>
@@ -2752,9 +2753,9 @@ such expressions thru XPath/XPointer engine, we need to have this hack here.</pa
 <title>xmlSecTransformVisa3DHackGetKlass ()</title>
 <indexterm zone="xmlSecTransformVisa3DHackGetKlass"><primary sortas="xmlSecTransformVisa3DHackGetKlass">xmlSecTransformVisa3DHackGetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecTransformVisa3DHackGetKlass   (void);</programlisting>
 <para>
-The Visa3DHack transform klass. The only reason why we need this 
-is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows 
-invalid XPointer expressions in the URI attribute. Since we couldn't evaluate 
+The Visa3DHack transform klass. The only reason why we need this
+is Visa3D protocol. It doesn't follow XML/XPointer/XMLDSig specs and allows
+invalid XPointer expressions in the URI attribute. Since we couldn't evaluate
 such expressions thru XPath/XPointer engine, we need to have this hack here.</para>
 <para>
 </para><variablelist role="params">
@@ -2770,10 +2771,10 @@ Sets the ID value for an Visa3DHack <parameter>transform</parameter>.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>		the pointer to Visa3DHack transform.
+<listitem><simpara>          the pointer to Visa3DHack transform.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
-<listitem><simpara>			the ID value.
+<listitem><simpara>                 the ID value.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

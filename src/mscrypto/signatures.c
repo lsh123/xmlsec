@@ -778,7 +778,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha256Klass = {
  *
  * The RSA-SHA256 signature transform klass.
  *
- * Returns RSA-SHA256 signature transform klass.
+ * Returns: RSA-SHA256 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha256GetKlass(void) {
@@ -824,7 +824,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha384Klass = {
  *
  * The RSA-SHA384 signature transform klass.
  *
- * Returns RSA-SHA384 signature transform klass.
+ * Returns: RSA-SHA384 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha384GetKlass(void) {
@@ -870,7 +870,7 @@ static xmlSecTransformKlass xmlSecMSCryptoRsaSha512Klass = {
  *
  * The RSA-SHA512 signature transform klass.
  *
- * Returns RSA-SHA512 signature transform klass.
+ * Returns: RSA-SHA512 signature transform klass.
  */
 xmlSecTransformId
 xmlSecMSCryptoTransformRsaSha512GetKlass(void) {

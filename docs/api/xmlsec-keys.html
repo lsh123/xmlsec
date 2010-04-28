@@ -183,49 +183,49 @@ const <font>xmlChar</font>*      <a href="xmlsec-keys.html#XMLSECKEYGETNAME">xml
 <a name="XMLSEC-KEYS.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGE"></a><h3>xmlSecKeyUsage</h3>
-<pre class="PROGRAMLISTING">typedef unsigned int 			xmlSecKeyUsage;</pre>
+<pre class="PROGRAMLISTING">typedef unsigned int                    xmlSecKeyUsage;</pre>
 <p>The key usage.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGESIGN"></a><h3>xmlSecKeyUsageSign</h3>
-<pre class="PROGRAMLISTING">#define	xmlSecKeyUsageSign		0x00000001</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUsageSign              0x00000001</pre>
 <p>Key can be used in any way.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGEVERIFY"></a><h3>xmlSecKeyUsageVerify</h3>
-<pre class="PROGRAMLISTING">#define	xmlSecKeyUsageVerify		0x00000002</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUsageVerify            0x00000002</pre>
 <p>Key for signing.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGEENCRYPT"></a><h3>xmlSecKeyUsageEncrypt</h3>
-<pre class="PROGRAMLISTING">#define	xmlSecKeyUsageEncrypt		0x00000004</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUsageEncrypt           0x00000004</pre>
 <p>Key for signature verification.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGEDECRYPT"></a><h3>xmlSecKeyUsageDecrypt</h3>
-<pre class="PROGRAMLISTING">#define	xmlSecKeyUsageDecrypt		0x00000008</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUsageDecrypt           0x00000008</pre>
 <p>An encryption key.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGEKEYEXCHANGE"></a><h3>xmlSecKeyUsageKeyExchange</h3>
-<pre class="PROGRAMLISTING">#define	xmlSecKeyUsageKeyExchange	0x00000010</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUsageKeyExchange       0x00000010</pre>
 <p>The key is used for key exchange.</p>
 <p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSAGEANY"></a><h3>xmlSecKeyUsageAny</h3>
-<pre class="PROGRAMLISTING">#define	xmlSecKeyUsageAny		0xFFFFFFFF</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUsageAny               0xFFFFFFFF</pre>
 <p>A decryption key.</p>
 <p></p>
 </div>
@@ -440,18 +440,18 @@ functions.</p>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9072"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for future use.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9078"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved2</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for future use.</p></td>
 </tr>
 </tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYUSEWITHPTRLISTID"></a><h3>xmlSecKeyUseWithPtrListId</h3>
-<pre class="PROGRAMLISTING">#define xmlSecKeyUseWithPtrListId	xmlSecKeyUseWithPtrListGetKlass()</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyUseWithPtrListId       xmlSecKeyUseWithPtrListGetKlass()</pre>
 <p>The keys list klass.</p>
 <p></p>
 </div>
@@ -471,11 +471,11 @@ functions.</p>
 <div class="REFSECT2">
 <a name="XMLSECKEYREQ"></a><h3>struct xmlSecKeyReq</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKeyReq {
-    xmlSecKeyDataId	        keyId;
-    xmlSecKeyDataType		keyType;
-    xmlSecKeyUsage		keyUsage;
-    xmlSecSize			keyBitsSize;
-    xmlSecPtrList               keyUseWithList;    
+    xmlSecKeyDataId             keyId;
+    xmlSecKeyDataType           keyType;
+    xmlSecKeyUsage              keyUsage;
+    xmlSecSize                  keyBitsSize;
+    xmlSecPtrList               keyUseWithList;
 
     void*                       reserved1;
     void*                       reserved2;
@@ -486,19 +486,19 @@ functions.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9113"><span style="white-space: nowrap"><font>xmlSecKeyDataId</font> <code class="STRUCTFIELD">keyId</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired key value klass.</p></td>
+<td align="LEFT" valign="TOP"><p>              the desired key value klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9119"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> <code class="STRUCTFIELD">keyType</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired key type.</p></td>
+<td align="LEFT" valign="TOP"><p>            the desired key type.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9125"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <code class="STRUCTFIELD">keyUsage</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the desired key usage.</p></td>
+<td align="LEFT" valign="TOP"><p>           the desired key usage.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9131"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> <code class="STRUCTFIELD">keyBitsSize</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the desired key size (in bits!).</p></td>
+<td align="LEFT" valign="TOP"><p>        the desired key size (in bits!).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9137"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrList</a> <code class="STRUCTFIELD">keyUseWithList</code>;</span></a></td>
@@ -506,11 +506,11 @@ functions.</p>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9143"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for future use.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9149"><span style="white-space: nowrap"><font>void</font> *<code class="STRUCTFIELD">reserved2</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		reserved for future use.</p></td>
+<td align="LEFT" valign="TOP"><p>          reserved for future use.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -525,7 +525,7 @@ cleaning it with <a href="xmlsec-keys.html#XMLSECKEYREQFINALIZE"><span class="TY
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9167"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9172"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -543,7 +543,7 @@ function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN9189"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -555,7 +555,7 @@ function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN9204"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements object.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -569,11 +569,11 @@ function.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9222"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to destination object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to destination object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9227"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to source object.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to source object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9232"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -592,11 +592,11 @@ function.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9250"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9255"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9260"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -616,11 +616,11 @@ if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9278"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9283"><span style="white-space: nowrap"><code class="PARAMETER">value</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key value.</p></td>
+<td align="LEFT" valign="TOP"><p>              the pointer to key value.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9288"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -640,11 +640,11 @@ if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9306"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9311"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -659,11 +659,11 @@ if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9329"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements object.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements object.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9334"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -671,12 +671,12 @@ if an error occurs.</p></td>
 <div class="REFSECT2">
 <a name="XMLSECKEY"></a><h3>struct xmlSecKey</h3>
 <pre class="PROGRAMLISTING">struct xmlSecKey {
-    xmlChar*				name;
-    xmlSecKeyDataPtr			value;
-    xmlSecPtrListPtr			dataList;
-    xmlSecKeyUsage			usage;
-    time_t				notValidBefore;
-    time_t				notValidAfter;    
+    xmlChar*                            name;
+    xmlSecKeyDataPtr                    value;
+    xmlSecPtrListPtr                    dataList;
+    xmlSecKeyUsage                      usage;
+    time_t                              notValidBefore;
+    time_t                              notValidAfter;
 };</pre>
 <p>The key.</p>
 <p></p>
@@ -684,27 +684,27 @@ if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9347"><span style="white-space: nowrap"><font>xmlChar</font> *<code class="STRUCTFIELD">name</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the key name.</p></td>
+<td align="LEFT" valign="TOP"><p>               the key name.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9353"><span style="white-space: nowrap"><a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> <code class="STRUCTFIELD">value</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key value.</p></td>
+<td align="LEFT" valign="TOP"><p>              the key value.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9359"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST">xmlSecPtrListPtr</a> <code class="STRUCTFIELD">dataList</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key data list.</p></td>
+<td align="LEFT" valign="TOP"><p>           the key data list.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9365"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEYUSAGE">xmlSecKeyUsage</a> <code class="STRUCTFIELD">usage</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key usage.</p></td>
+<td align="LEFT" valign="TOP"><p>              the key usage.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9371"><span style="white-space: nowrap"><font>time_t</font> <code class="STRUCTFIELD">notValidBefore</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the start key validity interval.</p></td>
+<td align="LEFT" valign="TOP"><p>     the start key validity interval.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9377"><span style="white-space: nowrap"><font>time_t</font> <code class="STRUCTFIELD">notValidAfter</code>;</span></a></td>
-<td align="LEFT" valign="TOP"><p>	the end key validity interval.</p></td>
+<td align="LEFT" valign="TOP"><p>      the end key validity interval.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -712,7 +712,7 @@ if an error occurs.</p></td>
 <div class="REFSECT2">
 <a name="XMLSECKEYCREATE"></a><h3>xmlSecKeyCreate ()</h3>
 <pre class="PROGRAMLISTING"><a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a>        xmlSecKeyCreate                     (void);</pre>
-<p>Allocates and initializes new key. Caller is responsible for 
+<p>Allocates and initializes new key. Caller is responsible for
 freeing returned object with <a href="xmlsec-keys.html#XMLSECKEYDESTROY"><span class="TYPE">xmlSecKeyDestroy</span></a> function.</p>
 <p></p>
 <p></p>
@@ -731,7 +731,7 @@ or NULL if an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN9412"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -743,7 +743,7 @@ or NULL if an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
 <td align="LEFT" valign="TOP"><a name="AEN9428"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -756,7 +756,7 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9444"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to the <a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKey</span></a> structure.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to the <a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKey</span></a> structure.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9451"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -776,11 +776,11 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9471"><span style="white-space: nowrap"><code class="PARAMETER">keyDst</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the destination key.</p></td>
+<td align="LEFT" valign="TOP"><p>             the destination key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9476"><span style="white-space: nowrap"><code class="PARAMETER">keySrc</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the source key.</p></td>
+<td align="LEFT" valign="TOP"><p>             the source key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9481"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -798,7 +798,7 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9498"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9503"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -817,11 +817,11 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9521"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9526"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new key name.</p></td>
+<td align="LEFT" valign="TOP"><p>               the new key name.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9531"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -839,7 +839,7 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9547"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9552"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -857,7 +857,7 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9569"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9574"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -876,11 +876,11 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9592"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9597"><span style="white-space: nowrap"><code class="PARAMETER">value</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new value.</p></td>
+<td align="LEFT" valign="TOP"><p>              the new value.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9602"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -899,15 +899,15 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9618"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9623"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the requested data klass.</p></td>
+<td align="LEFT" valign="TOP"><p>             the requested data klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9628"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> additional data associated with the <code class="PARAMETER">key</code> (see also 
+<td align="LEFT" valign="TOP"><p> additional data associated with the <code class="PARAMETER">key</code> (see also
 <a href="xmlsec-keys.html#XMLSECKEYADOPTDATA"><span class="TYPE">xmlSecKeyAdoptData</span></a> function).</p></td>
 </tr>
 </tbody></table>
@@ -923,11 +923,11 @@ or NULL if an error occurs.</p></td>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9649"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9654"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the requested data klass.</p></td>
+<td align="LEFT" valign="TOP"><p>             the requested data klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9659"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -947,11 +947,11 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9679"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9684"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key data.</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to key data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9689"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -970,11 +970,11 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9707"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9712"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -989,11 +989,11 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9730"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9735"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to output FILE.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -1009,15 +1009,15 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9754"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the requested key klass (rsa, dsa, aes, ...).</p></td>
+<td align="LEFT" valign="TOP"><p>             the requested key klass (rsa, dsa, aes, ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9759"><span style="white-space: nowrap"><code class="PARAMETER">sizeBits</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new key size (in bits!).</p></td>
+<td align="LEFT" valign="TOP"><p>           the new key size (in bits!).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9764"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new key type (session, permanent, ...).</p></td>
+<td align="LEFT" valign="TOP"><p>               the new key type (session, permanent, ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9769"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1037,15 +1037,15 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9788"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the requested key klass name (rsa, dsa, aes, ...).</p></td>
+<td align="LEFT" valign="TOP"><p>               the requested key klass name (rsa, dsa, aes, ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9793"><span style="white-space: nowrap"><code class="PARAMETER">sizeBits</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new key size (in bits!).</p></td>
+<td align="LEFT" valign="TOP"><p>           the new key size (in bits!).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9798"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the new key type (session, permanent, ...).</p></td>
+<td align="LEFT" valign="TOP"><p>               the new key type (session, permanent, ...).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9803"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1065,15 +1065,15 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9821"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9826"><span style="white-space: nowrap"><code class="PARAMETER">name</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the pointer to key name (may be NULL).</p></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to key name (may be NULL).</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9831"><span style="white-space: nowrap"><code class="PARAMETER">keyReq</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the pointer to key requirements.</p></td>
+<td align="LEFT" valign="TOP"><p>             the pointer to key requirements.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9836"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1092,11 +1092,11 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9853"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key value data klass.</p></td>
+<td align="LEFT" valign="TOP"><p>             the key value data klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9858"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the buffer that contains the binary data.</p></td>
+<td align="LEFT" valign="TOP"><p>             the buffer that contains the binary data.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9863"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1115,11 +1115,11 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9881"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key value data klass.</p></td>
+<td align="LEFT" valign="TOP"><p>             the key value data klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9886"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key binary filename.</p></td>
+<td align="LEFT" valign="TOP"><p>           the key binary filename.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9891"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1139,15 +1139,15 @@ by <code class="PARAMETER">key</code>.</p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9910"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the key value data klass.</p></td>
+<td align="LEFT" valign="TOP"><p>             the key value data klass.</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9915"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>		the memory containing the key</p></td>
+<td align="LEFT" valign="TOP"><p>               the memory containing the key</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9920"><span style="white-space: nowrap"><code class="PARAMETER">dataSize</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p> 		the size of the memory block</p></td>
+<td align="LEFT" valign="TOP"><p>           the size of the memory block</p></td>
 </tr>
 <tr>
 <td align="LEFT" valign="TOP"><a name="AEN9925"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
@@ -1189,7 +1189,7 @@ or 0 otherwise.</p>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECKEYPTRLISTID"></a><h3>xmlSecKeyPtrListId</h3>
-<pre class="PROGRAMLISTING">#define xmlSecKeyPtrListId	xmlSecKeyPtrListGetKlass()</pre>
+<pre class="PROGRAMLISTING">#define xmlSecKeyPtrListId      xmlSecKeyPtrListGetKlass()</pre>
 <p>The keys list klass.</p>
 <p></p>
 </div>

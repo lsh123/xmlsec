@@ -53,7 +53,7 @@ Registers the key data and transforms klasses from <parameter>functions</paramet
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>functions</parameter>&#160;:</term>
-<listitem><simpara> 		the functions table.
+<listitem><simpara>          the functions table.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -84,13 +84,13 @@ and should not be called by application directly.</para>
 <title>xmlSecCryptoDLLoadLibrary ()</title>
 <indexterm zone="xmlSecCryptoDLLoadLibrary"><primary sortas="xmlSecCryptoDLLoadLibrary">xmlSecCryptoDLLoadLibrary</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLLoadLibrary           (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
 <para>
-Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe, 
+Loads the xmlsec-&lt;crypto&gt; library. This function is NOT thread safe,
 application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>, <link linkend="xmlSecCryptoDLGetLibraryFunctions"><type>xmlSecCryptoDLGetLibraryFunctions</type></link>,
 and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrary</type></link> functions from multiple threads.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>crypto</parameter>&#160;:</term>
-<listitem><simpara>		the desired crypto library name ("openssl", "nss", ...).
+<listitem><simpara>             the desired crypto library name ("openssl", "nss", ...).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -100,13 +100,13 @@ and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrar
 <indexterm zone="xmlSecCryptoDLGetLibraryFunctions"><primary sortas="xmlSecCryptoDLGetLibraryFunctions">xmlSecCryptoDLGetLibraryFunctions</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoDLGetLibraryFunctions
                                                         (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
 <para>
-Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store 
-table. This function is NOT thread safe, application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>, 
+Loads the xmlsec-&lt;crypto&gt; library and gets global crypto functions/transforms/keys data/keys store
+table. This function is NOT thread safe, application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>,
 <link linkend="xmlSecCryptoDLGetLibraryFunctions"><type>xmlSecCryptoDLGetLibraryFunctions</type></link>, and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrary</type></link> functions from multiple threads.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>crypto</parameter>&#160;:</term>
-<listitem><simpara>		the desired crypto library name ("openssl", "nss", ...).
+<listitem><simpara>             the desired crypto library name ("openssl", "nss", ...).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the table or NULL if an error occurs.
 </simpara></listitem></varlistentry>
@@ -116,13 +116,13 @@ table. This function is NOT thread safe, application MUST NOT call <link linkend
 <indexterm zone="xmlSecCryptoDLUnloadLibrary"><primary sortas="xmlSecCryptoDLUnloadLibrary">xmlSecCryptoDLUnloadLibrary</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecCryptoDLUnloadLibrary         (const <link linkend="xmlChar">xmlChar</link> *crypto);</programlisting>
 <para>
 Unloads the xmlsec-&lt;crypto&gt; library. All pointers to this library
-functions tables became invalid. This function is NOT thread safe, 
+functions tables became invalid. This function is NOT thread safe,
 application MUST NOT call <link linkend="xmlSecCryptoDLLoadLibrary"><type>xmlSecCryptoDLLoadLibrary</type></link>, <link linkend="xmlSecCryptoDLGetLibraryFunctions"><type>xmlSecCryptoDLGetLibraryFunctions</type></link>,
 and <link linkend="xmlSecCryptoDLUnloadLibrary"><type>xmlSecCryptoDLUnloadLibrary</type></link> functions from multiple threads.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>crypto</parameter>&#160;:</term>
-<listitem><simpara>		the desired crypto library name ("openssl", "nss", ...).
+<listitem><simpara>             the desired crypto library name ("openssl", "nss", ...).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
@@ -135,7 +135,7 @@ Sets global crypto functions/transforms/keys data/keys store table.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><parameter>functions</parameter>&#160;:</term>
-<listitem><simpara>		the new table
+<listitem><simpara>          the new table
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>

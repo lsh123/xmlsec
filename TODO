@@ -97,8 +97,8 @@ aleksey-xmldsig-01/enveloped-gost
 * xmlsec-gnutls (April 26, 2010 using GnuTLS)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RSA, DSA, AES, AES/DES KW, 
-RSA PKCS/OAEP, X509
+** Skipped tests due to missing transforms: RSA, DSA, AES, AES/DES KW,
+RSA PKCS/OAEP, X509, GOST
 
 aleksey-xmldsig-01/enveloping-dsa-x509chain
 aleksey-xmldsig-01/enveloping-rsa-x509chain
@@ -162,7 +162,6 @@ phaos-xmldsig-three/signature-rsa-detached-xslt-transform-bad-retrieval-method
 phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val
 phaos-xmldsig-three/signature-rsa-enveloped-bad-sig
 phaos-xmldsig-three/signature-rsa-manifest-x509-data-crl
-
 
 aleksey-xmlenc-01/enc-des3cbc-aes192-keyname
 merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5

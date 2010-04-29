@@ -134,9 +134,11 @@ dist-hook:
 cleantar:
 	@($(RM) -f xmlsec*.tar.gz COPYING.LIB)
 
-rpm: cleantar
-	@(unset CDPATH && $(MAKE) dist && rpmbuild -ta $(distdir).tar.gz)
+tar-release: clean cleantar
+	@(unset CDPATH && $(MAKE) dist)
 
-rpm-release: clean cleantar rpm 
+rpm: cleantar tar-release
+	@(unset CDPATH && rpmbuild -ta $(distdir).tar.gz)
+
+rpm-release: clean cleantar rpm
 	
-

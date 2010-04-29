@@ -26,6 +26,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+#include "private.h"
 
 /*****************************************************************************
  *
@@ -65,201 +66,6 @@ static void     xmlSecMSCryptoSymKeyDataDebugDump       (xmlSecKeyDataPtr data,
 static void     xmlSecMSCryptoSymKeyDataDebugXmlDump    (xmlSecKeyDataPtr data,
                                                          FILE* output);
 static int      xmlSecMSCryptoSymKeyDataKlassCheck      (xmlSecKeyDataKlass* klass);
-
-#ifndef XMLSEC_NO_AES
-/**************************************************************************
- *
- * <xmlsec:AESKeyValue> processing
- *
- *************************************************************************/
-static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataAesKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecKeyDataBinarySize,
-
-    /* data */
-    xmlSecNameAESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
-    xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
-    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecMSCryptoSymKeyDataXmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecMSCryptoSymKeyDataBinRead,            /* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecMSCryptoSymKeyDataBinWrite,           /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecMSCryptoSymKeyDataDebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCryptoSymKeyDataDebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecMSCryptoKeyDataAesGetKlass:
- *
- * The AES key data klass.
- *
- * Returns: AES key data klass.
- */
-xmlSecKeyDataId
-xmlSecMSCryptoKeyDataAesGetKlass(void) {
-    return(&xmlSecMSCryptoKeyDataAesKlass);
-}
-
-/**
- * xmlSecMSCryptoKeyDataAesSet:
- * @data:               the pointer to AES key data.
- * @buf:                the pointer to key value.
- * @bufSize:            the key value size (in bytes).
- *
- * Sets the value of AES key data.
- *
- * Returns: 0 on success or a negative value if an error occurs.
- */
-int
-xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
-    xmlSecBufferPtr buffer;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataAesId), -1);
-    xmlSecAssert2(buf != NULL, -1);
-    xmlSecAssert2(bufSize > 0, -1);
-
-    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
-    xmlSecAssert2(buffer != NULL, -1);
-
-    return(xmlSecBufferSetData(buffer, buf, bufSize));
-}
-#endif /* XMLSEC_NO_AES */
-
-#ifndef XMLSEC_NO_DES
-/**************************************************************************
- *
- * <xmlsec:DESKeyValue> processing
- *
- *************************************************************************/
-static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecKeyDataBinarySize,
-
-    /* data */
-    xmlSecNameDESKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
-    xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
-        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecMSCryptoSymKeyDataXmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecMSCryptoSymKeyDataBinRead,            /* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecMSCryptoSymKeyDataBinWrite,           /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecMSCryptoSymKeyDataDebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCryptoSymKeyDataDebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecMSCryptoKeyDataDesGetKlass:
- *
- * The DES key data klass.
- *
- * Returns: DES key data klass.
- */
-xmlSecKeyDataId
-xmlSecMSCryptoKeyDataDesGetKlass(void) {
-    return(&xmlSecMSCryptoKeyDataDesKlass);
-}
-#endif /* XMLSEC_NO_DES */
-
-#ifndef XMLSEC_NO_HMAC
-/**************************************************************************
- *
- * <xmlsec:HMACKeyValue> processing
- *
- *************************************************************************/
-static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataHmacKlass = {
-    sizeof(xmlSecKeyDataKlass),
-    xmlSecKeyDataBinarySize,
-
-    /* data */
-    xmlSecNameHMACKeyValue,
-    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
-                                                /* xmlSecKeyDataUsage usage; */
-    xmlSecHrefHMACKeyValue,                     /* const xmlChar* href; */
-    xmlSecNodeHMACKeyValue,                     /* const xmlChar* dataNodeName; */
-    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
-
-    /* constructors/destructor */
-    xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
-    xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
-    xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
-    xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
-
-    /* get info */
-    xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
-    xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
-        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
-
-    /* read/write */
-    xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
-    xmlSecMSCryptoSymKeyDataXmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
-    xmlSecMSCryptoSymKeyDataBinRead,            /* xmlSecKeyDataBinReadMethod binRead; */
-    xmlSecMSCryptoSymKeyDataBinWrite,           /* xmlSecKeyDataBinWriteMethod binWrite; */
-
-    /* debug */
-    xmlSecMSCryptoSymKeyDataDebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
-    xmlSecMSCryptoSymKeyDataDebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
-
-    /* reserved for the future */
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecMSCryptoKeyDataHmacGetKlass:
- *
- * The HMAC key data klass.
- *
- * Returns: HMAC key data klass.
- */
-xmlSecKeyDataId
-xmlSecMSCryptoKeyDataHmacGetKlass(void) {
-    return(&xmlSecMSCryptoKeyDataHmacKlass);
-}
-#endif /* XMLSEC_NO_HMAC */
 
 /*
  * GENERIC HELPER FUNCTIONS
@@ -401,15 +207,16 @@ xmlSecMSCryptoSymKeyDataKlassCheck(xmlSecKeyDataKlass* klass) {
 }
 
 
-
-/*
+/******************************************************************************
+ *
+ * Utils
+ *
  * Low level helper routines for importing plain text keys in MS HKEY handle,
  * since MSCrypto API does not support import of plain text (session) keys
- * just like that.
- * These functions are based upon MS kb article: 228786
+ * just like that. These functions are based upon MS kb article #228786
+ * and "Base Provider Key BLOBs" article for priv key blob format.
  *
- * aleksey: also check "Base Provider Key BLOBs" article for priv key blob format
- **/
+ ******************************************************************************/
 BOOL
 xmlSecMSCryptoCreatePrivateExponentOneKey(HCRYPTPROV hProv, HCRYPTKEY *hPrivateKey)
 {
@@ -791,5 +598,227 @@ done:
     }
     return(res);
 }
+
+#ifndef XMLSEC_NO_AES
+/**************************************************************************
+ *
+ * <xmlsec:AESKeyValue> processing
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataAesKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameAESKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefAESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeAESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCryptoSymKeyDataXmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCryptoSymKeyDataBinRead,            /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCryptoSymKeyDataBinWrite,           /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCryptoSymKeyDataDebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCryptoSymKeyDataDebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoKeyDataAesGetKlass:
+ *
+ * The AES key data klass.
+ *
+ * Returns: AES key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCryptoKeyDataAesGetKlass(void) {
+    return(&xmlSecMSCryptoKeyDataAesKlass);
+}
+
+/**
+ * xmlSecMSCryptoKeyDataAesSet:
+ * @data:               the pointer to AES key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of AES key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoKeyDataAesSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataAesId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+#endif /* XMLSEC_NO_AES */
+
+#ifndef XMLSEC_NO_DES
+/**************************************************************************
+ *
+ * <xmlsec:DESKeyValue> processing
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataDesKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameDESKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefDESKeyValue,                      /* const xmlChar* href; */
+    xmlSecNodeDESKeyValue,                      /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
+        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCryptoSymKeyDataXmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCryptoSymKeyDataBinRead,            /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCryptoSymKeyDataBinWrite,           /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCryptoSymKeyDataDebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCryptoSymKeyDataDebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoKeyDataDesGetKlass:
+ *
+ * The DES key data klass.
+ *
+ * Returns: DES key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCryptoKeyDataDesGetKlass(void) {
+    return(&xmlSecMSCryptoKeyDataDesKlass);
+}
+#endif /* XMLSEC_NO_DES */
+
+#ifndef XMLSEC_NO_HMAC
+/**************************************************************************
+ *
+ * <xmlsec:HMACKeyValue> processing
+ *
+ *************************************************************************/
+static xmlSecKeyDataKlass xmlSecMSCryptoKeyDataHmacKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecKeyDataBinarySize,
+
+    /* data */
+    xmlSecNameHMACKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefHMACKeyValue,                     /* const xmlChar* href; */
+    xmlSecNodeHMACKeyValue,                     /* const xmlChar* dataNodeName; */
+    xmlSecNs,                                   /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecMSCryptoSymKeyDataInitialize,         /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecMSCryptoSymKeyDataDuplicate,          /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecMSCryptoSymKeyDataFinalize,           /* xmlSecKeyDataFinalizeMethod finalize; */
+    xmlSecMSCryptoSymKeyDataGenerate,           /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecMSCryptoSymKeyDataGetType,            /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecMSCryptoSymKeyDataGetSize,            /* xmlSecKeyDataGetSizeMethod getSize; */
+        NULL,                                   /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    xmlSecMSCryptoSymKeyDataXmlRead,            /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    xmlSecMSCryptoSymKeyDataXmlWrite,           /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    xmlSecMSCryptoSymKeyDataBinRead,            /* xmlSecKeyDataBinReadMethod binRead; */
+    xmlSecMSCryptoSymKeyDataBinWrite,           /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecMSCryptoSymKeyDataDebugDump,          /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecMSCryptoSymKeyDataDebugXmlDump,       /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoKeyDataHmacGetKlass:
+ *
+ * The HMAC key data klass.
+ *
+ * Returns: HMAC key data klass.
+ */
+xmlSecKeyDataId
+xmlSecMSCryptoKeyDataHmacGetKlass(void) {
+    return(&xmlSecMSCryptoKeyDataHmacKlass);
+}
+
+/**
+ * xmlSecMSCryptoKeyDataHmacSet:
+ * @data:               the pointer to HMAC key data.
+ * @buf:                the pointer to key value.
+ * @bufSize:            the key value size (in bytes).
+ *
+ * Sets the value of HMAC key data.
+ *
+ * Returns: 0 on success or a negative value if an error occurs.
+ */
+int
+xmlSecMSCryptoKeyDataHmacSet(xmlSecKeyDataPtr data, const xmlSecByte* buf, xmlSecSize bufSize) {
+    xmlSecBufferPtr buffer;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecMSCryptoKeyDataHmacId), -1);
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(bufSize > 0, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(data);
+    xmlSecAssert2(buffer != NULL, -1);
+
+    return(xmlSecBufferSetData(buffer, buf, bufSize));
+}
+
+
+#endif /* XMLSEC_NO_HMAC */
+
 
 

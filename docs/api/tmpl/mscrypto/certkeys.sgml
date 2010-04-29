@@ -64,3 +64,21 @@ MS Crypto certificates helper functions.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetMSCryptoProvider ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecMSCryptoKeyDataGetMSCryptoKeySpec ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+

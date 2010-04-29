@@ -48,16 +48,20 @@ xmlSecCryptoGetFunctions_openssl(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecOpenSSLFunctions = &functions;
 
-    /**
+    /********************************************************************
+     *
      * Crypto Init/shutdown
-     */
+     *
+     ********************************************************************/
     gXmlSecOpenSSLFunctions->cryptoInit                 = xmlSecOpenSSLInit;
     gXmlSecOpenSSLFunctions->cryptoShutdown             = xmlSecOpenSSLShutdown;
     gXmlSecOpenSSLFunctions->cryptoKeysMngrInit         = xmlSecOpenSSLKeysMngrInit;
 
-    /**
+    /********************************************************************
+     *
      * Key data ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->keyDataAesGetKlass         = xmlSecOpenSSLKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -83,16 +87,21 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataRawX509CertGetKlass = xmlSecOpenSSLKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /**
+    /********************************************************************
+     *
      * Key data store ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecOpenSSLFunctions->x509StoreGetKlass          = xmlSecOpenSSLX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /**
+    /********************************************************************
+     *
      * Crypto transforms ids
-     */
+     *
+     ********************************************************************/
+
     /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecOpenSSLFunctions->transformAes128CbcGetKlass         = xmlSecOpenSSLTransformAes128CbcGetKlass;
@@ -109,16 +118,18 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformKWDes3GetKlass            = xmlSecOpenSSLTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
-
     /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
+
 #ifndef XMLSEC_NO_SHA1
     gXmlSecOpenSSLFunctions->transformDsaSha1GetKlass           = xmlSecOpenSSLTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
+
 #endif /* XMLSEC_NO_DSA */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
+
 #ifndef XMLSEC_NO_MD5
     gXmlSecOpenSSLFunctions->transformHmacMd5GetKlass           = xmlSecOpenSSLTransformHmacMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
@@ -146,7 +157,6 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #ifndef XMLSEC_NO_SHA512
     gXmlSecOpenSSLFunctions->transformHmacSha512GetKlass        = xmlSecOpenSSLTransformHmacSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
-
 
 #endif /* XMLSEC_NO_HMAC */
 
@@ -216,9 +226,11 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->transformSha512GetKlass            = xmlSecOpenSSLTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-    /**
+    /********************************************************************
+     *
      * High level routines form xmlsec command line utility
-     */
+     *
+     ********************************************************************/
     gXmlSecOpenSSLFunctions->cryptoAppInit                      = xmlSecOpenSSLAppInit;
     gXmlSecOpenSSLFunctions->cryptoAppShutdown                  = xmlSecOpenSSLAppShutdown;
     gXmlSecOpenSSLFunctions->cryptoAppDefaultKeysMngrInit       = xmlSecOpenSSLAppDefaultKeysMngrInit;

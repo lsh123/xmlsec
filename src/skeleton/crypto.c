@@ -42,16 +42,20 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecSkeletonFunctions = &functions;
 
-    /**
+    /********************************************************************
+     *
      * Crypto Init/shutdown
-     */
+     *
+     ********************************************************************/
     gXmlSecSkeletonFunctions->cryptoInit                = xmlSecSkeletonInit;
     gXmlSecSkeletonFunctions->cryptoShutdown            = xmlSecSkeletonShutdown;
     gXmlSecSkeletonFunctions->cryptoKeysMngrInit        = xmlSecSkeletonKeysMngrInit;
 
-    /**
+    /********************************************************************
+     *
      * Key data ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecSkeletonFunctions->keyDataAesGetKlass        = xmlSecSkeletonKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -81,16 +85,22 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->keyDataRawX509CertGetKlass        = xmlSecSkeletonKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /**
+    /********************************************************************
+     *
      * Key data store ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecSkeletonFunctions->x509StoreGetKlass                 = xmlSecSkeletonX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /**
+    /********************************************************************
+     *
      * Crypto transforms ids
-     */
+     *
+     ********************************************************************/
+
+    /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecSkeletonFunctions->transformAes128CbcGetKlass        = xmlSecSkeletonTransformAes128CbcGetKlass;
     gXmlSecSkeletonFunctions->transformAes192CbcGetKlass        = xmlSecSkeletonTransformAes192CbcGetKlass;
@@ -100,46 +110,69 @@ xmlSecCryptoGetFunctions_skeleton(void) {
     gXmlSecSkeletonFunctions->transformKWAes256GetKlass         = xmlSecSkeletonTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
+    /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecSkeletonFunctions->transformDes3CbcGetKlass          = xmlSecSkeletonTransformDes3CbcGetKlass;
     gXmlSecSkeletonFunctions->transformKWDes3GetKlass           = xmlSecSkeletonTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
+    /******************************* DSA ********************************/
 #ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
     gXmlSecSkeletonFunctions->transformDsaSha1GetKlass          = xmlSecSkeletonTransformDsaSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
 #endif /* XMLSEC_NO_DSA */
 
+    /******************************* GOST ********************************/
 #ifndef XMLSEC_NO_GOST
     gXmlSecSkeletonFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecSkeletonTransformGost2001GostR3411_94GetKlass;
 #endif /* XMLSEC_GOST */
 
+#ifndef XMLSEC_NO_GOST
+    gXmlSecSkeletonFunctions->transformGostR3411_94GetKlass             = xmlSecSkeletonTransformGostR3411_94GetKlass;
+#endif /* XMLSEC_NO_GOST */
+
+    /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
+
+#ifndef XMLSEC_NO_SHA1
     gXmlSecSkeletonFunctions->transformHmacSha1GetKlass         = xmlSecSkeletonTransformHmacSha1GetKlass;
+#endif /* XMLSEC_NO_SHA1 */
+
+#ifndef XMLSEC_NO_RIPEMD160
     gXmlSecSkeletonFunctions->transformHmacRipemd160GetKlass    = xmlSecSkeletonTransformHmacRipemd160GetKlass;
+#endif /* XMLSEC_NO_RIPEMD160 */
+
+#ifndef XMLSEC_NO_MD5
     gXmlSecSkeletonFunctions->transformHmacMd5GetKlass          = xmlSecSkeletonTransformHmacMd5GetKlass;
+#endif /* XMLSEC_NO_MD5 */
+
 #endif /* XMLSEC_NO_HMAC */
 
+    /******************************* RIPEMD160 ********************************/
 #ifndef XMLSEC_NO_RIPEMD160
     gXmlSecSkeletonFunctions->transformRipemd160GetKlass        = xmlSecSkeletonTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
+    /******************************* RSA ********************************/
 #ifndef XMLSEC_NO_RSA
     gXmlSecSkeletonFunctions->transformRsaSha1GetKlass          = xmlSecSkeletonTransformRsaSha1GetKlass;
     gXmlSecSkeletonFunctions->transformRsaPkcs1GetKlass         = xmlSecSkeletonTransformRsaPkcs1GetKlass;
     gXmlSecSkeletonFunctions->transformRsaOaepGetKlass          = xmlSecSkeletonTransformRsaOaepGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
+    /******************************* SHA1 ********************************/
 #ifndef XMLSEC_NO_SHA1
     gXmlSecSkeletonFunctions->transformSha1GetKlass             = xmlSecSkeletonTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifndef XMLSEC_NO_GOST
-    gXmlSecSkeletonFunctions->transformGostR3411_94GetKlass             = xmlSecSkeletonTransformGostR3411_94GetKlass;
-#endif /* XMLSEC_NO_GOST */
-
-    /**
+    /********************************************************************
+     *
      * High level routines form xmlsec command line utility
-     */
+     *
+     ********************************************************************/
     gXmlSecSkeletonFunctions->cryptoAppInit                     = xmlSecSkeletonAppInit;
     gXmlSecSkeletonFunctions->cryptoAppShutdown                 = xmlSecSkeletonAppShutdown;
     gXmlSecSkeletonFunctions->cryptoAppDefaultKeysMngrInit      = xmlSecSkeletonAppDefaultKeysMngrInit;

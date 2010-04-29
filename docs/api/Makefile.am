@@ -99,18 +99,23 @@ templates: scan
 
 scan: doc_sources example_sources
 	-@gtkdoc-scan --module=xmlsec \
+		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/base \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/base
 	-@gtkdoc-scan --module=xmlsec-openssl \
+		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/openssl \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/openssl
 	-@gtkdoc-scan --module=xmlsec-gnutls \
+		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
 	-@gtkdoc-scan --module=xmlsec-nss \
+		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/nss
 	-@gtkdoc-scan --module=xmlsec-mscrypto \
+		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/mscrypto \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/mscrypto
 
@@ -142,7 +147,7 @@ doc_sources: $(DOC_SOURCE_FILES)
 #
 # Create index for all functions. For macros and defines need to add -CAPS suffix
 #
-xmlsec-index: scan 
+xmlsec-index: scan
 	@grep -h '<NAME>.*</NAME>' xmlsec-*decl.txt | \
 		grep -v '<NAME>extern</NAME>' | \
 		sort -u | \

@@ -139,31 +139,6 @@ X509 certificates support implementation for MS Crypto.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecMSCryptoX509StoreFindCert ##### -->
-<para>
-
-</para>
-
-@store: 
-@subjectName: 
-@issuerName: 
-@issuerSerial: 
-@ski: 
-@keyInfoCtx: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecMSCryptoX509StoreVerify ##### -->
-<para>
-
-</para>
-
-@store: 
-@certs: 
-@keyInfoCtx: 
-@Returns: 
-
-
 <!-- ##### FUNCTION xmlSecMSCryptoX509StoreAdoptCert ##### -->
 <para>
 

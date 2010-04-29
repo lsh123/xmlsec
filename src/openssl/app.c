@@ -1443,7 +1443,7 @@ xmlSecOpenSSLAppDefaultKeysMngrSave(xmlSecKeysMngrPtr mngr, const char* filename
 }
 
 
-/**
+/*
  * Random numbers initialization from openssl (apps/app_rand.c)
  */
 static int seeded = 0;

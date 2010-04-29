@@ -20,9 +20,11 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_skeleton(void);
 
-/**
+/********************************************************************
+ *
  * Init shutdown
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecSkeletonInit              (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecSkeletonShutdown          (void);
 

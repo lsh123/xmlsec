@@ -44,8 +44,10 @@ typedef void*                                   xmlSecPtr;
 #else  /* XMLSEC_NO_SIZE_T */
 #define xmlSecSize                              size_t
 #endif /* XMLSEC_NO_SIZE_T */
+
 /**
  * XMLSEC_SIZE_BAD_CAST:
+ * @val:        the value to cast
  *
  * Bad cast to xmlSecSize
  */

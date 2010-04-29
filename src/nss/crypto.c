@@ -49,16 +49,20 @@ xmlSecCryptoGetFunctions_nss(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecNssFunctions = &functions;
 
-    /**
+    /********************************************************************
+     *
      * Crypto Init/shutdown
-     */
+     *
+     ********************************************************************/
     gXmlSecNssFunctions->cryptoInit                     = xmlSecNssInit;
     gXmlSecNssFunctions->cryptoShutdown                 = xmlSecNssShutdown;
     gXmlSecNssFunctions->cryptoKeysMngrInit             = xmlSecNssKeysMngrInit;
 
-    /**
+    /********************************************************************
+     *
      * Key data ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecNssFunctions->keyDataAesGetKlass             = xmlSecNssKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -84,16 +88,20 @@ xmlSecCryptoGetFunctions_nss(void) {
     gXmlSecNssFunctions->keyDataRawX509CertGetKlass     = xmlSecNssKeyDataRawX509CertGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /**
+    /********************************************************************
+     *
      * Key data store ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_X509
     gXmlSecNssFunctions->x509StoreGetKlass              = xmlSecNssX509StoreGetKlass;
 #endif /* XMLSEC_NO_X509 */
 
-    /**
+    /********************************************************************
+     *
      * Crypto transforms ids
-     */
+     *
+     ********************************************************************/
 
     /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
@@ -201,9 +209,11 @@ xmlSecCryptoGetFunctions_nss(void) {
 #endif /* XMLSEC_NO_MD5 */
 
 
-    /**
+    /********************************************************************
+     *
      * High level routines form xmlsec command line utility
-     */
+     *
+     ********************************************************************/
     gXmlSecNssFunctions->cryptoAppInit                  = xmlSecNssAppInit;
     gXmlSecNssFunctions->cryptoAppShutdown              = xmlSecNssAppShutdown;
     gXmlSecNssFunctions->cryptoAppDefaultKeysMngrInit   = xmlSecNssAppDefaultKeysMngrInit;

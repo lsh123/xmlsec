@@ -259,6 +259,51 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO xmlSecGnuTLSTransformSha1Id ##### -->
 <para>
 
@@ -267,6 +312,81 @@ Crypto transforms implementation for GnuTLS.
 
 
 <!-- ##### FUNCTION xmlSecGnuTLSTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRipemd160GetKlass ##### -->
 <para>
 
 </para>

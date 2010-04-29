@@ -26,9 +26,11 @@ extern "C" {
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
 
-/**
- * Hi level functions
- */
+/****************************************************************************
+ *
+ * High-level functions
+ *
+ ****************************************************************************/
 XMLSEC_EXPORT int               xmlSecKeyInfoNodeRead           (xmlNodePtr keyInfoNode,
                                                                  xmlSecKeyPtr key,
                                                                  xmlSecKeyInfoCtxPtr keyInfoCtx);

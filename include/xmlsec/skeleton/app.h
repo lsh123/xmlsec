@@ -18,15 +18,19 @@ extern "C" {
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 
-/**
+/********************************************************************
+ *
  * Init/shutdown
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecSkeletonAppInit                   (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecSkeletonAppShutdown               (void);
 
-/**
+/********************************************************************
+ *
  * Keys Manager
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecSkeletonAppDefaultKeysMngrInit    (xmlSecKeysMngrPtr mngr);
 XMLSEC_CRYPTO_EXPORT int        xmlSecSkeletonAppDefaultKeysMngrAdoptKey(xmlSecKeysMngrPtr mngr,
                                                                          xmlSecKeyPtr key);
@@ -48,9 +52,11 @@ XMLSEC_CRYPTO_EXPORT int        xmlSecSkeletonAppKeysMngrCertLoadMemory (xmlSecK
 #endif /* XMLSEC_NO_X509 */
 
 
-/**
+/********************************************************************
+ *
  * Keys
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecSkeletonAppKeyLoad              (const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,

@@ -21,68 +21,62 @@ extern "C" {
 #include <windows.h>
 #include <wincrypt.h>
 
-/**
+/********************************************************************
+ *
  * Init/shutdown
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppInit                           (const char* config);
 XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppShutdown                       (void);
 XMLSEC_CRYPTO_EXPORT LPCTSTR    xmlSecMSCryptoAppGetCertStoreName               (void);
 
-/**
+/********************************************************************
+ *
  * Keys Manager
- */
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrInit(
-                                    xmlSecKeysMngrPtr mngr);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptKey(
-                                    xmlSecKeysMngrPtr mngr,
-                                    xmlSecKeyPtr key);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrLoad(
-                                    xmlSecKeysMngrPtr mngr,
-                                                                        const char* uri);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrSave(
-                                    xmlSecKeysMngrPtr mngr,
-                                                                        const char* filename,
-                                                                        xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad(
-                                    xmlSecKeysMngrPtr mngr,
-                                    HCRYPTKEY hKey);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad(
-                                    xmlSecKeysMngrPtr mngr,
-                                    HCRYPTKEY hKey);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad(
-                                    xmlSecKeysMngrPtr mngr,
-                                    HCRYPTKEY hKey);
+ *
+ ********************************************************************/
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrInit            (xmlSecKeysMngrPtr mngr);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptKey        (xmlSecKeysMngrPtr mngr,
+                                                                                 xmlSecKeyPtr key);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrLoad            (xmlSecKeysMngrPtr mngr,
+                                                                                 const char* uri);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrSave            (xmlSecKeysMngrPtr mngr,
+                                                                                 const char* filename,
+                                                                                 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrPrivateKeyLoad  (xmlSecKeysMngrPtr mngr,
+                                                                                 HCRYPTKEY hKey);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrPublicKeyLoad   (xmlSecKeysMngrPtr mngr,
+                                                                                 HCRYPTKEY hKey);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrSymKeyLoad      (xmlSecKeysMngrPtr mngr,
+                                                                                 HCRYPTKEY hKey);
 #ifndef XMLSEC_NO_X509
-XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore(
-                                    xmlSecKeysMngrPtr mngr,
-                                    HCERTSTORE keyStore);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptKeyStore   (xmlSecKeysMngrPtr mngr,
+                                                                                 HCERTSTORE keyStore);
 
-XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(
-                                    xmlSecKeysMngrPtr mngr,
-                                    HCERTSTORE trustedStore);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptTrustedStore(xmlSecKeysMngrPtr mngr,
+                                                                                 HCERTSTORE trustedStore);
 
-XMLSEC_CRYPTO_EXPORT int    xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(
-                                    xmlSecKeysMngrPtr mngr,
-                                    HCERTSTORE untrustedStore);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppDefaultKeysMngrAdoptUntrustedStore(xmlSecKeysMngrPtr mngr,
+                                                                                 HCERTSTORE untrustedStore);
 
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoad(
-                                    xmlSecKeysMngrPtr mngr,
-                                                                        const char *filename,
-                                                                        xmlSecKeyDataFormat format,
-                                                                        xmlSecKeyDataType type);
-XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoadMemory(
-                                    xmlSecKeysMngrPtr mngr,
-                                                                        const xmlSecByte* data,
-                                                                        xmlSecSize dataSize,
-                                                                        xmlSecKeyDataFormat format,
-                                                                        xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoad               (xmlSecKeysMngrPtr mngr,
+                                                                                 const char *filename,
+                                                                                 xmlSecKeyDataFormat format,
+                                                                                 xmlSecKeyDataType type);
+XMLSEC_CRYPTO_EXPORT int        xmlSecMSCryptoAppKeysMngrCertLoadMemory         (xmlSecKeysMngrPtr mngr,
+                                                                                 const xmlSecByte* data,
+                                                                                 xmlSecSize dataSize,
+                                                                                 xmlSecKeyDataFormat format,
+                                                                                 xmlSecKeyDataType type);
 
 #endif /* XMLSEC_NO_X509 */
 
 
-/**
+/********************************************************************
+ *
  * Keys
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT xmlSecKeyPtr xmlSecMSCryptoAppKeyLoad              (const char *filename,
                                                                          xmlSecKeyDataFormat format,
                                                                          const char *pwd,

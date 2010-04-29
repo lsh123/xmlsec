@@ -16,6 +16,7 @@
 <synopsis>
 typedef             <link linkend="xmlSec">xmlSecPtr</link>;
 #define             <link linkend="xmlSecSize">xmlSecSize</link>
+#define             <link linkend="XMLSEC-SIZE-BAD-CAST--CAPS">XMLSEC_SIZE_BAD_CAST</link>                (val)
 #define             <link linkend="xmlSecByte">xmlSecByte</link>
 <link linkend="int">int</link>                 <link linkend="xmlSecInit">xmlSecInit</link>                          (void);
 <link linkend="int">int</link>                 <link linkend="xmlSecShutdown">xmlSecShutdown</link>                      (void);
@@ -63,6 +64,18 @@ Size of something. Should be typedef instead of define
 but it will break ABI (todo).</para>
 <para>
 </para></refsect2>
+<refsect2 id="XMLSEC-SIZE-BAD-CAST--CAPS" role="macro">
+<title>XMLSEC_SIZE_BAD_CAST()</title>
+<indexterm zone="XMLSEC-SIZE-BAD-CAST--CAPS"><primary sortas="XMLSEC_SIZE_BAD_CAST">XMLSEC_SIZE_BAD_CAST</primary></indexterm><programlisting>#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))
+</programlisting>
+<para>
+Bad cast to xmlSecSize</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>        the value to cast
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2 id="xmlSecByte" role="macro">
 <title>xmlSecByte</title>
 <indexterm zone="xmlSecByte"><primary sortas="xmlSecByte">xmlSecByte</primary></indexterm><programlisting>#define xmlSecByte                              unsigned char

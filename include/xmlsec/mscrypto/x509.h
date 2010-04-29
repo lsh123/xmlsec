@@ -65,17 +65,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecMSCryptoKeyDataRawX509CertGetKlass
         xmlSecMSCryptoX509StoreGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataStoreId xmlSecMSCryptoX509StoreGetKlass(void);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert         (xmlSecKeyDataStorePtr store,
-                                                                                 xmlChar *subjectName,
-                                                                                 xmlChar *issuerName,
-                                                                                 xmlChar *issuerSerial,
-                                                                                 xmlChar *ski,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
-
-
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                                 HCERTSTORE certs,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptCert        (xmlSecKeyDataStorePtr store,
                                                                                  PCCERT_CONTEXT cert,
                                                                                  xmlSecKeyDataType type);
@@ -92,18 +81,6 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoX509StoreAdoptUntrustedSto
 XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoX509StoreEnableSystemTrustedCerts(xmlSecKeyDataStorePtr store,
                                                                                  int val);
 
-
-/**
- * Util functions
- */
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject     (HCERTSTORE store,
-                                                                                 const LPTSTR wcSubject,
-                                                                                 DWORD dwCertEncodingType);
-
-XMLSEC_CRYPTO_EXPORT xmlChar *          xmlSecMSCryptoX509GetNameString         (PCCERT_CONTEXT pCertContext,
-                                                                                 DWORD dwType,
-                                                                                 DWORD dwFlags,
-                                                                                 void *pvTypePara);
 
 
 #endif /* XMLSEC_NO_X509 */

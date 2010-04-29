@@ -23,9 +23,11 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_mscrypto(void);
 
-/**
+/********************************************************************
+ *
  * Init shutdown
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoInit              (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecMSCryptoShutdown          (void);
 
@@ -41,9 +43,11 @@ XMLSEC_CRYPTO_EXPORT void               xmlSecMSCryptoErrorsDefaultCallback(cons
                                                                         int reason,
                                                                         const char* msg);
 
-/**
- * Utils
- */
+/******************************************************************************
+ *
+ * String encoding conversion utils
+ *
+ ******************************************************************************/
 XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertLocaleToUnicode(const char* str);
 
 XMLSEC_CRYPTO_EXPORT LPWSTR             xmlSecMSCryptoConvertUtf8ToUnicode  (const xmlChar* str);
@@ -52,40 +56,8 @@ XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertUnicodeToUtf8  (LPC
 XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertLocaleToUtf8   (const char* str);
 XMLSEC_CRYPTO_EXPORT char*              xmlSecMSCryptoConvertUtf8ToLocale   (const xmlChar* str);
 
-XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertTstrToUtf8   (LPCTSTR str);
-XMLSEC_CRYPTO_EXPORT LPTSTR             xmlSecMSCryptoConvertUtf8ToTstr   (const xmlChar*  str);
-
-/**
- * Crypto Providers
- */
-
-/* We need to redefine both to ensure that we can pick the right one at runtime (instead of compile time) */
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A     "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W     L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-#ifdef UNICODE
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_W
-#else
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_PROTOTYPE_A
-#endif
-
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_A               "Microsoft Enhanced RSA and AES Cryptographic Provider"
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_W               L"Microsoft Enhanced RSA and AES Cryptographic Provider"
-#ifdef UNICODE
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_W
-#else
-#define XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV XMLSEC_CRYPTO_MS_ENH_RSA_AES_PROV_A
-#endif
-
-typedef struct _xmlSecMSCryptoProviderInfo {
-    LPCTSTR                 providerName;
-    DWORD                   providerType;
-} xmlSecMSCryptoProviderInfo;
-
-XMLSEC_CRYPTO_EXPORT HCRYPTPROV         xmlSecMSCryptoFindProvider      (const xmlSecMSCryptoProviderInfo * providers,
-                                                                         LPCTSTR pszContainer,
-                                                                         DWORD dwFlags,
-                                                                         BOOL bUseXmlSecContainer);
-
+XMLSEC_CRYPTO_EXPORT xmlChar*           xmlSecMSCryptoConvertTstrToUtf8     (LPCTSTR str);
+XMLSEC_CRYPTO_EXPORT LPTSTR             xmlSecMSCryptoConvertUtf8ToTstr     (const xmlChar*  str);
 
 
 /********************************************************************

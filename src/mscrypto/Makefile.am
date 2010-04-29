@@ -20,6 +20,8 @@ libxmlsec1_mscrypto_la_CPPFLAGS = \
 	$(NULL)
 
 libxmlsec1_mscrypto_la_SOURCES =\
+	globals.h \
+	private.h \
 	app.c \
 	certkeys.c \
 	ciphers.c \
@@ -34,7 +36,6 @@ libxmlsec1_mscrypto_la_SOURCES =\
 	x509vfy.c \
 	csp_calg.h \
 	csp_oid.h \
-	globals.h \
 	xmlsec-mingw.h \
 	$(NULL)
 

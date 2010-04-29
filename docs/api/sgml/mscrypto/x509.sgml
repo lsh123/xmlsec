@@ -37,15 +37,6 @@
                                                         (void);
 #define             <link linkend="xmlSecMSCryptoX509StoreId">xmlSecMSCryptoX509StoreId</link>
 <link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>  <link linkend="xmlSecMSCryptoX509StoreGetKlass">xmlSecMSCryptoX509StoreGetKlass</link>   (void);
-<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoX509StoreFindCert">xmlSecMSCryptoX509StoreFindCert</link>     (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="xmlChar">xmlChar</link> *subjectName,
-                                                         <link linkend="xmlChar">xmlChar</link> *issuerName,
-                                                         <link linkend="xmlChar">xmlChar</link> *issuerSerial,
-                                                         <link linkend="xmlChar">xmlChar</link> *ski,
-                                                         <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
-<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoX509StoreVerify">xmlSecMSCryptoX509StoreVerify</link>       (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> certs,
-                                                         <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);
 <link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</link>    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
                                                          <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert,
                                                          <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
@@ -261,61 +252,6 @@ The MSCrypto X509 certificates key data store klass.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to MSCrypto X509 certificates key data store klass.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecMSCryptoX509StoreFindCert" role="function">
-<title>xmlSecMSCryptoX509StoreFindCert ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreFindCert"><primary sortas="xmlSecMSCryptoX509StoreFindCert">xmlSecMSCryptoX509StoreFindCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoX509StoreFindCert     (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="xmlChar">xmlChar</link> *subjectName,
-                                                         <link linkend="xmlChar">xmlChar</link> *issuerName,
-                                                         <link linkend="xmlChar">xmlChar</link> *issuerSerial,
-                                                         <link linkend="xmlChar">xmlChar</link> *ski,
-                                                         <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
-<para>
-Searches <parameter>store</parameter> for a certificate that matches given criteria.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>          the pointer to X509 key data store klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>subjectName</parameter>&#160;:</term>
-<listitem><simpara>    the desired certificate name.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>issuerName</parameter>&#160;:</term>
-<listitem><simpara>     the desired certificate issuer name.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>issuerSerial</parameter>&#160;:</term>
-<listitem><simpara>   the desired certificate issuer serial number.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>ski</parameter>&#160;:</term>
-<listitem><simpara>            the desired certificate SKI.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>     the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to found certificate or NULL if certificate is not found
-or an error occurs.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecMSCryptoX509StoreVerify" role="function">
-<title>xmlSecMSCryptoX509StoreVerify ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreVerify"><primary sortas="xmlSecMSCryptoX509StoreVerify">xmlSecMSCryptoX509StoreVerify</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoX509StoreVerify       (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> certs,
-                                                         <link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link> *keyInfoCtx);</programlisting>
-<para>
-Verifies <parameter>certs</parameter> list.</para>
-<para>
-</para><variablelist role="params">
-<varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>        the pointer to X509 certificate context store klass.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>certs</parameter>&#160;:</term>
-<listitem><simpara>        the untrusted certificates stack.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
-<listitem><simpara>        the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
-</simpara></listitem></varlistentry>
-<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the first verified certificate from <parameter>certs</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreAdoptCert" role="function">

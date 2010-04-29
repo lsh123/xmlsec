@@ -38,6 +38,7 @@
 #include <xmlsec/mscrypto/keysstore.h>
 #include <xmlsec/mscrypto/x509.h>
 #include <xmlsec/mscrypto/certkeys.h>
+#include "private.h"
 
 #if defined(__MINGW32__)
 #  include "xmlsec-mingw.h"

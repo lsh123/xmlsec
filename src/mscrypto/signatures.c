@@ -27,6 +27,8 @@
 #include <xmlsec/mscrypto/symbols.h>
 #include <xmlsec/mscrypto/certkeys.h>
 #include <xmlsec/mscrypto/x509.h>
+#include "private.h"
+
 
 #if defined(__MINGW32__)
 #  include "xmlsec-mingw.h"

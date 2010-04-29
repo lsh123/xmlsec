@@ -43,16 +43,20 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     memset(&functions, 0, sizeof(functions));
     gXmlSecGnuTLSFunctions = &functions;
 
-    /**
+    /********************************************************************
+     *
      * Crypto Init/shutdown
-     */
+     *
+     ********************************************************************/
     gXmlSecGnuTLSFunctions->cryptoInit                  = xmlSecGnuTLSInit;
     gXmlSecGnuTLSFunctions->cryptoShutdown              = xmlSecGnuTLSShutdown;
     gXmlSecGnuTLSFunctions->cryptoKeysMngrInit          = xmlSecGnuTLSKeysMngrInit;
 
-    /**
+    /********************************************************************
+     *
      * Key data ids
-     */
+     *
+     ********************************************************************/
 #ifndef XMLSEC_NO_AES
     gXmlSecGnuTLSFunctions->keyDataAesGetKlass          = xmlSecGnuTLSKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
@@ -65,13 +69,17 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
-    /**
+    /********************************************************************
+     *
      * Key data store ids
-     */
+     *
+     ********************************************************************/
 
-    /**
+    /********************************************************************
+     *
      * Crypto transforms ids
-     */
+     *
+     ********************************************************************/
 
     /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
@@ -87,6 +95,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
+
 #ifndef XMLSEC_NO_MD5
     gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass           = xmlSecGnuTLSTransformHmacMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
@@ -111,7 +120,6 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformHmacSha512GetKlass        = xmlSecGnuTLSTransformHmacSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-
 #endif /* XMLSEC_NO_HMAC */
 
     /******************************* MD5 ********************************/
@@ -123,7 +131,6 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #ifndef XMLSEC_NO_RIPEMD160
     gXmlSecGnuTLSFunctions->transformRipemd160GetKlass         = xmlSecGnuTLSTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
-
 
 
     /******************************* SHA ********************************/
@@ -144,9 +151,11 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #endif /* XMLSEC_NO_SHA512 */
 
 
-    /**
+    /********************************************************************
+     *
      * High level routines form xmlsec command line utility
-     */
+     *
+     ********************************************************************/
     gXmlSecGnuTLSFunctions->cryptoAppInit                       = xmlSecGnuTLSAppInit;
     gXmlSecGnuTLSFunctions->cryptoAppShutdown                   = xmlSecGnuTLSAppShutdown;
     gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGnuTLSAppDefaultKeysMngrInit;

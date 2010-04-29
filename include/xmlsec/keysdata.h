@@ -21,9 +21,11 @@ extern "C" {
 #include <xmlsec/buffer.h>
 #include <xmlsec/list.h>
 
-/**
+/****************************************************************************
+ *
  * Forward declarations
- */
+ *
+ ****************************************************************************/
 typedef const struct _xmlSecKeyDataKlass                xmlSecKeyDataKlass,
                                                         *xmlSecKeyDataId;
 typedef const struct _xmlSecKeyDataStoreKlass           xmlSecKeyDataStoreKlass,

@@ -87,7 +87,7 @@
 <h1>
 <a name="XMLSEC-MSCRYPTO-CRYPTO"></a>crypto</h1>
 <div class="REFNAMEDIV">
-<a name="AEN28886"></a><h2>Name</h2>crypto -- Crypto transforms implementation for MS Crypto.</div>
+<a name="AEN29367"></a><h2>Name</h2>crypto -- Crypto transforms implementation for MS Crypto.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-MSCRYPTO-CRYPTO.SYNOPSIS"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS"><font>xmlSecCryptoDLFunctionsPtr</font>  <a href="xmlsec-mscrypto-crypto.html#XMLSECCRYPTOGETFUNCTIONS-MSCRYPTO">xmlSecCryptoGetFunctions_mscrypto</a>
@@ -104,6 +104,14 @@
                                                          const <font>char</font> *errorSubject,
                                                          <font>int</font> reason,
                                                          const <font>char</font> *msg);
+<font>LPWSTR</font>              <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTLOCALETOUNICODE">xmlSecMSCryptoConvertLocaleToUnicode</a>
+                                                        (const <font>char</font> *str);
+<font>LPWSTR</font>              <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTUTF8TOUNICODE">xmlSecMSCryptoConvertUtf8ToUnicode</a>  (const <font>xmlChar</font> *str);
+<font>xmlChar</font>*            <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTUNICODETOUTF8">xmlSecMSCryptoConvertUnicodeToUtf8</a>  (<font>LPCWSTR</font> str);
+<font>xmlChar</font>*            <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTLOCALETOUTF8">xmlSecMSCryptoConvertLocaleToUtf8</a>   (const <font>char</font> *str);
+<font>char</font>*               <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTUTF8TOLOCALE">xmlSecMSCryptoConvertUtf8ToLocale</a>   (const <font>xmlChar</font> *str);
+<font>xmlChar</font>*            <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTTSTRTOUTF8">xmlSecMSCryptoConvertTstrToUtf8</a>     (<font>LPCTSTR</font> str);
+<font>LPTSTR</font>              <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOCONVERTUTF8TOTSTR">xmlSecMSCryptoConvertUtf8ToTstr</a>     (const <font>xmlChar</font> *str);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATADSAID">xmlSecMSCryptoKeyDataDsaId</a>
 <font>xmlSecKeyDataId</font>     <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATADSAGETKLASS">xmlSecMSCryptoKeyDataDsaGetKlass</a>    (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMDSASHA1ID">xmlSecMSCryptoTransformDsaSha1Id</a>
@@ -117,14 +125,37 @@
                                                         (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATARSAID">xmlSecMSCryptoKeyDataRsaId</a>
 <font>xmlSecKeyDataId</font>     <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATARSAGETKLASS">xmlSecMSCryptoKeyDataRsaGetKlass</a>    (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSAMD5ID">xmlSecMSCryptoTransformRsaMd5Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSAMD5GETKLASS">xmlSecMSCryptoTransformRsaMd5GetKlass</a>
+                                                        (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA1ID">xmlSecMSCryptoTransformRsaSha1Id</a>
 <font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA1GETKLASS">xmlSecMSCryptoTransformRsaSha1GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA256ID">xmlSecMSCryptoTransformRsaSha256Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA256GETKLASS">xmlSecMSCryptoTransformRsaSha256GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA384ID">xmlSecMSCryptoTransformRsaSha384Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA384GETKLASS">xmlSecMSCryptoTransformRsaSha384GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA512ID">xmlSecMSCryptoTransformRsaSha512Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSASHA512GETKLASS">xmlSecMSCryptoTransformRsaSha512GetKlass</a>
                                                         (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSAPKCS1ID">xmlSecMSCryptoTransformRsaPkcs1Id</a>
 <font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMRSAPKCS1GETKLASS">xmlSecMSCryptoTransformRsaPkcs1GetKlass</a>
                                                         (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMMD5ID">xmlSecMSCryptoTransformMd5Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMMD5GETKLASS">xmlSecMSCryptoTransformMd5GetKlass</a>  (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA1ID">xmlSecMSCryptoTransformSha1Id</a>
 <font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA1GETKLASS">xmlSecMSCryptoTransformSha1GetKlass</a> (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA256ID">xmlSecMSCryptoTransformSha256Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA256GETKLASS">xmlSecMSCryptoTransformSha256GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA384ID">xmlSecMSCryptoTransformSha384Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA384GETKLASS">xmlSecMSCryptoTransformSha384GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA512ID">xmlSecMSCryptoTransformSha512Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMSHA512GETKLASS">xmlSecMSCryptoTransformSha512GetKlass</a>
+                                                        (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMGOSTR3411-94ID">xmlSecMSCryptoTransformGostR3411_94Id</a>
 <font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMGOSTR3411-94GETKLASS">xmlSecMSCryptoTransformGostR3411_94GetKlass</a>
                                                         (void);
@@ -146,6 +177,30 @@
 <font>xmlSecKeyDataId</font>     <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATADESGETKLASS">xmlSecMSCryptoKeyDataDesGetKlass</a>    (void);
 #define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMDES3CBCID">xmlSecMSCryptoTransformDes3CbcId</a>
 <font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMDES3CBCGETKLASS">xmlSecMSCryptoTransformDes3CbcGetKlass</a>
+                                                        (void);
+<font>int</font>                 <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOHMACGETMINOUTPUTLENGTH">xmlSecMSCryptoHmacGetMinOutputLength</a>
+                                                        (void);
+<font>void</font>                <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOHMACSETMINOUTPUTLENGTH">xmlSecMSCryptoHmacSetMinOutputLength</a>
+                                                        (<font>int</font> min_length);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATAHMACID">xmlSecMSCryptoKeyDataHmacId</a>
+<font>xmlSecKeyDataId</font>     <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATAHMACGETKLASS">xmlSecMSCryptoKeyDataHmacGetKlass</a>   (void);
+<font>int</font>                 <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOKEYDATAHMACSET">xmlSecMSCryptoKeyDataHmacSet</a>        (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                                         const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACMD5ID">xmlSecMSCryptoTransformHmacMd5Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACMD5GETKLASS">xmlSecMSCryptoTransformHmacMd5GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA1ID">xmlSecMSCryptoTransformHmacSha1Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA1GETKLASS">xmlSecMSCryptoTransformHmacSha1GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA256ID">xmlSecMSCryptoTransformHmacSha256Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA256GETKLASS">xmlSecMSCryptoTransformHmacSha256GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA384ID">xmlSecMSCryptoTransformHmacSha384Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA384GETKLASS">xmlSecMSCryptoTransformHmacSha384GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA512ID">xmlSecMSCryptoTransformHmacSha512Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-mscrypto-crypto.html#XMLSECMSCRYPTOTRANSFORMHMACSHA512GETKLASS">xmlSecMSCryptoTransformHmacSha512GetKlass</a>
                                                         (void);</pre>
 </div>
 <div class="REFSECT1">
@@ -162,7 +217,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN28978"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29532"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> xmlsec-mscrypto functions table.</p></td>
 </tr></tbody></table>
 </div>
@@ -174,7 +229,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN28992"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29546"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -186,7 +241,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29006"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29560"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -199,11 +254,11 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29021"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29575"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29026"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29580"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -219,15 +274,15 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29044"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29598"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the destination buffer.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29049"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29603"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the numer of bytes to generate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29054"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29608"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -247,32 +302,159 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29075"><span style="white-space: nowrap"><code class="PARAMETER">file</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29629"><span style="white-space: nowrap"><code class="PARAMETER">file</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the error location file name (__FILE__ macro).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29080"><span style="white-space: nowrap"><code class="PARAMETER">line</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29634"><span style="white-space: nowrap"><code class="PARAMETER">line</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the error location line number (__LINE__ macro).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29085"><span style="white-space: nowrap"><code class="PARAMETER">func</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29639"><span style="white-space: nowrap"><code class="PARAMETER">func</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the error location function name (__FUNCTION__ macro).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29090"><span style="white-space: nowrap"><code class="PARAMETER">errorObject</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29644"><span style="white-space: nowrap"><code class="PARAMETER">errorObject</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>        the error specific error object</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29095"><span style="white-space: nowrap"><code class="PARAMETER">errorSubject</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29649"><span style="white-space: nowrap"><code class="PARAMETER">errorSubject</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>       the error specific error subject.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29100"><span style="white-space: nowrap"><code class="PARAMETER">reason</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29654"><span style="white-space: nowrap"><code class="PARAMETER">reason</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the error code.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29105"><span style="white-space: nowrap"><code class="PARAMETER">msg</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29659"><span style="white-space: nowrap"><code class="PARAMETER">msg</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the additional error message.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTLOCALETOUNICODE"></a><h3>xmlSecMSCryptoConvertLocaleToUnicode ()</h3>
+<pre class="PROGRAMLISTING"><font>LPWSTR</font>              xmlSecMSCryptoConvertLocaleToUnicode
+                                                        (const <font>char</font> *str);</pre>
+<p>Converts input string from current system locale to Unicode.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29674"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29679"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTUTF8TOUNICODE"></a><h3>xmlSecMSCryptoConvertUtf8ToUnicode ()</h3>
+<pre class="PROGRAMLISTING"><font>LPWSTR</font>              xmlSecMSCryptoConvertUtf8ToUnicode  (const <font>xmlChar</font> *str);</pre>
+<p>Converts input string from UTF8 to Unicode.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29694"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29699"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTUNICODETOUTF8"></a><h3>xmlSecMSCryptoConvertUnicodeToUtf8 ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlChar</font>*            xmlSecMSCryptoConvertUnicodeToUtf8  (<font>LPCWSTR</font> str);</pre>
+<p>Converts input string from Unicode to UTF8.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29714"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29719"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTLOCALETOUTF8"></a><h3>xmlSecMSCryptoConvertLocaleToUtf8 ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlChar</font>*            xmlSecMSCryptoConvertLocaleToUtf8   (const <font>char</font> *str);</pre>
+<p>Converts input string from locale to UTF8.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29734"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29739"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTUTF8TOLOCALE"></a><h3>xmlSecMSCryptoConvertUtf8ToLocale ()</h3>
+<pre class="PROGRAMLISTING"><font>char</font>*               xmlSecMSCryptoConvertUtf8ToLocale   (const <font>xmlChar</font> *str);</pre>
+<p>Converts input string from UTF8 to locale.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29754"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29759"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTTSTRTOUTF8"></a><h3>xmlSecMSCryptoConvertTstrToUtf8 ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlChar</font>*            xmlSecMSCryptoConvertTstrToUtf8     (<font>LPCTSTR</font> str);</pre>
+<p>Converts input string from TSTR (locale or Unicode) to UTF8.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29774"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29779"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOCONVERTUTF8TOTSTR"></a><h3>xmlSecMSCryptoConvertUtf8ToTstr ()</h3>
+<pre class="PROGRAMLISTING"><font>LPTSTR</font>              xmlSecMSCryptoConvertUtf8ToTstr     (const <font>xmlChar</font> *str);</pre>
+<p>Converts input string from UTF8 to TSTR (locale or Unicode).</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29794"><span style="white-space: nowrap"><code class="PARAMETER">str</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>         the string to convert.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN29799"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> a pointer to newly allocated string (must be freed with xmlFree) or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -291,7 +473,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29126"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29820"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to DSA key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -311,7 +493,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29147"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29841"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> DSA-SHA1 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -331,7 +513,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29168"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29862"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to GOST2001 key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -351,7 +533,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29189"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29883"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> GOST2001-GOSTR3411_94 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -370,8 +552,28 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29210"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29904"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to MSCrypto RSA key data klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSAMD5ID"></a><h3>xmlSecMSCryptoTransformRsaMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformRsaMd5Id</pre>
+<p>The RSA-MD5 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSAMD5GETKLASS"></a><h3>xmlSecMSCryptoTransformRsaMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformRsaMd5GetKlass
+                                                        (void);</pre>
+<p>The RSA-MD5 signature transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN29925"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> RSA-MD5 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -390,8 +592,68 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29231"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN29946"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-SHA1 signature transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSASHA256ID"></a><h3>xmlSecMSCryptoTransformRsaSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformRsaSha256Id</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSASHA256GETKLASS"></a><h3>xmlSecMSCryptoTransformRsaSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformRsaSha256GetKlass
+                                                        (void);</pre>
+<p>The RSA-SHA256 signature transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN29967"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> RSA-SHA256 signature transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSASHA384ID"></a><h3>xmlSecMSCryptoTransformRsaSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformRsaSha384Id</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSASHA384GETKLASS"></a><h3>xmlSecMSCryptoTransformRsaSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformRsaSha384GetKlass
+                                                        (void);</pre>
+<p>The RSA-SHA384 signature transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN29988"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> RSA-SHA384 signature transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSASHA512ID"></a><h3>xmlSecMSCryptoTransformRsaSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformRsaSha512Id</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMRSASHA512GETKLASS"></a><h3>xmlSecMSCryptoTransformRsaSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformRsaSha512GetKlass
+                                                        (void);</pre>
+<p>The RSA-SHA512 signature transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30009"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> RSA-SHA512 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -410,8 +672,27 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29252"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30030"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-PKCS1 key transport transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMMD5ID"></a><h3>xmlSecMSCryptoTransformMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformMd5Id</pre>
+<p>The MD5 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMMD5GETKLASS"></a><h3>xmlSecMSCryptoTransformMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformMd5GetKlass  (void);</pre>
+<p>SHA-1 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30051"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA-1 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -429,8 +710,68 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29273"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30072"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-1 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMSHA256ID"></a><h3>xmlSecMSCryptoTransformSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformSha256Id</pre>
+<p>The SHA256 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMSHA256GETKLASS"></a><h3>xmlSecMSCryptoTransformSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformSha256GetKlass
+                                                        (void);</pre>
+<p>SHA-256 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30093"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA-256 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMSHA384ID"></a><h3>xmlSecMSCryptoTransformSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformSha384Id</pre>
+<p>The SHA384 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMSHA384GETKLASS"></a><h3>xmlSecMSCryptoTransformSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformSha384GetKlass
+                                                        (void);</pre>
+<p>SHA-384 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30114"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA-384 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMSHA512ID"></a><h3>xmlSecMSCryptoTransformSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformSha512Id</pre>
+<p>The SHA512 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMSHA512GETKLASS"></a><h3>xmlSecMSCryptoTransformSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformSha512GetKlass
+                                                        (void);</pre>
+<p>SHA-512 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30135"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA-512 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -449,7 +790,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29294"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30156"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to GOSTR3411_94 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -468,7 +809,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29315"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30177"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> AES key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -483,19 +824,19 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29332"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30194"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to AES key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29337"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30199"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29342"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30204"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN29347"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30209"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -516,7 +857,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29368"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30230"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 128 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -536,7 +877,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29389"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30251"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 192 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -556,7 +897,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29410"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30272"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 256 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -575,7 +916,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29431"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30293"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> DES key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -595,8 +936,181 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN29452"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN30314"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to Triple DES encryption transform.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOHMACGETMINOUTPUTLENGTH"></a><h3>xmlSecMSCryptoHmacGetMinOutputLength ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecMSCryptoHmacGetMinOutputLength
+                                                        (void);</pre>
+<p>Gets the value of min HMAC length.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30328"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the min HMAC output length</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOHMACSETMINOUTPUTLENGTH"></a><h3>xmlSecMSCryptoHmacSetMinOutputLength ()</h3>
+<pre class="PROGRAMLISTING"><font>void</font>                xmlSecMSCryptoHmacSetMinOutputLength
+                                                        (<font>int</font> min_length);</pre>
+<p>Sets the min HMAC output length</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30343"><span style="white-space: nowrap"><code class="PARAMETER">min_length</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the new min length</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOKEYDATAHMACID"></a><h3>xmlSecMSCryptoKeyDataHmacId</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoKeyDataHmacId</pre>
+<p>The DHMAC key klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOKEYDATAHMACGETKLASS"></a><h3>xmlSecMSCryptoKeyDataHmacGetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecKeyDataId</font>     xmlSecMSCryptoKeyDataHmacGetKlass   (void);</pre>
+<p>The HMAC key data klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30364"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> HMAC key data klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOKEYDATAHMACSET"></a><h3>xmlSecMSCryptoKeyDataHmacSet ()</h3>
+<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecMSCryptoKeyDataHmacSet        (<a href="xmlsec-keysdata.html#XMLSECKEYDATA">xmlSecKeyDataPtr</a> data,
+                                                         const <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a> *buf,
+                                                         <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a> bufSize);</pre>
+<p>Sets the value of HMAC key data.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN30381"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>               the pointer to HMAC key data.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN30386"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN30391"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN30396"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACMD5ID"></a><h3>xmlSecMSCryptoTransformHmacMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformHmacMd5Id</pre>
+<p>The HMAC with MD5 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACMD5GETKLASS"></a><h3>xmlSecMSCryptoTransformHmacMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformHmacMd5GetKlass
+                                                        (void);</pre>
+<p>The HMAC-MD5 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30417"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-MD5 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA1ID"></a><h3>xmlSecMSCryptoTransformHmacSha1Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformHmacSha1Id</pre>
+<p>The HMAC with SHA1 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA1GETKLASS"></a><h3>xmlSecMSCryptoTransformHmacSha1GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformHmacSha1GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA1 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30438"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA1 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA256ID"></a><h3>xmlSecMSCryptoTransformHmacSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformHmacSha256Id</pre>
+<p>The HMAC with SHA256 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA256GETKLASS"></a><h3>xmlSecMSCryptoTransformHmacSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformHmacSha256GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA256 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30459"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA256 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA384ID"></a><h3>xmlSecMSCryptoTransformHmacSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformHmacSha384Id</pre>
+<p>The HMAC with SHA384 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA384GETKLASS"></a><h3>xmlSecMSCryptoTransformHmacSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformHmacSha384GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA384 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30480"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA384 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA512ID"></a><h3>xmlSecMSCryptoTransformHmacSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecMSCryptoTransformHmacSha512Id</pre>
+<p>The HMAC with SHA512 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECMSCRYPTOTRANSFORMHMACSHA512GETKLASS"></a><h3>xmlSecMSCryptoTransformHmacSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecMSCryptoTransformHmacSha512GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA512 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN30501"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA512 transform klass.</p></td>
 </tr></tbody></table>
 </div>
 </div>

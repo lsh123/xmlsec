@@ -20,6 +20,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+#include "private.h"
 
 #if defined(__MINGW32__)
 #  include "xmlsec-mingw.h"

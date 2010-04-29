@@ -31,9 +31,11 @@ XMLSEC_EXPORT int                               xmlSecCryptoDLFunctionsRegisterK
 #include <xmlsec/keysmngr.h>
 #include <xmlsec/transforms.h>
 
-/**
+/****************************************************************************
+ *
  * Dynamic load functions
- */
+ *
+ ****************************************************************************/
 XMLSEC_EXPORT int                               xmlSecCryptoDLInit              (void);
 XMLSEC_EXPORT int                               xmlSecCryptoDLShutdown          (void);
 

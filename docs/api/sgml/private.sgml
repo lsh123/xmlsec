@@ -7,7 +7,7 @@
 
 <refnamediv>
 <refname>private</refname>
-<refpurpose></refpurpose>
+<refpurpose>Private header for building xmlsec-crypto-engine libraries.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv id="xmlsec-private.synopsis" role="synopsis">
@@ -83,6 +83,7 @@ struct              <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFuncti
 <refsect1 id="xmlsec-private.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
+Private header for building xmlsec-crypto-engine libraries.
 </para>
 </refsect1>
 
@@ -419,16 +420,12 @@ Reads the certificate from binary <parameter>data</parameter> buffer and adds it
 <refsect2 id="xmlSecCryptoDLFunctions" role="struct">
 <title>struct xmlSecCryptoDLFunctions</title>
 <indexterm zone="xmlSecCryptoDLFunctions"><primary sortas="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctions</primary></indexterm><programlisting>struct xmlSecCryptoDLFunctions {
-    /**
-     * Crypto Init/shutdown
-     */
+    /* Crypto Init/shutdown */
     xmlSecCryptoInitMethod                       cryptoInit;
     xmlSecCryptoShutdownMethod                   cryptoShutdown;
     xmlSecCryptoKeysMngrInitMethod               cryptoKeysMngrInit;
 
-    /**
-     * Key data ids
-     */
+    /* Key data ids */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDsaGetKlass;
@@ -438,14 +435,10 @@ Reads the certificate from binary <parameter>data</parameter> buffer and adds it
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRawX509CertGetKlass;
 
-    /**
-     * Key data store ids
-     */
+    /* Key data store ids */
     xmlSecCryptoKeyDataStoreGetKlassMethod       x509StoreGetKlass;
 
-    /**
-     * Crypto transforms ids
-     */
+    /* Crypto transforms ids */
     xmlSecCryptoTransformGetKlassMethod          transformAes128CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes192CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes256CbcGetKlass;
@@ -481,9 +474,7 @@ Reads the certificate from binary <parameter>data</parameter> buffer and adds it
     xmlSecCryptoTransformGetKlassMethod          transformSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformSha512GetKlass;
 
-    /**
-     * High level routines form xmlsec command line utility
-     */
+    /* High level routines form xmlsec command line utility */
     xmlSecCryptoAppInitMethod                    cryptoAppInit;
     xmlSecCryptoAppShutdownMethod                cryptoAppShutdown;
     xmlSecCryptoAppDefaultKeysMngrInitMethod     cryptoAppDefaultKeysMngrInit;

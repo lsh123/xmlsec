@@ -33,6 +33,7 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/x509.h>
+#include "private.h"
 
 #if defined(__MINGW32__)
 #  include "xmlsec-mingw.h"
@@ -1151,7 +1152,7 @@ xmlSecMSCryptoX509FindCertByIssuer(HCERTSTORE store, const LPTSTR wcIssuer,
     return (res);
 }
 
-static LPTSTR 
+static LPTSTR
 xmlSecMSCryptoX509GetCertName(const xmlChar * name) {
     xmlChar *name2 = NULL;
     xmlChar *p = NULL;

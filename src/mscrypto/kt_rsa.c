@@ -29,6 +29,7 @@
 
 #include <xmlsec/mscrypto/crypto.h>
 #include <xmlsec/mscrypto/certkeys.h>
+#include "private.h"
 
 /**************************************************************************
  *

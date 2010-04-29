@@ -87,7 +87,7 @@
 <h1>
 <a name="XMLSEC-GNUTLS-CRYPTO"></a>crypto</h1>
 <div class="REFNAMEDIV">
-<a name="AEN24892"></a><h2>Name</h2>crypto -- Crypto transforms implementation for GnuTLS.</div>
+<a name="AEN24871"></a><h2>Name</h2>crypto -- Crypto transforms implementation for GnuTLS.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-GNUTLS-CRYPTO.SYNOPSIS"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS"><font>xmlSecCryptoDLFunctionsPtr</font>  <a href="xmlsec-gnutls-crypto.html#XMLSECCRYPTOGETFUNCTIONS-GNUTLS">xmlSecCryptoGetFunctions_gnutls</a>
@@ -135,8 +135,28 @@
 #define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1ID">xmlSecGnuTLSTransformHmacSha1Id</a>
 <font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA1GETKLASS">xmlSecGnuTLSTransformHmacSha1GetKlass</a>
                                                         (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA256ID">xmlSecGnuTLSTransformHmacSha256Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA256GETKLASS">xmlSecGnuTLSTransformHmacSha256GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA384ID">xmlSecGnuTLSTransformHmacSha384Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA384GETKLASS">xmlSecGnuTLSTransformHmacSha384GetKlass</a>
+                                                        (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA512ID">xmlSecGnuTLSTransformHmacSha512Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMHMACSHA512GETKLASS">xmlSecGnuTLSTransformHmacSha512GetKlass</a>
+                                                        (void);
 #define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1ID">xmlSecGnuTLSTransformSha1Id</a>
-<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1GETKLASS">xmlSecGnuTLSTransformSha1GetKlass</a>   (void);</pre>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA1GETKLASS">xmlSecGnuTLSTransformSha1GetKlass</a>   (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA256ID">xmlSecGnuTLSTransformSha256Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA256GETKLASS">xmlSecGnuTLSTransformSha256GetKlass</a> (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA384ID">xmlSecGnuTLSTransformSha384Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA384GETKLASS">xmlSecGnuTLSTransformSha384GetKlass</a> (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA512ID">xmlSecGnuTLSTransformSha512Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMSHA512GETKLASS">xmlSecGnuTLSTransformSha512GetKlass</a> (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMMD5ID">xmlSecGnuTLSTransformMd5Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMMD5GETKLASS">xmlSecGnuTLSTransformMd5GetKlass</a>    (void);
+#define             <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRIPEMD160ID">xmlSecGnuTLSTransformRipemd160Id</a>
+<font>xmlSecTransformId</font>   <a href="xmlsec-gnutls-crypto.html#XMLSECGNUTLSTRANSFORMRIPEMD160GETKLASS">xmlSecGnuTLSTransformRipemd160GetKlass</a>
+                                                        (void);</pre>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-GNUTLS-CRYPTO.DESCRIPTION"></a><h2>Description</h2>
@@ -152,7 +172,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN24978"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN24981"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the xmlsec-gnutls functions table or NULL if an error occurs.</p></td>
 </tr></tbody></table>
 </div>
@@ -164,7 +184,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN24992"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN24995"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -176,7 +196,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25006"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25009"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -189,11 +209,11 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25021"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25024"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25026"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25029"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -208,15 +228,15 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25044"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25047"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the destination buffer.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25049"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25052"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the numer of bytes to generate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25054"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25057"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -236,7 +256,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25075"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25078"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> AES key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -251,19 +271,19 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25092"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25095"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to AES key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25097"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25100"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25102"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25105"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25107"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25110"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -284,7 +304,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25128"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25131"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 128 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -304,7 +324,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25149"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25152"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 192 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -324,7 +344,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25170"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25173"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 256 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -343,7 +363,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25191"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25194"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> DES key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -358,19 +378,19 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25208"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25211"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to DES key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25213"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25216"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25218"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25221"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25223"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25226"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -391,7 +411,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25244"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25247"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to Triple DES encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -403,7 +423,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25258"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25261"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the min HMAC output length</p></td>
 </tr></tbody></table>
 </div>
@@ -415,7 +435,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25273"><span style="white-space: nowrap"><code class="PARAMETER">min_length</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25276"><span style="white-space: nowrap"><code class="PARAMETER">min_length</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the new min length</p></td>
 </tr></tbody></table>
 </div>
@@ -434,7 +454,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25294"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25297"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> HMAC key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -449,19 +469,19 @@
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25311"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25314"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to HMAC key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25316"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25319"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25321"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25324"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN25326"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25329"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -482,7 +502,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25347"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25350"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-MD5 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -502,7 +522,7 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25368"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25371"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-RIPEMD160 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -522,8 +542,68 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25389"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25392"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-SHA1 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA256ID"></a><h3>xmlSecGnuTLSTransformHmacSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha256Id</pre>
+<p>The HMAC with SHA256 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA256GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformHmacSha256GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA256 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25413"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA256 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA384ID"></a><h3>xmlSecGnuTLSTransformHmacSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha384Id</pre>
+<p>The HMAC with SHA384 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA384GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformHmacSha384GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA384 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25434"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA384 transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA512ID"></a><h3>xmlSecGnuTLSTransformHmacSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformHmacSha512Id</pre>
+<p>The HMAC with SHA512 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMHMACSHA512GETKLASS"></a><h3>xmlSecGnuTLSTransformHmacSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformHmacSha512GetKlass
+                                                        (void);</pre>
+<p>The HMAC-SHA512 transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25455"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the HMAC-SHA512 transform klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
@@ -541,8 +621,104 @@
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN25410"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN25476"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-1 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA256ID"></a><h3>xmlSecGnuTLSTransformSha256Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha256Id</pre>
+<p>The HMAC with SHA256 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA256GETKLASS"></a><h3>xmlSecGnuTLSTransformSha256GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformSha256GetKlass (void);</pre>
+<p>SHA256 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25497"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA256 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA384ID"></a><h3>xmlSecGnuTLSTransformSha384Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha384Id</pre>
+<p>The HMAC with SHA384 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA384GETKLASS"></a><h3>xmlSecGnuTLSTransformSha384GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformSha384GetKlass (void);</pre>
+<p>SHA384 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25518"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA384 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA512ID"></a><h3>xmlSecGnuTLSTransformSha512Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformSha512Id</pre>
+<p>The HMAC with SHA512 signature transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMSHA512GETKLASS"></a><h3>xmlSecGnuTLSTransformSha512GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformSha512GetKlass (void);</pre>
+<p>SHA512 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25539"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to SHA512 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMMD5ID"></a><h3>xmlSecGnuTLSTransformMd5Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformMd5Id</pre>
+<p>The MD5 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMMD5GETKLASS"></a><h3>xmlSecGnuTLSTransformMd5GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformMd5GetKlass    (void);</pre>
+<p>MD5 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25560"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to MD5 digest transform klass.</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRIPEMD160ID"></a><h3>xmlSecGnuTLSTransformRipemd160Id</h3>
+<pre class="PROGRAMLISTING">#define             xmlSecGnuTLSTransformRipemd160Id</pre>
+<p>The RIPEMD160 digest transform klass.</p>
+<p></p>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECGNUTLSTRANSFORMRIPEMD160GETKLASS"></a><h3>xmlSecGnuTLSTransformRipemd160GetKlass ()</h3>
+<pre class="PROGRAMLISTING"><font>xmlSecTransformId</font>   xmlSecGnuTLSTransformRipemd160GetKlass
+                                                        (void);</pre>
+<p>RIPEMD160 digest transform klass.</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN25581"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> pointer to RIPEMD160 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
 </div>

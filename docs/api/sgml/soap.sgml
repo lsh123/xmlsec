@@ -7,7 +7,7 @@
 
 <refnamediv>
 <refname>soap</refname>
-<refpurpose></refpurpose>
+<refpurpose>Experimental soap support.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv id="xmlsec-soap.synopsis" role="synopsis">
@@ -70,6 +70,7 @@ enum                <link linkend="xmlSecSoap12FaultCode">xmlSecSoap12FaultCode<
 <refsect1 id="xmlsec-soap.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
+Experimental soap support.
 </para>
 </refsect1>
 

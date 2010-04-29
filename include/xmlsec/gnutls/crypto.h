@@ -20,9 +20,11 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_gnutls(void);
 
-/**
+/********************************************************************
+ *
  * Init shutdown
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSInit                (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSShutdown            (void);
 

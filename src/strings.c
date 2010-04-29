@@ -595,7 +595,3 @@ const xmlChar xmlSecStringEmpty[]               = "";
 const xmlChar xmlSecStringCR[]                  = "\n";
 
 
-
-
-
-

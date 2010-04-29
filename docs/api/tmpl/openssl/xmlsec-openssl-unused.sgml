@@ -1,3 +1,33 @@
+<!-- ##### MACRO XMLSEC_NO_AES ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA224 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA256 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA384 ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO XMLSEC_NO_SHA512 ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### SECTION tmpl/openssl/ciphers.sgml:Long_Description ##### -->
 <para>
 

@@ -2,11 +2,11 @@
 private
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Private header for building xmlsec-crypto-engine libraries.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Private header for building xmlsec-crypto-engine libraries.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

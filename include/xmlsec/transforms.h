@@ -37,7 +37,7 @@ typedef const struct _xmlSecTransformKlass              xmlSecTransformKlass,
 
 /**********************************************************************
  *
- * Hi-level functions
+ * High-level functions
  *
  *********************************************************************/
 XMLSEC_EXPORT xmlSecPtrListPtr  xmlSecTransformIdsGet           (void);

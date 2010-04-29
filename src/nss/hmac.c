@@ -575,9 +575,11 @@ xmlSecNssHmacExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxP
 
 
 #ifndef XMLSEC_NO_RIPEMD160
-/**
+/******************************************************************************
+ *
  * HMAC Ripemd160
- */
+ *
+ ******************************************************************************/
 static xmlSecTransformKlass xmlSecNssHmacRipemd160Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -619,9 +621,11 @@ xmlSecNssTransformHmacRipemd160GetKlass(void) {
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_MD5
-/**
- * HMAC Md5
- */
+/******************************************************************************
+ *
+ * HMAC MD5
+ *
+ ******************************************************************************/
 static xmlSecTransformKlass xmlSecNssHmacMd5Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -663,9 +667,11 @@ xmlSecNssTransformHmacMd5GetKlass(void) {
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_SHA1
-/**
+/******************************************************************************
+ *
  * HMAC SHA1
- */
+ *
+ ******************************************************************************/
 static xmlSecTransformKlass xmlSecNssHmacSha1Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -707,9 +713,11 @@ xmlSecNssTransformHmacSha1GetKlass(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-/**
+/******************************************************************************
+ *
  * HMAC SHA256
- */
+ *
+ ******************************************************************************/
 static xmlSecTransformKlass xmlSecNssHmacSha256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -751,9 +759,11 @@ xmlSecNssTransformHmacSha256GetKlass(void) {
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-/**
+/******************************************************************************
+ *
  * HMAC SHA384
- */
+ *
+ ******************************************************************************/
 static xmlSecTransformKlass xmlSecNssHmacSha384Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -795,9 +805,11 @@ xmlSecNssTransformHmacSha384GetKlass(void) {
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-/**
+/******************************************************************************
+ *
  * HMAC SHA512
- */
+ *
+ ******************************************************************************/
 static xmlSecTransformKlass xmlSecNssHmacSha512Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */

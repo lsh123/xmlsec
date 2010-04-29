@@ -7,7 +7,7 @@
 
 <refnamediv>
 <refname>exports</refname>
-<refpurpose></refpurpose>
+<refpurpose>Black magic to export functions on Windows.</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv id="xmlsec-exports.synopsis" role="synopsis">
@@ -29,6 +29,7 @@
 <refsect1 id="xmlsec-exports.description" role="desc">
 <title role="desc.title">Description</title>
 <para>
+Black magic to export functions on Windows.
 </para>
 </refsect1>
 

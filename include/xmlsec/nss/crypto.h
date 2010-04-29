@@ -25,9 +25,11 @@ extern "C" {
 
 XMLSEC_CRYPTO_EXPORT xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctions_nss(void);
 
-/**
+/********************************************************************
+ *
  * Init shutdown
- */
+ *
+ ********************************************************************/
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssInit                   (void);
 XMLSEC_CRYPTO_EXPORT int                xmlSecNssShutdown               (void);
 
@@ -441,7 +443,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformSha512GetKlass(void);
 
 /********************************************************************
  *
- * Md5 transforms
+ * MD5 transforms
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_MD5

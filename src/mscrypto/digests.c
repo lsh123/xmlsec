@@ -22,6 +22,7 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+#include "private.h"
 
 #define MSCRYPTO_MAX_HASH_SIZE 256
 

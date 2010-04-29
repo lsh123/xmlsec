@@ -87,15 +87,10 @@
 <h1>
 <a name="XMLSEC-OPENSSL-CRYPTO"></a>crypto</h1>
 <div class="REFNAMEDIV">
-<a name="AEN22071"></a><h2>Name</h2>crypto -- Crypto transforms implementation for OpenSSL.</div>
+<a name="AEN22085"></a><h2>Name</h2>crypto -- Crypto transforms implementation for OpenSSL.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-OPENSSL-CRYPTO.SYNOPSIS"></a><h2>Synopsis</h2>
-<pre class="SYNOPSIS">#define             <a href="xmlsec-openssl-crypto.html#XMLSEC-NO-SHA224--CAPS">XMLSEC_NO_SHA224</a>
-#define             <a href="xmlsec-openssl-crypto.html#XMLSEC-NO-SHA256--CAPS">XMLSEC_NO_SHA256</a>
-#define             <a href="xmlsec-openssl-crypto.html#XMLSEC-NO-SHA384--CAPS">XMLSEC_NO_SHA384</a>
-#define             <a href="xmlsec-openssl-crypto.html#XMLSEC-NO-SHA512--CAPS">XMLSEC_NO_SHA512</a>
-#define             <a href="xmlsec-openssl-crypto.html#XMLSEC-NO-AES--CAPS">XMLSEC_NO_AES</a>
-<font>xmlSecCryptoDLFunctionsPtr</font>  <a href="xmlsec-openssl-crypto.html#XMLSECCRYPTOGETFUNCTIONS-OPENSSL">xmlSecCryptoGetFunctions_openssl</a>
+<pre class="SYNOPSIS"><font>xmlSecCryptoDLFunctionsPtr</font>  <a href="xmlsec-openssl-crypto.html#XMLSECCRYPTOGETFUNCTIONS-OPENSSL">xmlSecCryptoGetFunctions_openssl</a>
                                                         (void);
 <font>int</font>                 <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLINIT">xmlSecOpenSSLInit</a>                   (void);
 <font>int</font>                 <a href="xmlsec-openssl-crypto.html#XMLSECOPENSSLSHUTDOWN">xmlSecOpenSSLShutdown</a>               (void);
@@ -250,36 +245,6 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <div class="REFSECT1">
 <a name="XMLSEC-OPENSSL-CRYPTO.DETAILS"></a><h2>Details</h2>
 <div class="REFSECT2">
-<a name="XMLSEC-NO-SHA224--CAPS"></a><h3>XMLSEC_NO_SHA224</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_NO_SHA224 1</pre>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-NO-SHA256--CAPS"></a><h3>XMLSEC_NO_SHA256</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_NO_SHA256 1</pre>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-NO-SHA384--CAPS"></a><h3>XMLSEC_NO_SHA384</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_NO_SHA384 1</pre>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-NO-SHA512--CAPS"></a><h3>XMLSEC_NO_SHA512</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_NO_SHA512 1</pre>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
-<a name="XMLSEC-NO-AES--CAPS"></a><h3>XMLSEC_NO_AES</h3>
-<pre class="PROGRAMLISTING">#define XMLSEC_NO_AES    1</pre>
-<p></p>
-</div>
-<hr>
-<div class="REFSECT2">
 <a name="XMLSECCRYPTOGETFUNCTIONS-OPENSSL"></a><h3>xmlSecCryptoGetFunctions_openssl ()</h3>
 <pre class="PROGRAMLISTING"><font>xmlSecCryptoDLFunctionsPtr</font>  xmlSecCryptoGetFunctions_openssl
                                                         (void);</pre>
@@ -287,7 +252,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22314"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22293"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the xmlsec-openssl functions table or NULL if an error occurs.</p></td>
 </tr></tbody></table>
 </div>
@@ -299,7 +264,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22328"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22307"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -311,7 +276,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22321"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -324,11 +289,11 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22357"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22336"><span style="white-space: nowrap"><code class="PARAMETER">mngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22362"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22341"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -343,15 +308,15 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22380"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22359"><span style="white-space: nowrap"><code class="PARAMETER">buffer</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the destination buffer.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22385"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22364"><span style="white-space: nowrap"><code class="PARAMETER">size</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the numer of bytes to generate.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22390"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22369"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -366,11 +331,11 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22405"><span style="white-space: nowrap"><code class="PARAMETER">path</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22384"><span style="white-space: nowrap"><code class="PARAMETER">path</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>       the default trusted certs path.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22410"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22389"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -384,7 +349,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22424"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22403"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the default trusted cert folder.</p></td>
 </tr></tbody></table>
 </div>
@@ -403,7 +368,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22445"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22424"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> AES key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -418,19 +383,19 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22462"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22441"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to AES key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22467"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22446"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22472"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22451"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22477"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22456"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -451,7 +416,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22498"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22477"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 128 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -471,7 +436,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22519"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22498"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 192 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -491,7 +456,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22540"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22519"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to AES 256 CBC encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -511,7 +476,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22561"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22540"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> AES-128 kew wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -531,7 +496,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22582"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22561"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> AES-192 kew wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -551,7 +516,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22603"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22582"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> AES-256 kew wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -570,7 +535,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22624"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22603"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> DES key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -585,19 +550,19 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22641"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22620"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to DES key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22646"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22625"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22651"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22630"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22656"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22635"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -618,7 +583,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22677"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22656"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to Triple DES encryption transform.</p></td>
 </tr></tbody></table>
 </div>
@@ -638,7 +603,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22698"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22677"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> Triple DES key wrapper transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -657,7 +622,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22719"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22698"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to DSA key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -671,15 +636,15 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22735"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22714"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to DSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22740"><span style="white-space: nowrap"><code class="PARAMETER">dsa</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22719"><span style="white-space: nowrap"><code class="PARAMETER">dsa</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to OpenSSL DSA key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22745"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22724"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -693,11 +658,11 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22760"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22739"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to DSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22765"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22744"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to OpenSSL DSA key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -712,15 +677,15 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22781"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22760"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to DSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22786"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22765"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to OpenSSL EVP key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22791"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22770"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -734,11 +699,11 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22806"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22785"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to DSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22811"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22790"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to OpenSSL EVP key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -759,7 +724,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22832"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22811"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> DSA-SHA1 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -771,7 +736,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22846"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22825"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the min HMAC output length</p></td>
 </tr></tbody></table>
 </div>
@@ -783,7 +748,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22861"><span style="white-space: nowrap"><code class="PARAMETER">min_length</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22840"><span style="white-space: nowrap"><code class="PARAMETER">min_length</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the new min length</p></td>
 </tr></tbody></table>
 </div>
@@ -802,7 +767,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22882"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22861"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> HMAC key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -817,19 +782,19 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22899"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22878"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to HMAC key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22904"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22883"><span style="white-space: nowrap"><code class="PARAMETER">buf</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to key value.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22909"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22888"><span style="white-space: nowrap"><code class="PARAMETER">bufSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>            the key value size (in bytes).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22914"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22893"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -850,7 +815,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22935"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22914"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-MD5 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -870,7 +835,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22956"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22935"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-RIPEMD160 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -890,7 +855,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22977"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22956"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-SHA1 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -910,7 +875,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22998"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22977"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-SHA224 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -930,7 +895,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23019"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22998"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-SHA256 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -950,7 +915,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23040"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23019"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-SHA384 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -970,7 +935,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23061"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23040"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the HMAC-SHA512 transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -989,7 +954,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23082"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23061"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to MD5 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1009,7 +974,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23103"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23082"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to RIPEMD-160 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1028,7 +993,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23124"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23103"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to OpenSSL RSA key data klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1042,15 +1007,15 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23140"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23119"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to RSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23145"><span style="white-space: nowrap"><code class="PARAMETER">rsa</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23124"><span style="white-space: nowrap"><code class="PARAMETER">rsa</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the pointer to OpenSSL RSA key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23150"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23129"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -1064,11 +1029,11 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23165"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23144"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to RSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23170"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23149"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to OpenSSL RSA key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -1083,15 +1048,15 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23186"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23165"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to RSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23191"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23170"><span style="white-space: nowrap"><code class="PARAMETER">pKey</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to OpenSSL EVP key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23196"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23175"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -1105,11 +1070,11 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23211"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23190"><span style="white-space: nowrap"><code class="PARAMETER">data</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the pointer to RSA key data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23216"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23195"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to OpenSSL EVP key or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -1130,7 +1095,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23237"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23216"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-MD5 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1150,7 +1115,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23258"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23237"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-RIPEMD160 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1170,7 +1135,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23279"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23258"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-SHA1 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1190,7 +1155,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23300"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23279"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-SHA224 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1210,7 +1175,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23321"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23300"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-SHA256 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1230,7 +1195,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23321"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-SHA384 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1250,7 +1215,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23363"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23342"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-SHA512 signature transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1270,7 +1235,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23384"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23363"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-PKCS1 key transport transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1290,7 +1255,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23405"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23384"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> RSA-OAEP key transport transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1309,7 +1274,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23426"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23405"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-1 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1329,7 +1294,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23447"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23426"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-224 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1349,7 +1314,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23468"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23447"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-256 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1369,7 +1334,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23489"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23468"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-384 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1389,7 +1354,7 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN23510"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23489"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to SHA-512 digest transform klass.</p></td>
 </tr></tbody></table>
 </div>
@@ -1422,31 +1387,31 @@ const <font>xmlChar</font>*      <a href="xmlsec-openssl-crypto.html#XMLSECOPENS
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23545"><span style="white-space: nowrap"><code class="PARAMETER">file</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23524"><span style="white-space: nowrap"><code class="PARAMETER">file</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the error location file name (__FILE__ macro).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23550"><span style="white-space: nowrap"><code class="PARAMETER">line</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23529"><span style="white-space: nowrap"><code class="PARAMETER">line</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the error location line number (__LINE__ macro).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23555"><span style="white-space: nowrap"><code class="PARAMETER">func</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23534"><span style="white-space: nowrap"><code class="PARAMETER">func</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the error location function name (__FUNCTION__ macro).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23560"><span style="white-space: nowrap"><code class="PARAMETER">errorObject</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23539"><span style="white-space: nowrap"><code class="PARAMETER">errorObject</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>        the error specific error object</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23565"><span style="white-space: nowrap"><code class="PARAMETER">errorSubject</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23544"><span style="white-space: nowrap"><code class="PARAMETER">errorSubject</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>       the error specific error subject.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23570"><span style="white-space: nowrap"><code class="PARAMETER">reason</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23549"><span style="white-space: nowrap"><code class="PARAMETER">reason</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>             the error code.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN23575"><span style="white-space: nowrap"><code class="PARAMETER">msg</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN23554"><span style="white-space: nowrap"><code class="PARAMETER">msg</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>                the additional error message.</p></td>
 </tr>
 </tbody></table>

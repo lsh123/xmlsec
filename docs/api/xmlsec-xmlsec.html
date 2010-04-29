@@ -92,6 +92,7 @@
 <a name="XMLSEC-XMLSEC.SYNOPSIS"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">typedef             <font>xmlSecPtr</font>;
 #define             <a href="xmlsec-xmlsec.html#XMLSECSIZE">xmlSecSize</a>
+#define             <a href="xmlsec-xmlsec.html#XMLSEC-SIZE-BAD-CAST--CAPS">XMLSEC_SIZE_BAD_CAST</a>                (val)
 #define             <a href="xmlsec-xmlsec.html#XMLSECBYTE">xmlSecByte</a>
 <font>int</font>                 <a href="xmlsec-xmlsec.html#XMLSECINIT">xmlSecInit</a>                          (void);
 <font>int</font>                 <a href="xmlsec-xmlsec.html#XMLSECSHUTDOWN">xmlSecShutdown</a>                      (void);
@@ -126,6 +127,18 @@ but it will break ABI (todo).</p>
 </div>
 <hr>
 <div class="REFSECT2">
+<a name="XMLSEC-SIZE-BAD-CAST--CAPS"></a><h3>XMLSEC_SIZE_BAD_CAST()</h3>
+<pre class="PROGRAMLISTING">#define XMLSEC_SIZE_BAD_CAST(val)               ((xmlSecSize)(val))</pre>
+<p>Bad cast to xmlSecSize</p>
+<p></p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
+<td align="LEFT" valign="TOP"><a name="AEN19091"><span style="white-space: nowrap"><code class="PARAMETER">val</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>        the value to cast</p></td>
+</tr></tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
 <a name="XMLSECBYTE"></a><h3>xmlSecByte</h3>
 <pre class="PROGRAMLISTING">#define xmlSecByte                              unsigned char</pre>
 <p>One byte. Should be typedef instead of define
@@ -141,7 +154,7 @@ but it will break ABI (todo).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19098"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19112"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -153,7 +166,7 @@ but it will break ABI (todo).</p>
 <p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN19112"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19126"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value otherwise.</p></td>
 </tr></tbody></table>
 </div>
@@ -208,23 +221,23 @@ value if an error occurs.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19162"><span style="white-space: nowrap"><code class="PARAMETER">major</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19176"><span style="white-space: nowrap"><code class="PARAMETER">major</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>              the major version number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19167"><span style="white-space: nowrap"><code class="PARAMETER">minor</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19181"><span style="white-space: nowrap"><code class="PARAMETER">minor</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>              the minor version number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19172"><span style="white-space: nowrap"><code class="PARAMETER">subminor</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19186"><span style="white-space: nowrap"><code class="PARAMETER">subminor</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>           the subminor version number.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19177"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19191"><span style="white-space: nowrap"><code class="PARAMETER">mode</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>               the version check mode.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN19182"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN19196"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 1 if the loaded xmlsec library version is OK to use
 0 if it is not or a negative value if an error occurs.</p></td>
 </tr>

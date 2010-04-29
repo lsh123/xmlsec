@@ -32,7 +32,7 @@
 
 /*********************************************************************
  *
- * key transform transforms
+ * Key transport transforms
  *
  ********************************************************************/
 typedef struct _xmlSecNssKeyTransportCtx                        xmlSecNssKeyTransportCtx;
@@ -243,9 +243,6 @@ xmlSecNssKeyTransportSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     return(0) ;
 }
 
-/**
- * key wrap transform
- */
 static int
 xmlSecNssKeyTransportCtxInit(
         xmlSecNssKeyTransportCtxPtr             ctx ,
@@ -318,9 +315,6 @@ xmlSecNssKeyTransportCtxInit(
         return(0);
 }
 
-/**
- * key wrap transform update
- */
 static int
 xmlSecNssKeyTransportCtxUpdate(
         xmlSecNssKeyTransportCtxPtr             ctx ,
@@ -360,9 +354,6 @@ xmlSecNssKeyTransportCtxUpdate(
         return(0);
 }
 
-/**
- * Block cipher transform final
- */
 static int
 xmlSecNssKeyTransportCtxFinal(xmlSecNssKeyTransportCtxPtr ctx,  xmlSecBufferPtr in,  xmlSecBufferPtr out,
                               int encrypt, xmlSecTransformCtxPtr transformCtx) {

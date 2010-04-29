@@ -59,8 +59,28 @@
 #define             <link linkend="xmlSecGnuTLSTransformHmacSha1Id">xmlSecGnuTLSTransformHmacSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacSha1GetKlass">xmlSecGnuTLSTransformHmacSha1GetKlass</link>
                                                         (void);
+#define             <link linkend="xmlSecGnuTLSTransformHmacSha256Id">xmlSecGnuTLSTransformHmacSha256Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacSha256GetKlass">xmlSecGnuTLSTransformHmacSha256GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformHmacSha384Id">xmlSecGnuTLSTransformHmacSha384Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacSha384GetKlass">xmlSecGnuTLSTransformHmacSha384GetKlass</link>
+                                                        (void);
+#define             <link linkend="xmlSecGnuTLSTransformHmacSha512Id">xmlSecGnuTLSTransformHmacSha512Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformHmacSha512GetKlass">xmlSecGnuTLSTransformHmacSha512GetKlass</link>
+                                                        (void);
 #define             <link linkend="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</link>
 <link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformSha1GetKlass">xmlSecGnuTLSTransformSha1GetKlass</link>   (void);
+#define             <link linkend="xmlSecGnuTLSTransformSha256Id">xmlSecGnuTLSTransformSha256Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformSha256GetKlass">xmlSecGnuTLSTransformSha256GetKlass</link> (void);
+#define             <link linkend="xmlSecGnuTLSTransformSha384Id">xmlSecGnuTLSTransformSha384Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformSha384GetKlass">xmlSecGnuTLSTransformSha384GetKlass</link> (void);
+#define             <link linkend="xmlSecGnuTLSTransformSha512Id">xmlSecGnuTLSTransformSha512Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformSha512GetKlass">xmlSecGnuTLSTransformSha512GetKlass</link> (void);
+#define             <link linkend="xmlSecGnuTLSTransformMd5Id">xmlSecGnuTLSTransformMd5Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformMd5GetKlass">xmlSecGnuTLSTransformMd5GetKlass</link>    (void);
+#define             <link linkend="xmlSecGnuTLSTransformRipemd160Id">xmlSecGnuTLSTransformRipemd160Id</link>
+<link linkend="xmlSecTransformId">xmlSecTransformId</link>   <link linkend="xmlSecGnuTLSTransformRipemd160GetKlass">xmlSecGnuTLSTransformRipemd160GetKlass</link>
+                                                        (void);
 </synopsis>
 </refsynopsisdiv>
 
@@ -403,6 +423,60 @@ The HMAC-SHA1 transform klass.</para>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA1 transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha256Id" role="macro">
+<title>xmlSecGnuTLSTransformHmacSha256Id</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha256Id"><primary sortas="xmlSecGnuTLSTransformHmacSha256Id">xmlSecGnuTLSTransformHmacSha256Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformHmacSha256Id</programlisting>
+<para>
+The HMAC with SHA256 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha256GetKlass" role="function">
+<title>xmlSecGnuTLSTransformHmacSha256GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha256GetKlass"><primary sortas="xmlSecGnuTLSTransformHmacSha256GetKlass">xmlSecGnuTLSTransformHmacSha256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformHmacSha256GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA256 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA256 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha384Id" role="macro">
+<title>xmlSecGnuTLSTransformHmacSha384Id</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha384Id"><primary sortas="xmlSecGnuTLSTransformHmacSha384Id">xmlSecGnuTLSTransformHmacSha384Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformHmacSha384Id</programlisting>
+<para>
+The HMAC with SHA384 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha384GetKlass" role="function">
+<title>xmlSecGnuTLSTransformHmacSha384GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha384GetKlass"><primary sortas="xmlSecGnuTLSTransformHmacSha384GetKlass">xmlSecGnuTLSTransformHmacSha384GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformHmacSha384GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA384 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA384 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha512Id" role="macro">
+<title>xmlSecGnuTLSTransformHmacSha512Id</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha512Id"><primary sortas="xmlSecGnuTLSTransformHmacSha512Id">xmlSecGnuTLSTransformHmacSha512Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformHmacSha512Id</programlisting>
+<para>
+The HMAC with SHA512 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformHmacSha512GetKlass" role="function">
+<title>xmlSecGnuTLSTransformHmacSha512GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformHmacSha512GetKlass"><primary sortas="xmlSecGnuTLSTransformHmacSha512GetKlass">xmlSecGnuTLSTransformHmacSha512GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformHmacSha512GetKlass
+                                                        (void);</programlisting>
+<para>
+The HMAC-SHA512 transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the HMAC-SHA512 transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
 <refsect2 id="xmlSecGnuTLSTransformSha1Id" role="macro">
 <title>xmlSecGnuTLSTransformSha1Id</title>
 <indexterm zone="xmlSecGnuTLSTransformSha1Id"><primary sortas="xmlSecGnuTLSTransformSha1Id">xmlSecGnuTLSTransformSha1Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformSha1Id</programlisting>
@@ -418,6 +492,92 @@ SHA-1 digest transform klass.</para>
 <para>
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA-1 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformSha256Id" role="macro">
+<title>xmlSecGnuTLSTransformSha256Id</title>
+<indexterm zone="xmlSecGnuTLSTransformSha256Id"><primary sortas="xmlSecGnuTLSTransformSha256Id">xmlSecGnuTLSTransformSha256Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformSha256Id</programlisting>
+<para>
+The HMAC with SHA256 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformSha256GetKlass" role="function">
+<title>xmlSecGnuTLSTransformSha256GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformSha256GetKlass"><primary sortas="xmlSecGnuTLSTransformSha256GetKlass">xmlSecGnuTLSTransformSha256GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformSha256GetKlass (void);</programlisting>
+<para>
+SHA256 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA256 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformSha384Id" role="macro">
+<title>xmlSecGnuTLSTransformSha384Id</title>
+<indexterm zone="xmlSecGnuTLSTransformSha384Id"><primary sortas="xmlSecGnuTLSTransformSha384Id">xmlSecGnuTLSTransformSha384Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformSha384Id</programlisting>
+<para>
+The HMAC with SHA384 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformSha384GetKlass" role="function">
+<title>xmlSecGnuTLSTransformSha384GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformSha384GetKlass"><primary sortas="xmlSecGnuTLSTransformSha384GetKlass">xmlSecGnuTLSTransformSha384GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformSha384GetKlass (void);</programlisting>
+<para>
+SHA384 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA384 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformSha512Id" role="macro">
+<title>xmlSecGnuTLSTransformSha512Id</title>
+<indexterm zone="xmlSecGnuTLSTransformSha512Id"><primary sortas="xmlSecGnuTLSTransformSha512Id">xmlSecGnuTLSTransformSha512Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformSha512Id</programlisting>
+<para>
+The HMAC with SHA512 signature transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformSha512GetKlass" role="function">
+<title>xmlSecGnuTLSTransformSha512GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformSha512GetKlass"><primary sortas="xmlSecGnuTLSTransformSha512GetKlass">xmlSecGnuTLSTransformSha512GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformSha512GetKlass (void);</programlisting>
+<para>
+SHA512 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to SHA512 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformMd5Id" role="macro">
+<title>xmlSecGnuTLSTransformMd5Id</title>
+<indexterm zone="xmlSecGnuTLSTransformMd5Id"><primary sortas="xmlSecGnuTLSTransformMd5Id">xmlSecGnuTLSTransformMd5Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformMd5Id</programlisting>
+<para>
+The MD5 digest transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformMd5GetKlass" role="function">
+<title>xmlSecGnuTLSTransformMd5GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformMd5GetKlass"><primary sortas="xmlSecGnuTLSTransformMd5GetKlass">xmlSecGnuTLSTransformMd5GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformMd5GetKlass    (void);</programlisting>
+<para>
+MD5 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to MD5 digest transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformRipemd160Id" role="macro">
+<title>xmlSecGnuTLSTransformRipemd160Id</title>
+<indexterm zone="xmlSecGnuTLSTransformRipemd160Id"><primary sortas="xmlSecGnuTLSTransformRipemd160Id">xmlSecGnuTLSTransformRipemd160Id</primary></indexterm><programlisting>#define             xmlSecGnuTLSTransformRipemd160Id</programlisting>
+<para>
+The RIPEMD160 digest transform klass.</para>
+<para>
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSTransformRipemd160GetKlass" role="function">
+<title>xmlSecGnuTLSTransformRipemd160GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSTransformRipemd160GetKlass"><primary sortas="xmlSecGnuTLSTransformRipemd160GetKlass">xmlSecGnuTLSTransformRipemd160GetKlass</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   xmlSecGnuTLSTransformRipemd160GetKlass
+                                                        (void);</programlisting>
+<para>
+RIPEMD160 digest transform klass.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to RIPEMD160 digest transform klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 

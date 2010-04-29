@@ -594,9 +594,11 @@ int
 xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFunctions* functions) {
     xmlSecAssert2(functions != NULL, -1);
 
-    /**
+    /****************************************************************************
+     *
      * Register keys
-     */
+     *
+     ****************************************************************************/
     if((functions->keyDataAesGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataAesGetKlass()) < 0)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(functions->keyDataAesGetKlass())),
@@ -663,9 +665,11 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     }
 
 
-    /**
+    /****************************************************************************
+     *
      * Register transforms
-     */
+     *
+     ****************************************************************************/
     if((functions->transformAes128CbcGetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformAes128CbcGetKlass()) < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformAes128CbcGetKlass())),
@@ -972,6 +976,7 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
         return(-1);
     }
 
+    /* done */
     return(0);
 }
 

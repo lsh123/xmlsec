@@ -14,11 +14,6 @@
 <title role="synopsis.title">Synopsis</title>
 
 <synopsis>
-#define             <link linkend="XMLSEC-NO-SHA224--CAPS">XMLSEC_NO_SHA224</link>
-#define             <link linkend="XMLSEC-NO-SHA256--CAPS">XMLSEC_NO_SHA256</link>
-#define             <link linkend="XMLSEC-NO-SHA384--CAPS">XMLSEC_NO_SHA384</link>
-#define             <link linkend="XMLSEC-NO-SHA512--CAPS">XMLSEC_NO_SHA512</link>
-#define             <link linkend="XMLSEC-NO-AES--CAPS">XMLSEC_NO_AES</link>
 <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  <link linkend="xmlSecCryptoGetFunctions-openssl">xmlSecCryptoGetFunctions_openssl</link>
                                                         (void);
 <link linkend="int">int</link>                 <link linkend="xmlSecOpenSSLInit">xmlSecOpenSSLInit</link>                   (void);
@@ -186,36 +181,6 @@ Crypto transforms implementation for OpenSSL.
 
 <refsect1 id="xmlsec-openssl-crypto.details" role="details">
 <title role="details.title">Details</title>
-<refsect2 id="XMLSEC-NO-SHA224--CAPS" role="macro">
-<title>XMLSEC_NO_SHA224</title>
-<indexterm zone="XMLSEC-NO-SHA224--CAPS"><primary sortas="XMLSEC_NO_SHA224">XMLSEC_NO_SHA224</primary></indexterm><programlisting>#define XMLSEC_NO_SHA224 1
-</programlisting>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-NO-SHA256--CAPS" role="macro">
-<title>XMLSEC_NO_SHA256</title>
-<indexterm zone="XMLSEC-NO-SHA256--CAPS"><primary sortas="XMLSEC_NO_SHA256">XMLSEC_NO_SHA256</primary></indexterm><programlisting>#define XMLSEC_NO_SHA256 1
-</programlisting>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-NO-SHA384--CAPS" role="macro">
-<title>XMLSEC_NO_SHA384</title>
-<indexterm zone="XMLSEC-NO-SHA384--CAPS"><primary sortas="XMLSEC_NO_SHA384">XMLSEC_NO_SHA384</primary></indexterm><programlisting>#define XMLSEC_NO_SHA384 1
-</programlisting>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-NO-SHA512--CAPS" role="macro">
-<title>XMLSEC_NO_SHA512</title>
-<indexterm zone="XMLSEC-NO-SHA512--CAPS"><primary sortas="XMLSEC_NO_SHA512">XMLSEC_NO_SHA512</primary></indexterm><programlisting>#define XMLSEC_NO_SHA512 1
-</programlisting>
-<para>
-</para></refsect2>
-<refsect2 id="XMLSEC-NO-AES--CAPS" role="macro">
-<title>XMLSEC_NO_AES</title>
-<indexterm zone="XMLSEC-NO-AES--CAPS"><primary sortas="XMLSEC_NO_AES">XMLSEC_NO_AES</primary></indexterm><programlisting>#define XMLSEC_NO_AES    1
-</programlisting>
-<para>
-</para></refsect2>
 <refsect2 id="xmlSecCryptoGetFunctions-openssl" role="function">
 <title>xmlSecCryptoGetFunctions_openssl ()</title>
 <indexterm zone="xmlSecCryptoGetFunctions-openssl"><primary sortas="xmlSecCryptoGetFunctions_openssl">xmlSecCryptoGetFunctions_openssl</primary></indexterm><programlisting><link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctionsPtr</link>  xmlSecCryptoGetFunctions_openssl

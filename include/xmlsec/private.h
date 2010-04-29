@@ -2,7 +2,7 @@
  * XML Security Library (http://www.aleksey.com/xmlsec).
  *
  * These are internal private declarations. You don't want to use this file
- * unless you are building xmlsec or xmlsec-<crypto> library
+ * unless you are building xmlsec or xmlsec-<crypto> library.
  *
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
@@ -393,16 +393,12 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * The list of crypto engine functions, key data and transform classes.
  */
 struct _xmlSecCryptoDLFunctions {
-    /**
-     * Crypto Init/shutdown
-     */
+    /* Crypto Init/shutdown */
     xmlSecCryptoInitMethod                       cryptoInit;
     xmlSecCryptoShutdownMethod                   cryptoShutdown;
     xmlSecCryptoKeysMngrInitMethod               cryptoKeysMngrInit;
 
-    /**
-     * Key data ids
-     */
+    /* Key data ids */
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDsaGetKlass;
@@ -412,14 +408,10 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataX509GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRawX509CertGetKlass;
 
-    /**
-     * Key data store ids
-     */
+    /* Key data store ids */
     xmlSecCryptoKeyDataStoreGetKlassMethod       x509StoreGetKlass;
 
-    /**
-     * Crypto transforms ids
-     */
+    /* Crypto transforms ids */
     xmlSecCryptoTransformGetKlassMethod          transformAes128CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes192CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformAes256CbcGetKlass;
@@ -455,9 +447,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformSha384GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformSha512GetKlass;
 
-    /**
-     * High level routines form xmlsec command line utility
-     */
+    /* High level routines form xmlsec command line utility */
     xmlSecCryptoAppInitMethod                    cryptoAppInit;
     xmlSecCryptoAppShutdownMethod                cryptoAppShutdown;
     xmlSecCryptoAppDefaultKeysMngrInitMethod     cryptoAppDefaultKeysMngrInit;

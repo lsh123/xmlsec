@@ -17,22 +17,23 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/**
- * Defines for writing simple code
- */
 #ifdef XMLSEC_CRYPTO_SKELETON
 
-/**
+/********************************************************************
+ *
  * Crypto Init/shutdown
- */
+ *
+ ********************************************************************/
 #define xmlSecCryptoInit                        xmlSecSkeletonInit
 #define xmlSecCryptoShutdown                    xmlSecSkeletonShutdown
 
 #define xmlSecCryptoKeysMngrInit                xmlSecSkeletonKeysMngrInit
 
-/**
+/********************************************************************
+ *
  * Key data ids
- */
+ *
+ ********************************************************************/
 #define xmlSecKeyDataAesId                      xmlSecSkeletonKeyDataAesId
 #define xmlSecKeyDataDesId                      xmlSecSkeletonKeyDataDesId
 #define xmlSecKeyDataDsaId                      xmlSecSkeletonKeyDataDsaId
@@ -41,14 +42,18 @@ extern "C" {
 #define xmlSecKeyDataX509Id                     xmlSecSkeletonKeyDataX509Id
 #define xmlSecKeyDataRawX509CertId              xmlSecSkeletonKeyDataRawX509CertId
 
-/**
+/********************************************************************
+ *
  * Key data store ids
- */
+ *
+ ********************************************************************/
 #define xmlSecX509StoreId                       xmlSecSkeletonX509StoreId
 
-/**
+/********************************************************************
+ *
  * Crypto transforms ids
- */
+ *
+ ********************************************************************/
 #define xmlSecTransformAes128CbcId              xmlSecSkeletonTransformAes128CbcId
 #define xmlSecTransformAes192CbcId              xmlSecSkeletonTransformAes192CbcId
 #define xmlSecTransformAes256CbcId              xmlSecSkeletonTransformAes256CbcId
@@ -80,9 +85,11 @@ extern "C" {
 #define xmlSecTransformSha384Id                 xmlSecSkeletonTransformSha384Id
 #define xmlSecTransformSha512Id                 xmlSecSkeletonTransformSha512Id
 
-/**
+/********************************************************************
+ *
  * High level routines form xmlsec command line utility
- */
+ *
+ ********************************************************************/
 #define xmlSecCryptoAppInit                     xmlSecSkeletonAppInit
 #define xmlSecCryptoAppShutdown                 xmlSecSkeletonAppShutdown
 #define xmlSecCryptoAppDefaultKeysMngrInit      xmlSecSkeletonAppDefaultKeysMngrInit

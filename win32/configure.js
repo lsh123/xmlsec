@@ -45,7 +45,7 @@ var withNss = 0;
 var withMSCrypto = 0;
 var withLibXSLT = 1;
 var withIconv = 1;
-var withNT4 = 0;
+var withNT4 = 1;
 
 /* Win32 build options. */
 var buildUnicode = 1;
@@ -159,7 +159,7 @@ function discoverVersion()
 	vf.WriteLine("WITH_CRYPTO=" + withCrypto);	
 	vf.WriteLine("WITH_DEFAULT_CRYPTO=" + withDefaultCrypto);	
 	vf.WriteLine("WITH_OPENSSL=" + withOpenSSL);	
-	vf.WriteLine("WITH_OPENSSL_VERSION=" + withOpenSSLVersion);	
+	vf.WriteLine("WITH_OPENSSL_VERSION=XMLSEC_OPENSSL_" + withOpenSSLVersion);	
 	vf.WriteLine("WITH_NSS=" + withNss);	
 	vf.WriteLine("WITH_MSCRYPTO=" + withMSCrypto);	
 	vf.WriteLine("WITH_LIBXSLT=" + (withLibXSLT ? "1" : "0"));
@@ -311,19 +311,19 @@ for (j = 0; j < crlist.length; j++) {
 	if (crlist[j] == "openssl") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "XMLSEC_OPENSSL_098"; /* default */
+		withOpenSSLVersion = "098"; /* default */
 	} else if (crlist[j] == "openssl=096") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "XMLSEC_OPENSSL_096";
+		withOpenSSLVersion = "096";
 	} else if (crlist[j] == "openssl=097") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "XMLSEC_OPENSSL_097";
+		withOpenSSLVersion = "097";
 	} else if (crlist[j] == "openssl=098") {
 		curcrypto="openssl";
 		withOpenSSL = 1;
-		withOpenSSLVersion = "XMLSEC_OPENSSL_098";
+		withOpenSSLVersion = "098";
 	} else if (crlist[j] == "nss") {
 		curcrypto="nss";
 		withNss = 1;
@@ -369,8 +369,8 @@ var txtOut = "\nXMLSEC configuration\n";
 txtOut += "----------------------------\n";
 txtOut += "         Use Crypto: " + withCrypto + "\n";
 txtOut += " Use Default Crypto: " + withDefaultCrypto + "\n";
-txtOut += "       Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
-txtOut += "Use OpenSSL Version: " + boolToStr(withOpenSSLVersion) + "\n";
+txtOut += "        Use OpenSSL: " + boolToStr(withOpenSSL) + "\n";
+txtOut += "Use OpenSSL Version: " + withOpenSSLVersion + "\n";
 txtOut += "            Use NSS: " + boolToStr(withNss) + "\n";
 txtOut += "       Use MSCrypto: " + boolToStr(withMSCrypto) + "\n";
 txtOut += "        Use LibXSLT: " + boolToStr(withLibXSLT) + "\n";

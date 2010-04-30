@@ -54,6 +54,7 @@ else
     tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
     logfile=$TMPFOLDER/$testname.$timestamp-$$.log
 fi
+nssdbfolder=$topfolder/nssdb
 
 #
 # Valgrind
@@ -127,6 +128,10 @@ execKeysTest() {
     key_name="$3"
     alg_name="$4"
 
+    # prepare
+    rm -f $tmpfile
+    old_pwd=`pwd`
+
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
@@ -158,6 +163,10 @@ execKeysTest() {
     echo "$xmlsec_app keys $params $xmlsec_params $keysfile" >>  $logfile 
     $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $logfile 2>> $logfile
     printRes $expected_res $?
+
+    # cleanup
+    cd $old_pwd
+    rm -f $tmpfile
 }
 
 #
@@ -171,6 +180,10 @@ execDSigTest() {
     params1="$5"
     params2="$6"
     params3="$7"
+
+    # prepare
+    rm -f $tmpfile
+    old_pwd=`pwd`
 
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
@@ -189,7 +202,6 @@ execDSigTest() {
         echo "Test: $folder/$filename ($expected_res)" >> $logfile
     fi
 
-
     # check transforms
     if [ -n "$req_transforms" ] ; then
         printf "    Checking required transforms                         "
@@ -204,10 +216,6 @@ execDSigTest() {
             return
         fi
     fi
-
-    # prepare
-    rm -f $tmpfile
-    old_pwd=`pwd`
 
     # run tests
     if [ -n "$params1" ] ; then
@@ -248,6 +256,10 @@ execEncTest() {
     params2="$6"
     params3="$7"
 
+    # prepare
+    rm -f $tmpfile $tmpfile.2
+    old_pwd=`pwd`
+
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
@@ -278,10 +290,6 @@ execEncTest() {
             return
         fi
     fi
-
-    # prepare
-    rm -f $tmpfile $tmpfile.2
-    old_pwd=`pwd`
 
     # run tests
     if [ -n "$params1" ] ; then
@@ -333,6 +341,10 @@ execXkmsServerRequestTest() {
     response="$5"
     params1="$6"
 
+    # prepare
+    rm -f $tmpfile $tmpfile.2 tmpfile.3
+    old_pwd=`pwd`
+
     # check params
     if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
         echo " Bad parameter: expected_res=$expected_res"
@@ -365,10 +377,6 @@ execXkmsServerRequestTest() {
             return
         fi
     fi
-
-    # prepare
-    rm -f $tmpfile $tmpfile.2 tmpfile.3
-    old_pwd=`pwd`
 
     # run tests
     if [ -n "$params1" ] ; then

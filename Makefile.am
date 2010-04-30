@@ -110,14 +110,11 @@ check-all: $(TEST_APP)
 	done; )
 
 check-info:
-	@echo "-------------------------- ATTENTION -----------------------------------"
-	@echo "--- 1) Some of the following tests use resources located on external ---"
-	@echo "--- HTTP servers. If you have no Internet connection or the external ---"
-	@echo "--- resource is not responding then the test will fail.              ---"
-	@echo "--- 2) The test fails if corresponding feature(s) is disabled.       ---"
-	@echo "--- Please, don't be surprised that many XML Encryption tests fails  ---"
-	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
-	@echo "-------------------------- ATTENTION -----------------------------------"
+	@echo "---------------------------- ATTENTION -----------------------------------"
+	@echo "--- Some of the tests use resources located on external HTTP servers.  ---"
+	@echo "--- If you have no Internet connection or the external resource is not ---"
+	@echo "--- responding then the test will fail.                                ---"
+	@echo "---------------------------- ATTENTION -----------------------------------"
 
 check-keys: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \

@@ -1,3 +1,6 @@
+2010-04-30  Aleksey Sanin  <aleksey@aleksey.com>
+	* Added RSA/OAEP support for xmlsec-mscrypto
+
 2010-04-29  Aleksey Sanin  <aleksey@aleksey.com>
 	* 1.2.15 release
 

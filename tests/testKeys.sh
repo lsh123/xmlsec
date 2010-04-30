@@ -56,7 +56,7 @@ printRes() {
     fi
 }
 
-execKeysTest() {    
+execKeysTest() {
     req_key_data=$1
     key_name=$2
     alg_name=$3

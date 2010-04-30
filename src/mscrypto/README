@@ -34,8 +34,6 @@ KNOWN ISSUES.
 (http://bugzilla.gnome.org/show_bug.cgi?id=123668).
 
 2) Missing crypto functionality:
-  - RSA-OAEP (http://bugzilla.gnome.org/show_bug.cgi?id=123671): MS says
-  that they will support this in the near future.
   - AES KW (http://bugzilla.gnome.org/show_bug.cgi?id=123672): no native
   support, might be possible to implement on top of AES cipher itself
   - DES KW (http://bugzilla.gnome.org/show_bug.cgi?id=123673): no native

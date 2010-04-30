@@ -311,7 +311,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/x509data-test" \
     "xpath2 sha1 rsa-sha1" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format" \
-    "$priv_key_option $topfolder/tests/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format"
 
 execDSigTest $res_success \
@@ -319,7 +319,7 @@ execDSigTest $res_success \
     "aleksey-xmldsig-01/x509data-sn-test" \
     "xpath2 sha1 rsa-sha1" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509" \
-    "$priv_key_option $topfolder/tests/keys/rsakey.$priv_key_format --pwd secret" \
+    "$priv_key_option $topfolder/keys/rsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --untrusted-$cert_format $topfolder/keys/rsacert.$cert_format --enabled-key-data x509"
 
 ##########################################################################

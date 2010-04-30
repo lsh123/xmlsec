@@ -346,6 +346,30 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
 
         outBuf = xmlSecBufferGetData(out);
         xmlSecAssert2(outBuf != NULL, -1);
+
+        /* set OAEP parameter for the key 
+         *
+         * aleksey: I don't understand how this would work in multi-threaded
+         * environment or when key can be re-used multiple times
+         */
+        if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
+            CRYPT_DATA_BLOB oaepParams;
+
+            memset(&oaepParams, 0, sizeof(oaepParams));
+            oaepParams.pbData = xmlSecBufferGetData(&(ctx->oaepParams));
+            oaepParams.cbData = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+            if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "CryptSetKeyParam",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return (-1);
+            }
+        }
+
+        /* encrypt */
         if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -377,6 +401,30 @@ xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformC
                         XMLSEC_ERRORS_NO_MESSAGE);
             return (-1);
         }
+
+        /* set OAEP parameter for the key 
+         *
+         * aleksey: I don't understand how this would work in multi-threaded
+         * environment or when key can be re-used multiple times
+         */
+        if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId) && xmlSecBufferGetSize(&(ctx->oaepParams)) > 0) {
+            CRYPT_DATA_BLOB oaepParams;
+
+            memset(&oaepParams, 0, sizeof(oaepParams));
+            oaepParams.pbData = xmlSecBufferGetData(&(ctx->oaepParams));
+            oaepParams.cbData = xmlSecBufferGetSize(&(ctx->oaepParams));
+
+            if (!CryptSetKeyParam(hKey, KP_OAEP_PARAMS, (const BYTE*)&oaepParams, 0)) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "CryptSetKeyParam",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return (-1);
+            }
+        }
+
+        /* decrypt */
         if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),

@@ -22,6 +22,17 @@ extern "C" {
 
 /********************************************************************
  *
+ * Utils
+ *
+ ********************************************************************/
+int                ConvertEndian                    (const xmlSecByte * src, 
+                                                     xmlSecByte * dst, 
+                                                     xmlSecSize size);
+int                ConvertEndianInPlace             (xmlSecByte * buf, 
+                                                     xmlSecSize size);
+
+/********************************************************************
+ *
  * Crypto Providers
  *
  ********************************************************************/
@@ -53,10 +64,10 @@ typedef struct _xmlSecMSCryptoProviderInfo {
     DWORD                   providerType;
 } xmlSecMSCryptoProviderInfo;
 
-XMLSEC_CRYPTO_EXPORT HCRYPTPROV         xmlSecMSCryptoFindProvider      (const xmlSecMSCryptoProviderInfo * providers,
-                                                                         LPCTSTR pszContainer,
-                                                                         DWORD dwFlags,
-                                                                         BOOL bUseXmlSecContainer);
+HCRYPTPROV         xmlSecMSCryptoFindProvider                   (const xmlSecMSCryptoProviderInfo * providers,
+                                                                 LPCTSTR pszContainer,
+                                                                 DWORD dwFlags,
+                                                                 BOOL bUseXmlSecContainer);
 
 
 /******************************************************************************
@@ -69,16 +80,16 @@ XMLSEC_CRYPTO_EXPORT HCRYPTPROV         xmlSecMSCryptoFindProvider      (const x
  * and "Base Provider Key BLOBs" article for priv key blob format.
  *
  ******************************************************************************/
-XMLSEC_CRYPTO_EXPORT BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey   (HCRYPTPROV hProv,
-                                                                         HCRYPTKEY *hPrivateKey);
+BOOL               xmlSecMSCryptoCreatePrivateExponentOneKey    (HCRYPTPROV hProv,
+                                                                 HCRYPTKEY *hPrivateKey);
 
-XMLSEC_CRYPTO_EXPORT BOOL               xmlSecMSCryptoImportPlainSessionBlob (HCRYPTPROV hProv,
-                                                                         HCRYPTKEY hPrivateKey,
-                                                                         ALG_ID dwAlgId,
-                                                                         LPBYTE pbKeyMaterial,
-                                                                         DWORD dwKeyMaterial,
-                                                                         BOOL bCheckKeyLength,
-                                                                         HCRYPTKEY *hSessionKey);
+BOOL               xmlSecMSCryptoImportPlainSessionBlob         (HCRYPTPROV hProv,
+                                                                 HCRYPTKEY hPrivateKey,
+                                                                 ALG_ID dwAlgId,
+                                                                 LPBYTE pbKeyMaterial,
+                                                                 DWORD dwKeyMaterial,
+                                                                 BOOL bCheckKeyLength,
+                                                                 HCRYPTKEY *hSessionKey);
 
 /******************************************************************************
  *
@@ -86,25 +97,25 @@ XMLSEC_CRYPTO_EXPORT BOOL               xmlSecMSCryptoImportPlainSessionBlob (HC
  *
  ******************************************************************************/
 #ifndef XMLSEC_NO_X509
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject     (HCERTSTORE store,
-                                                                                 const LPTSTR wcSubject,
-                                                                                 DWORD dwCertEncodingType);
+PCCERT_CONTEXT     xmlSecMSCryptoX509FindCertBySubject          (HCERTSTORE store,
+                                                                 const LPTSTR wcSubject,
+                                                                 DWORD dwCertEncodingType);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert         (xmlSecKeyDataStorePtr store,
-                                                                                 xmlChar *subjectName,
-                                                                                 xmlChar *issuerName,
-                                                                                 xmlChar *issuerSerial,
-                                                                                 xmlChar *ski,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+PCCERT_CONTEXT     xmlSecMSCryptoX509StoreFindCert              (xmlSecKeyDataStorePtr store,
+                                                                 xmlChar *subjectName,
+                                                                 xmlChar *issuerName,
+                                                                 xmlChar *issuerSerial,
+                                                                 xmlChar *ski,
+                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
 
-XMLSEC_CRYPTO_EXPORT xmlChar *          xmlSecMSCryptoX509GetNameString         (PCCERT_CONTEXT pCertContext,
-                                                                                 DWORD dwType,
-                                                                                 DWORD dwFlags,
-                                                                                 void *pvTypePara);
+xmlChar *          xmlSecMSCryptoX509GetNameString              (PCCERT_CONTEXT pCertContext,
+                                                                 DWORD dwType,
+                                                                 DWORD dwFlags,
+                                                                 void *pvTypePara);
 
-XMLSEC_CRYPTO_EXPORT PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify           (xmlSecKeyDataStorePtr store,
-                                                                                 HCERTSTORE certs,
-                                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
+PCCERT_CONTEXT     xmlSecMSCryptoX509StoreVerify                (xmlSecKeyDataStorePtr store,
+                                                                 HCERTSTORE certs,
+                                                                 xmlSecKeyInfoCtx* keyInfoCtx);
 
 #endif /* XMLSEC_NO_X509 */
 

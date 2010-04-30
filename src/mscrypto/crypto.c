@@ -734,6 +734,11 @@ xmlSecMSCryptoConvertUtf8ToTstr(const xmlChar*  str) {
 #endif /* UNICODE */
 }
 
+/********************************************************************
+ *
+ * Crypto Providers
+ *
+ ********************************************************************/
 /**
  * xmlSecMSCryptoFindProvider:
  * @providers:           the pointer to list of providers, last provider should have NULL for name.
@@ -820,5 +825,41 @@ xmlSecMSCryptoFindProvider(const xmlSecMSCryptoProviderInfo * providers,
     return (0);
 }
 
+
+/********************************************************************
+ *
+ * Utils
+ *
+ ********************************************************************/
+int
+ConvertEndian(const xmlSecByte * src, xmlSecByte * dst, xmlSecSize size) {
+    xmlSecByte * p;
+
+    xmlSecAssert2(src != NULL, -1);
+    xmlSecAssert2(dst != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+
+    for(p = dst + size - 1; p >= dst; ++src, --p) {
+        (*p) = (*src);
+    }
+
+    return (0);
+}
+
+int
+ConvertEndianInPlace(xmlSecByte * buf, xmlSecSize size) {
+    xmlSecByte * p;
+    xmlSecByte ch;
+
+    xmlSecAssert2(buf != NULL, -1);
+    xmlSecAssert2(size > 0, -1);
+
+    for(p = buf + size - 1; p >= buf; ++buf, --p) {
+        ch = (*p);
+        (*p) = (*buf);
+        (*buf) = ch;
+    }
+    return (0);
+}
 
 

@@ -244,8 +244,8 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     DWORD dwInLen;
     DWORD dwBufLen;
     DWORD dwOutLen;
-    BYTE * outBuf;
-    BYTE * inBuf;
+    xmlSecByte * outBuf;
+    xmlSecByte * inBuf;
     int i;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
@@ -297,8 +297,6 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     }
 
     if(transform->operation == xmlSecTransformOperationEncrypt) {
-        BYTE ch;
-
         if(inSize > outSize) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -344,11 +342,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         /* The output of CryptEncrypt is in little-endian format, so we have to convert to
          * big-endian first.
          */
-        for(i = 0; i < outSize / 2; i++) {
-            ch = outBuf[i];
-            outBuf[i] = outBuf[outSize - (i + 1)];
-            outBuf[outSize - (i + 1)] = ch;
-        }
+        ConvertEndianInPlace(outBuf, outSize);
     } else {
         dwOutLen = inSize;
 
@@ -357,12 +351,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
          */
         inBuf   = xmlSecBufferGetData(in);
         outBuf  = xmlSecBufferGetData(out);
-
-        xmlSecAssert2(inBuf != 0, -1);
-        xmlSecAssert2(outBuf != 0, -1);
-        for (i = 0; i < inSize; i++) {
-            outBuf[i] = inBuf[inSize - (i + 1)];
-        }
+        ConvertEndian(inBuf, outBuf, inSize);
 
         if (0 == (hKey = xmlSecMSCryptoKeyDataGetDecryptKey(ctx->data))) {
             xmlSecError(XMLSEC_ERRORS_HERE,

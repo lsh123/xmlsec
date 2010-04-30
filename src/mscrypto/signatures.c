@@ -287,22 +287,6 @@ static int xmlSecMSCryptoSignatureSetKeyReq(xmlSecTransformPtr transform,  xmlSe
     return(0);
 }
 
-static int ConvertEndian(const xmlSecByte * src, xmlSecByte * dst, int size) {
-    BYTE * p;
-
-    xmlSecAssert2(src != NULL, -1);
-    xmlSecAssert2(dst != NULL, -1);
-    xmlSecAssert2(size > 0, -1);
-
-    p = dst + size - 1;
-    while (p >= dst) {
-        *(p--) = *(src++);
-    }
-
-    return (0);
-}
-
-
 static int xmlSecMSCryptoSignatureVerify(xmlSecTransformPtr transform,
                                          const xmlSecByte* data,
                                          xmlSecSize dataSize,

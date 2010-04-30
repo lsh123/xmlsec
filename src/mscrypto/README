@@ -41,10 +41,7 @@ KNOWN ISSUES.
   - DES KW (http://bugzilla.gnome.org/show_bug.cgi?id=123673): no native
   support, might be possible to implement on top of AES cipher itself
 
-3) Actual AES Crypto provider name is different from the "official" one
-(http://bugzilla.gnome.org/show_bug.cgi?id=123674).
-
-4) The only supported file formats are PKCS#12 and DER certificates
+3) The only supported file formats are PKCS#12 and DER certificates
 (http://bugzilla.gnome.org/show_bug.cgi?id=123675).
 
 

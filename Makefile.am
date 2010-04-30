@@ -85,11 +85,28 @@ check: check-all check-info
 
 check-all: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \
-	for i in $(CHECK_CRYPTO_LIST) ; do \
-	    echo "=================== Checking xmlsec-$$i =================================" && \
-	    $(SHELL) ./tests/testKeys.sh $$i $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der && \
-	    $(SHELL) ./tests/testDSig.sh $$i $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der && \
-	    $(SHELL) ./tests/testEnc.sh  $$i $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der ; \
+	for crypto in $(CHECK_CRYPTO_LIST) ; do \
+	    echo "=================== Checking xmlsec-$$crypto =================================" && \
+	    $(SHELL) ./tests/testrun.sh \
+	        $(ABS_SRCDIR)/tests/testKeys.sh \
+	        $$crypto \
+	        $(ABS_SRCDIR)/tests \
+	        $(ABS_BUILDDIR)/$(TEST_APP) der \
+	    && \
+	    $(SHELL) ./tests/testrun.sh \
+	        $(ABS_SRCDIR)/tests/testDSig.sh \
+	        $$crypto \
+	        $(ABS_SRCDIR)/tests \
+	        $(ABS_BUILDDIR)/$(TEST_APP) \
+	        der \
+	    && \
+	    $(SHELL) ./tests/testrun.sh \
+	        $(ABS_SRCDIR)/tests/testEnc.sh \
+	        $$crypto \
+	        $(ABS_SRCDIR)/tests \
+	        $(ABS_BUILDDIR)/$(TEST_APP) \
+	        der \
+	    ; \
 	done; )
 
 check-info:
@@ -102,21 +119,45 @@ check-info:
 	@echo "--- when you use OpenSSL 0.9.6 (see the FAQ for details)             ---"
 	@echo "-------------------------- ATTENTION -----------------------------------"
 
-check-km: $(TEST_APP)
+check-keys: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testKeys.sh default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
+	$(SHELL) ./tests/testrun.sh \
+	    $(ABS_SRCDIR)/tests/testKeys.sh \
+	    default \
+	    $(ABS_SRCDIR)/tests \
+	    $(ABS_BUILDDIR)/$(TEST_APP) \
+	    der \
+	)
 
 check-dsig: $(TEST_APP) 	
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testDSig.sh default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
-
-check-xkms: $(TEST_APP) 	
-	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testXKMS.sh default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
+	$(SHELL) ./tests/testrun.sh \
+	    $(ABS_SRCDIR)/tests/testDSig.sh \
+	    default \
+	    $(ABS_SRCDIR)/tests \
+	    $(ABS_BUILDDIR)/$(TEST_APP) \
+	    der \
+	)
 
 check-enc: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \
-	$(SHELL) ./tests/testEnc.sh  default $(ABS_SRCDIR)/tests $(ABS_BUILDDIR)/$(TEST_APP) der)
+	$(SHELL) ./tests/testrun.sh \
+	    $(ABS_SRCDIR)/tests/testEnc.sh  \
+	    default \
+	    $(ABS_SRCDIR)/tests \
+	    $(ABS_BUILDDIR)/$(TEST_APP) \
+	    der \
+	)
+
+check-xkms: $(TEST_APP) 	
+	@($(PRECHECK_COMMANDS) && \
+	$(SHELL) ./tests/testrun.sh \
+	    $(ABS_SRCDIR)/tests/testXKMS.sh \
+	    default \
+	    $(ABS_SRCDIR)/tests \
+	    $(ABS_BUILDDIR)/$(TEST_APP) \
+	    der \
+	)
 
 memcheck-res:
 	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u

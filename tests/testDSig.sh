@@ -1,175 +1,16 @@
-#!/bin/sh -x
+#!/bin/sh
+#
+# This script needs to be called from testrun.sh script
+#
 
-OS_ARCH=`uname -o`
-OS_KERNEL=`uname -s`
-
-crypto=$1
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
-	topfolder=`cygpath -wa $2`
-	xmlsec_app=`cygpath -a $3`
-else
-	topfolder=$2
-	xmlsec_app=$3
-fi
-file_format=$4
-
-pub_key_format=$file_format
-cert_format=$file_format
-priv_key_option="--pkcs12"
-priv_key_format="p12"
-
-# On Windows, one needs to specify Crypto Service Provider (CSP)
-# in the pkcs12 file to ensure it is loaded correctly to be used
-# with SHA2 algorithms. Worse, the CSP is different for XP and older 
-# versions
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
-	if [ "z$OS_KERNEL" = "zCYGWIN_NT-5.1" ] ; then
-		priv_key_suffix="-winxp"
-	else
-		priv_key_suffix="-win"
-	fi
-else
-	priv_key_suffix=""
-fi
-
-if [ "z$TMPFOLDER" = "z" ] ; then
-    TMPFOLDER=/tmp
-fi
-timestamp=`date +%Y%m%d_%H%M%S` 
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
-	tmpfile=`cygpath -wa $TMPFOLDER/testDSig.$timestamp-$$.tmp`
-	logfile=`cygpath -wa $TMPFOLDER/testDSig.$timestamp-$$.log`
-else
-	tmpfile=$TMPFOLDER/testDSig.$timestamp-$$.tmp
-	logfile=$TMPFOLDER/testDSig.$timestamp-$$.log
-fi
-
-script="$0"
-
-# prepate crypto config folder
-crypto_config=$TMPFOLDER/xmlsec-crypto-config
-keysfile=$crypto_config/keys.xml
-
-valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
-valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
-
-if [ "z$crypto" != "z" -a "z$crypto" != "zdefault" ] ; then
-    xmlsec_params="$xmlsec_params --crypto $crypto"
-fi
-xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
-
-if [ -n "$DEBUG_MEMORY" ] ; then 
-    export VALGRIND="valgrind $valgrind_options"
-    export REPEAT=3
-    xmlsec_params="$xmlsec_params --repeat $REPEAT"
-fi
-
-if [ -n "$PERF_TEST" ] ; then 
-    xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
-fi
-
-res_success="success"
-res_fail="fail"
-printRes() {
-    expected_res=$1
-    actual_res=$2
-
-    # convert status to string
-    if [ $actual_res = 0 ]; then
-        actual_res=$res_success
-    else
-        actual_res=$res_fail
-    fi
-
-    # check
-    if [ "z$expected_res" = "z$actual_res" ] ; then
-        echo "   OK"
-    elif [ "z$expected_res" = "z$res_fail" ] ; then
-        echo " Fail"
-    fi
-
-    # memlog
-    if [ -f .memdump ] ; then 
-        cat .memdump >> $logfile 
-    fi
-}
-
-execDSigTest() {
-    expected_res=$1
-    folder=$2
-    file=$3
-    req_transforms=$4
-    params1=$5
-    params2=$6
-    params3=$7
-    old_pwd=`pwd`
-    rm -f $tmpfile
-
-    # check params
-    if [ -n "$folder" ] ; then
-	cd $topfolder/$folder
-        full_file=$file
-	echo $folder/$file
-	echo "Test: $folder/$file in folder " `pwd` " ($expected_res)" >> $logfile
-    else
-	full_file=$topfolder/$file
-        echo $file 
-	echo "Test: $folder/$file ($expected_res)" >> $logfile
-    fi
-
-    if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
-	echo " Bad parameter: expected_res=$expected_res"
-	cd $old_pwd
-	return
-    fi
-
-    # check transforms
-    if [ -n "$req_transforms" ] ; then
-	printf "    Checking required transforms                         "
-        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $logfile
-	$xmlsec_app check-transforms $xmlsec_params $req_transforms >> $logfile 2>> $logfile
-	res=$?
-	if [ $res = 0 ]; then
-	    echo "   OK"
-	else
-	    echo " Skip"
-	    cd $old_pwd
-	    return
-	fi
-    fi
-
-    # run tests
-    if [ -n "$params1" ] ; then
-	printf "    Verify existing signature                            "
-	echo "$xmlsec_app verify $xmlsec_params $params1 $full_file.xml" >> $logfile
-	$VALGRIND $xmlsec_app verify $xmlsec_params $params1 $full_file.xml >> $logfile 2>> $logfile
-	printRes $expected_res $?
-    fi
-
-    if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
-	printf "    Create new signature                                 "
-	echo "$xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $logfile
-	$VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
-	printRes $expected_res $?
-    fi
-    
-    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
-	printf "    Verify new signature                                 "
-	echo "$xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $logfile
-	$VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile >> $logfile 2>> $logfile
-	printRes $expected_res $?
-    fi
-
-    # done
-    cd $old_pwd
-}
-
-echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" 
+##########################################################################
+##########################################################################
+##########################################################################
+echo "--- testDSig started for xmlsec-$crypto library ($timestamp)"
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 echo "--- log file is $logfile"
 echo "--- testDSig started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
-
 
 ##########################################################################
 ##########################################################################
@@ -861,7 +702,6 @@ execDSigTest $res_success \
 # test dynamic signature
 #
 ##########################################################################
-
 echo "Dynamic signature template"
 printf "    Create new signature                                 "
 echo "$xmlsec_app sign-tmpl $xmlsec_params --keys-file $keysfile --output $tmpfile" >> $logfile
@@ -932,9 +772,10 @@ execDSigTest $res_fail \
     "sha1 rsa-sha1" \
     "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
 
-rm -rf $tmpfile
-
+##########################################################################
+##########################################################################
+##########################################################################
 echo "--- testDSig finished" >> $logfile
 echo "--- testDSig finished"
-echo "--- detailed log is written to  $logfile" 
+echo "--- detailed log is written to  $logfile"
 

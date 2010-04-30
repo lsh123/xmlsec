@@ -1,0 +1,404 @@
+#!/bin/sh
+
+OS_ARCH=`uname -o`
+OS_KERNEL=`uname -s`
+
+#
+# Get command line params
+#
+testfile="$1"
+crypto="$2"
+topfolder="$3"
+xmlsec_app="$4"
+file_format="$5"
+timestamp=`date +%Y%m%d_%H%M%S`
+
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+    topfolder=`cygpath -wa "$topfolder"`
+    xmlsec_app=`cygpath -a "$xmlsec_app"`
+fi
+
+#
+# Setup keys config
+#
+pub_key_format=$file_format
+cert_format=$file_format
+priv_key_option="--pkcs12"
+priv_key_format="p12"
+
+# On Windows, one needs to specify Crypto Service Provider (CSP)
+# in the pkcs12 file to ensure it is loaded correctly to be used
+# with SHA2 algorithms. Worse, the CSP is different for XP and older 
+# versions
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+    if [ "z$OS_KERNEL" = "zCYGWIN_NT-5.1" ] ; then
+        priv_key_suffix="-winxp"
+    else
+        priv_key_suffix="-win"
+    fi
+else
+    priv_key_suffix=""
+fi
+
+#
+# Prepare folders
+#
+if [ "z$TMPFOLDER" = "z" ] ; then
+    TMPFOLDER=/tmp
+fi
+testname=`basename $testfile`
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+    tmpfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.tmp`
+    logfile=`cygpath -wa $TMPFOLDER/$testname.$timestamp-$$.log`
+else
+    tmpfile=$TMPFOLDER/$testname.$timestamp-$$.tmp
+    logfile=$TMPFOLDER/$testname.$timestamp-$$.log
+fi
+
+#
+# Valgrind
+#
+valgrind_suppression="--suppressions=$topfolder/openssl.supp --suppressions=$topfolder/nss.supp"
+valgrind_options="--leak-check=yes --show-reachable=yes --num-callers=32 -v"
+if [ -n "$DEBUG_MEMORY" ] ; then 
+    export VALGRIND="valgrind $valgrind_options"
+    export REPEAT=3
+    xmlsec_params="$xmlsec_params --repeat $REPEAT"
+fi
+
+#
+# Setup crypto engine
+#
+crypto_config=$TMPFOLDER/xmlsec-crypto-config
+keysfile=$crypto_config/keys.xml
+if [ "z$crypto" != "z" -a "z$crypto" != "zdefault" ] ; then
+    xmlsec_params="$xmlsec_params --crypto $crypto"
+fi
+xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
+
+#
+# Misc
+#
+if [ -n "$PERF_TEST" ] ; then 
+    xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
+fi
+
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+    diff_param=-uw
+else
+    diff_param=-u
+fi
+
+#
+# Check the command result and print it to stdout
+#
+res_success="success"
+res_fail="fail"
+printRes() {
+    expected_res="$1"
+    actual_res="$2"
+
+    # convert status to string
+    if [ $actual_res = 0 ]; then
+        actual_res=$res_success
+    else
+        actual_res=$res_fail
+    fi
+
+    # check
+    if [ "z$expected_res" = "z$actual_res" ] ; then
+        echo "   OK"
+    else
+        echo " Fail"
+    fi
+
+    # memlog
+    if [ -f .memdump ] ; then
+        cat .memdump >> $logfile
+    fi
+}
+
+#
+# Keys Manager test function
+#
+execKeysTest() {
+    expected_res="$1"
+    req_key_data="$2"
+    key_name="$3"
+    alg_name="$4"
+
+    # check params
+    if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
+        echo " Bad parameter: expected_res=$expected_res"
+        cd $old_pwd
+        return
+    fi
+    echo "Test: $alg_name ($expected_res)"
+
+    # check key data
+    if [ -n "$req_key_data" ] ; then
+        printf "    Checking required key data                            "
+        echo "$xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $logfile
+        $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            echo "   OK"
+        else
+            echo " Skip"
+            return
+        fi
+    fi
+
+    # run tests
+    printf "    Creating new key                                      "
+    params="--gen-key:$key_name $alg_name"
+    if [ -f $keysfile ] ; then
+        params="$params --keys-file $keysfile"
+    fi
+    echo "$xmlsec_app keys $params $xmlsec_params $keysfile" >>  $logfile 
+    $VALGRIND $xmlsec_app keys $params $xmlsec_params $keysfile >> $logfile 2>> $logfile
+    printRes $expected_res $?
+}
+
+#
+# DSig test function
+#
+execDSigTest() {
+    expected_res="$1"
+    folder="$2"
+    filename="$3"
+    req_transforms="$4"
+    params1="$5"
+    params2="$6"
+    params3="$7"
+
+    # check params
+    if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
+        echo " Bad parameter: expected_res=$expected_res"
+        cd $old_pwd
+        return
+    fi
+    if [ -n "$folder" ] ; then
+        cd $topfolder/$folder
+        full_file=$filename
+        echo $folder/$filename
+        echo "Test: $folder/$filename in folder " `pwd` " ($expected_res)" >> $logfile
+    else
+        full_file=$topfolder/$filename
+        echo $filename
+        echo "Test: $folder/$filename ($expected_res)" >> $logfile
+    fi
+
+
+    # check transforms
+    if [ -n "$req_transforms" ] ; then
+        printf "    Checking required transforms                         "
+        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $logfile
+        $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            echo "   OK"
+        else
+            echo " Skip"
+            cd $old_pwd
+            return
+        fi
+    fi
+
+    # prepare
+    rm -f $tmpfile
+    old_pwd=`pwd`
+
+    # run tests
+    if [ -n "$params1" ] ; then
+        printf "    Verify existing signature                            "
+        echo "$xmlsec_app verify $xmlsec_params $params1 $full_file.xml" >> $logfile
+        $VALGRIND $xmlsec_app verify $xmlsec_params $params1 $full_file.xml >> $logfile 2>> $logfile
+        printRes $expected_res $?
+    fi
+
+    if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
+        printf "    Create new signature                                 "
+        echo "$xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >> $logfile
+        $VALGRIND $xmlsec_app sign $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
+        printRes $expected_res $?
+    fi
+
+    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then
+        printf "    Verify new signature                                 "
+        echo "$xmlsec_app verify $xmlsec_params $params3 $tmpfile" >> $logfile
+        $VALGRIND $xmlsec_app verify $xmlsec_params $params3 $tmpfile >> $logfile 2>> $logfile
+        printRes $expected_res $?
+    fi
+
+    # cleanup
+    cd $old_pwd
+    rm -f $tmpfile
+}
+
+#
+# Enc test function
+#
+execEncTest() {
+    expected_res="$1"
+    folder="$2"
+    filename="$3"
+    req_transforms="$4"
+    params1="$5"
+    params2="$6"
+    params3="$7"
+
+    # check params
+    if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
+        echo " Bad parameter: expected_res=$expected_res"
+        cd $old_pwd
+        return
+    fi
+    if [ -n "$folder" ] ; then
+        cd $topfolder/$folder
+        full_file=$filename
+        echo $folder/$filename
+        echo "Test: $folder/$filename in folder " `pwd` " ($expected_res)" >> $logfile
+    else
+        full_file=$topfolder/$filename
+        echo $filename
+        echo "Test: $folder/$filename ($expected_res)" >> $logfile
+    fi
+
+    # check transforms
+    if [ -n "$req_transforms" ] ; then
+        printf "    Checking required transforms                         "
+        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $logfile
+        $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            echo "   OK"
+        else
+            echo " Skip"
+            return
+        fi
+    fi
+
+    # prepare
+    rm -f $tmpfile $tmpfile.2
+    old_pwd=`pwd`
+
+    # run tests
+    if [ -n "$params1" ] ; then
+        rm -f $tmpfile
+        printf "    Decrypt existing document                            "
+        echo "$xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml" >>  $logfile 
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params1 $full_file.xml > $tmpfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            diff $diff_param $full_file.data $tmpfile >> $logfile 2>> $logfile
+            printRes $expected_res $?
+        else
+            printRes $expected_res $res
+        fi
+    fi
+
+    if [ -n "$params2" -a -z "$PERF_TEST" ] ; then
+        rm -f $tmpfile
+        printf "    Encrypt document                                     "
+        echo "$xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl" >>  $logfile 
+        $VALGRIND $xmlsec_app encrypt $xmlsec_params $params2 --output $tmpfile $full_file.tmpl >> $logfile 2>> $logfile
+        printRes $expected_res $?
+    fi
+
+    if [ -n "$params3" -a -z "$PERF_TEST" ] ; then 
+        rm -f $tmpfile.2
+        printf "    Decrypt new document                                 "
+        echo "$xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile" >>  $logfile
+        $VALGRIND $xmlsec_app decrypt $xmlsec_params $params3 --output $tmpfile.2 $tmpfile >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            diff $diff_param $full_file.data $tmpfile.2 >> $logfile 2>> $logfile
+            printRes $expected_res $?
+        else
+            printRes $expected_res $res
+        fi
+    fi
+
+    # cleanup
+    cd $old_pwd
+    rm -f $tmpfile $tmpfile.2
+}
+
+execXkmsServerRequestTest() {
+    expected_res="$1"
+    folder="$2"
+    filename="$3"
+    req_transforms="$4"
+    response="$5"
+    params1="$6"
+
+    # check params
+    if [ "z$expected_res" != "z$res_success" -a "z$expected_res" != "z$res_fail" ] ; then
+        echo " Bad parameter: expected_res=$expected_res"
+        cd $old_pwd
+        return
+    fi
+    if [ -n "$folder" ] ; then
+        cd $topfolder/$folder
+        full_file=$filename
+        full_resfile=$filename-$response
+        echo "$folder/$filename ($response)"
+        echo "Test: $folder/$filename in folder " `pwd` " $response ($expected_res)" >> $logfile
+    else
+        full_file=$topfolder/$filename
+        full_resfile=$topfolder/$filename-$response
+        echo "$filename ($response)"
+        echo "Test: $folder/$filename $response ($expected_res)" >> $logfile
+    fi
+
+    # check transforms
+    if [ -n "$req_transforms" ] ; then
+        printf "    Checking required transforms                         "
+        echo "$xmlsec_app check-transforms $xmlsec_params $req_transforms" >> $logfile
+        $xmlsec_app check-transforms $xmlsec_params $req_transforms >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            echo "   OK"
+        else
+            echo " Skip"
+            return
+        fi
+    fi
+
+    # prepare
+    rm -f $tmpfile $tmpfile.2 tmpfile.3
+    old_pwd=`pwd`
+
+    # run tests
+    if [ -n "$params1" ] ; then
+        printf "    Processing xkms request                              "
+        echo "$xmlsec_app --xkms-server-request --output $tmpfile $xmlsec_params $params1 $full_file.xml" >> $logfile
+        $VALGRIND $xmlsec_app --xkms-server-request  --output $tmpfile $xmlsec_params $params1 $full_file.xml >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            # cleanup Id attribute because it is generated every time
+            sed 's/ Id="[^\"]*"/ Id=""/g' $full_resfile > $tmpfile.2
+            sed 's/ Id="[^\"]*"/ Id=""/g' $tmpfile > $tmpfile.3
+            diff $tmpfile.2 $tmpfile.3 >> $logfile 2>> $logfile
+            printRes $expected_res $?
+        else
+            printRes $expected_res $res
+        fi
+    fi
+
+    # cleanup
+    cd $old_pwd
+    rm -f $tmpfile $tmpfile.2 tmpfile.3
+}
+
+
+# prepare
+rm -rf $tmpfile $tmpfile.2 tmpfile.3
+
+# run tests
+source "$testfile"
+
+# cleanup
+rm -rf $tmpfile $tmpfile.2 tmpfile.3
+

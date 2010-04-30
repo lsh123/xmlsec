@@ -14,6 +14,7 @@ INCLUDES = \
 
 EXTRA_DIST = \
 	globals.h \
+	kw_aes_des.h \
 	skeleton \
 	mscrypto \
 	$(XMLSEC_CRYPTO_DISABLED_LIST) \
@@ -38,6 +39,7 @@ libxmlsec1_la_SOURCES = \
 	keys.c \
 	keysdata.c \
 	keysmngr.c \
+	kw_aes_des.c \
 	list.c \
 	membuf.c \
 	nodeset.c \

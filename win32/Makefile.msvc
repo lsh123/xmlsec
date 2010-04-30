@@ -143,6 +143,7 @@ XMLSEC_OBJS = \
 	$(XMLSEC_INTDIR)\keys.obj \
 	$(XMLSEC_INTDIR)\keysdata.obj \
 	$(XMLSEC_INTDIR)\keysmngr.obj \
+	$(XMLSEC_INTDIR)\kw_aes_des.obj \
 	$(XMLSEC_INTDIR)\list.obj \
 	$(XMLSEC_INTDIR)\membuf.obj \
 	$(XMLSEC_INTDIR)\nodeset.obj \
@@ -173,6 +174,7 @@ XMLSEC_OBJS_A = \
 	$(XMLSEC_INTDIR_A)\keys.obj \
 	$(XMLSEC_INTDIR_A)\keysdata.obj \
 	$(XMLSEC_INTDIR_A)\keysmngr.obj \
+	$(XMLSEC_INTDIR_A)\kw_aes_des.obj \
 	$(XMLSEC_INTDIR_A)\list.obj \
 	$(XMLSEC_INTDIR_A)\membuf.obj \
 	$(XMLSEC_INTDIR_A)\nodeset.obj \

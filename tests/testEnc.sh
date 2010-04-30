@@ -254,16 +254,11 @@ execEncTest "merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml  --session-key des-192 --node-name urn:example:po:PaymentInfo --xml-data $topfolder/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.data" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml"
-        
+
 execEncTest "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" \
     "aes256-cbc kw-aes256" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
 
-execEncTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
-    "ripemd160 hmac-ripemd160 kw-tripledes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
 
 #merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.xml
 

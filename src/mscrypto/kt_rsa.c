@@ -36,99 +36,114 @@
  * Internal MSCRYPTO RSA PKCS1 CTX
  *
  *************************************************************************/
-typedef struct _xmlSecMSCryptoRsaPkcs1Ctx       xmlSecMSCryptoRsaPkcs1Ctx,
-                                                *xmlSecMSCryptoRsaPkcs1CtxPtr;
-struct _xmlSecMSCryptoRsaPkcs1Ctx {
-    xmlSecKeyDataPtr data;
-    DWORD typeFlags;
+typedef struct _xmlSecMSCryptoRsaPkcs1OaepCtx    xmlSecMSCryptoRsaPkcs1OaepCtx,
+                                                *xmlSecMSCryptoRsaPkcs1OaepCtxPtr;
+struct _xmlSecMSCryptoRsaPkcs1OaepCtx {
+    DWORD               dwFlags;
+    xmlSecKeyDataPtr    data;
+    xmlSecBuffer        oaepParams;
 };
 
 /*********************************************************************
  *
  * RSA PKCS1 key transport transform
  *
- * xmlSecMSCryptoRsaPkcs1Ctx is located after xmlSecTransform
+ * xmlSecMSCryptoRsaPkcs1OaepCtx is located after xmlSecTransform
  *
  ********************************************************************/
-#define xmlSecMSCryptoRsaPkcs1Size      \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoRsaPkcs1Ctx))
-#define xmlSecMSCryptoRsaPkcs1GetCtx(transform) \
-    ((xmlSecMSCryptoRsaPkcs1CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecMSCryptoRsaPkcs1OaepCtx      \
+    (sizeof(xmlSecTransform) + sizeof(xmlSecMSCryptoRsaPkcs1OaepCtx))
+#define xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform) \
+    ((xmlSecMSCryptoRsaPkcs1OaepCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
-static int      xmlSecMSCryptoRsaPkcs1Initialize                (xmlSecTransformPtr transform);
-static void     xmlSecMSCryptoRsaPkcs1Finalize                  (xmlSecTransformPtr transform);
-static int      xmlSecMSCryptoRsaPkcs1SetKeyReq                 (xmlSecTransformPtr transform,
+static int      xmlSecMSCryptoRsaPkcs1OaepCheckId               (xmlSecTransformPtr transform);
+static int      xmlSecMSCryptoRsaPkcs1OaepInitialize            (xmlSecTransformPtr transform);
+static void     xmlSecMSCryptoRsaPkcs1OaepFinalize              (xmlSecTransformPtr transform);
+static int      xmlSecMSCryptoRsaPkcs1OaepSetKeyReq             (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecMSCryptoRsaPkcs1SetKey                    (xmlSecTransformPtr transform,
+static int      xmlSecMSCryptoRsaPkcs1OaepSetKey                (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecMSCryptoRsaPkcs1Execute                   (xmlSecTransformPtr transform,
+static int      xmlSecMSCryptoRsaPkcs1OaepExecute               (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int      xmlSecMSCryptoRsaPkcs1Process                   (xmlSecTransformPtr transform,
+static int      xmlSecMSCryptoRsaPkcs1OaepProcess                   (xmlSecTransformPtr transform,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
-static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecMSCryptoRsaPkcs1Size,                 /* xmlSecSize objSize */
 
-    xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
-    xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+static int
+xmlSecMSCryptoRsaPkcs1OaepCheckId(xmlSecTransformPtr transform) {
 
-    xmlSecMSCryptoRsaPkcs1Initialize,           /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecMSCryptoRsaPkcs1Finalize,             /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecMSCryptoRsaPkcs1SetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecMSCryptoRsaPkcs1SetKey,               /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecMSCryptoRsaPkcs1Execute,              /* xmlSecTransformExecuteMethod execute; */
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id)) {
+        return(1);
+    } else
 
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
+        return(1);
+    } else
 
+    /* not found */
+    {
+        return(0);
+    }
 
-/**
- * xmlSecMSCryptoTransformRsaPkcs1GetKlass:
- *
- * The RSA-PKCS1 key transport transform klass.
- *
- * Returns: RSA-PKCS1 key transport transform klass.
- */
-xmlSecTransformId
-xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
-    return(&xmlSecMSCryptoRsaPkcs1Klass);
+    /* just in case */
+    return(0);
 }
 
 static int
-xmlSecMSCryptoRsaPkcs1Initialize(xmlSecTransformPtr transform) {
-    xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
+xmlSecMSCryptoRsaPkcs1OaepInitialize(xmlSecTransformPtr transform) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
+    int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
+    xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx), -1);
 
-    ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1Ctx));
+    /* initialize */
+    memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1OaepCtx));
+
+    ret = xmlSecBufferInitialize(&(ctx->oaepParams), 0);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id)) {
+        ctx->dwFlags = 0;
+    } else
+
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaOaepId)) {
+        ctx->dwFlags = CRYPT_OAEP;
+    } else
+
+    /* not found */
+    {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* done */
     return(0);
 }
 
 static void
-xmlSecMSCryptoRsaPkcs1Finalize(xmlSecTransformPtr transform) {
-    xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
+xmlSecMSCryptoRsaPkcs1OaepFinalize(xmlSecTransformPtr transform) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
 
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size));
+    xmlSecAssert(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx));
 
-    ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     if (ctx->data != NULL)  {
@@ -136,19 +151,20 @@ xmlSecMSCryptoRsaPkcs1Finalize(xmlSecTransformPtr transform) {
         ctx->data = NULL;
     }
 
-    memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1Ctx));
+    xmlSecBufferFinalize(&(ctx->oaepParams));
+    memset(ctx, 0, sizeof(xmlSecMSCryptoRsaPkcs1OaepCtx));
 }
 
 static int
-xmlSecMSCryptoRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
+xmlSecMSCryptoRsaPkcs1OaepSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
+    xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     keyReq->keyId        = xmlSecMSCryptoKeyDataRsaId;
@@ -163,16 +179,16 @@ xmlSecMSCryptoRsaPkcs1SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr k
 }
 
 static int
-xmlSecMSCryptoRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
+xmlSecMSCryptoRsaPkcs1OaepSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
+    xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx), -1);
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecMSCryptoKeyDataRsaId), -1);
 
-    ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data == NULL, -1);
 
@@ -190,16 +206,16 @@ xmlSecMSCryptoRsaPkcs1SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
+xmlSecMSCryptoRsaPkcs1OaepExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
+    xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     if(transform->status == xmlSecTransformStatusNone) {
@@ -209,11 +225,11 @@ xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTran
     if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
                 /* just do nothing */
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
-        ret = xmlSecMSCryptoRsaPkcs1Process(transform, transformCtx);
+        ret = xmlSecMSCryptoRsaPkcs1OaepProcess(transform, transformCtx);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecMSCryptoRsaPkcs1Process",
+                        "xmlSecMSCryptoRsaPkcs1OaepProcess",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
@@ -234,8 +250,8 @@ xmlSecMSCryptoRsaPkcs1Execute(xmlSecTransformPtr transform, int last, xmlSecTran
 }
 
 static int
-xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecMSCryptoRsaPkcs1CtxPtr ctx;
+xmlSecMSCryptoRsaPkcs1OaepProcess(xmlSecTransformPtr transform, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize;
     xmlSecSize keySize;
@@ -248,12 +264,12 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
     xmlSecByte * inBuf;
     int i;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformRsaPkcs1Id), -1);
+    xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecMSCryptoRsaPkcs1GetCtx(transform);
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->data != NULL, -1);
 
@@ -330,7 +346,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
 
         outBuf = xmlSecBufferGetData(out);
         xmlSecAssert2(outBuf != NULL, -1);
-        if (!CryptEncrypt(hKey, 0, TRUE, 0, outBuf, &dwInLen, dwBufLen)) {
+        if (!CryptEncrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwInLen, dwBufLen)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "CryptEncrypt",
@@ -361,7 +377,7 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
                         XMLSEC_ERRORS_NO_MESSAGE);
             return (-1);
         }
-        if (!CryptDecrypt(hKey, 0, TRUE, 0, outBuf, &dwOutLen)) {
+        if (!CryptDecrypt(hKey, 0, TRUE, ctx->dwFlags, outBuf, &dwOutLen)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                         "CryptDecrypt",
@@ -393,6 +409,173 @@ xmlSecMSCryptoRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPt
         return(-1);
     }
 
+    return(0);
+}
+
+
+/**********************************************************************
+ *
+ * RSA/PKCS1 transform
+ *
+ **********************************************************************/
+static xmlSecTransformKlass xmlSecMSCryptoRsaPkcs1Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+
+    xmlSecNameRsaPkcs1,                         /* const xmlChar* name; */
+    xmlSecHrefRsaPkcs1,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCryptoRsaPkcs1OaepInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoRsaPkcs1OaepFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKey,               /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoRsaPkcs1OaepExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+
+/**
+ * xmlSecMSCryptoTransformRsaPkcs1GetKlass:
+ *
+ * The RSA-PKCS1 key transport transform klass.
+ *
+ * Returns: RSA-PKCS1 key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformRsaPkcs1GetKlass(void) {
+    return(&xmlSecMSCryptoRsaPkcs1Klass);
+}
+
+
+
+/**********************************************************************
+ *
+ * RSA/OAEP transform
+ *
+ **********************************************************************/
+static int          xmlSecMSCryptoRsaOaepNodeRead               (xmlSecTransformPtr transform, 
+                                                                 xmlNodePtr node, 
+                                                                 xmlSecTransformCtxPtr transformCtx);
+
+static xmlSecTransformKlass xmlSecMSCryptoRsaOaepKlass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoRsaPkcs1OaepCtx,                 /* xmlSecSize objSize */
+
+    xmlSecNameRsaOaep,                          /* const xmlChar* name; */
+    xmlSecHrefRsaOaep,                          /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCryptoRsaPkcs1OaepInitialize,           /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoRsaPkcs1OaepFinalize,             /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecMSCryptoRsaOaepNodeRead,              /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKeyReq,            /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoRsaPkcs1OaepSetKey,               /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoRsaPkcs1OaepExecute,              /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+
+/**
+ * xmlSecMSCryptoTransformRsaOaepGetKlass:
+ *
+ * The RSA-OAEP key transport transform klass.
+ *
+ * Returns: RSA-OAEP key transport transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformRsaOaepGetKlass(void) {
+    return(&xmlSecMSCryptoRsaOaepKlass);
+}
+
+static int
+xmlSecMSCryptoRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCryptoRsaPkcs1OaepCtxPtr ctx;
+    xmlNodePtr cur;
+    int ret;
+
+    xmlSecAssert2(xmlSecMSCryptoRsaPkcs1OaepCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoRsaPkcs1OaepCtx), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecMSCryptoRsaPkcs1OaepGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
+
+    cur = xmlSecGetNextElementNode(node->children);
+    while(cur != NULL) {
+        if(xmlSecCheckNodeName(cur,  xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecBufferBase64NodeContentRead",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+        } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            xmlChar* algorithm;
+
+            /* Algorithm attribute is required */
+            algorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if(algorithm == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
+                            XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+                            "node=%s",
+                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
+            }
+
+            /* for now we support only sha1 */
+            if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            xmlSecErrorsSafeString(algorithm),
+                            XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                            "digest algorithm is not supported for rsa/oaep");
+                xmlFree(algorithm);
+                return(-1);
+            }
+            xmlFree(algorithm);
+        } else {
+            /* not found */
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                        XMLSEC_ERRORS_R_UNEXPECTED_NODE,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+
+        /* next node */
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+    
     return(0);
 }
 

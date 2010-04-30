@@ -197,6 +197,15 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaPkcs1GetKlass(v
 /**
  * xmlSecMSCryptoTransformRsaOaepId:
  *
+ * The RSA OAEP key transport transform klass.
+ */
+#define xmlSecMSCryptoTransformRsaOaepId \
+        xmlSecMSCryptoTransformRsaOaepGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformRsaOaepGetKlass(void);
+
+/**
+ * xmlSecMSCryptoTransformRsaOaepId:
+ *
  * The RSA PKCS1 key transport transform klass.
  */
 /*

@@ -472,17 +472,16 @@ execDSigTest "" "merlin-xmldsig-twenty-three/signature" \
     "$priv_key_option $topfolder/keys/dsakey.$priv_key_format --pwd secret" \
     "--trusted-$cert_format $topfolder/keys/cacert.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format"
 
-##########################################################################
-#
-# merlin-xmlenc-five
-#
-##########################################################################
 
-execDSigTest "" "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
-    "ripemd160 hmac-ripemd160 kw-tripledes" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
-    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+##########################################################################
+#
+# merlin-xmlenc-five 
+#
+# While the main operation is signature (and this is why we have these 
+# tests here instead of testEnc.sh), these tests check the encryption
+# key transport/wrapper algorightms
+#
+##########################################################################
 
 execDSigTest "" "merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128" \
     "sha256 hmac-sha256 kw-aes128" \
@@ -496,8 +495,16 @@ execDSigTest "" "merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256" \
     "sha512 hmac-sha512 kw-aes256" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
 
-#merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5.xml
+execDSigTest "" "merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5" \
+    "sha1 hmac-sha256 rsa-1_5" \
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" 
+
+execDSigTest "" "merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p" \
+    "sha1 hmac-sha256 rsa-oaep-mgf1p" \
+    "$priv_key_option $topfolder/merlin-xmlenc-five/rsapriv.$priv_key_format --pwd secret" 
+
 #merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p.xml
+
 
 ##########################################################################
 #

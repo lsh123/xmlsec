@@ -127,6 +127,11 @@ echo "--- log file is $logfile"
 echo "--- testEnc started for xmlsec-$crypto library ($timestamp)" >> $logfile
 echo "--- LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $logfile
 
+##########################################################################
+#
+# aleksey-xmlenc-01
+#
+##########################################################################
 
 execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname" \
     "tripledes-cbc" \
@@ -186,7 +191,12 @@ execEncTest "aleksey-xmlenc-01/enc-des3cbc-aes192-keyname" \
     "--keys-file $keysfile  --session-key des-192  --binary-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-aes192-keyname.data" \
     "--keys-file $keysfile"
 
-# Merlin's tests
+##########################################################################
+#
+# merlin-xmlenc-five
+#
+##########################################################################
+
 execEncTest "merlin-xmlenc-five/encrypt-data-aes128-cbc" \
     "aes128-cbc" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
@@ -249,6 +259,13 @@ execEncTest "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" 
     "aes256-cbc kw-aes256" \
     "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
 
+execEncTest "merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes" \
+    "ripemd160 hmac-ripemd160 kw-tripledes" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--session-key hmac-192 --keys-file $topfolder/merlin-xmlenc-five/keys.xml" \
+    "--keys-file $topfolder/merlin-xmlenc-five/keys.xml" 
+
+#merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.xml
 
 #merlin-xmlenc-five/encrypt-element-aes256-cbc-carried-kw-aes256.xml
 #merlin-xmlenc-five/decryption-transform-except.xml
@@ -256,9 +273,14 @@ execEncTest "merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256" 
 
 #merlin-xmlenc-five/encrypt-element-aes256-cbc-kw-aes256-dh-ripemd160.xml
 #merlin-xmlenc-five/encrypt-content-aes192-cbc-dh-sha512.xml
-#merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p-sha256.xml
 #merlin-xmlenc-five/encsig-hmac-sha256-dh.xml
 #merlin-xmlenc-five/encsig-hmac-sha256-kw-tripledes-dh.xml
+
+##########################################################################
+#
+# 01-phaos-xmlenc-3
+#
+##########################################################################
 
 execEncTest "01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5" \
     "tripledes-cbc rsa-1_5" \

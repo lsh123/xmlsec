@@ -358,7 +358,7 @@ xmlSecOpenSSLRsaPkcs1Process(xmlSecTransformPtr transform, xmlSecTransformCtxPtr
 
 /**************************************************************************
  *
- * Internal OpenSSL RSA OAPE CTX
+ * Internal OpenSSL RSA OAEP CTX
  *
  *************************************************************************/
 typedef struct _xmlSecOpenSSLRsaOaepCtx         xmlSecOpenSSLRsaOaepCtx,
@@ -492,56 +492,55 @@ xmlSecOpenSSLRsaOaepNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlS
     xmlSecAssert2(xmlSecBufferGetSize(&(ctx->oaepParams)) == 0, -1);
 
     cur = xmlSecGetNextElementNode(node->children);
-    if((cur != NULL) && xmlSecCheckNodeName(cur,  xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
-        ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
-        if(ret < 0) {
+    while(cur != NULL) {
+        if(xmlSecCheckNodeName(cur,  xmlSecNodeRsaOAEPparams, xmlSecEncNs)) {
+            ret = xmlSecBufferBase64NodeContentRead(&(ctx->oaepParams), cur);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecBufferBase64NodeContentRead",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+        } else if(xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
+            xmlChar* algorithm;
+
+            /* Algorithm attribute is required */
+            algorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
+            if(algorithm == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
+                            XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
+                            "node=%s",
+                            xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
+                return(-1);
+            }
+
+            /* for now we support only sha1 */
+            if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            xmlSecErrorsSafeString(algorithm),
+                            XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                            "digest algorithm is not supported for rsa/oaep");
+                xmlFree(algorithm);
+                return(-1);
+            }
+            xmlFree(algorithm);
+        } else {
+            /* not found */
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xmlSecBufferBase64NodeContentRead",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                        XMLSEC_ERRORS_R_UNEXPECTED_NODE,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
         }
+
+        /* next node */
         cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if((cur != NULL) && xmlSecCheckNodeName(cur,  xmlSecNodeDigestMethod, xmlSecDSigNs)) {
-        xmlChar* algorithm;
-
-        /* Algorithm attribute is required */
-        algorithm = xmlGetProp(cur, xmlSecAttrAlgorithm);
-        if(algorithm == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(xmlSecAttrAlgorithm),
-                        XMLSEC_ERRORS_R_INVALID_NODE_ATTRIBUTE,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeGetName(cur)));
-            return(-1);
-        }
-
-        /* for now we support only sha1 */
-        if(xmlStrcmp(algorithm, xmlSecHrefSha1) != 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        xmlSecErrorsSafeString(algorithm),
-                        XMLSEC_ERRORS_R_INVALID_TRANSFORM,
-                        "digest algorithm is not supported for rsa/oaep");
-            xmlFree(algorithm);
-            return(-1);
-        }
-        xmlFree(algorithm);
-
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_UNEXPECTED_NODE,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
     }
 
     return(0);

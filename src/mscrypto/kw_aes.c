@@ -56,7 +56,7 @@ static xmlSecKWAesKlass xmlSecMSCryptoKWAesKlass = {
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
     NULL                                    /* void*                               reserved1; */
-}; 
+};
 
 /**************************************************************************
  *

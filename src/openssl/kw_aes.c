@@ -54,7 +54,7 @@ static xmlSecKWAesKlass xmlSecOpenSSLKWAesKlass = {
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
     NULL                                    /* void*                               reserved1; */
-}; 
+};
 
 
 /*********************************************************************

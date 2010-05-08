@@ -35,10 +35,14 @@ extern "C" {
 #define XMLSEC_KW_AES256_KEY_SIZE                   32
 
 typedef int  (*xmlSecAesBlockEncryptCallback)       (const xmlSecByte * in,
+                                                     xmlSecSize inSize,
                                                      xmlSecByte * out,
+                                                     xmlSecSize outSize,
                                                      void * key);
 typedef int  (*xmlSecAesBlockDecryptCallback)       (const xmlSecByte * in,
+                                                     xmlSecSize inSize,
                                                      xmlSecByte * out,
+                                                     xmlSecSize outSize,
                                                      void * key);
 
 

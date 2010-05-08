@@ -121,6 +121,9 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     gXmlSecMSCryptoFunctions->transformAes128CbcGetKlass        = xmlSecMSCryptoTransformAes128CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformAes192CbcGetKlass        = xmlSecMSCryptoTransformAes192CbcGetKlass;
     gXmlSecMSCryptoFunctions->transformAes256CbcGetKlass        = xmlSecMSCryptoTransformAes256CbcGetKlass;
+    gXmlSecMSCryptoFunctions->transformKWAes128GetKlass         = xmlSecMSCryptoTransformKWAes128GetKlass;
+    gXmlSecMSCryptoFunctions->transformKWAes192GetKlass         = xmlSecMSCryptoTransformKWAes192GetKlass;
+    gXmlSecMSCryptoFunctions->transformKWAes256GetKlass         = xmlSecMSCryptoTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
     /******************************* DES ********************************/

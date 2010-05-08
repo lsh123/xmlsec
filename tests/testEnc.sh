@@ -69,10 +69,10 @@ execEncTest $res_success \
     "--keys-file $keysfile --binary-data $topfolder/aleksey-xmlenc-01/enc-aes256cbc-keyname.data" \
     "--keys-file $keysfile"
 
-execEncTest "aleksey-xmlenc-01/enc-des3cbc-keyname-content" \
-    "tripled$res_success \
+execEncTest $res_success \
     "" \
-    es-cbc" \
+    "aleksey-xmlenc-01/enc-des3cbc-keyname-content" \
+    "tripledes-cbc" \
     "--keys-file $topfolder/keys/keys.xml" \
     "--keys-file $keysfile --xml-data $topfolder/aleksey-xmlenc-01/enc-des3cbc-keyname-content.data --node-id Test" \
     "--keys-file $keysfile"

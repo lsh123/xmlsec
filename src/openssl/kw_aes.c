@@ -190,23 +190,31 @@ xmlSecOpenSSLTransformKWAes256GetKlass(void) {
 
 
 static int 
-xmlSecOpenSSLAesBlockEncryptCallback(const xmlSecByte * in, xmlSecByte * out, void * key) {
+xmlSecOpenSSLAesBlockEncryptCallback(const xmlSecByte * in, xmlSecSize inSize,
+                                     xmlSecByte * out, xmlSecSize outSize,
+                                     void * key) {
     xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(key != NULL, -1);
 
     AES_encrypt(in, out, (AES_KEY*)key);
-    return(0);
+    return(AES_BLOCK_SIZE);
 }
 
 static int
-xmlSecOpenSSLAesBlockDecryptCallback(const xmlSecByte * in, xmlSecByte * out, void * key) {
+xmlSecOpenSSLAesBlockDecryptCallback(const xmlSecByte * in, xmlSecSize inSize,
+                                     xmlSecByte * out, xmlSecSize outSize,
+                                     void * key) {
     xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
     xmlSecAssert2(key != NULL, -1);
 
     AES_decrypt(in, out, (AES_KEY*)key);
-    return(0);
+    return(AES_BLOCK_SIZE);
 }
 
 static int

@@ -47,11 +47,10 @@ merlin-xmldsig-twenty-three/signature-x509-crt-crl
 
 
 -------------------------------------------------
-* xmlsec-mscrypto (April 26, 2010 using Windows XP SP3)
+* xmlsec-mscrypto (May 08, 2010 using Windows XP SP3)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RIPEMD160, SHA224,
-AES and DES KW
+** Skipped tests due to missing transforms: RIPEMD160, SHA224, DES KW
 
 aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160
 aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64
@@ -59,27 +58,11 @@ aleksey-xmldsig-01/enveloping-sha224-hmac-sha224
 aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64
 aleksey-xmldsig-01/enveloping-ripemd160-rsa-ripemd160
 aleksey-xmldsig-01/enveloping-sha224-rsa-sha224
-
 merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes
-merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128
-merlin-xmlenc-five/encsig-sha384-hmac-sha384-kw-aes192
-merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256
-aleksey-xmlenc-01/enc-des3cbc-aes192-keyname
 merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes
-merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192
-merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256
-merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128
-merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256
 01-phaos-xmlenc-3/enc-element-3des-kw-3des
 01-phaos-xmlenc-3/enc-content-aes128-kw-3des
-01-phaos-xmlenc-3/enc-element-aes128-kw-aes128
-01-phaos-xmlenc-3/enc-element-aes128-kw-aes256
-01-phaos-xmlenc-3/enc-content-3des-kw-aes192
-01-phaos-xmlenc-3/enc-content-aes192-kw-aes256
-01-phaos-xmlenc-3/enc-element-aes192-kw-aes192
-01-phaos-xmlenc-3/enc-element-aes256-kw-aes256
-01-phaos-xmlenc-3/enc-text-3des-kw-aes256
-01-phaos-xmlenc-3/enc-text-aes128-kw-aes192
+
 
 ** Failed tests due to no GOST crypto providers on test machine
 

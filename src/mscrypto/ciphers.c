@@ -20,12 +20,14 @@
 #include <xmlsec/errors.h>
 
 #include <xmlsec/mscrypto/crypto.h>
+
+#include "../kw_aes_des.h"
 #include "private.h"
+
 
 #if defined(__MINGW32__)
 #  include "xmlsec-mingw.h"
 #endif
-
 
 
 /**************************************************************************
@@ -37,15 +39,15 @@ typedef struct _xmlSecMSCryptoBlockCipherCtx            xmlSecMSCryptoBlockCiphe
                                                         *xmlSecMSCryptoBlockCipherCtxPtr;
 struct _xmlSecMSCryptoBlockCipherCtx {
     ALG_ID                              algorithmIdentifier;
-    int                                 mode;
-    HCRYPTPROV                          cryptProvider;
-    HCRYPTKEY                           cryptKey;
-    HCRYPTKEY                           pubPrivKey;
-    xmlSecKeyDataId                     keyId;
     const xmlSecMSCryptoProviderInfo  * providers;
-    int                                 keyInitialized;
-    int                                 ctxInitialized;
+    xmlSecKeyDataId                     keyId;
     xmlSecSize                          keySize;
+
+    HCRYPTPROV                          cryptProvider;
+    HCRYPTKEY                           pubPrivKey;
+    HCRYPTKEY                           cryptKey;
+    xmlSecBuffer                        kwKeyBuffer; /* used only for KW algorithm - need to reset cryptKey for every operation to avoid CBC mode */
+    int                                 ctxInitialized;
 };
 /* function declarations */
 static int      xmlSecMSCryptoBlockCipherCtxUpdate      (xmlSecMSCryptoBlockCipherCtxPtr ctx,
@@ -68,7 +70,7 @@ xmlSecMSCryptoBlockCipherCtxInit(xmlSecMSCryptoBlockCipherCtxPtr ctx,
     DWORD dwBlockLen, dwBlockLenLen;
 
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->keyInitialized != 0, -1);
+    xmlSecAssert2(ctx->cryptKey != 0, -1);
     xmlSecAssert2(ctx->ctxInitialized == 0, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -496,6 +498,13 @@ xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
 
        return(1);
     }
+
+    if(xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformKWAes128Id) ||
+       xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformKWAes192Id) ||
+       xmlSecTransformCheckId(transform, xmlSecMSCryptoTransformKWAes256Id)) {
+
+       return(1);
+    }
 #endif /* XMLSEC_NO_AES */
 
     return(0);
@@ -504,6 +513,7 @@ xmlSecMSCryptoBlockCipherCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecMSCryptoBlockCipherCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);
@@ -512,6 +522,16 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
     xmlSecAssert2(ctx != NULL, -1);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
+
+    ret = xmlSecBufferInitialize(&ctx->kwKeyBuffer, 0);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
 
 #ifndef XMLSEC_NO_DES
     if(transform->id == xmlSecMSCryptoTransformDes3CbcId) {
@@ -538,7 +558,23 @@ xmlSecMSCryptoBlockCipherInitialize(xmlSecTransformPtr transform) {
         ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
         ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
         ctx->keySize                = 32;
+    } else if(transform->id == xmlSecMSCryptoTransformKWAes128Id) {
+        ctx->algorithmIdentifier    = CALG_AES_128;
+        ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
+        ctx->keySize                = XMLSEC_KW_AES128_KEY_SIZE;
+    } else if(transform->id == xmlSecMSCryptoTransformKWAes192Id) {
+        ctx->algorithmIdentifier    = CALG_AES_192;
+        ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
+        ctx->keySize                = XMLSEC_KW_AES192_KEY_SIZE;
+    } else if(transform->id == xmlSecMSCryptoTransformKWAes256Id) {
+        ctx->algorithmIdentifier    = CALG_AES_256;
+        ctx->keyId                  = xmlSecMSCryptoKeyDataAesId;
+        ctx->providers              = xmlSecMSCryptoProviderInfo_Aes;
+        ctx->keySize                = XMLSEC_KW_AES256_KEY_SIZE;
     } else
+
 #endif /* XMLSEC_NO_AES */
 
     {
@@ -595,6 +631,8 @@ xmlSecMSCryptoBlockCipherFinalize(xmlSecTransformPtr transform) {
     if (ctx->cryptProvider) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
+    
+    xmlSecBufferFinalize(&ctx->kwKeyBuffer);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoBlockCipherCtx));
 }
@@ -637,7 +675,7 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
 
     ctx = xmlSecMSCryptoBlockCipherGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
-    xmlSecAssert2(ctx->keyInitialized == 0, -1);
+    xmlSecAssert2(ctx->cryptKey == 0, -1);
     xmlSecAssert2(ctx->pubPrivKey != 0, -1);
     xmlSecAssert2(ctx->keyId != NULL, -1);
     xmlSecAssert2(xmlSecKeyCheckId(key, ctx->keyId), -1);
@@ -676,7 +714,6 @@ xmlSecMSCryptoBlockCipherSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) 
         return(-1);
     }
 
-    ctx->keyInitialized = 1;
     return(0);
 }
 
@@ -941,3 +978,414 @@ xmlSecMSCryptoTransformDes3CbcGetKlass(void) {
 }
 #endif /* XMLSEC_NO_DES */
 
+#ifndef XMLSEC_NO_AES
+static int 
+xmlSecMSCryptoAesBlockEncryptCallback(const xmlSecByte * in, xmlSecSize inSize,
+                                      xmlSecByte * out, xmlSecSize outSize,
+                                      void * key) {
+    xmlSecMSCryptoBlockCipherCtxPtr ctx = (xmlSecMSCryptoBlockCipherCtxPtr)key;
+    DWORD dwCLen;
+
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= inSize, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
+    xmlSecAssert2(ctx->cryptKey == 0, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&ctx->kwKeyBuffer) == ctx->keySize, -1);
+
+    /* Import this key and get an HCRYPTKEY handle, we do it again and again 
+       to ensure we don't go into CBC mode */
+    if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
+        ctx->pubPrivKey,
+        ctx->algorithmIdentifier,
+        xmlSecBufferGetData(&ctx->kwKeyBuffer),
+        xmlSecBufferGetSize(&ctx->kwKeyBuffer),
+        TRUE,
+        &(ctx->cryptKey)))  {
+
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecMSCryptoImportPlainSessionBlob",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
+     * can be skipped. I hope this will work .... */
+    memcpy(out, in, inSize);
+    dwCLen = inSize;
+    if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "CryptEncrypt",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* cleanup */
+    if (ctx->cryptKey != 0) {
+        CryptDestroyKey(ctx->cryptKey);
+        ctx->cryptKey = 0;
+    }
+
+    return(0);
+}
+
+static int
+xmlSecMSCryptoAesBlockDecryptCallback(const xmlSecByte * in, xmlSecSize inSize,
+                                      xmlSecByte * out, xmlSecSize outSize,
+                                      void * key) {
+    xmlSecMSCryptoBlockCipherCtxPtr ctx = (xmlSecMSCryptoBlockCipherCtxPtr)key;
+    DWORD dwCLen;
+
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= XMLSEC_KW_AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= inSize, -1);
+    xmlSecAssert2(ctx != NULL, -1);
+    xmlSecAssert2(ctx->pubPrivKey != 0, -1);
+    xmlSecAssert2(ctx->cryptKey == 0, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&ctx->kwKeyBuffer) == ctx->keySize, -1);
+
+    /* Import this key and get an HCRYPTKEY handle, we do it again and again 
+       to ensure we don't go into CBC mode */
+    if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
+        ctx->pubPrivKey,
+        ctx->algorithmIdentifier,
+        xmlSecBufferGetData(&ctx->kwKeyBuffer),
+        xmlSecBufferGetSize(&ctx->kwKeyBuffer),
+        TRUE,
+        &(ctx->cryptKey)))  {
+
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecMSCryptoImportPlainSessionBlob",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
+     * can be skipped. I hope this will work .... */
+    memcpy(out, in, inSize);
+    dwCLen = inSize;
+    if(!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, out, &dwCLen)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "CryptEncrypt",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* cleanup */
+    if (ctx->cryptKey != 0) {
+        CryptDestroyKey(ctx->cryptKey);
+        ctx->cryptKey = 0;
+    }
+
+    return(0);
+}
+
+static int
+xmlSecMSCryptoKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecMSCryptoBlockCipherCtxPtr ctx;
+    xmlSecBufferPtr buffer;
+    xmlSecSize keySize;
+    int ret;
+
+    xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecMSCryptoKeyDataAesId), -1);
+
+    ctx = xmlSecMSCryptoBlockCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
+    xmlSecAssert2(buffer != NULL, -1);
+
+    keySize = xmlSecBufferGetSize(buffer);
+    if(keySize < ctx->keySize) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_KEY_DATA_SIZE,
+                    "key=%d;expected=%d",
+                    keySize, ctx->keySize);
+        return(-1);
+    }
+
+    ret = xmlSecBufferSetData(&(ctx->kwKeyBuffer),
+                            xmlSecBufferGetData(buffer),
+                            ctx->keySize);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    "xmlSecBufferSetData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "expected-size=%d", 
+                    ctx->keySize);
+        return(-1);
+    }
+
+    return(0);
+}
+
+static int
+xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecMSCryptoBlockCipherCtxPtr ctx;
+    xmlSecBufferPtr in, out;
+    xmlSecSize inSize, outSize;
+    int ret;
+
+    xmlSecAssert2(xmlSecMSCryptoBlockCipherCheckId(transform), -1);
+    xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecMSCryptoBlockCipherSize), -1);
+    xmlSecAssert2(transformCtx != NULL, -1);
+
+    ctx = xmlSecMSCryptoBlockCipherGetCtx(transform);
+    xmlSecAssert2(ctx != NULL, -1);
+
+    in = &(transform->inBuf);
+    out = &(transform->outBuf);
+    inSize = xmlSecBufferGetSize(in);
+    outSize = xmlSecBufferGetSize(out);
+    xmlSecAssert2(outSize == 0, -1);
+
+    if(transform->status == xmlSecTransformStatusNone) {
+        transform->status = xmlSecTransformStatusWorking;
+    }
+
+    if((transform->status == xmlSecTransformStatusWorking) && (last == 0)) {
+        /* just do nothing */
+    } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
+        if((inSize % 8) != 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        NULL,
+                        XMLSEC_ERRORS_R_INVALID_SIZE,
+                        "size=%d(not 8 bytes aligned)", inSize);
+            return(-1);
+        }
+
+        if(transform->operation == xmlSecTransformOperationEncrypt) {
+            /* the encoded key might be 8 bytes longer plus 8 bytes just in case */
+            outSize = inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE +
+                               XMLSEC_KW_AES_BLOCK_SIZE;
+        } else {
+            outSize = inSize + XMLSEC_KW_AES_BLOCK_SIZE;
+        }
+
+        ret = xmlSecBufferSetMaxSize(out, outSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferSetMaxSize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "outSize=%d", outSize);
+            return(-1);
+        }
+
+        if(transform->operation == xmlSecTransformOperationEncrypt) {
+            ret = xmlSecKWAesEncode(xmlSecMSCryptoAesBlockEncryptCallback, ctx,
+                                    xmlSecBufferGetData(in), inSize,
+                                    xmlSecBufferGetData(out), outSize);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecKWAesEncode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+            outSize = ret;
+        } else {
+            ret = xmlSecKWAesDecode(xmlSecMSCryptoAesBlockDecryptCallback, ctx,
+                                    xmlSecBufferGetData(in), inSize,
+                                    xmlSecBufferGetData(out), outSize);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                            "xmlSecKWAesEncode",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                return(-1);
+            }
+            outSize = ret;
+        }
+
+        ret = xmlSecBufferSetSize(out, outSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferSetSize",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "outSize=%d", outSize);
+            return(-1);
+        }
+
+        ret = xmlSecBufferRemoveHead(in, inSize);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                        "xmlSecBufferRemoveHead",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "inSize%d", inSize);
+            return(-1);
+        }
+
+        transform->status = xmlSecTransformStatusFinished;
+    } else if(transform->status == xmlSecTransformStatusFinished) {
+        /* the only way we can get here is if there is no input */
+        xmlSecAssert2(xmlSecBufferGetSize(&(transform->inBuf)) == 0, -1);
+    } else {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_STATUS,
+                    "status=%d", transform->status);
+        return(-1);
+    }
+    return(0);
+}
+
+/*********************************************************************
+ *
+ * AES KW cipher transforms
+ *
+ ********************************************************************/
+
+/*
+ * The AES-128 kew wrapper transform klass.
+ */
+static xmlSecTransformKlass xmlSecMSCryptoKWAes128Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoBlockCipherSize,              /* xmlSecSize objSize */
+
+    xmlSecNameKWAes128,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCryptoBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWAesSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoKWAesExecute,                 /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformKWAes128GetKlass:
+ *
+ * The AES-128 kew wrapper transform klass.
+ *
+ * Returns: AES-128 kew wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformKWAes128GetKlass(void) {
+    return(&xmlSecMSCryptoKWAes128Klass);
+}
+
+
+/*
+ * The AES-192 kew wrapper transform klass.
+ */
+static xmlSecTransformKlass xmlSecMSCryptoKWAes192Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoBlockCipherSize,              /* xmlSecSize objSize */
+
+    xmlSecNameKWAes192,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes192,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCryptoBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWAesSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoKWAesExecute,                 /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformKWAes192GetKlass:
+ *
+ * The AES-192 kew wrapper transform klass.
+ *
+ * Returns: AES-192 kew wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformKWAes192GetKlass(void) {
+    return(&xmlSecMSCryptoKWAes192Klass);
+}
+
+/*
+ * The AES-256 kew wrapper transform klass.
+ */
+static xmlSecTransformKlass xmlSecMSCryptoKWAes256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecMSCryptoBlockCipherSize,              /* xmlSecSize objSize */
+
+    xmlSecNameKWAes256,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes256,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecMSCryptoBlockCipherInitialize,        /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecMSCryptoBlockCipherFinalize,          /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecMSCryptoBlockCipherSetKeyReq,         /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecMSCryptoKWAesSetKey,                  /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                           /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecMSCryptoKWAesExecute,                 /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecMSCryptoTransformKWAes256GetKlass:
+ *
+ * The AES-256 kew wrapper transform klass.
+ *
+ * Returns: AES-256 kew wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecMSCryptoTransformKWAes256GetKlass(void) {
+    return(&xmlSecMSCryptoKWAes256Klass);
+}
+
+#endif /* XMLSEC_NO_AES */

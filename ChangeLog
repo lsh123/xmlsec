@@ -1,3 +1,6 @@
+2010-05-08  Aleksey Sanin  <aleksey@aleksey.com>
+	* Added AES KW support for xmlsec-mscrypto
+
 2010-04-30  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added RSA/OAEP support for xmlsec-mscrypto
 

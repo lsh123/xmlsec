@@ -127,7 +127,15 @@ xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
 
     N = (inSize / 8);
     if(N == 1) {
-        encryptCallback(out, out, key);
+        ret = encryptCallback(out, inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE, out, outSize, key);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "encryptCallback",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
     } else {
         for(j = 0; j <= 5; ++j) {
             for(i = 1; i <= N; ++i) {
@@ -137,7 +145,15 @@ xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
                 memcpy(block, out, 8);
                 memcpy(block + 8, p, 8);
 
-                encryptCallback(block, block, key);
+                ret = encryptCallback(block, sizeof(block), block, sizeof(block), key);
+                if(ret < 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "encryptCallback",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_NO_MESSAGE);
+                    return(-1);
+                }
                 block[7] ^=  t;
                 memcpy(out, block, 8);
                 memcpy(p, block + 8, 8);
@@ -171,7 +187,15 @@ xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
 
     N = (inSize / 8) - 1;
     if(N == 1) {
-        decryptCallback(out, out, key);
+        ret = decryptCallback(out, inSize, out, outSize, key);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "decryptCallback",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
     } else {
         for(j = 5; j >= 0; --j) {
             for(i = N; i > 0; --i) {
@@ -182,7 +206,15 @@ xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
                 memcpy(block + 8, p, 8);
                 block[7] ^= t;
 
-                decryptCallback(block, block, key);
+                ret = decryptCallback(block, sizeof(block), block, sizeof(block), key);
+                if(ret < 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "encryptCallback",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_NO_MESSAGE);
+                    return(-1);
+                }
                 memcpy(out, block, 8);
                 memcpy(p, block + 8, 8);
             }

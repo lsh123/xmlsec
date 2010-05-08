@@ -102,7 +102,7 @@ static const xmlSecByte xmlSecKWAesMagicBlock[XMLSEC_KW_AES_MAGIC_BLOCK_SIZE] = 
 };
 
 int
-xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
+xmlSecKWAesEncode(xmlSecKWAesId kwAesId, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize) {
     xmlSecByte block[XMLSEC_KW_AES_BLOCK_SIZE];
@@ -110,8 +110,10 @@ xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
     int N, i, j, t;
     int ret;
 
-    xmlSecAssert2(encryptCallback != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(kwAesId != NULL, -1);
+    xmlSecAssert2(kwAesId->encrypt != NULL, -1);
+    xmlSecAssert2(kwAesId->decrypt != NULL, -1);
+    xmlSecAssert2(context != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -127,11 +129,11 @@ xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
 
     N = (inSize / 8);
     if(N == 1) {
-        ret = encryptCallback(out, inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE, out, outSize, key);
+        ret = kwAesId->encrypt(out, inSize + XMLSEC_KW_AES_MAGIC_BLOCK_SIZE, out, outSize, context);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "encryptCallback",
+                        "kwAesId->encrypt",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
@@ -145,11 +147,11 @@ xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
                 memcpy(block, out, 8);
                 memcpy(block + 8, p, 8);
 
-                ret = encryptCallback(block, sizeof(block), block, sizeof(block), key);
+                ret = kwAesId->encrypt(block, sizeof(block), block, sizeof(block), context);
                 if(ret < 0) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
-                                "encryptCallback",
+                                "kwAesId->encrypt",
                                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                                 XMLSEC_ERRORS_NO_MESSAGE);
                     return(-1);
@@ -165,7 +167,7 @@ xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
 }
 
 int
-xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
+xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize) {
     xmlSecByte block[XMLSEC_KW_AES_BLOCK_SIZE];
@@ -173,8 +175,10 @@ xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
     int N, i, j, t;
     int ret;
 
-    xmlSecAssert2(decryptCallback != NULL, -1);
-    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(kwAesId != NULL, -1);
+    xmlSecAssert2(kwAesId->encrypt != NULL, -1);
+    xmlSecAssert2(kwAesId->decrypt != NULL, -1);
+    xmlSecAssert2(context != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -187,11 +191,11 @@ xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
 
     N = (inSize / 8) - 1;
     if(N == 1) {
-        ret = decryptCallback(out, inSize, out, outSize, key);
+        ret = kwAesId->decrypt(out, inSize, out, outSize, context);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "decryptCallback",
+                        "kwAesId->decrypt",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             return(-1);
@@ -206,11 +210,11 @@ xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
                 memcpy(block + 8, p, 8);
                 block[7] ^= t;
 
-                ret = decryptCallback(block, sizeof(block), block, sizeof(block), key);
+                ret = kwAesId->decrypt(block, sizeof(block), block, sizeof(block), context);
                 if(ret < 0) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,
-                                "encryptCallback",
+                                "kwAesId->decrypt",
                                 XMLSEC_ERRORS_R_XMLSEC_FAILED,
                                 XMLSEC_ERRORS_NO_MESSAGE);
                     return(-1);

@@ -34,25 +34,37 @@ extern "C" {
 #define XMLSEC_KW_AES192_KEY_SIZE                   24
 #define XMLSEC_KW_AES256_KEY_SIZE                   32
 
-typedef int  (*xmlSecAesBlockEncryptCallback)       (const xmlSecByte * in,
+typedef int  (*xmlSecKWAesBlockEncryptMethod)       (const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
-                                                     void * key);
-typedef int  (*xmlSecAesBlockDecryptCallback)       (const xmlSecByte * in,
+                                                     void * context);
+typedef int  (*xmlSecKWAesBlockDecryptMethod)       (const xmlSecByte * in,
                                                      xmlSecSize inSize,
                                                      xmlSecByte * out,
                                                      xmlSecSize outSize,
-                                                     void * key);
+                                                     void * context);
 
+
+struct _xmlSecKWAesKlass {
+    /* callbacks */
+    xmlSecKWAesBlockEncryptMethod       encrypt;
+    xmlSecKWAesBlockDecryptMethod       decrypt;
+
+    /* for the future */
+    void*                               reserved0;
+    void*                               reserved1;
+}; 
+typedef const struct _xmlSecKWAesKlass              xmlSecKWAesKlass,
+                                                    *xmlSecKWAesId;
 
 XMLSEC_EXPORT int
-xmlSecKWAesEncode(xmlSecAesBlockEncryptCallback encryptCallback, void *key,
+xmlSecKWAesEncode(xmlSecKWAesId kwAesId, void *key,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize);
 
 XMLSEC_EXPORT int
-xmlSecKWAesDecode(xmlSecAesBlockDecryptCallback decryptCallback, void *key,
+xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *key,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize);
 

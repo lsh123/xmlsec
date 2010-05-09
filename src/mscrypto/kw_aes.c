@@ -73,8 +73,7 @@ struct _xmlSecMSCryptoKWAesCtx {
 
     HCRYPTPROV                          cryptProvider;
     HCRYPTKEY                           pubPrivKey;
-    HCRYPTKEY                           cryptKey;
-    xmlSecBuffer                        kwKeyBuffer;
+    xmlSecBuffer                        keyBuffer;
 };
 
 /******************************************************************************
@@ -164,7 +163,7 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = xmlSecBufferInitialize(&ctx->kwKeyBuffer, 0);
+    ret = xmlSecBufferInitialize(&ctx->keyBuffer, 0);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -174,6 +173,7 @@ xmlSecMSCryptoKWAesInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
+    /* find provider */
     ctx->cryptProvider = xmlSecMSCryptoFindProvider(ctx->providers, NULL, CRYPT_VERIFYCONTEXT, TRUE);
     if(ctx->cryptProvider == 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -209,9 +209,6 @@ xmlSecMSCryptoKWAesFinalize(xmlSecTransformPtr transform) {
     ctx = xmlSecMSCryptoKWAesGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
-    if (ctx->cryptKey) {
-        CryptDestroyKey(ctx->cryptKey);
-    }
     if (ctx->pubPrivKey) {
         CryptDestroyKey(ctx->pubPrivKey);
     }
@@ -219,7 +216,7 @@ xmlSecMSCryptoKWAesFinalize(xmlSecTransformPtr transform) {
         CryptReleaseContext(ctx->cryptProvider, 0);
     }
     
-    xmlSecBufferFinalize(&ctx->kwKeyBuffer);
+    xmlSecBufferFinalize(&ctx->keyBuffer);
 
     memset(ctx, 0, sizeof(xmlSecMSCryptoKWAesCtx));
 }
@@ -281,7 +278,7 @@ xmlSecMSCryptoKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    ret = xmlSecBufferSetData(&(ctx->kwKeyBuffer),
+    ret = xmlSecBufferSetData(&(ctx->keyBuffer),
                             xmlSecBufferGetData(buffer),
                             ctx->keySize);
     if(ret < 0) {
@@ -426,6 +423,7 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
                                 void * context) {
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
+    HCRYPTKEY cryptKey = 0;
     DWORD dwCLen;
 
     xmlSecAssert2(in != NULL, -1);
@@ -434,18 +432,17 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pubPrivKey != 0, -1);
-    xmlSecAssert2(ctx->cryptKey == 0, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&ctx->kwKeyBuffer) == ctx->keySize, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
 
     /* Import this key and get an HCRYPTKEY handle, we do it again and again 
        to ensure we don't go into CBC mode */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
-        xmlSecBufferGetData(&ctx->kwKeyBuffer),
-        xmlSecBufferGetSize(&ctx->kwKeyBuffer),
+        xmlSecBufferGetData(&ctx->keyBuffer),
+        xmlSecBufferGetSize(&ctx->keyBuffer),
         TRUE,
-        &(ctx->cryptKey)))  {
+        &cryptKey))  {
 
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -454,27 +451,27 @@ xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
+    xmlSecAssert2(cryptKey != 0, -1);
 
     /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
      * can be skipped. I hope this will work .... */
-    memcpy(out, in, inSize);
+    if(out != in) {
+        memcpy(out, in, inSize);
+    }
     dwCLen = inSize;
-    if(!CryptEncrypt(ctx->cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
+    if(!CryptEncrypt(cryptKey, 0, FALSE, 0, out, &dwCLen, outSize)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptEncrypt",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
+        CryptDestroyKey(cryptKey);    
         return(-1);
     }
 
     /* cleanup */
-    if (ctx->cryptKey != 0) {
-        CryptDestroyKey(ctx->cryptKey);
-        ctx->cryptKey = 0;
-    }
-
-    return(0);
+    CryptDestroyKey(cryptKey);    
+    return(dwCLen);
 }
 
 static int
@@ -482,6 +479,7 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
                                 void * context) {
     xmlSecMSCryptoKWAesCtxPtr ctx = (xmlSecMSCryptoKWAesCtxPtr)context;
+    HCRYPTKEY cryptKey = 0;
     DWORD dwCLen;
 
     xmlSecAssert2(in != NULL, -1);
@@ -490,18 +488,17 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     xmlSecAssert2(outSize >= inSize, -1);
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(ctx->pubPrivKey != 0, -1);
-    xmlSecAssert2(ctx->cryptKey == 0, -1);
-    xmlSecAssert2(xmlSecBufferGetSize(&ctx->kwKeyBuffer) == ctx->keySize, -1);
+    xmlSecAssert2(xmlSecBufferGetSize(&ctx->keyBuffer) == ctx->keySize, -1);
 
     /* Import this key and get an HCRYPTKEY handle, we do it again and again 
        to ensure we don't go into CBC mode */
     if (!xmlSecMSCryptoImportPlainSessionBlob(ctx->cryptProvider,
         ctx->pubPrivKey,
         ctx->algorithmIdentifier,
-        xmlSecBufferGetData(&ctx->kwKeyBuffer),
-        xmlSecBufferGetSize(&ctx->kwKeyBuffer),
+        xmlSecBufferGetData(&ctx->keyBuffer),
+        xmlSecBufferGetSize(&ctx->keyBuffer),
         TRUE,
-        &(ctx->cryptKey)))  {
+        &cryptKey))  {
 
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -510,27 +507,27 @@ xmlSecMSCryptoKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
+    xmlSecAssert2(cryptKey != 0, -1);
 
     /* Set process last block to false, since we handle padding ourselves, and MSCrypto padding
      * can be skipped. I hope this will work .... */
-    memcpy(out, in, inSize);
+    if(out != in) {
+        memcpy(out, in, inSize);
+    }
     dwCLen = inSize;
-    if(!CryptDecrypt(ctx->cryptKey, 0, FALSE, 0, out, &dwCLen)) {
+    if(!CryptDecrypt(cryptKey, 0, FALSE, 0, out, &dwCLen)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "CryptEncrypt",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
+        CryptDestroyKey(cryptKey);
         return(-1);
     }
 
     /* cleanup */
-    if (ctx->cryptKey != 0) {
-        CryptDestroyKey(ctx->cryptKey);
-        ctx->cryptKey = 0;
-    }
-
-    return(0);
+    CryptDestroyKey(cryptKey);
+    return(dwCLen);
 }
 
 /*********************************************************************

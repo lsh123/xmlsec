@@ -269,6 +269,7 @@ XMLSEC_MSCRYPTO_OBJS = \
 	$(XMLSEC_MSCRYPTO_INTDIR)\symkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\kt_rsa.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\kw_aes.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR)\kw_des.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\strings.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\signatures.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR)\certkeys.obj \
@@ -284,6 +285,7 @@ XMLSEC_MSCRYPTO_OBJS_A = \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\symkeys.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\kt_rsa.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\kw_aes.obj \
+	$(XMLSEC_MSCRYPTO_INTDIR_A)\kw_des.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\strings.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\signatures.obj \
 	$(XMLSEC_MSCRYPTO_INTDIR_A)\certkeys.obj \

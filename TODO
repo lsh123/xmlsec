@@ -47,7 +47,7 @@ merlin-xmldsig-twenty-three/signature-x509-crt-crl
 
 
 -------------------------------------------------
-* xmlsec-mscrypto (May 08, 2010 using Windows XP SP3)
+* xmlsec-mscrypto (May 09, 2010 using Windows XP SP3)
 -------------------------------------------------
 
 ** Skipped tests due to missing transforms: RIPEMD160, SHA224, DES KW
@@ -59,10 +59,6 @@ aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64
 aleksey-xmldsig-01/enveloping-ripemd160-rsa-ripemd160
 aleksey-xmldsig-01/enveloping-sha224-rsa-sha224
 merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes
-merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes
-01-phaos-xmlenc-3/enc-element-3des-kw-3des
-01-phaos-xmlenc-3/enc-content-aes128-kw-3des
-
 
 ** Failed tests due to no GOST crypto providers on test machine
 

@@ -129,6 +129,7 @@ xmlSecCryptoGetFunctions_mscrypto(void) {
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecMSCryptoFunctions->transformDes3CbcGetKlass          = xmlSecMSCryptoTransformDes3CbcGetKlass;
+    gXmlSecMSCryptoFunctions->transformKWDes3GetKlass           = xmlSecMSCryptoTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
     /******************************* DSA ********************************/

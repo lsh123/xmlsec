@@ -360,9 +360,9 @@ xmlSecMSCryptoDigestExecute(xmlSecTransformPtr transform,
             if (ret == 0) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                            "CryptGetHashParam",
+                            "CryptGetHashParam(HP_HASHVAL)",
                             XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                            "size=%d", inSize);
+                            "size=%d", MSCRYPTO_MAX_HASH_SIZE);
                 return(-1);
             }
 

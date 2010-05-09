@@ -30,6 +30,7 @@ libxmlsec1_mscrypto_la_SOURCES =\
 	hmac.c \
 	keysstore.c \
 	kw_aes.c \
+	kw_des.c \
 	kt_rsa.c \
 	signatures.c \
 	symkeys.c \

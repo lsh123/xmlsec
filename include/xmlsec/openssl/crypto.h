@@ -144,6 +144,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDes3CbcGetKlass(voi
 #define xmlSecOpenSSLTransformKWDes3Id \
         xmlSecOpenSSLTransformKWDes3GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformKWDes3GetKlass(void);
+
 #endif /* XMLSEC_NO_DES */
 
 /********************************************************************

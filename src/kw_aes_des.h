@@ -22,6 +22,76 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#ifndef XMLSEC_NO_DES
+/********************************************************************
+ *
+ * KT DES
+ *
+ ********************************************************************/
+#define XMLSEC_KW_DES3_KEY_LENGTH                   24
+#define XMLSEC_KW_DES3_IV_LENGTH                    8
+#define XMLSEC_KW_DES3_BLOCK_LENGTH                 8
+#define XMLSEC_KW_DES3_SHA_DIGEST_LENGTH            20
+
+
+typedef int  (*xmlSecKWDes3Sha1Method)              (void * context,
+                                                     const xmlSecByte * in,
+                                                     xmlSecSize inSize,
+                                                     xmlSecByte * out,
+                                                     xmlSecSize outSize);
+typedef int  (*xmlSecKWDes3GenerateRandomMethod)    (void * context,
+                                                     xmlSecByte * out,
+                                                     xmlSecSize outSize);
+typedef int  (*xmlSecKWDes3BlockEncryptMethod)      (void * context,
+                                                     const xmlSecByte * iv,
+                                                     xmlSecSize ivSize,
+                                                     const xmlSecByte * in,
+                                                     xmlSecSize inSize,
+                                                     xmlSecByte * out,
+                                                     xmlSecSize outSize);
+typedef int  (*xmlSecKWDes3BlockDecryptMethod)      (void * context,
+                                                     const xmlSecByte * iv,
+                                                     xmlSecSize ivSize,
+                                                     const xmlSecByte * in,
+                                                     xmlSecSize inSize,
+                                                     xmlSecByte * out,
+                                                     xmlSecSize outSize);
+
+
+struct _xmlSecKWDes3Klass {
+    /* callbacks */
+    xmlSecKWDes3GenerateRandomMethod    generateRandom;
+    xmlSecKWDes3Sha1Method              sha1;
+    xmlSecKWDes3BlockEncryptMethod      encrypt;
+    xmlSecKWDes3BlockDecryptMethod      decrypt;
+
+    /* for the future */
+    void*                               reserved0;
+    void*                               reserved1;
+}; 
+typedef const struct _xmlSecKWDes3Klass              xmlSecKWDes3Klass,
+                                                    *xmlSecKWDes3Id;
+
+#define xmlSecKWDes3CheckId(id) \
+    ( \
+     ((id) != NULL) && \
+     ((id)->generateRandom != NULL) && \
+     ((id)->sha1 != NULL) && \
+     ((id)->encrypt != NULL) && \
+     ((id)->decrypt != NULL) \
+    )
+
+XMLSEC_EXPORT int
+xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
+                  const xmlSecByte *in, xmlSecSize inSize,
+                  xmlSecByte *out, xmlSecSize outSize);
+
+XMLSEC_EXPORT int
+xmlSecKWDes3Decode(xmlSecKWDes3Id kwDes3Id, void *context,
+                  const xmlSecByte *in, xmlSecSize inSize,
+                  xmlSecByte *out, xmlSecSize outSize);
+#endif /* XMLSEC_NO_DES */
+
 #ifndef XMLSEC_NO_AES
 /********************************************************************
  *
@@ -59,12 +129,12 @@ typedef const struct _xmlSecKWAesKlass              xmlSecKWAesKlass,
                                                     *xmlSecKWAesId;
 
 XMLSEC_EXPORT int
-xmlSecKWAesEncode(xmlSecKWAesId kwAesId, void *key,
+xmlSecKWAesEncode(xmlSecKWAesId kwAesId, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize);
 
 XMLSEC_EXPORT int
-xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *key,
+xmlSecKWAesDecode(xmlSecKWAesId kwAesId, void *context,
                   const xmlSecByte *in, xmlSecSize inSize,
                   xmlSecByte *out, xmlSecSize outSize);
 

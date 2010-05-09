@@ -69,10 +69,10 @@ merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes
 aleksey-xmldsig-01/enveloped-gost
 
 -------------------------------------------------
-* xmlsec-gnutls (April 26, 2010 using GnuTLS)
+* xmlsec-gnutls (May 09, 2010 using GnuTLS)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RSA, DSA, AES, AES/DES KW,
+** Skipped tests due to missing transforms: RSA, DSA, DES KW,
 RSA PKCS/OAEP, X509, GOST
 
 aleksey-xmldsig-01/enveloping-dsa-x509chain
@@ -103,9 +103,6 @@ merlin-xmldsig-twenty-three/signature-x509-ski
 merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt
 merlin-xmldsig-twenty-three/signature
 merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes
-merlin-xmlenc-five/encsig-sha256-hmac-sha256-kw-aes128
-merlin-xmlenc-five/encsig-sha384-hmac-sha384-kw-aes192
-merlin-xmlenc-five/encsig-sha512-hmac-sha512-kw-aes256
 merlin-exc-c14n-one/exc-signature
 merlin-exc-c14n-one/exc-signature
 merlin-c14n-three/signature
@@ -138,14 +135,9 @@ phaos-xmldsig-three/signature-rsa-enveloped-bad-digest-val
 phaos-xmldsig-three/signature-rsa-enveloped-bad-sig
 phaos-xmldsig-three/signature-rsa-manifest-x509-data-crl
 
-aleksey-xmlenc-01/enc-des3cbc-aes192-keyname
 merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5
 merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
 merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes
-merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192
-merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256
-merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128
-merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256
 01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5
 01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1
 01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5
@@ -156,11 +148,3 @@ merlin-xmlenc-five/encrypt-element-aes256-cbc-retrieved-kw-aes256
 01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
 01-phaos-xmlenc-3/enc-element-3des-kw-3des
 01-phaos-xmlenc-3/enc-content-aes128-kw-3des
-01-phaos-xmlenc-3/enc-element-aes128-kw-aes128
-01-phaos-xmlenc-3/enc-element-aes128-kw-aes256
-01-phaos-xmlenc-3/enc-content-3des-kw-aes192
-01-phaos-xmlenc-3/enc-content-aes192-kw-aes256
-01-phaos-xmlenc-3/enc-element-aes192-kw-aes192
-01-phaos-xmlenc-3/enc-element-aes256-kw-aes256
-01-phaos-xmlenc-3/enc-text-3des-kw-aes256
-01-phaos-xmlenc-3/enc-text-aes128-kw-aes192

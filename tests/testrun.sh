@@ -72,6 +72,9 @@ fi
 #
 crypto_config=$TMPFOLDER/xmlsec-crypto-config
 keysfile=$crypto_config/keys.xml
+if [ "z$crypto" == "zdefault" -a "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
+    crypto="$XMLSEC_DEFAULT_CRYPTO"
+fi
 if [ "z$crypto" != "z" -a "z$crypto" != "zdefault" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi

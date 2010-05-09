@@ -24,6 +24,7 @@ libxmlsec1_gnutls_la_SOURCES =\
 	crypto.c \
 	digests.c \
 	hmac.c \
+	kw_aes.c \
 	symkeys.c \
 	globals.h \
 	$(NULL)

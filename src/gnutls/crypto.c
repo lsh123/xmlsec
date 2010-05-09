@@ -86,6 +86,9 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformAes128CbcGetKlass          = xmlSecGnuTLSTransformAes128CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass          = xmlSecGnuTLSTransformAes192CbcGetKlass;
     gXmlSecGnuTLSFunctions->transformAes256CbcGetKlass          = xmlSecGnuTLSTransformAes256CbcGetKlass;
+    gXmlSecGnuTLSFunctions->transformKWAes128GetKlass           = xmlSecGnuTLSTransformKWAes128GetKlass;
+    gXmlSecGnuTLSFunctions->transformKWAes192GetKlass           = xmlSecGnuTLSTransformKWAes192GetKlass;
+    gXmlSecGnuTLSFunctions->transformKWAes256GetKlass           = xmlSecGnuTLSTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
     /******************************* DES ********************************/

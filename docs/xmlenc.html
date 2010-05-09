@@ -60,510 +60,350 @@ data (including XML document). </div>
             <p> </p>
             <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2"><tbody>
 <tr>
-<td style="width: 40%;" align="left" valign="top"><b>Features
-and
-algorithms<br></b></td>
-                  <td align="left" valign="top"> <b>XMLSec with OpenSSL</b>
-                  </td>
-                  <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
-                  <td style="vertical-align: top;"> <b>XMLSec with NSS</b>
-                  </td>
-                  <td style="vertical-align: top;"> <b>XMLSec with
-MSCrypto</b> </td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top"><b>Features and algorithms</b></td>
+    <td valign="top"><b>XMLSec with OpenSSL</b></td>
+    <td valign="top"><b>XMLSec with GnuTLS</b></td>
+    <td valign="top"><b>XMLSec with NSS</b></td>
+    <td valign="top"><b>XMLSec with MSCrypto</b></td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Laxly
-valid
-schema generation of EncryptedData
-/EncryptedKey <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Laxly valid schema 
+    generation of EncryptedData/EncryptedKey</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> Normalized Form C generations. </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>Normalized Form C generations.</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Type,
-MimeType,
-and Encoding <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Type, MimeType, and Encoding</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">CipherReference
-URI derefencing <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">CipherReference
+    URI derefencing</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> Transforms </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>Transforms </li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">ds:KeyInfo
-                  <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>ds:KeyInfo</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> enc:DHKeyValue </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>enc:DHKeyValue</li></ul>
+    </td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> ds:KeyName </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>ds:KeyName</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> ds:RetrievalMethod </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>ds:RetrievalMethod</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">ReferenceList
-                  <br>
-</td>
-                  <td align="left" valign="top">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">ReferenceList</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">EncryptionProperties
-                  <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">EncryptionProperties</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Satisfactory
-Performance<br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Satisfactory Performance</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Required
-Type
-support: Element and Content. <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Required Type
+    support: Element and Content.</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">Encryption
-                  <br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Encryption</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> Serialization of XML Element and Content.
-                      <ol>
-<li> NFC conversion from non-Unicode encodings.
-                        </li>
-                      </ol>
-</li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>Serialization of XML Element and Content
+    (NFC conversion from non-Unicode encodings).
+    </li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> Encryptor returns EncryptedData structure. </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>Encryptor returns EncryptedData structure. </li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> Encryptor replaces EncryptedData into source
-document (when Type is Element or Content). </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li> Encryptor replaces EncryptedData into source
+    document (when Type is Element or Content).</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> Decryption <br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Decryption</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> The decryptor returns the data and its Type to
-the application (be
-it an octet sequence or key value). </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>The decryptor returns the data and its Type to
+    the application (be it an octet sequence or key value).</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> If data is Element or Content the decryptor
-return the UTF-8 encoding XML character data. </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>If data is Element or Content the decryptor
+    return the UTF-8 encoding XML character data.</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-                  <ul>
-<li> If data is Element or Content the decryptor
-replaces the EncryptedData in the source document with the decrypted
-data. </li>
-                  </ul>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>If data is Element or Content the decryptor
+    replaces the EncryptedData in the source document with the decrypted
+    data.</li></ul>
+    </td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">TRIPLEDES<br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">TRIPLEDES</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">AES-128<br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">AES-128</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">AES-256<br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">AES-256</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top">AES-192<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">AES-192</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">RSA-v1.5
-(192 bit keys
-for AES or DES)<br>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">RSA-v1.5 (192 bit keys for AES or DES)</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> RSA-OAEP (128
-and 256 bit keys for
-AES)<br>
-</td>
-                  <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a>
-                  <br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">RSA-OAEP (128 and 256 bit keys for AES)</td>
+    <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a></td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> Diffie-Hellman
-Key Agreement<br>
-</td>
-                  <td valign="top">N<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Diffie-Hellman Key Agreement</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> TRIPLEDES Key
-Wrap<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">N</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">TRIPLEDES Key Wrap</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top">AES-128 Key
-Wrap (128 bit keys)<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">AES-128 Key Wrap (128 bit keys)</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> AES-192 Key Wrap<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">AES-192 Key Wrap</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> AES-256 Key
-Wrap (256 bit keys)<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">AES-256 Key Wrap (256 bit keys)</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> SHA1<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">SHA1</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> SHA256<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">SHA256</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> SHA512<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">SHA512</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> RIPEMD-160<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                  <td style="vertical-align: top;">N<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">RIPEMD-160</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> XML Digital
-Signature <br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">XML Digital Signature</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top"> Decryption
-Transform<br>
-</td>
-                  <td valign="top">N<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Decryption Transform</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top">
-<ul>
-<li>XPointer support in <code>Except URI</code>
-</li>
-</ul>
-</td>
-                  <td valign="top">N<br>
-</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                  <td style="vertical-align: top;">N</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">
+    <ul><li>XPointer support in <code>Except URI</code></li></ul>
+    </td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a></td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a></td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a>
-</td>
-                  <td align="left" valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y<br>
-</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a></td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 <tr>
-<td style="width: 40%;" valign="top">Base64 Encoding<br>
-</td>
-                  <td valign="top">Y<br>
-</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                  <td style="vertical-align: top;">Y</td>
-                </tr>
+    <td style="width: 40%;" align="left" valign="top">Base64 Encoding</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
 </tbody></table>
 <div align="left"> <br><a name="rsa-oaep"></a> <sup>(1)</sup> OpenSSL (and XML
 Security Library) supports only SHA1 as the digest in the RSA-OAEP key

@@ -2432,7 +2432,7 @@ xmlSecAppInit(void) {
                         "this it installed, check shared libraries path (LD_LIBRARY_PATH)\n"
                         "envornment variable or use \"--crypto\" option to specify different\n"
                         "crypto engine.\n", xmlsec_crypto);
-        return(-1);     
+        return(-1);
     }
 #endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 

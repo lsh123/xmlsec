@@ -77,6 +77,34 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes192CbcGetKlass(v
         xmlSecGnuTLSTransformAes256CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformAes256CbcGetKlass(void);
 
+/**
+ * xmlSecGnuTLSTransformKWAes128Id:
+ *
+ * The AES 128 key wrap transform klass.
+ */
+#define xmlSecGnuTLSTransformKWAes128Id \
+        xmlSecGnuTLSTransformKWAes128GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformKWAes128GetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformKWAes192Id:
+ *
+ * The AES 192 key wrap transform klass.
+ */
+#define xmlSecGnuTLSTransformKWAes192Id \
+        xmlSecGnuTLSTransformKWAes192GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformKWAes192GetKlass(void);
+
+/**
+ * xmlSecGnuTLSTransformKWAes256Id:
+ *
+ * The AES 256 key wrap transform klass.
+ */
+#define xmlSecGnuTLSTransformKWAes256Id \
+        xmlSecGnuTLSTransformKWAes256GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId  xmlSecGnuTLSTransformKWAes256GetKlass(void);
+
+
 #endif /* XMLSEC_NO_AES */
 
 /********************************************************************

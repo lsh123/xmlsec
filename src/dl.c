@@ -89,7 +89,7 @@ XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
 static xmlSecCryptoDLLibraryPtr
 xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     xmlSecCryptoDLLibraryPtr lib;
-    xmlSecCryptoGetFunctionsCallback * getFunctions;
+    xmlSecCryptoGetFunctionsCallback getFunctions;
 
     xmlSecAssert2(name != NULL, NULL);
 
@@ -209,7 +209,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    lib->functions = (*getFunctions)();
+    lib->functions = getFunctions();
     if(lib->functions == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     "getFunctions",

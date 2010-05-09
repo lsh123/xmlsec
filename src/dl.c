@@ -82,10 +82,14 @@ static int                      xmlSecCryptoDLLibrariesListFindByName   (xmlSecP
 
 typedef xmlSecCryptoDLFunctionsPtr (*xmlSecCryptoGetFunctionsCallback)(void);
 
+/* conversion from ptr to func "the right way" */
+XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
+
+
 static xmlSecCryptoDLLibraryPtr
 xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     xmlSecCryptoDLLibraryPtr lib;
-    xmlSecCryptoGetFunctionsCallback getFunctions;
+    xmlSecCryptoGetFunctionsCallback * getFunctions;
 
     xmlSecAssert2(name != NULL, NULL);
 
@@ -149,7 +153,9 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    getFunctions = (xmlSecCryptoGetFunctionsCallback)lt_dlsym(lib->handle, (char*)lib->getFunctionsName);
+    getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback,
+                        lt_dlsym(lib->handle, (char*)lib->getFunctionsName)
+                    );
     if(getFunctions == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     "lt_dlsym",
@@ -175,7 +181,12 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    getFunctions = (xmlSecCryptoGetFunctionsCallback)GetProcAddress(lib->handle, (char*)lib->getFunctionsName);
+    getFunctions = XMLSEC_PTR_TO_FUNC(xmlSecCryptoGetFunctionsCallback,
+                        GetProcAddress(
+                            lib->handle,
+                            (const char*)lib->getFunctionsName
+                        )
+                    );
     if(getFunctions == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     "GetProcAddressA",
@@ -198,7 +209,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
         return(NULL);
     }
 
-    lib->functions = getFunctions();
+    lib->functions = (*getFunctions)();
     if(lib->functions == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     "getFunctions",

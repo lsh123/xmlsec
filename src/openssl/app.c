@@ -32,10 +32,20 @@
 #include <xmlsec/openssl/evp.h>
 #include <xmlsec/openssl/x509.h>
 
-static int              xmlSecOpenSSLAppLoadRANDFile            (const char *file);
-static int              xmlSecOpenSSLAppSaveRANDFile            (const char *file);
-static int              xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsiz, int verify, void *userdata);
-static int      xmlSecOpenSSLDummyPasswordCallback  (char *buf, int bufsize, int verify, void *userdata);
+static int      xmlSecOpenSSLAppLoadRANDFile            (const char *file);
+static int      xmlSecOpenSSLAppSaveRANDFile            (const char *file);
+static int      xmlSecOpenSSLDefaultPasswordCallback    (char *buf,
+                                                         int bufsiz,
+                                                         int verify,
+                                                         void *userdata);
+static int      xmlSecOpenSSLDummyPasswordCallback      (char *buf,
+                                                         int bufsize,
+                                                         int verify,
+                                                         void *userdata);
+
+/* conversion from ptr to func "the right way" */
+XMLSEC_PTR_TO_FUNC_IMPL(pem_password_cb)
+
 
 /**
  * xmlSecOpenSSLAppInit:
@@ -234,13 +244,21 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
     switch(format) {
     case xmlSecKeyDataFormatPem:
         /* try to read private key first */
+        if(pwd != NULL) {
             pKey = PEM_read_bio_PrivateKey(bio, NULL,
-            (pwd != NULL) ? xmlSecOpenSSLDummyPasswordCallback : (pem_password_cb*)pwdCallback,
-            (pwd != NULL) ? (void*)pwd : pwdCallbackCtx);
+                        xmlSecOpenSSLDummyPasswordCallback,
+                        (void*)pwd);
+        } else {
+            pKey = PEM_read_bio_PrivateKey(bio, NULL,
+                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
+                            pwdCallbackCtx);
+        }
         if(pKey == NULL) {
             /* go to start of the file and try to read public key */
             BIO_reset(bio);
-            pKey = PEM_read_bio_PUBKEY(bio, NULL, (pem_password_cb*)pwdCallback, pwdCallbackCtx);
+            pKey = PEM_read_bio_PUBKEY(bio, NULL,
+                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
+                            pwdCallbackCtx);
             if(pKey == NULL) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
@@ -270,7 +288,9 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         break;
     case xmlSecKeyDataFormatPkcs8Pem:
         /* try to read private key first */
-        pKey = PEM_read_bio_PrivateKey(bio, NULL, (pem_password_cb*)pwdCallback, pwdCallbackCtx);
+        pKey = PEM_read_bio_PrivateKey(bio, NULL,
+                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
+                            pwdCallbackCtx);
         if(pKey == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -282,7 +302,9 @@ xmlSecOpenSSLAppKeyLoadBIO(BIO* bio, xmlSecKeyDataFormat format,
         break;
     case xmlSecKeyDataFormatPkcs8Der:
         /* try to read private key first */
-        pKey = d2i_PKCS8PrivateKey_bio(bio, NULL, (pem_password_cb*)pwdCallback, pwdCallbackCtx);
+        pKey = d2i_PKCS8PrivateKey_bio(bio, NULL,
+                            XMLSEC_PTR_TO_FUNC(pem_password_cb, pwdCallback),
+                            pwdCallbackCtx);
         if(pKey == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
@@ -1513,7 +1535,7 @@ xmlSecOpenSSLAppSaveRANDFile(const char *file) {
  */
 void*
 xmlSecOpenSSLAppGetDefaultPwdCallback(void) {
-    return((void*)xmlSecOpenSSLDefaultPasswordCallback);
+    return XMLSEC_FUNC_TO_PTR(pem_password_cb, xmlSecOpenSSLDefaultPasswordCallback);
 }
 
 static int

@@ -80,7 +80,7 @@ static xmlSecPtrListId          xmlSecCryptoDLLibrariesListGetKlass     (void);
 static int                      xmlSecCryptoDLLibrariesListFindByName   (xmlSecPtrListPtr list,
                                                                          const xmlChar* name);
 
-typedef xmlSecCryptoDLFunctionsPtr (*xmlSecCryptoGetFunctionsCallback)(void);
+typedef xmlSecCryptoDLFunctionsPtr xmlSecCryptoGetFunctionsCallback(void);
 
 /* conversion from ptr to func "the right way" */
 XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
@@ -89,7 +89,7 @@ XMLSEC_PTR_TO_FUNC_IMPL(xmlSecCryptoGetFunctionsCallback)
 static xmlSecCryptoDLLibraryPtr
 xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
     xmlSecCryptoDLLibraryPtr lib;
-    xmlSecCryptoGetFunctionsCallback getFunctions;
+    xmlSecCryptoGetFunctionsCallback * getFunctions;
 
     xmlSecAssert2(name != NULL, NULL);
 

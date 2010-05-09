@@ -50,7 +50,7 @@ merlin-xmldsig-twenty-three/signature-x509-crt-crl
 * xmlsec-mscrypto (May 09, 2010 using Windows XP SP3)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RIPEMD160, SHA224, DES KW
+** Skipped tests due to missing transforms: RIPEMD160, SHA224
 
 aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160
 aleksey-xmldsig-01/enveloping-ripemd160-hmac-ripemd160-64
@@ -68,8 +68,7 @@ aleksey-xmldsig-01/enveloped-gost
 * xmlsec-gnutls (May 09, 2010 using GnuTLS)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RSA, DSA, DES KW,
-RSA PKCS/OAEP, X509, GOST
+** Skipped tests due to missing transforms: RSA, DSA, RSA PKCS/OAEP, X509, GOST
 
 aleksey-xmldsig-01/enveloping-dsa-x509chain
 aleksey-xmldsig-01/enveloping-rsa-x509chain
@@ -133,7 +132,6 @@ phaos-xmldsig-three/signature-rsa-manifest-x509-data-crl
 
 merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5
 merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
-merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes
 01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5
 01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1
 01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5
@@ -142,5 +140,3 @@ merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes
 01-phaos-xmlenc-3/enc-text-aes192-kt-rsa1_5
 01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5
 01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
-01-phaos-xmlenc-3/enc-element-3des-kw-3des
-01-phaos-xmlenc-3/enc-content-aes128-kw-3des

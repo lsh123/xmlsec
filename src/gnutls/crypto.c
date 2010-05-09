@@ -94,6 +94,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
     gXmlSecGnuTLSFunctions->transformDes3CbcGetKlass            = xmlSecGnuTLSTransformDes3CbcGetKlass;
+    gXmlSecGnuTLSFunctions->transformKWDes3GetKlass             = xmlSecGnuTLSTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
     /******************************* HMAC ********************************/

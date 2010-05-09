@@ -134,6 +134,15 @@ XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDesSet       (xmlSecK
         xmlSecGnuTLSTransformDes3CbcGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDes3CbcGetKlass(void);
 
+/**
+ * xmlSecGnuTLSTransformKWDes3Id:
+ *
+ * The DES3 KW transform klass.
+ */
+#define xmlSecGnuTLSTransformKWDes3Id \
+        xmlSecGnuTLSTransformKWDes3GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void);
+
 #endif /* XMLSEC_NO_DES */
 
 

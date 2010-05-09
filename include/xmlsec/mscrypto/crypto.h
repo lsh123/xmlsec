@@ -419,7 +419,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecMSCryptoTransformDes3CbcGetKlass(vo
 /**
  * xmlSecMSCryptoTransformKWDes3Id:
  *
- * The DES3 CBC cipher transform klass.
+ * The DES3 KW transform klass.
  */
 #define xmlSecMSCryptoTransformKWDes3Id \
         xmlSecMSCryptoTransformKWDes3GetKlass()

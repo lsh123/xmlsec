@@ -473,7 +473,7 @@ xmlSecGnuTLSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                                void * context) {
     xmlSecGnuTLSKWAesCtxPtr ctx = (xmlSecGnuTLSKWAesCtxPtr)context;
     gcry_cipher_hd_t cipherCtx;
-    int ret;
+    gpg_err_code_t ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -494,7 +494,7 @@ xmlSecGnuTLSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     ret = gcry_cipher_setkey(cipherCtx,
                              xmlSecBufferGetData(&ctx->keyBuffer),
                              xmlSecBufferGetSize(&ctx->keyBuffer));
-    if(ret != 0) {
+    if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_cipher_setkey",
@@ -505,7 +505,7 @@ xmlSecGnuTLSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     /* use zero IV and CBC mode to ensure we get result as-is */
     ret = gcry_cipher_setiv(cipherCtx, g_zero_iv, sizeof(g_zero_iv));
-    if(ret != 0) {
+    if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_cipher_setiv",
@@ -515,7 +515,7 @@ xmlSecGnuTLSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     ret = gcry_cipher_encrypt(cipherCtx, out, outSize, in, inSize);
-    if(ret != 0) {
+    if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_cipher_encrypt",
@@ -535,7 +535,7 @@ xmlSecGnuTLSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
                                void * context) {
     xmlSecGnuTLSKWAesCtxPtr ctx = (xmlSecGnuTLSKWAesCtxPtr)context;
     gcry_cipher_hd_t cipherCtx;
-    int ret;
+    gpg_err_code_t ret;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(in != NULL, -1);
@@ -556,7 +556,7 @@ xmlSecGnuTLSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     ret = gcry_cipher_setkey(cipherCtx,
                              xmlSecBufferGetData(&ctx->keyBuffer),
                              xmlSecBufferGetSize(&ctx->keyBuffer));
-    if(ret != 0) {
+    if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_cipher_setkey",
@@ -567,7 +567,7 @@ xmlSecGnuTLSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
 
     /* use zero IV and CBC mode to ensure we get result as-is */
     ret = gcry_cipher_setiv(cipherCtx, g_zero_iv, sizeof(g_zero_iv));
-    if(ret != 0) {
+    if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_cipher_setiv",
@@ -577,7 +577,7 @@ xmlSecGnuTLSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     }
 
     ret = gcry_cipher_decrypt(cipherCtx, out, outSize, in, inSize);
-    if(ret != 0) {
+    if(ret != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_cipher_decrypt",

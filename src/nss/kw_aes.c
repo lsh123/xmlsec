@@ -351,7 +351,6 @@ xmlSecNssKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtx
     xmlSecNssKWAesCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize, keySize;
-    PK11SymKey *aeskey = NULL;
     int ret;
 
     xmlSecAssert2(xmlSecNssKWAesCheckId(transform), -1);
@@ -614,8 +613,8 @@ xmlSecNssAesOp(PK11SymKey *aeskey, const xmlSecByte *in, xmlSecByte *out, int en
     unsigned int       tmp2_outlen;
     int                ret = -1;
 
-    xmlSecAssert(in != NULL);
-    xmlSecAssert(out != NULL);
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
 
     cipherMech = CKM_AES_ECB;
     SecParam = PK11_ParamFromIV(cipherMech, NULL);

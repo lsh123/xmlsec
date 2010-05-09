@@ -7,7 +7,7 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2002-2003 Aleksey Sanin <aleksey@aleksey.com>
+ * Copyright (C) 2002-2010 Aleksey Sanin <aleksey@aleksey.com>
  */
 #ifndef XMLSEC_NO_DES
 #include "globals.h"
@@ -372,6 +372,7 @@ xmlSecOpenSSLKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfo
                     "status=%d", transform->status);
         return(-1);
     }
+
     return(0);
 }
 
@@ -400,7 +401,6 @@ xmlSecOpenSSLKWDes3Sha1(void * context,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
-
     return(SHA_DIGEST_LENGTH);
 }
 

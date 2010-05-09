@@ -150,7 +150,7 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecNssTransformDes3CbcGetKlass(void);
 /**
 * xmlSecNssTransformKWDes3Id:
 *
-* The DES3 CBC cipher transform klass.
+* The DES3 KW transform klass.
 */
 #define xmlSecNssTransformKWDes3Id \
         xmlSecNssTransformKWDes3GetKlass()

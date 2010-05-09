@@ -33,13 +33,7 @@ KNOWN ISSUES.
 1) Default keys manager don't use trusted certs in MS Crypto Store
 (http://bugzilla.gnome.org/show_bug.cgi?id=123668).
 
-2) Missing crypto functionality:
-  - AES KW (http://bugzilla.gnome.org/show_bug.cgi?id=123672): no native
-  support, might be possible to implement on top of AES cipher itself
-  - DES KW (http://bugzilla.gnome.org/show_bug.cgi?id=123673): no native
-  support, might be possible to implement on top of AES cipher itself
-
-3) The only supported file formats are PKCS#12 and DER certificates
+2) The only supported file formats are PKCS#12 and DER certificates
 (http://bugzilla.gnome.org/show_bug.cgi?id=123675).
 
 

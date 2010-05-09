@@ -170,10 +170,13 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key, const xmlSecByte* data, xmlSecSize dataSize,
-                                xmlSecKeyDataFormat format) {
+xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
+                                 const xmlSecByte* data,
+                                 xmlSecSize dataSize,
+                                 xmlSecKeyDataFormat format) {
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */
@@ -231,9 +234,12 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                           const char *pwd, void* pwdCallback,
-                           void* pwdCallbackCtx) {
+                           const char *pwd ATTRIBUTE_UNUSED,
+                           void* pwdCallback ATTRIBUTE_UNUSED,
+                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
     xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+
     /* TODO */
     xmlSecError(XMLSEC_ERRORS_HERE,
                 NULL,
@@ -257,7 +263,8 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
+xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, 
+                                const char *filename,
                                 xmlSecKeyDataFormat format,
                                 xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
@@ -287,11 +294,14 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, const char *filename,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr, const xmlSecByte* data,
-                                    xmlSecSize dataSize, xmlSecKeyDataFormat format,
-                                    xmlSecKeyDataType type) {
+xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
+                                      const xmlSecByte* data,
+                                      xmlSecSize dataSize,
+                                      xmlSecKeyDataFormat format,
+                                      xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
+    xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
     /* TODO */

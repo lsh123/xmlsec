@@ -483,7 +483,7 @@ xmlSecNssKWDes3BlockEncrypt(void * context,
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= 0, -1);
+    xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
@@ -518,7 +518,7 @@ xmlSecNssKWDes3BlockDecrypt(void * context,
     xmlSecAssert2(iv != NULL, -1);
     xmlSecAssert2(ivSize >= XMLSEC_KW_DES3_IV_LENGTH, -1);
     xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= 0, -1);
+    xmlSecAssert2(inSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 

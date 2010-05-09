@@ -174,9 +174,9 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
     xmlSecOpenSSLX509StoreCtxPtr ctx;
     STACK_OF(X509)* certs2 = NULL;
     STACK_OF(X509_CRL)* crls2 = NULL;
-    X509* res = NULL;
-    X509* cert;
-    X509 *err_cert = NULL;
+    X509 * res = NULL;
+    X509 * cert;
+    X509 * err_cert = NULL;
     char buf[256];
     int err = 0, depth;
     int i;
@@ -233,7 +233,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
             if(ret == 1) {
                 ++i;
             } else if(ret == 0) {
-                sk_X509_CRL_delete(crls2, i);
+                (void)sk_X509_CRL_delete(crls2, i);
             } else {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
@@ -252,7 +252,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         if(crls2 != NULL) {
             ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(crls2, cert);
             if(ret == 0) {
-                sk_X509_delete(certs2, i);
+                (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -267,7 +267,7 @@ xmlSecOpenSSLX509StoreVerify(xmlSecKeyDataStorePtr store, XMLSEC_STACK_OF_X509* 
         if(ctx->crls != NULL) {
             ret = xmlSecOpenSSLX509VerifyCertAgainstCrls(ctx->crls, cert);
             if(ret == 0) {
-                sk_X509_delete(certs2, i);
+                (void)sk_X509_delete(certs2, i);
                 continue;
             } else if(ret != 1) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1232,9 +1232,9 @@ xmlSecOpenSSLX509NamesCompare(X509_NAME *a, X509_NAME *b) {
     }
 
     /* sort both */
-    sk_X509_NAME_ENTRY_set_cmp_func(a1->entries, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
+    (void)sk_X509_NAME_ENTRY_set_cmp_func(a1->entries, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     sk_X509_NAME_ENTRY_sort(a1->entries);
-    sk_X509_NAME_ENTRY_set_cmp_func(b1->entries, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
+    (void)sk_X509_NAME_ENTRY_set_cmp_func(b1->entries, xmlSecOpenSSLX509_NAME_ENTRY_cmp);
     sk_X509_NAME_ENTRY_sort(b1->entries);
 
     /* actually compare */

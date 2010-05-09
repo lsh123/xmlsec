@@ -117,11 +117,11 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
     }
 
     /* step 5: first encryption, result is TEMP1 */
-    ret = kwDes3Id->encrypt(context, 
+    ret = kwDes3Id->encrypt(context,
                            iv, sizeof(iv),
                            out, inSize + XMLSEC_KW_DES3_BLOCK_LENGTH,
                            out, outSize);
-    if((ret < 0) || (ret != inSize + XMLSEC_KW_DES3_BLOCK_LENGTH)) {
+    if((ret < 0) || ((xmlSecSize)ret != inSize + XMLSEC_KW_DES3_BLOCK_LENGTH)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "kwDes3Id->encrypt",
@@ -132,7 +132,7 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
 
     /* step 6: construct TEMP2=IV || TEMP1 */
     memmove(out + XMLSEC_KW_DES3_IV_LENGTH, out, inSize + XMLSEC_KW_DES3_BLOCK_LENGTH);
-    memcpy(out, iv, XMLSEC_KW_DES3_IV_LENGTH); 
+    memcpy(out, iv, XMLSEC_KW_DES3_IV_LENGTH);
     s = inSize + XMLSEC_KW_DES3_BLOCK_LENGTH + XMLSEC_KW_DES3_IV_LENGTH;
 
     /* step 7: reverse octets order, result is TEMP3 */
@@ -147,11 +147,11 @@ xmlSecKWDes3Encode(xmlSecKWDes3Id kwDes3Id, void *context,
     }
 
     /* step 8: second encryption with static IV */
-    ret = kwDes3Id->encrypt(context, 
+    ret = kwDes3Id->encrypt(context,
                            xmlSecKWDes3Iv, sizeof(xmlSecKWDes3Iv),
-                           out, s, 
+                           out, s,
                            out, outSize);
-    if((ret < 0) || (ret != s)) {
+    if((ret < 0) || ((xmlSecSize)ret != s)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "kwDes3Id->encrypt",

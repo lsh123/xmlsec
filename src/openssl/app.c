@@ -1590,10 +1590,12 @@ xmlSecOpenSSLDefaultPasswordCallback(char *buf, int bufsize, int verify, void *u
 }
 
 static int
-xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize, int verify, void *userdata) {
+xmlSecOpenSSLDummyPasswordCallback(char *buf, int bufsize,
+                                   int verify ATTRIBUTE_UNUSED,
+                                   void *userdata) {
     char* password = (char*)userdata;
 
-    if((password == NULL) || (strlen(password) + 1 > bufsize)) {
+    if((password == NULL) || ((int)strlen(password) + 1 > bufsize)) {
         return(-1);
     }
 

@@ -357,34 +357,6 @@ xmlSecOpenSSLKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
     return(0);
 }
 
-static int
-xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
-                               xmlSecByte * out, xmlSecSize outSize,
-                               void * context) {
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
-    xmlSecAssert2(context != NULL, -1);
-
-    AES_encrypt(in, out, (AES_KEY*)context);
-    return(AES_BLOCK_SIZE);
-}
-
-static int
-xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
-                               xmlSecByte * out, xmlSecSize outSize,
-                               void * context) {
-    xmlSecAssert2(in != NULL, -1);
-    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
-    xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
-    xmlSecAssert2(context != NULL, -1);
-
-    AES_decrypt(in, out, (AES_KEY*)context);
-    return(AES_BLOCK_SIZE);
-}
-
 static xmlSecTransformKlass xmlSecOpenSSLKWAes128Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -502,6 +474,40 @@ xmlSecTransformId
 xmlSecOpenSSLTransformKWAes256GetKlass(void) {
     return(&xmlSecOpenSSLKWAes256Klass);
 }
+
+/*********************************************************************
+ *
+ * AES KW implementation
+ *
+ *********************************************************************/
+static int
+xmlSecOpenSSLKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
+                               xmlSecByte * out, xmlSecSize outSize,
+                               void * context) {
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(context != NULL, -1);
+
+    AES_encrypt(in, out, (AES_KEY*)context);
+    return(AES_BLOCK_SIZE);
+}
+
+static int
+xmlSecOpenSSLKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
+                               xmlSecByte * out, xmlSecSize outSize,
+                               void * context) {
+    xmlSecAssert2(in != NULL, -1);
+    xmlSecAssert2(inSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(out != NULL, -1);
+    xmlSecAssert2(outSize >= AES_BLOCK_SIZE, -1);
+    xmlSecAssert2(context != NULL, -1);
+
+    AES_decrypt(in, out, (AES_KEY*)context);
+    return(AES_BLOCK_SIZE);
+}
+
 
 #endif /* XMLSEC_OPENSSL_096 */
 #endif /* XMLSEC_NO_AES */

@@ -415,10 +415,10 @@ xmlSecMSCryptoKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransfo
 
 /*********************************************************************
  *
- * AES KW callbacks
+ * AES KW implementation
  *
  ********************************************************************/
-static int 
+static int
 xmlSecMSCryptoKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                                 xmlSecByte * out, xmlSecSize outSize,
                                 void * context) {

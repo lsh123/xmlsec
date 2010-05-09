@@ -341,6 +341,130 @@ xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
     return(0);
 }
 
+
+static xmlSecTransformKlass xmlSecGnuTLSKWAes128Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
+
+    xmlSecNameKWAes128,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformKWAes128GetKlass:
+ *
+ * The AES-128 kew wrapper transform klass.
+ *
+ * Returns: AES-128 kew wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformKWAes128GetKlass(void) {
+    return(&xmlSecGnuTLSKWAes128Klass);
+}
+
+static xmlSecTransformKlass xmlSecGnuTLSKWAes192Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
+
+    xmlSecNameKWAes192,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes192,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+
+/**
+ * xmlSecGnuTLSTransformKWAes192GetKlass:
+ *
+ * The AES-192 kew wrapper transform klass.
+ *
+ * Returns: AES-192 kew wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformKWAes192GetKlass(void) {
+    return(&xmlSecGnuTLSKWAes192Klass);
+}
+
+static xmlSecTransformKlass xmlSecGnuTLSKWAes256Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
+
+    xmlSecNameKWAes256,                         /* const xmlChar* name; */
+    xmlSecHrefKWAes256,                         /* const xmlChar* href; */
+    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
+
+    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
+    NULL,                                       /* xmlSecTransformValidateMethod validate; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecGnuTLSTransformKWAes256GetKlass:
+ *
+ * The AES-256 kew wrapper transform klass.
+ *
+ * Returns: AES-256 kew wrapper transform klass.
+ */
+xmlSecTransformId
+xmlSecGnuTLSTransformKWAes256GetKlass(void) {
+    return(&xmlSecGnuTLSKWAes256Klass);
+}
+
+/*********************************************************************
+ *
+ * AES KW implementation
+ *
+ *********************************************************************/
 static unsigned char g_zero_iv[XMLSEC_KW_AES_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static int
@@ -465,124 +589,6 @@ xmlSecGnuTLSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
     gcry_cipher_close(cipherCtx);
 
     return(ctx->blockSize);
-}
-
-static xmlSecTransformKlass xmlSecGnuTLSKWAes128Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
-
-    xmlSecNameKWAes128,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes128,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecGnuTLSTransformKWAes128GetKlass:
- *
- * The AES-128 kew wrapper transform klass.
- *
- * Returns: AES-128 kew wrapper transform klass.
- */
-xmlSecTransformId
-xmlSecGnuTLSTransformKWAes128GetKlass(void) {
-    return(&xmlSecGnuTLSKWAes128Klass);
-}
-
-static xmlSecTransformKlass xmlSecGnuTLSKWAes192Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
-
-    xmlSecNameKWAes192,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes192,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-
-/**
- * xmlSecGnuTLSTransformKWAes192GetKlass:
- *
- * The AES-192 kew wrapper transform klass.
- *
- * Returns: AES-192 kew wrapper transform klass.
- */
-xmlSecTransformId
-xmlSecGnuTLSTransformKWAes192GetKlass(void) {
-    return(&xmlSecGnuTLSKWAes192Klass);
-}
-
-static xmlSecTransformKlass xmlSecGnuTLSKWAes256Klass = {
-    /* klass/object sizes */
-    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
-
-    xmlSecNameKWAes256,                         /* const xmlChar* name; */
-    xmlSecHrefKWAes256,                         /* const xmlChar* href; */
-    xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
-
-    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
-    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
-    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
-    NULL,                                       /* xmlSecTransformValidateMethod validate; */
-    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
-    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
-    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
-    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
-    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
-
-    NULL,                                       /* void* reserved0; */
-    NULL,                                       /* void* reserved1; */
-};
-
-/**
- * xmlSecGnuTLSTransformKWAes256GetKlass:
- *
- * The AES-256 kew wrapper transform klass.
- *
- * Returns: AES-256 kew wrapper transform klass.
- */
-xmlSecTransformId
-xmlSecGnuTLSTransformKWAes256GetKlass(void) {
-    return(&xmlSecGnuTLSKWAes256Klass);
 }
 
 #endif /* XMLSEC_NO_AES */

@@ -65,6 +65,10 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataDesGetKlass          = xmlSecGnuTLSKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
+#ifndef XMLSEC_NO_DSA
+    gXmlSecGnuTLSFunctions->keyDataDsaGetKlass          = xmlSecGnuTLSKeyDataDsaGetKlass;
+#endif /* XMLSEC_NO_DSA */
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
@@ -97,61 +101,72 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->transformKWDes3GetKlass             = xmlSecGnuTLSTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
+    /******************************* DSA ********************************/
+#ifndef XMLSEC_NO_DSA
+
+#ifndef XMLSEC_NO_SHA1
+/* ALEKSEY_TODO
+    gXmlSecGnuTLSFunctions->transformDsaSha1GetKlass            = xmlSecGnuTLSTransformDsaSha1GetKlass;
+*/
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
+
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass           = xmlSecGnuTLSTransformHmacMd5GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass            = xmlSecGnuTLSTransformHmacMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass     = xmlSecGnuTLSTransformHmacRipemd160GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass      = xmlSecGnuTLSTransformHmacRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass          = xmlSecGnuTLSTransformHmacSha1GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass           = xmlSecGnuTLSTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecGnuTLSFunctions->transformHmacSha256GetKlass        = xmlSecGnuTLSTransformHmacSha256GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacSha256GetKlass         = xmlSecGnuTLSTransformHmacSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecGnuTLSFunctions->transformHmacSha384GetKlass        = xmlSecGnuTLSTransformHmacSha384GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacSha384GetKlass         = xmlSecGnuTLSTransformHmacSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecGnuTLSFunctions->transformHmacSha512GetKlass        = xmlSecGnuTLSTransformHmacSha512GetKlass;
+    gXmlSecGnuTLSFunctions->transformHmacSha512GetKlass         = xmlSecGnuTLSTransformHmacSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */
 
     /******************************* MD5 ********************************/
 #ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformMd5GetKlass               = xmlSecGnuTLSTransformMd5GetKlass;
+    gXmlSecGnuTLSFunctions->transformMd5GetKlass                = xmlSecGnuTLSTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
     /******************************* RIPEMD160 ********************************/
 #ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformRipemd160GetKlass         = xmlSecGnuTLSTransformRipemd160GetKlass;
+    gXmlSecGnuTLSFunctions->transformRipemd160GetKlass          = xmlSecGnuTLSTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 
     /******************************* SHA ********************************/
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformSha1GetKlass              = xmlSecGnuTLSTransformSha1GetKlass;
+    gXmlSecGnuTLSFunctions->transformSha1GetKlass               = xmlSecGnuTLSTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecGnuTLSFunctions->transformSha256GetKlass            = xmlSecGnuTLSTransformSha256GetKlass;
+    gXmlSecGnuTLSFunctions->transformSha256GetKlass             = xmlSecGnuTLSTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecGnuTLSFunctions->transformSha384GetKlass            = xmlSecGnuTLSTransformSha384GetKlass;
+    gXmlSecGnuTLSFunctions->transformSha384GetKlass             = xmlSecGnuTLSTransformSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecGnuTLSFunctions->transformSha512GetKlass            = xmlSecGnuTLSTransformSha512GetKlass;
+    gXmlSecGnuTLSFunctions->transformSha512GetKlass             = xmlSecGnuTLSTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 

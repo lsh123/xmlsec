@@ -27,6 +27,7 @@ libxmlsec1_gnutls_la_SOURCES =\
 	kw_aes.c \
 	kw_des.c \
 	symkeys.c \
+	asymkeys.c \
 	globals.h \
 	$(NULL)
 

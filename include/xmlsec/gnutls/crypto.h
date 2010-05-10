@@ -145,6 +145,44 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
 
 #endif /* XMLSEC_NO_DES */
 
+/********************************************************************
+ *
+ * DSA transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_DSA
+#include <gcrypt.h>
+
+/**
+ * xmlSecGnuTLSKeyDataDsaId:
+ *
+ * The DSA key klass.
+ */
+#define xmlSecGnuTLSKeyDataDsaId \
+        xmlSecGnuTLSKeyDataDsaGetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataDsaGetKlass          (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptKey          (xmlSecKeyDataPtr data,
+                                                                                 gcry_sexp_t dsa_key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptKeyPair      (xmlSecKeyDataPtr data,
+                                                                                 gcry_sexp_t pub_key,
+                                                                                 gcry_sexp_t priv_key);
+XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGnuTLSKeyDataDsaGetPublicKey      (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGnuTLSKeyDataDsaGetPrivateKey     (xmlSecKeyDataPtr data);
+
+#ifndef XMLSEC_NO_SHA1
+/**
+ * xmlSecGnuTLSTransformDsaSha1Id:
+ *
+ * The DSA SHA1 signature transform klass.
+ */
+#define xmlSecGnuTLSTransformDsaSha1Id \
+        xmlSecGnuTLSTransformDsaSha1GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformDsaSha1GetKlass(void);
+#endif /* XMLSEC_NO_SHA1 */
+
+#endif /* XMLSEC_NO_DSA */
+
+
 
 /********************************************************************
  *

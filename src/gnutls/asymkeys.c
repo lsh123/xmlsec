@@ -215,7 +215,12 @@ xmlSecGnuTLSAsymKeyDataAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, 
     xmlSecAssert2(xmlSecKeyDataIsValid(data), -1);
     xmlSecAssert2(xmlSecKeyDataCheckSize(data, xmlSecGnuTLSAsymKeyDataSize), -1);
     xmlSecAssert2(pub_key != NULL, -1); /* public key should present always */
+/*
+    aleksey - we don't set optional parameters for RSA keys (p, k, u) and
+    because of that we can't actually test the key
+
     xmlSecAssert2(((priv_key == NULL) || (gcry_pk_testkey(priv_key) == GPG_ERR_NO_ERROR)), -1);
+*/
 
     ctx = xmlSecGnuTLSAsymKeyDataGetCtx(data);
     xmlSecAssert2(ctx != NULL, -1);
@@ -877,6 +882,45 @@ xmlSecGnuTLSKeyDataDsaFinalize(xmlSecKeyDataPtr data) {
     xmlSecGnuTLSAsymKeyDataFinalize(data);
 }
 
+static int
+xmlSecGnuTLSKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), -1);
+    xmlSecAssert2(sizeBits > 0, -1);
+
+    return xmlSecGnuTLSAsymKeyDataGenerate(data, "dsa", sizeBits);
+}
+
+static xmlSecKeyDataType
+xmlSecGnuTLSKeyDataDsaGetType(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), xmlSecKeyDataTypeUnknown);
+
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
+}
+
+static xmlSecSize
+xmlSecGnuTLSKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), 0);
+
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
+}
+
+static void
+xmlSecGnuTLSKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== dsa key: size = %d\n",
+            xmlSecGnuTLSKeyDataDsaGetSize(data));
+}
+
+static void
+xmlSecGnuTLSKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
+            xmlSecGnuTLSKeyDataDsaGetSize(data));
+}
 
 static int
 xmlSecGnuTLSKeyDataDsaXmlRead(xmlSecKeyDataId id,
@@ -1311,50 +1355,9 @@ done:
     return(res);
 }
 
-static int
-xmlSecGnuTLSKeyDataDsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), -1);
-    xmlSecAssert2(sizeBits > 0, -1);
-
-    return xmlSecGnuTLSAsymKeyDataGenerate(data, "dsa", sizeBits);
-}
-
-static xmlSecKeyDataType
-xmlSecGnuTLSKeyDataDsaGetType(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), xmlSecKeyDataTypeUnknown);
-
-    return xmlSecGnuTLSAsymKeyDataGetType(data);
-}
-
-static xmlSecSize
-xmlSecGnuTLSKeyDataDsaGetSize(xmlSecKeyDataPtr data) {
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), 0);
-
-    return xmlSecGnuTLSAsymKeyDataGetSize(data);
-}
-
-static void
-xmlSecGnuTLSKeyDataDsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "=== dsa key: size = %d\n",
-            xmlSecGnuTLSKeyDataDsaGetSize(data));
-}
-
-static void
-xmlSecGnuTLSKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
-    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId));
-    xmlSecAssert(output != NULL);
-
-    fprintf(output, "<DSAKeyValue size=\"%d\" />\n",
-            xmlSecGnuTLSKeyDataDsaGetSize(data));
-}
-
 #endif /* XMLSEC_NO_DSA */
 
 
-#ifdef ALEKSEY_TODO
 #ifndef XMLSEC_NO_RSA
 /**************************************************************************
  *
@@ -1472,110 +1475,67 @@ xmlSecGnuTLSKeyDataRsaGetKlass(void) {
 }
 
 /**
- * xmlSecGnuTLSKeyDataRsaAdoptRsa:
+ * xmlSecGnuTLSKeyDataRsaAdoptKey:
  * @data:               the pointer to RSA key data.
- * @rsa:                the pointer to GnuTLS RSA key.
+ * @rsa_key:            the pointer to GnuTLS RSA key.
  *
  * Sets the value of RSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSKeyDataRsaAdoptRsa(xmlSecKeyDataPtr data, RSA* rsa) {
-    EVP_PKEY* pKey = NULL;
-    int ret;
-
+xmlSecGnuTLSKeyDataRsaAdoptKey(xmlSecKeyDataPtr data, gcry_sexp_t rsa_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
+    xmlSecAssert2(rsa_key != NULL, -1);
 
-    /* construct new EVP_PKEY */
-    if(rsa != NULL) {
-        pKey = EVP_PKEY_new();
-        if(pKey == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "EVP_PKEY_new",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);
-        }
-
-        ret = EVP_PKEY_assign_RSA(pKey, rsa);
-        if(ret != 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                        "EVP_PKEY_assign_RSA",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            return(-1);
-        }
-    }
-
-    ret = xmlSecGnuTLSKeyDataRsaAdoptEvp(data, pKey);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecGnuTLSKeyDataRsaAdoptEvp",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        if(pKey != NULL) {
-            EVP_PKEY_free(pKey);
-        }
-        return(-1);
-    }
-    return(0);
+    return xmlSecGnuTLSAsymKeyDataAdoptKey(data, rsa_key);
 }
 
-/**
- * xmlSecGnuTLSKeyDataRsaGetRsa:
- * @data:               the pointer to RSA key data.
- *
- * Gets the GnuTLS RSA key from RSA key data.
- *
- * Returns: pointer to GnuTLS RSA key or NULL if an error occurs.
- */
-RSA*
-xmlSecGnuTLSKeyDataRsaGetRsa(xmlSecKeyDataPtr data) {
-    EVP_PKEY* pKey;
-
-    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), NULL);
-
-    pKey = xmlSecGnuTLSKeyDataRsaGetEvp(data);
-    xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_RSA), NULL);
-
-    return((pKey != NULL) ? pKey->pkey.rsa : (RSA*)NULL);
-}
 
 /**
- * xmlSecGnuTLSKeyDataRsaAdoptEvp:
+ * xmlSecGnuTLSKeyDataRsaAdoptKeyPair:
  * @data:               the pointer to RSA key data.
- * @pKey:               the pointer to GnuTLS EVP key.
+ * @pub_key:            the pointer to GnuTLS RSA pub key.
+ * @priv_key:           the pointer to GnuTLS RSA priv key.
  *
- * Sets the RSA key data value to GnuTLS EVP key.
+ * Sets the value of RSA key data.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSKeyDataRsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+xmlSecGnuTLSKeyDataRsaAdoptKeyPair(xmlSecKeyDataPtr data, gcry_sexp_t pub_key, gcry_sexp_t priv_key) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
-    xmlSecAssert2(pKey != NULL, -1);
-    xmlSecAssert2(pKey->type == EVP_PKEY_RSA, -1);
+    xmlSecAssert2(pub_key != NULL, -1);
 
-    return(xmlSecGnuTLSAsymKeyDataAdoptEvp(data, pKey));
+    return xmlSecGnuTLSAsymKeyDataAdoptKeyPair(data, pub_key, priv_key);
 }
 
 /**
- * xmlSecGnuTLSKeyDataRsaGetEvp:
+ * xmlSecGnuTLSKeyDataRsaGetPublicKey:
  * @data:               the pointer to RSA key data.
  *
- * Gets the GnuTLS EVP key from RSA key data.
+ * Gets the GnuTLS RSA public key from RSA key data.
  *
- * Returns: pointer to GnuTLS EVP key or NULL if an error occurs.
+ * Returns: pointer to GnuTLS public RSA key or NULL if an error occurs.
  */
-EVP_PKEY*
-xmlSecGnuTLSKeyDataRsaGetEvp(xmlSecKeyDataPtr data) {
+gcry_sexp_t
+xmlSecGnuTLSKeyDataRsaGetPublicKey(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPublicKey(data);
+}
 
-    return(xmlSecGnuTLSAsymKeyDataGetEvp(data));
+/**
+ * xmlSecGnuTLSKeyDataRsaGetPrivateKey:
+ * @data:               the pointer to RSA key data.
+ *
+ * Gets the GnuTLS RSA private key from RSA key data.
+ *
+ * Returns: pointer to GnuTLS private RSA key or NULL if an error occurs.
+ */
+gcry_sexp_t
+xmlSecGnuTLSKeyDataRsaGetPrivateKey(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), NULL);
+    return xmlSecGnuTLSAsymKeyDataGetPrivateKey(data);
 }
 
 static int
@@ -1601,309 +1561,25 @@ xmlSecGnuTLSKeyDataRsaFinalize(xmlSecKeyDataPtr data) {
 }
 
 static int
-xmlSecGnuTLSKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                                    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlSecKeyDataPtr data;
-    xmlNodePtr cur;
-    RSA *rsa;
-    int ret;
-
-    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    if(xmlSecKeyGetValue(key) != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    NULL,
-                    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
-                    "key already has a value");
-        return(-1);
-    }
-
-    rsa = RSA_new();
-    if(rsa == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "RSA_new",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        return(-1);
-    }
-
-    cur = xmlSecGetNextElementNode(node->children);
-
-    /* first is Modulus node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
-        RSA_free(rsa);
-        return(-1);
-    }
-    if(xmlSecGnuTLSNodeGetMpiValue(cur, &(rsa->n)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGnuTLSNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
-        RSA_free(rsa);
-        return(-1);
-    }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    /* next is Exponent node. It is REQUIRED because we do not support Seed and PgenCounter*/
-    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
-        RSA_free(rsa);
-        return(-1);
-    }
-    if(xmlSecGnuTLSNodeGetMpiValue(cur, &(rsa->e)) == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGnuTLSNodeGetMpiValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
-        RSA_free(rsa);
-        return(-1);
-    }
-    cur = xmlSecGetNextElementNode(cur->next);
-
-    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
-        /* next is X node. It is REQUIRED for private key but
-         * we are not sure exactly what do we read */
-        if(xmlSecGnuTLSNodeGetMpiValue(cur, &(rsa->d)) == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGnuTLSNodeGetMpiValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
-            RSA_free(rsa);
-            return(-1);
-        }
-        cur = xmlSecGetNextElementNode(cur->next);
-    }
-
-    if(cur != NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
-                    XMLSEC_ERRORS_R_INVALID_NODE,
-                    "no nodes expected");
-        RSA_free(rsa);
-        return(-1);
-    }
-
-    data = xmlSecKeyDataCreate(id);
-    if(data == NULL ) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        RSA_free(rsa);
-        return(-1);
-    }
-
-    ret = xmlSecGnuTLSKeyDataRsaAdoptRsa(data, rsa);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGnuTLSKeyDataRsaAdoptRsa",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        xmlSecKeyDataDestroy(data);
-        RSA_free(rsa);
-        return(-1);
-    }
-
-    ret = xmlSecKeySetValue(key, data);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecKeySetValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        xmlSecKeyDataDestroy(data);
-        return(-1);
-    }
-
-    return(0);
-}
-
-static int
-xmlSecGnuTLSKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
-                            xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
-    xmlNodePtr cur;
-    RSA* rsa;
-    int ret;
-
-    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
-    xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGnuTLSKeyDataRsaId), -1);
-    xmlSecAssert2(node != NULL, -1);
-    xmlSecAssert2(keyInfoCtx != NULL, -1);
-
-    rsa = xmlSecGnuTLSKeyDataRsaGetRsa(xmlSecKeyGetValue(key));
-    xmlSecAssert2(rsa != NULL, -1);
-
-    if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
-        /* we can have only private key or public key */
-        return(0);
-    }
-
-    /* first is Modulus node */
-    cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
-        return(-1);
-    }
-    ret = xmlSecGnuTLSNodeSetSExpTokValue(cur, rsa->n, 1);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGnuTLSNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
-        return(-1);
-    }
-
-    /* next is Exponent node. */
-    cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
-    if(cur == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecAddChild",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
-        return(-1);
-    }
-    ret = xmlSecGnuTLSNodeSetSExpTokValue(cur, rsa->e, 1);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                    "xmlSecGnuTLSNodeSetSExpTokValue",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "node=%s",
-                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
-        return(-1);
-    }
-
-    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
-    if(((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) && (rsa->d != NULL)) {
-        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
-        if(cur == NULL) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecAddChild",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
-            return(-1);
-        }
-        ret = xmlSecGnuTLSNodeSetSExpTokValue(cur, rsa->d, 1);
-        if(ret < 0) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
-                        "xmlSecGnuTLSNodeSetSExpTokValue",
-                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "node=%s",
-                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
-            return(-1);
-        }
-    }
-
-    return(0);
-}
-
-static int
 xmlSecGnuTLSKeyDataRsaGenerate(xmlSecKeyDataPtr data, xmlSecSize sizeBits, xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
-    RSA* rsa;
-    int ret;
-
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
     xmlSecAssert2(sizeBits > 0, -1);
 
-    rsa = RSA_generate_key(sizeBits, 3, NULL, NULL);
-    if(rsa == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "RSA_generate_key",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "sizeBits=%d", sizeBits);
-        return(-1);
-    }
-
-    ret = xmlSecGnuTLSKeyDataRsaAdoptRsa(data, rsa);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
-                    "xmlSecGnuTLSKeyDataRsaAdoptRsa",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        RSA_free(rsa);
-        return(-1);
-    }
-
-    return(0);
+    return xmlSecGnuTLSAsymKeyDataGenerate(data, "rsa", sizeBits);
 }
 
 static xmlSecKeyDataType
 xmlSecGnuTLSKeyDataRsaGetType(xmlSecKeyDataPtr data) {
-    RSA* rsa;
-
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), xmlSecKeyDataTypeUnknown);
 
-    rsa = xmlSecGnuTLSKeyDataRsaGetRsa(data);
-    if((rsa != NULL) && (rsa->n != NULL) && (rsa->e != NULL)) {
-        if(rsa->d != NULL) {
-            return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-        } else if(rsa->engine != NULL) {
-            /*
-             * !!! HACK !!! Also see DSA key
-             * We assume here that engine *always* has private key.
-             * This might be incorrect but it seems that there is no
-             * way to ask engine if given key is private or not.
-             */
-            return(xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
-        } else {
-            return(xmlSecKeyDataTypePublic);
-        }
-    }
-
-    return(xmlSecKeyDataTypeUnknown);
+    return xmlSecGnuTLSAsymKeyDataGetType(data);
 }
 
 static xmlSecSize
 xmlSecGnuTLSKeyDataRsaGetSize(xmlSecKeyDataPtr data) {
-    RSA* rsa;
-
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), 0);
 
-    rsa = xmlSecGnuTLSKeyDataRsaGetRsa(data);
-    if((rsa != NULL) && (rsa->n != NULL)) {
-        return(BN_num_bits(rsa->n));
-    }
-    return(0);
+    return xmlSecGnuTLSAsymKeyDataGetSize(data);
 }
 
 static void
@@ -1924,7 +1600,323 @@ xmlSecGnuTLSKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
             xmlSecGnuTLSKeyDataRsaGetSize(data));
 }
 
+static int
+xmlSecGnuTLSKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                                    xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlNodePtr cur;
+    xmlSecKeyDataPtr data = NULL;
+    gcry_mpi_t n = NULL;
+    gcry_mpi_t e = NULL;
+    gcry_mpi_t d = NULL;
+    gcry_sexp_t pub_key = NULL;
+    gcry_sexp_t priv_key = NULL;
+    gcry_error_t err;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if(xmlSecKeyGetValue(key) != NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_KEY_DATA,
+                    "key already has a value");
+        goto done;
+    }
+
+    cur = xmlSecGetNextElementNode(node->children);
+
+    /* first is Modulus node. It is REQUIRED */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur,  xmlSecNodeRSAModulus, xmlSecDSigNs))) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_INVALID_NODE,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        goto done;
+    }
+    n = xmlSecGnuTLSNodeGetMpiValue(cur);
+    if(n == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecGnuTLSNodeGetMpiValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        goto done;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    /* next is Exponent node. It is REQUIRED */
+    if((cur == NULL) || (!xmlSecCheckNodeName(cur, xmlSecNodeRSAExponent, xmlSecDSigNs))) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_INVALID_NODE,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        goto done;
+    }
+    e = xmlSecGnuTLSNodeGetMpiValue(cur);
+    if(e == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecGnuTLSNodeGetMpiValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+        goto done;
+    }
+    cur = xmlSecGetNextElementNode(cur->next);
+
+    if((cur != NULL) && (xmlSecCheckNodeName(cur, xmlSecNodeRSAPrivateExponent, xmlSecNs))) {
+        /* next is PrivateExponent node. It is REQUIRED for private key */
+        d = xmlSecGnuTLSNodeGetMpiValue(cur);
+        if(d == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        "xmlSecGnuTLSNodeGetMpiValue",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "node=%s",
+                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
+            goto done;
+        }
+        cur = xmlSecGetNextElementNode(cur->next);
+    }
+
+    if(cur != NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    xmlSecErrorsSafeString(xmlSecNodeGetName(cur)),
+                    XMLSEC_ERRORS_R_INVALID_NODE,
+                    "no nodes expected");
+        goto done;
+    }
+
+    /* construct pub/priv key pairs */
+    err = gcry_sexp_build(&pub_key, NULL,
+             "(public-key(rsa(n%m)(e%m)))",
+             n, e);
+    if((err != GPG_ERR_NO_ERROR) || (pub_key == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "gcry_sexp_build(public)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    if(d != NULL) {
+        err = gcry_sexp_build(&priv_key, NULL,
+                 "(private-key(rsa(n%m)(e%m)(d%m)))",
+                 n, e, d);
+        if((err != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        "gcry_sexp_build(private)",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            goto done;
+        }
+    }
+
+
+    /* create key data */
+    data = xmlSecKeyDataCreate(id);
+    if(data == NULL ) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecKeyDataCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    ret = xmlSecGnuTLSKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecGnuTLSKeyDataRsaAdoptKeyPair",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    pub_key = NULL; /* pub_key is owned by data now */
+    priv_key = NULL; /* priv_key is owned by data now */
+
+    /* set key */
+    ret = xmlSecKeySetValue(key, data);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecKeySetValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    data = NULL; /* data is owned by key now */
+
+
+    /* success */
+    res = 0;
+
+done:
+    /* cleanup */
+    if(n != NULL) {
+        gcry_mpi_release(n);
+    }
+
+    if(e != NULL) {
+        gcry_mpi_release(e);
+    }
+
+    if(d != NULL) {
+        gcry_mpi_release(d);
+    }
+
+    if(pub_key != NULL) {
+        gcry_sexp_release(pub_key);
+    }
+
+    if(priv_key != NULL) {
+        gcry_sexp_release(priv_key);
+    }
+
+    if(data != NULL) {
+        xmlSecKeyDataDestroy(data);
+    }
+    return(res);
+
+}
+
+static int
+xmlSecGnuTLSKeyDataRsaXmlWrite(xmlSecKeyDataId id, xmlSecKeyPtr key,
+                            xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
+    xmlNodePtr cur;
+    gcry_sexp_t pub_priv_key;
+    gcry_sexp_t rsa = NULL;
+    int private = 0;
+    int res = -1;
+    int ret;
+
+    xmlSecAssert2(id == xmlSecGnuTLSKeyDataRsaId, -1);
+    xmlSecAssert2(key != NULL, -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGnuTLSKeyDataRsaId), -1);
+    xmlSecAssert2(node != NULL, -1);
+    xmlSecAssert2(keyInfoCtx != NULL, -1);
+
+    if(((xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate) & keyInfoCtx->keyReq.keyType) == 0) {
+        /* we can have only private key or public key */
+        return(0);
+    }
+
+    /* find the private or public key */
+    pub_priv_key = xmlSecGnuTLSKeyDataRsaGetPrivateKey(xmlSecKeyGetValue(key));
+    if(pub_priv_key == NULL) {
+        pub_priv_key = xmlSecGnuTLSKeyDataRsaGetPublicKey(xmlSecKeyGetValue(key));
+        if(pub_priv_key == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        "xmlSecGnuTLSKeyDataRsaGetPublicKey()",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            goto done;
+        }
+    } else {
+        private = 1;
+    }
+
+    rsa = gcry_sexp_find_token(pub_priv_key, "rsa", 0);
+    if(rsa == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "gcry_sexp_find_token(rsa)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* first is Modulus node */
+    cur = xmlSecAddChild(node, xmlSecNodeRSAModulus, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecAddChild",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+       goto done;
+    }
+    ret = xmlSecGnuTLSNodeSetSExpTokValue(cur, rsa, "n", 1);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecGnuTLSNodeSetSExpTokValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAModulus));
+        goto done;
+    }
+
+    /* next is Exponent node. */
+    cur = xmlSecAddChild(node, xmlSecNodeRSAExponent, xmlSecDSigNs);
+    if(cur == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecAddChild",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+       goto done;
+    }
+    ret = xmlSecGnuTLSNodeSetSExpTokValue(cur, rsa, "e", 1);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                    "xmlSecGnuTLSNodeSetSExpTokValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "node=%s",
+                    xmlSecErrorsSafeString(xmlSecNodeRSAExponent));
+       goto done;
+    }
+
+    /* next is PrivateExponent node: write it ONLY for private keys and ONLY if it is requested */
+    if(((keyInfoCtx->keyReq.keyType & xmlSecKeyDataTypePrivate) != 0) && (private != 0)) {
+        cur = xmlSecAddChild(node, xmlSecNodeRSAPrivateExponent, xmlSecNs);
+        if(cur == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        "xmlSecAddChild",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "node=%s",
+                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
+           goto done;
+        }
+        ret = xmlSecGnuTLSNodeSetSExpTokValue(cur, rsa, "d", 1);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(id)),
+                        "xmlSecGnuTLSNodeSetSExpTokValue",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "node=%s",
+                        xmlSecErrorsSafeString(xmlSecNodeRSAPrivateExponent));
+           goto done;
+        }
+    }
+
+    /* success */
+    res = 0;
+
+done:
+    if(rsa != NULL) {
+        gcry_sexp_release(rsa);
+    }
+
+    return(res);
+}
+
 #endif /* XMLSEC_NO_RSA */
-#endif /* ALEKSEY_TODO */
-
-

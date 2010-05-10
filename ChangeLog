@@ -1,6 +1,7 @@
 2010-05-09  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added DES KW support for xmlsec-mscrypto
 	* Added DES KW support for xmlsec-gnutls
+	* Separated xmlsec-gnutls and xmlsec-gcrypt libraries
 
 2010-05-08  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added AES KW support for xmlsec-mscrypto

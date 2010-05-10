@@ -17,6 +17,9 @@ Keys store implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO xmlSecMSCryptoKeysStoreId ##### -->
 <para>
 
@@ -29,6 +32,7 @@ Keys store implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 

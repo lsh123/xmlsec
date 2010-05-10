@@ -17,11 +17,15 @@ Crypto transforms implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecCryptoGetFunctions_gnutls ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -30,6 +34,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -38,6 +43,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -72,6 +78,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -98,6 +105,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -113,6 +121,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -128,6 +137,55 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformKWAes128Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformKWAes128GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformKWAes192Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformKWAes192GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformKWAes256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformKWAes256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -143,6 +201,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -169,6 +228,94 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformKWDes3Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformKWDes3GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSKeyDataDsaId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaAdoptKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@dsa_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaAdoptKeyPair ##### -->
+<para>
+
+</para>
+
+@data: 
+@pub_key: 
+@priv_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaGetPublicKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaGetPrivateKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformDsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformDsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -177,6 +324,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -200,6 +348,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -226,6 +375,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -241,6 +391,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -256,6 +407,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -271,6 +423,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -286,6 +439,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -301,6 +455,158 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSKeyDataRsaId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaAdoptKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@rsa_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaAdoptKeyPair ##### -->
+<para>
+
+</para>
+
+@data: 
+@pub_key: 
+@priv_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaGetPublicKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaGetPrivateKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRsaMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRsaMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRsaRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRsaRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRsaSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRsaSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRsaSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRsaSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGnuTLSTransformRsaSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGnuTLSTransformRsaSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
@@ -316,6 +622,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -331,6 +638,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -346,6 +654,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -361,6 +670,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -376,6 +686,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -391,6 +702,7 @@ Crypto transforms implementation for GnuTLS.
 
 </para>
 
+@void: 
 @Returns: 
 
 

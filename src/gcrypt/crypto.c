@@ -10,7 +10,6 @@
 
 #include <string.h>
 
-#include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -20,37 +19,37 @@
 #include <xmlsec/dl.h>
 #include <xmlsec/private.h>
 
-#include <xmlsec/gnutls/app.h>
-#include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gcrypt/app.h>
+#include <xmlsec/gcrypt/crypto.h>
 
-static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
+static xmlSecCryptoDLFunctionsPtr gXmlSecGCryptFunctions = NULL;
 
 /**
- * xmlSecCryptoGetFunctions_gnutls:
+ * xmlSecCryptoGetFunctions_gcrypt:
  *
- * Gets the pointer to xmlsec-gnutls functions table.
+ * Gets the pointer to xmlsec-gcrypt functions table.
  *
- * Returns: the xmlsec-gnutls functions table or NULL if an error occurs.
+ * Returns: the xmlsec-gcrypt functions table or NULL if an error occurs.
  */
 xmlSecCryptoDLFunctionsPtr
-xmlSecCryptoGetFunctions_gnutls(void) {
+xmlSecCryptoGetFunctions_gcrypt(void) {
     static xmlSecCryptoDLFunctions functions;
 
-    if(gXmlSecGnuTLSFunctions != NULL) {
-        return(gXmlSecGnuTLSFunctions);
+    if(gXmlSecGCryptFunctions != NULL) {
+        return(gXmlSecGCryptFunctions);
     }
 
     memset(&functions, 0, sizeof(functions));
-    gXmlSecGnuTLSFunctions = &functions;
+    gXmlSecGCryptFunctions = &functions;
 
     /********************************************************************
      *
      * Crypto Init/shutdown
      *
      ********************************************************************/
-    gXmlSecGnuTLSFunctions->cryptoInit                  = xmlSecGnuTLSInit;
-    gXmlSecGnuTLSFunctions->cryptoShutdown              = xmlSecGnuTLSShutdown;
-    gXmlSecGnuTLSFunctions->cryptoKeysMngrInit          = xmlSecGnuTLSKeysMngrInit;
+    gXmlSecGCryptFunctions->cryptoInit                  = xmlSecGCryptInit;
+    gXmlSecGCryptFunctions->cryptoShutdown              = xmlSecGCryptShutdown;
+    gXmlSecGCryptFunctions->cryptoKeysMngrInit          = xmlSecGCryptKeysMngrInit;
 
     /********************************************************************
      *
@@ -58,23 +57,23 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      *
      ********************************************************************/
 #ifndef XMLSEC_NO_AES
-    gXmlSecGnuTLSFunctions->keyDataAesGetKlass          = xmlSecGnuTLSKeyDataAesGetKlass;
+    gXmlSecGCryptFunctions->keyDataAesGetKlass          = xmlSecGCryptKeyDataAesGetKlass;
 #endif /* XMLSEC_NO_AES */
 
 #ifndef XMLSEC_NO_DES
-    gXmlSecGnuTLSFunctions->keyDataDesGetKlass          = xmlSecGnuTLSKeyDataDesGetKlass;
+    gXmlSecGCryptFunctions->keyDataDesGetKlass          = xmlSecGCryptKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
 #ifndef XMLSEC_NO_DSA
-    gXmlSecGnuTLSFunctions->keyDataDsaGetKlass          = xmlSecGnuTLSKeyDataDsaGetKlass;
+    gXmlSecGCryptFunctions->keyDataDsaGetKlass          = xmlSecGCryptKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
 #ifndef XMLSEC_NO_HMAC
-    gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
+    gXmlSecGCryptFunctions->keyDataHmacGetKlass         = xmlSecGCryptKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
 #ifndef XMLSEC_NO_RSA
-    gXmlSecGnuTLSFunctions->keyDataRsaGetKlass          = xmlSecGnuTLSKeyDataRsaGetKlass;
+    gXmlSecGCryptFunctions->keyDataRsaGetKlass          = xmlSecGCryptKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
 
@@ -92,18 +91,18 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 
     /******************************* AES ********************************/
 #ifndef XMLSEC_NO_AES
-    gXmlSecGnuTLSFunctions->transformAes128CbcGetKlass          = xmlSecGnuTLSTransformAes128CbcGetKlass;
-    gXmlSecGnuTLSFunctions->transformAes192CbcGetKlass          = xmlSecGnuTLSTransformAes192CbcGetKlass;
-    gXmlSecGnuTLSFunctions->transformAes256CbcGetKlass          = xmlSecGnuTLSTransformAes256CbcGetKlass;
-    gXmlSecGnuTLSFunctions->transformKWAes128GetKlass           = xmlSecGnuTLSTransformKWAes128GetKlass;
-    gXmlSecGnuTLSFunctions->transformKWAes192GetKlass           = xmlSecGnuTLSTransformKWAes192GetKlass;
-    gXmlSecGnuTLSFunctions->transformKWAes256GetKlass           = xmlSecGnuTLSTransformKWAes256GetKlass;
+    gXmlSecGCryptFunctions->transformAes128CbcGetKlass          = xmlSecGCryptTransformAes128CbcGetKlass;
+    gXmlSecGCryptFunctions->transformAes192CbcGetKlass          = xmlSecGCryptTransformAes192CbcGetKlass;
+    gXmlSecGCryptFunctions->transformAes256CbcGetKlass          = xmlSecGCryptTransformAes256CbcGetKlass;
+    gXmlSecGCryptFunctions->transformKWAes128GetKlass           = xmlSecGCryptTransformKWAes128GetKlass;
+    gXmlSecGCryptFunctions->transformKWAes192GetKlass           = xmlSecGCryptTransformKWAes192GetKlass;
+    gXmlSecGCryptFunctions->transformKWAes256GetKlass           = xmlSecGCryptTransformKWAes256GetKlass;
 #endif /* XMLSEC_NO_AES */
 
     /******************************* DES ********************************/
 #ifndef XMLSEC_NO_DES
-    gXmlSecGnuTLSFunctions->transformDes3CbcGetKlass            = xmlSecGnuTLSTransformDes3CbcGetKlass;
-    gXmlSecGnuTLSFunctions->transformKWDes3GetKlass             = xmlSecGnuTLSTransformKWDes3GetKlass;
+    gXmlSecGCryptFunctions->transformDes3CbcGetKlass            = xmlSecGCryptTransformDes3CbcGetKlass;
+    gXmlSecGCryptFunctions->transformKWDes3GetKlass             = xmlSecGCryptTransformKWDes3GetKlass;
 #endif /* XMLSEC_NO_DES */
 
     /******************************* DSA ********************************/
@@ -112,7 +111,7 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformDsaSha1GetKlass            = xmlSecGnuTLSTransformDsaSha1GetKlass;
+    gXmlSecGCryptFunctions->transformDsaSha1GetKlass            = xmlSecGCryptTransformDsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
@@ -123,39 +122,39 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #ifndef XMLSEC_NO_HMAC
 
 #ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformHmacMd5GetKlass            = xmlSecGnuTLSTransformHmacMd5GetKlass;
+    gXmlSecGCryptFunctions->transformHmacMd5GetKlass            = xmlSecGCryptTransformHmacMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformHmacRipemd160GetKlass      = xmlSecGnuTLSTransformHmacRipemd160GetKlass;
+    gXmlSecGCryptFunctions->transformHmacRipemd160GetKlass      = xmlSecGCryptTransformHmacRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformHmacSha1GetKlass           = xmlSecGnuTLSTransformHmacSha1GetKlass;
+    gXmlSecGCryptFunctions->transformHmacSha1GetKlass           = xmlSecGCryptTransformHmacSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecGnuTLSFunctions->transformHmacSha256GetKlass         = xmlSecGnuTLSTransformHmacSha256GetKlass;
+    gXmlSecGCryptFunctions->transformHmacSha256GetKlass         = xmlSecGCryptTransformHmacSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecGnuTLSFunctions->transformHmacSha384GetKlass         = xmlSecGnuTLSTransformHmacSha384GetKlass;
+    gXmlSecGCryptFunctions->transformHmacSha384GetKlass         = xmlSecGCryptTransformHmacSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecGnuTLSFunctions->transformHmacSha512GetKlass         = xmlSecGnuTLSTransformHmacSha512GetKlass;
+    gXmlSecGCryptFunctions->transformHmacSha512GetKlass         = xmlSecGCryptTransformHmacSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_HMAC */
 
     /******************************* MD5 ********************************/
 #ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformMd5GetKlass                = xmlSecGnuTLSTransformMd5GetKlass;
+    gXmlSecGCryptFunctions->transformMd5GetKlass                = xmlSecGCryptTransformMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
     /******************************* RIPEMD160 ********************************/
 #ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformRipemd160GetKlass          = xmlSecGnuTLSTransformRipemd160GetKlass;
+    gXmlSecGCryptFunctions->transformRipemd160GetKlass          = xmlSecGCryptTransformRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
     /******************************* RSA ********************************/
@@ -164,54 +163,54 @@ xmlSecCryptoGetFunctions_gnutls(void) {
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
-    gXmlSecGnuTLSFunctions->transformRsaMd5GetKlass            = xmlSecGnuTLSTransformRsaMd5GetKlass;
+    gXmlSecGCryptFunctions->transformRsaMd5GetKlass            = xmlSecGCryptTransformRsaMd5GetKlass;
 #endif /* XMLSEC_NO_MD5 */
 
 #ifndef XMLSEC_NO_RIPEMD160
-    gXmlSecGnuTLSFunctions->transformRsaRipemd160GetKlass      = xmlSecGnuTLSTransformRsaRipemd160GetKlass;
+    gXmlSecGCryptFunctions->transformRsaRipemd160GetKlass      = xmlSecGCryptTransformRsaRipemd160GetKlass;
 #endif /* XMLSEC_NO_RIPEMD160 */
 
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformRsaSha1GetKlass           = xmlSecGnuTLSTransformRsaSha1GetKlass;
+    gXmlSecGCryptFunctions->transformRsaSha1GetKlass           = xmlSecGCryptTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA224
-    gXmlSecGnuTLSFunctions->transformRsaSha224GetKlass         = xmlSecGnuTLSTransformRsaSha224GetKlass;
+    gXmlSecGCryptFunctions->transformRsaSha224GetKlass         = xmlSecGCryptTransformRsaSha224GetKlass;
 #endif /* XMLSEC_NO_SHA224 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecGnuTLSFunctions->transformRsaSha256GetKlass         = xmlSecGnuTLSTransformRsaSha256GetKlass;
+    gXmlSecGCryptFunctions->transformRsaSha256GetKlass         = xmlSecGCryptTransformRsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecGnuTLSFunctions->transformRsaSha384GetKlass         = xmlSecGnuTLSTransformRsaSha384GetKlass;
+    gXmlSecGCryptFunctions->transformRsaSha384GetKlass         = xmlSecGCryptTransformRsaSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecGnuTLSFunctions->transformRsaSha512GetKlass         = xmlSecGnuTLSTransformRsaSha512GetKlass;
+    gXmlSecGCryptFunctions->transformRsaSha512GetKlass         = xmlSecGCryptTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-    gXmlSecGnuTLSFunctions->transformRsaPkcs1GetKlass          = xmlSecGnuTLSTransformRsaPkcs1GetKlass;
-    gXmlSecGnuTLSFunctions->transformRsaOaepGetKlass           = xmlSecGnuTLSTransformRsaOaepGetKlass;
+    gXmlSecGCryptFunctions->transformRsaPkcs1GetKlass          = xmlSecGCryptTransformRsaPkcs1GetKlass;
+    gXmlSecGCryptFunctions->transformRsaOaepGetKlass           = xmlSecGCryptTransformRsaOaepGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
 #endif /* ALEKSEY_TODO */
 
     /******************************* SHA ********************************/
 #ifndef XMLSEC_NO_SHA1
-    gXmlSecGnuTLSFunctions->transformSha1GetKlass               = xmlSecGnuTLSTransformSha1GetKlass;
+    gXmlSecGCryptFunctions->transformSha1GetKlass               = xmlSecGCryptTransformSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
-    gXmlSecGnuTLSFunctions->transformSha256GetKlass             = xmlSecGnuTLSTransformSha256GetKlass;
+    gXmlSecGCryptFunctions->transformSha256GetKlass             = xmlSecGCryptTransformSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
 
 #ifndef XMLSEC_NO_SHA384
-    gXmlSecGnuTLSFunctions->transformSha384GetKlass             = xmlSecGnuTLSTransformSha384GetKlass;
+    gXmlSecGCryptFunctions->transformSha384GetKlass             = xmlSecGCryptTransformSha384GetKlass;
 #endif /* XMLSEC_NO_SHA384 */
 
 #ifndef XMLSEC_NO_SHA512
-    gXmlSecGnuTLSFunctions->transformSha512GetKlass             = xmlSecGnuTLSTransformSha512GetKlass;
+    gXmlSecGCryptFunctions->transformSha512GetKlass             = xmlSecGCryptTransformSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
 
@@ -220,33 +219,33 @@ xmlSecCryptoGetFunctions_gnutls(void) {
      * High level routines form xmlsec command line utility
      *
      ********************************************************************/
-    gXmlSecGnuTLSFunctions->cryptoAppInit                       = xmlSecGnuTLSAppInit;
-    gXmlSecGnuTLSFunctions->cryptoAppShutdown                   = xmlSecGnuTLSAppShutdown;
-    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGnuTLSAppDefaultKeysMngrInit;
-    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrAdoptKey    = xmlSecGnuTLSAppDefaultKeysMngrAdoptKey;
-    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrLoad        = xmlSecGnuTLSAppDefaultKeysMngrLoad;
-    gXmlSecGnuTLSFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGnuTLSAppDefaultKeysMngrSave;
+    gXmlSecGCryptFunctions->cryptoAppInit                       = xmlSecGCryptAppInit;
+    gXmlSecGCryptFunctions->cryptoAppShutdown                   = xmlSecGCryptAppShutdown;
+    gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrInit        = xmlSecGCryptAppDefaultKeysMngrInit;
+    gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrAdoptKey    = xmlSecGCryptAppDefaultKeysMngrAdoptKey;
+    gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrLoad        = xmlSecGCryptAppDefaultKeysMngrLoad;
+    gXmlSecGCryptFunctions->cryptoAppDefaultKeysMngrSave        = xmlSecGCryptAppDefaultKeysMngrSave;
 #ifndef XMLSEC_NO_X509
-    gXmlSecGnuTLSFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGnuTLSAppKeysMngrCertLoad;
-    gXmlSecGnuTLSFunctions->cryptoAppPkcs12Load                 = xmlSecGnuTLSAppPkcs12Load;
-    gXmlSecGnuTLSFunctions->cryptoAppKeyCertLoad                = xmlSecGnuTLSAppKeyCertLoad;
+    gXmlSecGCryptFunctions->cryptoAppKeysMngrCertLoad           = xmlSecGCryptAppKeysMngrCertLoad;
+    gXmlSecGCryptFunctions->cryptoAppPkcs12Load                 = xmlSecGCryptAppPkcs12Load;
+    gXmlSecGCryptFunctions->cryptoAppKeyCertLoad                = xmlSecGCryptAppKeyCertLoad;
 #endif /* XMLSEC_NO_X509 */
-    gXmlSecGnuTLSFunctions->cryptoAppKeyLoad                    = xmlSecGnuTLSAppKeyLoad;
-    gXmlSecGnuTLSFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGnuTLSAppGetDefaultPwdCallback();
+    gXmlSecGCryptFunctions->cryptoAppKeyLoad                    = xmlSecGCryptAppKeyLoad;
+    gXmlSecGCryptFunctions->cryptoAppDefaultPwdCallback         = (void*)xmlSecGCryptAppGetDefaultPwdCallback();
 
-    return(gXmlSecGnuTLSFunctions);
+    return(gXmlSecGCryptFunctions);
 }
 
 
 /**
- * xmlSecGnuTLSInit:
+ * xmlSecGCryptInit:
  *
  * XMLSec library specific crypto engine initialization.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSInit (void)  {
+xmlSecGCryptInit (void)  {
     /* Check loaded xmlsec library version */
     if(xmlSecCheckVersionExact() != 1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -258,7 +257,7 @@ xmlSecGnuTLSInit (void)  {
     }
 
     /* register our klasses */
-    if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_gnutls()) < 0) {
+    if(xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(xmlSecCryptoGetFunctions_gcrypt()) < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms",
@@ -271,27 +270,27 @@ xmlSecGnuTLSInit (void)  {
 }
 
 /**
- * xmlSecGnuTLSShutdown:
+ * xmlSecGCryptShutdown:
  *
  * XMLSec library specific crypto engine shutdown.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSShutdown(void) {
+xmlSecGCryptShutdown(void) {
     return(0);
 }
 
 /**
- * xmlSecGnuTLSKeysMngrInit:
+ * xmlSecGCryptKeysMngrInit:
  * @mngr:               the pointer to keys manager.
  *
- * Adds GnuTLS specific key data stores in keys manager.
+ * Adds GCrypt specific key data stores in keys manager.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+xmlSecGCryptKeysMngrInit(xmlSecKeysMngrPtr mngr) {
     xmlSecAssert2(mngr != NULL, -1);
 
     /* TODO: add key data stores */
@@ -299,7 +298,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
 }
 
 /**
- * xmlSecGnuTLSGenerateRandom:
+ * xmlSecGCryptGenerateRandom:
  * @buffer:             the destination buffer.
  * @size:               the numer of bytes to generate.
  *
@@ -308,7 +307,7 @@ xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
+xmlSecGCryptGenerateRandom(xmlSecBufferPtr buffer, xmlSecSize size) {
     int ret;
 
     xmlSecAssert2(buffer != NULL, -1);

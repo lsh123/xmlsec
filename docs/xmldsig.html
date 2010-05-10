@@ -74,6 +74,7 @@ algorithms<br></b></td>
                   <td align="left" valign="top"> <b>XMLSec with OpenSSL</b>
 </td>
                   <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
+                  <td style="vertical-align: top;"><b>XMLSec with GCrypt</b></td>
                   <td style="vertical-align: top;"> <b>XMLSec with NSS</b>
 </td>
                   <td style="vertical-align: top;"> <b>XMLSec with MSCrypto</b>
@@ -84,6 +85,8 @@ algorithms<br></b></td>
 Signature<br>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -105,6 +108,8 @@ Signature: same document reference with fragment
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top"> <span class="link-def">Enveloped</span>
@@ -112,6 +117,8 @@ Signature: same document reference (URI="") with Enveloped Signature
 Transform .<br>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -132,6 +139,8 @@ generation/validation<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">Manifest
@@ -139,6 +148,8 @@ DigestValue
 generation/valdiation<br>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -161,12 +172,16 @@ Signature element generation<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">XPointers
 '#xpointer(/)'<br>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -187,11 +202,15 @@ Signature element generation<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">XPointers:
 full suppport </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -212,6 +231,8 @@ full suppport </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">the
@@ -219,6 +240,8 @@ dsig XPath 'here()'
 function (can be used to implement enveloped signature)<br>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -241,6 +264,8 @@ element of Transform has been deprecated.)<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">RetrievalMethod
@@ -248,6 +273,8 @@ element of Transform has been deprecated.)<br>
 X509Data)<br>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -268,6 +295,8 @@ X509Data)<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">Base64
@@ -281,10 +310,14 @@ X509Data)<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">HMAC-SHA1
                   <br>
+</td>
+                  <td align="left" valign="top">Y<br>
 </td>
                   <td align="left" valign="top">Y<br>
 </td>
@@ -304,6 +337,8 @@ X509Data)<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
@@ -317,6 +352,8 @@ X509Data)<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
@@ -326,6 +363,8 @@ X509Data)<br>
 <td style="width: 40%;" valign="top">X509 support<br>
 </td>
                   <td valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
@@ -346,12 +385,16 @@ C14N (deprecated)<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">
 <a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -372,12 +415,16 @@ C14N (deprecated)<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">
 <a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a>
 </td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -396,6 +443,8 @@ Signature <br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                   <td style="vertical-align: top;"><br></td>
                 </tr>
 </tbody></table>
@@ -409,6 +458,7 @@ algorithms<br></b></td>
                   <td align="left" valign="top"> <b>XMLSec with
 OpenSSL </b> </td>
                   <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
+                  <td style="vertical-align: top;"><b>XMLSec with GCrypt</b></td>
                   <td style="vertical-align: top;"> <b>XMLSec with NSS</b>
                   </td>
                   <td style="vertical-align: top;"> <b>XMLSec with
@@ -416,6 +466,8 @@ MSCrypto</b> </td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">MD5<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -437,9 +489,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">SHA256<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -461,9 +517,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">SHA512<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -485,6 +545,8 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">HMAC-SHA224<br>
@@ -497,9 +559,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">HMAC-SHA256</td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                   <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
@@ -519,10 +585,14 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">HMAC-SHA512</td>
                   <td align="left" valign="top">Y<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -540,6 +610,8 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                 </tr>
@@ -548,7 +620,9 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
-                  <td style="vertical-align: top;">Y<br>
+                  <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
@@ -566,15 +640,19 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">RSA-SHA256<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
-                  <td style="vertical-align: top;">Y<br>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -584,9 +662,11 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
-                  <td style="vertical-align: top;">Y<br>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -596,9 +676,11 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
-                  <td style="vertical-align: top;">Y<br>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
+</td>
+                  <td style="vertical-align: top;">Y<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
@@ -613,9 +695,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA1<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
@@ -637,9 +723,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA256</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
@@ -659,9 +749,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">ECDSA-SHA512</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
@@ -682,9 +776,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">ESIGN-SHA224</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
@@ -704,9 +802,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">ESIGN-SHA384</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
@@ -726,9 +828,13 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">Minimal C14N (deprecated) </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
@@ -750,10 +856,14 @@ transform<br>
 </td>
                   <td style="vertical-align: top;">Y<br>
 </td>
+                  <td style="vertical-align: top;">Y<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">ARCFOUR
 Encryption<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
@@ -777,11 +887,15 @@ Encryption 128<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">Camellia
 Block
 Encryption 192</td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
@@ -804,10 +918,14 @@ Encryption 256<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">Camellia
 Key Wrap 128<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
@@ -829,10 +947,14 @@ Key Wrap 192</td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">Camellia
 Key Wrap 256<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
@@ -854,6 +976,8 @@ Key Wrap 256<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                 </tr>
 </tbody></table>
 <div align="left"> <br><h4 style="text-align: center;">Other algorithms</h4>
@@ -865,6 +989,7 @@ algorithms<br></b></td>
                   <td align="left" valign="top"> <b>XMLSec with
 OpenSSL </b> </td>
                   <td style="vertical-align: top;"><b>XMLSec with GnuTLS</b></td>
+                  <td style="vertical-align: top;"><b>XMLSec with GCrypt</b></td>
                   <td style="vertical-align: top;"> <b>XMLSec with NSS</b>
                   </td>
                   <td style="vertical-align: top;"> <b>XMLSec with
@@ -879,11 +1004,15 @@ MSCrypto</b> </td>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>
+                  <td style="vertical-align: top;">N<br>
+</td>
                   <td style="vertical-align: top;">Y<a href="#gost-mscrypto"><sup>(2)</sup></a><br>
 </td>
                 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">GOST2001 signatures<br>
+</td>
+                  <td style="vertical-align: top;">N<br>
 </td>
                   <td style="vertical-align: top;">N<br>
 </td>

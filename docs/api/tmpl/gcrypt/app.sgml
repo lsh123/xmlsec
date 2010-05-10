@@ -6,7 +6,7 @@ Application functions implementation for GnuTLS.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Application functions implementation for GnuTLS.
+Application functions implementation for GCrypt.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -17,7 +17,10 @@ Application functions implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppInit ##### -->
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION xmlSecGCryptAppInit ##### -->
 <para>
 
 </para>
@@ -26,15 +29,16 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppShutdown ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppShutdown ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrInit ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrInit ##### -->
 <para>
 
 </para>
@@ -43,7 +47,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrAdoptKey ##### -->
 <para>
 
 </para>
@@ -53,7 +57,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrLoad ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrLoad ##### -->
 <para>
 
 </para>
@@ -63,7 +67,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppDefaultKeysMngrSave ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppDefaultKeysMngrSave ##### -->
 <para>
 
 </para>
@@ -74,7 +78,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoad ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoad ##### -->
 <para>
 
 </para>
@@ -86,7 +90,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeysMngrCertLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeysMngrCertLoadMemory ##### -->
 <para>
 
 </para>
@@ -99,7 +103,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeyLoad ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeyLoad ##### -->
 <para>
 
 </para>
@@ -112,7 +116,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeyLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeyLoadMemory ##### -->
 <para>
 
 </para>
@@ -126,7 +130,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppPkcs12Load ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppPkcs12Load ##### -->
 <para>
 
 </para>
@@ -138,7 +142,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppPkcs12LoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppPkcs12LoadMemory ##### -->
 <para>
 
 </para>
@@ -151,7 +155,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoad ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoad ##### -->
 <para>
 
 </para>
@@ -162,7 +166,7 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppKeyCertLoadMemory ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppKeyCertLoadMemory ##### -->
 <para>
 
 </para>
@@ -174,11 +178,12 @@ Application functions implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSAppGetDefaultPwdCallback ##### -->
+<!-- ##### FUNCTION xmlSecGCryptAppGetDefaultPwdCallback ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 

@@ -861,6 +861,88 @@ AC_SUBST(GNUTLS_CRYPTO_LIB)
 AC_SUBST(GNUTLS_MIN_VERSION)
 
 dnl ==========================================================================
+dnl See if we can find GCrypt
+dnl ==========================================================================
+GCRYPT_CONFIG="libgcrypt-config"
+XMLSEC_NO_GCRYPT="1"
+GCRYPT_MIN_VERSION="1.4.0"
+GCRYPT_VERSION=""
+GCRYPT_CFLAGS=""
+GCRYPT_LIBS=""
+GCRYPT_CRYPTO_LIB="$XMLSEC_PACKAGE-gcrypt"
+GCRYPT_FOUND="no"
+AC_ARG_WITH(gcrypt, [  --with-gcrypt=[PFX]       gcrypt location])
+if test "z$with_gcrypt" = "zno" ; then
+    AC_MSG_CHECKING(for gcrypt libraries >= $GCRYPT_MIN_VERSION) 
+    AC_MSG_RESULT(no)
+    GCRYPT_FOUND="without"
+elif test "z$with_gcrypt" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
+    PKG_CHECK_MODULES(GCRYPT, gcrypt >= $GCRYPT_MIN_VERSION,
+	[GCRYPT_FOUND=yes],
+	[GCRYPT_FOUND=no])
+
+    if test "z$GCRYPT_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(GCRYPT, libgcrypt >= $GCRYPT_MIN_VERSION,
+	    [GCRYPT_FOUND=yes],
+	    [GCRYPT_FOUND=no])
+    fi
+
+    if test "z$GCRYPT_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(GCRYPT, libgcrypt11 >= $GCRYPT_MIN_VERSION,
+	    [GCRYPT_FOUND=yes],
+	    [GCRYPT_FOUND=no])
+    fi
+fi
+
+if test "z$GCRYPT_FOUND" = "zno" ; then
+    AC_MSG_CHECKING(for gcrypt libraries >= $GCRYPT_MIN_VERSION) 
+    if test "z$with_gcrypt" != "z" ; then
+	GCRYPT_CONFIG=$with_gcrypt/bin/$GCRYPT_CONFIG
+    fi
+    if ! $GCRYPT_CONFIG --version > /dev/null 2>&1 ; then
+	if test "z$with_gcrypt" != "z" ; then
+	    AC_MSG_ERROR(Unable to find gcrypt at '$with_gcrypt')
+	else
+	    AC_MSG_RESULT(no)
+	fi
+    else
+        vers=`$GCRYPT_CONFIG --version | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	minvers=`echo $GCRYPT_MIN_VERSION | awk -F. '{ printf "%d", ($1 * 1000 + $2) * 1000 + $3;}'`
+	if test "$vers" -ge "$minvers" ; then
+	    GCRYPT_CFLAGS="$GCRYPT_CFLAGS `$GCRYPT_CONFIG --cflags`"
+	    GCRYPT_LIBS="$GCRYPT_LIBS `$GCRYPT_CONFIG --libs`"
+	    GCRYPT_FOUND=yes
+	else
+	    AC_MSG_ERROR(You need at least gcrypt $GCRYPT_MIN_VERSION for this version of $XMLSEC_PACKAGE)
+	fi	
+    fi
+fi
+
+if test "z$GCRYPT_FOUND" = "zyes" ; then 
+    XMLSEC_NO_GCRYPT="0"
+    GCRYPT_CFLAGS="$GCRYPT_CFLAGS -DXMLSEC_CRYPTO_GCRYPT=1"
+
+    dnl first crypto library is default one
+    if test "z$XMLSEC_CRYPTO" = "z" ; then
+	XMLSEC_CRYPTO="gcrypt"
+    	XMLSEC_CRYPTO_LIB="$GCRYPT_CRYPTO_LIB"
+	XMLSEC_CRYPTO_CFLAGS="$GCRYPT_CFLAGS"
+	XMLSEC_CRYPTO_LIBS="$GCRYPT_LIBS"
+    fi	
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gcrypt"
+else
+    XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gcrypt"
+fi
+
+AM_CONDITIONAL(XMLSEC_NO_GCRYPT, test "z$XMLSEC_NO_GCRYPT" = "z1")
+AC_SUBST(XMLSEC_NO_GCRYPT)
+AC_SUBST(GCRYPT_CFLAGS)
+AC_SUBST(GCRYPT_LIBS)
+AC_SUBST(GCRYPT_CRYPTO_LIB)
+AC_SUBST(GCRYPT_MIN_VERSION)
+
+
+dnl ==========================================================================
 dnl See if we can find MSCrypto
 dnl ==========================================================================
 XMLSEC_NO_MSCRYPTO="1"
@@ -1372,10 +1454,16 @@ XMLSEC_OPENSSL_LIBS="-L${libdir} -l$OPENSSL_CRYPTO_LIB $XMLSEC_CORE_LIBS $OPENSS
 AC_SUBST(XMLSEC_OPENSSL_CFLAGS)
 AC_SUBST(XMLSEC_OPENSSL_LIBS)
 
+
 XMLSEC_GNUTLS_CFLAGS="$XMLSEC_CORE_CFLAGS $GNUTLS_CFLAGS"
 XMLSEC_GNUTLS_LIBS="-L${libdir} -l$GNUTLS_CRYPTO_LIB $XMLSEC_CORE_LIBS $GNUTLS_LIBS"
 AC_SUBST(XMLSEC_GNUTLS_CFLAGS)
 AC_SUBST(XMLSEC_GNUTLS_LIBS)
+
+XMLSEC_GCRYPT_CFLAGS="$XMLSEC_CORE_CFLAGS $GCRYPT_CFLAGS"
+XMLSEC_GCRYPT_LIBS="-L${libdir} -l$GCRYPT_CRYPTO_LIB $XMLSEC_CORE_LIBS $GCRYPT_LIBS"
+AC_SUBST(XMLSEC_GCRYPT_CFLAGS)
+AC_SUBST(XMLSEC_GCRYPT_LIBS)
 
 XMLSEC_NSS_CFLAGS="$XMLSEC_CORE_CFLAGS $NSS_CFLAGS"
 XMLSEC_NSS_LIBS="-L${libdir} -l$NSS_CRYPTO_LIB $XMLSEC_CORE_LIBS $NSS_LIBS"
@@ -1427,6 +1515,10 @@ if test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/gnutls/Makefile src/gnutls/Makefile])
 fi
 
+if test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
+AC_CONFIG_FILES([include/xmlsec/gcrypt/Makefile src/gcrypt/Makefile])
+fi
+
 if test "z$XMLSEC_NO_NSS" != "z1" ; then
 AC_CONFIG_FILES([include/xmlsec/nss/Makefile src/nss/Makefile])
 fi
@@ -1457,6 +1549,7 @@ xmlsec1Conf.sh:xmlsecConf.sh.in
 xmlsec1-config:xmlsec-config.in
 xmlsec1-openssl.pc:xmlsec-openssl.pc.in
 xmlsec1-gnutls.pc:xmlsec-gnutls.pc.in
+xmlsec1-gcrypt.pc:xmlsec-gcrypt.pc.in
 xmlsec1-nss.pc:xmlsec-nss.pc.in
 xmlsec1.spec:xmlsec.spec.in
 ])

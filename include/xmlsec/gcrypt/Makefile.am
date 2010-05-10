@@ -1,13 +1,13 @@
 NULL =
 
-xmlsecgnutlsincdir = $(includedir)/xmlsec1/xmlsec/gnutls
+xmlsecgcryptincdir = $(includedir)/xmlsec1/xmlsec/gcrypt
 
-xmlsecgnutlsinc_HEADERS = \
+xmlsecgcryptinc_HEADERS = \
 app.h \
 crypto.h \
 symbols.h \
 $(NULL)
 
 install-exec-hook:
-	$(mkinstalldirs) $(DESTDIR)$(xmlsecgnutlsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(xmlsecgcryptincdir)
 

@@ -60,345 +60,390 @@ data (including XML document). </div>
             <p> </p>
             <table style="width: 85%;" border="1" cellpadding="2" cellspacing="2"><tbody>
 <tr>
-    <td style="width: 40%;" align="left" valign="top"><b>Features and algorithms</b></td>
+<td style="width: 40%;" align="left" valign="top"><b>Features and algorithms</b></td>
     <td valign="top"><b>XMLSec with OpenSSL</b></td>
     <td valign="top"><b>XMLSec with GnuTLS</b></td>
+    <td valign="top"><b>XMLSec with GCrypt</b></td>
     <td valign="top"><b>XMLSec with NSS</b></td>
     <td valign="top"><b>XMLSec with MSCrypto</b></td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">Laxly valid schema 
+<td style="width: 40%;" align="left" valign="top">Laxly valid schema 
     generation of EncryptedData/EncryptedKey</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
+    <td valign="top">Y</td>
 </tr>
-
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>Normalized Form C generations.</li></ul>
-    </td>
+</td>
     <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">Type, MimeType, and Encoding</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">CipherReference
+<td style="width: 40%;" align="left" valign="top">Type, MimeType, and Encoding</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">CipherReference
     URI derefencing</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
+    <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>Transforms </li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>ds:KeyInfo</li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>enc:DHKeyValue</li></ul>
-    </td>
+</td>
+    <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>ds:KeyName</li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>ds:RetrievalMethod</li></ul>
-    </td>
+</td>
     <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">ReferenceList</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">EncryptionProperties</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">Satisfactory Performance</td>
+<td style="width: 40%;" align="left" valign="top">ReferenceList</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">EncryptionProperties</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">Required Type
+<td style="width: 40%;" align="left" valign="top">Satisfactory Performance</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">Required Type
     support: Element and Content.</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">Encryption</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">Encryption</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>Serialization of XML Element and Content
     (NFC conversion from non-Unicode encodings).
     </li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>Encryptor returns EncryptedData structure. </li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li> Encryptor replaces EncryptedData into source
     document (when Type is Element or Content).</li></ul>
-    </td>
+</td>
     <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">Decryption</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">Decryption</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>The decryptor returns the data and its Type to
     the application (be it an octet sequence or key value).</li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>If data is Element or Content the decryptor
     return the UTF-8 encoding XML character data.</li></ul>
-    </td>
+</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">
+<td style="width: 40%;" align="left" valign="top">
     <ul><li>If data is Element or Content the decryptor
     replaces the EncryptedData in the source document with the decrypted
     data.</li></ul>
-    </td>
+</td>
     <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">TRIPLEDES</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">AES-128</td>
+<td style="width: 40%;" align="left" valign="top">TRIPLEDES</td>
     <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-256</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">AES-192</td>
+<td style="width: 40%;" align="left" valign="top">AES-128</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">AES-256</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">RSA-v1.5 (192 bit keys for AES or DES)</td>
+<td style="width: 40%;" align="left" valign="top">AES-192</td>
     <td valign="top">Y</td>
-    <td valign="top">N</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">RSA-OAEP (128 and 256 bit keys for AES)</td>
-    <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a></td>
+<td style="width: 40%;" align="left" valign="top">RSA-v1.5 (192 bit keys for AES or DES)</td>
+    <td valign="top">Y</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">Y</td>
+    <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">Diffie-Hellman Key Agreement</td>
+<td style="width: 40%;" align="left" valign="top">RSA-OAEP (128 and 256 bit keys for AES)</td>
+    <td valign="top">Y<a href="#rsa-oaep"><sup>(1)</sup></a>
+</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">Diffie-Hellman Key Agreement</td>
     <td valign="top">N</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">TRIPLEDES Key Wrap</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-128 Key Wrap (128 bit keys)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-192 Key Wrap</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">AES-256 Key Wrap (256 bit keys)</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">SHA1</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">SHA256</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">SHA512</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">RIPEMD-160</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">XML Digital Signature</td>
+<td style="width: 40%;" align="left" valign="top">TRIPLEDES Key Wrap</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">AES-128 Key Wrap (128 bit keys)</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">AES-192 Key Wrap</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">AES-256 Key Wrap (256 bit keys)</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">SHA1</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">SHA256</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">SHA512</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">RIPEMD-160</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">XML Digital Signature</td>
     <td valign="top">Y </td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
+    <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">Decryption Transform</td>
+<td style="width: 40%;" align="left" valign="top">Decryption Transform</td>
     <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-    <td valign="top">N</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top">
-    <ul><li>XPointer support in <code>Except URI</code></li></ul>
-    </td>
     <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
     <td valign="top">N</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a></td>
+<td style="width: 40%;" align="left" valign="top">
+    <ul><li>XPointer support in <code>Except URI</code>
+</li></ul>
+</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+    <td valign="top">N</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a></td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a></td>
+<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a></td>
     <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-    <td valign="top">Y</td>
-</tr>
-<tr>
-    <td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a></td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
 </tr>
 <tr>
-    <td style="width: 40%;" align="left" valign="top">Base64 Encoding</td>
+<td style="width: 40%;" align="left" valign="top"><a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a></td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+    <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" align="left" valign="top">Base64 Encoding</td>
+    <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>
     <td valign="top">Y</td>

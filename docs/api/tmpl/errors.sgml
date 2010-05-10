@@ -17,6 +17,9 @@ Error/log messages support.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO XMLSEC_ERRORS_R_XMLSEC_FAILED ##### -->
 <para>
 
@@ -372,6 +375,7 @@ Error/log messages support.
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION xmlSecErrorsShutdown ##### -->
@@ -379,6 +383,7 @@ Error/log messages support.
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION xmlSecErrorsSetCallback ##### -->

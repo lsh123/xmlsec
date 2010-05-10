@@ -2,9 +2,10 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-nss-keysstore.top_of_page">keysstore</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC-NSS Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC-NSS Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>keysstore</refname>
 <refpurpose>Keys store implementation for NSS.</refpurpose>
@@ -13,27 +14,18 @@
 <refsynopsisdiv id="xmlsec-nss-keysstore.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-#define             <link linkend="xmlSecNssKeysStoreId">xmlSecNssKeysStoreId</link>
-<link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link>    <link linkend="xmlSecNssKeysStoreGetKlass">xmlSecNssKeysStoreGetKlass</link>          (void);
-<link linkend="int">int</link>                 <link linkend="xmlSecNssKeysStoreAdoptKey">xmlSecNssKeysStoreAdoptKey</link>          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);
-<link linkend="int">int</link>                 <link linkend="xmlSecNssKeysStoreLoad">xmlSecNssKeysStoreLoad</link>              (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                                         const <link linkend="char">char</link> *uri,
-                                                         <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-<link linkend="int">int</link>                 <link linkend="xmlSecNssKeysStoreSave">xmlSecNssKeysStoreSave</link>              (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
+<synopsis>#define             <link linkend="xmlSecNssKeysStoreId">xmlSecNssKeysStoreId</link>
+<link linkend="xmlSecKeyStoreId"><returnvalue>xmlSecKeyStoreId</returnvalue></link>    <link linkend="xmlSecNssKeysStoreGetKlass">xmlSecNssKeysStoreGetKlass</link>          (<parameter><type>void</type></parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNssKeysStoreAdoptKey">xmlSecNssKeysStoreAdoptKey</link>          (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNssKeysStoreLoad">xmlSecNssKeysStoreLoad</link>              (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *uri</parameter>,
+                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecNssKeysStoreSave">xmlSecNssKeysStoreSave</link>              (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);
 </synopsis>
 </refsynopsisdiv>
-
-
-
-
-
-
-
-
 
 <refsect1 id="xmlsec-nss-keysstore.description" role="desc">
 <title role="desc.title">Description</title>
@@ -41,90 +33,86 @@
 Keys store implementation for NSS.
 </para>
 </refsect1>
-
 <refsect1 id="xmlsec-nss-keysstore.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecNssKeysStoreId" role="macro">
 <title>xmlSecNssKeysStoreId</title>
-<indexterm zone="xmlSecNssKeysStoreId"><primary sortas="xmlSecNssKeysStoreId">xmlSecNssKeysStoreId</primary></indexterm><programlisting>#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()
+<indexterm zone="xmlSecNssKeysStoreId"><primary>xmlSecNssKeysStoreId</primary></indexterm>
+<programlisting>#define xmlSecNssKeysStoreId            xmlSecNssKeysStoreGetKlass()
 </programlisting>
 <para>
-A Nss keys store klass id.</para>
-<para>
+A Nss keys store klass id.
 </para></refsect2>
 <refsect2 id="xmlSecNssKeysStoreGetKlass" role="function">
 <title>xmlSecNssKeysStoreGetKlass ()</title>
-<indexterm zone="xmlSecNssKeysStoreGetKlass"><primary sortas="xmlSecNssKeysStoreGetKlass">xmlSecNssKeysStoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyStoreId">xmlSecKeyStoreId</link>    xmlSecNssKeysStoreGetKlass          (void);</programlisting>
+<indexterm zone="xmlSecNssKeysStoreGetKlass"><primary>xmlSecNssKeysStoreGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyStoreId"><returnvalue>xmlSecKeyStoreId</returnvalue></link>    xmlSecNssKeysStoreGetKlass          (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-The Nss list based keys store klass.</para>
-<para>
+The Nss list based keys store klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Nss list based keys store klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssKeysStoreAdoptKey" role="function">
 <title>xmlSecNssKeysStoreAdoptKey ()</title>
-<indexterm zone="xmlSecNssKeysStoreAdoptKey"><primary sortas="xmlSecNssKeysStoreAdoptKey">xmlSecNssKeysStoreAdoptKey</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNssKeysStoreAdoptKey          (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                                         <link linkend="xmlSecKey">xmlSecKeyPtr</link> key);</programlisting>
+<indexterm zone="xmlSecNssKeysStoreAdoptKey"><primary>xmlSecNssKeysStoreAdoptKey</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNssKeysStoreAdoptKey          (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>);</programlisting>
 <para>
-Adds <parameter>key</parameter> to the <parameter>store</parameter>.</para>
-<para>
+Adds <parameter>key</parameter> to the <parameter>store</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to Nss keys store.
+<listitem><simpara>the pointer to Nss keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
+<listitem><simpara>the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssKeysStoreLoad" role="function">
 <title>xmlSecNssKeysStoreLoad ()</title>
-<indexterm zone="xmlSecNssKeysStoreLoad"><primary sortas="xmlSecNssKeysStoreLoad">xmlSecNssKeysStoreLoad</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNssKeysStoreLoad              (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                                         const <link linkend="char">char</link> *uri,
-                                                         <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<indexterm zone="xmlSecNssKeysStoreLoad"><primary>xmlSecNssKeysStoreLoad</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNssKeysStoreLoad              (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *uri</parameter>,
+                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
-Reads keys from an XML file.</para>
-<para>
+Reads keys from an XML file.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to Nss keys store.
+<listitem><simpara>the pointer to Nss keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>uri</parameter>&#160;:</term>
-<listitem><simpara>                the filename.
+<listitem><simpara>the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara>           the pointer to associated keys manager.
+<listitem><simpara>the pointer to associated keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecNssKeysStoreSave" role="function">
 <title>xmlSecNssKeysStoreSave ()</title>
-<indexterm zone="xmlSecNssKeysStoreSave"><primary sortas="xmlSecNssKeysStoreSave">xmlSecNssKeysStoreSave</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecNssKeysStoreSave              (<link linkend="xmlSecKeyStore">xmlSecKeyStorePtr</link> store,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<indexterm zone="xmlSecNssKeysStoreSave"><primary>xmlSecNssKeysStoreSave</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecNssKeysStoreSave              (<parameter><link linkend="xmlSecKeyStore"><type>xmlSecKeyStorePtr</type></link> store</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
 <para>
-Writes keys from <parameter>store</parameter> to an XML file.</para>
-<para>
+Writes keys from <parameter>store</parameter> to an XML file.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to Nss keys store.
+<listitem><simpara>the pointer to Nss keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the filename.
+<listitem><simpara>the filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the saved keys type (public, private, ...).
+<listitem><simpara>the saved keys type (public, private, ...).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: xmlsec1-gnutls
+Name: xmlsec1-gcrypt
 Version: @VERSION@
 Description: XML Security Library implements XML Signature and XML Encryption standards
-Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ 
-Cflags: -DXMLSEC_CRYPTO=\\\"gnutls\\\" @XMLSEC_GNUTLS_CFLAGS@
-Libs: @XMLSEC_GNUTLS_LIBS@ 
+Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@
+Cflags: -DXMLSEC_CRYPTO=\\\"gcrypt\\\" @XMLSEC_GCRYPT_CFLAGS@
+Libs: @XMLSEC_GCRYPT_LIBS@

@@ -17,6 +17,9 @@ Application functions implementation for NSS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### FUNCTION xmlSecNssAppInit ##### -->
 <para>
 
@@ -31,6 +34,7 @@ Application functions implementation for NSS.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -237,6 +241,7 @@ Application functions implementation for NSS.
 
 </para>
 
+@void: 
 @Returns: 
 
 

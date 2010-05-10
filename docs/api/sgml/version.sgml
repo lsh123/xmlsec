@@ -2,9 +2,10 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-version.top_of_page">version</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>version</refname>
 <refpurpose>Version macros.</refpurpose>
@@ -13,22 +14,13 @@
 <refsynopsisdiv id="xmlsec-version.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-#define             <link linkend="XMLSEC-VERSION--CAPS">XMLSEC_VERSION</link>
-#define             <link linkend="XMLSEC-VERSION-MAJOR--CAPS">XMLSEC_VERSION_MAJOR</link>
-#define             <link linkend="XMLSEC-VERSION-MINOR--CAPS">XMLSEC_VERSION_MINOR</link>
-#define             <link linkend="XMLSEC-VERSION-SUBMINOR--CAPS">XMLSEC_VERSION_SUBMINOR</link>
-#define             <link linkend="XMLSEC-VERSION-INFO--CAPS">XMLSEC_VERSION_INFO</link>
+<synopsis>#define             <link linkend="XMLSEC-VERSION:CAPS">XMLSEC_VERSION</link>
+#define             <link linkend="XMLSEC-VERSION-MAJOR:CAPS">XMLSEC_VERSION_MAJOR</link>
+#define             <link linkend="XMLSEC-VERSION-MINOR:CAPS">XMLSEC_VERSION_MINOR</link>
+#define             <link linkend="XMLSEC-VERSION-SUBMINOR:CAPS">XMLSEC_VERSION_SUBMINOR</link>
+#define             <link linkend="XMLSEC-VERSION-INFO:CAPS">XMLSEC_VERSION_INFO</link>
 </synopsis>
 </refsynopsisdiv>
-
-
-
-
-
-
-
-
 
 <refsect1 id="xmlsec-version.description" role="desc">
 <title role="desc.title">Description</title>
@@ -36,55 +28,51 @@
 Version macros.
 </para>
 </refsect1>
-
 <refsect1 id="xmlsec-version.details" role="details">
 <title role="details.title">Details</title>
-<refsect2 id="XMLSEC-VERSION--CAPS" role="macro">
+<refsect2 id="XMLSEC-VERSION:CAPS" role="macro">
 <title>XMLSEC_VERSION</title>
-<indexterm zone="XMLSEC-VERSION--CAPS"><primary sortas="XMLSEC_VERSION">XMLSEC_VERSION</primary></indexterm><programlisting>#define XMLSEC_VERSION			"1.2.15"
+<indexterm zone="XMLSEC-VERSION:CAPS"><primary>XMLSEC_VERSION</primary></indexterm>
+<programlisting>#define XMLSEC_VERSION			"1.2.15"
 </programlisting>
 <para>
 The library version string in the format
-"&lt;major-number&gt;.&lt;minor-number&gt;.&lt;sub-minor-number&gt;".</para>
-<para>
+"&lt;major-number&gt;.&lt;minor-number&gt;.&lt;sub-minor-number&gt;".
 </para></refsect2>
-<refsect2 id="XMLSEC-VERSION-MAJOR--CAPS" role="macro">
+<refsect2 id="XMLSEC-VERSION-MAJOR:CAPS" role="macro">
 <title>XMLSEC_VERSION_MAJOR</title>
-<indexterm zone="XMLSEC-VERSION-MAJOR--CAPS"><primary sortas="XMLSEC_VERSION_MAJOR">XMLSEC_VERSION_MAJOR</primary></indexterm><programlisting>#define XMLSEC_VERSION_MAJOR		1
+<indexterm zone="XMLSEC-VERSION-MAJOR:CAPS"><primary>XMLSEC_VERSION_MAJOR</primary></indexterm>
+<programlisting>#define XMLSEC_VERSION_MAJOR		1
 </programlisting>
 <para>
-The library major version number.</para>
-<para>
+The library major version number.
 </para></refsect2>
-<refsect2 id="XMLSEC-VERSION-MINOR--CAPS" role="macro">
+<refsect2 id="XMLSEC-VERSION-MINOR:CAPS" role="macro">
 <title>XMLSEC_VERSION_MINOR</title>
-<indexterm zone="XMLSEC-VERSION-MINOR--CAPS"><primary sortas="XMLSEC_VERSION_MINOR">XMLSEC_VERSION_MINOR</primary></indexterm><programlisting>#define XMLSEC_VERSION_MINOR		2
+<indexterm zone="XMLSEC-VERSION-MINOR:CAPS"><primary>XMLSEC_VERSION_MINOR</primary></indexterm>
+<programlisting>#define XMLSEC_VERSION_MINOR		2
 </programlisting>
 <para>
-The library minor version number.</para>
-<para>
+The library minor version number.
 </para></refsect2>
-<refsect2 id="XMLSEC-VERSION-SUBMINOR--CAPS" role="macro">
+<refsect2 id="XMLSEC-VERSION-SUBMINOR:CAPS" role="macro">
 <title>XMLSEC_VERSION_SUBMINOR</title>
-<indexterm zone="XMLSEC-VERSION-SUBMINOR--CAPS"><primary sortas="XMLSEC_VERSION_SUBMINOR">XMLSEC_VERSION_SUBMINOR</primary></indexterm><programlisting>#define XMLSEC_VERSION_SUBMINOR		15
+<indexterm zone="XMLSEC-VERSION-SUBMINOR:CAPS"><primary>XMLSEC_VERSION_SUBMINOR</primary></indexterm>
+<programlisting>#define XMLSEC_VERSION_SUBMINOR		15
 </programlisting>
 <para>
-The library sub-minor version number.</para>
-<para>
+The library sub-minor version number.
 </para></refsect2>
-<refsect2 id="XMLSEC-VERSION-INFO--CAPS" role="macro">
+<refsect2 id="XMLSEC-VERSION-INFO:CAPS" role="macro">
 <title>XMLSEC_VERSION_INFO</title>
-<indexterm zone="XMLSEC-VERSION-INFO--CAPS"><primary sortas="XMLSEC_VERSION_INFO">XMLSEC_VERSION_INFO</primary></indexterm><programlisting>#define XMLSEC_VERSION_INFO		"3:15:2"
+<indexterm zone="XMLSEC-VERSION-INFO:CAPS"><primary>XMLSEC_VERSION_INFO</primary></indexterm>
+<programlisting>#define XMLSEC_VERSION_INFO		"3:15:2"
 </programlisting>
 <para>
 The library version info string in the format
-"&lt;major-number&gt;+&lt;minor-number&gt;:&lt;sub-minor-number&gt;:&lt;minor-number&gt;".</para>
-<para>
+"&lt;major-number&gt;+&lt;minor-number&gt;:&lt;sub-minor-number&gt;:&lt;minor-number&gt;".
 </para></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

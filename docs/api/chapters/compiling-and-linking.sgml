@@ -161,7 +161,7 @@ clean:
 	    <listitem><para>xmlsec1-config script
 		<example>
 		    <title>Using xmlsec1-config script in a Makefile
-		    to select crypto engine (gnutls) at linking time.</title>
+		    to select crypto engine (e.g. gnutls) at linking time.</title>
 		    <programlisting><![CDATA[
 PROGRAM = test
 PROGRAM_FILES = test.c

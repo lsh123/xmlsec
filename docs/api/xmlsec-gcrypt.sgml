@@ -1,6 +1,6 @@
 <!doctype book PUBLIC "-//DavenPort//DTD DocBook V3.0//EN" [
-<!ENTITY xmlsec-gnutls-app SYSTEM "sgml/app.sgml">
-<!ENTITY xmlsec-gnutls-crypto SYSTEM "sgml/crypto.sgml">
+<!ENTITY xmlsec-gcrypt-app SYSTEM "sgml/app.sgml">
+<!ENTITY xmlsec-gcrypt-crypto SYSTEM "sgml/crypto.sgml">
 ]>
 <book id="index">
   <bookinfo>
@@ -9,7 +9,7 @@
 
   <chapter>
     <title>[Insert title here]</title>
-    &xmlsec-gnutls-app;
-    &xmlsec-gnutls-crypto;
+    &xmlsec-gcrypt-app;
+    &xmlsec-gcrypt-crypto;
   </chapter>
 </book>

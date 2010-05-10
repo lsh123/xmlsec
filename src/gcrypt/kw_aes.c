@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -25,7 +24,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
-#include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gcrypt/crypto.h>
 
 #include "../kw_aes_des.h"
 
@@ -35,20 +34,20 @@
  * AES KW implementation
  *
  *********************************************************************/
-static int        xmlSecGnuTLSKWAesBlockEncrypt                 (const xmlSecByte * in, 
+static int        xmlSecGCryptKWAesBlockEncrypt                 (const xmlSecByte * in, 
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize,
                                                                  void * context);
-static int        xmlSecGnuTLSKWAesBlockDecrypt                 (const xmlSecByte * in, 
+static int        xmlSecGCryptKWAesBlockDecrypt                 (const xmlSecByte * in, 
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize,
                                                                  void * context);
-static xmlSecKWAesKlass xmlSecGnuTLSKWAesKlass = {
+static xmlSecKWAesKlass xmlSecGCryptKWAesKlass = {
     /* callbacks */
-    xmlSecGnuTLSKWAesBlockEncrypt,          /* xmlSecKWAesBlockEncryptMethod       encrypt; */
-    xmlSecGnuTLSKWAesBlockDecrypt,          /* xmlSecKWAesBlockDecryptMethod       decrypt; */
+    xmlSecGCryptKWAesBlockEncrypt,          /* xmlSecKWAesBlockEncryptMethod       encrypt; */
+    xmlSecGCryptKWAesBlockDecrypt,          /* xmlSecKWAesBlockDecryptMethod       decrypt; */
 
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
@@ -61,9 +60,9 @@ static xmlSecKWAesKlass xmlSecGnuTLSKWAesKlass = {
  * AES KW transforms
  *
  ********************************************************************/
-typedef struct _xmlSecGnuTLSKWAesCtx              xmlSecGnuTLSKWAesCtx,
-                                                  *xmlSecGnuTLSKWAesCtxPtr;
-struct _xmlSecGnuTLSKWAesCtx {
+typedef struct _xmlSecGCryptKWAesCtx              xmlSecGCryptKWAesCtx,
+                                                  *xmlSecGCryptKWAesCtxPtr;
+struct _xmlSecGCryptKWAesCtx {
     int                 cipher;
     int                 mode;
     int                 flags;
@@ -72,43 +71,43 @@ struct _xmlSecGnuTLSKWAesCtx {
 
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecGnuTLSKWAesSize     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGnuTLSKWAesCtx))
-#define xmlSecGnuTLSKWAesGetCtx(transform) \
-    ((xmlSecGnuTLSKWAesCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
-#define xmlSecGnuTLSKWAesCheckId(transform) \
-    (xmlSecTransformCheckId((transform), xmlSecGnuTLSTransformKWAes128Id) || \
-     xmlSecTransformCheckId((transform), xmlSecGnuTLSTransformKWAes192Id) || \
-     xmlSecTransformCheckId((transform), xmlSecGnuTLSTransformKWAes256Id))
+#define xmlSecGCryptKWAesSize     \
+    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptKWAesCtx))
+#define xmlSecGCryptKWAesGetCtx(transform) \
+    ((xmlSecGCryptKWAesCtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecGCryptKWAesCheckId(transform) \
+    (xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes128Id) || \
+     xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes192Id) || \
+     xmlSecTransformCheckId((transform), xmlSecGCryptTransformKWAes256Id))
 
-static int      xmlSecGnuTLSKWAesInitialize                     (xmlSecTransformPtr transform);
-static void     xmlSecGnuTLSKWAesFinalize                       (xmlSecTransformPtr transform);
-static int      xmlSecGnuTLSKWAesSetKeyReq                      (xmlSecTransformPtr transform,
+static int      xmlSecGCryptKWAesInitialize                     (xmlSecTransformPtr transform);
+static void     xmlSecGCryptKWAesFinalize                       (xmlSecTransformPtr transform);
+static int      xmlSecGCryptKWAesSetKeyReq                      (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecGnuTLSKWAesSetKey                         (xmlSecTransformPtr transform,
+static int      xmlSecGCryptKWAesSetKey                         (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecGnuTLSKWAesExecute                        (xmlSecTransformPtr transform,
+static int      xmlSecGCryptKWAesExecute                        (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
 
 static int
-xmlSecGnuTLSKWAesInitialize(xmlSecTransformPtr transform) {
-    xmlSecGnuTLSKWAesCtxPtr ctx;
+xmlSecGCryptKWAesInitialize(xmlSecTransformPtr transform) {
+    xmlSecGCryptKWAesCtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecGnuTLSKWAesCheckId(transform), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWAesSize), -1);
+    xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
 
-    ctx = xmlSecGnuTLSKWAesGetCtx(transform);
+    ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes128Id)) {
+    if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes128Id)) {
         ctx->cipher             = GCRY_CIPHER_AES128;
         ctx->keyExpectedSize    = XMLSEC_KW_AES128_KEY_SIZE;
-    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes192Id)) {
+    } else if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes192Id)) {
         ctx->cipher             = GCRY_CIPHER_AES192;
         ctx->keyExpectedSize    = XMLSEC_KW_AES192_KEY_SIZE;
-    } else if(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWAes256Id)) {
+    } else if(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWAes256Id)) {
         ctx->cipher             = GCRY_CIPHER_AES256;
         ctx->keyExpectedSize    = XMLSEC_KW_AES256_KEY_SIZE;
     } else {
@@ -128,7 +127,7 @@ xmlSecGnuTLSKWAesInitialize(xmlSecTransformPtr transform) {
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                    "xmlSecGnuTLSKWAesGetKey",
+                    "xmlSecGCryptKWAesGetKey",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
@@ -138,31 +137,31 @@ xmlSecGnuTLSKWAesInitialize(xmlSecTransformPtr transform) {
 }
 
 static void
-xmlSecGnuTLSKWAesFinalize(xmlSecTransformPtr transform) {
-    xmlSecGnuTLSKWAesCtxPtr ctx;
+xmlSecGCryptKWAesFinalize(xmlSecTransformPtr transform) {
+    xmlSecGCryptKWAesCtxPtr ctx;
 
-    xmlSecAssert(xmlSecGnuTLSKWAesCheckId(transform));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWAesSize));
+    xmlSecAssert(xmlSecGCryptKWAesCheckId(transform));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize));
 
-    ctx = xmlSecGnuTLSKWAesGetCtx(transform);
+    ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     xmlSecBufferFinalize(&(ctx->keyBuffer));
 }
 
 static int
-xmlSecGnuTLSKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecGnuTLSKWAesCtxPtr ctx;
+xmlSecGCryptKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecGCryptKWAesCtxPtr ctx;
 
-    xmlSecAssert2(xmlSecGnuTLSKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWAesSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    ctx = xmlSecGnuTLSKWAesGetCtx(transform);
+    ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyReq->keyId    = xmlSecGnuTLSKeyDataAesId;
+    keyReq->keyId    = xmlSecGCryptKeyDataAesId;
     keyReq->keyType  = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage = xmlSecKeyUsageEncrypt;
@@ -175,19 +174,19 @@ xmlSecGnuTLSKWAesSetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq
 }
 
 static int
-xmlSecGnuTLSKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecGnuTLSKWAesCtxPtr ctx;
+xmlSecGCryptKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecGCryptKWAesCtxPtr ctx;
     xmlSecBufferPtr buffer;
     xmlSecSize keySize;
     int ret;
 
-    xmlSecAssert2(xmlSecGnuTLSKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWAesSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGnuTLSKeyDataAesId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGCryptKeyDataAesId), -1);
 
-    ctx = xmlSecGnuTLSKWAesGetCtx(transform);
+    ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
@@ -221,18 +220,18 @@ xmlSecGnuTLSKWAesSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecGnuTLSKWAesCtxPtr ctx;
+xmlSecGCryptKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecGCryptKWAesCtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize, keySize;
     int ret;
 
-    xmlSecAssert2(xmlSecGnuTLSKWAesCheckId(transform), -1);
+    xmlSecAssert2(xmlSecGCryptKWAesCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWAesSize), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWAesSize), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecGnuTLSKWAesGetCtx(transform);
+    ctx = xmlSecGCryptKWAesGetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     keySize = xmlSecBufferGetSize(&(ctx->keyBuffer));
@@ -279,7 +278,7 @@ xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWAesEncode(&xmlSecGnuTLSKWAesKlass, ctx,
+            ret = xmlSecKWAesEncode(&xmlSecGCryptKWAesKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
@@ -292,7 +291,7 @@ xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
             }
             outSize = ret;
         } else {
-            ret = xmlSecKWAesDecode(&xmlSecGnuTLSKWAesKlass, ctx,
+            ret = xmlSecKWAesDecode(&xmlSecGCryptKWAesKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
@@ -342,67 +341,67 @@ xmlSecGnuTLSKWAesExecute(xmlSecTransformPtr transform, int last, xmlSecTransform
 }
 
 
-static xmlSecTransformKlass xmlSecGnuTLSKWAes128Klass = {
+static xmlSecTransformKlass xmlSecGCryptKWAes128Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
+    xmlSecGCryptKWAesSize,                      /* xmlSecSize objSize */
 
     xmlSecNameKWAes128,                         /* const xmlChar* name; */
     xmlSecHrefKWAes128,                         /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGCryptKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
+    xmlSecGCryptKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
- * xmlSecGnuTLSTransformKWAes128GetKlass:
+ * xmlSecGCryptTransformKWAes128GetKlass:
  *
  * The AES-128 kew wrapper transform klass.
  *
  * Returns: AES-128 kew wrapper transform klass.
  */
 xmlSecTransformId
-xmlSecGnuTLSTransformKWAes128GetKlass(void) {
-    return(&xmlSecGnuTLSKWAes128Klass);
+xmlSecGCryptTransformKWAes128GetKlass(void) {
+    return(&xmlSecGCryptKWAes128Klass);
 }
 
-static xmlSecTransformKlass xmlSecGnuTLSKWAes192Klass = {
+static xmlSecTransformKlass xmlSecGCryptKWAes192Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
+    xmlSecGCryptKWAesSize,                      /* xmlSecSize objSize */
 
     xmlSecNameKWAes192,                         /* const xmlChar* name; */
     xmlSecHrefKWAes192,                         /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGCryptKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
+    xmlSecGCryptKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
@@ -410,54 +409,54 @@ static xmlSecTransformKlass xmlSecGnuTLSKWAes192Klass = {
 
 
 /**
- * xmlSecGnuTLSTransformKWAes192GetKlass:
+ * xmlSecGCryptTransformKWAes192GetKlass:
  *
  * The AES-192 kew wrapper transform klass.
  *
  * Returns: AES-192 kew wrapper transform klass.
  */
 xmlSecTransformId
-xmlSecGnuTLSTransformKWAes192GetKlass(void) {
-    return(&xmlSecGnuTLSKWAes192Klass);
+xmlSecGCryptTransformKWAes192GetKlass(void) {
+    return(&xmlSecGCryptKWAes192Klass);
 }
 
-static xmlSecTransformKlass xmlSecGnuTLSKWAes256Klass = {
+static xmlSecTransformKlass xmlSecGCryptKWAes256Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWAesSize,                      /* xmlSecSize objSize */
+    xmlSecGCryptKWAesSize,                      /* xmlSecSize objSize */
 
     xmlSecNameKWAes256,                         /* const xmlChar* name; */
     xmlSecHrefKWAes256,                         /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecGnuTLSKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGCryptKWAesInitialize,                /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptKWAesFinalize,                  /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptKWAesSetKeyReq,                 /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWAesSetKey,                    /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
+    xmlSecGCryptKWAesExecute,                   /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
- * xmlSecGnuTLSTransformKWAes256GetKlass:
+ * xmlSecGCryptTransformKWAes256GetKlass:
  *
  * The AES-256 kew wrapper transform klass.
  *
  * Returns: AES-256 kew wrapper transform klass.
  */
 xmlSecTransformId
-xmlSecGnuTLSTransformKWAes256GetKlass(void) {
-    return(&xmlSecGnuTLSKWAes256Klass);
+xmlSecGCryptTransformKWAes256GetKlass(void) {
+    return(&xmlSecGCryptKWAes256Klass);
 }
 
 /*********************************************************************
@@ -468,10 +467,10 @@ xmlSecGnuTLSTransformKWAes256GetKlass(void) {
 static unsigned char g_zero_iv[XMLSEC_KW_AES_BLOCK_SIZE] =
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static int
-xmlSecGnuTLSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
+xmlSecGCryptKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                void * context) {
-    xmlSecGnuTLSKWAesCtxPtr ctx = (xmlSecGnuTLSKWAesCtxPtr)context;
+    xmlSecGCryptKWAesCtxPtr ctx = (xmlSecGCryptKWAesCtxPtr)context;
     gcry_cipher_hd_t cipherCtx;
     gpg_err_code_t ret;
 
@@ -530,10 +529,10 @@ xmlSecGnuTLSKWAesBlockEncrypt(const xmlSecByte * in, xmlSecSize inSize,
 }
 
 static int
-xmlSecGnuTLSKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
+xmlSecGCryptKWAesBlockDecrypt(const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize,
                                void * context) {
-    xmlSecGnuTLSKWAesCtxPtr ctx = (xmlSecGnuTLSKWAesCtxPtr)context;
+    xmlSecGCryptKWAesCtxPtr ctx = (xmlSecGCryptKWAesCtxPtr)context;
     gcry_cipher_hd_t cipherCtx;
     gpg_err_code_t ret;
 

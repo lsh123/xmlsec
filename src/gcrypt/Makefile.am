@@ -5,20 +5,20 @@ EXTRA_DIST = \
 	$(NULL)
 
 lib_LTLIBRARIES = \
-	libxmlsec1-gnutls.la \
+	libxmlsec1-gcrypt.la \
 	$(NULL)
 
-libxmlsec1_gnutls_la_CPPFLAGS = \
+libxmlsec1_gcrypt_la_CPPFLAGS = \
 	-DPACKAGE=\"@PACKAGE@\" \
 	-I../../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \
-	$(GNUTLS_CFLAGS) \
+	$(GCRYPT_CFLAGS) \
 	$(LIBXSLT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(NULL)
 
-libxmlsec1_gnutls_la_SOURCES =\
+libxmlsec1_gcrypt_la_SOURCES =\
 	app.c \
 	ciphers.c \
 	crypto.c \
@@ -32,20 +32,20 @@ libxmlsec1_gnutls_la_SOURCES =\
 	$(NULL)
 
 if SHAREDLIB_HACK
-libxmlsec1_gnutls_la_SOURCES += ../strings.c
+libxmlsec1_gcrypt_la_SOURCES += ../strings.c
 endif
 
-libxmlsec1_gnutls_la_LIBADD = \
-	$(GNUTLS_LIBS) \
+libxmlsec1_gcrypt_la_LIBADD = \
+	$(GCRYPT_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
 	../libxmlsec1.la \
 	$(NULL)
 
-libxmlsec1_gnutls_la_DEPENDENCIES = \
+libxmlsec1_gcrypt_la_DEPENDENCIES = \
 	$(NULL)
 
-libxmlsec1_gnutls_la_LDFLAGS = \
+libxmlsec1_gcrypt_la_LDFLAGS = \
 	@XMLSEC_CRYPTO_EXTRA_LDFLAGS@ \
 	-version-info @XMLSEC_VERSION_INFO@ \
 	$(NULL)

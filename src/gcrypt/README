@@ -1,4 +1,4 @@
-The xmlsec-gnutls implementation is really limited and is not ready
+The xmlsec-gcrypt implementation is really limited and is not ready
 for production use. The only supported crypto transforms are:
 
     - HMAC

@@ -21,7 +21,7 @@ Known values for OPTION are:
   --help		display this help and exit
   --version		output version information
   --crypto=LIB		configure with XMLSEC crypto library (one of the
-			following: none default openssl gnutls nss) 
+			following: none default openssl nss gnutls gcrypt)
 EOF
 
     exit $1
@@ -161,6 +161,17 @@ gnutls)
         the_crypto_flags="@GNUTLS_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gnutls\\\""
 	the_crypto_libs="@GNUTLS_LIBS@"
         the_xmlsec_crypto_lib="-l@GNUTLS_CRYPTO_LIB@"
+    else
+        echo "Error: the \"$crypto\" cryptographic library is not supported"
+	usage 1
+    fi
+    ;;
+
+gcrypt)
+    if test "@XMLSEC_NO_GCRYPT@" = "0"; then
+        the_crypto_flags="@GCRYPT_CFLAGS@ -DXMLSEC_CRYPTO=\\\"gcrypt\\\""
+	the_crypto_libs="@GCRYPT_LIBS@"
+        the_xmlsec_crypto_lib="-l@GCRYPT_CRYPTO_LIB@"
     else
         echo "Error: the \"$crypto\" cryptographic library is not supported"
 	usage 1

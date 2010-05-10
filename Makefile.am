@@ -17,7 +17,11 @@ ACLOCAL_AMFLAGS	= -I m4
 
 DISTCLEANFILES = \
 	xmlsec1Conf.sh \
-	xmlsec1.pc xmlsec1-openssl.pc xmlsec1-gnutls.pc xmlsec1-nss.pc \
+	xmlsec1.pc \
+	xmlsec1-openssl.pc \
+	xmlsec1-nss.pc \
+	xmlsec1-gnutls.pc \
+	xmlsec1-gcrypt.pc \
 	xmlsec1-config \
 	xmlsec1.spec \
 	stamp-h2 \
@@ -36,7 +40,10 @@ EXTRA_DIST = \
 	ChangeLog \
 	Copyright \
 	HACKING \
-	xmlsec-openssl.pc.in xmlsec-gnutls.pc.in xmlsec-nss.pc.in\
+	xmlsec-openssl.pc.in \
+	xmlsec-nss.pc.in\
+	xmlsec-gnutls.pc.in \
+	xmlsec-gcrypt.pc.in \
 	xmlsec-config.in \
 	xmlsecConf.sh.in \
 	xmlsec.spec.in \

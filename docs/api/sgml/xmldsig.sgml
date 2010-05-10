@@ -2,9 +2,10 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-xmldsig.top_of_page">xmldsig</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>xmldsig</refname>
 <refpurpose>XML Digital Signature support.</refpurpose>
@@ -13,63 +14,54 @@
 <refsynopsisdiv id="xmlsec-xmldsig.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-enum                <link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>;
-#define             <link linkend="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS--CAPS">XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</link>
-#define             <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES--CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</link>
-#define             <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES--CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</link>
-#define             <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE--CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link>
-#define             <link linkend="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK--CAPS">XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</link>
+<synopsis>enum                <link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>;
+#define             <link linkend="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS:CAPS">XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</link>
+#define             <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</link>
+#define             <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</link>
+#define             <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</link>
+#define             <link linkend="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK:CAPS">XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</link>
 struct              <link linkend="xmlSecDSigCtx">xmlSecDSigCtx</link>;
-<link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link>    <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>                 (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>                (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>               (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>                   (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> tmpl);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>                 (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigCtxEnableReferenceTransform">xmlSecDSigCtxEnableReferenceTransform</link>
-                                                        (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigCtxEnableSignatureTransform">xmlSecDSigCtxEnableSignatureTransform</link>
-                                                        (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);
-<link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link>     <link linkend="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</link>       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link>              (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump</link>           (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
+<link linkend="xmlSecDSigCtxPtr"><returnvalue>xmlSecDSigCtxPtr</returnvalue></link>    <link linkend="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</link>                 (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</link>                (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</link>             (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</link>               (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigCtxSign">xmlSecDSigCtxSign</link>                   (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> tmpl</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</link>                 (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigCtxEnableReferenceTransform">xmlSecDSigCtxEnableReferenceTransform</link>
+                                                        (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigCtxEnableSignatureTransform">xmlSecDSigCtxEnableSignatureTransform</link>
+                                                        (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);
+<link linkend="xmlSecBufferPtr"><returnvalue>xmlSecBufferPtr</returnvalue></link>     <link linkend="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</link>       (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</link>              (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump</link>           (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
 enum                <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link>;
 struct              <link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtx</link>;
-<link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link>  <link linkend="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</link> (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</link>       (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</link>    (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link>      (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
-<link linkend="int">int</link>                 <link linkend="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</link>   (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node);
-<link linkend="xmlSecBuffer">xmlSecBufferPtr</link>     <link linkend="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer</link>
-                                                        (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</link>     (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
-<link linkend="void">void</link>                <link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferenceCtxDebugXmlDump</link>  (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);
+<link linkend="xmlSecDSigReferenceCtxPtr"><returnvalue>xmlSecDSigReferenceCtxPtr</returnvalue></link>  <link linkend="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</link> (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecDSigReferenceOrigin"><type>xmlSecDSigReferenceOrigin</type></link> origin</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</link>       (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</link>    (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecDSigReferenceOrigin"><type>xmlSecDSigReferenceOrigin</type></link> origin</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</link>      (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</link>   (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);
+<link linkend="xmlSecBuffer"><returnvalue>xmlSecBufferPtr</returnvalue></link>     <link linkend="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer</link>
+                                                        (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</link>     (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferenceCtxDebugXmlDump</link>  (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
 #define             <link linkend="xmlSecDSigReferenceCtxListId">xmlSecDSigReferenceCtxListId</link>
-<link linkend="xmlSecPtrListId">xmlSecPtrListId</link>     <link linkend="xmlSecDSigReferenceCtxListGetKlass">xmlSecDSigReferenceCtxListGetKlass</link>  (void);
+<link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>     <link linkend="xmlSecDSigReferenceCtxListGetKlass">xmlSecDSigReferenceCtxListGetKlass</link>  (<parameter><type>void</type></parameter>);
 </synopsis>
 </refsynopsisdiv>
-
-
-
-
-
-
-
-
 
 <refsect1 id="xmlsec-xmldsig.description" role="desc">
 <title role="desc.title">Description</title>
@@ -77,85 +69,85 @@ struct              <link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCt
 XML Digital Signature support.
 </para>
 </refsect1>
-
 <refsect1 id="xmlsec-xmldsig.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecDSigStatus" role="enum">
 <title>enum xmlSecDSigStatus</title>
-<indexterm zone="xmlSecDSigStatus"><primary sortas="xmlSecDSigStatus">xmlSecDSigStatus</primary></indexterm><programlisting>typedef enum {
+<indexterm zone="xmlSecDSigStatus"><primary>xmlSecDSigStatus</primary></indexterm>
+<programlisting>typedef enum {
     xmlSecDSigStatusUnknown = 0,
     xmlSecDSigStatusSucceeded,
     xmlSecDSigStatusInvalid
 } xmlSecDSigStatus;
 </programlisting>
 <para>
-XML Digital signature processing status.</para>
-<para>
+XML Digital signature processing status.
 </para><variablelist role="enum">
 <varlistentry id="xmlSecDSigStatusUnknown" role="constant">
 <term><literal>xmlSecDSigStatusUnknown</literal></term>
-<listitem><simpara>    the status is unknow.
+<listitem><simpara>the status is unknow.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecDSigStatusSucceeded" role="constant">
 <term><literal>xmlSecDSigStatusSucceeded</literal></term>
-<listitem><simpara>  the processing succeeded.
+<listitem><simpara>the processing succeeded.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecDSigStatusInvalid" role="constant">
 <term><literal>xmlSecDSigStatusInvalid</literal></term>
-<listitem><simpara>    the processing failed.
+<listitem><simpara>the processing failed.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
-<refsect2 id="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS--CAPS" role="macro">
+<refsect2 id="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS:CAPS" role="macro">
 <title>XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</title>
-<indexterm zone="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS--CAPS"><primary sortas="XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS">XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS                      0x00000001
+<indexterm zone="XMLSEC-DSIG-FLAGS-IGNORE-MANIFESTS:CAPS"><primary>XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS</primary></indexterm>
+<programlisting>#define XMLSEC_DSIG_FLAGS_IGNORE_MANIFESTS                      0x00000001
 </programlisting>
 <para>
-If this flag is set then <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests">&lt;dsig:Manifests/&gt;</ulink> nodes will not be processed.</para>
-<para>
+If this flag is set then <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifests">&lt;dsig:Manifests/&gt;</ulink> nodes will not be processed.
 </para></refsect2>
-<refsect2 id="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES--CAPS" role="macro">
+<refsect2 id="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS" role="macro">
 <title>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</title>
-<indexterm zone="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES--CAPS"><primary sortas="XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES           0x00000002
+<indexterm zone="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS"><primary>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</primary></indexterm>
+<programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES           0x00000002
 </programlisting>
 <para>
 If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
-<para>
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.
 </para></refsect2>
-<refsect2 id="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES--CAPS" role="macro">
+<refsect2 id="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS" role="macro">
 <title>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</title>
-<indexterm zone="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES--CAPS"><primary sortas="XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES             0x00000004
+<indexterm zone="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS"><primary>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</primary></indexterm>
+<programlisting>#define XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES             0x00000004
 </programlisting>
 <para>
 If this flag is set then pre-digest buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> child
-of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
-<para>
+of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> element will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.
 </para></refsect2>
-<refsect2 id="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE--CAPS" role="macro">
+<refsect2 id="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS" role="macro">
 <title>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</title>
-<indexterm zone="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE--CAPS"><primary sortas="XMLSEC_DSIG_FLAGS_STORE_SIGNATURE">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE                       0x00000008
+<indexterm zone="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS"><primary>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</primary></indexterm>
+<programlisting>#define XMLSEC_DSIG_FLAGS_STORE_SIGNATURE                       0x00000008
 </programlisting>
 <para>
 If this flag is set then pre-signature buffer for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink>
-element processing will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.</para>
-<para>
+element processing will be stored in <link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtx</type></link>.
 </para></refsect2>
-<refsect2 id="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK--CAPS" role="macro">
+<refsect2 id="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK:CAPS" role="macro">
 <title>XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</title>
-<indexterm zone="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK--CAPS"><primary sortas="XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK">XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</primary></indexterm><programlisting>#define XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK                       0x00000010
+<indexterm zone="XMLSEC-DSIG-FLAGS-USE-VISA3D-HACK:CAPS"><primary>XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK</primary></indexterm>
+<programlisting>#define XMLSEC_DSIG_FLAGS_USE_VISA3D_HACK                       0x00000010
 </programlisting>
 <para>
 If this flag is set then URI ID references are resolved directly
 without using XPointers. This allows one to sign/verify Visa3D
-documents that don't follow XML, XPointer and XML DSig specifications.</para>
-<para>
+documents that don't follow XML, XPointer and XML DSig specifications.
 </para></refsect2>
 <refsect2 id="xmlSecDSigCtx" role="struct">
 <title>struct xmlSecDSigCtx</title>
-<indexterm zone="xmlSecDSigCtx"><primary sortas="xmlSecDSigCtx">xmlSecDSigCtx</primary></indexterm><programlisting>struct xmlSecDSigCtx {
+<indexterm zone="xmlSecDSigCtx"><primary>xmlSecDSigCtx</primary></indexterm>
+<programlisting>struct xmlSecDSigCtx {
     /* these data user can set before performing the operation */
     void*                       userData;
     unsigned int                flags;
@@ -189,150 +181,124 @@ documents that don't follow XML, XPointer and XML DSig specifications.</para>
 };
 </programlisting>
 <para>
-XML DSig processing context.</para>
-<para>
+XML DSig processing context.
 </para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>userData</structfield>;</term>
-<listitem><simpara>                   the pointer to user data (xmlsec and xmlsec-crypto libraries
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecDSigCtx.userData">userData</structfield>;</term>
+<listitem><simpara>the pointer to user data (xmlsec and xmlsec-crypto libraries
                              never touches this).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term>unsigned&#160;<link linkend="int">int</link>&#160;<structfield>flags</structfield>;</term>
-<listitem><simpara>                      the XML Digital Signature processing flags.
+<varlistentry><term>unsigned&#160;<link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecDSigCtx.flags">flags</structfield>;</term>
+<listitem><simpara>the XML Digital Signature processing flags.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term>unsigned&#160;<link linkend="int">int</link>&#160;<structfield>flags2</structfield>;</term>
-<listitem><simpara>                     the XML Digital Signature processing flags.
+<varlistentry><term>unsigned&#160;<link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecDSigCtx.flags2">flags2</structfield>;</term>
+<listitem><simpara>the XML Digital Signature processing flags.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>&#160;<structfield>keyInfoReadCtx</structfield>;</term>
-<listitem><simpara>             the reading key context.
+<varlistentry><term><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtx</type></link>&#160;<structfield id="xmlSecDSigCtx.keyInfoReadCtx">keyInfoReadCtx</structfield>;</term>
+<listitem><simpara>the reading key context.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKeyInfoCtx">xmlSecKeyInfoCtx</link>&#160;<structfield>keyInfoWriteCtx</structfield>;</term>
-<listitem><simpara>            the writing key context (not used for signature verification).
+<varlistentry><term><link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtx</type></link>&#160;<structfield id="xmlSecDSigCtx.keyInfoWriteCtx">keyInfoWriteCtx</structfield>;</term>
+<listitem><simpara>the writing key context (not used for signature verification).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>&#160;<structfield>transformCtx</structfield>;</term>
-<listitem><simpara>               the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node processing context.
+<varlistentry><term><link linkend="xmlSecTransformCtx"><type>xmlSecTransformCtx</type></link>&#160;<structfield id="xmlSecDSigCtx.transformCtx">transformCtx</structfield>;</term>
+<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node processing context.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformUriType">xmlSecTransformUriType</link>&#160;<structfield>enabledReferenceUris</structfield>;</term>
-<listitem><simpara>       the URI types allowed for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
+<varlistentry><term><link linkend="xmlSecTransformUriType"><type>xmlSecTransformUriType</type></link>&#160;<structfield id="xmlSecDSigCtx.enabledReferenceUris">enabledReferenceUris</structfield>;</term>
+<listitem><simpara>the URI types allowed for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrListPtr</link>&#160;<structfield>enabledReferenceTransforms</structfield>;</term>
-<listitem><simpara> the list of transforms allowed in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
+<varlistentry><term><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.enabledReferenceTransforms">enabledReferenceTransforms</structfield>;</term>
+<listitem><simpara>the list of transforms allowed in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformCtxPreExecuteCallback">xmlSecTransformCtxPreExecuteCallback</link>&#160;<structfield>referencePreExecuteCallback</structfield>;</term>
+<varlistentry><term><link linkend="xmlSecTransformCtxPreExecuteCallback"><type>xmlSecTransformCtxPreExecuteCallback</type></link>&#160;<structfield id="xmlSecDSigCtx.referencePreExecuteCallback">referencePreExecuteCallback</structfield>;</term>
 <listitem><simpara>the callback for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node processing.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformId">xmlSecTransformId</link>&#160;<structfield>defSignMethodId</structfield>;</term>
-<listitem><simpara>            the default signing method klass.
+<varlistentry><term><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link>&#160;<structfield id="xmlSecDSigCtx.defSignMethodId">defSignMethodId</structfield>;</term>
+<listitem><simpara>the default signing method klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformId">xmlSecTransformId</link>&#160;<structfield>defC14NMethodId</structfield>;</term>
-<listitem><simpara>            the default c14n method klass.
+<varlistentry><term><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link>&#160;<structfield id="xmlSecDSigCtx.defC14NMethodId">defC14NMethodId</structfield>;</term>
+<listitem><simpara>the default c14n method klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformId">xmlSecTransformId</link>&#160;<structfield>defDigestMethodId</structfield>;</term>
-<listitem><simpara>          the default digest method klass.
+<varlistentry><term><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link>&#160;<structfield id="xmlSecDSigCtx.defDigestMethodId">defDigestMethodId</structfield>;</term>
+<listitem><simpara>the default digest method klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecKey">xmlSecKeyPtr</link>&#160;<structfield>signKey</structfield>;</term>
-<listitem><simpara>                    the signature key; application may set <link linkend="signKey"><type>signKey</type></link>
+<varlistentry><term><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.signKey">signKey</structfield>;</term>
+<listitem><simpara>the signature key; application may set <link linkend="signKey"><type>signKey</type></link>
                              before calling <link linkend="xmlSecDSigCtxSign"><type>xmlSecDSigCtxSign</type></link> or <link linkend="xmlSecDSigCtxVerify"><type>xmlSecDSigCtxVerify</type></link>
                              functions.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformOperation">xmlSecTransformOperation</link>&#160;<structfield>operation</structfield>;</term>
-<listitem><simpara>                  the operation: sign or verify.
+<varlistentry><term><link linkend="xmlSecTransformOperation"><type>xmlSecTransformOperation</type></link>&#160;<structfield id="xmlSecDSigCtx.operation">operation</structfield>;</term>
+<listitem><simpara>the operation: sign or verify.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecBuffer">xmlSecBufferPtr</link>&#160;<structfield>result</structfield>;</term>
-<listitem><simpara>                     the pointer to signature (not valid for signature verificaction).
+<varlistentry><term><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.result">result</structfield>;</term>
+<listitem><simpara>the pointer to signature (not valid for signature verificaction).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>&#160;<structfield>status</structfield>;</term>
-<listitem><simpara>                     the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire">&lt;dsig:Signatuire/&gt;</ulink> procesisng status.
+<varlistentry><term><link linkend="xmlSecDSigStatus"><type>xmlSecDSigStatus</type></link>&#160;<structfield id="xmlSecDSigCtx.status">status</structfield>;</term>
+<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire">&lt;dsig:Signatuire/&gt;</ulink> procesisng status.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>signMethod</structfield>;</term>
-<listitem><simpara>                 the pointer to signature transform.
+<varlistentry><term><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.signMethod">signMethod</structfield>;</term>
+<listitem><simpara>the pointer to signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>c14nMethod</structfield>;</term>
-<listitem><simpara>                 the pointer to c14n transform.
+<varlistentry><term><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.c14nMethod">c14nMethod</structfield>;</term>
+<listitem><simpara>the pointer to c14n transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>preSignMemBufMethod</structfield>;</term>
-<listitem><simpara>        the pointer to binary buffer right before signature
-                             (valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE--CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</type></link> flag is set).
+<varlistentry><term><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.preSignMemBufMethod">preSignMemBufMethod</structfield>;</term>
+<listitem><simpara>the pointer to binary buffer right before signature
+                             (valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</type></link> flag is set).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlNode">xmlNodePtr</link>&#160;<structfield>signValueNode</structfield>;</term>
-<listitem><simpara>              the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink> node.
+<varlistentry><term><link linkend="xmlNode"><type>xmlNodePtr</type></link>&#160;<structfield id="xmlSecDSigCtx.signValueNode">signValueNode</structfield>;</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue">&lt;dsig:SignatureValue/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>id</structfield>;</term>
-<listitem><simpara>                         the pointer to Id attribute of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+<varlistentry><term><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecDSigCtx.id">id</structfield>;</term>
+<listitem><simpara>the pointer to Id attribute of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrList</link>&#160;<structfield>signedInfoReferences</structfield>;</term>
-<listitem><simpara>       the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node.
+<varlistentry><term><link linkend="xmlSecPtrList"><type>xmlSecPtrList</type></link>&#160;<structfield id="xmlSecDSigCtx.signedInfoReferences">signedInfoReferences</structfield>;</term>
+<listitem><simpara>the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> node.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecPtrList">xmlSecPtrList</link>&#160;<structfield>manifestReferences</structfield>;</term>
-<listitem><simpara>         the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> nodes.
+<varlistentry><term><link linkend="xmlSecPtrList"><type>xmlSecPtrList</type></link>&#160;<structfield id="xmlSecDSigCtx.manifestReferences">manifestReferences</structfield>;</term>
+<listitem><simpara>the list of references in <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> nodes.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>                  reserved for the future.
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecDSigCtx.reserved0">reserved0</structfield>;</term>
+<listitem><simpara>reserved for the future.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>                  reserved for the future.
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecDSigCtx.reserved1">reserved1</structfield>;</term>
+<listitem><simpara>reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxCreate" role="function">
 <title>xmlSecDSigCtxCreate ()</title>
-<indexterm zone="xmlSecDSigCtxCreate"><primary sortas="xmlSecDSigCtxCreate">xmlSecDSigCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecDSigCtxPtr">xmlSecDSigCtxPtr</link>    xmlSecDSigCtxCreate                 (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<indexterm zone="xmlSecDSigCtxCreate"><primary>xmlSecDSigCtxCreate</primary></indexterm>
+<programlisting><link linkend="xmlSecDSigCtxPtr"><returnvalue>xmlSecDSigCtxPtr</returnvalue></link>    xmlSecDSigCtxCreate                 (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
 The caller is responsible for destroying returend object by calling
-<link linkend="xmlSecDSigCtxDestroy"><type>xmlSecDSigCtxDestroy</type></link> function.</para>
-<para>
+<link linkend="xmlSecDSigCtxDestroy"><type>xmlSecDSigCtxDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara>           the pointer to keys manager.
+<listitem><simpara>the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated context object or NULL if an error
 occurs.
@@ -340,76 +306,76 @@ occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxDestroy" role="function">
 <title>xmlSecDSigCtxDestroy ()</title>
-<indexterm zone="xmlSecDSigCtxDestroy"><primary sortas="xmlSecDSigCtxDestroy">xmlSecDSigCtxDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigCtxDestroy                (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<indexterm zone="xmlSecDSigCtxDestroy"><primary>xmlSecDSigCtxDestroy</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigCtxDestroy                (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>);</programlisting>
 <para>
-Destroy context object created with <link linkend="xmlSecDSigCtxCreate"><type>xmlSecDSigCtxCreate</type></link> function.</para>
-<para>
+Destroy context object created with <link linkend="xmlSecDSigCtxCreate"><type>xmlSecDSigCtxCreate</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxInitialize" role="function">
 <title>xmlSecDSigCtxInitialize ()</title>
-<indexterm zone="xmlSecDSigCtxInitialize"><primary sortas="xmlSecDSigCtxInitialize">xmlSecDSigCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigCtxInitialize             (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> keysMngr);</programlisting>
+<indexterm zone="xmlSecDSigCtxInitialize"><primary>xmlSecDSigCtxInitialize</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigCtxInitialize             (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
 The caller is responsible for cleaing up returend object by calling
-<link linkend="xmlSecDSigCtxFinalize"><type>xmlSecDSigCtxFinalize</type></link> function.</para>
-<para>
+<link linkend="xmlSecDSigCtxFinalize"><type>xmlSecDSigCtxFinalize</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
-<listitem><simpara>           the pointer to keys manager.
+<listitem><simpara>the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxFinalize" role="function">
 <title>xmlSecDSigCtxFinalize ()</title>
-<indexterm zone="xmlSecDSigCtxFinalize"><primary sortas="xmlSecDSigCtxFinalize">xmlSecDSigCtxFinalize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigCtxFinalize               (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<indexterm zone="xmlSecDSigCtxFinalize"><primary>xmlSecDSigCtxFinalize</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigCtxFinalize               (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>);</programlisting>
 <para>
-Cleans up <parameter>dsigCtx</parameter> object initialized with <link linkend="xmlSecDSigCtxInitialize"><type>xmlSecDSigCtxInitialize</type></link> function.</para>
-<para>
+Cleans up <parameter>dsigCtx</parameter> object initialized with <link linkend="xmlSecDSigCtxInitialize"><type>xmlSecDSigCtxInitialize</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxSign" role="function">
 <title>xmlSecDSigCtxSign ()</title>
-<indexterm zone="xmlSecDSigCtxSign"><primary sortas="xmlSecDSigCtxSign">xmlSecDSigCtxSign</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigCtxSign                   (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> tmpl);</programlisting>
+<indexterm zone="xmlSecDSigCtxSign"><primary>xmlSecDSigCtxSign</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigCtxSign                   (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> tmpl</parameter>);</programlisting>
 <para>
-Signs the data as described in <parameter>tmpl</parameter> node.</para>
-<para>
+Signs the data as described in <parameter>tmpl</parameter> node.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>tmpl</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node with signature template.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node with signature template.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxVerify" role="function">
 <title>xmlSecDSigCtxVerify ()</title>
-<indexterm zone="xmlSecDSigCtxVerify"><primary sortas="xmlSecDSigCtxVerify">xmlSecDSigCtxVerify</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigCtxVerify                 (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<indexterm zone="xmlSecDSigCtxVerify"><primary>xmlSecDSigCtxVerify</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigCtxVerify                 (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);</programlisting>
 <para>
 Vaidates signature in the <parameter>node</parameter>. The verification result is returned
-in <link linkend="status"><type>status</type></link> member of the <parameter>dsigCtx</parameter> object.</para>
-<para>
+in <link linkend="status"><type>status</type></link> member of the <parameter>dsigCtx</parameter> object.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>               the pointer with <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
+<listitem><simpara>the pointer with <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success (check <link linkend="status"><type>status</type></link> member of <parameter>dsigCtx</parameter> to get
 signature verification result) or a negative value if an error occurs.
@@ -417,96 +383,96 @@ signature verification result) or a negative value if an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxEnableReferenceTransform" role="function">
 <title>xmlSecDSigCtxEnableReferenceTransform ()</title>
-<indexterm zone="xmlSecDSigCtxEnableReferenceTransform"><primary sortas="xmlSecDSigCtxEnableReferenceTransform">xmlSecDSigCtxEnableReferenceTransform</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigCtxEnableReferenceTransform
-                                                        (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
+<indexterm zone="xmlSecDSigCtxEnableReferenceTransform"><primary>xmlSecDSigCtxEnableReferenceTransform</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigCtxEnableReferenceTransform
+                                                        (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);</programlisting>
 <para>
-Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> elements processing.</para>
-<para>
+Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> elements processing.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformId</parameter>&#160;:</term>
-<listitem><simpara>        the transform klass.
+<listitem><simpara>the transform klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxEnableSignatureTransform" role="function">
 <title>xmlSecDSigCtxEnableSignatureTransform ()</title>
-<indexterm zone="xmlSecDSigCtxEnableSignatureTransform"><primary sortas="xmlSecDSigCtxEnableSignatureTransform">xmlSecDSigCtxEnableSignatureTransform</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigCtxEnableSignatureTransform
-                                                        (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecTransformId">xmlSecTransformId</link> transformId);</programlisting>
+<indexterm zone="xmlSecDSigCtxEnableSignatureTransform"><primary>xmlSecDSigCtxEnableSignatureTransform</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigCtxEnableSignatureTransform
+                                                        (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecTransformId"><type>xmlSecTransformId</type></link> transformId</parameter>);</programlisting>
 <para>
-Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element processing.</para>
-<para>
+Enables <parameter>transformId</parameter> for <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element processing.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>transformId</parameter>&#160;:</term>
-<listitem><simpara>        the transform klass.
+<listitem><simpara>the transform klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxGetPreSignBuffer" role="function">
 <title>xmlSecDSigCtxGetPreSignBuffer ()</title>
-<indexterm zone="xmlSecDSigCtxGetPreSignBuffer"><primary sortas="xmlSecDSigCtxGetPreSignBuffer">xmlSecDSigCtxGetPreSignBuffer</primary></indexterm><programlisting><link linkend="xmlSecBufferPtr">xmlSecBufferPtr</link>     xmlSecDSigCtxGetPreSignBuffer       (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx);</programlisting>
+<indexterm zone="xmlSecDSigCtxGetPreSignBuffer"><primary>xmlSecDSigCtxGetPreSignBuffer</primary></indexterm>
+<programlisting><link linkend="xmlSecBufferPtr"><returnvalue>xmlSecBufferPtr</returnvalue></link>     xmlSecDSigCtxGetPreSignBuffer       (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>);</programlisting>
 <para>
 Gets pointer to the buffer with serialized <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> element
 just before signature claculation (valid if and only if
-<link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE--CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</type></link> context flag is set.</para>
-<para>
+<link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</type></link> context flag is set.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxDebugDump" role="function">
 <title>xmlSecDSigCtxDebugDump ()</title>
-<indexterm zone="xmlSecDSigCtxDebugDump"><primary sortas="xmlSecDSigCtxDebugDump">xmlSecDSigCtxDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigCtxDebugDump              (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
+<indexterm zone="xmlSecDSigCtxDebugDump"><primary>xmlSecDSigCtxDebugDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigCtxDebugDump              (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>output</parameter>.</para>
-<para>
+Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>output</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
+<listitem><simpara>the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigCtxDebugXmlDump" role="function">
 <title>xmlSecDSigCtxDebugXmlDump ()</title>
-<indexterm zone="xmlSecDSigCtxDebugXmlDump"><primary sortas="xmlSecDSigCtxDebugXmlDump">xmlSecDSigCtxDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigCtxDebugXmlDump           (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
+<indexterm zone="xmlSecDSigCtxDebugXmlDump"><primary>xmlSecDSigCtxDebugXmlDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigCtxDebugXmlDump           (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>output</parameter> in XML format.</para>
-<para>
+Prints the debug information about <parameter>dsigCtx</parameter> to <parameter>output</parameter> in XML format.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
+<listitem><simpara>the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceOrigin" role="enum">
 <title>enum xmlSecDSigReferenceOrigin</title>
-<indexterm zone="xmlSecDSigReferenceOrigin"><primary sortas="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</primary></indexterm><programlisting>typedef enum  {
+<indexterm zone="xmlSecDSigReferenceOrigin"><primary>xmlSecDSigReferenceOrigin</primary></indexterm>
+<programlisting>typedef enum  {
     xmlSecDSigReferenceOriginSignedInfo,
     xmlSecDSigReferenceOriginManifest
 } xmlSecDSigReferenceOrigin;
 </programlisting>
 <para>
 The possible <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node locations: in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink>
-node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.</para>
-<para>
+node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node.
 </para><variablelist role="enum">
 <varlistentry id="xmlSecDSigReferenceOriginSignedInfo" role="constant">
 <term><literal>xmlSecDSigReferenceOriginSignedInfo</literal></term>
@@ -515,13 +481,14 @@ node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;
 </varlistentry>
 <varlistentry id="xmlSecDSigReferenceOriginManifest" role="constant">
 <term><literal>xmlSecDSigReferenceOriginManifest</literal></term>
-<listitem><simpara>  reference &lt;dsig:Manifest&gt; node.
+<listitem><simpara>reference &lt;dsig:Manifest&gt; node.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtx" role="struct">
 <title>struct xmlSecDSigReferenceCtx</title>
-<indexterm zone="xmlSecDSigReferenceCtx"><primary sortas="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtx</primary></indexterm><programlisting>struct xmlSecDSigReferenceCtx {
+<indexterm zone="xmlSecDSigReferenceCtx"><primary>xmlSecDSigReferenceCtx</primary></indexterm>
+<programlisting>struct xmlSecDSigReferenceCtx {
     void*                       userData;
     xmlSecDSigCtxPtr            dsigCtx;
     xmlSecDSigReferenceOrigin   origin;
@@ -541,147 +508,134 @@ node or in the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;
 };
 </programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> processing context.</para>
-<para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> processing context.
 </para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>userData</structfield>;</term>
-<listitem><simpara>                   the pointer to user data (xmlsec and xmlsec-crypto libraries
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecDSigReferenceCtx.userData">userData</structfield>;</term>
+<listitem><simpara>the pointer to user data (xmlsec and xmlsec-crypto libraries
                              never touches this).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link>&#160;<structfield>dsigCtx</structfield>;</term>
-<listitem><simpara>                    the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
+<varlistentry><term><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.dsigCtx">dsigCtx</structfield>;</term>
+<listitem><simpara>the pointer to "parent" <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> processing context.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link>&#160;<structfield>origin</structfield>;</term>
-<listitem><simpara>                     the signature origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink>).
+<varlistentry><term><link linkend="xmlSecDSigReferenceOrigin"><type>xmlSecDSigReferenceOrigin</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.origin">origin</structfield>;</term>
+<listitem><simpara>the signature origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink>).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransformCtx">xmlSecTransformCtx</link>&#160;<structfield>transformCtx</structfield>;</term>
-<listitem><simpara>               the reference processing transforms context.
+<varlistentry><term><link linkend="xmlSecTransformCtx"><type>xmlSecTransformCtx</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.transformCtx">transformCtx</structfield>;</term>
+<listitem><simpara>the reference processing transforms context.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>digestMethod</structfield>;</term>
-<listitem><simpara>               the pointer to digest transform.
+<varlistentry><term><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.digestMethod">digestMethod</structfield>;</term>
+<listitem><simpara>the pointer to digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecBuffer">xmlSecBufferPtr</link>&#160;<structfield>result</structfield>;</term>
-<listitem><simpara>                     the pointer to digest result.
+<varlistentry><term><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.result">result</structfield>;</term>
+<listitem><simpara>the pointer to digest result.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecDSigStatus">xmlSecDSigStatus</link>&#160;<structfield>status</structfield>;</term>
-<listitem><simpara>                     the reference processing status.
+<varlistentry><term><link linkend="xmlSecDSigStatus"><type>xmlSecDSigStatus</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.status">status</structfield>;</term>
+<listitem><simpara>the reference processing status.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecTransform">xmlSecTransformPtr</link>&#160;<structfield>preDigestMemBufMethod</structfield>;</term>
-<listitem><simpara>      the pointer to binary buffer right before digest
+<varlistentry><term><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link>&#160;<structfield id="xmlSecDSigReferenceCtx.preDigestMemBufMethod">preDigestMemBufMethod</structfield>;</term>
+<listitem><simpara>the pointer to binary buffer right before digest
                              (valid only if either
-                             <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES--CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</type></link> or
-                             <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES--CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</type></link> flags are set).
+                             <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</type></link> or
+                             <link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</type></link> flags are set).
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>id</structfield>;</term>
-<listitem><simpara>                         the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node ID attribute.
+<varlistentry><term><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecDSigReferenceCtx.id">id</structfield>;</term>
+<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node ID attribute.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>uri</structfield>;</term>
-<listitem><simpara>                        the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node URI attribute.
+<varlistentry><term><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecDSigReferenceCtx.uri">uri</structfield>;</term>
+<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node URI attribute.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlChar">xmlChar</link>&#160;*<structfield>type</structfield>;</term>
-<listitem><simpara>                       the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node Type attribute.
+<varlistentry><term><link linkend="xmlChar"><type>xmlChar</type></link>&#160;*<structfield id="xmlSecDSigReferenceCtx.type">type</structfield>;</term>
+<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node Type attribute.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved0</structfield>;</term>
-<listitem><simpara>                  reserved for the future.
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecDSigReferenceCtx.reserved0">reserved0</structfield>;</term>
+<listitem><simpara>reserved for the future.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>reserved1</structfield>;</term>
-<listitem><simpara>                  reserved for the future.
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecDSigReferenceCtx.reserved1">reserved1</structfield>;</term>
+<listitem><simpara>reserved for the future.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxCreate" role="function">
 <title>xmlSecDSigReferenceCtxCreate ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxCreate"><primary sortas="xmlSecDSigReferenceCtxCreate">xmlSecDSigReferenceCtxCreate</primary></indexterm><programlisting><link linkend="xmlSecDSigReferenceCtxPtr">xmlSecDSigReferenceCtxPtr</link>  xmlSecDSigReferenceCtxCreate (<link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxCreate"><primary>xmlSecDSigReferenceCtxCreate</primary></indexterm>
+<programlisting><link linkend="xmlSecDSigReferenceCtxPtr"><returnvalue>xmlSecDSigReferenceCtxPtr</returnvalue></link>  xmlSecDSigReferenceCtxCreate (<parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecDSigReferenceOrigin"><type>xmlSecDSigReferenceOrigin</type></link> origin</parameter>);</programlisting>
 <para>
 Creates new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context. Caller is responsible
 for destroying the returned context by calling <link linkend="xmlSecDSigReferenceCtxDestroy"><type>xmlSecDSigReferenceCtxDestroy</type></link>
-function.</para>
-<para>
+function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
+<listitem><simpara>the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>origin</parameter>&#160;:</term>
-<listitem><simpara>             the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
+<listitem><simpara>the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly created context or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxDestroy" role="function">
 <title>xmlSecDSigReferenceCtxDestroy ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxDestroy"><primary sortas="xmlSecDSigReferenceCtxDestroy">xmlSecDSigReferenceCtxDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigReferenceCtxDestroy       (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxDestroy"><primary>xmlSecDSigReferenceCtxDestroy</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigReferenceCtxDestroy       (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>);</programlisting>
 <para>
-Destroy context object created with <link linkend="xmlSecDSigReferenceCtxCreate"><type>xmlSecDSigReferenceCtxCreate</type></link> function.</para>
-<para>
+Destroy context object created with <link linkend="xmlSecDSigReferenceCtxCreate"><type>xmlSecDSigReferenceCtxCreate</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxInitialize" role="function">
 <title>xmlSecDSigReferenceCtxInitialize ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxInitialize"><primary sortas="xmlSecDSigReferenceCtxInitialize">xmlSecDSigReferenceCtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigReferenceCtxInitialize    (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="xmlSecDSigCtx">xmlSecDSigCtxPtr</link> dsigCtx,
-                                                         <link linkend="xmlSecDSigReferenceOrigin">xmlSecDSigReferenceOrigin</link> origin);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxInitialize"><primary>xmlSecDSigReferenceCtxInitialize</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigReferenceCtxInitialize    (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecDSigCtx"><type>xmlSecDSigCtxPtr</type></link> dsigCtx</parameter>,
+                                                         <parameter><link linkend="xmlSecDSigReferenceOrigin"><type>xmlSecDSigReferenceOrigin</type></link> origin</parameter>);</programlisting>
 <para>
 Initializes new <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context. Caller is responsible
 for cleaning up the returned context by calling <link linkend="xmlSecDSigReferenceCtxFinalize"><type>xmlSecDSigReferenceCtxFinalize</type></link>
-function.</para>
-<para>
+function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>
-<listitem><simpara>            the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
+<listitem><simpara>the pointer to parent <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> node processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>origin</parameter>&#160;:</term>
-<listitem><simpara>             the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
+<listitem><simpara>the reference origin (<ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo">&lt;dsig:SignedInfo/&gt;</ulink> or <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Manifest">&lt;dsig:Manifest/&gt;</ulink> node).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on succes or aa negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxFinalize" role="function">
 <title>xmlSecDSigReferenceCtxFinalize ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxFinalize"><primary sortas="xmlSecDSigReferenceCtxFinalize">xmlSecDSigReferenceCtxFinalize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigReferenceCtxFinalize      (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxFinalize"><primary>xmlSecDSigReferenceCtxFinalize</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigReferenceCtxFinalize      (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>);</programlisting>
 <para>
-Cleans up context object created with <link linkend="xmlSecDSigReferenceCtxInitialize"><type>xmlSecDSigReferenceCtxInitialize</type></link> function.</para>
-<para>
+Cleans up context object created with <link linkend="xmlSecDSigReferenceCtxInitialize"><type>xmlSecDSigReferenceCtxInitialize</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxProcessNode" role="function">
 <title>xmlSecDSigReferenceCtxProcessNode ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxProcessNode"><primary sortas="xmlSecDSigReferenceCtxProcessNode">xmlSecDSigReferenceCtxProcessNode</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecDSigReferenceCtxProcessNode   (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="xmlNode">xmlNodePtr</link> node);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxProcessNode"><primary>xmlSecDSigReferenceCtxProcessNode</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecDSigReferenceCtxProcessNode   (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> node</parameter>);</programlisting>
 <para>
 The Reference Element (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-Reference"><type>sec-Reference</type></link>)
 </para>
@@ -695,86 +649,82 @@ was created. The Type attribute facilitates the processing of referenced
 data. For example, while this specification makes no requirements over
 external data, an application may wish to signal that the referent is a
 Manifest. An optional ID attribute permits a Reference to be referenced
-from elsewhere.</para>
-<para>
+from elsewhere.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>node</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on succes or aa negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxGetPreDigestBuffer" role="function">
 <title>xmlSecDSigReferenceCtxGetPreDigestBuffer ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxGetPreDigestBuffer"><primary sortas="xmlSecDSigReferenceCtxGetPreDigestBuffer">xmlSecDSigReferenceCtxGetPreDigestBuffer</primary></indexterm><programlisting><link linkend="xmlSecBuffer">xmlSecBufferPtr</link>     xmlSecDSigReferenceCtxGetPreDigestBuffer
-                                                        (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxGetPreDigestBuffer"><primary>xmlSecDSigReferenceCtxGetPreDigestBuffer</primary></indexterm>
+<programlisting><link linkend="xmlSecBuffer"><returnvalue>xmlSecBufferPtr</returnvalue></link>     xmlSecDSigReferenceCtxGetPreDigestBuffer
+                                                        (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>);</programlisting>
 <para>
 Gets the results of <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> node processing just before digesting
-(valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES--CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</type></link> or
-<link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES--CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</type></link> flas of signature context
-is set).</para>
-<para>
+(valid only if <link linkend="XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</type></link> or
+<link linkend="XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS"><type>XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</type></link> flas of signature context
+is set).
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the buffer or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxDebugDump" role="function">
 <title>xmlSecDSigReferenceCtxDebugDump ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxDebugDump"><primary sortas="xmlSecDSigReferenceCtxDebugDump">xmlSecDSigReferenceCtxDebugDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigReferenceCtxDebugDump     (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxDebugDump"><primary>xmlSecDSigReferenceCtxDebugDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigReferenceCtxDebugDump     (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>output</parameter>.</para>
-<para>
+Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>output</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
+<listitem><simpara>the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxDebugXmlDump" role="function">
 <title>xmlSecDSigReferenceCtxDebugXmlDump ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxDebugXmlDump"><primary sortas="xmlSecDSigReferenceCtxDebugXmlDump">xmlSecDSigReferenceCtxDebugXmlDump</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecDSigReferenceCtxDebugXmlDump  (<link linkend="xmlSecDSigReferenceCtx">xmlSecDSigReferenceCtxPtr</link> dsigRefCtx,
-                                                         <link linkend="FILE--CAPS">FILE</link> *output);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxDebugXmlDump"><primary>xmlSecDSigReferenceCtxDebugXmlDump</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecDSigReferenceCtxDebugXmlDump  (<parameter><link linkend="xmlSecDSigReferenceCtx"><type>xmlSecDSigReferenceCtxPtr</type></link> dsigRefCtx</parameter>,
+                                                         <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);</programlisting>
 <para>
-Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>output</parameter> in output format.</para>
-<para>
+Prints debug information about <parameter>dsigRefCtx</parameter> to <parameter>output</parameter> in output format.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigRefCtx</parameter>&#160;:</term>
-<listitem><simpara>         the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>output</parameter>&#160;:</term>
-<listitem><simpara>             the pointer to output FILE.
+<listitem><simpara>the pointer to output FILE.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxListId" role="macro">
 <title>xmlSecDSigReferenceCtxListId</title>
-<indexterm zone="xmlSecDSigReferenceCtxListId"><primary sortas="xmlSecDSigReferenceCtxListId">xmlSecDSigReferenceCtxListId</primary></indexterm><programlisting>#define             xmlSecDSigReferenceCtxListId</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxListId"><primary>xmlSecDSigReferenceCtxListId</primary></indexterm>
+<programlisting>#define             xmlSecDSigReferenceCtxListId</programlisting>
 <para>
-The references list klass.</para>
-<para>
+The references list klass.
 </para></refsect2>
 <refsect2 id="xmlSecDSigReferenceCtxListGetKlass" role="function">
 <title>xmlSecDSigReferenceCtxListGetKlass ()</title>
-<indexterm zone="xmlSecDSigReferenceCtxListGetKlass"><primary sortas="xmlSecDSigReferenceCtxListGetKlass">xmlSecDSigReferenceCtxListGetKlass</primary></indexterm><programlisting><link linkend="xmlSecPtrListId">xmlSecPtrListId</link>     xmlSecDSigReferenceCtxListGetKlass  (void);</programlisting>
+<indexterm zone="xmlSecDSigReferenceCtxListGetKlass"><primary>xmlSecDSigReferenceCtxListGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecPtrListId"><returnvalue>xmlSecPtrListId</returnvalue></link>     xmlSecDSigReferenceCtxListGetKlass  (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing contexts list klass.</para>
-<para>
+The <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing contexts list klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Reference">&lt;dsig:Reference/&gt;</ulink> element processing context list klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

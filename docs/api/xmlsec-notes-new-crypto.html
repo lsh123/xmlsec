@@ -102,7 +102,7 @@
 <h1 class="SECT1"><a name="XMLSEC-NOTES-NEW-CRYPTO-OVERVIEW">Overview.</a></h1>
 <p>XML Security Library can support practicaly any cryptographic
     library. Currently, it has "out-of-the-box" support for OpenSSL,
-    NSS and GnuTLS. If your favorite library is not supported yet then
+    MSCrypto, NSS, GnuTLS and GCrypt. If your favorite library is not supported yet then
     you can write necessary code yourself. If you and your company
     (university, ...) are willing to share the results of your work I would 
     be happy to add support for new libraries to the main XML Security 
@@ -111,7 +111,7 @@
     <a href="xmlsec-notes-structure.html">separates</a> 
     the cryptographic library (engine) 
     specific code in an "xmlsec-&lt;crypto&gt;" library (where "&lt;crypto&gt;" is 
-    "openssl", "gnutls", "nss", etc.) which includes following items:
+    "openssl", "mscrypt", "gnutls", "gcrypt", "nss", etc.) which includes following items:
     </p>
 <p></p>
 <ul>

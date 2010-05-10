@@ -17,6 +17,9 @@ XML tree operations.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO xmlSecNodeGetName ##### -->
 <para>
 

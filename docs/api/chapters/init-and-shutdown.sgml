@@ -6,7 +6,7 @@
 	<itemizedlist>
 	    <listitem><para>libxml library;</para></listitem>
 	    <listitem><para>libxslt library;</para></listitem>
-	    <listitem><para>crypto library (OpenSSL, GnuTLS, NSS, ...);</para></listitem>
+	    <listitem><para>crypto library (OpenSSL, GnuTLS, GCrypt, NSS, ...);</para></listitem>
 	    <listitem><para>xmlsec library 
 		(<link linkend="xmlSecInit">xmlSecInit</link> 
 		and <link linkend="xmlSecShutdown">xmlSecShutdown</link> 

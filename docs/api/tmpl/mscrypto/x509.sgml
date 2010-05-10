@@ -17,6 +17,9 @@ X509 certificates support implementation for MS Crypto.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### MACRO xmlSecMSCryptoKeyDataX509Id ##### -->
 <para>
 
@@ -29,6 +32,7 @@ X509 certificates support implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -121,6 +125,7 @@ X509 certificates support implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -136,6 +141,7 @@ X509 certificates support implementation for MS Crypto.
 
 </para>
 
+@void: 
 @Returns: 
 
 

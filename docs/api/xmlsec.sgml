@@ -48,6 +48,9 @@
 <!ENTITY xmlsec-gnutls-app 		SYSTEM "sgml/gnutls/app.sgml">
 <!ENTITY xmlsec-gnutls-crypto 		SYSTEM "sgml/gnutls/crypto.sgml">
 
+<!ENTITY xmlsec-gcrypt-app 		SYSTEM "sgml/gcrypt/app.sgml">
+<!ENTITY xmlsec-gcrypt-crypto 		SYSTEM "sgml/gcrypt/crypto.sgml">
+
 <!ENTITY xmlsec-nss-app 		SYSTEM "sgml/nss/app.sgml">
 <!ENTITY xmlsec-nss-bignum		SYSTEM "sgml/nss/bignum.sgml">
 <!ENTITY xmlsec-nss-crypto 		SYSTEM "sgml/nss/crypto.sgml">
@@ -143,14 +146,15 @@
 	<para>XML Security Library provides support for XML Digital Signature 
 	and XML Encryption. It is based on LibXML/LibXSLT and can use
 	practicaly any crypto library (currently there is "out of the box" 
-	support for OpenSSL, GnuTLS and NSS).
+	support for OpenSSL, MSCrypto, GnuTLS, GCrypt and NSS).
 	</para>
     </chapter>
     <chapter id="xmlsec-notes-structure">
 	<title>XML Security Library Structure.</title>
 	<para>In order to provide the an ability to use different crypto engines, 
 	the XML Security Library is splitted in two parts: core library (xmlsec)
-	and crypto library (xmlsec-openssl, xmlsec-gnutls, xmlsec-nss, ...). 
+	and crypto library (xmlsec-openssl, xmlsec-mscrypt, xmlsec-gnutls, 
+	xmlsec-gcrypt, xmlsec-nss, ...).
 	<figure>
 	    <title>The library structure and dependencies.</title>
 	    <graphic fileref="images/structure.png" align="center"></graphic>
@@ -252,6 +256,16 @@
 
     &xmlsec-gnutls-app;
     &xmlsec-gnutls-crypto;
+    </chapter>
+
+    <chapter id="xmlsec-gcrypt-ref">
+    <title>XML Security Library for GCrypt API Reference.</title>
+    <para>This section contains the API reference for xmlsec-gcrypt. All
+    the public interfaces are documented here. This reference guide is
+    build by extracting comments from the code sources. </para>
+
+    &xmlsec-gcrypt-app;
+    &xmlsec-gcrypt-crypto;
     </chapter>
 
     <chapter id="xmlsec-nss-ref">

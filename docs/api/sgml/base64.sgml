@@ -2,9 +2,10 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-base64.top_of_page">base64</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>base64</refname>
 <refpurpose>Base64 encoding/decoding functions.</refpurpose>
@@ -13,41 +14,32 @@
 <refsynopsisdiv id="xmlsec-base64.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-#define             <link linkend="XMLSEC-BASE64-LINESIZE--CAPS">XMLSEC_BASE64_LINESIZE</link>
-<link linkend="int">int</link>                 <link linkend="xmlSecBase64GetDefaultLineSize">xmlSecBase64GetDefaultLineSize</link>      (void);
-<link linkend="void">void</link>                <link linkend="xmlSecBase64SetDefaultLineSize">xmlSecBase64SetDefaultLineSize</link>      (<link linkend="int">int</link> columns);
-<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link>  <link linkend="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</link>               (<link linkend="int">int</link> encode,
-                                                         <link linkend="int">int</link> columns);
-<link linkend="void">void</link>                <link linkend="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</link>              (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);
-<link linkend="int">int</link>                 <link linkend="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize</link>           (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                                         <link linkend="int">int</link> encode,
-                                                         <link linkend="int">int</link> columns);
-<link linkend="void">void</link>                <link linkend="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</link>             (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);
-<link linkend="int">int</link>                 <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>               (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *in,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> inSize,
-                                                         <link linkend="xmlSecByte">xmlSecByte</link> *out,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> outSize);
-<link linkend="int">int</link>                 <link linkend="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</link>                (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                                         <link linkend="xmlSecByte">xmlSecByte</link> *out,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> outSize);
-<link linkend="xmlChar">xmlChar</link>*            <link linkend="xmlSecBase64Encode">xmlSecBase64Encode</link>                  (const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> len,
-                                                         <link linkend="int">int</link> columns);
-<link linkend="int">int</link>                 <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>                  (const <link linkend="xmlChar">xmlChar</link> *str,
-                                                         <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> len);
+<synopsis>#define             <link linkend="XMLSEC-BASE64-LINESIZE:CAPS">XMLSEC_BASE64_LINESIZE</link>
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecBase64GetDefaultLineSize">xmlSecBase64GetDefaultLineSize</link>      (<parameter><type>void</type></parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecBase64SetDefaultLineSize">xmlSecBase64SetDefaultLineSize</link>      (<parameter><link linkend="int"><type>int</type></link> columns</parameter>);
+<link linkend="xmlSecBase64Ctx"><returnvalue>xmlSecBase64CtxPtr</returnvalue></link>  <link linkend="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</link>               (<parameter><link linkend="int"><type>int</type></link> encode</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> columns</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</link>              (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize</link>           (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> encode</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> columns</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</link>             (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</link>               (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>,
+                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *in</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> inSize</parameter>,
+                                                         <parameter><link linkend="xmlSecByte"><type>xmlSecByte</type></link> *out</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> outSize</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</link>                (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>,
+                                                         <parameter><link linkend="xmlSecByte"><type>xmlSecByte</type></link> *out</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> outSize</parameter>);
+<link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*            <link linkend="xmlSecBase64Encode">xmlSecBase64Encode</link>                  (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> columns</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecBase64Decode">xmlSecBase64Decode</link>                  (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *str</parameter>,
+                                                         <parameter><link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>);
 </synopsis>
 </refsynopsisdiv>
-
-
-
-
-
-
-
-
 
 <refsect1 id="xmlsec-base64.description" role="desc">
 <title role="desc.title">Description</title>
@@ -55,51 +47,50 @@
 Base64 encoding/decoding functions.
 </para>
 </refsect1>
-
 <refsect1 id="xmlsec-base64.details" role="details">
 <title role="details.title">Details</title>
-<refsect2 id="XMLSEC-BASE64-LINESIZE--CAPS" role="macro">
+<refsect2 id="XMLSEC-BASE64-LINESIZE:CAPS" role="macro">
 <title>XMLSEC_BASE64_LINESIZE</title>
-<indexterm zone="XMLSEC-BASE64-LINESIZE--CAPS"><primary sortas="XMLSEC_BASE64_LINESIZE">XMLSEC_BASE64_LINESIZE</primary></indexterm><programlisting>#define XMLSEC_BASE64_LINESIZE                          64
+<indexterm zone="XMLSEC-BASE64-LINESIZE:CAPS"><primary>XMLSEC_BASE64_LINESIZE</primary></indexterm>
+<programlisting>#define XMLSEC_BASE64_LINESIZE                          64
 </programlisting>
 <para>
-The default maximum base64 encoded line size.</para>
-<para>
+The default maximum base64 encoded line size.
 </para></refsect2>
 <refsect2 id="xmlSecBase64GetDefaultLineSize" role="function">
 <title>xmlSecBase64GetDefaultLineSize ()</title>
-<indexterm zone="xmlSecBase64GetDefaultLineSize"><primary sortas="xmlSecBase64GetDefaultLineSize">xmlSecBase64GetDefaultLineSize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBase64GetDefaultLineSize      (void);</programlisting>
+<indexterm zone="xmlSecBase64GetDefaultLineSize"><primary>xmlSecBase64GetDefaultLineSize</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecBase64GetDefaultLineSize      (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-Gets the current default line size.</para>
-<para>
+Gets the current default line size.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the current default line size.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64SetDefaultLineSize" role="function">
 <title>xmlSecBase64SetDefaultLineSize ()</title>
-<indexterm zone="xmlSecBase64SetDefaultLineSize"><primary sortas="xmlSecBase64SetDefaultLineSize">xmlSecBase64SetDefaultLineSize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBase64SetDefaultLineSize      (<link linkend="int">int</link> columns);</programlisting>
+<indexterm zone="xmlSecBase64SetDefaultLineSize"><primary>xmlSecBase64SetDefaultLineSize</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecBase64SetDefaultLineSize      (<parameter><link linkend="int"><type>int</type></link> columns</parameter>);</programlisting>
 <para>
-Sets the current default line size.</para>
-<para>
+Sets the current default line size.
 </para><variablelist role="params">
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara> number of columns
+<listitem><simpara>number of columns
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxCreate" role="function">
 <title>xmlSecBase64CtxCreate ()</title>
-<indexterm zone="xmlSecBase64CtxCreate"><primary sortas="xmlSecBase64CtxCreate">xmlSecBase64CtxCreate</primary></indexterm><programlisting><link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link>  xmlSecBase64CtxCreate               (<link linkend="int">int</link> encode,
-                                                         <link linkend="int">int</link> columns);</programlisting>
+<indexterm zone="xmlSecBase64CtxCreate"><primary>xmlSecBase64CtxCreate</primary></indexterm>
+<programlisting><link linkend="xmlSecBase64Ctx"><returnvalue>xmlSecBase64CtxPtr</returnvalue></link>  xmlSecBase64CtxCreate               (<parameter><link linkend="int"><type>int</type></link> encode</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> columns</parameter>);</programlisting>
 <para>
-Allocates and initializes new base64 context.</para>
-<para>
+Allocates and initializes new base64 context.
 </para><variablelist role="params">
 <varlistentry><term><parameter>encode</parameter>&#160;:</term>
-<listitem><simpara>             the encode/decode flag (1 - encode, 0 - decode)
+<listitem><simpara>the encode/decode flag (1 - encode, 0 - decode)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara>            the max line length.
+<listitem><simpara>the max line length.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> a pointer to newly created <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
 or NULL if an error occurs.
@@ -107,72 +98,72 @@ or NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxDestroy" role="function">
 <title>xmlSecBase64CtxDestroy ()</title>
-<indexterm zone="xmlSecBase64CtxDestroy"><primary sortas="xmlSecBase64CtxDestroy">xmlSecBase64CtxDestroy</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBase64CtxDestroy              (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<indexterm zone="xmlSecBase64CtxDestroy"><primary>xmlSecBase64CtxDestroy</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecBase64CtxDestroy              (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>);</programlisting>
 <para>
-Destroys base64 context.</para>
-<para>
+Destroys base64 context.
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure.
+<listitem><simpara>the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxInitialize" role="function">
 <title>xmlSecBase64CtxInitialize ()</title>
-<indexterm zone="xmlSecBase64CtxInitialize"><primary sortas="xmlSecBase64CtxInitialize">xmlSecBase64CtxInitialize</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBase64CtxInitialize           (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                                         <link linkend="int">int</link> encode,
-                                                         <link linkend="int">int</link> columns);</programlisting>
+<indexterm zone="xmlSecBase64CtxInitialize"><primary>xmlSecBase64CtxInitialize</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecBase64CtxInitialize           (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> encode</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> columns</parameter>);</programlisting>
 <para>
-Initializes new base64 context.</para>
-<para>
+Initializes new base64 context.
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
+<listitem><simpara>the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>encode</parameter>&#160;:</term>
-<listitem><simpara>             the encode/decode flag (1 - encode, 0 - decode)
+<listitem><simpara>the encode/decode flag (1 - encode, 0 - decode)
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara>            the max line length.
+<listitem><simpara>the max line length.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success and a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxFinalize" role="function">
 <title>xmlSecBase64CtxFinalize ()</title>
-<indexterm zone="xmlSecBase64CtxFinalize"><primary sortas="xmlSecBase64CtxFinalize">xmlSecBase64CtxFinalize</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecBase64CtxFinalize             (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx);</programlisting>
+<indexterm zone="xmlSecBase64CtxFinalize"><primary>xmlSecBase64CtxFinalize</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecBase64CtxFinalize             (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>);</programlisting>
 <para>
-Frees all the resources allocated by <parameter>ctx</parameter>.</para>
-<para>
+Frees all the resources allocated by <parameter>ctx</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
+<listitem><simpara>the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure,
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxUpdate" role="function">
 <title>xmlSecBase64CtxUpdate ()</title>
-<indexterm zone="xmlSecBase64CtxUpdate"><primary sortas="xmlSecBase64CtxUpdate">xmlSecBase64CtxUpdate</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBase64CtxUpdate               (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *in,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> inSize,
-                                                         <link linkend="xmlSecByte">xmlSecByte</link> *out,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> outSize);</programlisting>
+<indexterm zone="xmlSecBase64CtxUpdate"><primary>xmlSecBase64CtxUpdate</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecBase64CtxUpdate               (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>,
+                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *in</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> inSize</parameter>,
+                                                         <parameter><link linkend="xmlSecByte"><type>xmlSecByte</type></link> *out</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> outSize</parameter>);</programlisting>
 <para>
-Encodes or decodes the next piece of data from input buffer.</para>
-<para>
+Encodes or decodes the next piece of data from input buffer.
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
+<listitem><simpara>the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>in</parameter>&#160;:</term>
-<listitem><simpara>                 the input buffer
+<listitem><simpara>the input buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>inSize</parameter>&#160;:</term>
-<listitem><simpara>             the input buffer size
+<listitem><simpara>the input buffer size
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>out</parameter>&#160;:</term>
-<listitem><simpara>                the output buffer
+<listitem><simpara>the output buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>outSize</parameter>&#160;:</term>
-<listitem><simpara>            the output buffer size
+<listitem><simpara>the output buffer size
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to output buffer or
 -1 if an error occurs.
@@ -180,22 +171,22 @@ Encodes or decodes the next piece of data from input buffer.</para>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64CtxFinal" role="function">
 <title>xmlSecBase64CtxFinal ()</title>
-<indexterm zone="xmlSecBase64CtxFinal"><primary sortas="xmlSecBase64CtxFinal">xmlSecBase64CtxFinal</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBase64CtxFinal                (<link linkend="xmlSecBase64Ctx">xmlSecBase64CtxPtr</link> ctx,
-                                                         <link linkend="xmlSecByte">xmlSecByte</link> *out,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> outSize);</programlisting>
+<indexterm zone="xmlSecBase64CtxFinal"><primary>xmlSecBase64CtxFinal</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecBase64CtxFinal                (<parameter><link linkend="xmlSecBase64Ctx"><type>xmlSecBase64CtxPtr</type></link> ctx</parameter>,
+                                                         <parameter><link linkend="xmlSecByte"><type>xmlSecByte</type></link> *out</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> outSize</parameter>);</programlisting>
 <para>
 Encodes or decodes the last piece of data stored in the context
-and finalizes the result.</para>
-<para>
+and finalizes the result.
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
+<listitem><simpara>the pointer to <link linkend="xmlSecBase64Ctx"><type>xmlSecBase64Ctx</type></link> structure
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>out</parameter>&#160;:</term>
-<listitem><simpara>                the output buffer
+<listitem><simpara>the output buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>outSize</parameter>&#160;:</term>
-<listitem><simpara>            the output buffer size
+<listitem><simpara>the output buffer size
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to output buffer or
 -1 if an error occurs.
@@ -203,23 +194,23 @@ and finalizes the result.</para>
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64Encode" role="function">
 <title>xmlSecBase64Encode ()</title>
-<indexterm zone="xmlSecBase64Encode"><primary sortas="xmlSecBase64Encode">xmlSecBase64Encode</primary></indexterm><programlisting><link linkend="xmlChar">xmlChar</link>*            xmlSecBase64Encode                  (const <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> len,
-                                                         <link linkend="int">int</link> columns);</programlisting>
+<indexterm zone="xmlSecBase64Encode"><primary>xmlSecBase64Encode</primary></indexterm>
+<programlisting><link linkend="xmlChar"><returnvalue>xmlChar</returnvalue></link>*            xmlSecBase64Encode                  (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> columns</parameter>);</programlisting>
 <para>
 Encodes the data from input buffer and allocates the string for the result.
 The caller is responsible for freeing returned buffer using
-<link linkend="xmlFree"><function>xmlFree()</function></link> function.</para>
-<para>
+<link linkend="xmlFree"><function>xmlFree()</function></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the input buffer.
+<listitem><simpara>the input buffer.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>                the input buffer size.
+<listitem><simpara>the input buffer size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>columns</parameter>&#160;:</term>
-<listitem><simpara>            the output max line length (if 0 then no line breaks
+<listitem><simpara>the output max line length (if 0 then no line breaks
                      would be inserted)
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> newly allocated string with base64 encoded data
@@ -228,22 +219,22 @@ or NULL if an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecBase64Decode" role="function">
 <title>xmlSecBase64Decode ()</title>
-<indexterm zone="xmlSecBase64Decode"><primary sortas="xmlSecBase64Decode">xmlSecBase64Decode</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecBase64Decode                  (const <link linkend="xmlChar">xmlChar</link> *str,
-                                                         <link linkend="xmlSecByte">xmlSecByte</link> *buf,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> len);</programlisting>
+<indexterm zone="xmlSecBase64Decode"><primary>xmlSecBase64Decode</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecBase64Decode                  (<parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *str</parameter>,
+                                                         <parameter><link linkend="xmlSecByte"><type>xmlSecByte</type></link> *buf</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> len</parameter>);</programlisting>
 <para>
 Decodes input base64 encoded string and puts result into
-the output buffer.</para>
-<para>
+the output buffer.
 </para><variablelist role="params">
 <varlistentry><term><parameter>str</parameter>&#160;:</term>
-<listitem><simpara>                the input buffer with base64 encoded string
+<listitem><simpara>the input buffer with base64 encoded string
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>buf</parameter>&#160;:</term>
-<listitem><simpara>                the output buffer
+<listitem><simpara>the output buffer
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>len</parameter>&#160;:</term>
-<listitem><simpara>                the output buffer size
+<listitem><simpara>the output buffer size
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of bytes written to the output buffer or
 a negative value if an error occurs
@@ -251,8 +242,5 @@ a negative value if an error occurs
 </variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

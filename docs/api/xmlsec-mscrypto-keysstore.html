@@ -87,19 +87,19 @@
 <h1>
 <a name="XMLSEC-MSCRYPTO-KEYSSTORE"></a>keysstore</h1>
 <div class="REFNAMEDIV">
-<a name="AEN30511"></a><h2>Name</h2>keysstore -- Keys store implementation for MS Crypto.</div>
+<a name="AEN40841"></a><h2>Name</h2>keysstore -- Keys store implementation for MS Crypto.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-MSCRYPTO-KEYSSTORE.SYNOPSIS"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">#define             <a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTOREID">xmlSecMSCryptoKeysStoreId</a>
-<font>xmlSecKeyStoreId</font>    <a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTOREGETKLASS">xmlSecMSCryptoKeysStoreGetKlass</a>     (void);
-<font>int</font>                 <a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTOREADOPTKEY">xmlSecMSCryptoKeysStoreAdoptKey</a>     (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                                         <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);
-<font>int</font>                 <a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTORELOAD">xmlSecMSCryptoKeysStoreLoad</a>         (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                                         const <font>char</font> *uri,
-                                                         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);
-<font>int</font>                 <a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTORESAVE">xmlSecMSCryptoKeysStoreSave</a>         (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                                         const <font>char</font> *filename,
-                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<gtkdoclink href="XMLSECKEYSTOREID"><span class="RETURNVALUE">xmlSecKeyStoreId</span></gtkdoclink><a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTOREGETKLASS">xmlSecMSCryptoKeysStoreGetKlass</a>     (<code class="PARAMETER"><span class="TYPE">void</span></code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTOREADOPTKEY">xmlSecMSCryptoKeysStoreAdoptKey</a>     (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTORELOAD">xmlSecMSCryptoKeysStoreLoad</a>         (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *uri</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);
+<gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-mscrypto-keysstore.html#XMLSECMSCRYPTOKEYSSTORESAVE">xmlSecMSCryptoKeysStoreSave</a>         (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
 </div>
 <div class="REFSECT1">
 <a name="XMLSEC-MSCRYPTO-KEYSSTORE.DESCRIPTION"></a><h2>Description</h2>
@@ -111,39 +111,36 @@
 <a name="XMLSECMSCRYPTOKEYSSTOREID"></a><h3>xmlSecMSCryptoKeysStoreId</h3>
 <pre class="PROGRAMLISTING">#define xmlSecMSCryptoKeysStoreId       xmlSecMSCryptoKeysStoreGetKlass()</pre>
 <p>A MSCrypto keys store klass id.</p>
-<p></p>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECMSCRYPTOKEYSSTOREGETKLASS"></a><h3>xmlSecMSCryptoKeysStoreGetKlass ()</h3>
-<pre class="PROGRAMLISTING"><font>xmlSecKeyStoreId</font>    xmlSecMSCryptoKeysStoreGetKlass     (void);</pre>
+<pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYSTOREID"><span class="RETURNVALUE">xmlSecKeyStoreId</span></gtkdoclink>    xmlSecMSCryptoKeysStoreGetKlass     (<code class="PARAMETER"><span class="TYPE">void</span></code>);</pre>
 <p>The MSCrypto list based keys store klass.</p>
 <p></p>
-<p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN30555"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN40908"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> MSCrypto list based keys store klass.</p></td>
 </tr></tbody></table>
 </div>
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECMSCRYPTOKEYSSTOREADOPTKEY"></a><h3>xmlSecMSCryptoKeysStoreAdoptKey ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecMSCryptoKeysStoreAdoptKey     (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                                         <a href="xmlsec-keys.html#XMLSECKEY">xmlSecKeyPtr</a> key);</pre>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecMSCryptoKeysStoreAdoptKey     (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> key</code>);</pre>
 <p>Adds <code class="PARAMETER">key</code> to the <code class="PARAMETER">store</code>.</p>
-<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30573"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to MSCrypto keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN40930"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to MSCrypto keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30578"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the pointer to key.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN40935"><span style="white-space: nowrap"><code class="PARAMETER">key</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to key.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30583"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN40940"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -151,27 +148,26 @@
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECMSCRYPTOKEYSSTORELOAD"></a><h3>xmlSecMSCryptoKeysStoreLoad ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecMSCryptoKeysStoreLoad         (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                                         const <font>char</font> *uri,
-                                                         <a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR">xmlSecKeysMngrPtr</a> keysMngr);</pre>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecMSCryptoKeysStoreLoad         (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *uri</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSMNGR"><span class="TYPE">xmlSecKeysMngrPtr</span></a> keysMngr</code>);</pre>
 <p>Reads keys from an XML file.</p>
-<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30600"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to MSCrypto keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN40963"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to MSCrypto keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30605"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>                the filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN40968"><span style="white-space: nowrap"><code class="PARAMETER">uri</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30610"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the pointer to associated keys manager.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN40973"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to associated keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30615"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN40978"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -179,27 +175,26 @@
 <hr>
 <div class="REFSECT2">
 <a name="XMLSECMSCRYPTOKEYSSTORESAVE"></a><h3>xmlSecMSCryptoKeysStoreSave ()</h3>
-<pre class="PROGRAMLISTING"><font>int</font>                 xmlSecMSCryptoKeysStoreSave         (<a href="xmlsec-keysmngr.html#XMLSECKEYSTORE">xmlSecKeyStorePtr</a> store,
-                                                         const <font>char</font> *filename,
-                                                         <a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE">xmlSecKeyDataType</a> type);</pre>
+<pre class="PROGRAMLISTING"><gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink>                 xmlSecMSCryptoKeysStoreSave         (<code class="PARAMETER"><a href="xmlsec-keysmngr.html#XMLSECKEYSTORE"><span class="TYPE">xmlSecKeyStorePtr</span></a> store</code>,
+                                                         <code class="PARAMETER">const <gtkdoclink href="CHAR"><span class="TYPE">char</span></gtkdoclink> *filename</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATATYPE"><span class="TYPE">xmlSecKeyDataType</span></a> type</code>);</pre>
 <p>Writes keys from <code class="PARAMETER">store</code> to an XML file.</p>
-<p></p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30633"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>              the pointer to MSCrypto keys store.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN41002"><span style="white-space: nowrap"><code class="PARAMETER">store</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to MSCrypto keys store.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30638"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>           the filename.</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN41007"><span style="white-space: nowrap"><code class="PARAMETER">filename</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the filename.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30643"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
-<td align="LEFT" valign="TOP"><p>               the saved keys type (public, private, ...).</p></td>
+<td align="LEFT" valign="TOP"><a name="AEN41012"><span style="white-space: nowrap"><code class="PARAMETER">type</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the saved keys type (public, private, ...).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN30648"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN41017"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>

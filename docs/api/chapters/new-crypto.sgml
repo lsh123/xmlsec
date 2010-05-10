@@ -4,7 +4,7 @@
     <title>Overview.</title>
     <para>XML Security Library can support practicaly any cryptographic
     library. Currently, it has "out-of-the-box" support for OpenSSL,
-    NSS and GnuTLS. If your favorite library is not supported yet then
+    MSCrypto, NSS, GnuTLS and GCrypt. If your favorite library is not supported yet then
     you can write necessary code yourself. If you and your company
     (university, ...) are willing to share the results of your work I would 
     be happy to add support for new libraries to the main XML Security 
@@ -14,7 +14,7 @@
     <link linkend="xmlsec-notes-structure">separates</link> 
     the cryptographic library (engine) 
     specific code in an "xmlsec-&lt;crypto&gt;" library (where "&lt;crypto&gt;" is 
-    "openssl", "gnutls", "nss", etc.) which includes following items:
+    "openssl", "mscrypt", "gnutls", "gcrypt", "nss", etc.) which includes following items:
     <itemizedlist>
     <listitem><para>
     xmlSecCryptoApp* functions.
@@ -186,7 +186,7 @@ src/mycrypto/Makefile
 	<example>
 	    <title>Compiling the results.</title>
 	    <programlisting><![CDATA[
-./autogen.sh --without-openssl --without-nss --without-gnutls \
+./autogen.sh --without-openssl --without-nss --without-gnutls --without-gcrypt \
     	     --with-mycrypto=$HOME --disable-tmpl-tests
 make	
 	    ]]></programlisting>

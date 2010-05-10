@@ -2,9 +2,10 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-private.top_of_page">private</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>private</refname>
 <refpurpose>Private header for building xmlsec-crypto-engine libraries.</refpurpose>
@@ -13,72 +14,63 @@
 <refsynopsisdiv id="xmlsec-private.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoInitMethod">*xmlSecCryptoInitMethod</link>)           (void);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoShutdownMethod">*xmlSecCryptoShutdownMethod</link>)       (void);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoKeysMngrInitMethod">*xmlSecCryptoKeysMngrInitMethod</link>)   (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     (<link linkend="xmlSecCryptoKeyDataGetKlassMethod">*xmlSecCryptoKeyDataGetKlassMethod</link>)
-                                                        (void);
-<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>  (<link linkend="xmlSecCryptoKeyDataStoreGetKlassMethod">*xmlSecCryptoKeyDataStoreGetKlassMethod</link>)
-                                                        (void);
-<link linkend="xmlSecTransformId">xmlSecTransformId</link>   (<link linkend="xmlSecCryptoTransformGetKlassMethod">*xmlSecCryptoTransformGetKlassMethod</link>)
-                                                        (void);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoAppInitMethod">*xmlSecCryptoAppInitMethod</link>)        (const <link linkend="char">char</link> *config);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoAppShutdownMethod">*xmlSecCryptoAppShutdownMethod</link>)    (void);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod">*xmlSecCryptoAppKeysMngrCertLoadMethod</link>)
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</link>)
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        (<link linkend="xmlSecCryptoAppKeyLoadMethod">*xmlSecCryptoAppKeyLoadMethod</link>)     (const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        (<link linkend="xmlSecCryptoAppKeyLoadMemoryMethod">*xmlSecCryptoAppKeyLoadMemoryMethod</link>)
-                                                        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        (<link linkend="xmlSecCryptoAppPkcs12LoadMethod">*xmlSecCryptoAppPkcs12LoadMethod</link>)  (const <link linkend="char">char</link> *filename,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="xmlSecKey">xmlSecKeyPtr</link>        (<link linkend="xmlSecCryptoAppPkcs12LoadMemoryMethod">*xmlSecCryptoAppPkcs12LoadMemoryMethod</link>)
-                                                        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoAppKeyCertLoadMethod">*xmlSecCryptoAppKeyCertLoadMethod</link>) (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
-<link linkend="int">int</link>                 (<link linkend="xmlSecCryptoAppKeyCertLoadMemoryMethod">*xmlSecCryptoAppKeyCertLoadMemoryMethod</link>)
-                                                        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);
+<synopsis><link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoInitMethod">*xmlSecCryptoInitMethod</link>)           (<parameter><type>void</type></parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoShutdownMethod">*xmlSecCryptoShutdownMethod</link>)       (<parameter><type>void</type></parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoKeysMngrInitMethod">*xmlSecCryptoKeysMngrInitMethod</link>)   (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     (<link linkend="xmlSecCryptoKeyDataGetKlassMethod">*xmlSecCryptoKeyDataGetKlassMethod</link>)
+                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecKeyDataStoreId"><returnvalue>xmlSecKeyDataStoreId</returnvalue></link>  (<link linkend="xmlSecCryptoKeyDataStoreGetKlassMethod">*xmlSecCryptoKeyDataStoreGetKlassMethod</link>)
+                                                        (<parameter><type>void</type></parameter>);
+<link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   (<link linkend="xmlSecCryptoTransformGetKlassMethod">*xmlSecCryptoTransformGetKlassMethod</link>)
+                                                        (<parameter><type>void</type></parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoAppInitMethod">*xmlSecCryptoAppInitMethod</link>)        (<parameter>const <link linkend="char"><type>char</type></link> *config</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoAppShutdownMethod">*xmlSecCryptoAppShutdownMethod</link>)    (<parameter><type>void</type></parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod">*xmlSecCryptoAppKeysMngrCertLoadMethod</link>)
+                                                        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</link>)
+                                                        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);
+<link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (<link linkend="xmlSecCryptoAppKeyLoadMethod">*xmlSecCryptoAppKeyLoadMethod</link>)     (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);
+<link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (<link linkend="xmlSecCryptoAppKeyLoadMemoryMethod">*xmlSecCryptoAppKeyLoadMemoryMethod</link>)
+                                                        (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);
+<link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (<link linkend="xmlSecCryptoAppPkcs12LoadMethod">*xmlSecCryptoAppPkcs12LoadMethod</link>)  (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);
+<link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (<link linkend="xmlSecCryptoAppPkcs12LoadMemoryMethod">*xmlSecCryptoAppPkcs12LoadMemoryMethod</link>)
+                                                        (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoAppKeyCertLoadMethod">*xmlSecCryptoAppKeyCertLoadMethod</link>) (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 (<link linkend="xmlSecCryptoAppKeyCertLoadMemoryMethod">*xmlSecCryptoAppKeyCertLoadMemoryMethod</link>)
+                                                        (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);
 struct              <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctions</link>;
 #define             <link linkend="xmlSecStrPrintf">xmlSecStrPrintf</link>
 #define             <link linkend="xmlSecStrVPrintf">xmlSecStrVPrintf</link>
 </synopsis>
 </refsynopsisdiv>
-
-
-
-
-
-
-
-
 
 <refsect1 id="xmlsec-private.description" role="desc">
 <title role="desc.title">Description</title>
@@ -86,49 +78,48 @@ struct              <link linkend="xmlSecCryptoDLFunctions">xmlSecCryptoDLFuncti
 Private header for building xmlsec-crypto-engine libraries.
 </para>
 </refsect1>
-
 <refsect1 id="xmlsec-private.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecCryptoInitMethod" role="function">
 <title>xmlSecCryptoInitMethod ()</title>
-<indexterm zone="xmlSecCryptoInitMethod"><primary sortas="xmlSecCryptoInitMethod">xmlSecCryptoInitMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoInitMethod)           (void);</programlisting>
+<indexterm zone="xmlSecCryptoInitMethod"><primary>xmlSecCryptoInitMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoInitMethod)           (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-xmlsec-crypto libraryinitialization method.</para>
-<para>
+xmlsec-crypto libraryinitialization method.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoShutdownMethod" role="function">
 <title>xmlSecCryptoShutdownMethod ()</title>
-<indexterm zone="xmlSecCryptoShutdownMethod"><primary sortas="xmlSecCryptoShutdownMethod">xmlSecCryptoShutdownMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoShutdownMethod)       (void);</programlisting>
+<indexterm zone="xmlSecCryptoShutdownMethod"><primary>xmlSecCryptoShutdownMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoShutdownMethod)       (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-xmlsec-crypto library shutdown method.</para>
-<para>
+xmlsec-crypto library shutdown method.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoKeysMngrInitMethod" role="function">
 <title>xmlSecCryptoKeysMngrInitMethod ()</title>
-<indexterm zone="xmlSecCryptoKeysMngrInitMethod"><primary sortas="xmlSecCryptoKeysMngrInitMethod">xmlSecCryptoKeysMngrInitMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoKeysMngrInitMethod)   (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr);</programlisting>
+<indexterm zone="xmlSecCryptoKeysMngrInitMethod"><primary>xmlSecCryptoKeysMngrInitMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoKeysMngrInitMethod)   (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>);</programlisting>
 <para>
-Initializes <parameter>mngr</parameter> with xmlsec-crypto library specific data.</para>
-<para>
+Initializes <parameter>mngr</parameter> with xmlsec-crypto library specific data.
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to keys manager.
+<listitem><simpara>the pointer to keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoKeyDataGetKlassMethod" role="function">
 <title>xmlSecCryptoKeyDataGetKlassMethod ()</title>
-<indexterm zone="xmlSecCryptoKeyDataGetKlassMethod"><primary sortas="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     (*xmlSecCryptoKeyDataGetKlassMethod)
-                                                        (void);</programlisting>
+<indexterm zone="xmlSecCryptoKeyDataGetKlassMethod"><primary>xmlSecCryptoKeyDataGetKlassMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     (*xmlSecCryptoKeyDataGetKlassMethod)
+                                                        (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-Gets the key data klass.</para>
-<para>
+Gets the key data klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to key data klass or NULL if an error occurs
 (the xmlsec-crypto library is not loaded or this key data klass is not
@@ -137,11 +128,11 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoKeyDataStoreGetKlassMethod" role="function">
 <title>xmlSecCryptoKeyDataStoreGetKlassMethod ()</title>
-<indexterm zone="xmlSecCryptoKeyDataStoreGetKlassMethod"><primary sortas="xmlSecCryptoKeyDataStoreGetKlassMethod">xmlSecCryptoKeyDataStoreGetKlassMethod</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>  (*xmlSecCryptoKeyDataStoreGetKlassMethod)
-                                                        (void);</programlisting>
+<indexterm zone="xmlSecCryptoKeyDataStoreGetKlassMethod"><primary>xmlSecCryptoKeyDataStoreGetKlassMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataStoreId"><returnvalue>xmlSecKeyDataStoreId</returnvalue></link>  (*xmlSecCryptoKeyDataStoreGetKlassMethod)
+                                                        (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-Gets the key data store klass.</para>
-<para>
+Gets the key data store klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to key data store klass or NULL if an error occurs
 (the xmlsec-crypto library is not loaded or this key data store klass is not
@@ -150,11 +141,11 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoTransformGetKlassMethod" role="function">
 <title>xmlSecCryptoTransformGetKlassMethod ()</title>
-<indexterm zone="xmlSecCryptoTransformGetKlassMethod"><primary sortas="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</primary></indexterm><programlisting><link linkend="xmlSecTransformId">xmlSecTransformId</link>   (*xmlSecCryptoTransformGetKlassMethod)
-                                                        (void);</programlisting>
+<indexterm zone="xmlSecCryptoTransformGetKlassMethod"><primary>xmlSecCryptoTransformGetKlassMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   (*xmlSecCryptoTransformGetKlassMethod)
+                                                        (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-Gets the transform klass.</para>
-<para>
+Gets the transform klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to transform klass or NULL if an error occurs
 (the xmlsec-crypto library is not loaded or this transform is not
@@ -163,54 +154,54 @@ implemented).
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppInitMethod" role="function">
 <title>xmlSecCryptoAppInitMethod ()</title>
-<indexterm zone="xmlSecCryptoAppInitMethod"><primary sortas="xmlSecCryptoAppInitMethod">xmlSecCryptoAppInitMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoAppInitMethod)        (const <link linkend="char">char</link> *config);</programlisting>
+<indexterm zone="xmlSecCryptoAppInitMethod"><primary>xmlSecCryptoAppInitMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoAppInitMethod)        (<parameter>const <link linkend="char"><type>char</type></link> *config</parameter>);</programlisting>
 <para>
 General crypto engine initialization. This function is used
 by XMLSec command line utility and called before
-<parameter>xmlSecInit</parameter> function.</para>
-<para>
+<parameter>xmlSecInit</parameter> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>config</parameter>&#160;:</term>
-<listitem><simpara>             the path to crypto library configuration.
+<listitem><simpara>the path to crypto library configuration.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppShutdownMethod" role="function">
 <title>xmlSecCryptoAppShutdownMethod ()</title>
-<indexterm zone="xmlSecCryptoAppShutdownMethod"><primary sortas="xmlSecCryptoAppShutdownMethod">xmlSecCryptoAppShutdownMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoAppShutdownMethod)    (void);</programlisting>
+<indexterm zone="xmlSecCryptoAppShutdownMethod"><primary>xmlSecCryptoAppShutdownMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoAppShutdownMethod)    (<parameter><type>void</type></parameter>);</programlisting>
 <para>
 General crypto engine shutdown. This function is used
 by XMLSec command line utility and called after
-<parameter>xmlSecShutdown</parameter> function.</para>
-<para>
+<parameter>xmlSecShutdown</parameter> function.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppKeysMngrCertLoadMethod" role="function">
 <title>xmlSecCryptoAppKeysMngrCertLoadMethod ()</title>
-<indexterm zone="xmlSecCryptoAppKeysMngrCertLoadMethod"><primary sortas="xmlSecCryptoAppKeysMngrCertLoadMethod">xmlSecCryptoAppKeysMngrCertLoadMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoAppKeysMngrCertLoadMethod)
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<indexterm zone="xmlSecCryptoAppKeysMngrCertLoadMethod"><primary>xmlSecCryptoAppKeysMngrCertLoadMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoAppKeysMngrCertLoadMethod)
+                                                        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
 <para>
 Reads cert from <parameter>filename</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter>.</para>
-<para>
+untrusted certs in <parameter>store</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the keys manager.
+<listitem><simpara>the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the certificate file.
+<listitem><simpara>the certificate file.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate file format.
+<listitem><simpara>the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the flag that indicates is the certificate in <parameter>filename</parameter>
+<listitem><simpara>the flag that indicates is the certificate in <parameter>filename</parameter>
                      trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
@@ -218,31 +209,31 @@ untrusted certs in <parameter>store</parameter>.</para>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod" role="function">
 <title>xmlSecCryptoAppKeysMngrCertLoadMemoryMethod ()</title>
-<indexterm zone="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod"><primary sortas="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)
-                                                        (<link linkend="xmlSecKeysMngr">xmlSecKeysMngrPtr</link> mngr,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<indexterm zone="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod"><primary>xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoAppKeysMngrCertLoadMemoryMethod)
+                                                        (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> mngr</parameter>,
+                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
 <para>
 Reads cert from <parameter>data</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter>.</para>
-<para>
+untrusted certs in <parameter>store</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
-<listitem><simpara>               the keys manager.
+<listitem><simpara>the keys manager.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the key data.
+<listitem><simpara>the key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the key data size.
+<listitem><simpara>the key data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate format.
+<listitem><simpara>the certificate format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the flag that indicates is the certificate in <parameter>data</parameter>
+<listitem><simpara>the flag that indicates is the certificate in <parameter>data</parameter>
                      trusted or not.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
@@ -250,176 +241,177 @@ untrusted certs in <parameter>store</parameter>.</para>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppKeyLoadMethod" role="function">
 <title>xmlSecCryptoAppKeyLoadMethod ()</title>
-<indexterm zone="xmlSecCryptoAppKeyLoadMethod"><primary sortas="xmlSecCryptoAppKeyLoadMethod">xmlSecCryptoAppKeyLoadMethod</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        (*xmlSecCryptoAppKeyLoadMethod)     (const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
+<indexterm zone="xmlSecCryptoAppKeyLoadMethod"><primary>xmlSecCryptoAppKeyLoadMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (*xmlSecCryptoAppKeyLoadMethod)     (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key from the a file.</para>
-<para>
+Reads key from the a file.
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the key filename.
+<listitem><simpara>the key filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the key file format.
+<listitem><simpara>the key file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the key file password.
+<listitem><simpara>the key file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the key password callback.
+<listitem><simpara>the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
+<listitem><simpara>the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppKeyLoadMemoryMethod" role="function">
 <title>xmlSecCryptoAppKeyLoadMemoryMethod ()</title>
-<indexterm zone="xmlSecCryptoAppKeyLoadMemoryMethod"><primary sortas="xmlSecCryptoAppKeyLoadMemoryMethod">xmlSecCryptoAppKeyLoadMemoryMethod</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        (*xmlSecCryptoAppKeyLoadMemoryMethod)
-                                                        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
+<indexterm zone="xmlSecCryptoAppKeyLoadMemoryMethod"><primary>xmlSecCryptoAppKeyLoadMemoryMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (*xmlSecCryptoAppKeyLoadMemoryMethod)
+                                                        (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key from the binary data buffer.</para>
-<para>
+Reads key from the binary data buffer.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the key data.
+<listitem><simpara>the key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the key data size.
+<listitem><simpara>the key data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the key data format.
+<listitem><simpara>the key data format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the key data password.
+<listitem><simpara>the key data password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the key password callback.
+<listitem><simpara>the key password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
+<listitem><simpara>the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppPkcs12LoadMethod" role="function">
 <title>xmlSecCryptoAppPkcs12LoadMethod ()</title>
-<indexterm zone="xmlSecCryptoAppPkcs12LoadMethod"><primary sortas="xmlSecCryptoAppPkcs12LoadMethod">xmlSecCryptoAppPkcs12LoadMethod</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        (*xmlSecCryptoAppPkcs12LoadMethod)  (const <link linkend="char">char</link> *filename,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
+<indexterm zone="xmlSecCryptoAppPkcs12LoadMethod"><primary>xmlSecCryptoAppPkcs12LoadMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (*xmlSecCryptoAppPkcs12LoadMethod)  (<parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 file.
 For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
-in format=xmlSecKeyDataFormatPkcs12.</para>
-<para>
+in format=xmlSecKeyDataFormatPkcs12.
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the PKCS12 key filename.
+<listitem><simpara>the PKCS12 key filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the PKCS12 file password.
+<listitem><simpara>the PKCS12 file password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the password callback.
+<listitem><simpara>the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
+<listitem><simpara>the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppPkcs12LoadMemoryMethod" role="function">
 <title>xmlSecCryptoAppPkcs12LoadMemoryMethod ()</title>
-<indexterm zone="xmlSecCryptoAppPkcs12LoadMemoryMethod"><primary sortas="xmlSecCryptoAppPkcs12LoadMemoryMethod">xmlSecCryptoAppPkcs12LoadMemoryMethod</primary></indexterm><programlisting><link linkend="xmlSecKey">xmlSecKeyPtr</link>        (*xmlSecCryptoAppPkcs12LoadMemoryMethod)
-                                                        (const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         const <link linkend="char">char</link> *pwd,
-                                                         <link linkend="void">void</link> *pwdCallback,
-                                                         <link linkend="void">void</link> *pwdCallbackCtx);</programlisting>
+<indexterm zone="xmlSecCryptoAppPkcs12LoadMemoryMethod"><primary>xmlSecCryptoAppPkcs12LoadMemoryMethod</primary></indexterm>
+<programlisting><link linkend="xmlSecKey"><returnvalue>xmlSecKeyPtr</returnvalue></link>        (*xmlSecCryptoAppPkcs12LoadMemoryMethod)
+                                                        (<parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *pwd</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
+                                                         <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
 Reads key and all associated certificates from the PKCS12 binary data.
 For uniformity, call xmlSecCryptoAppKeyLoad instead of this function. Pass
-in format=xmlSecKeyDataFormatPkcs12.</para>
-<para>
+in format=xmlSecKeyDataFormatPkcs12.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pkcs12 data.
+<listitem><simpara>the pkcs12 data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the pkcs12 data size.
+<listitem><simpara>the pkcs12 data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwd</parameter>&#160;:</term>
-<listitem><simpara>                the PKCS12 data password.
+<listitem><simpara>the PKCS12 data password.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallback</parameter>&#160;:</term>
-<listitem><simpara>        the password callback.
+<listitem><simpara>the password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pwdCallbackCtx</parameter>&#160;:</term>
-<listitem><simpara>     the user context for password callback.
+<listitem><simpara>the user context for password callback.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the key or NULL if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppKeyCertLoadMethod" role="function">
 <title>xmlSecCryptoAppKeyCertLoadMethod ()</title>
-<indexterm zone="xmlSecCryptoAppKeyCertLoadMethod"><primary sortas="xmlSecCryptoAppKeyCertLoadMethod">xmlSecCryptoAppKeyCertLoadMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoAppKeyCertLoadMethod) (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="char">char</link> *filename,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<indexterm zone="xmlSecCryptoAppKeyCertLoadMethod"><primary>xmlSecCryptoAppKeyCertLoadMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoAppKeyCertLoadMethod) (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);</programlisting>
 <para>
-Reads the certificate from $<parameter>filename</parameter> and adds it to key.</para>
-<para>
+Reads the certificate from $<parameter>filename</parameter> and adds it to key.
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
+<listitem><simpara>the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
-<listitem><simpara>           the certificate filename.
+<listitem><simpara>the certificate filename.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate file format.
+<listitem><simpara>the certificate file format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoAppKeyCertLoadMemoryMethod" role="function">
 <title>xmlSecCryptoAppKeyCertLoadMemoryMethod ()</title>
-<indexterm zone="xmlSecCryptoAppKeyCertLoadMemoryMethod"><primary sortas="xmlSecCryptoAppKeyCertLoadMemoryMethod">xmlSecCryptoAppKeyCertLoadMemoryMethod</primary></indexterm><programlisting><link linkend="int">int</link>                 (*xmlSecCryptoAppKeyCertLoadMemoryMethod)
-                                                        (<link linkend="xmlSecKey">xmlSecKeyPtr</link> key,
-                                                         const <link linkend="xmlSecByte">xmlSecByte</link> *data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> dataSize,
-                                                         <link linkend="xmlSecKeyDataFormat">xmlSecKeyDataFormat</link> format);</programlisting>
+<indexterm zone="xmlSecCryptoAppKeyCertLoadMemoryMethod"><primary>xmlSecCryptoAppKeyCertLoadMemoryMethod</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 (*xmlSecCryptoAppKeyCertLoadMemoryMethod)
+                                                        (<parameter><link linkend="xmlSecKey"><type>xmlSecKeyPtr</type></link> key</parameter>,
+                                                         <parameter>const <link linkend="xmlSecByte"><type>xmlSecByte</type></link> *data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);</programlisting>
 <para>
-Reads the certificate from binary <parameter>data</parameter> buffer and adds it to key.</para>
-<para>
+Reads the certificate from binary <parameter>data</parameter> buffer and adds it to key.
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to key.
+<listitem><simpara>the pointer to key.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the cert data.
+<listitem><simpara>the cert data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>dataSize</parameter>&#160;:</term>
-<listitem><simpara>           the cert data size.
+<listitem><simpara>the cert data size.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>format</parameter>&#160;:</term>
-<listitem><simpara>             the certificate data format.
+<listitem><simpara>the certificate data format.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value otherwise.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecCryptoDLFunctions" role="struct">
 <title>struct xmlSecCryptoDLFunctions</title>
-<indexterm zone="xmlSecCryptoDLFunctions"><primary sortas="xmlSecCryptoDLFunctions">xmlSecCryptoDLFunctions</primary></indexterm><programlisting>struct xmlSecCryptoDLFunctions {
+<indexterm zone="xmlSecCryptoDLFunctions"><primary>xmlSecCryptoDLFunctions</primary></indexterm>
+<programlisting>struct xmlSecCryptoDLFunctions {
     /* Crypto Init/shutdown */
     xmlSecCryptoInitMethod                       cryptoInit;
     xmlSecCryptoShutdownMethod                   cryptoShutdown;
@@ -493,335 +485,270 @@ Reads the certificate from binary <parameter>data</parameter> buffer and adds it
 };
 </programlisting>
 <para>
-The list of crypto engine functions, key data and transform classes.</para>
-<para>
+The list of crypto engine functions, key data and transform classes.
 </para><variablelist role="struct">
-<varlistentry>
-<term><link linkend="xmlSecCryptoInitMethod">xmlSecCryptoInitMethod</link>&#160;<structfield>cryptoInit</structfield>;</term>
-<listitem><simpara>                 the xmlsec-crypto library initialization method.
+<varlistentry><term><link linkend="xmlSecCryptoInitMethod"><type>xmlSecCryptoInitMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoInit">cryptoInit</structfield>;</term>
+<listitem><simpara>the xmlsec-crypto library initialization method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoShutdownMethod">xmlSecCryptoShutdownMethod</link>&#160;<structfield>cryptoShutdown</structfield>;</term>
-<listitem><simpara>             the xmlsec-crypto library shutdown method.
+<varlistentry><term><link linkend="xmlSecCryptoShutdownMethod"><type>xmlSecCryptoShutdownMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoShutdown">cryptoShutdown</structfield>;</term>
+<listitem><simpara>the xmlsec-crypto library shutdown method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeysMngrInitMethod">xmlSecCryptoKeysMngrInitMethod</link>&#160;<structfield>cryptoKeysMngrInit</structfield>;</term>
-<listitem><simpara>         the xmlsec-crypto library keys manager init method.
+<varlistentry><term><link linkend="xmlSecCryptoKeysMngrInitMethod"><type>xmlSecCryptoKeysMngrInitMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoKeysMngrInit">cryptoKeysMngrInit</structfield>;</term>
+<listitem><simpara>the xmlsec-crypto library keys manager init method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataAesGetKlass</structfield>;</term>
-<listitem><simpara>         the method to get pointer to AES key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataAesGetKlass">keyDataAesGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataDesGetKlass</structfield>;</term>
-<listitem><simpara>         the method to get pointer to DES key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataDesGetKlass">keyDataDesGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to DES key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataDsaGetKlass</structfield>;</term>
-<listitem><simpara>         the method to get pointer to DSA key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataDsaGetKlass">keyDataDsaGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to DSA key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataGost2001GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to GOST 2001 key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataGost2001GetKlass">keyDataGost2001GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to GOST 2001 key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataHmacGetKlass</structfield>;</term>
-<listitem><simpara>        the method to get pointer to HMAC key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataHmacGetKlass">keyDataHmacGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataRsaGetKlass</structfield>;</term>
-<listitem><simpara>         the method to get pointer to RSA key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataRsaGetKlass">keyDataRsaGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataX509GetKlass</structfield>;</term>
-<listitem><simpara>        the method to get pointer to X509 key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataX509GetKlass">keyDataX509GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to X509 key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataGetKlassMethod">xmlSecCryptoKeyDataGetKlassMethod</link>&#160;<structfield>keyDataRawX509CertGetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to raw X509 cert key data klass.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataGetKlassMethod"><type>xmlSecCryptoKeyDataGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.keyDataRawX509CertGetKlass">keyDataRawX509CertGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to raw X509 cert key data klass.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoKeyDataStoreGetKlassMethod">xmlSecCryptoKeyDataStoreGetKlassMethod</link>&#160;<structfield>x509StoreGetKlass</structfield>;</term>
-<listitem><simpara>          the method to get pointer to X509 key data store.
+<varlistentry><term><link linkend="xmlSecCryptoKeyDataStoreGetKlassMethod"><type>xmlSecCryptoKeyDataStoreGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.x509StoreGetKlass">x509StoreGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to X509 key data store.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformAes128CbcGetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to AES 128 encryption transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformAes128CbcGetKlass">transformAes128CbcGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES 128 encryption transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformAes192CbcGetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to AES 192 encryption transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformAes192CbcGetKlass">transformAes192CbcGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES 192 encryption transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformAes256CbcGetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to AES 256 encryption transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformAes256CbcGetKlass">transformAes256CbcGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES 256 encryption transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformKWAes128GetKlass</structfield>;</term>
-<listitem><simpara>  the method to get pointer to AES 128 key wrapper transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformKWAes128GetKlass">transformKWAes128GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES 128 key wrapper transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformKWAes192GetKlass</structfield>;</term>
-<listitem><simpara>  the method to get pointer to AES 192 key wrapper transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformKWAes192GetKlass">transformKWAes192GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES 192 key wrapper transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformKWAes256GetKlass</structfield>;</term>
-<listitem><simpara>  the method to get pointer to AES 256 key wrapper transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformKWAes256GetKlass">transformKWAes256GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to AES 256 key wrapper transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformDes3CbcGetKlass</structfield>;</term>
-<listitem><simpara>   the method to get pointer to Triple DES encryption transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformDes3CbcGetKlass">transformDes3CbcGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to Triple DES encryption transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformKWDes3GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to Triple DES key wrapper transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformKWDes3GetKlass">transformKWDes3GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to Triple DES key wrapper transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformDsaSha1GetKlass</structfield>;</term>
-<listitem><simpara>   the method to get pointer to DSA-SHA1 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformDsaSha1GetKlass">transformDsaSha1GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to DSA-SHA1 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformGost2001GostR3411_94GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to GOST2001 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformGost2001GostR3411-94GetKlass">transformGost2001GostR3411_94GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to GOST2001 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacMd5GetKlass</structfield>;</term>
-<listitem><simpara>   the method to get pointer to HMAC-MD5 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacMd5GetKlass">transformHmacMd5GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-MD5 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacRipemd160GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to HMAC-RIPEMD160 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacRipemd160GetKlass">transformHmacRipemd160GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-RIPEMD160 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacSha1GetKlass</structfield>;</term>
-<listitem><simpara>  the method to get pointer to HMAC-SHA1 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacSha1GetKlass">transformHmacSha1GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-SHA1 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacSha224GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to HMAC-SHA224 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacSha224GetKlass">transformHmacSha224GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-SHA224 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacSha256GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to HMAC-SHA256 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacSha256GetKlass">transformHmacSha256GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-SHA256 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacSha384GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to HMAC-SHA384 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacSha384GetKlass">transformHmacSha384GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-SHA384 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformHmacSha512GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to HMAC-SHA512 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformHmacSha512GetKlass">transformHmacSha512GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to HMAC-SHA512 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformMd5GetKlass</structfield>;</term>
-<listitem><simpara>       the method to get pointer to MD5 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformMd5GetKlass">transformMd5GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to MD5 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRipemd160GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to RIPEMD160 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRipemd160GetKlass">transformRipemd160GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RIPEMD160 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaMd5GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to RSA-MD5 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaMd5GetKlass">transformRsaMd5GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-MD5 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaRipemd160GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to RSA-RIPEMD160 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaRipemd160GetKlass">transformRsaRipemd160GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-RIPEMD160 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaSha1GetKlass</structfield>;</term>
-<listitem><simpara>   the method to get pointer to RSA-SHA1 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaSha1GetKlass">transformRsaSha1GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-SHA1 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaSha224GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to RSA-SHA224 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaSha224GetKlass">transformRsaSha224GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-SHA224 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaSha256GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to RSA-SHA256 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaSha256GetKlass">transformRsaSha256GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-SHA256 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaSha384GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to RSA-SHA384 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaSha384GetKlass">transformRsaSha384GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-SHA384 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaSha512GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to RSA-SHA512 signature transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaSha512GetKlass">transformRsaSha512GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-SHA512 signature transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaPkcs1GetKlass</structfield>;</term>
-<listitem><simpara>  the method to get pointer to RSA-PKCS1_5 key transport transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaPkcs1GetKlass">transformRsaPkcs1GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-PKCS1_5 key transport transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformRsaOaepGetKlass</structfield>;</term>
-<listitem><simpara>   the method to get pointer to RSA-OAEP key transport transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformRsaOaepGetKlass">transformRsaOaepGetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to RSA-OAEP key transport transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformGostR3411_94GetKlass</structfield>;</term>
-<listitem><simpara> the method to get pointer to GOST R3411 transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformGostR3411-94GetKlass">transformGostR3411_94GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to GOST R3411 transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformSha1GetKlass</structfield>;</term>
-<listitem><simpara>      the method to get pointer to SHA1 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformSha1GetKlass">transformSha1GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to SHA1 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformSha224GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to SHA224 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformSha224GetKlass">transformSha224GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to SHA224 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformSha256GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to SHA256 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformSha256GetKlass">transformSha256GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to SHA256 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformSha384GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to SHA384 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformSha384GetKlass">transformSha384GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to SHA384 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoTransformGetKlassMethod">xmlSecCryptoTransformGetKlassMethod</link>&#160;<structfield>transformSha512GetKlass</structfield>;</term>
-<listitem><simpara>    the method to get pointer to SHA512 digest transform.
+<varlistentry><term><link linkend="xmlSecCryptoTransformGetKlassMethod"><type>xmlSecCryptoTransformGetKlassMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.transformSha512GetKlass">transformSha512GetKlass</structfield>;</term>
+<listitem><simpara>the method to get pointer to SHA512 digest transform.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppInitMethod">xmlSecCryptoAppInitMethod</link>&#160;<structfield>cryptoAppInit</structfield>;</term>
-<listitem><simpara>              the default crypto engine initialization method.
+<varlistentry><term><link linkend="xmlSecCryptoAppInitMethod"><type>xmlSecCryptoAppInitMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppInit">cryptoAppInit</structfield>;</term>
+<listitem><simpara>the default crypto engine initialization method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppShutdownMethod">xmlSecCryptoAppShutdownMethod</link>&#160;<structfield>cryptoAppShutdown</structfield>;</term>
-<listitem><simpara>          the default crypto engine shutdown method.
+<varlistentry><term><link linkend="xmlSecCryptoAppShutdownMethod"><type>xmlSecCryptoAppShutdownMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppShutdown">cryptoAppShutdown</structfield>;</term>
+<listitem><simpara>the default crypto engine shutdown method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppDefaultKeysMngrInitMethod">xmlSecCryptoAppDefaultKeysMngrInitMethod</link>&#160;<structfield>cryptoAppDefaultKeysMngrInit</structfield>;</term>
-<listitem><simpara>       the default keys manager init method.
+<varlistentry><term><link linkend="xmlSecCryptoAppDefaultKeysMngrInitMethod"><type>xmlSecCryptoAppDefaultKeysMngrInitMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppDefaultKeysMngrInit">cryptoAppDefaultKeysMngrInit</structfield>;</term>
+<listitem><simpara>the default keys manager init method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod">xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod</link>&#160;<structfield>cryptoAppDefaultKeysMngrAdoptKey</structfield>;</term>
-<listitem><simpara>   the default keys manager adopt key method.
+<varlistentry><term><link linkend="xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod"><type>xmlSecCryptoAppDefaultKeysMngrAdoptKeyMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppDefaultKeysMngrAdoptKey">cryptoAppDefaultKeysMngrAdoptKey</structfield>;</term>
+<listitem><simpara>the default keys manager adopt key method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppDefaultKeysMngrLoadMethod">xmlSecCryptoAppDefaultKeysMngrLoadMethod</link>&#160;<structfield>cryptoAppDefaultKeysMngrLoad</structfield>;</term>
-<listitem><simpara>       the default keys manager load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppDefaultKeysMngrLoadMethod"><type>xmlSecCryptoAppDefaultKeysMngrLoadMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppDefaultKeysMngrLoad">cryptoAppDefaultKeysMngrLoad</structfield>;</term>
+<listitem><simpara>the default keys manager load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppDefaultKeysMngrSaveMethod">xmlSecCryptoAppDefaultKeysMngrSaveMethod</link>&#160;<structfield>cryptoAppDefaultKeysMngrSave</structfield>;</term>
-<listitem><simpara>       the default keys manager save method.
+<varlistentry><term><link linkend="xmlSecCryptoAppDefaultKeysMngrSaveMethod"><type>xmlSecCryptoAppDefaultKeysMngrSaveMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppDefaultKeysMngrSave">cryptoAppDefaultKeysMngrSave</structfield>;</term>
+<listitem><simpara>the default keys manager save method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod">xmlSecCryptoAppKeysMngrCertLoadMethod</link>&#160;<structfield>cryptoAppKeysMngrCertLoad</structfield>;</term>
-<listitem><simpara>          the default keys manager file cert load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppKeysMngrCertLoadMethod"><type>xmlSecCryptoAppKeysMngrCertLoadMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppKeysMngrCertLoad">cryptoAppKeysMngrCertLoad</structfield>;</term>
+<listitem><simpara>the default keys manager file cert load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod">xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</link>&#160;<structfield>cryptoAppKeysMngrCertLoadMemory</structfield>;</term>
-<listitem><simpara>    the default keys manager memory cert load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppKeysMngrCertLoadMemoryMethod"><type>xmlSecCryptoAppKeysMngrCertLoadMemoryMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppKeysMngrCertLoadMemory">cryptoAppKeysMngrCertLoadMemory</structfield>;</term>
+<listitem><simpara>the default keys manager memory cert load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppKeyLoadMethod">xmlSecCryptoAppKeyLoadMethod</link>&#160;<structfield>cryptoAppKeyLoad</structfield>;</term>
-<listitem><simpara>           the key file load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppKeyLoadMethod"><type>xmlSecCryptoAppKeyLoadMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppKeyLoad">cryptoAppKeyLoad</structfield>;</term>
+<listitem><simpara>the key file load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppKeyLoadMemoryMethod">xmlSecCryptoAppKeyLoadMemoryMethod</link>&#160;<structfield>cryptoAppKeyLoadMemory</structfield>;</term>
-<listitem><simpara>     the meory key load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppKeyLoadMemoryMethod"><type>xmlSecCryptoAppKeyLoadMemoryMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppKeyLoadMemory">cryptoAppKeyLoadMemory</structfield>;</term>
+<listitem><simpara>the meory key load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppPkcs12LoadMethod">xmlSecCryptoAppPkcs12LoadMethod</link>&#160;<structfield>cryptoAppPkcs12Load</structfield>;</term>
-<listitem><simpara>        the pkcs12 file load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppPkcs12LoadMethod"><type>xmlSecCryptoAppPkcs12LoadMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppPkcs12Load">cryptoAppPkcs12Load</structfield>;</term>
+<listitem><simpara>the pkcs12 file load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppPkcs12LoadMemoryMethod">xmlSecCryptoAppPkcs12LoadMemoryMethod</link>&#160;<structfield>cryptoAppPkcs12LoadMemory</structfield>;</term>
-<listitem><simpara>  the memory pkcs12 load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppPkcs12LoadMemoryMethod"><type>xmlSecCryptoAppPkcs12LoadMemoryMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppPkcs12LoadMemory">cryptoAppPkcs12LoadMemory</structfield>;</term>
+<listitem><simpara>the memory pkcs12 load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppKeyCertLoadMethod">xmlSecCryptoAppKeyCertLoadMethod</link>&#160;<structfield>cryptoAppKeyCertLoad</structfield>;</term>
-<listitem><simpara>       the cert file load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppKeyCertLoadMethod"><type>xmlSecCryptoAppKeyCertLoadMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppKeyCertLoad">cryptoAppKeyCertLoad</structfield>;</term>
+<listitem><simpara>the cert file load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="xmlSecCryptoAppKeyCertLoadMemoryMethod">xmlSecCryptoAppKeyCertLoadMemoryMethod</link>&#160;<structfield>cryptoAppKeyCertLoadMemory</structfield>;</term>
-<listitem><simpara> the memory cert load method.
+<varlistentry><term><link linkend="xmlSecCryptoAppKeyCertLoadMemoryMethod"><type>xmlSecCryptoAppKeyCertLoadMemoryMethod</type></link>&#160;<structfield id="xmlSecCryptoDLFunctions.cryptoAppKeyCertLoadMemory">cryptoAppKeyCertLoadMemory</structfield>;</term>
+<listitem><simpara>the memory cert load method.
 </simpara></listitem>
 </varlistentry>
-<varlistentry>
-<term><link linkend="void">void</link>&#160;*<structfield>cryptoAppDefaultPwdCallback</structfield>;</term>
+<varlistentry><term><link linkend="void"><type>void</type></link>&#160;*<structfield id="xmlSecCryptoDLFunctions.cryptoAppDefaultPwdCallback">cryptoAppDefaultPwdCallback</structfield>;</term>
 <listitem><simpara>the default password callback.
 </simpara></listitem>
 </varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecStrPrintf" role="macro">
 <title>xmlSecStrPrintf</title>
-<indexterm zone="xmlSecStrPrintf"><primary sortas="xmlSecStrPrintf">xmlSecStrPrintf</primary></indexterm><programlisting>#define xmlSecStrPrintf         xmlStrPrintf
+<indexterm zone="xmlSecStrPrintf"><primary>xmlSecStrPrintf</primary></indexterm>
+<programlisting>#define xmlSecStrPrintf         xmlStrPrintf
 </programlisting>
 <para>
-Prints a string (see <parameter>xmlStrPrintf</parameter>).</para>
-<para>
+Prints a string (see <parameter>xmlStrPrintf</parameter>).
 </para></refsect2>
 <refsect2 id="xmlSecStrVPrintf" role="macro">
 <title>xmlSecStrVPrintf</title>
-<indexterm zone="xmlSecStrVPrintf"><primary sortas="xmlSecStrVPrintf">xmlSecStrVPrintf</primary></indexterm><programlisting>#define xmlSecStrVPrintf        xmlStrVPrintf
+<indexterm zone="xmlSecStrVPrintf"><primary>xmlSecStrVPrintf</primary></indexterm>
+<programlisting>#define xmlSecStrVPrintf        xmlStrVPrintf
 </programlisting>
 <para>
-Prints a string (see <parameter>xmlStrVPrintf</parameter>).</para>
-<para>
+Prints a string (see <parameter>xmlStrVPrintf</parameter>).
 </para></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

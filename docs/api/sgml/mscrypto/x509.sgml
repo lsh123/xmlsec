@@ -2,9 +2,10 @@
 <refmeta>
 <refentrytitle role="top_of_page" id="xmlsec-mscrypto-x509.top_of_page">x509</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>XMLSEC-MSCRYPTO Library</refmiscinfo>
+<refmiscinfo>
+  XMLSEC-MSCRYPTO Library
+</refmiscinfo>
 </refmeta>
-
 <refnamediv>
 <refname>x509</refname>
 <refpurpose>X509 certificates support implementation for MS Crypto.</refpurpose>
@@ -13,55 +14,46 @@
 <refsynopsisdiv id="xmlsec-mscrypto-x509.synopsis" role="synopsis">
 <title role="synopsis.title">Synopsis</title>
 
-<synopsis>
-#define             <link linkend="xmlSecMSCryptoKeyDataX509Id">xmlSecMSCryptoKeyDataX509Id</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataX509GetKlass">xmlSecMSCryptoKeyDataX509GetKlass</link>   (void);
-<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoKeyDataX509GetKeyCert">xmlSecMSCryptoKeyDataX509GetKeyCert</link> (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoKeyDataX509AdoptKeyCert">xmlSecMSCryptoKeyDataX509AdoptKeyCert</link>
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKeyDataX509AdoptCert</link>  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert);
-<link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      <link linkend="xmlSecMSCryptoKeyDataX509GetCert">xmlSecMSCryptoKeyDataX509GetCert</link>    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="xmlSecSize">xmlSecSize</link>          <link linkend="xmlSecMSCryptoKeyDataX509GetCertsSize">xmlSecMSCryptoKeyDataX509GetCertsSize</link>
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyDataX509AdoptCrl</link>   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="PCCRL-CONTEXT--CAPS">PCCRL_CONTEXT</link> crl);
-<link linkend="PCCRL-CONTEXT--CAPS">PCCRL_CONTEXT</link>       <link linkend="xmlSecMSCryptoKeyDataX509GetCrl">xmlSecMSCryptoKeyDataX509GetCrl</link>     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> pos);
-<link linkend="xmlSecSize">xmlSecSize</link>          <link linkend="xmlSecMSCryptoKeyDataX509GetCrlsSize">xmlSecMSCryptoKeyDataX509GetCrlsSize</link>
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);
+<synopsis>#define             <link linkend="xmlSecMSCryptoKeyDataX509Id">xmlSecMSCryptoKeyDataX509Id</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecMSCryptoKeyDataX509GetKlass">xmlSecMSCryptoKeyDataX509GetKlass</link>   (<parameter><type>void</type></parameter>);
+<link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>      <link linkend="xmlSecMSCryptoKeyDataX509GetKeyCert">xmlSecMSCryptoKeyDataX509GetKeyCert</link> (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoKeyDataX509AdoptKeyCert">xmlSecMSCryptoKeyDataX509AdoptKeyCert</link>
+                                                        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> cert</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKeyDataX509AdoptCert</link>  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> cert</parameter>);
+<link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>      <link linkend="xmlSecMSCryptoKeyDataX509GetCert">xmlSecMSCryptoKeyDataX509GetCert</link>    (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecMSCryptoKeyDataX509GetCertsSize">xmlSecMSCryptoKeyDataX509GetCertsSize</link>
+                                                        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyDataX509AdoptCrl</link>   (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="PCCRL-CONTEXT:CAPS"><type>PCCRL_CONTEXT</type></link> crl</parameter>);
+<link linkend="PCCRL-CONTEXT:CAPS"><returnvalue>PCCRL_CONTEXT</returnvalue></link>       <link linkend="xmlSecMSCryptoKeyDataX509GetCrl">xmlSecMSCryptoKeyDataX509GetCrl</link>     (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecMSCryptoKeyDataX509GetCrlsSize">xmlSecMSCryptoKeyDataX509GetCrlsSize</link>
+                                                        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
 #define             <link linkend="xmlSecMSCryptoKeyDataRawX509CertId">xmlSecMSCryptoKeyDataRawX509CertId</link>
-<link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     <link linkend="xmlSecMSCryptoKeyDataRawX509CertGetKlass">xmlSecMSCryptoKeyDataRawX509CertGetKlass</link>
-                                                        (void);
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecMSCryptoKeyDataRawX509CertGetKlass">xmlSecMSCryptoKeyDataRawX509CertGetKlass</link>
+                                                        (<parameter><type>void</type></parameter>);
 #define             <link linkend="xmlSecMSCryptoX509StoreId">xmlSecMSCryptoX509StoreId</link>
-<link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>  <link linkend="xmlSecMSCryptoX509StoreGetKlass">xmlSecMSCryptoX509StoreGetKlass</link>   (void);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</link>    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptKeyStore">xmlSecMSCryptoX509StoreAdoptKeyStore</link>
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> keyStore);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptTrustedStore">xmlSecMSCryptoX509StoreAdoptTrustedStore</link>
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> trustedStore);
-<link linkend="int">int</link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptUntrustedStore">xmlSecMSCryptoX509StoreAdoptUntrustedStore</link>
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> untrustedStore);
-<link linkend="void">void</link>                <link linkend="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</link>
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="int">int</link> val);
+<link linkend="xmlSecKeyDataStoreId"><returnvalue>xmlSecKeyDataStoreId</returnvalue></link>  <link linkend="xmlSecMSCryptoX509StoreGetKlass">xmlSecMSCryptoX509StoreGetKlass</link>   (<parameter><type>void</type></parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</link>    (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> cert</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptKeyStore">xmlSecMSCryptoX509StoreAdoptKeyStore</link>
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="HCERTSTORE:CAPS"><type>HCERTSTORE</type></link> keyStore</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptTrustedStore">xmlSecMSCryptoX509StoreAdoptTrustedStore</link>
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="HCERTSTORE:CAPS"><type>HCERTSTORE</type></link> trustedStore</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecMSCryptoX509StoreAdoptUntrustedStore">xmlSecMSCryptoX509StoreAdoptUntrustedStore</link>
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="HCERTSTORE:CAPS"><type>HCERTSTORE</type></link> untrustedStore</parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</link>
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> val</parameter>);
 </synopsis>
 </refsynopsisdiv>
-
-
-
-
-
-
-
-
 
 <refsect1 id="xmlsec-mscrypto-x509.description" role="desc">
 <title role="desc.title">Description</title>
@@ -69,35 +61,34 @@
 X509 certificates support implementation for MS Crypto.
 </para>
 </refsect1>
-
 <refsect1 id="xmlsec-mscrypto-x509.details" role="details">
 <title role="details.title">Details</title>
 <refsect2 id="xmlSecMSCryptoKeyDataX509Id" role="macro">
 <title>xmlSecMSCryptoKeyDataX509Id</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509Id"><primary sortas="xmlSecMSCryptoKeyDataX509Id">xmlSecMSCryptoKeyDataX509Id</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataX509Id</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509Id"><primary>xmlSecMSCryptoKeyDataX509Id</primary></indexterm>
+<programlisting>#define             xmlSecMSCryptoKeyDataX509Id</programlisting>
 <para>
-The MSCrypto X509 data klass.</para>
-<para>
+The MSCrypto X509 data klass.
 </para></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509GetKlass" role="function">
 <title>xmlSecMSCryptoKeyDataX509GetKlass ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509GetKlass"><primary sortas="xmlSecMSCryptoKeyDataX509GetKlass">xmlSecMSCryptoKeyDataX509GetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataX509GetKlass   (void);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509GetKlass"><primary>xmlSecMSCryptoKeyDataX509GetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecMSCryptoKeyDataX509GetKlass   (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data"><type>sec-X509Data</type></link>).</para>
-<para>
+The MSCrypto X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data"><type>sec-X509Data</type></link>).
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the X509 data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509GetKeyCert" role="function">
 <title>xmlSecMSCryptoKeyDataX509GetKeyCert ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509GetKeyCert"><primary sortas="xmlSecMSCryptoKeyDataX509GetKeyCert">xmlSecMSCryptoKeyDataX509GetKeyCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoKeyDataX509GetKeyCert (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509GetKeyCert"><primary>xmlSecMSCryptoKeyDataX509GetKeyCert</primary></indexterm>
+<programlisting><link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>      xmlSecMSCryptoKeyDataX509GetKeyCert (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
 <para>
-Gets the certificate from which the key was extracted.</para>
-<para>
+Gets the certificate from which the key was extracted.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key's certificate or NULL if key data was not used for key
 extraction or an error occurs.
@@ -105,52 +96,52 @@ extraction or an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509AdoptKeyCert" role="function">
 <title>xmlSecMSCryptoKeyDataX509AdoptKeyCert ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509AdoptKeyCert"><primary sortas="xmlSecMSCryptoKeyDataX509AdoptKeyCert">xmlSecMSCryptoKeyDataX509AdoptKeyCert</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoKeyDataX509AdoptKeyCert
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509AdoptKeyCert"><primary>xmlSecMSCryptoKeyDataX509AdoptKeyCert</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoKeyDataX509AdoptKeyCert
+                                                        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> cert</parameter>);</programlisting>
 <para>
-Sets the key's certificate in <parameter>data</parameter>.</para>
-<para>
+Sets the key's certificate in <parameter>data</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to MSCRYPTO X509 certificate.
+<listitem><simpara>the pointer to MSCRYPTO X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509AdoptCert" role="function">
 <title>xmlSecMSCryptoKeyDataX509AdoptCert ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509AdoptCert"><primary sortas="xmlSecMSCryptoKeyDataX509AdoptCert">xmlSecMSCryptoKeyDataX509AdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoKeyDataX509AdoptCert  (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509AdoptCert"><primary>xmlSecMSCryptoKeyDataX509AdoptCert</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoKeyDataX509AdoptCert  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> cert</parameter>);</programlisting>
 <para>
-Adds certificate to the X509 key data.</para>
-<para>
+Adds certificate to the X509 key data.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to MSCRYPTO X509 certificate.
+<listitem><simpara>the pointer to MSCRYPTO X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509GetCert" role="function">
 <title>xmlSecMSCryptoKeyDataX509GetCert ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509GetCert"><primary sortas="xmlSecMSCryptoKeyDataX509GetCert">xmlSecMSCryptoKeyDataX509GetCert</primary></indexterm><programlisting><link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link>      xmlSecMSCryptoKeyDataX509GetCert    (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509GetCert"><primary>xmlSecMSCryptoKeyDataX509GetCert</primary></indexterm>
+<programlisting><link linkend="PCCERT-CONTEXT:CAPS"><returnvalue>PCCERT_CONTEXT</returnvalue></link>      xmlSecMSCryptoKeyDataX509GetCert    (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
 <para>
-Gets a certificate from X509 key data.</para>
-<para>
+Gets a certificate from X509 key data.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>                the desired certificate position.
+<listitem><simpara>the desired certificate position.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the
 number of certificates in <parameter>data</parameter> or an error occurs.
@@ -158,48 +149,48 @@ number of certificates in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509GetCertsSize" role="function">
 <title>xmlSecMSCryptoKeyDataX509GetCertsSize ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509GetCertsSize"><primary sortas="xmlSecMSCryptoKeyDataX509GetCertsSize">xmlSecMSCryptoKeyDataX509GetCertsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>          xmlSecMSCryptoKeyDataX509GetCertsSize
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509GetCertsSize"><primary>xmlSecMSCryptoKeyDataX509GetCertsSize</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecMSCryptoKeyDataX509GetCertsSize
+                                                        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
 <para>
-Gets the number of certificates in <parameter>data</parameter>.</para>
-<para>
+Gets the number of certificates in <parameter>data</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> te number of certificates in <parameter>data</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509AdoptCrl" role="function">
 <title>xmlSecMSCryptoKeyDataX509AdoptCrl ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509AdoptCrl"><primary sortas="xmlSecMSCryptoKeyDataX509AdoptCrl">xmlSecMSCryptoKeyDataX509AdoptCrl</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoKeyDataX509AdoptCrl   (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="PCCRL-CONTEXT--CAPS">PCCRL_CONTEXT</link> crl);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509AdoptCrl"><primary>xmlSecMSCryptoKeyDataX509AdoptCrl</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoKeyDataX509AdoptCrl   (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="PCCRL-CONTEXT:CAPS"><type>PCCRL_CONTEXT</type></link> crl</parameter>);</programlisting>
 <para>
-Adds CRL to the X509 key data.</para>
-<para>
+Adds CRL to the X509 key data.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>crl</parameter>&#160;:</term>
-<listitem><simpara>                the pointer to MSCrypto X509 CRL.
+<listitem><simpara>the pointer to MSCrypto X509 CRL.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509GetCrl" role="function">
 <title>xmlSecMSCryptoKeyDataX509GetCrl ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509GetCrl"><primary sortas="xmlSecMSCryptoKeyDataX509GetCrl">xmlSecMSCryptoKeyDataX509GetCrl</primary></indexterm><programlisting><link linkend="PCCRL-CONTEXT--CAPS">PCCRL_CONTEXT</link>       xmlSecMSCryptoKeyDataX509GetCrl     (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data,
-                                                         <link linkend="xmlSecSize">xmlSecSize</link> pos);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509GetCrl"><primary>xmlSecMSCryptoKeyDataX509GetCrl</primary></indexterm>
+<programlisting><link linkend="PCCRL-CONTEXT:CAPS"><returnvalue>PCCRL_CONTEXT</returnvalue></link>       xmlSecMSCryptoKeyDataX509GetCrl     (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
 <para>
-Gets a CRL from X509 key data.</para>
-<para>
+Gets a CRL from X509 key data.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>pos</parameter>&#160;:</term>
-<listitem><simpara>                the desired CRL position.
+<listitem><simpara>the desired CRL position.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to CRL or NULL if <parameter>pos</parameter> is larger than the
 number of CRLs in <parameter>data</parameter> or an error occurs.
@@ -207,148 +198,145 @@ number of CRLs in <parameter>data</parameter> or an error occurs.
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataX509GetCrlsSize" role="function">
 <title>xmlSecMSCryptoKeyDataX509GetCrlsSize ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataX509GetCrlsSize"><primary sortas="xmlSecMSCryptoKeyDataX509GetCrlsSize">xmlSecMSCryptoKeyDataX509GetCrlsSize</primary></indexterm><programlisting><link linkend="xmlSecSize">xmlSecSize</link>          xmlSecMSCryptoKeyDataX509GetCrlsSize
-                                                        (<link linkend="xmlSecKeyData">xmlSecKeyDataPtr</link> data);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataX509GetCrlsSize"><primary>xmlSecMSCryptoKeyDataX509GetCrlsSize</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecMSCryptoKeyDataX509GetCrlsSize
+                                                        (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
 <para>
-Gets the number of CRLs in <parameter>data</parameter>.</para>
-<para>
+Gets the number of CRLs in <parameter>data</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to X509 key data.
+<listitem><simpara>the pointer to X509 key data.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> te number of CRLs in <parameter>data</parameter>.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataRawX509CertId" role="macro">
 <title>xmlSecMSCryptoKeyDataRawX509CertId</title>
-<indexterm zone="xmlSecMSCryptoKeyDataRawX509CertId"><primary sortas="xmlSecMSCryptoKeyDataRawX509CertId">xmlSecMSCryptoKeyDataRawX509CertId</primary></indexterm><programlisting>#define             xmlSecMSCryptoKeyDataRawX509CertId</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataRawX509CertId"><primary>xmlSecMSCryptoKeyDataRawX509CertId</primary></indexterm>
+<programlisting>#define             xmlSecMSCryptoKeyDataRawX509CertId</programlisting>
 <para>
-The MSCrypto raw X509 certificate klass.</para>
-<para>
+The MSCrypto raw X509 certificate klass.
 </para></refsect2>
 <refsect2 id="xmlSecMSCryptoKeyDataRawX509CertGetKlass" role="function">
 <title>xmlSecMSCryptoKeyDataRawX509CertGetKlass ()</title>
-<indexterm zone="xmlSecMSCryptoKeyDataRawX509CertGetKlass"><primary sortas="xmlSecMSCryptoKeyDataRawX509CertGetKlass">xmlSecMSCryptoKeyDataRawX509CertGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataId">xmlSecKeyDataId</link>     xmlSecMSCryptoKeyDataRawX509CertGetKlass
-                                                        (void);</programlisting>
+<indexterm zone="xmlSecMSCryptoKeyDataRawX509CertGetKlass"><primary>xmlSecMSCryptoKeyDataRawX509CertGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecMSCryptoKeyDataRawX509CertGetKlass
+                                                        (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-The raw X509 certificates key data klass.</para>
-<para>
+The raw X509 certificates key data klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> raw X509 certificates key data klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreId" role="macro">
 <title>xmlSecMSCryptoX509StoreId</title>
-<indexterm zone="xmlSecMSCryptoX509StoreId"><primary sortas="xmlSecMSCryptoX509StoreId">xmlSecMSCryptoX509StoreId</primary></indexterm><programlisting>#define             xmlSecMSCryptoX509StoreId</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreId"><primary>xmlSecMSCryptoX509StoreId</primary></indexterm>
+<programlisting>#define             xmlSecMSCryptoX509StoreId</programlisting>
 <para>
-The MSCrypto X509 store klass.</para>
-<para>
+The MSCrypto X509 store klass.
 </para></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreGetKlass" role="function">
 <title>xmlSecMSCryptoX509StoreGetKlass ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreGetKlass"><primary sortas="xmlSecMSCryptoX509StoreGetKlass">xmlSecMSCryptoX509StoreGetKlass</primary></indexterm><programlisting><link linkend="xmlSecKeyDataStoreId">xmlSecKeyDataStoreId</link>  xmlSecMSCryptoX509StoreGetKlass   (void);</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreGetKlass"><primary>xmlSecMSCryptoX509StoreGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataStoreId"><returnvalue>xmlSecKeyDataStoreId</returnvalue></link>  xmlSecMSCryptoX509StoreGetKlass   (<parameter><type>void</type></parameter>);</programlisting>
 <para>
-The MSCrypto X509 certificates key data store klass.</para>
-<para>
+The MSCrypto X509 certificates key data store klass.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to MSCrypto X509 certificates key data store klass.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreAdoptCert" role="function">
 <title>xmlSecMSCryptoX509StoreAdoptCert ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreAdoptCert"><primary sortas="xmlSecMSCryptoX509StoreAdoptCert">xmlSecMSCryptoX509StoreAdoptCert</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoX509StoreAdoptCert    (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="PCCERT-CONTEXT--CAPS">PCCERT_CONTEXT</link> cert,
-                                                         <link linkend="xmlSecKeyDataType">xmlSecKeyDataType</link> type);</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreAdoptCert"><primary>xmlSecMSCryptoX509StoreAdoptCert</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoX509StoreAdoptCert    (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="PCCERT-CONTEXT:CAPS"><type>PCCERT_CONTEXT</type></link> cert</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
 <para>
-Adds trusted (root) or untrusted certificate to the store.</para>
-<para>
+Adds trusted (root) or untrusted certificate to the store.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to X509 key data store klass.
+<listitem><simpara>the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>cert</parameter>&#160;:</term>
-<listitem><simpara>               the pointer to PCCERT_CONTEXT X509 certificate.
+<listitem><simpara>the pointer to PCCERT_CONTEXT X509 certificate.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>type</parameter>&#160;:</term>
-<listitem><simpara>               the certificate type (trusted/untrusted).
+<listitem><simpara>the certificate type (trusted/untrusted).
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreAdoptKeyStore" role="function">
 <title>xmlSecMSCryptoX509StoreAdoptKeyStore ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreAdoptKeyStore"><primary sortas="xmlSecMSCryptoX509StoreAdoptKeyStore">xmlSecMSCryptoX509StoreAdoptKeyStore</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoX509StoreAdoptKeyStore
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> keyStore);</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreAdoptKeyStore"><primary>xmlSecMSCryptoX509StoreAdoptKeyStore</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoX509StoreAdoptKeyStore
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="HCERTSTORE:CAPS"><type>HCERTSTORE</type></link> keyStore</parameter>);</programlisting>
 <para>
-Adds <parameter>keyStore</parameter> to the list of key stores.</para>
-<para>
+Adds <parameter>keyStore</parameter> to the list of key stores.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to X509 key data store klass.
+<listitem><simpara>the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>keyStore</parameter>&#160;:</term>
-<listitem><simpara>           the pointer to keys store.
+<listitem><simpara>the pointer to keys store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreAdoptTrustedStore" role="function">
 <title>xmlSecMSCryptoX509StoreAdoptTrustedStore ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreAdoptTrustedStore"><primary sortas="xmlSecMSCryptoX509StoreAdoptTrustedStore">xmlSecMSCryptoX509StoreAdoptTrustedStore</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoX509StoreAdoptTrustedStore
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> trustedStore);</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreAdoptTrustedStore"><primary>xmlSecMSCryptoX509StoreAdoptTrustedStore</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoX509StoreAdoptTrustedStore
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="HCERTSTORE:CAPS"><type>HCERTSTORE</type></link> trustedStore</parameter>);</programlisting>
 <para>
-Adds <parameter>trustedStore</parameter> to the list of trusted certs stores.</para>
-<para>
+Adds <parameter>trustedStore</parameter> to the list of trusted certs stores.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to X509 key data store klass.
+<listitem><simpara>the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>trustedStore</parameter>&#160;:</term>
-<listitem><simpara>       the pointer to certs store.
+<listitem><simpara>the pointer to certs store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreAdoptUntrustedStore" role="function">
 <title>xmlSecMSCryptoX509StoreAdoptUntrustedStore ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreAdoptUntrustedStore"><primary sortas="xmlSecMSCryptoX509StoreAdoptUntrustedStore">xmlSecMSCryptoX509StoreAdoptUntrustedStore</primary></indexterm><programlisting><link linkend="int">int</link>                 xmlSecMSCryptoX509StoreAdoptUntrustedStore
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="HCERTSTORE--CAPS">HCERTSTORE</link> untrustedStore);</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreAdoptUntrustedStore"><primary>xmlSecMSCryptoX509StoreAdoptUntrustedStore</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecMSCryptoX509StoreAdoptUntrustedStore
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="HCERTSTORE:CAPS"><type>HCERTSTORE</type></link> untrustedStore</parameter>);</programlisting>
 <para>
-Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.</para>
-<para>
+Adds <parameter>trustedStore</parameter> to the list of un-trusted certs stores.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to X509 key data store klass.
+<listitem><simpara>the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>untrustedStore</parameter>&#160;:</term>
-<listitem><simpara>     the pointer to certs store.
+<listitem><simpara>the pointer to certs store.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts" role="function">
 <title>xmlSecMSCryptoX509StoreEnableSystemTrustedCerts ()</title>
-<indexterm zone="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts"><primary sortas="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts">xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</primary></indexterm><programlisting><link linkend="void">void</link>                xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
-                                                        (<link linkend="xmlSecKeyDataStore">xmlSecKeyDataStorePtr</link> store,
-                                                         <link linkend="int">int</link> val);</programlisting>
+<indexterm zone="xmlSecMSCryptoX509StoreEnableSystemTrustedCerts"><primary>xmlSecMSCryptoX509StoreEnableSystemTrustedCerts</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecMSCryptoX509StoreEnableSystemTrustedCerts
+                                                        (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="int"><type>int</type></link> val</parameter>);</programlisting>
 <para>
-Enables/disables the system trusted certs.</para>
-<para>
+Enables/disables the system trusted certs.
 </para><variablelist role="params">
 <varlistentry><term><parameter>store</parameter>&#160;:</term>
-<listitem><simpara>              the pointer to X509 key data store klass.
+<listitem><simpara>the pointer to X509 key data store klass.
 </simpara></listitem></varlistentry>
 <varlistentry><term><parameter>val</parameter>&#160;:</term>
-<listitem><simpara>                the enable/disable flag
+<listitem><simpara>the enable/disable flag
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 
 </refsect1>
-
-
-
 
 </refentry>

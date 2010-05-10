@@ -34,11 +34,6 @@ extern "C" {
 #include <xmlsec/openssl/x509.h>
 #include <xmlsec/openssl/symbols.h>
 #else /* XMLSEC_CRYPTO_OPENSSL */
-#ifdef XMLSEC_CRYPTO_GNUTLS
-#include <xmlsec/gnutls/app.h>
-#include <xmlsec/gnutls/crypto.h>
-#include <xmlsec/gnutls/symbols.h>
-#else /* XMLSEC_CRYPTO_GNUTLS */
 #ifdef XMLSEC_CRYPTO_MSCRYPTO
 #include <xmlsec/mscrypto/app.h>
 #include <xmlsec/mscrypto/crypto.h>
@@ -51,10 +46,21 @@ extern "C" {
 #include <xmlsec/nss/x509.h>
 #include <xmlsec/nss/symbols.h>
 #else /* XMLSEC_CRYPTO_NSS */
+#ifdef XMLSEC_CRYPTO_GNUTLS
+#include <xmlsec/gnutls/app.h>
+#include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gnutls/symbols.h>
+#else /* XMLSEC_CRYPTO_GNUTLS */
+#ifdef XMLSEC_CRYPTO_GCRYPT
+#include <xmlsec/gcrypt/app.h>
+#include <xmlsec/gcrypt/crypto.h>
+#include <xmlsec/gcrypt/symbols.h>
+#else /* XMLSEC_CRYPTO_GCRYPT */
 #error No crypto library defined
+#endif /* XMLSEC_CRYPTO_GCRYPT */
 #endif /* XMLSEC_CRYPTO_GNUTLS */
-#endif /* XMLSEC_CRYPTO_MSCRYPTO */
 #endif /* XMLSEC_CRYPTO_NSS */
+#endif /* XMLSEC_CRYPTO_MSCRYPTO */
 #endif /* XMLSEC_CRYPTO_OPENSSL */
 #endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
 

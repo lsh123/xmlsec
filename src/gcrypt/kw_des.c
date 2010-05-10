@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
 
@@ -26,7 +25,7 @@
 #include <xmlsec/transforms.h>
 #include <xmlsec/errors.h>
 
-#include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gcrypt/crypto.h>
 
 #include "../kw_aes_des.h"
 
@@ -35,22 +34,22 @@
  * DES KW implementation
  *
  *********************************************************************/
-static int       xmlSecGnuTLSKWDes3GenerateRandom               (void * context,
+static int       xmlSecGCryptKWDes3GenerateRandom               (void * context,
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize);
-static int       xmlSecGnuTLSKWDes3Sha1                         (void * context,
+static int       xmlSecGCryptKWDes3Sha1                         (void * context,
                                                                  const xmlSecByte * in, 
                                                                  xmlSecSize inSize, 
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize);
-static int      xmlSecGnuTLSKWDes3BlockEncrypt                  (void * context,
+static int      xmlSecGCryptKWDes3BlockEncrypt                  (void * context,
                                                                  const xmlSecByte * iv, 
                                                                  xmlSecSize ivSize,
                                                                  const xmlSecByte * in, 
                                                                  xmlSecSize inSize,
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize);
-static int      xmlSecGnuTLSKWDes3BlockDecrypt                  (void * context,
+static int      xmlSecGCryptKWDes3BlockDecrypt                  (void * context,
                                                                  const xmlSecByte * iv, 
                                                                  xmlSecSize ivSize,
                                                                  const xmlSecByte * in, 
@@ -58,19 +57,19 @@ static int      xmlSecGnuTLSKWDes3BlockDecrypt                  (void * context,
                                                                  xmlSecByte * out, 
                                                                  xmlSecSize outSize);
 
-static xmlSecKWDes3Klass xmlSecGnuTLSKWDes3ImplKlass = {
+static xmlSecKWDes3Klass xmlSecGCryptKWDes3ImplKlass = {
     /* callbacks */
-    xmlSecGnuTLSKWDes3GenerateRandom,       /* xmlSecKWDes3GenerateRandomMethod     generateRandom; */
-    xmlSecGnuTLSKWDes3Sha1,                 /* xmlSecKWDes3Sha1Method               sha1; */
-    xmlSecGnuTLSKWDes3BlockEncrypt,         /* xmlSecKWDes3BlockEncryptMethod       encrypt; */
-    xmlSecGnuTLSKWDes3BlockDecrypt,         /* xmlSecKWDes3BlockDecryptMethod       decrypt; */
+    xmlSecGCryptKWDes3GenerateRandom,       /* xmlSecKWDes3GenerateRandomMethod     generateRandom; */
+    xmlSecGCryptKWDes3Sha1,                 /* xmlSecKWDes3Sha1Method               sha1; */
+    xmlSecGCryptKWDes3BlockEncrypt,         /* xmlSecKWDes3BlockEncryptMethod       encrypt; */
+    xmlSecGCryptKWDes3BlockDecrypt,         /* xmlSecKWDes3BlockDecryptMethod       decrypt; */
 
     /* for the future */
     NULL,                                   /* void*                               reserved0; */
     NULL,                                   /* void*                               reserved1; */
 };
 
-static int      xmlSecGnuTLSKWDes3Encrypt                       (const xmlSecByte *key, 
+static int      xmlSecGCryptKWDes3Encrypt                       (const xmlSecByte *key, 
                                                                  xmlSecSize keySize,
                                                                  const xmlSecByte *iv, 
                                                                  xmlSecSize ivSize,
@@ -88,73 +87,73 @@ static int      xmlSecGnuTLSKWDes3Encrypt                       (const xmlSecByt
  * key (xmlSecBuffer) is located after xmlSecTransform structure
  *
  ********************************************************************/
-typedef struct _xmlSecGnuTLSKWDes3Ctx              xmlSecGnuTLSKWDes3Ctx,
-                                                  *xmlSecGnuTLSKWDes3CtxPtr;
-struct _xmlSecGnuTLSKWDes3Ctx {
+typedef struct _xmlSecGCryptKWDes3Ctx              xmlSecGCryptKWDes3Ctx,
+                                                  *xmlSecGCryptKWDes3CtxPtr;
+struct _xmlSecGCryptKWDes3Ctx {
     xmlSecBuffer        keyBuffer;
 };
-#define xmlSecGnuTLSKWDes3Size     \
-    (sizeof(xmlSecTransform) + sizeof(xmlSecGnuTLSKWDes3Ctx))
-#define xmlSecGnuTLSKWDes3GetCtx(transform) \
-    ((xmlSecGnuTLSKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
+#define xmlSecGCryptKWDes3Size     \
+    (sizeof(xmlSecTransform) + sizeof(xmlSecGCryptKWDes3Ctx))
+#define xmlSecGCryptKWDes3GetCtx(transform) \
+    ((xmlSecGCryptKWDes3CtxPtr)(((xmlSecByte*)(transform)) + sizeof(xmlSecTransform)))
 
-static int      xmlSecGnuTLSKWDes3Initialize                    (xmlSecTransformPtr transform);
-static void     xmlSecGnuTLSKWDes3Finalize                      (xmlSecTransformPtr transform);
-static int      xmlSecGnuTLSKWDes3SetKeyReq                     (xmlSecTransformPtr transform,
+static int      xmlSecGCryptKWDes3Initialize                    (xmlSecTransformPtr transform);
+static void     xmlSecGCryptKWDes3Finalize                      (xmlSecTransformPtr transform);
+static int      xmlSecGCryptKWDes3SetKeyReq                     (xmlSecTransformPtr transform,
                                                                  xmlSecKeyReqPtr keyReq);
-static int      xmlSecGnuTLSKWDes3SetKey                        (xmlSecTransformPtr transform,
+static int      xmlSecGCryptKWDes3SetKey                        (xmlSecTransformPtr transform,
                                                                  xmlSecKeyPtr key);
-static int      xmlSecGnuTLSKWDes3Execute                       (xmlSecTransformPtr transform,
+static int      xmlSecGCryptKWDes3Execute                       (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static xmlSecTransformKlass xmlSecGnuTLSKWDes3Klass = {
+static xmlSecTransformKlass xmlSecGCryptKWDes3Klass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
-    xmlSecGnuTLSKWDes3Size,                     /* xmlSecSize objSize */
+    xmlSecGCryptKWDes3Size,                     /* xmlSecSize objSize */
 
     xmlSecNameKWDes3,                           /* const xmlChar* name; */
     xmlSecHrefKWDes3,                           /* const xmlChar* href; */
     xmlSecTransformUsageEncryptionMethod,       /* xmlSecAlgorithmUsage usage; */
 
-    xmlSecGnuTLSKWDes3Initialize,               /* xmlSecTransformInitializeMethod initialize; */
-    xmlSecGnuTLSKWDes3Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */
+    xmlSecGCryptKWDes3Initialize,               /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecGCryptKWDes3Finalize,                 /* xmlSecTransformFinalizeMethod finalize; */
     NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
     NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
-    xmlSecGnuTLSKWDes3SetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
-    xmlSecGnuTLSKWDes3SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecGCryptKWDes3SetKeyReq,                /* xmlSecTransformSetKeyMethod setKeyReq; */
+    xmlSecGCryptKWDes3SetKey,                   /* xmlSecTransformSetKeyMethod setKey; */
     NULL,                                       /* xmlSecTransformValidateMethod validate; */
     xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
     xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
     xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
     NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
     NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
-    xmlSecGnuTLSKWDes3Execute,                  /* xmlSecTransformExecuteMethod execute; */
+    xmlSecGCryptKWDes3Execute,                  /* xmlSecTransformExecuteMethod execute; */
 
     NULL,                                       /* void* reserved0; */
     NULL,                                       /* void* reserved1; */
 };
 
 /**
- * xmlSecGnuTLSTransformKWDes3GetKlass:
+ * xmlSecGCryptTransformKWDes3GetKlass:
  *
  * The Triple DES key wrapper transform klass.
  *
  * Returns: Triple DES key wrapper transform klass.
  */
 xmlSecTransformId
-xmlSecGnuTLSTransformKWDes3GetKlass(void) {
-    return(&xmlSecGnuTLSKWDes3Klass);
+xmlSecGCryptTransformKWDes3GetKlass(void) {
+    return(&xmlSecGCryptKWDes3Klass);
 }
 
 static int
-xmlSecGnuTLSKWDes3Initialize(xmlSecTransformPtr transform) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx;
+xmlSecGCryptKWDes3Initialize(xmlSecTransformPtr transform) {
+    xmlSecGCryptKWDes3CtxPtr ctx;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWDes3Id), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWDes3Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWDes3Size), -1);
 
-    ctx = xmlSecGnuTLSKWDes3GetCtx(transform);
+    ctx = xmlSecGCryptKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     ret = xmlSecBufferInitialize(&(ctx->keyBuffer), 0);
@@ -171,31 +170,31 @@ xmlSecGnuTLSKWDes3Initialize(xmlSecTransformPtr transform) {
 }
 
 static void
-xmlSecGnuTLSKWDes3Finalize(xmlSecTransformPtr transform) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx;
+xmlSecGCryptKWDes3Finalize(xmlSecTransformPtr transform) {
+    xmlSecGCryptKWDes3CtxPtr ctx;
 
-    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWDes3Id));
-    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWDes3Size));
+    xmlSecAssert(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWDes3Id));
+    xmlSecAssert(xmlSecTransformCheckSize(transform, xmlSecGCryptKWDes3Size));
 
-    ctx = xmlSecGnuTLSKWDes3GetCtx(transform);
+    ctx = xmlSecGCryptKWDes3GetCtx(transform);
     xmlSecAssert(ctx != NULL);
 
     xmlSecBufferFinalize(&(ctx->keyBuffer));
 }
 
 static int
-xmlSecGnuTLSKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx;
+xmlSecGCryptKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyReq) {
+    xmlSecGCryptKWDes3CtxPtr ctx;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWDes3Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWDes3Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWDes3Size), -1);
     xmlSecAssert2(keyReq != NULL, -1);
 
-    ctx = xmlSecGnuTLSKWDes3GetCtx(transform);
+    ctx = xmlSecGCryptKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
-    keyReq->keyId       = xmlSecGnuTLSKeyDataDesId;
+    keyReq->keyId       = xmlSecGCryptKeyDataDesId;
     keyReq->keyType     = xmlSecKeyDataTypeSymmetric;
     if(transform->operation == xmlSecTransformOperationEncrypt) {
         keyReq->keyUsage= xmlSecKeyUsageEncrypt;
@@ -207,19 +206,19 @@ xmlSecGnuTLSKWDes3SetKeyReq(xmlSecTransformPtr transform,  xmlSecKeyReqPtr keyRe
 }
 
 static int
-xmlSecGnuTLSKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx;
+xmlSecGCryptKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
+    xmlSecGCryptKWDes3CtxPtr ctx;
     xmlSecBufferPtr buffer;
     xmlSecSize keySize;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWDes3Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWDes3Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWDes3Size), -1);
     xmlSecAssert2(key != NULL, -1);
-    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGnuTLSKeyDataDesId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(xmlSecKeyGetValue(key), xmlSecGCryptKeyDataDesId), -1);
 
-    ctx = xmlSecGnuTLSKWDes3GetCtx(transform);
+    ctx = xmlSecGCryptKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     buffer = xmlSecKeyDataBinaryValueGetBuffer(xmlSecKeyGetValue(key));
@@ -250,18 +249,18 @@ xmlSecGnuTLSKWDes3SetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
 }
 
 static int
-xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx;
+xmlSecGCryptKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr transformCtx) {
+    xmlSecGCryptKWDes3CtxPtr ctx;
     xmlSecBufferPtr in, out;
     xmlSecSize inSize, outSize, keySize;
     int ret;
 
-    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGnuTLSTransformKWDes3Id), -1);
+    xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecGCryptTransformKWDes3Id), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationEncrypt) || (transform->operation == xmlSecTransformOperationDecrypt), -1);
-    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSKWDes3Size), -1);
+    xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptKWDes3Size), -1);
     xmlSecAssert2(transformCtx != NULL, -1);
 
-    ctx = xmlSecGnuTLSKWDes3GetCtx(transform);
+    ctx = xmlSecGCryptKWDes3GetCtx(transform);
     xmlSecAssert2(ctx != NULL, -1);
 
     keySize = xmlSecBufferGetSize(&(ctx->keyBuffer));
@@ -311,7 +310,7 @@ xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
         }
 
         if(transform->operation == xmlSecTransformOperationEncrypt) {
-            ret = xmlSecKWDes3Encode(&xmlSecGnuTLSKWDes3ImplKlass, ctx,
+            ret = xmlSecKWDes3Encode(&xmlSecGCryptKWDes3ImplKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
@@ -325,7 +324,7 @@ xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
             }
             outSize = ret;
         } else {
-            ret = xmlSecKWDes3Decode(&xmlSecGnuTLSKWDes3ImplKlass, ctx,
+            ret = xmlSecKWDes3Decode(&xmlSecGCryptKWDes3ImplKlass, ctx,
                                     xmlSecBufferGetData(in), inSize,
                                     xmlSecBufferGetData(out), outSize);
             if(ret < 0) {
@@ -381,10 +380,10 @@ xmlSecGnuTLSKWDes3Execute(xmlSecTransformPtr transform, int last, xmlSecTransfor
  *
  *********************************************************************/
 static int
-xmlSecGnuTLSKWDes3Sha1(void * context,
+xmlSecGCryptKWDes3Sha1(void * context,
                        const xmlSecByte * in, xmlSecSize inSize,
                        xmlSecByte * out, xmlSecSize outSize) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx = (xmlSecGnuTLSKWDes3CtxPtr)context;
+    xmlSecGCryptKWDes3CtxPtr ctx = (xmlSecGCryptKWDes3CtxPtr)context;
     gcry_md_hd_t digestCtx;
     unsigned char * res;
     unsigned int len;
@@ -441,9 +440,9 @@ xmlSecGnuTLSKWDes3Sha1(void * context,
 }
 
 static int
-xmlSecGnuTLSKWDes3GenerateRandom(void * context,
+xmlSecGCryptKWDes3GenerateRandom(void * context,
                                  xmlSecByte * out, xmlSecSize outSize) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx = (xmlSecGnuTLSKWDes3CtxPtr)context;
+    xmlSecGCryptKWDes3CtxPtr ctx = (xmlSecGCryptKWDes3CtxPtr)context;
 
     xmlSecAssert2(ctx != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -454,11 +453,11 @@ xmlSecGnuTLSKWDes3GenerateRandom(void * context,
 }
 
 static int
-xmlSecGnuTLSKWDes3BlockEncrypt(void * context,
+xmlSecGCryptKWDes3BlockEncrypt(void * context,
                                const xmlSecByte * iv, xmlSecSize ivSize,
                                const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx = (xmlSecGnuTLSKWDes3CtxPtr)context;
+    xmlSecGCryptKWDes3CtxPtr ctx = (xmlSecGCryptKWDes3CtxPtr)context;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -471,7 +470,7 @@ xmlSecGnuTLSKWDes3BlockEncrypt(void * context,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
-    ret = xmlSecGnuTLSKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)),
+    ret = xmlSecGCryptKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)),
                                     XMLSEC_KW_DES3_KEY_LENGTH,
                                     iv, XMLSEC_KW_DES3_IV_LENGTH,
                                     in, inSize,
@@ -480,7 +479,7 @@ xmlSecGnuTLSKWDes3BlockEncrypt(void * context,
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecGnuTLSKWDes3Encrypt",
+                    "xmlSecGCryptKWDes3Encrypt",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
@@ -490,11 +489,11 @@ xmlSecGnuTLSKWDes3BlockEncrypt(void * context,
 }
 
 static int
-xmlSecGnuTLSKWDes3BlockDecrypt(void * context,
+xmlSecGCryptKWDes3BlockDecrypt(void * context,
                                const xmlSecByte * iv, xmlSecSize ivSize,
                                const xmlSecByte * in, xmlSecSize inSize,
                                xmlSecByte * out, xmlSecSize outSize) {
-    xmlSecGnuTLSKWDes3CtxPtr ctx = (xmlSecGnuTLSKWDes3CtxPtr)context;
+    xmlSecGCryptKWDes3CtxPtr ctx = (xmlSecGCryptKWDes3CtxPtr)context;
     int ret;
 
     xmlSecAssert2(ctx != NULL, -1);
@@ -507,7 +506,7 @@ xmlSecGnuTLSKWDes3BlockDecrypt(void * context,
     xmlSecAssert2(out != NULL, -1);
     xmlSecAssert2(outSize >= inSize, -1);
 
-    ret = xmlSecGnuTLSKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)),
+    ret = xmlSecGCryptKWDes3Encrypt(xmlSecBufferGetData(&(ctx->keyBuffer)),
                                     XMLSEC_KW_DES3_KEY_LENGTH,
                                     iv, XMLSEC_KW_DES3_IV_LENGTH,
                                     in, inSize,
@@ -516,7 +515,7 @@ xmlSecGnuTLSKWDes3BlockDecrypt(void * context,
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecGnuTLSKWDes3Encrypt",
+                    "xmlSecGCryptKWDes3Encrypt",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
@@ -525,7 +524,7 @@ xmlSecGnuTLSKWDes3BlockDecrypt(void * context,
 }
 
 static int
-xmlSecGnuTLSKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
+xmlSecGCryptKWDes3Encrypt(const xmlSecByte *key, xmlSecSize keySize,
                            const xmlSecByte *iv, xmlSecSize ivSize,
                            const xmlSecByte *in, xmlSecSize inSize,
                            xmlSecByte *out, xmlSecSize outSize,

@@ -65,6 +65,12 @@ sgml: templates
 		    --output-dir=sgml/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
+	-@gtkdoc-mkdb --module=xmlsec-gcrypt \
+		    --main-sgml-file=xmlsec-gcrypt.sgml \
+		    --tmpl-dir=tmpl/gcrypt \
+		    --output-dir=sgml/gcrypt \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
 	-@gtkdoc-mkdb --module=xmlsec-nss \
 		    --main-sgml-file=xmlsec-nss.sgml \
 		    --tmpl-dir=tmpl/nss \
@@ -92,6 +98,8 @@ templates: scan
 		    --output-dir=tmpl/openssl
 	-@gtkdoc-mktmpl --module=xmlsec-gnutls \
 		    --output-dir=tmpl/gnutls
+	-@gtkdoc-mktmpl --module=xmlsec-gcrypt \
+		    --output-dir=tmpl/gcrypt
 	-@gtkdoc-mktmpl --module=xmlsec-nss \
 		    --output-dir=tmpl/nss
 	-@gtkdoc-mktmpl --module=xmlsec-mscrypto \
@@ -110,6 +118,10 @@ scan: doc_sources example_sources
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/gnutls \
 		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gnutls
+	-@gtkdoc-scan --module=xmlsec-gcrypt \
+		    --rebuild-sections \
+		    --source-dir=$(DOC_SOURCE_DIR)/src/gcrypt \
+		    --source-dir=$(DOC_SOURCE_DIR)/include/xmlsec/gcrypt
 	-@gtkdoc-scan --module=xmlsec-nss \
 		    --rebuild-sections \
 		    --source-dir=$(DOC_SOURCE_DIR)/src/nss \

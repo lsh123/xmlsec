@@ -2,11 +2,11 @@
 crypto
 
 <!-- ##### SECTION Short_Description ##### -->
-Crypto transforms implementation for GnuTLS.
+Crypto transforms implementation for GCrypt.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-Crypto transforms implementation for GnuTLS.
+Crypto transforms implementation for GCrypt.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -17,31 +17,37 @@ Crypto transforms implementation for GnuTLS.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### FUNCTION xmlSecCryptoGetFunctions_gnutls ##### -->
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION xmlSecCryptoGetFunctions_gcrypt ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSInit ##### -->
+<!-- ##### FUNCTION xmlSecGCryptInit ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSShutdown ##### -->
+<!-- ##### FUNCTION xmlSecGCryptShutdown ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeysMngrInit ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeysMngrInit ##### -->
 <para>
 
 </para>
@@ -50,7 +56,7 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSGenerateRandom ##### -->
+<!-- ##### FUNCTION xmlSecGCryptGenerateRandom ##### -->
 <para>
 
 </para>
@@ -60,22 +66,23 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSKeyDataAesId ##### -->
+<!-- ##### MACRO xmlSecGCryptKeyDataAesId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataAesGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataAesGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataAesSet ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataAesSet ##### -->
 <para>
 
 </para>
@@ -86,67 +93,119 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformAes128CbcId ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformAes128CbcId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformAes128CbcGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformAes128CbcGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformAes192CbcId ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformAes192CbcId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformAes192CbcGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformAes192CbcGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformAes256CbcId ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformAes256CbcId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformAes256CbcGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformAes256CbcGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSKeyDataDesId ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformKWAes128Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDesGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformKWAes128GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDesSet ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformKWAes192Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformKWAes192GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformKWAes256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformKWAes256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptKeyDataDesId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDesGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDesSet ##### -->
 <para>
 
 </para>
@@ -157,30 +216,119 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformDes3CbcId ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformDes3CbcId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformDes3CbcGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformDes3CbcGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSHmacGetMinOutputLength ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformKWDes3Id ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformKWDes3GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSHmacSetMinOutputLength ##### -->
+<!-- ##### MACRO xmlSecGCryptKeyDataDsaId ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDsaGetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDsaAdoptKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@dsa_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDsaAdoptKeyPair ##### -->
+<para>
+
+</para>
+
+@data: 
+@pub_key: 
+@priv_key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDsaGetPublicKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptKeyDataDsaGetPrivateKey ##### -->
+<para>
+
+</para>
+
+@data: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformDsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformDsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptHmacGetMinOutputLength ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION xmlSecGCryptHmacSetMinOutputLength ##### -->
 <para>
 
 </para>
@@ -188,22 +336,23 @@ Crypto transforms implementation for GnuTLS.
 @min_length: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSKeyDataHmacId ##### -->
+<!-- ##### MACRO xmlSecGCryptKeyDataHmacId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataHmacGetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataHmacGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataHmacSet ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataHmacSet ##### -->
 <para>
 
 </para>
@@ -214,183 +363,346 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacMd5Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformHmacMd5Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacMd5GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformHmacMd5GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacRipemd160Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformHmacRipemd160Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacRipemd160GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformHmacRipemd160GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha1Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformHmacSha1Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha1GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformHmacSha1GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha256Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformHmacSha256Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha256GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformHmacSha256GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha384Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformHmacSha384Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha384GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformHmacSha384GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformHmacSha512Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformHmacSha512Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformHmacSha512GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformHmacSha512GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformSha1Id ##### -->
+<!-- ##### MACRO xmlSecGCryptKeyDataRsaId ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformSha1GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataRsaGetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformSha256Id ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataRsaAdoptKey ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSTransformSha256GetKlass ##### -->
-<para>
-
-</para>
-
+@data: 
+@rsa_key: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformSha384Id ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataRsaAdoptKeyPair ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSTransformSha384GetKlass ##### -->
-<para>
-
-</para>
-
+@data: 
+@pub_key: 
+@priv_key: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformSha512Id ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataRsaGetPublicKey ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSTransformSha512GetKlass ##### -->
-<para>
-
-</para>
-
+@data: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformMd5Id ##### -->
+<!-- ##### FUNCTION xmlSecGCryptKeyDataRsaGetPrivateKey ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSTransformMd5GetKlass ##### -->
-<para>
-
-</para>
-
+@data: 
 @Returns: 
 
 
-<!-- ##### MACRO xmlSecGnuTLSTransformRipemd160Id ##### -->
+<!-- ##### MACRO xmlSecGCryptTransformRsaMd5Id ##### -->
 <para>
 
 </para>
 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSTransformRipemd160GetKlass ##### -->
+<!-- ##### FUNCTION xmlSecGCryptTransformRsaMd5GetKlass ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformRsaRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformRsaRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformRsaSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformRsaSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformRsaSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformRsaSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformRsaSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformRsaSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformRsaSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformRsaSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformSha1Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformSha1GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformSha256Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformSha256GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformSha384Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformSha384GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformSha512Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformSha512GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformMd5Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformMd5GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### MACRO xmlSecGCryptTransformRipemd160Id ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION xmlSecGCryptTransformRipemd160GetKlass ##### -->
+<para>
+
+</para>
+
+@void: 
 @Returns: 
 
 

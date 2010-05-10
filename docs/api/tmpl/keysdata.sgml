@@ -17,6 +17,9 @@ Crypto key data object definition.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### SECTION Image ##### -->
+
+
 <!-- ##### TYPEDEF xmlSecKeyDataUsage ##### -->
 <para>
 
@@ -189,6 +192,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -197,6 +201,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -205,6 +210,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 
 
 <!-- ##### FUNCTION xmlSecKeyDataIdsRegisterDefault ##### -->
@@ -212,6 +218,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -587,6 +594,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -602,6 +610,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 @Returns: 
 
 
@@ -915,6 +924,7 @@ Crypto key data object definition.
 
 </para>
 
+@void: 
 @Returns: 
 
 

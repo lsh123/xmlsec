@@ -180,9 +180,10 @@ execDSigTest() {
     folder="$2"
     filename="$3"
     req_transforms="$4"
-    params1="$5"
-    params2="$6"
-    params3="$7"
+    req_key_data="$5"
+    params1="$6"
+    params2="$7"
+    params3="$8"
 
     # prepare
     rm -f $tmpfile
@@ -216,6 +217,20 @@ execDSigTest() {
         else
             echo " Skip"
             cd $old_pwd
+            return
+        fi
+    fi
+
+    # check key data
+    if [ -n "$req_key_data" ] ; then
+        printf "    Checking required key data                            "
+        echo "$xmlsec_app check-key-data $xmlsec_params $req_key_data" >> $logfile
+        $xmlsec_app check-key-data $xmlsec_params $req_key_data >> $logfile 2>> $logfile
+        res=$?
+        if [ $res = 0 ]; then
+            echo "  OK"
+        else
+            echo "Skip"
             return
         fi
     fi

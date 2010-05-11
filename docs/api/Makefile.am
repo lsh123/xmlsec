@@ -1,11 +1,5 @@
 #
-# To remove "bad" chars, run the following command
 #
-# for i in `grep -l $'\xA0' *` ; do \
-#	echo $i ;  \
-#	sed 's/\xA0/ /g' $i > $i.tmp ; \
-#	mv $i.tmp $i ; \
-# done
 #
 NULL=
 TOP=../..
@@ -38,9 +32,9 @@ all:
 
 docs: sgml html clean-sources
 
+# need to cleanup "bad" chars
 html: sgml xmlsec.sgml xmlsec-index
 	gtkdoc-mkhtml xmlsec xmlsec.sgml
-	
 
 #
 # Prepeare sgml files from sources for each library. We are also

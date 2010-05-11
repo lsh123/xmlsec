@@ -526,7 +526,6 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
     size_t written;
     gpg_error_t err;
     int ret;
-    int res = -1;
 
     xmlSecAssert2(a != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
@@ -618,7 +617,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
  *
  ***************************************************************************/
 static int
-xmlSecGCryptDsaPkSign(int digest, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                       const xmlSecByte* dgst, xmlSecSize dgstSize,
                       xmlSecBufferPtr out) {
     gcry_mpi_t m_hash = NULL;
@@ -793,7 +792,7 @@ done:
 }
 
 static int
-xmlSecGCryptDsaPkVerify(int digest, xmlSecKeyDataPtr key_data,
+xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                         const xmlSecByte* dgst, xmlSecSize dgstSize,
                         const xmlSecByte* data, xmlSecSize dataSize) {
     gcry_mpi_t m_hash = NULL;

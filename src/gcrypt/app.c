@@ -133,8 +133,11 @@ xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  */
 xmlSecKeyPtr
 xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                        xmlSecKeyDataFormat format, const char *pwd,
-                        void* pwdCallback, void* pwdCallbackCtx) {
+                        xmlSecKeyDataFormat format,
+                        const char *pwd ATTRIBUTE_UNUSED,
+                        void* pwdCallback ATTRIBUTE_UNUSED,
+                        void* pwdCallbackCtx ATTRIBUTE_UNUSED)
+{
     xmlSecKeyPtr key = NULL;
     xmlSecKeyDataPtr key_data = NULL;
     int ret;
@@ -181,7 +184,7 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     }
 
     /* we should have key data by now */
-    xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(key_data != NULL, NULL);
     key = xmlSecKeyCreate();
     if(key == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,

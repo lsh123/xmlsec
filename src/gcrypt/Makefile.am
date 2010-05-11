@@ -20,6 +20,8 @@ libxmlsec1_gcrypt_la_CPPFLAGS = \
 
 libxmlsec1_gcrypt_la_SOURCES =\
 	app.c \
+	asn1.h \
+	asn1.c \
 	ciphers.c \
 	crypto.c \
 	digests.c \

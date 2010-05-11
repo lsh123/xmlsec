@@ -20,8 +20,6 @@
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
 
-#define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
-
 /**************************************************************************
  *
  * Internal GCRYPT Digest CTX
@@ -109,7 +107,7 @@ xmlSecGCryptDigestCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecGCryptDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecGCryptDigestCtxPtr ctx;
-    gpg_err_code_t ret;
+    gpg_err_code_t err;
 
     xmlSecAssert2(xmlSecGCryptDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptDigestSize), -1);
@@ -165,8 +163,9 @@ xmlSecGCryptDigestInitialize(xmlSecTransformPtr transform) {
         return(-1);
     }
 
-    ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
-    if(ret != GPG_ERR_NO_ERROR) {
+    /* create digest ctx */
+    err = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_SECURE); /* we are paranoid */
+    if(err != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_open",
@@ -275,7 +274,7 @@ xmlSecGCryptDigestExecute(xmlSecTransformPtr transform, int last, xmlSecTransfor
                 return(-1);
             }
         }
-        if(last) {
+        if(last != 0) {
             xmlSecByte* buf;
 
             /* get the final digest */

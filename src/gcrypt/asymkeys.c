@@ -27,7 +27,7 @@
  * Helpers
  *
  *************************************************************************/
-static gcry_sexp_t              xmlSecGCryptAsymSExpDup          (gcry_sexp_t sexp);
+static gcry_sexp_t             xmlSecGCryptAsymSExpDup    (gcry_sexp_t sexp);
 
 
 /**************************************************************************
@@ -340,7 +340,7 @@ xmlSecGCryptAsymKeyDataGetType(xmlSecKeyDataPtr data) {
     xmlSecAssert2(ctx != NULL, xmlSecKeyDataTypeUnknown);
 
     if((ctx->priv_key != NULL) && (ctx->pub_key != NULL)) {
-        return (xmlSecKeyDataTypePrivate);
+        return (xmlSecKeyDataTypePrivate | xmlSecKeyDataTypePublic);
     } else if(ctx->pub_key != NULL) {
         return (xmlSecKeyDataTypePublic);
     }

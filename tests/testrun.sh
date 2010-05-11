@@ -19,28 +19,6 @@ if [ "z$OS_ARCH" = "zCygwin" ] ; then
 fi
 
 #
-# Setup keys config
-#
-pub_key_format=$file_format
-cert_format=$file_format
-priv_key_option="--pkcs12"
-priv_key_format="p12"
-
-# On Windows, one needs to specify Crypto Service Provider (CSP)
-# in the pkcs12 file to ensure it is loaded correctly to be used
-# with SHA2 algorithms. Worse, the CSP is different for XP and older 
-# versions
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
-    if [ "z$OS_KERNEL" = "zCYGWIN_NT-5.1" ] ; then
-        priv_key_suffix="-winxp"
-    else
-        priv_key_suffix="-win"
-    fi
-else
-    priv_key_suffix=""
-fi
-
-#
 # Prepare folders
 #
 if [ "z$TMPFOLDER" = "z" ] ; then
@@ -72,13 +50,45 @@ fi
 #
 crypto_config=$TMPFOLDER/xmlsec-crypto-config
 keysfile=$crypto_config/keys.xml
-if [ "z$crypto" == "zdefault" -a "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
+if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
     crypto="$XMLSEC_DEFAULT_CRYPTO"
-fi
-if [ "z$crypto" != "z" -a "z$crypto" != "zdefault" ] ; then
+elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
 xmlsec_params="$xmlsec_params --crypto-config $crypto_config"
+
+#
+# Setup keys config
+#
+pub_key_format=$file_format
+cert_format=$file_format
+
+#
+# GCrypt only supports DER format for now, others are good to go with PKCS12
+# 
+if [ "z$crypto" != "zgcrypt" ] ; then
+    priv_key_option="--pkcs12"
+    priv_key_format="p12"
+else
+    priv_key_option="--privkey-der"
+    priv_key_format="der"
+    pub_key_format="der"
+fi
+
+# On Windows, one needs to specify Crypto Service Provider (CSP)
+# in the pkcs12 file to ensure it is loaded correctly to be used
+# with SHA2 algorithms. Worse, the CSP is different for XP and older 
+# versions
+if [ "z$OS_ARCH" = "zCygwin" ] ; then
+    if [ "z$OS_KERNEL" = "zCYGWIN_NT-5.1" ] ; then
+        priv_key_suffix="-winxp"
+    else
+        priv_key_suffix="-win"
+    fi
+else
+    priv_key_suffix=""
+fi
+
 
 #
 # Misc

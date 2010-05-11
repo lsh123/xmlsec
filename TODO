@@ -142,10 +142,10 @@ merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
 01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
 
 -------------------------------------------------
-* xmlsec-gnutls (May 09, 2010 using GnuTLS)
+* xmlsec-gcrypt (May 09, 2010 using GCrypt)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RSA, DSA, RSA PKCS/OAEP, X509, GOST
+** Skipped tests due to missing transforms: DSA, RSA PKCS/OAEP, X509, GOST
 
 aleksey-xmldsig-01/enveloping-dsa-x509chain
 aleksey-xmldsig-01/enveloping-rsa-x509chain
@@ -164,7 +164,6 @@ aleksey-xmldsig-01/x509data-sn-test
 merlin-xmldsig-twenty-three/signature-enveloped-dsa
 merlin-xmldsig-twenty-three/signature-enveloping-dsa
 merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa
-merlin-xmldsig-twenty-three/signature-enveloping-rsa
 merlin-xmldsig-twenty-three/signature-external-b64-dsa
 merlin-xmldsig-twenty-three/signature-external-dsa
 merlin-xmldsig-twenty-three/signature-keyname

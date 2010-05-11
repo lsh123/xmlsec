@@ -21,4 +21,8 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
+
+#define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
+
+
 #endif /* ! __XMLSEC_GLOBALS_H__ */

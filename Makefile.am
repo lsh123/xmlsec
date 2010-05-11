@@ -64,9 +64,6 @@ if XMLSEC_NO_APPS_CRYPTO_DYNAMIC_LOADING
 PRECHECK_COMMANDS = \
 	cd $(ABS_SRCDIR) \
 	$(NULL)
-CHECK_CRYPTO_LIST = \
-	"default" \
-	$(NULL)
 else
 PRECHECK_COMMANDS= \
 	for i in $(XMLSEC_CRYPTO_LIST) ; do \
@@ -74,10 +71,10 @@ PRECHECK_COMMANDS= \
 	done && \
 	cd $(ABS_SRCDIR) \
 	$(NULL)	
+endif
 CHECK_CRYPTO_LIST = \
 	$(XMLSEC_CRYPTO_LIST) \
 	$(NULL)
-endif
 
 docs: docs-man
 	@(cd docs && $(MAKE) docs)
@@ -127,7 +124,7 @@ check-keys: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testKeys.sh \
-	    default \
+	    $(XMLSEC_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \
@@ -137,7 +134,7 @@ check-dsig: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testDSig.sh \
-	    default \
+	    $(XMLSEC_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \
@@ -147,7 +144,7 @@ check-enc: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testEnc.sh  \
-	    default \
+	    $(XMLSEC_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \
@@ -157,7 +154,7 @@ check-xkms: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testXKMS.sh \
-	    default \
+	    $(XMLSEC_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \

@@ -160,9 +160,8 @@ static xmlSecAppCmdLineParam helpParam = {
     xmlSecAppCmdLineParamTypeFlag,
     xmlSecAppCmdLineParamFlagNone,
     NULL
-};    
+};
 
-#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
 static xmlSecAppCmdLineParam cryptoParam = { 
     xmlSecAppCmdLineTopicCryptoConfig,
     "--crypto",
@@ -175,7 +174,6 @@ static xmlSecAppCmdLineParam cryptoParam = {
     xmlSecAppCmdLineParamFlagNone,
     NULL
 };
-#endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
 
 static xmlSecAppCmdLineParam cryptoConfigParam = { 
     xmlSecAppCmdLineTopicCryptoConfig,
@@ -899,9 +897,7 @@ static xmlSecAppCmdLineParamPtr parameters[] = {
 #endif /* XMLSEC_NO_X509 */    
     
     /* General configuration params */
-#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
     &cryptoParam,
-#endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
     &cryptoConfigParam,
     &repeatParam,
     &disableErrorMsgsParam,
@@ -1061,15 +1057,22 @@ int main(int argc, const char **argv) {
         default:
             break;
     }
-    
+
     /* now init the xmlsec and all other libs */
-#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
+    /* ignore "--crypto" if we don't have dynamic loading */
     tmp = xmlSecAppCmdLineParamGetString(&cryptoParam);
+#if !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING)
     if((tmp != NULL) && (strcmp(tmp, "default") != 0)) {
         xmlsec_crypto = tmp;
     }
+#else /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
+    if((tmp != NULL) && (strcmp(tmp, xmlsec_crypto) != 0)) {
+        fprintf(stderr, "Error: dynaimc crypto libraries loading is disabled and the only available crypto library is '%s'\n", xmlsec_crypto);
+        xmlSecAppPrintUsage();
+        goto fail;
+    }
 #endif /* !defined(XMLSEC_NO_CRYPTO_DYNAMIC_LOADING) && defined(XMLSEC_CRYPTO_DYNAMIC_LOADING) */
-    
+
     if(xmlSecAppInit() < 0) {
         fprintf(stderr, "Error: initialization failed\n");
         xmlSecAppPrintUsage();

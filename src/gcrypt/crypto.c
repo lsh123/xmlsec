@@ -106,8 +106,6 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_DES */
 
     /******************************* DSA ********************************/
-#ifdef ALEKSEY_TODO
-
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -115,8 +113,6 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
-
-#endif /* ALEKSEY_TODO */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC
@@ -158,8 +154,6 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
 #endif /* XMLSEC_NO_RIPEMD160 */
 
     /******************************* RSA ********************************/
-#ifdef ALEKSEY_TODO
-
 #ifndef XMLSEC_NO_RSA
 
 #ifndef XMLSEC_NO_MD5
@@ -174,10 +168,6 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformRsaSha1GetKlass           = xmlSecGCryptTransformRsaSha1GetKlass;
 #endif /* XMLSEC_NO_SHA1 */
 
-#ifndef XMLSEC_NO_SHA224
-    gXmlSecGCryptFunctions->transformRsaSha224GetKlass         = xmlSecGCryptTransformRsaSha224GetKlass;
-#endif /* XMLSEC_NO_SHA224 */
-
 #ifndef XMLSEC_NO_SHA256
     gXmlSecGCryptFunctions->transformRsaSha256GetKlass         = xmlSecGCryptTransformRsaSha256GetKlass;
 #endif /* XMLSEC_NO_SHA256 */
@@ -190,11 +180,7 @@ xmlSecCryptoGetFunctions_gcrypt(void) {
     gXmlSecGCryptFunctions->transformRsaSha512GetKlass         = xmlSecGCryptTransformRsaSha512GetKlass;
 #endif /* XMLSEC_NO_SHA512 */
 
-    gXmlSecGCryptFunctions->transformRsaPkcs1GetKlass          = xmlSecGCryptTransformRsaPkcs1GetKlass;
-    gXmlSecGCryptFunctions->transformRsaOaepGetKlass           = xmlSecGCryptTransformRsaOaepGetKlass;
 #endif /* XMLSEC_NO_RSA */
-
-#endif /* ALEKSEY_TODO */
 
     /******************************* SHA ********************************/
 #ifndef XMLSEC_NO_SHA1

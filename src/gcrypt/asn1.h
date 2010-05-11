@@ -19,12 +19,17 @@
 extern "C" {
 #endif /* __cplusplus */
 
-xmlSecKeyDataPtr        xmlSecGCryptParseDerPrivateKey  (const xmlSecByte * der,
-                                                         xmlSecSize derlen);
-xmlSecKeyDataPtr        xmlSecGCryptParseDerPublicKey   (const xmlSecByte * der,
-                                                         xmlSecSize derlen);
+enum xmlSecGCryptDerKeyType {
+    xmlSecGCryptDerKeyTypeAuto = 0,
+    xmlSecGCryptDerKeyTypePublicDsa,
+    xmlSecGCryptDerKeyTypePublicRsa,
+    xmlSecGCryptDerKeyTypePrivateDsa,
+    xmlSecGCryptDerKeyTypePrivateRsa
+};
+
 xmlSecKeyDataPtr        xmlSecGCryptParseDer            (const xmlSecByte * der,
-                                                         xmlSecSize derlen);
+                                                         xmlSecSize derlen,
+                                                         enum xmlSecGCryptDerKeyType type);
 
 #ifdef __cplusplus
 }

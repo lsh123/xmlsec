@@ -91,13 +91,17 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, xmlSecSize *buflen, struct 
 {
     int c;
     unsigned long tag;
-    const xmlSecByte *buf = *buffer;
-    xmlSecSize length = *buflen;
+    const xmlSecByte *buf;
+    xmlSecSize length;
 
     xmlSecAssert2(buffer != NULL, -1);
     xmlSecAssert2((*buffer) != NULL, -1);
     xmlSecAssert2(buflen != NULL, -1);
     xmlSecAssert2(ti != NULL, -1);
+
+    /* initialize */
+    buf = *buffer;
+    length = *buflen;
 
     ti->length = 0;
     ti->ndef = 0;
@@ -174,152 +178,421 @@ xmlSecGCryptAsn1ParseTag (xmlSecByte const **buffer, xmlSecSize *buflen, struct 
     return(0);
 }
 
-xmlSecKeyDataPtr
-xmlSecGCryptParseDerPrivateKey(const xmlSecByte * der, xmlSecSize derlen) {
-    xmlSecKeyDataPtr key_data = NULL;
-    gcry_sexp_t s_key = NULL;
-    gcry_error_t err;
+static int
+xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *buflen,
+                                     gcry_mpi_t * params, int params_size) {
+    const xmlSecByte *buf;
+    xmlSecSize length;
     struct tag_info ti;
-    gcry_mpi_t keyparms[8] = {
-        NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL
-    } ;
-    int n_keyparms = sizeof(keyparms) / sizeof(keyparms[0]);
-    int idx;
+    gcry_error_t err;
+    int idx = 0;
+    int ret;
+
+    xmlSecAssert2(buffer != NULL, -1);
+    xmlSecAssert2((*buffer) != NULL, -1);
+    xmlSecAssert2(buflen != NULL, -1);
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(params_size > 0, -1);
+
+    /* initialize */
+    buf = *buffer;
+    length = *buflen;
+
+    /* read SEQUENCE */
+    memset(&ti, 0, sizeof(ti));
+    ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
+    if((ret != 0)  || (ti.tag != TAG_SEQUENCE) || ti.class || !ti.cons || ti.ndef) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptAsn1ParseTag",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "TAG_SEQUENCE is expected: tag=%d",
+                    (int)ti.tag);
+        return(-1);
+    }
+
+    /* read INTEGERs */
+    for (idx = 0; ((idx < params_size) && (length > 0)); idx++) {
+        memset(&ti, 0, sizeof(ti));
+        ret = xmlSecGCryptAsn1ParseTag (&buf, &length, &ti);
+        if((ret != 0) || (ti.tag != TAG_INTEGER) || ti.class || ti.cons || ti.ndef)
+        {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGCryptAsn1ParseTag",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "TAG_INTEGER is expected - index=%d, tag=%d",
+                        (int)idx, (int)ti.tag);
+            return(-1);
+        }
+
+        err = gcry_mpi_scan(&(params[idx]), GCRYMPI_FMT_USG, buf, ti.length, NULL);
+        if((err != GPG_ERR_NO_ERROR) || (params[idx] == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_mpi_scan",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "err=%d", (int)err);
+            return(-1);
+        }
+        buf += ti.length;
+        length -= ti.length;
+    }
+
+    /* did we parse everything? */
+    if(length > 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptAsn1ParseTag",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "too many params - cur=%d, expected=%d",
+                    (int)(idx - 1), (int)params_size);
+        return(-1);
+    }
+
+    /* done */
+    *buffer = buf;
+    *buflen = length;
+    return(idx);
+}
+
+xmlSecKeyDataPtr
+xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
+                     enum xmlSecGCryptDerKeyType type) {
+    xmlSecKeyDataPtr key_data = NULL;
+    gcry_sexp_t s_pub_key = NULL;
+    gcry_sexp_t s_priv_key = NULL;
+    gcry_error_t err;
+    gcry_mpi_t keyparms[20];
+    int keyparms_num;
+    unsigned int idx;
     int ret;
 
     xmlSecAssert2(der != NULL, NULL);
     xmlSecAssert2(derlen > 0, NULL);
 
     /* Parse the ASN.1 structure.  */
-    if(xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-       || ti.tag != TAG_SEQUENCE || ti.class || !ti.cons || ti.ndef)
-    {
+    memset(&keyparms, 0, sizeof(keyparms));
+    ret = xmlSecGCryptAsn1ParseIntegerSequence(
+        &der, &derlen,
+        keyparms,  sizeof(keyparms) / sizeof(keyparms[0])
+    );
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptAsn1ParseIntegerSequence",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    keyparms_num = ret;
+
+    /* The value of the first integer should be 0. */
+    if ((keyparms_num < 1) || (gcry_mpi_cmp_ui(keyparms[0], 0) != 0)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "xmlSecGCryptAsn1ParseTag",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "TAG_SEQUENCE is expected");
+                    "num=%d",
+                    (int)keyparms_num);
         goto done;
     }
 
-    if (xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-       || ti.tag != TAG_INTEGER || ti.class || ti.cons || ti.ndef)
-    {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsn1ParseTag",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "TAG_INTEGER is expected");
-        goto done;
-    }
-
-    if ((ti.length != 1) || ((*der) != 0)) {
-        /* The value of the first integer is no 0. */
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptAsn1ParseTag",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "integer length=%d, value=%d",
-                    (int)ti.length, (int)(*der));
-        goto done;
-    }
-    der += ti.length; 
-    derlen -= ti.length;
-
-    /* read params */
-    for (idx=0; idx < n_keyparms; idx++) {
-        if ( xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-           || ti.tag != TAG_INTEGER || ti.class || ti.cons || ti.ndef)
-        {
+    /* do we need to guess the key type? not robust but the best we can do */
+    if(type == xmlSecGCryptDerKeyTypeAuto) {
+        switch(keyparms_num) {
+        case 3:
+            /* Public RSA */
+            type = xmlSecGCryptDerKeyTypePublicRsa;
+        case 5:
+            /* Public DSA */
+            type = xmlSecGCryptDerKeyTypePublicDsa;
+        case 6:
+            /* Private DSA */
+            type = xmlSecGCryptDerKeyTypePrivateDsa;
+            break;
+        case 9:
+            /* Private RSA */
+            type = xmlSecGCryptDerKeyTypePrivateRsa;
+            break;
+        default:
+            /* unknown */
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "xmlSecGCryptAsn1ParseTag",
+                        "Unexpected number of parameters, unknown key type",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        "TAG_INTEGER is expected - index=%d",
-                        (int)idx);
+                        "keyparms_num=%d", (int)keyparms_num);
+            goto done;
+        }
+    }
+
+
+    switch(type) {
+#ifndef XMLSEC_NO_DSA
+    case xmlSecGCryptDerKeyTypePrivateDsa:
+        /* check we have enough params */
+        if(keyparms_num != 6) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "Private DSA key: 6 parameters exepcted",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "parms_num=%d", (int)keyparms_num);
             goto done;
         }
 
-        err = gcry_mpi_scan (keyparms+idx, GCRYMPI_FMT_USG, der, ti.length,NULL);
-        if (err) {
+        /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+        /* First check that x < y; if not swap x and y  */
+        if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
+            gcry_mpi_swap (keyparms[4], keyparms[5]);
+        }
+
+        /* Build the S-expressions  */
+        err = gcry_sexp_build (&s_priv_key, NULL,
+                "(private-key(dsa(p%m)(q%m)(g%m)(x%m)(y%m)))",
+                keyparms[1], keyparms[2], keyparms[3], keyparms[4], keyparms[5]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
-                        "gcry_mpi_scan",
+                        "gcry_sexp_build(private-key/dsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         "err=%d", (int)err);
             goto done;
         }
-        der += ti.length;
-        derlen -= ti.length;
-    }
 
-    if (idx != n_keyparms) {
+        err = gcry_sexp_build (&s_pub_key, NULL,
+                "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
+                keyparms[1], keyparms[2], keyparms[3], keyparms[5]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_sexp_build(public-key/dsa)",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "err=%d", (int)err);
+            goto done;
+        }
+
+        /* construct key and key data */
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataDsaId);
+        if(key_data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataDsaId");
+            goto done;
+        }
+
+        ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGCryptKeyDataDsaAdoptKey",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataDsaId");
+            xmlSecKeyDataDestroy(key_data);
+            key_data = NULL;
+            goto done;
+        }
+        s_pub_key = NULL; /* owned by key_data now */
+        s_priv_key = NULL; /* owned by key_data now */
+        break;
+
+    case xmlSecGCryptDerKeyTypePublicDsa:
+        /* check we have enough params */
+        if(keyparms_num != 5) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "Public DSA key: 5 parameters exepcted",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "parms_num=%d", (int)keyparms_num);
+            goto done;
+        }
+
+        /* Build the S-expression.  */
+        err = gcry_sexp_build (&s_pub_key, NULL,
+                "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
+                keyparms[2], keyparms[3], keyparms[4], keyparms[1]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_sexp_build(public-key/dsa)",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "err=%d", (int)err);
+            goto done;
+        }
+
+        /* construct key and key data */
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataDsaId);
+        if(key_data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataDsaId");
+            goto done;
+        }
+
+        ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(key_data, s_pub_key, NULL);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGCryptKeyDataDsaAdoptKey",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataDsaId");
+            xmlSecKeyDataDestroy(key_data);
+            key_data = NULL;
+            goto done;
+        }
+        s_pub_key = NULL; /* owned by key_data now */
+        break;
+#endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_RSA
+    case xmlSecGCryptDerKeyTypePrivateRsa:
+        /* check we have enough params */
+        if(keyparms_num != 9) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "Private RSA key: 9 parameters exepcted",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "parms_num=%d", (int)keyparms_num);
+            goto done;
+        }
+
+        /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
+        /* First check that p < q; if not swap p and q and recompute u.  */ 
+        if (gcry_mpi_cmp (keyparms[4], keyparms[5]) > 0) {
+            gcry_mpi_swap (keyparms[4], keyparms[5]);
+            gcry_mpi_invm (keyparms[8], keyparms[4], keyparms[5]);
+        }
+
+        /* Build the S-expression.  */
+        err = gcry_sexp_build (&s_priv_key, NULL,
+                         "(private-key(rsa(n%m)(e%m)(d%m)(p%m)(q%m)(u%m)))",
+                         keyparms[1], keyparms[2],
+                         keyparms[3], keyparms[4],
+                         keyparms[5], keyparms[8]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_priv_key == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_sexp_build(private-key/rsa)",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "err=%d", (int)err);
+            goto done;
+        }
+
+        err = gcry_sexp_build (&s_pub_key, NULL,
+                         "(public-key(rsa(n%m)(e%m)))",
+                         keyparms[1], keyparms[2]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_sexp_build(public-key/rsa)",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "err=%d", (int)err);
+            goto done;
+        }
+
+        /* construct key and key data */
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId);
+        if(key_data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataRsaId");
+            goto done;
+        }
+
+        ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(key_data, s_pub_key, s_priv_key);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGCryptKeyDataRsaAdoptKey",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataRsaId");
+            xmlSecKeyDataDestroy(key_data);
+            key_data = NULL;
+            goto done;
+        }
+        s_pub_key = NULL; /* owned by key_data now */
+        s_priv_key = NULL; /* owned by key_data now */
+        break;
+
+    case xmlSecGCryptDerKeyTypePublicRsa:
+        /* check we have enough params */
+        if(keyparms_num != 3) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "Public RSA key: 3 parameters exepcted",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "parms_num=%d", (int)keyparms_num);
+            goto done;
+        }
+
+        /* Build the S-expression.  */
+        err = gcry_sexp_build (&s_pub_key, NULL,
+                         "(public-key(rsa(n%m)(e%m)))",
+                         keyparms[1], keyparms[2]
+        );
+        if((err != GPG_ERR_NO_ERROR) || (s_pub_key == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_sexp_build(public-key/rsa)",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "err=%d", (int)err);
+            goto done;
+        }
+
+        /* construct key and key data */
+        key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId);
+        if(key_data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataRsaId");
+            goto done;
+        }
+
+        ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(key_data, s_pub_key, NULL);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGCryptKeyDataRsaAdoptKey",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGCryptKeyDataRsaId");
+            xmlSecKeyDataDestroy(key_data);
+            key_data = NULL;
+            goto done;
+        }
+        s_pub_key = NULL; /* owned by key_data now */
+        break;
+#endif /* XMLSEC_NO_RSA */
+
+    default:
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecGCryptAsn1ParseTag",
+                    "Unsupported key type",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "Not enough params: index=%d, expected=%d",
-                    (int)idx, (int)n_keyparms);
+                    "type=%d", (int)type);
         goto done;
+        break;
     }
-
-    /* Convert from OpenSSL parameter ordering to the OpenPGP order. */
-    /* First check that p < q; if not swap p and q and recompute u.  */ 
-    if (gcry_mpi_cmp (keyparms[3], keyparms[4]) > 0) {
-        gcry_mpi_swap (keyparms[3], keyparms[4]);
-        gcry_mpi_invm (keyparms[7], keyparms[3], keyparms[4]);
-    }
-
-    /* Build the S-expression.  */
-    err = gcry_sexp_build (&s_key, NULL,
-                         "(key-data"
-                         "(public-key(rsa(n%m)(e%m)))"
-                         "(private-key(rsa(n%m)(e%m)"
-                         /**/            "(d%m)(p%m)(q%m)(u%m)))"
-                         ")",
-                         keyparms[0], keyparms[1],
-                         keyparms[0], keyparms[1],
-                         keyparms[2], keyparms[3], keyparms[4], keyparms[7]
-    );
-    if (err) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_sexp_build",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
-        goto done;
-    }
-
-    key_data = xmlSecKeyDataCreate(xmlSecGCryptKeyDataRsaId);
-    if(key_data == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecKeyDataCreate",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "xmlSecGCryptKeyDataRsaId");
-        goto done;
-    }
-
-    ret = xmlSecGCryptKeyDataRsaAdoptKey(key_data, s_key);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecGCryptKeyDataRsaAdoptKey",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "xmlSecGCryptKeyDataRsaId");
-        xmlSecKeyDataDestroy(key_data);
-        key_data = NULL;
-        goto done;
-    }
-    s_key = NULL; /* owned by key_data now */
 
 done:
-    if(s_key != NULL) {
-        gcry_sexp_release(s_key);
+    if(s_priv_key != NULL) {
+        gcry_sexp_release(s_priv_key);
     }
-
-    for (idx=0; idx < n_keyparms; idx++) {
+    if(s_pub_key != NULL) {
+        gcry_sexp_release(s_pub_key);
+    }
+    for (idx = 0; idx < sizeof(keyparms) / sizeof(keyparms[0]); idx++) {
         if(keyparms[idx] != NULL) {
             gcry_mpi_release (keyparms[idx]);
         }
@@ -327,125 +600,3 @@ done:
 
     return(key_data);
 }
-
-
-xmlSecKeyDataPtr
-xmlSecGCryptParseDerPublicKey(const xmlSecByte * der, xmlSecSize derlen) {
-    xmlSecAssert2(der != NULL, NULL);
-    xmlSecAssert2(derlen > 0, NULL);
-
-    /* aleksey todo */
-    return(NULL);
-}
-
-#if 0
-/* Read the file FNAME assuming it is a PEM encoded public key file
-   and return an S-expression.  With SHOW set, the key parameters are
-   printed.  */
-static gcry_sexp_t
-read_public_key_file (const char *fname, int show)
-{
-  gcry_error_t err;
-  FILE *fp;
-  char *buffer;
-  size_t buflen;
-  const unsigned char *der;
-  size_t derlen;
-  struct tag_info ti;
-  gcry_mpi_t keyparms[2];
-  int n_keyparms = 2;
-  int idx;
-  gcry_sexp_t s_key;
-
-  fp = fopen (fname, binary_input?"rb":"r");
-  if (!fp)
-    die ("can't open `%s': %s\n", fname, strerror (errno));
-  buffer = read_file (fp, 0, &buflen);
-  if (!buffer)
-    die ("error reading `%s'\n", fname);
-  fclose (fp);
-
-  buflen = base64_decode (buffer, buflen);
-  
-  /* Parse the ASN.1 structure.  */
-  der = (const unsigned char*)buffer;
-  derlen = buflen;
-  if ( xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-       || ti.tag != TAG_SEQUENCE || ti.class || !ti.cons || ti.ndef)
-    goto bad_asn1;
-  if ( xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-       || ti.tag != TAG_SEQUENCE || ti.class || !ti.cons || ti.ndef)
-    goto bad_asn1;
-  /* We skip the description of the key parameters and assume it is RSA.  */
-  der += ti.length; derlen -= ti.length;
-  
-  if ( xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-       || ti.tag != TAG_BIT_STRING || ti.class || ti.cons || ti.ndef)
-    goto bad_asn1;
-  if (ti.length < 1 || *der)
-    goto bad_asn1;  /* The number of unused bits needs to be 0. */
-  der += 1; derlen -= 1;
-
-  /* Parse the BIT string.  */
-  if ( xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-       || ti.tag != TAG_SEQUENCE || ti.class || !ti.cons || ti.ndef)
-    goto bad_asn1;
-
-  for (idx=0; idx < n_keyparms; idx++)
-    {
-      if ( xmlSecGCryptAsn1ParseTag (&der, &derlen, &ti)
-           || ti.tag != TAG_INTEGER || ti.class || ti.cons || ti.ndef)
-        goto bad_asn1;
-      if (show)
-        {
-          char prefix[2];
-
-          prefix[0] = idx < 2? "ne"[idx] : '?';
-          prefix[1] = 0;
-          showhex (prefix, der, ti.length);
-        }
-      err = gcry_mpi_scan (keyparms+idx, GCRYMPI_FMT_USG, der, ti.length,NULL);
-      if (err)
-        die ("error scanning RSA parameter %d: %s\n", idx, gpg_strerror (err));
-      der += ti.length; derlen -= ti.length;
-    }
-  if (idx != n_keyparms)
-    die ("not enough RSA key parameters\n");
-
-  gcry_free (buffer);
-
-  /* Build the S-expression.  */
-  err = gcry_sexp_build (&s_key, NULL,
-                         "(public-key(rsa(n%m)(e%m)))",
-                         keyparms[0], keyparms[1] );
-  if (err)
-    die ("error building S-expression: %s\n", gpg_strerror (err));
-  
-  for (idx=0; idx < n_keyparms; idx++)
-    gcry_mpi_release (keyparms[idx]);
-  
-  return s_key;
-  
- bad_asn1:
-  die ("invalid ASN.1 structure in `%s'\n", fname);
-  return NULL; /*NOTREACHED*/
-}
-#endif /* 0 */
-
-
-xmlSecKeyDataPtr
-xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen) {
-    xmlSecKeyDataPtr res = NULL;
-
-    xmlSecAssert2(der != NULL, NULL);
-    xmlSecAssert2(derlen > 0, NULL);
-
-    /* try private key first */
-    res = xmlSecGCryptParseDerPrivateKey(der, derlen);
-    if(res == NULL) {
-        res = xmlSecGCryptParseDerPublicKey(der, derlen);
-    }
-
-    return(res);
-}
-

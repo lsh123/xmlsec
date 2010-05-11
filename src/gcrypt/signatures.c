@@ -515,6 +515,82 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
     return(0);
 }
 
+/*****************************************************************************
+ *
+ * Helper
+ *
+ ****************************************************************************/
+static int
+xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
+    xmlSecSize outSize;
+    size_t written;
+    gpg_error_t err;
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(a != NULL, -1);
+    xmlSecAssert2(out != NULL, -1);
+
+    /* current size */
+    outSize = xmlSecBufferGetSize(out);
+
+    /* figure out how much space we need */
+    written = 0;
+    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &written, a);
+    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_mpi_print",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        return(-1);
+    }
+
+    /* allocate space */
+    ret = xmlSecBufferSetMaxSize(out, outSize + written + 1);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferSetMaxSize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d", (int)(outSize + written + 1));
+        return(-1);
+    }
+    xmlSecAssert2(xmlSecBufferGetMaxSize(out) > outSize, -1);
+
+    /* write out */
+    written = 0;
+    err = gcry_mpi_print(GCRYMPI_FMT_USG,
+            xmlSecBufferGetData(out) + outSize,
+            xmlSecBufferGetMaxSize(out) - outSize,
+            &written, a);
+    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_mpi_print",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d,size=%d",
+                    (int)err,
+                    (int)(xmlSecBufferGetMaxSize(out) - outSize));
+        return(-1);
+    }
+
+    /* reset size */
+    ret = xmlSecBufferSetSize(out, outSize + written);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferSetSize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "size=%d",
+                    (int)(outSize + written));
+        return(-1);
+    }
+
+    /* done */
+    return(0);
+}
+
 #ifndef XMLSEC_NO_DSA
 
 #ifndef XMLSEC_NO_SHA1
@@ -545,27 +621,286 @@ static int
 xmlSecGCryptDsaPkSign(int digest, xmlSecKeyDataPtr key_data,
                       const xmlSecByte* dgst, xmlSecSize dgstSize,
                       xmlSecBufferPtr out) {
+    gcry_mpi_t m_hash = NULL;
+    gcry_sexp_t s_data = NULL;
+    gcry_sexp_t s_sig = NULL;
+    gcry_sexp_t s_r = NULL;
+    gcry_sexp_t s_s = NULL;
+    gcry_mpi_t m_r = NULL;
+    gcry_mpi_t m_s = NULL;
+    gcry_sexp_t s_tmp;
+    gpg_error_t err;
+    int ret;
+    int res = -1;
+
     xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(xmlSecGCryptKeyDataDsaGetPrivateKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(out != NULL, -1);
 
-    /* ALEKSEY_TODO */
-    return(-1);
+    /* get the current digest, can't use "hash" :( */
+    err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_mpi_scan(hash)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_data, NULL,
+                           "(data (flags raw)(value %m))",
+                           m_hash);
+    if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(data)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    /* create signature */
+    err = gcry_pk_sign(&s_sig, s_data, xmlSecGCryptKeyDataDsaGetPrivateKey(key_data));
+    if(err != GPG_ERR_NO_ERROR) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_pk_sign",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    /* find signature value */
+    s_tmp = gcry_sexp_find_token(s_sig, "sig-val", 0);
+    if(s_tmp == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_find_token(sig-val)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    s_tmp = gcry_sexp_find_token(s_sig, "dsa", 0);
+    if(s_tmp == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_find_token(rsa)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    gcry_sexp_release(s_sig);
+    s_sig = s_tmp;
+
+    /* r */
+    s_r = gcry_sexp_find_token(s_sig, "r", 0);
+    if(s_r == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_find_token(r)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    m_r = gcry_sexp_nth_mpi(s_r, 1, GCRYMPI_FMT_USG);
+    if(m_r == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_nth_mpi(r)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* s */
+    s_s = gcry_sexp_find_token(s_sig, "s", 0);
+    if(s_s == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_find_token(s)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    m_s = gcry_sexp_nth_mpi(s_s, 1, GCRYMPI_FMT_USG);
+    if(m_s == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_nth_mpi(s)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* write out: r + s */
+    ret = xmlSecGCryptAppendMpi(m_r, out);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptAppendMpi",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    xmlSecAssert2(xmlSecBufferGetSize(out), 20);
+    ret = xmlSecGCryptAppendMpi(m_s, out);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptAppendMpi",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    xmlSecAssert2(xmlSecBufferGetSize(out), 40);
+
+    /* done */
+    res = 0;
+
+done:
+    if(m_hash != NULL) {
+        gcry_mpi_release(m_hash);
+    }
+    if(m_r != NULL) {
+        gcry_mpi_release(m_r);
+    }
+    if(m_s != NULL) {
+        gcry_mpi_release(m_s);
+    }
+
+    if(s_data != NULL) {
+        gcry_sexp_release(s_data);
+    }
+    if(s_sig != NULL) {
+        gcry_sexp_release(s_sig);
+    }
+    if(s_r != NULL) {
+        gcry_sexp_release(s_r);
+    }
+    if(s_s != NULL) {
+        gcry_sexp_release(s_s);
+    }
+
+    return(res);
 }
 
 static int
 xmlSecGCryptDsaPkVerify(int digest, xmlSecKeyDataPtr key_data,
                         const xmlSecByte* dgst, xmlSecSize dgstSize,
                         const xmlSecByte* data, xmlSecSize dataSize) {
+    gcry_mpi_t m_hash = NULL;
+    gcry_sexp_t s_data = NULL;
+    gcry_mpi_t m_sig_r = NULL;
+    gcry_mpi_t m_sig_s = NULL;
+    gcry_sexp_t s_sig = NULL;
+    gpg_error_t err;
+    int res = -1;
+
     xmlSecAssert2(key_data != NULL, -1);
+    xmlSecAssert2(xmlSecGCryptKeyDataDsaGetPublicKey(key_data) != NULL, -1);
     xmlSecAssert2(dgst != NULL, -1);
     xmlSecAssert2(dgstSize > 0, -1);
     xmlSecAssert2(data != NULL, -1);
-    xmlSecAssert2(dataSize > 0, -1);
+    xmlSecAssert2(dataSize == (20 + 20), -1);
 
-    /* ALEKSEY_TODO */
-    return(-1);
+    /* get the current digest, can't use "hash" :( */
+    err = gcry_mpi_scan(&m_hash, GCRYMPI_FMT_USG, dgst, dgstSize, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_hash == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_mpi_scan(hash)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_data, NULL,
+                           "(data (flags raw)(value %m))",
+                           m_hash);
+    if((err != GPG_ERR_NO_ERROR) || (s_data == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(data)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    /* get the existing signature */
+    err = gcry_mpi_scan(&m_sig_r, GCRYMPI_FMT_USG, data, 20, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_sig_r == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_mpi_scan(r)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+    err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + 20, 20, NULL);
+    if((err != GPG_ERR_NO_ERROR) || (m_sig_s == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_mpi_scan(s)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    err = gcry_sexp_build (&s_sig, NULL,
+                           "(sig-val(dsa(r %m)(s %m)))",
+                           m_sig_r, m_sig_s);
+    if((err != GPG_ERR_NO_ERROR) || (s_sig == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(sig-val)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    /* verify signature */
+    err = gcry_pk_verify(s_sig, s_data, xmlSecGCryptKeyDataDsaGetPublicKey(key_data));
+    if(err == GPG_ERR_NO_ERROR) {
+        res = 1; /* good signature */
+    } else if(err == GPG_ERR_BAD_SIGNATURE) {
+        res = 0; /* bad signature */
+    } else {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_pk_verify",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    "err=%d", (int)err);
+        goto done;
+    }
+
+    /* done */
+done:
+    if(m_hash != NULL) {
+        gcry_mpi_release(m_hash);
+    }
+    if(m_sig_r != NULL) {
+        gcry_mpi_release(m_sig_r);
+    }
+    if(m_sig_s != NULL) {
+        gcry_mpi_release(m_sig_s);
+    }
+
+    if(s_data != NULL) {
+        gcry_sexp_release(s_data);
+    }
+    if(s_sig != NULL) {
+        gcry_sexp_release(s_sig);
+    }
+
+    return(res);
 }
 
 
@@ -657,7 +992,6 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     gcry_mpi_t m_sig = NULL;
     gcry_sexp_t s_sig = NULL;
     gcry_sexp_t s_tmp;
-    size_t written = 0;
     gpg_error_t err;
     int ret;
     int res = -1;
@@ -741,51 +1075,13 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     }
 
     /* write out */
-    written = 0;
-    err = gcry_mpi_print(GCRYMPI_FMT_USG, NULL, 0, &written, m_sig);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_mpi_print",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
-        goto done;
-    }
-
-    ret = xmlSecBufferSetMaxSize(out, written + 1);
+    ret = xmlSecGCryptAppendMpi(m_sig, out);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecBufferSetMaxSize",
+                    "xmlSecGCryptAppendMpi",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "size=%d", (int)written + 1);
-        goto done;
-    }
-
-    written = 0;
-    err = gcry_mpi_print(GCRYMPI_FMT_USG,
-            xmlSecBufferGetData(out),
-            xmlSecBufferGetMaxSize(out),
-            &written, m_sig);
-    if((err != GPG_ERR_NO_ERROR) || (written == 0)) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "gcry_mpi_print",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d,size=%d",
-                    (int)err,
-                    (int)xmlSecBufferGetMaxSize(out));
-        goto done;
-    }
-
-    ret = xmlSecBufferSetSize(out, written);
-    if(ret < 0) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    NULL,
-                    "xmlSecBufferSetSize",
-                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    "written=%d",
-                    (int)written);
+                    XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
 

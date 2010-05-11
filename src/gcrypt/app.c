@@ -145,7 +145,7 @@ xmlSecGCryptAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
     switch(format) {
     case xmlSecKeyDataFormatDer:
-        key_data = xmlSecGCryptParseDer(data, dataSize);
+        key_data = xmlSecGCryptParseDer(data, dataSize, xmlSecGCryptDerKeyTypeAuto);
         if(key_data == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,

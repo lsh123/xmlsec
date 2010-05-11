@@ -24,6 +24,7 @@
 
 #include <xmlsec/gcrypt/crypto.h>
 
+
 /*****************************************************************************
  *
  * Symmetic (binary) keys - just a wrapper for xmlSecKeyDataBinary

@@ -161,11 +161,7 @@ aleksey-xmldsig-01/enveloping-sha512-rsa-sha512
 aleksey-xmldsig-01/enveloping-expired-cert
 aleksey-xmldsig-01/x509data-test
 aleksey-xmldsig-01/x509data-sn-test
-merlin-xmldsig-twenty-three/signature-enveloped-dsa
-merlin-xmldsig-twenty-three/signature-enveloping-dsa
-merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa
-merlin-xmldsig-twenty-three/signature-external-b64-dsa
-merlin-xmldsig-twenty-three/signature-external-dsa
+
 merlin-xmldsig-twenty-three/signature-keyname
 merlin-xmldsig-twenty-three/signature-x509-crt
 merlin-xmldsig-twenty-three/signature-x509-sn
@@ -173,12 +169,8 @@ merlin-xmldsig-twenty-three/signature-x509-is
 merlin-xmldsig-twenty-three/signature-x509-ski
 merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt
 merlin-xmldsig-twenty-three/signature
-merlin-xmlenc-five/encsig-ripemd160-hmac-ripemd160-kw-tripledes
-merlin-exc-c14n-one/exc-signature
-merlin-exc-c14n-one/exc-signature
-merlin-c14n-three/signature
-merlin-xpath-filter2-three/sign-xfdl
-merlin-xpath-filter2-three/sign-spec
+merlin-xmlenc-five/encsig-hmac-sha256-rsa-1_5
+merlin-xmlenc-five/encsig-hmac-sha256-rsa-oaep-mgf1p
 phaos-xmldsig-three/signature-big
 phaos-xmldsig-three/signature-dsa-detached
 phaos-xmldsig-three/signature-dsa-enveloped

@@ -64,18 +64,21 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataDesGetKlass          = xmlSecGnuTLSKeyDataDesGetKlass;
 #endif /* XMLSEC_NO_DES */
 
+#ifdef ALEKSEY_TODO
 #ifndef XMLSEC_NO_DSA
     gXmlSecGnuTLSFunctions->keyDataDsaGetKlass          = xmlSecGnuTLSKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
+#endif /* ALEKSEY_TODO */
 
 #ifndef XMLSEC_NO_HMAC
     gXmlSecGnuTLSFunctions->keyDataHmacGetKlass         = xmlSecGnuTLSKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
 
+#ifdef ALEKSEY_TODO
 #ifndef XMLSEC_NO_RSA
     gXmlSecGnuTLSFunctions->keyDataRsaGetKlass          = xmlSecGnuTLSKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
-
+#endif /* ALEKSEY_TODO */
 
     /********************************************************************
      *

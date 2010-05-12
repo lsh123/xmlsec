@@ -85,7 +85,7 @@ docs-clean:
 docs-man: 
 	@(cd man && $(MAKE) docs)
 
-check: check-all check-info 
+check: check-all check-info
 
 check-all: $(TEST_APP) 
 	@($(PRECHECK_COMMANDS) && \

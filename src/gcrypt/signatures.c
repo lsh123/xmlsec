@@ -178,7 +178,7 @@ xmlSecGCryptPkSignatureCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
     xmlSecGCryptPkSignatureCtxPtr ctx;
-    gpg_err_code_t err;
+    gcry_error_t err;
 
     xmlSecAssert2(xmlSecGCryptPkSignatureCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptPkSignatureSize), -1);
@@ -275,7 +275,7 @@ xmlSecGCryptPkSignatureInitialize(xmlSecTransformPtr transform) {
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_open",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
 
@@ -541,7 +541,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
                     NULL,
                     "gcry_mpi_print",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
 
@@ -568,9 +568,7 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
                     NULL,
                     "gcry_mpi_print",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d,size=%d",
-                    (int)err,
-                    (int)(xmlSecBufferGetMaxSize(out) - outSize));
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
 
@@ -645,7 +643,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_mpi_scan(hash)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -657,7 +655,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_sexp_build(data)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -668,7 +666,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_pk_sign",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -817,7 +815,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_mpi_scan(hash)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -829,7 +827,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_sexp_build(data)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -840,7 +838,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_mpi_scan(r)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
     err = gcry_mpi_scan(&m_sig_s, GCRYMPI_FMT_USG, data + 20, 20, NULL);
@@ -849,7 +847,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_mpi_scan(s)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -861,7 +859,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_sexp_build(sig-val)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -876,7 +874,7 @@ xmlSecGCryptDsaPkVerify(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_pk_verify",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -1011,7 +1009,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_sexp_build(data)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -1022,7 +1020,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_pk_sign",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -1129,7 +1127,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_sexp_build(data)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -1140,7 +1138,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_mpi_scan",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -1152,7 +1150,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_sexp_build(sig-val)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -1167,7 +1165,7 @@ xmlSecGCryptRsaPkcs1PkVerify(int digest, xmlSecKeyDataPtr key_data,
                     NULL,
                     "gcry_pk_verify",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 

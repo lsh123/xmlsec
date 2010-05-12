@@ -1,9 +1,5 @@
-The xmlsec-gnutls implementation is really limited and is not ready
-for production use. The only supported crypto transforms are:
-
-    - HMAC
-    - Tripple DES
-    - AES [128|192|256]
-    - SHA1
+The xmlsec-gnutls uses both libgcrypt and libgnutls because GnuTLS
+does not provide direct access to low-level crypto operations (digests,
+hmac, aes, des, etc.).
 
 

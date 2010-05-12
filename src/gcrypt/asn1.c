@@ -232,7 +232,7 @@ xmlSecGCryptAsn1ParseIntegerSequence(xmlSecByte const **buffer, xmlSecSize *bufl
                         NULL,
                         "gcry_mpi_scan",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             return(-1);
         }
         buf += ti.length;
@@ -356,7 +356,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                         NULL,
                         "gcry_sexp_build(private-key/dsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
 
@@ -369,7 +369,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                         NULL,
                         "gcry_sexp_build(public-key/dsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
 
@@ -420,7 +420,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                         NULL,
                         "gcry_sexp_build(public-key/dsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
 
@@ -481,7 +481,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                         NULL,
                         "gcry_sexp_build(private-key/rsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
 
@@ -494,7 +494,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                         NULL,
                         "gcry_sexp_build(public-key/rsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
 
@@ -545,7 +545,7 @@ xmlSecGCryptParseDer(const xmlSecByte * der, xmlSecSize derlen,
                         NULL,
                         "gcry_sexp_build(public-key/rsa)",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        "err=%d", (int)err);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
 

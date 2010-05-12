@@ -107,7 +107,7 @@ xmlSecGCryptDigestCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecGCryptDigestInitialize(xmlSecTransformPtr transform) {
     xmlSecGCryptDigestCtxPtr ctx;
-    gpg_err_code_t err;
+    gcry_error_t err;
 
     xmlSecAssert2(xmlSecGCryptDigestCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGCryptDigestSize), -1);
@@ -170,7 +170,7 @@ xmlSecGCryptDigestInitialize(xmlSecTransformPtr transform) {
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_open",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
     return(0);

@@ -10,7 +10,6 @@
 
 #include <string.h>
 
-#include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>

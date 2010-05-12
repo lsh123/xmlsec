@@ -21,4 +21,8 @@
 #define IN_XMLSEC_CRYPTO
 #define XMLSEC_PRIVATE
 
+#define XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err)  \
+        "error code=%d; error message='%s'",    \
+        (int)err, xmlSecErrorsSafeString(gcry_strerror((err)))
+
 #endif /* ! __XMLSEC_GLOBALS_H__ */

@@ -290,7 +290,7 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
                     NULL,
                     "gcry_sexp_build(genkey)",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -300,7 +300,7 @@ xmlSecGCryptAsymKeyDataGenerate(xmlSecKeyDataPtr data, const char * alg, xmlSecS
                     NULL,
                     "gcry_pk_genkey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -371,7 +371,7 @@ static gcry_sexp_t
 xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
     gcry_sexp_t res = NULL;
     xmlSecByte *buf = NULL;
-    gcry_error_t ret;
+    gcry_error_t err;
     size_t size;
 
     xmlSecAssert2(pKey != NULL, NULL);
@@ -406,13 +406,13 @@ xmlSecGCryptAsymSExpDup(gcry_sexp_t pKey) {
         goto done;
     }
 
-    ret = gcry_sexp_new(&res, buf, size, 1);
-    if((ret != GPG_ERR_NO_ERROR) || (res == NULL)) {
+    err = gcry_sexp_new(&res, buf, size, 1);
+    if((err != GPG_ERR_NO_ERROR) || (res == NULL)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gcry_sexp_new",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "ret=%d", (int)ret);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
 
@@ -474,7 +474,7 @@ xmlSecGCryptNodeGetMpiValue(const xmlNodePtr cur) {
                     NULL,
                     "gcry_mpi_scan",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         xmlSecBufferFinalize(&buf);
         return(NULL);
     }
@@ -517,7 +517,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
                     NULL,
                     "gcry_mpi_print",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d", (int)err);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
 
@@ -541,8 +541,7 @@ xmlSecGCryptNodeSetMpiValue(xmlNodePtr cur, const gcry_mpi_t a, int addLineBreak
                     NULL,
                     "gcry_mpi_print",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "err=%d,size=%d",
-                    (int)err, (int)xmlSecBufferGetMaxSize(&buf));
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         xmlSecBufferFinalize(&buf);
         return(-1);
     }
@@ -1093,7 +1092,7 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "gcry_sexp_build(public)",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
     if(x != NULL) {
@@ -1105,7 +1104,7 @@ xmlSecGCryptKeyDataDsaXmlRead(xmlSecKeyDataId id,
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                         "gcry_sexp_build(private)",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
     }
@@ -1706,7 +1705,7 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                     xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                     "gcry_sexp_build(public)",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    XMLSEC_GCRYPT_REPORT_ERROR(err));
         goto done;
     }
     if(d != NULL) {
@@ -1718,7 +1717,7 @@ xmlSecGCryptKeyDataRsaXmlRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
                         xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
                         "gcry_sexp_build(private)",
                         XMLSEC_ERRORS_R_XMLSEC_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
+                        XMLSEC_GCRYPT_REPORT_ERROR(err));
             goto done;
         }
     }

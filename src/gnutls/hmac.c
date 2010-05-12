@@ -11,7 +11,6 @@
 
 #include <string.h>
 
-#include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
 #include <xmlsec/xmlsec.h>
@@ -152,7 +151,7 @@ xmlSecGnuTLSHmacCheckId(xmlSecTransformPtr transform) {
 static int
 xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     xmlSecGnuTLSHmacCtxPtr ctx;
-    gpg_err_code_t ret;
+    gcry_error_t err;
 
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecGnuTLSHmacSize), -1);
@@ -209,13 +208,13 @@ xmlSecGnuTLSHmacInitialize(xmlSecTransformPtr transform) {
     }
 
     /* open context */
-    ret = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
-    if(ret != GPG_ERR_NO_ERROR) {
+    err = gcry_md_open(&ctx->digestCtx, ctx->digest, GCRY_MD_FLAG_HMAC | GCRY_MD_FLAG_SECURE); /* we are paranoid */
+    if(err != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_open",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
+                    XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
 
@@ -339,7 +338,7 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
     xmlSecGnuTLSHmacCtxPtr ctx;
     xmlSecKeyDataPtr value;
     xmlSecBufferPtr buffer;
-    int ret;
+    gcry_err_code_t err;
 
     xmlSecAssert2(xmlSecGnuTLSHmacCheckId(transform), -1);
     xmlSecAssert2((transform->operation == xmlSecTransformOperationSign) || (transform->operation == xmlSecTransformOperationVerify), -1);
@@ -365,14 +364,14 @@ xmlSecGnuTLSHmacSetKey(xmlSecTransformPtr transform, xmlSecKeyPtr key) {
         return(-1);
     }
 
-    ret = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer),
+    err = gcry_md_setkey(ctx->digestCtx, xmlSecBufferGetData(buffer),
                         xmlSecBufferGetSize(buffer));
-    if(ret != 0) {
+    if(err != GPG_ERR_NO_ERROR) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
                     "gcry_md_setkey",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "ret=%d", ret);
+                    XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
         return(-1);
     }
     return(0);

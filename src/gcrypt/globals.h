@@ -23,6 +23,8 @@
 
 
 #define XMLSEC_GCRYPT_MAX_DIGEST_SIZE           256
-
+#define XMLSEC_GCRYPT_REPORT_ERROR(err)         \
+        "error code=%d; error message='%s'",    \
+        (int)err, xmlSecErrorsSafeString(gcry_strerror((err)))
 
 #endif /* ! __XMLSEC_GLOBALS_H__ */

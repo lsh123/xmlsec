@@ -578,7 +578,7 @@ elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z
     dnl We are going to try all options
     dnl
     if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, seamonkey-nspr >= $SEAMONKEY_MIN_VERSION seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
+        PKG_CHECK_MODULES(NSS, seamonkey-nspr >= $NSPR_MIN_VERSION seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
     	    [NSS_FOUND=yes NSPR_PACKAGE=seamonkey-nspr NSS_PACKAGE=seamonkey-nss],
 	    [NSS_FOUND=no])
     fi
@@ -588,7 +588,7 @@ elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z
 	    [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, xulrunner-nspr >= $MOZILLA_MIN_VERSION xulrunner-nss >= $MOZILLA_MIN_VERSION,
+        PKG_CHECK_MODULES(NSS, xulrunner-nspr >= $NSPR_MIN_VERSION xulrunner-nss >= $NSS_MIN_VERSION,
     	    [NSS_FOUND=yes NSPR_PACKAGE=xulrunner-nspr NSS_PACKAGE=xulrunner-nss],
 	    [NSS_FOUND=no])
     fi

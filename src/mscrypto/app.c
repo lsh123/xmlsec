@@ -26,10 +26,6 @@
 #include <xmlsec/mscrypto/x509.h>
 #include "private.h"
 
-#if defined(__MINGW32__)
-#  include "xmlsec-mingw.h"
-#endif
-
 
 /* I don't see any other way then to use a global var to get the
  * config info to the mscrypto keysstore :(  WK

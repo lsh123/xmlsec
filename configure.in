@@ -543,8 +543,8 @@ dnl
 dnl   2 overrides 1
 dnl
 dnl ==========================================================================
-    
 XMLSEC_NO_NSS="1"
+SEAMONKEY_MIN_VERSION="1.0"
 MOZILLA_MIN_VERSION="1.4"
 NSS_MIN_VERSION="3.9"
 NSPR_MIN_VERSION="4.4.1"
@@ -567,15 +567,21 @@ if test "z$with_nss" = "zno" -o "z$with_nspr" = "zno" ; then
     AC_MSG_CHECKING(for NSS libraries) 
     AC_MSG_RESULT(no)
     NSS_FOUND="without"
-elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
+elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z" -a "z$with_seamonkey_ver" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
     dnl
     dnl Mozilla's NSS/NSPR are distributed under different names
     dnl in different distribution:
+    dnl         seamonkey-nspr and seamonkey-nss
     dnl 	mozilla-nspr and mozilla-nss
     dnl		xulrunner-nspr and xulrunner-nss
     dnl		nspr and nss
     dnl We are going to try all options
     dnl
+    if test "z$NSS_FOUND" = "zno" ; then
+        PKG_CHECK_MODULES(NSS, seamonkey-nspr >= $SEAMONKEY_MIN_VERSION seamonkey-nss >= $SEAMONKEY_MIN_VERSION,
+    	    [NSS_FOUND=yes NSPR_PACKAGE=seamonkey-nspr NSS_PACKAGE=seamonkey-nss],
+	    [NSS_FOUND=no])
+    fi
     if test "z$NSS_FOUND" = "zno" ; then
         PKG_CHECK_MODULES(NSS, mozilla-nspr >= $MOZILLA_MIN_VERSION mozilla-nss >= $MOZILLA_MIN_VERSION,
     	    [NSS_FOUND=yes NSPR_PACKAGE=mozilla-nspr NSS_PACKAGE=mozilla-nss],
@@ -587,7 +593,7 @@ elif test "z$with_nss" = "z" -a "z$with_nspr" = "z" -a "z$with_mozilla_ver" = "z
 	    [NSS_FOUND=no])
     fi
     if test "z$NSS_FOUND" = "zno" ; then
-        PKG_CHECK_MODULES(NSS, nspr >= $MOZILLA_MIN_VERSION nss >= $MOZILLA_MIN_VERSION,
+        PKG_CHECK_MODULES(NSS, nspr >= $NSPR_MIN_VERSION nss >= $NSS_MIN_VERSION,
     	    [NSS_FOUND=yes NSPR_PACKAGE=nspr NSS_PACKAGE=nss],
 	    [NSS_FOUND=no])
     fi

@@ -26,7 +26,26 @@
 #include "private.h"
 
 #if defined(__MINGW32__)
-#  include "xmlsec-mingw.h"
+/* NOTE mingw.org project don't define any xxx_s function and may
+ * be never will define them.
+ *
+ * In this file is save to use non _s function as into destination
+ * buffer program code copy empty string and the size of source buffer
+ * (XMLSEC_MSCRYPTO_ERROR_MSG_BUFFER_SIZE=4096) is enough for any
+ * encoding. Also program code don't check result of _s functions.
+ */
+
+static int
+strcpy_s(char *dest, size_t n, const char *src) {
+    strcpy(dest, src);
+    return(0);
+}
+
+static int
+wcscpy_s(wchar_t *dest, size_t n, const wchar_t *src) {
+    wcscpy(dest, src);
+    return(0);
+}
 #endif
 
 #define XMLSEC_CONTAINER_NAME_A "xmlsec-key-container"

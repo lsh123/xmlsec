@@ -20,7 +20,7 @@
 #include <xmlsec/gcrypt/app.h>
 #include <xmlsec/gcrypt/crypto.h>
 
-#include "src/gcrypt/asn1.h"
+#include "asn1.h"
 
 /**
  * xmlSecGCryptAppInit:

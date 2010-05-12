@@ -4,14 +4,57 @@
  * This is free software; see Copyright file in the source
  * distribution for preciese wording.
  *
- * Copyright (C) 2007 Roumen Petrov.
+ * Copyright (C) 2007,2010 Roumen Petrov.
  */
 
 #ifndef __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__
 #define __XMLSEC_MSCRYPTO_XMLSEC_MINGW_H__
 
+#ifndef XMLSEC_PRIVATE
+#error "xmlsec-mingw.h file contains private xmlsec definitions for mingw build and should not be used outside xmlsec or xmlsec-<crypto> libraries"
+#endif /* XMLSEC_PRIVATE */
+
 
 /*defines*/
+
+#ifndef ALG_SID_HMAC
+#  define ALG_SID_HMAC          9
+#endif
+
+#ifndef ALG_SID_SHA_256
+#  define ALG_SID_SHA_256       12
+#endif
+
+#ifndef ALG_SID_SHA_384
+#  define ALG_SID_SHA_384       13
+#endif
+
+#ifndef ALG_SID_SHA_512
+#  define ALG_SID_SHA_512       14
+#endif
+
+#ifndef CALG_HMAC
+#  define CALG_HMAC             (ALG_CLASS_HASH|ALG_TYPE_ANY|ALG_SID_HMAC)
+#endif
+
+#ifndef CALG_SHA_256
+#  define CALG_SHA_256          (ALG_CLASS_HASH|ALG_TYPE_ANY|ALG_SID_SHA_256)
+#endif
+
+#ifndef CALG_SHA_384
+#  define CALG_SHA_384          (ALG_CLASS_HASH|ALG_TYPE_ANY|ALG_SID_SHA_384)
+#endif
+
+#ifndef CALG_SHA_512
+#  define CALG_SHA_512          (ALG_CLASS_HASH|ALG_TYPE_ANY|ALG_SID_SHA_512)
+#endif
+
+
+#ifndef KP_OAEP_PARAMS
+#  define KP_OAEP_PARAMS        36
+#endif
+
+
 #ifndef CERT_CLOSE_STORE_FORCE_FLAG
 #  define CERT_CLOSE_STORE_FORCE_FLAG           1
 #endif
@@ -139,14 +182,6 @@ BOOL            WINAPI CertStrToNameW(DWORD,LPCWSTR,DWORD,void*,BYTE*,DWORD*,LPC
 #define CertStrToName  CertStrToNameW
 #else
 #define CertStrToName  CertStrToNameA
-#endif
-
-DWORD          WINAPI CertNameToStrA(DWORD,PCERT_NAME_BLOB,DWORD,LPCSTR,DWORD);
-DWORD          WINAPI CertNameToStrW(DWORD,PCERT_NAME_BLOB,DWORD,LPCWSTR,DWORD);
-#ifdef UNICODE
-#define CertNameToStr  CertNameToStrA
-#else
-#define CertNameToStr  CertNameToStrW
 #endif
 
 

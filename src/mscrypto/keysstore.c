@@ -40,10 +40,6 @@
 #include <xmlsec/mscrypto/certkeys.h>
 #include "private.h"
 
-#if defined(__MINGW32__)
-#  include "xmlsec-mingw.h"
-#endif
-
 #define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_A     "MY"
 #define XMLSEC_MSCRYPTO_APP_DEFAULT_CERT_STORE_NAME_W     L"MY"
 #ifdef UNICODE

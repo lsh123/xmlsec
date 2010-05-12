@@ -24,10 +24,6 @@
 #include "../kw_aes_des.h"
 #include "private.h"
 
-#if defined(__MINGW32__)
-#  include "xmlsec-mingw.h"
-#endif
-
 
 #ifndef XMLSEC_NO_AES
 

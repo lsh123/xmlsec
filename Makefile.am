@@ -124,7 +124,7 @@ check-keys: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testKeys.sh \
-	    $(XMLSEC_CRYPTO) \
+	    $(DEFAULT_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \
@@ -134,7 +134,7 @@ check-dsig: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testDSig.sh \
-	    $(XMLSEC_CRYPTO) \
+	    $(DEFAULT_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \
@@ -144,7 +144,7 @@ check-enc: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testEnc.sh  \
-	    $(XMLSEC_CRYPTO) \
+	    $(DEFAULT_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \
@@ -154,7 +154,7 @@ check-xkms: $(TEST_APP)
 	@($(PRECHECK_COMMANDS) && \
 	$(SHELL) ./tests/testrun.sh \
 	    $(ABS_SRCDIR)/tests/testXKMS.sh \
-	    $(XMLSEC_CRYPTO) \
+	    $(DEFAULT_CRYPTO) \
 	    $(ABS_SRCDIR)/tests \
 	    $(ABS_BUILDDIR)/$(TEST_APP) \
 	    der \

@@ -88,11 +88,13 @@ static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Md5[] = {
     { NULL, 0 }
 };
 
+#ifndef XMLSEC_NO_GOST
 static xmlSecMSCryptoProviderInfo xmlSecMSCryptoProviderInfo_Gost[] = {
     { MAGPRO_CSP,                                       PROV_MAGPRO_GOST },
     { CRYPTOPRO_CSP,                                    PROV_CRYPTOPRO_GOST },
     { NULL, 0 }
 };
+#endif /*ndef XMLSEC_NO_GOST*/
 
 static int
 xmlSecMSCryptoDigestCheckId(xmlSecTransformPtr transform) {

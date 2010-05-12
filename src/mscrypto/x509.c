@@ -42,10 +42,6 @@
 #include <xmlsec/mscrypto/certkeys.h>
 #include "private.h"
 
-#if defined(__MINGW32__)
-#  include "xmlsec-mingw.h"
-#endif
-
 
 /*************************************************************************
  *

@@ -46,10 +46,10 @@ libxmlsec1_mscrypto_la_SOURCES += ../strings.c
 endif
 
 libxmlsec1_mscrypto_la_LIBADD = \
-	../libxmlsec1.la \
 	$(MSCRYPTO_LIBS) \
 	$(LIBXSLT_LIBS) \
 	$(LIBXML_LIBS) \
+	../libxmlsec1.la \
 	$(NULL)
 
 libxmlsec1_mscrypto_la_DEPENDENCIES = \

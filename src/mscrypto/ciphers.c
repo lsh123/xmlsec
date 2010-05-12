@@ -24,11 +24,6 @@
 #include "private.h"
 
 
-#if defined(__MINGW32__)
-#  include "xmlsec-mingw.h"
-#endif
-
-
 /**************************************************************************
  *
  * Internal MSCrypto Block cipher CTX

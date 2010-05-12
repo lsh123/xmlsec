@@ -5,6 +5,8 @@ COPYING
 .libs/
 *.o
 *.lo
+*.la
+apps/xmlsec1
 autom4te.cache/
 config.guess
 config.sub

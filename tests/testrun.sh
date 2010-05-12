@@ -51,7 +51,7 @@ fi
 crypto_config=$TMPFOLDER/xmlsec-crypto-config
 keysfile=$crypto_config/keys.xml
 if [ "z$XMLSEC_DEFAULT_CRYPTO" != "z" ] ; then
-    crypto="$XMLSEC_DEFAULT_CRYPTO"
+    xmlsec_params="$xmlsec_params --crypto $XMLSEC_DEFAULT_CRYPTO"
 elif [ "z$crypto" != "z" ] ; then
     xmlsec_params="$xmlsec_params --crypto $crypto"
 fi
@@ -65,7 +65,7 @@ cert_format=$file_format
 
 #
 # GCrypt only supports DER format for now, others are good to go with PKCS12
-# 
+#
 if [ "z$crypto" != "zgcrypt" ] ; then
     priv_key_option="--pkcs12"
     priv_key_format="p12"

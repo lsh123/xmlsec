@@ -321,13 +321,8 @@ AC_SUBST(LIBXSLT_MIN_VERSION)
 dnl ==========================================================================
 dnl See if we can find a crypto library
 dnl ==========================================================================
-XMLSEC_CRYPTO=""
 XMLSEC_CRYPTO_LIST=""
 XMLSEC_CRYPTO_DISABLED_LIST=""
-XMLSEC_CRYPTO_LIB=""
-XMLSEC_CRYPTO_CFLAGS=""
-XMLSEC_CRYPTO_CFLAGS_APP=""
-XMLSEC_CRYPTO_LIBS=""
 
 dnl ==========================================================================
 dnl OpenSSL
@@ -505,14 +500,6 @@ if test "z$OPENSSL_FOUND" = "zyes" ; then
 	OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_OPENSSL_100=1"
     fi    
     OPENSSL_CFLAGS="$OPENSSL_CFLAGS -DXMLSEC_CRYPTO_OPENSSL=1"
-    	
-    dnl first crypto library is default one
-    if test "z$XMLSEC_CRYPTO" = "z" ; then
-	XMLSEC_CRYPTO="openssl"
-    	XMLSEC_CRYPTO_LIB="$OPENSSL_CRYPTO_LIB"
-	XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$OPENSSL_LIBS"
-    fi	
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST openssl"
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST openssl"
@@ -756,7 +743,7 @@ if test "z$NSS_FOUND" = "zno" ; then
     fi
 
     dnl check that we have found both NSS and NSPR
-    if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then    
+    if test "z$NSPR_FOUND" = "zyes" -a "z$NSS_FOUND" = "zyes" ; then
 	NSS_CFLAGS="$NSS_CFLAGS $NSPR_CFLAGS"
 	NSS_LIBS="$NSS_LIBS $NSPR_LIBS"
     elif test "z$NSPR_FOUND" != "zyes" -a "z$NSS_FOUND" = "zyes" ; then    
@@ -768,14 +755,6 @@ fi
 if test "z$NSS_FOUND" = "zyes" ; then
     XMLSEC_NO_NSS="0"
     NSS_CFLAGS="$NSS_CFLAGS -DXMLSEC_CRYPTO_NSS=1"
-       
-    dnl first crypto library is default one
-    if test "z$XMLSEC_CRYPTO" = "z" ;  then
-	XMLSEC_CRYPTO="nss"
-	XMLSEC_CRYPTO_LIB="$NSS_CRYPTO_LIB"
-	XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$NSS_LIBS"
-    fi
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST nss"
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST nss"
@@ -830,7 +809,7 @@ fi
 if test "z$GCRYPT_FOUND" = "zno" ; then
     AC_MSG_CHECKING(for gcrypt libraries >= $GCRYPT_MIN_VERSION) 
     if test "z$with_gcrypt" != "z" ; then
-	GCRYPT_CONFIG=$with_gcrypt/bin/$GCRYPT_CONFIG
+        GCRYPT_CONFIG=$with_gcrypt/bin/$GCRYPT_CONFIG
     fi
     if ! $GCRYPT_CONFIG --version > /dev/null 2>&1 ; then
 	if test "z$with_gcrypt" != "z" ; then
@@ -854,14 +833,6 @@ fi
 if test "z$GCRYPT_FOUND" = "zyes" ; then 
     XMLSEC_NO_GCRYPT="0"
     GCRYPT_CFLAGS="$GCRYPT_CFLAGS -DXMLSEC_CRYPTO_GCRYPT=1"
-
-    dnl first crypto library is default one
-    if test "z$XMLSEC_CRYPTO" = "z" ; then
-	XMLSEC_CRYPTO="gcrypt"
-    	XMLSEC_CRYPTO_LIB="$GCRYPT_CRYPTO_LIB"
-	XMLSEC_CRYPTO_CFLAGS="$GCRYPT_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$GCRYPT_LIBS"
-    fi	
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gcrypt"
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gcrypt"
@@ -929,20 +900,13 @@ fi
 if test "z$GNUTLS_FOUND" = "zyes" ; then 
     XMLSEC_NO_GNUTLS="0"
     GNUTLS_CFLAGS="$GNUTLS_CFLAGS -DXMLSEC_CRYPTO_GNUTLS=1"
+    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
 
     dnl xmlsec-gnutls is using xmlsec-gcrypt
     if test "z$GCRYPT_FOUND" != "zyes" ; then
-	AC_MSG_ERROR(xmlsec-gnutls library requires xmlsec-gcrypt library which is disabled or missing)
+        AC_MSG_ERROR(xmlsec-gnutls library requires xmlsec-gcrypt library which is disabled or missing)
     fi
 
-    dnl first crypto library is default one
-    if test "z$XMLSEC_CRYPTO" = "z" ; then
-	XMLSEC_CRYPTO="gnutls"
-    	XMLSEC_CRYPTO_LIB="$GNUTLS_CRYPTO_LIB"
-	XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
-    fi	
-    XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST gnutls"
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST gnutls"
 fi
@@ -999,13 +963,6 @@ if test "z$MSCRYPTO_ENABLE" = "zyes" ; then
 		MSCRYPTO_LIBS="-lcrypt32";;
     esac
 
-    dnl first crypto library is default one
-    if test "z$XMLSEC_CRYPTO" = "z" ; then
-	XMLSEC_CRYPTO="mscrypto"
-    	XMLSEC_CRYPTO_LIB="$MSCRYPTO_CRYPTO_LIB"
-	XMLSEC_CRYPTO_CFLAGS="$MSCRYPTO_CFLAGS"
-	XMLSEC_CRYPTO_LIBS="$MSCRYPTO_LIBS"
-    fi	
     XMLSEC_CRYPTO_LIST="$XMLSEC_CRYPTO_LIST mscrypto"
 else
     XMLSEC_CRYPTO_DISABLED_LIST="$XMLSEC_CRYPTO_DISABLED_LIST mscrypto"
@@ -1017,15 +974,107 @@ AC_SUBST(MSCRYPTO_CFLAGS)
 AC_SUBST(MSCRYPTO_LIBS)
 AC_SUBST(MSCRYPTO_CRYPTO_LIB)
 
+
 dnl ==========================================================================
-dnl Do we have a crypto library?
+dnl Figure out the default crypt - the first crypto library wins
 dnl ==========================================================================
-AC_MSG_CHECKING(for crypto library) 
-if test "z$XMLSEC_CRYPTO" = "z" ;  then
-    AC_MSG_ERROR(At least one crypto library should exist for $XMLSEC_PACKAGE)
-else
-    AC_MSG_RESULT(yes ('$XMLSEC_CRYPTO'))
-fi
+XMLSEC_CRYPTO=""
+XMLSEC_CRYPTO_LIB=""
+XMLSEC_CRYPTO_CFLAGS=""
+XMLSEC_CRYPTO_LIBS=""
+AC_MSG_CHECKING(for default crypto library)
+AC_ARG_WITH(default_crypto, [  --with-default-crypto=name default crypto name])
+
+# check the argument
+case "z$with_default_crypto" in
+    'zmscrypto')
+        if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
+            XMLSEC_CRYPTO="mscrypto"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
+    'zopenssl')
+        if test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
+            XMLSEC_CRYPTO="openssl"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
+    'znss')
+        if test "z$XMLSEC_NO_NSS" != "z1" ; then
+            XMLSEC_CRYPTO="nss"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
+    'zgnutls')
+        if test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
+            XMLSEC_CRYPTO="gnutls"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
+    'zgcrypt')
+        if test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
+            XMLSEC_CRYPTO="gcrypt"
+        else
+            AC_MSG_ERROR('$with_default_crypto' is specified as default crypto library but it is not configured or found)
+        fi
+        ;;
+    'z')
+        dnl The first crypto library wins
+        if test "z$XMLSEC_NO_MSCRYPTO" != "z1" ; then
+            XMLSEC_CRYPTO="mscrypto"
+        elif test "z$XMLSEC_NO_OPENSSL" != "z1" ; then
+            XMLSEC_CRYPTO="openssl"
+        elif test "z$XMLSEC_NO_NSS" != "z1" ; then
+            XMLSEC_CRYPTO="nss"
+        elif test "z$XMLSEC_NO_GNUTLS" != "z1" ; then
+            XMLSEC_CRYPTO="gnutls"
+        elif test "z$XMLSEC_NO_GCRYPT" != "z1" ; then
+            XMLSEC_CRYPTO="gcrypt"
+        else
+            AC_MSG_ERROR(At least one crypto library should exist for $XMLSEC_PACKAGE)
+        fi
+        ;;
+    *)
+        AC_MSG_ERROR(The value '$with_default_crypto' is not a recongnized crypto library name)
+        ;;
+esac
+
+dnl Set the flags for default crypto lib
+case "$XMLSEC_CRYPTO" in
+    'mscrypto')
+        XMLSEC_CRYPTO_LIB="$MSCRYPTO_CRYPTO_LIB"
+        XMLSEC_CRYPTO_CFLAGS="$MSCRYPTO_CFLAGS"
+        XMLSEC_CRYPTO_LIBS="$MSCRYPTO_LIBS"
+        ;;
+    'openssl')
+        XMLSEC_CRYPTO_LIB="$OPENSSL_CRYPTO_LIB"
+        XMLSEC_CRYPTO_CFLAGS="$OPENSSL_CFLAGS"
+        XMLSEC_CRYPTO_LIBS="$OPENSSL_LIBS"
+        ;;
+    'nss')
+        XMLSEC_CRYPTO_LIB="$NSS_CRYPTO_LIB"
+        XMLSEC_CRYPTO_CFLAGS="$NSS_CFLAGS"
+        XMLSEC_CRYPTO_LIBS="$NSS_LIBS"
+        ;;
+    'gnutls')
+        XMLSEC_CRYPTO_LIB="$GNUTLS_CRYPTO_LIB"
+        XMLSEC_CRYPTO_CFLAGS="$GNUTLS_CFLAGS"
+        XMLSEC_CRYPTO_LIBS="$GNUTLS_LIBS"
+        ;;
+    'gcrypt')
+        XMLSEC_CRYPTO_LIB="$GCRYPT_CRYPTO_LIB"
+        XMLSEC_CRYPTO_CFLAGS="$GCRYPT_CFLAGS"
+        XMLSEC_CRYPTO_LIBS="$GCRYPT_LIBS"
+        ;;
+    *)
+        AC_MSG_ERROR(The value \"$XMLSEC_CRYPTO\" is not a recongnized crypto library name)
+        ;;
+esac
+AC_MSG_RESULT(yes ('$XMLSEC_CRYPTO'))
 
 dnl ==========================================================================
 dnl See do we need MD5 suport
@@ -1385,7 +1434,7 @@ if test "z$enable_skm" = "zno" ; then
     AC_MSG_RESULT(no)
 else
     AC_MSG_RESULT(yes)
-fi    
+fi
 
 dnl ==========================================================================
 dnl See do we need templates tests

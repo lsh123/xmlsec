@@ -151,7 +151,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_DSA
-#include <gcrypt.h>
+
+#include <gnutls/gnutls.h>
+#include <gnutls/x509.h>
 
 /**
  * xmlSecGnuTLSKeyDataDsaId:
@@ -161,13 +163,13 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformKWDes3GetKlass(void)
 #define xmlSecGnuTLSKeyDataDsaId \
         xmlSecGnuTLSKeyDataDsaGetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataDsaGetKlass          (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptKey          (xmlSecKeyDataPtr data,
-                                                                                 gcry_sexp_t dsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptKeyPair      (xmlSecKeyDataPtr data,
-                                                                                 gcry_sexp_t pub_key,
-                                                                                 gcry_sexp_t priv_key);
-XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGnuTLSKeyDataDsaGetPublicKey      (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGnuTLSKeyDataDsaGetPrivateKey     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPrivateKey   (xmlSecKeyDataPtr data,
+                                                                                 gnutls_x509_privkey_t dsa_key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataDsaAdoptPublicKey    (xmlSecKeyDataPtr data,
+                                                                                 gnutls_datum_t * p,
+                                                                                 gnutls_datum_t * q,
+                                                                                 gnutls_datum_t * g,
+                                                                                 gnutls_datum_t * y);
 
 #ifndef XMLSEC_NO_SHA1
 /**
@@ -281,7 +283,9 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
  *
  *******************************************************************/
 #ifndef XMLSEC_NO_RSA
-#include <gcrypt.h>
+
+#include <gnutls/gnutls.h>
+#include <gnutls/x509.h>
 
 /**
  * xmlSecGnuTLSKeyDataRsaId:
@@ -290,14 +294,12 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecGnuTLSTransformHmacSha512GetKlass(v
  */
 #define xmlSecGnuTLSKeyDataRsaId \
         xmlSecGnuTLSKeyDataRsaGetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRsaGetKlass (void);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptKey          (xmlSecKeyDataPtr data,
-                                                                                 gcry_sexp_t rsa_key);
-XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptKeyPair      (xmlSecKeyDataPtr data,
-                                                                                 gcry_sexp_t pub_key,
-                                                                                 gcry_sexp_t priv_key);
-XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGnuTLSKeyDataRsaGetPublicKey      (xmlSecKeyDataPtr data);
-XMLSEC_CRYPTO_EXPORT gcry_sexp_t        xmlSecGnuTLSKeyDataRsaGetPrivateKey     (xmlSecKeyDataPtr data);
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataRsaGetKlass          (void);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptPrivateKey   (xmlSecKeyDataPtr data,
+                                                                                 gnutls_x509_privkey_t rsa_key);
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataRsaAdoptPublicKey    (xmlSecKeyDataPtr data,
+                                                                                 gnutls_datum_t * m,
+                                                                                 gnutls_datum_t * e);
 
 #ifndef XMLSEC_NO_MD5
 /**

@@ -2,6 +2,8 @@
 	* Several patches from Roumen: support NSS/NSPR from seamonkey
 	package; reorder libxmlsec as dep. lib for mingw; fix gcrypt/src/asn1.h
 	include; fix Unicode build for mingw
+	* Added RSA/SHA1/SHA256/SHA384/SHA512/MD5/RIPEMD160 for xmlsec-gnutls
+	* Added DSA/SHA1 for xmlsec-gnutls
 
 2010-05-10  Aleksey Sanin  <aleksey@aleksey.com>
 	* Added RSA/SHA1/SHA256/SHA384/SHA512/MD5/RIPEMD160 for xmlsec-gcrypt

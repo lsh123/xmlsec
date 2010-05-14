@@ -20,6 +20,15 @@
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
 
+/**************************************************************************
+ *
+ * We use xmlsec-gcrypt for all the basic crypto ops
+ *
+ *****************************************************************************/
+#include <xmlsec/gcrypt/crypto.h>
+#include <xmlsec/gcrypt/app.h>
+
+
 /**
  * xmlSecGnuTLSAppInit:
  * @config:             the path to GnuTLS configuration (unused).
@@ -31,7 +40,7 @@
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
+xmlSecGnuTLSAppInit(const char* config) {
     int ret;
 
     ret = gnutls_global_init();
@@ -43,7 +52,8 @@ xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
                     "ret=%d", ret);
         return(-1);
     }
-    return(0);
+
+    return(xmlSecGCryptAppInit(config));
 }
 
 /**
@@ -58,7 +68,8 @@ xmlSecGnuTLSAppInit(const char* config ATTRIBUTE_UNUSED) {
 int
 xmlSecGnuTLSAppShutdown(void) {
     gnutls_global_deinit();
-    return(0);
+
+    return(xmlSecGCryptAppShutdown());
 }
 
 /**
@@ -81,19 +92,7 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-
-    if (format == xmlSecKeyDataFormatPkcs12) {
-        return (xmlSecGnuTLSAppPkcs12Load(filename, pwd, pwdCallback,
-                                          pwdCallbackCtx));
-    }
-
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppKeyLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL);
+    return(xmlSecGCryptAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx));
 }
 
 /**
@@ -116,18 +115,7 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    if (format == xmlSecKeyDataFormatPkcs12) {
-        return (xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd,
-                                        pwdCallback, pwdCallbackCtx));
-    }
-
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppKeyLoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL);
+    return(xmlSecGCryptAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx));
 }
 
 #ifndef XMLSEC_NO_X509

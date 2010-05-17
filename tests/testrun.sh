@@ -79,8 +79,11 @@ fi
 # in the pkcs12 file to ensure it is loaded correctly to be used
 # with SHA2 algorithms. Worse, the CSP is different for XP and older 
 # versions
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
-    if [ "z$OS_KERNEL" = "zCYGWIN_NT-5.1" ] ; then
+if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
+    # Samples:
+    #   Cygwin	: CYGWIN_NT-5.1
+    #   Msys	: MINGW32_NT-5.1
+    if expr "$OS_KERNEL" : '.*_NT-5\.1' > /dev/null; then
         priv_key_suffix="-winxp"
     else
         priv_key_suffix="-win"
@@ -97,7 +100,7 @@ if [ -n "$PERF_TEST" ] ; then
     xmlsec_params="$xmlsec_params --repeat $PERF_TEST"
 fi
 
-if [ "z$OS_ARCH" = "zCygwin" ] ; then
+if test "z$OS_ARCH" = "zCygwin" || test "z$OS_ARCH" = "zMsys" ; then
     diff_param=-uw
 else
     diff_param=-u

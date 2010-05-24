@@ -361,7 +361,6 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     gnutls_x509_privkey_t priv_key = NULL;
     gnutls_x509_crt_t key_cert = NULL;
     xmlSecSize certsSize;
-    int err;
     int ret;
 
     xmlSecAssert2(data != NULL, NULL);

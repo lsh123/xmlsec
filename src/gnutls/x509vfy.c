@@ -584,6 +584,69 @@ xmlSecGnuTLSX509StoreFinalize(xmlSecKeyDataStorePtr store) {
  * Low-level x509 functions
  *
  *****************************************************************************/
+#define XMLSEC_GNUTLS_DN_ATTRS_SIZE             1024
+static int
+xmlSecGnuTLSX509DnsEqual(const xmlChar * ll, const xmlChar * rr) {
+    xmlSecGnuTLSDnAttr ll_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
+    xmlSecGnuTLSDnAttr rr_attrs[XMLSEC_GNUTLS_DN_ATTRS_SIZE];
+    int ret;
+    int res = -1;
+
+    xmlSecAssert2(ll != NULL, -1);
+    xmlSecAssert2(rr != NULL, -1);
+
+    /* fast version first */
+    if(xmlStrEqual(ll, rr)) {
+        return(1);
+    }
+
+    /* prepare */
+    xmlSecGnuTLSDnAttrsInitialize(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    xmlSecGnuTLSDnAttrsInitialize(rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+
+    /* parse */
+    ret = xmlSecGnuTLSDnAttrsParse(ll, ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSDnAttrsParse(ll)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    ret = xmlSecGnuTLSDnAttrsParse(rr, rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSDnAttrsParse(rr)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* compare */
+    ret = xmlSecGnuTLSDnAttrsEqual(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE,
+                                   rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    if(ret == 1) {
+        res = 1;
+    } else if(ret == 0) {
+        res = 0;
+    } else {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSDnAttrsEqual",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+done:
+    xmlSecGnuTLSDnAttrsDeinitialize(ll_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    xmlSecGnuTLSDnAttrsDeinitialize(rr_attrs, XMLSEC_GNUTLS_DN_ATTRS_SIZE);
+    return(res);
+}
+
 static gnutls_x509_crt_t
 xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
                          const xmlChar *subjectName,
@@ -593,7 +656,6 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
     xmlSecSize ii, sz;
 
     xmlSecAssert2(certs != NULL, NULL);
-
 
     /* todo: this is not the fastest way to search certs */
     sz = xmlSecPtrListGetSize(certs);
@@ -621,7 +683,7 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
                 return(NULL);
             }
 
-            if(xmlStrEqual(subjectName, tmp)) {
+            if(xmlSecGnuTLSX509DnsEqual(subjectName, tmp) == 1) {
                 xmlFree(tmp);
                 return(cert);
             }
@@ -651,7 +713,7 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
                 return(NULL);
             }
 
-            if(xmlStrEqual(issuerName, tmp1) && xmlStrEqual(issuerSerial, tmp2)) {
+            if((xmlSecGnuTLSX509DnsEqual(issuerName, tmp1) == 1) && xmlStrEqual(issuerSerial, tmp2)) {
                 xmlFree(tmp1);
                 xmlFree(tmp2);
                 return(cert);
@@ -730,7 +792,7 @@ xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
         }
 
         /* are we done? */
-        if(xmlStrEqual(subject, issuer)) {
+        if(xmlSecGnuTLSX509DnsEqual(subject, issuer) == 1) {
             res = tmp;
         }
         xmlFree(issuer);
@@ -791,7 +853,7 @@ xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
         }
 
         /* are we done? */
-        if(xmlStrEqual(issuer, subject)) {
+        if((xmlSecGnuTLSX509DnsEqual(issuer, subject) == 1)) {
             res = tmp;
         }
         xmlFree(subject);

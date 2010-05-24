@@ -976,6 +976,393 @@ xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key) {
     return(res);
 }
 
+/*************************************************************************
+ *
+ * LDAP DN parser
+ *
+ ************************************************************************/
+void
+xmlSecGnuTLSDnAttrsInitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize) {
+    xmlSecAssert(attrs != NULL);
+    xmlSecAssert(attrsSize > 0);
+
+    memset(attrs, 0, attrsSize * sizeof(xmlSecGnuTLSDnAttr));
+}
+
+void
+xmlSecGnuTLSDnAttrsDeinitialize(xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize) {
+    xmlSecSize ii;
+
+    xmlSecAssert(attrs != NULL);
+    xmlSecAssert(attrsSize > 0);
+
+    for(ii = 0; ii < attrsSize; ++ii) {
+        if(attrs[ii].key != NULL) {
+            xmlFree(attrs[ii].key);
+        }
+        if(attrs[ii].value != NULL) {
+            xmlFree(attrs[ii].value);
+        }
+    }
+    memset(attrs, 0, attrsSize * sizeof(xmlSecGnuTLSDnAttr));
+}
+
+const xmlSecGnuTLSDnAttr *
+xmlSecGnuTLSDnAttrrsFind(const xmlSecGnuTLSDnAttr * attrs,
+                         xmlSecSize attrsSize,
+                         const xmlChar * key)
+{
+    xmlSecSize ii;
+
+    xmlSecAssert2(attrs != NULL, NULL);
+    xmlSecAssert2(attrsSize > 0, NULL);
+    xmlSecAssert2(key != NULL, NULL);
+
+    for(ii = 0; ii < attrsSize; ++ii) {
+        /* simple case */
+        if(xmlStrcasecmp(key, attrs[ii].key) == 0) {
+            return(&(attrs[ii]));
+        }
+
+        /* special case for emailAddress (as usual) */
+        if((xmlStrcasecmp(key, BAD_CAST "emailAddress") == 0) &&
+           (xmlStrcasecmp(attrs[ii].key, BAD_CAST "email") == 0))
+        {
+            return(&(attrs[ii]));
+        }
+        if((xmlStrcasecmp(key, BAD_CAST "email") == 0) &&
+           (xmlStrcasecmp(attrs[ii].key, BAD_CAST "emailAddress") == 0))
+        {
+            return(&(attrs[ii]));
+        }
+    }
+
+    /* not found :( */
+    return(NULL);
+}
+
+int
+xmlSecGnuTLSDnAttrsEqual(const xmlSecGnuTLSDnAttr * ll, xmlSecSize llSize,
+                         const xmlSecGnuTLSDnAttr * rr, xmlSecSize rrSize) 
+{
+    xmlSecSize llNum = 0;
+    xmlSecSize rrNum = 0;
+    const xmlSecGnuTLSDnAttr * tmp;
+    xmlSecSize ii;
+
+    xmlSecAssert2(ll != NULL, -1);
+    xmlSecAssert2(llSize > 0, -1);
+    xmlSecAssert2(rr != NULL, -1);
+    xmlSecAssert2(rrSize > 0, -1);
+
+    /* compare number of non-nullattributes */
+    for(ii = 0; ii < llSize; ++ii) {
+        if(ll[ii].key != NULL) {
+            ++llNum;
+        }
+    }
+    for(ii = 0; ii < rrSize; ++ii) {
+        if(rr[ii].key != NULL) {
+            ++rrNum;
+        }
+    }
+    if(llNum != rrNum) {
+        return(0);
+    }
+
+    /* make sure that all ll attrs are equal to rr attrs */
+    for(ii = 0; ii < llSize; ++ii) {
+        if(ll[ii].key == NULL) {
+            continue;
+        }
+
+        tmp = xmlSecGnuTLSDnAttrrsFind(rr, rrSize, ll[ii].key);
+        if(tmp == NULL) {
+            return(0); /* attribute was not found */
+        }
+
+        if(!xmlStrEqual(ll[ii].value, tmp->value)) {
+            return(0); /* different values */
+        }
+    }
+
+    /* good!!! */
+    return(1);
+}
+
+/*
+Distinguished name syntax
+
+The formal syntax for a Distinguished Name (DN) is based on RFC 2253. 
+The Backus Naur Form (BNF) syntax is defined as follows:
+
+    <name> ::= <name-component> ( <spaced-separator> )
+          | <name-component> <spaced-separator> <name>
+
+   <spaced-separator> ::= <optional-space>
+                   <separator>
+                   <optional-space>
+
+   <separator> ::=  "," | ";"
+
+   <optional-space> ::= ( <CR> ) *( " " )
+
+   <name-component> ::= <attribute>
+           | <attribute> <optional-space> "+"
+             <optional-space> <name-component>
+
+   <attribute> ::= <string>
+           | <key> <optional-space> "=" <optional-space> <string>
+
+   <key> ::= 1*( <keychar> ) | "OID." <oid> | "oid." <oid>
+   <keychar> ::= letters, numbers, and space
+
+   <oid> ::= <digitstring> | <digitstring> "." <oid>
+   <digitstring> ::= 1*<digit>
+   <digit> ::= digits 0-9
+
+   <string> ::= *( <stringchar> | <pair> )
+            | '"' *( <stringchar> | <special> | <pair> ) '"'
+            | "#" <hex>
+
+
+   <special> ::= "," | "=" | <CR> | "+" | "<" |  ">"
+            | "#" | ";"
+
+   <pair> ::= "\" ( <special> | "\" | '"')
+   <stringchar> ::= any character except <special> or "\" or '"'
+
+
+   <hex> ::= 2*<hexchar>
+   <hexchar> ::= 0-9, a-f, A-F
+
+A semicolon (;) character can be used to separate RDNs in a distinguished name,
+although the comma (,) character is the typical notation.
+
+White-space characters (spaces) might be present on either side of the comma or
+semicolon. The white-space characters are ignored, and the semicolon is replaced
+with a comma.
+
+In addition, space (' ' ASCII 32) characters may be present either before or 
+after a '+' or '='. These space characters are ignored when parsing.
+*/
+enum xmlSecGnuTLSDnParseState {
+    xmlSecGnuTLSDnParseState_BeforeNameComponent = 0,
+    xmlSecGnuTLSDnParseState_Key,
+    xmlSecGnuTLSDnParseState_BeforeString,
+    xmlSecGnuTLSDnParseState_String,
+    xmlSecGnuTLSDnParseState_QuotedString,
+    xmlSecGnuTLSDnParseState_AfterQuotedString
+};
+
+#define XMLSEC_GNUTLS_IS_SPACE(ch)      \
+        (((ch) == ' ') || ((ch) == '\n') || ((ch) == '\r'))
+
+int
+xmlSecGnuTLSDnAttrsParse(const xmlChar * dn,
+                         xmlSecGnuTLSDnAttr * attrs, xmlSecSize attrsSize)
+{
+    xmlChar * tmp = NULL;
+    xmlChar * p;
+    xmlChar ch;
+    enum xmlSecGnuTLSDnParseState state;
+    int slash;
+    xmlSecSize pos;
+    int res = -1;
+
+    xmlSecAssert2(dn != NULL, -1);
+    xmlSecAssert2(attrs != NULL, -1);
+    xmlSecAssert2(attrsSize > 0, -1);
+
+    /* allocate buffer, we don't need more than string */
+    tmp = (xmlChar *)xmlMalloc(xmlStrlen(dn) + 1);
+    if(tmp == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlMalloc",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", (int)(xmlStrlen(dn) + 1));
+        goto done;
+    }
+
+    /* state machine */
+    state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
+    slash = 0;
+    pos = 0;
+    p = tmp;
+    for(ch = (*dn); ; ch = *(++dn)) {
+        switch(state) {
+        case xmlSecGnuTLSDnParseState_BeforeNameComponent:
+            if(!XMLSEC_GNUTLS_IS_SPACE(ch)) {
+                *(p++) = ch; /* we are sure we have enough buffer */
+                state = xmlSecGnuTLSDnParseState_Key;
+            } else {
+                /* just skip space */
+            }
+            break;
+        case xmlSecGnuTLSDnParseState_Key:
+            /* we don't support
+            1) <attribute><optional-space>"+"<optional-space><name-component>
+            2) <attribute> ::= <string>
+            */
+            if(ch != '=') {
+                *(p++) = ch; /* we are sure we have enough buffer */
+            } else {
+                *(p) = '\0';
+                /* remove spaces back */
+                while((p > tmp) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) {
+                    *(--p) = '\0';
+                }
+
+                /* insert into the attrs */
+                if(pos >= attrsSize) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                "Not enough space: size=%d", (int)attrsSize);
+                    goto done;
+                }
+                attrs[pos].key = xmlStrdup(tmp);
+                if(attrs[pos].key == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlStrdup",
+                                XMLSEC_ERRORS_R_MALLOC_FAILED,
+                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    goto done;
+                }
+
+                state = xmlSecGnuTLSDnParseState_BeforeString;
+                p = tmp;
+            }
+            break;
+        case xmlSecGnuTLSDnParseState_BeforeString:
+            if(!XMLSEC_GNUTLS_IS_SPACE(ch)) {
+                if(ch != '\"') {
+                    state = xmlSecGnuTLSDnParseState_String;
+                    slash = 0;
+                    --dn; /* small hack, so we can look at the same char 
+                           again with the correct state */
+                } else {
+                    state = xmlSecGnuTLSDnParseState_QuotedString;
+                    slash = 0;
+                }
+            } else {
+                /* just skip space */
+            }
+            break;
+        case xmlSecGnuTLSDnParseState_String:
+            if(slash == 1) {
+                *(p++) = ch; /* we are sure we have enough buffer */
+                slash = 0;
+            } else if(ch == '\\') {
+                slash = 1;
+            } else if((ch == ',') || (ch == ';') || (ch == '\0')) {
+                *(p) = '\0';
+                /* remove spaces back */
+                while((p > tmp) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) {
+                    *(--p) = '\0';
+                }
+
+                attrs[pos].value = xmlStrdup(tmp);
+                if(attrs[pos].value == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlStrdup",
+                                XMLSEC_ERRORS_R_MALLOC_FAILED,
+                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    goto done;
+                }
+                state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
+                ++pos;
+                p = tmp;
+            } else {
+                *(p++) = ch; /* we are sure we have enough buffer */
+            }
+            break;
+        case xmlSecGnuTLSDnParseState_QuotedString:
+            if(slash == 1) {
+                *(p++) = ch; /* we are sure we have enough buffer */
+                slash = 0;
+            } else if(ch == '\\') {
+                slash = 1;
+            } else if(ch == '\"') {
+                *(p) = '\0'; 
+                /* don't remove spaces for quoted string */
+
+                attrs[pos].value = xmlStrdup(tmp);
+                if(attrs[pos].value == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlStrdup",
+                                XMLSEC_ERRORS_R_MALLOC_FAILED,
+                                "size=%d", (int)(xmlStrlen(tmp) + 1));
+                    goto done;
+                }
+                state = xmlSecGnuTLSDnParseState_AfterQuotedString;
+                ++pos;
+                p = tmp;
+            } else {
+                *(p++) = ch; /* we are sure we have enough buffer */
+            }
+            break;
+        case xmlSecGnuTLSDnParseState_AfterQuotedString:
+            if(!XMLSEC_GNUTLS_IS_SPACE(ch)) {
+                if((ch == ',') || (ch == ';') || (ch == '\0')) {
+                    state = xmlSecGnuTLSDnParseState_BeforeNameComponent;
+                } else {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                "Unexpected character %c (expected space or ',' or ';')",
+                                ch);
+                    goto done;
+                }
+            } else {
+                /* just skip space */
+            }
+            break;
+        }
+
+        if(ch == '\0') {
+            /* done */
+            break;
+        }
+    }
+
+    /* check end state */
+    if(state != xmlSecGnuTLSDnParseState_BeforeNameComponent) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "Unexpected state %d at the end of parsing",
+                    (int)state);
+        goto done;
+    }
+
+    /* debug
+    {
+        xmlSecSize ii;
+        for(ii = 0; ii < attrsSize; ++ii) {
+            if(attrs[ii].key != NULL) {
+                printf("DEBUG: attrs - %s=>%s\n", attrs[ii].key, attrs[ii].value);
+            }
+        }
+    }
+    */
+
+    /* done */
+    res = 0;
+
+done:
+    if(tmp != NULL) {
+        xmlFree(tmp);
+    }
+    return(res);
+}
 
 
 #endif /* XMLSEC_NO_X509 */

@@ -72,6 +72,31 @@ int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByt
 xmlSecKeyDataPtr        xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key);
 
 
+
+/*************************************************************************
+ *
+ * LDAP DN parser
+ *
+ ************************************************************************/
+typedef struct _xmlSecGnuTLSDnAttr {
+    xmlChar * key;
+    xmlChar * value;
+} xmlSecGnuTLSDnAttr;
+
+void                    xmlSecGnuTLSDnAttrsInitialize           (xmlSecGnuTLSDnAttr * attrs,
+                                                                 xmlSecSize attrsSize);
+void                    xmlSecGnuTLSDnAttrsDeinitialize         (xmlSecGnuTLSDnAttr * attrs,
+                                                                 xmlSecSize attrsSize);
+const xmlSecGnuTLSDnAttr * xmlSecGnuTLSDnAttrrsFind             (const xmlSecGnuTLSDnAttr * attrs,
+                                                                 xmlSecSize attrsSize,
+                                                                 const xmlChar * key);
+int                     xmlSecGnuTLSDnAttrsEqual                (const xmlSecGnuTLSDnAttr * ll,
+                                                                 xmlSecSize llSize,
+                                                                 const xmlSecGnuTLSDnAttr * rr,
+                                                                 xmlSecSize rrSize);
+int                     xmlSecGnuTLSDnAttrsParse                (const xmlChar * dn,
+                                                                 xmlSecGnuTLSDnAttr * attrs,
+                                                                 xmlSecSize attrsSize);
 #endif /* XMLSEC_NO_X509 */
 
 #ifdef __cplusplus

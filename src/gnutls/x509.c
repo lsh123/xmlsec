@@ -828,6 +828,32 @@ xmlSecGnuTLSX509CertificateNodeWrite(gnutls_x509_crt_t cert, xmlNodePtr node, xm
     return(0);
 }
 
+#define XMLSEC_GNUTLS_IS_SPACE(ch) \
+    (((ch) == ' ') || ((ch) == '\r') || ((ch) == '\n'))
+
+static void
+xmlSecGnuTLSX509Trim(xmlChar * str) {
+    xmlChar * p, * q;
+
+    xmlSecAssert(str != NULL);
+
+    /* skip spaces from the beggining */
+    p = str;
+    while(XMLSEC_GNUTLS_IS_SPACE(*p) && ((*p) != '\0')) ++p;
+    if(p != str) {
+        for(q = str; ; ++q, ++p) {
+            (*q) = (*p);
+            if((*p) == '\0') {
+                break;
+            }
+        }
+    }
+
+    /* skip spaces from the end */
+    for(p = str; (*p) != '\0'; ++p);
+    while((p > str) && (XMLSEC_GNUTLS_IS_SPACE(*(p - 1)))) *(--p) = '\0';
+}
+
 static int
 xmlSecGnuTLSX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInfoCtxPtr keyInfoCtx) {
     xmlSecKeyDataStorePtr x509Store;
@@ -867,6 +893,7 @@ xmlSecGnuTLSX509SubjectNameNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlS
         return(0);
     }
 
+    xmlSecGnuTLSX509Trim(subject);
     cert = xmlSecGnuTLSX509StoreFindCert(x509Store, subject, NULL, NULL, NULL, keyInfoCtx);
     if(cert == NULL){
 
@@ -1048,6 +1075,8 @@ xmlSecGnuTLSX509IssuerSerialNodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xml
         return(-1);
     }
 
+    xmlSecGnuTLSX509Trim(issuerName);
+    xmlSecGnuTLSX509Trim(issuerSerial);
     cert = xmlSecGnuTLSX509StoreFindCert(x509Store, NULL, issuerName, issuerSerial, NULL, keyInfoCtx);
     if(cert == NULL){
 
@@ -1211,6 +1240,7 @@ xmlSecGnuTLSX509SKINodeRead(xmlSecKeyDataPtr data, xmlNodePtr node, xmlSecKeyInf
         return(0);
     }
 
+    xmlSecGnuTLSX509Trim(ski);
     cert = xmlSecGnuTLSX509StoreFindCert(x509Store, NULL, NULL, NULL, ski, keyInfoCtx);
     if(cert == NULL){
         xmlFree(ski);

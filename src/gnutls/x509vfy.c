@@ -83,6 +83,11 @@ static gnutls_x509_crt_t xmlSecGnuTLSX509FindCert                       (xmlSecP
                                                                          const xmlChar *issuerName,
                                                                          const xmlChar *issuerSerial,
                                                                          const xmlChar *ski);
+static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignedCert                 (xmlSecPtrListPtr certs,
+                                                                         gnutls_x509_crt_t cert);
+static gnutls_x509_crt_t xmlSecGnuTLSX509FindSignerCert                 (xmlSecPtrListPtr certs,
+                                                                         gnutls_x509_crt_t cert);
+
 
 /**
  * xmlSecGnuTLSX509StoreGetKlass:
@@ -150,15 +155,123 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                             xmlSecPtrListPtr certs,
                             const xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
+    gnutls_x509_crt_t res = NULL;
+    xmlSecSize certs_size = 0;
+    gnutls_x509_crt_t * cert_list = NULL;
+    xmlSecSize cert_list_length;
+    gnutls_x509_crt_t * ca_list = NULL;
+    xmlSecSize ca_list_length;
+    xmlSecSize ii;
+    int err;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
     xmlSecAssert2(certs != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
+    certs_size = xmlSecPtrListGetSize(certs);
+    if(certs_size <= 0) {
+        /* nothing to do */
+        return(NULL);
+    }
+
     ctx = xmlSecGnuTLSX509StoreGetCtx(store);
     xmlSecAssert2(ctx != NULL, NULL);
 
+    /* Prepare */
+    cert_list_length = certs_size + xmlSecPtrListGetSize(&(ctx->certsUntrusted));
+    if(cert_list_length > 0) {
+        cert_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * cert_list_length);
+        if(cert_list == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                        "xmlMalloc",
+                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        "size=%d", (int)(sizeof(gnutls_x509_crt_t) * cert_list_length));
+            goto done;
+        }
+    }
+    ca_list_length = xmlSecPtrListGetSize(&(ctx->certsTrusted));
+    if(ca_list_length > 0) {
+        ca_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * ca_list_length);
+        if(ca_list == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                        "xmlMalloc",
+                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        "size=%d", (int)(sizeof(gnutls_x509_crt_t) * ca_list_length));
+            goto done;
+        }
+        for(ii = 0; ii < ca_list_length; ++ii) {
+            ca_list[ii] = xmlSecPtrListGetItem(&(ctx->certsTrusted), ii);
+            if(ca_list[ii] == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                            "xmlSecPtrListGetItem(certsTrusted)",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                goto done;
+            }
+        }
+    }
+
     /* We are going to build all possible cert chains and try to verify them */
+    for(ii = 0; (ii < certs_size) && (res == NULL); ++ii) {
+        gnutls_x509_crt_t cert, cert2;
+        xmlSecSize cert_list_cur_length = 0;
+        unsigned int verify = 0;
+
+        cert = xmlSecPtrListGetItem(certs, ii);
+        if(cert == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                        "xmlSecPtrListGetItem(certs)",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            goto done;
+        }
+
+        /* check if we are the "leaf" node in the certs chain */
+        if(xmlSecGnuTLSX509FindSignedCert(certs, cert) != NULL) {
+            continue;
+        }
+
+        /* build the chain */
+        for(cert2 = cert, cert_list_cur_length = 0;
+            (cert2 != NULL) && (cert_list_cur_length < cert_list_length);
+            ++cert_list_cur_length)
+        {
+            gnutls_x509_crt_t tmp;
+
+            /* store */
+            cert_list[cert_list_cur_length] = cert2;
+
+            /* find next */
+            tmp = xmlSecGnuTLSX509FindSignerCert(certs, cert2);
+            if(tmp == NULL) {
+                tmp = xmlSecGnuTLSX509FindSignerCert(&(ctx->certsUntrusted), cert2);
+            }
+            cert2 = tmp;
+        }
+
+        /* try to verify */
+        err = gnutls_x509_crt_list_verify(
+                cert_list, (int)cert_list_cur_length, /* certs chain */
+                ca_list, (int)ca_list_length, /* trusted cas */
+                NULL, 0, /* crls */
+                0, /* flags */
+                &verify);
+        if(err == GNUTLS_E_SUCCESS) {
+            /* TODO: check the timestamp */
+            res = cert;
+        } else {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gnutls_x509_crt_list_verify",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            /* don't stop, continue! */
+        }
+    }
 
     /*
     for(ii = 0; ii < certs.size; ++ii) {
@@ -183,7 +296,15 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     }
     */
 
-    return(NULL);
+done:
+    if(ca_list != NULL) {
+        xmlFree(ca_list);
+    }
+    if(cert_list != NULL) {
+        xmlFree(cert_list);
+    }
+
+    return(res);
 
 #ifdef TODO
     STACK_OF(X509)* certs2 = NULL;
@@ -559,6 +680,128 @@ xmlSecGnuTLSX509FindCert(xmlSecPtrListPtr certs,
     }
 
     return(NULL);
+}
+
+/* signed cert has issuer dn equal to our's subject dn */
+static gnutls_x509_crt_t
+xmlSecGnuTLSX509FindSignedCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
+    gnutls_x509_crt_t res = NULL;
+    xmlChar * subject = NULL;
+    xmlSecSize ii, sz;
+
+    xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+
+    /* get subject */
+    subject = xmlSecGnuTLSX509CertGetSubjectDN(cert);
+    if(subject == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CertGetSubjectDN",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* todo: this is not the fastest way to search certs */
+    sz = xmlSecPtrListGetSize(certs);
+    for(ii = 0; (ii < sz) && (res == NULL); ++ii) {
+        gnutls_x509_crt_t tmp;
+        xmlChar * issuer;
+
+        tmp = xmlSecPtrListGetItem(certs, ii);
+        if(tmp == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecPtrListGetItem",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "pos=%i", (int)ii);
+            goto done;
+        }
+
+        issuer = xmlSecGnuTLSX509CertGetIssuerDN(tmp);
+        if(issuer == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGnuTLSX509CertGetIssuerDN",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "pos=%i", (int)ii);
+            goto done;
+        }
+
+        /* are we done? */
+        if(xmlStrEqual(subject, issuer)) {
+            res = tmp;
+        }
+        xmlFree(issuer);
+    }
+
+done:
+    if(subject != NULL) {
+        xmlFree(subject);
+    }
+    return(res);
+}
+
+/* signer cert has subject dn equal to our's issuer dn */
+static gnutls_x509_crt_t
+xmlSecGnuTLSX509FindSignerCert(xmlSecPtrListPtr certs, gnutls_x509_crt_t cert) {
+    gnutls_x509_crt_t res = NULL;
+    xmlChar * issuer = NULL;
+    xmlSecSize ii, sz;
+
+    xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(cert != NULL, NULL);
+
+    /* get issuer */
+    issuer = xmlSecGnuTLSX509CertGetIssuerDN(cert);
+    if(issuer == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CertGetIssuerDN",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* todo: this is not the fastest way to search certs */
+    sz = xmlSecPtrListGetSize(certs);
+    for(ii = 0; (ii < sz) && (res == NULL); ++ii) {
+        gnutls_x509_crt_t tmp;
+        xmlChar * subject;
+
+        tmp = xmlSecPtrListGetItem(certs, ii);
+        if(tmp == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecPtrListGetItem",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "pos=%i", (int)ii);
+            goto done;
+        }
+
+        subject = xmlSecGnuTLSX509CertGetSubjectDN(tmp);
+        if(subject == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecGnuTLSX509CertGetSubjectDN",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "pos=%i", (int)ii);
+            goto done;
+        }
+
+        /* are we done? */
+        if(xmlStrEqual(issuer, subject)) {
+            res = tmp;
+        }
+        xmlFree(subject);
+    }
+
+done:
+    if(issuer != NULL) {
+        xmlFree(issuer);
+    }
+    return(res);
 }
 
 #endif /* XMLSEC_NO_X509 */

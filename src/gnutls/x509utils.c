@@ -833,13 +833,15 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
             goto done;
         }
         for(ii = 0; ii < certsSize; ++ii) {
-            cert = xmlSecPtrListRemoveAndReturn(certsList, ii);
-            if(cert == NULL) {
+            gnutls_x509_crt_t tmp;
+
+            tmp = xmlSecPtrListGetItem(certsList, ii);
+            if(tmp == NULL) {
                 continue;
             }
 
             cert_id_size = sizeof(cert_id);
-            err = gnutls_x509_crt_get_key_id(cert, 0, cert_id, &cert_id_size);
+            err = gnutls_x509_crt_get_key_id(tmp, 0, cert_id, &cert_id_size);
             if(err != GNUTLS_E_SUCCESS) {
                 xmlSecError(XMLSEC_ERRORS_HERE,
                             NULL,
@@ -851,7 +853,7 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 
             /* if key ids match, then this is THE key cert!!! */
             if((key_id_size == cert_id_size) && (memcmp(key_id, cert_id, key_id_size) == 0)) {
-                (*key_cert) = xmlSecGnuTLSX509CertDup(cert);
+                (*key_cert) = xmlSecGnuTLSX509CertDup(tmp);
                 if((*key_cert) == NULL) {
                     xmlSecError(XMLSEC_ERRORS_HERE,
                                 NULL,

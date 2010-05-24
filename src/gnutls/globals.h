@@ -24,5 +24,8 @@
 #define XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err)  \
         "error code=%d; error message='%s'",    \
         (int)err, xmlSecErrorsSafeString(gcry_strerror((err)))
+#define XMLSEC_GNUTLS_REPORT_ERROR(err)         \
+        "error code=%d; error message='%s'",    \
+        (int)err, xmlSecErrorsSafeString(gnutls_strerror((err)))
 
 #endif /* ! __XMLSEC_GLOBALS_H__ */

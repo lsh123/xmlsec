@@ -11,6 +11,8 @@
 #include <string.h>
 
 #include <gnutls/gnutls.h>
+#include <gnutls/x509.h>
+#include <gnutls/pkcs12.h>
 
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
@@ -41,15 +43,15 @@
  */
 int
 xmlSecGnuTLSAppInit(const char* config) {
-    int ret;
+    int err;
 
-    ret = gnutls_global_init();
-    if(ret != 0) {
+    err = gnutls_global_init();
+    if(err != GNUTLS_E_SUCCESS) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
                     "gnutls_global_init",
                     XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    "ret=%d", ret);
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
         return(-1);
     }
 
@@ -89,10 +91,23 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
                         const char *pwd,
                         void* pwdCallback,
                         void* pwdCallbackCtx) {
+    xmlSecKeyPtr key;
+
     xmlSecAssert2(filename != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    return(xmlSecGCryptAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx));
+    switch(format) {
+#ifndef XMLSEC_NO_X509
+    case xmlSecKeyDataFormatPkcs12:
+        key = xmlSecGnuTLSAppPkcs12Load(filename, pwd, pwdCallback, pwdCallbackCtx);
+        break;
+#endif /* XMLSEC_NO_X509 */
+    default:
+        key = xmlSecGCryptAppKeyLoad(filename, format, pwd, pwdCallback, pwdCallbackCtx);
+        break;
+    }
+
+    return(key);
 }
 
 /**
@@ -112,10 +127,22 @@ xmlSecKeyPtr
 xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                         xmlSecKeyDataFormat format, const char *pwd,
                         void* pwdCallback, void* pwdCallbackCtx) {
+    xmlSecKeyPtr key;
+
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
 
-    return(xmlSecGCryptAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx));
+    switch(format) {
+#ifndef XMLSEC_NO_X509
+    case xmlSecKeyDataFormatPkcs12:
+        key = xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd, pwdCallback, pwdCallbackCtx);
+        break;
+#endif /* XMLSEC_NO_X509 */
+    default:
+        key = xmlSecGCryptAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx);
+        break;
+    }
+    return(key);
 }
 
 #ifndef XMLSEC_NO_X509
@@ -133,17 +160,53 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
 int
 xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
                           xmlSecKeyDataFormat format) {
+    xmlSecBuffer buffer;
+    int ret;
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppKeyCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferReadFile",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s", 
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    ret = xmlSecGnuTLSAppKeyCertLoadMemory(key,
+                    xmlSecBufferGetData(&buffer),
+                    xmlSecBufferGetSize(&buffer),
+                    format);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSAppKeyCertLoadMemory",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s",
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    /* cleanup */
+    xmlSecBufferFinalize(&buffer);
+    return(0);
 }
 
 /**
@@ -192,18 +255,54 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12Load(const char *filename,
-                          const char *pwd ATTRIBUTE_UNUSED,
-                          void* pwdCallback ATTRIBUTE_UNUSED,
-                          void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                          const char *pwd,
+                          void* pwdCallback,
+                          void* pwdCallbackCtx) {
+    xmlSecKeyPtr key;
+    xmlSecBuffer buffer;
+    int ret;
+
     xmlSecAssert2(filename != NULL, NULL);
 
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppPkcs12Load",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL);
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferReadFile",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s", 
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    key = xmlSecGnuTLSAppPkcs12LoadMemory(xmlSecBufferGetData(&buffer),
+                    xmlSecBufferGetSize(&buffer),
+                    pwd, pwdCallback, pwdCallbackCtx);
+    if(key == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSAppPkcs12LoadMemory",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s",
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    /* cleanup */
+    xmlSecBufferFinalize(&buffer);
+    return(key);
 }
 
 /**
@@ -251,21 +350,58 @@ xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * Returns: 0 on success or a negative value otherwise.
  */
 int
-xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr, 
+xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
                                 const char *filename,
                                 xmlSecKeyDataFormat format,
-                                xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                xmlSecKeyDataType type) {
+    xmlSecBuffer buffer;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(filename != NULL, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppKeysMngrCertLoad",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferReadFile",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s", 
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    ret = xmlSecGnuTLSAppKeysMngrCertLoadMemory(mngr,
+                    xmlSecBufferGetData(&buffer),
+                    xmlSecBufferGetSize(&buffer),
+                    format,
+                    type);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSAppKeysMngrCertLoadMemory",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s",
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(-1);
+    }
+
+    /* cleanup */
+    xmlSecBufferFinalize(&buffer);
+    return(0);
 }
 
 /**

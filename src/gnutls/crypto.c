@@ -21,6 +21,7 @@
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gnutls/x509.h>
 
 static xmlSecCryptoDLFunctionsPtr gXmlSecGnuTLSFunctions = NULL;
 
@@ -76,11 +77,19 @@ xmlSecCryptoGetFunctions_gnutls(void) {
     gXmlSecGnuTLSFunctions->keyDataRsaGetKlass          = xmlSecGnuTLSKeyDataRsaGetKlass;
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_X509
+    gXmlSecGnuTLSFunctions->keyDataX509GetKlass         = xmlSecGnuTLSKeyDataX509GetKlass;
+    gXmlSecGnuTLSFunctions->keyDataRawX509CertGetKlass  = xmlSecGnuTLSKeyDataRawX509CertGetKlass;
+#endif /* XMLSEC_NO_X509 */
+
     /********************************************************************
      *
      * Key data store ids
      *
      ********************************************************************/
+#ifndef XMLSEC_NO_X509
+    gXmlSecGnuTLSFunctions->x509StoreGetKlass           = xmlSecGnuTLSX509StoreGetKlass;
+#endif /* XMLSEC_NO_X509 */
 
     /********************************************************************
      *
@@ -276,9 +285,37 @@ xmlSecGnuTLSShutdown(void) {
  */
 int
 xmlSecGnuTLSKeysMngrInit(xmlSecKeysMngrPtr mngr) {
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
 
-    /* TODO: add key data stores */
+#ifndef XMLSEC_NO_X509
+    /* create x509 store if needed */
+    if(xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId) == NULL) {
+        xmlSecKeyDataStorePtr x509Store;
+
+        x509Store = xmlSecKeyDataStoreCreate(xmlSecGnuTLSX509StoreId);
+        if(x509Store == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataStoreCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecGnuTLSX509StoreId");
+            return(-1);
+        }
+
+        ret = xmlSecKeysMngrAdoptDataStore(mngr, x509Store);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeysMngrAdoptDataStore",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            xmlSecKeyDataStoreDestroy(x509Store);
+            return(-1);
+        }
+    }
+#endif /* XMLSEC_NO_X509 */
     return(0);
 }
 

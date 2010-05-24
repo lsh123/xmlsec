@@ -6,6 +6,7 @@ xmlsecgnutlsinc_HEADERS = \
 app.h \
 crypto.h \
 symbols.h \
+x509.h \
 $(NULL)
 
 install-exec-hook:

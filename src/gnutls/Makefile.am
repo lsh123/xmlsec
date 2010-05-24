@@ -29,6 +29,10 @@ libxmlsec1_gnutls_la_SOURCES =\
 	symkeys.c \
 	asymkeys.c \
 	signatures.c \
+	x509utils.h \
+	x509utils.c \
+	x509.c \
+	x509vfy.c \
 	globals.h \
 	$(NULL)
 

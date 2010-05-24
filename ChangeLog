@@ -1,3 +1,6 @@
+2010-05-23  Aleksey Sanin  <aleksey@aleksey.com>
+	* Added X509Data support to xmlsec-gnutls
+
 2010-05-12  Aleksey Sanin  <aleksey@aleksey.com>
 	* Several patches from Roumen: support NSS/NSPR from seamonkey
 	package; reorder libxmlsec as dep. lib for mingw; fix gcrypt/src/asn1.h

@@ -387,9 +387,11 @@ xmlSecGnuTLSX509CertRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFo
 
     /* figure out format */
     switch(format) {
+    case xmlSecKeyDataFormatPem:
     case xmlSecKeyDataFormatCertPem:
         fmt = GNUTLS_X509_FMT_PEM;
         break;
+    case xmlSecKeyDataFormatDer:
     case xmlSecKeyDataFormatCertDer:
         fmt = GNUTLS_X509_FMT_DER;
         break;
@@ -592,12 +594,14 @@ int
 xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                              const char *pwd,
                              gnutls_x509_privkey_t * priv_key,
+                             gnutls_x509_crt_t * key_cert,
                              xmlSecPtrListPtr certsList)
 {
     gnutls_pkcs12_t pkcs12 = NULL;
     gnutls_pkcs12_bag_t bag = NULL;
     gnutls_x509_crt_t cert = NULL;
     gnutls_datum_t datum;
+    xmlSecSize certsSize;
     int res = -1;
     int idx;
     int err;
@@ -607,6 +611,8 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(priv_key != NULL, -1);
     xmlSecAssert2((*priv_key) == NULL, -1);
+    xmlSecAssert2(key_cert!= NULL, -1);
+    xmlSecAssert2((*key_cert) == NULL, -1);
     xmlSecAssert2(certsList != NULL, -1);
 
     /* read pkcs12 in internal structure */
@@ -806,6 +812,70 @@ xmlSecGnuTLSPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
                     "Private key was not found in pkcs12 object");
         goto done;
     }
+
+    /* we will search for key cert using the key id */
+    certsSize = xmlSecPtrListGetSize(certsList);
+    if(certsSize > 0) {
+        size_t cert_id_size = 0;
+        size_t key_id_size = 0;
+        xmlSecByte cert_id[100];
+        xmlSecByte key_id[100];
+        xmlSecSize ii;
+
+        key_id_size = sizeof(key_id);
+        err = gnutls_x509_privkey_get_key_id((*priv_key), 0, key_id, &key_id_size);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gnutls_x509_privkey_get_key_id",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            goto done;
+        }
+        for(ii = 0; ii < certsSize; ++ii) {
+            cert = xmlSecPtrListRemoveAndReturn(certsList, ii);
+            if(cert == NULL) {
+                continue;
+            }
+
+            cert_id_size = sizeof(cert_id);
+            err = gnutls_x509_crt_get_key_id(cert, 0, cert_id, &cert_id_size);
+            if(err != GNUTLS_E_SUCCESS) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "gnutls_x509_crt_get_key_id",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                goto done;
+            }
+
+            /* if key ids match, then this is THE key cert!!! */
+            if((key_id_size == cert_id_size) && (memcmp(key_id, cert_id, key_id_size) == 0)) {
+                (*key_cert) = xmlSecGnuTLSX509CertDup(cert);
+                if((*key_cert) == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlSecGnuTLSX509CertDup",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_NO_MESSAGE);
+                    goto done;
+                }
+
+                break;
+            }
+        }
+
+        /* check we have key cert */
+        if((*key_cert) == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "Certificate for the private key was not found in pkcs12 object");
+            goto done;
+        }
+    }
+
 
     /* success!!! */
     res = 0;

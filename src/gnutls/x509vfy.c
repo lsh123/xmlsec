@@ -149,10 +149,43 @@ gnutls_x509_crt_t
 xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                             xmlSecPtrListPtr certs,
                             const xmlSecKeyInfoCtx* keyInfoCtx) {
+    xmlSecGnuTLSX509StoreCtxPtr ctx;
+
+    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
+    xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(keyInfoCtx != NULL, NULL);
+
+    ctx = xmlSecGnuTLSX509StoreGetCtx(store);
+    xmlSecAssert2(ctx != NULL, NULL);
+
+    /* We are going to build all possible cert chains and try to verify them */
+
+    /*
+    for(ii = 0; ii < certs.size; ++ii) {
+        cert = certs[ii];
+        if(find(certs, where issuer = cert.subj)) {
+            continue; // this is not the "leaf" of a certs chain!
+        }
+        // build chain
+        for(cert2 = cert; ; ) {
+            put cert2 into certsChain;
+            cert2 = find(certs, where subject = cert2.issuer);
+            if(cert2 == NULL) {
+                cert2 = find(untrusted certs from store, where subject = cert2.issuer);
+            }
+        }
+        if(gnutls_x509_crt_list_verify(certsChain, trusted certs from store)) {
+            // we found it!
+            cert is the key cert;
+
+            // manually check certs time if specified 
+        }
+    }
+    */
+
     return(NULL);
 
 #ifdef TODO
-    xmlSecGnuTLSX509StoreCtxPtr ctx;
     STACK_OF(X509)* certs2 = NULL;
     X509 * res = NULL;
     X509 * cert;
@@ -161,14 +194,6 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     int err = 0, depth;
     int i;
     int ret;
-
-    xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
-    xmlSecAssert2(certs != NULL, NULL);
-    xmlSecAssert2(keyInfoCtx != NULL, NULL);
-
-    ctx = xmlSecGnuTLSX509StoreGetCtx(store);
-    xmlSecAssert2(ctx != NULL, NULL);
-    xmlSecAssert2(ctx->xst != NULL, NULL);
 
     /* dup certs */
     certs2 = sk_X509_dup(certs);

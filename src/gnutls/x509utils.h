@@ -66,6 +66,7 @@ int                     xmlSecGnuTLSPkcs12LoadMemory            (const xmlSecByt
                                                                  xmlSecSize dataSize,
                                                                  const char *pwd,
                                                                  gnutls_x509_privkey_t * priv_key,
+                                                                 gnutls_x509_crt_t * key_cert,
                                                                  xmlSecPtrListPtr certsList);
 
 xmlSecKeyDataPtr        xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(gnutls_x509_privkey_t priv_key);

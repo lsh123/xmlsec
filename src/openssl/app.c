@@ -685,7 +685,7 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
     X509 *cert = NULL;
     X509 *tmpcert = NULL;
     int i;
-        int has_cert;
+    int has_cert;
     int ret;
 
     xmlSecAssert2(bio != NULL, NULL);
@@ -757,49 +757,50 @@ xmlSecOpenSSLAppPkcs12LoadBIO(BIO* bio, const char *pwd,
         }
     }
 
-        /*
+    /*
         The documentation states (http://www.openssl.org/docs/crypto/PKCS12_parse.html):
 
         If successful the private key will be written to "*pkey", the
-    corresponding certificate to "*cert" and any additional certificates
-    to "*ca".
+        corresponding certificate to "*cert" and any additional certificates
+        to "*ca".
 
         In reality, the function sometime returns in the "ca" the certificates
-    including the one it is already returned in "cert".
-        */
-        has_cert = 0;
+        including the one it is already returned in "cert".
+    */
+    has_cert = 0;
     for(i = 0; i < sk_X509_num(chain); ++i) {
-                xmlSecAssert2(sk_X509_value(chain, i), NULL);
+        xmlSecAssert2(sk_X509_value(chain, i), NULL);
 
-                if(X509_cmp(sk_X509_value(chain, i), cert) != 0) {
-                        has_cert = 1;
-                        break;
-                }
+        if(X509_cmp(sk_X509_value(chain, i), cert) != 0) {
+            has_cert = 1;
+            break;
         }
-        if(has_cert != 0) {
-                tmpcert = X509_dup(cert);
-                if(tmpcert == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "X509_dup",
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                "data=%s",
-                                xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-                goto done;
-                }
+    }
 
-                ret = sk_X509_push(chain, tmpcert);
-                if(ret < 1) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                                NULL,
-                                "sk_X509_push",
-                                XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                                "data=%s",
-                                xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
-                X509_free(tmpcert);
-                goto done;
-                }
+    if(has_cert != 0) {
+        tmpcert = X509_dup(cert);
+        if(tmpcert == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "X509_dup",
+                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "data=%s",
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            goto done;
         }
+
+        ret = sk_X509_push(chain, tmpcert);
+        if(ret < 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "sk_X509_push",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "data=%s",
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            X509_free(tmpcert);
+            goto done;
+        }
+    }
 
     ret = xmlSecOpenSSLKeyDataX509AdoptKeyCert(x509Data, cert);
     if(ret < 0) {

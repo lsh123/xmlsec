@@ -66,7 +66,7 @@ cert_format=$file_format
 #
 # GCrypt/GnuTLS only supports DER format for now, others are good to go with PKCS12
 #
-if [ "z$crypto" != "zgcrypt" -a "z$crypto" != "zgnutls" ] ; then
+if [ "z$crypto" != "zgcrypt" ] ; then
     priv_key_option="--pkcs12"
     priv_key_format="p12"
 else

@@ -31,6 +31,51 @@
 #include <xmlsec/gcrypt/crypto.h>
 #include <gcrypt.h>
 
+static void xmlSecGnuTLSDestroyParams(gnutls_datum_t * params, xmlSecSize num) {
+    xmlSecSize ii;
+
+    xmlSecAssert(params != NULL);
+    for(ii = 0; ii < num; ++ii) {
+        gnutls_free(params[ii].data);
+    }
+}
+
+static void xmlSecGnuTLSDestroyMpis(gcry_mpi_t * mpis, xmlSecSize num) {
+    xmlSecSize ii;
+
+    xmlSecAssert(mpis != NULL);
+    for(ii = 0; ii < num; ++ii) {
+        gcry_mpi_release(mpis[ii]);
+    }
+}
+
+static int xmlSecGnuTLSConvertParamsToMpis(gnutls_datum_t * params, xmlSecSize paramsNum,
+                                           gcry_mpi_t * mpis, xmlSecSize mpisNum) {
+
+    xmlSecSize ii;
+    int err;
+
+    xmlSecAssert2(params != NULL, -1);
+    xmlSecAssert2(mpis != NULL, -1);
+    xmlSecAssert2(paramsNum == mpisNum, -1);
+
+    for(ii = 0; ii < paramsNum; ++ii) {
+        err = gcry_mpi_scan(&(mpis[ii]), GCRYMPI_FMT_USG, params[ii].data, params[ii].size, NULL);
+        if((err != GPG_ERR_NO_ERROR) || (mpis[ii] == NULL)) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gcry_mpi_scan",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
+            xmlSecGnuTLSDestroyMpis(mpis, ii); /* destroy up to now */
+            return(-1);
+        }
+    }
+
+    /* done */
+    return(0);
+}
+
 #ifndef XMLSEC_NO_DSA
 
 /**
@@ -56,10 +101,86 @@ xmlSecGnuTLSKeyDataDsaGetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataDsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey_t dsa_key) {
+    gnutls_datum_t params[5];
+    gcry_mpi_t mpis[5];
+    gcry_sexp_t priv_key = NULL;
+    gcry_sexp_t pub_key = NULL;
+    int rc;
+    int err;
+    int ret;
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataDsaId), -1);
     xmlSecAssert2(dsa_key != NULL, -1);
+    xmlSecAssert2(gnutls_x509_privkey_get_pk_algorithm(dsa_key) == GNUTLS_PK_DSA, -1);
 
-    /* ALEKSEY_TODO */
+    /* get raw values */
+    err = gnutls_x509_privkey_export_dsa_raw(dsa_key,
+            &(params[0]), &(params[1]), &(params[2]),
+            &(params[3]), &(params[4]));
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_privkey_export_dsa_raw",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        return(-1);
+    }
+
+    /* convert to mpis */
+    ret = xmlSecGnuTLSConvertParamsToMpis(
+            params, sizeof(params)/sizeof(params[0]),
+            mpis, sizeof(mpis)/sizeof(mpis[0]));
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSConvertParamsToMpis",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+
+    /* build expressions */
+    rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(dsa(p%m)(q%m)(g%m)(y%m)(x%m)))",
+                        mpis[0], mpis[1], mpis[2], mpis[3], mpis[4]);
+    if((err != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(private/dsa)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    rc = gcry_sexp_build(&(pub_key), NULL, "(public-key(dsa(p%m)(q%m)(g%m)(y%m)))",
+                        mpis[0], mpis[1], mpis[2], mpis[3]);
+    if((err != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(private/rsa)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
+        gcry_sexp_release(priv_key);
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+
+    ret = xmlSecGCryptKeyDataDsaAdoptKeyPair(data, pub_key, priv_key);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptKeyDataDsaAdoptKeyPair",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        gcry_sexp_release(pub_key);
+        gcry_sexp_release(priv_key);
+        return(-1);
+    }
+
+    /* done, we "adopted" the key - destroy it! */
+    gnutls_x509_privkey_deinit(dsa_key);
     return(0);
 }
 
@@ -118,10 +239,87 @@ xmlSecGnuTLSKeyDataRsaGetKlass(void) {
  */
 int
 xmlSecGnuTLSKeyDataRsaAdoptPrivateKey(xmlSecKeyDataPtr data, gnutls_x509_privkey_t rsa_key) {
+    gnutls_datum_t params[6];
+    gcry_mpi_t mpis[6];
+    gcry_sexp_t priv_key = NULL;
+    gcry_sexp_t pub_key = NULL;
+    int rc;
+    int err;
+    int ret;
+
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecGnuTLSKeyDataRsaId), -1);
     xmlSecAssert2(rsa_key != NULL, -1);
+    xmlSecAssert2(gnutls_x509_privkey_get_pk_algorithm(rsa_key) == GNUTLS_PK_RSA, -1);
 
-    /* ALEKSEY_TODO */
+    /* get raw values */
+    err = gnutls_x509_privkey_export_rsa_raw(rsa_key,
+            &(params[0]), &(params[1]), &(params[2]),
+            &(params[3]), &(params[4]), &(params[5]));
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_privkey_export_rsa_raw",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        return(-1);
+    }
+
+    /* convert to mpis */
+    ret = xmlSecGnuTLSConvertParamsToMpis(
+            params, sizeof(params)/sizeof(params[0]),
+            mpis, sizeof(mpis)/sizeof(mpis[0]));
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSConvertParamsToMpis",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyParams(params, sizeof(params)/sizeof(params[0]));
+
+    /* build expressions */
+    rc = gcry_sexp_build(&(priv_key), NULL, "(private-key(rsa((n%m)(e%m)(d%m)(p%m)(q%m)(u%m))))",
+                        mpis[0], mpis[1], mpis[2],
+                        mpis[3], mpis[4], mpis[5]);
+    if((err != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(private/rsa)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    rc = gcry_sexp_build(&(pub_key), NULL, "(public-key(rsa((n%m)(e%m))))",
+                        mpis[0], mpis[1]);
+    if((err != GPG_ERR_NO_ERROR) || (priv_key == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_sexp_build(private/rsa)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_GNUTLS_GCRYPT_REPORT_ERROR(err));
+        gcry_sexp_release(priv_key);
+        xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+        return(-1);
+    }
+    xmlSecGnuTLSDestroyMpis(mpis, sizeof(mpis)/sizeof(mpis[0]));
+
+    ret = xmlSecGCryptKeyDataRsaAdoptKeyPair(data, pub_key, priv_key);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGCryptKeyDataRsaAdoptKeyPair",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        gcry_sexp_release(pub_key);
+        gcry_sexp_release(priv_key);
+        return(-1);
+    }
+
+    /* done, we "adopted" the key - destroy it! */
+    gnutls_x509_privkey_deinit(rsa_key);
     return(0);
 }
 

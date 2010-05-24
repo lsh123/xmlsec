@@ -368,6 +368,32 @@ xmlSecPtrListRemove(xmlSecPtrListPtr list, xmlSecSize pos) {
 }
 
 /**
+ * xmlSecPtrListRemoveAndReturn:
+ * @list:               the pointer to list.
+ * @pos:                the position.
+ *
+ * Remove the list item at the position @pos and return it back.
+ *
+ * Returns: the pointer to the list item.
+ */
+xmlSecPtr
+xmlSecPtrListRemoveAndReturn(xmlSecPtrListPtr list, xmlSecSize pos) {
+    xmlSecPtr res;
+
+    xmlSecAssert2(xmlSecPtrListIsValid(list), NULL);
+    xmlSecAssert2(list->data != NULL, NULL);
+    xmlSecAssert2(pos < list->use, NULL);
+
+    res = list->data[pos];
+    list->data[pos] = NULL;
+    if(pos == list->use - 1) {
+        --list->use;
+    }
+    return(res);
+}
+
+
+/**
  * xmlSecPtrListDebugDump:
  * @list:               the pointer to list.
  * @output:             the pointer to output FILE.

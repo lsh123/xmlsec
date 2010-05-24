@@ -67,6 +67,8 @@ XMLSEC_EXPORT int               xmlSecPtrListSet                (xmlSecPtrListPt
                                                                  xmlSecSize pos);
 XMLSEC_EXPORT int               xmlSecPtrListRemove             (xmlSecPtrListPtr list,
                                                                  xmlSecSize pos);
+XMLSEC_EXPORT xmlSecPtr         xmlSecPtrListRemoveAndReturn    (xmlSecPtrListPtr list,
+                                                                 xmlSecSize pos);
 XMLSEC_EXPORT void              xmlSecPtrListDebugDump          (xmlSecPtrListPtr list,
                                                                  FILE* output);
 XMLSEC_EXPORT void              xmlSecPtrListDebugXmlDump       (xmlSecPtrListPtr list,

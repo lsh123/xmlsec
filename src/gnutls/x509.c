@@ -1425,6 +1425,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
     }
 
     switch(alg) {
+#ifndef XMLSEC_NO_RSA
     case GNUTLS_PK_RSA:
         {
             gnutls_datum_t m, e;
@@ -1463,7 +1464,9 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
             /* m and e are owned by data now */
         }
         break;
+#endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_DSA
     case GNUTLS_PK_DSA:
         {
             gnutls_datum_t p, q, g, y;
@@ -1504,6 +1507,7 @@ xmlSecGnuTLSX509CertGetKey(gnutls_x509_crt_t cert) {
             /* p, q, g and y are owned by data now */
         }
         break;
+#endif /* XMLSEC_NO_DSA */
 
     default:
         {
@@ -1597,11 +1601,11 @@ xmlSecGnuTLSKeyDataRawX509CertBinRead(xmlSecKeyDataId id, xmlSecKeyPtr key,
     xmlSecAssert2(bufSize > 0, -1);
     xmlSecAssert2(keyInfoCtx != NULL, -1);
 
-    cert = xmlSecGnuTLSX509CertDerRead(buf, bufSize);
+    cert = xmlSecGnuTLSX509CertRead(buf, bufSize, xmlSecKeyDataFormatCertDer);
     if(cert == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xmlSecGnuTLSX509CertDerRead",
+                    "xmlSecGnuTLSX509CertRead",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);

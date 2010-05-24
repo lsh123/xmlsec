@@ -10,10 +10,6 @@
 
 #include <string.h>
 
-#include <gnutls/gnutls.h>
-#include <gnutls/x509.h>
-#include <gnutls/pkcs12.h>
-
 #include <xmlsec/xmlsec.h>
 #include <xmlsec/keys.h>
 #include <xmlsec/transforms.h>
@@ -21,6 +17,9 @@
 
 #include <xmlsec/gnutls/app.h>
 #include <xmlsec/gnutls/crypto.h>
+#include <xmlsec/gnutls/x509.h>
+
+#include "x509utils.h"
 
 /**************************************************************************
  *
@@ -225,18 +224,47 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
                                  const xmlSecByte* data,
                                  xmlSecSize dataSize,
                                  xmlSecKeyDataFormat format) {
+    gnutls_x509_crt_t cert;
+    xmlSecKeyDataPtr keyData;
+    int ret;
+
     xmlSecAssert2(key != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppKeyCertLoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
+    keyData = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
+    if(keyData == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyEnsureData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
+    if(cert == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CertRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    ret = xmlSecGnuTLSKeyDataX509AdoptCert(keyData, cert);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSKeyDataX509AdoptCert",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        gnutls_x509_crt_deinit(cert);
+        return(-1);
+    }
+
+    return(0);
 }
 
 /**
@@ -321,19 +349,203 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  */
 xmlSecKeyPtr
 xmlSecGnuTLSAppPkcs12LoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
-                           const char *pwd ATTRIBUTE_UNUSED,
-                           void* pwdCallback ATTRIBUTE_UNUSED,
-                           void* pwdCallbackCtx ATTRIBUTE_UNUSED) {
+                                const char *pwd,
+                                void* pwdCallback ATTRIBUTE_UNUSED,
+                                void* pwdCallbackCtx ATTRIBUTE_UNUSED)
+{
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyPtr res = NULL;
+    xmlSecPtrList certsList;
+    xmlSecKeyDataPtr keyData = NULL;
+    xmlSecKeyDataPtr x509Data = NULL;
+    gnutls_x509_privkey_t priv_key = NULL;
+    gnutls_x509_crt_t cert = NULL;
+    xmlSecSize certsSize;
+    int err;
+    int ret;
+
     xmlSecAssert2(data != NULL, NULL);
     xmlSecAssert2(dataSize > 0, NULL);
 
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppPkcs12LoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(NULL);
+    /* prepare */
+    ret = xmlSecPtrListInitialize(&(certsList), xmlSecGnuTLSX509CrtListId);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecPtrListInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "certsList");
+        return(NULL);
+    }
+
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* load pkcs12 */
+    ret = xmlSecGnuTLSPkcs12LoadMemory(data, dataSize, pwd, &priv_key, &certsList);
+    if((ret < 0) || (priv_key == NULL)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSPkcs12LoadMemory",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* create x509 certs data */
+    certsSize = xmlSecPtrListGetSize(&certsList);
+    if(certsSize > 0) {
+        size_t cert_id_size = 0;
+        size_t key_id_size = 0;
+        xmlSecByte cert_id[100];
+        xmlSecByte key_id[100];
+        xmlSecSize ii;
+
+        x509Data = xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id);
+        if(x509Data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate(xmlSecGnuTLSKeyDataX509Id)",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            goto done;
+        }
+
+        /* we will search for cert for this key using the key id */
+        key_id_size = sizeof(key_id);
+        err = gnutls_x509_privkey_get_key_id(priv_key, 0, key_id, &key_id_size);
+        if(err != GNUTLS_E_SUCCESS) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gnutls_x509_privkey_get_key_id",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_GNUTLS_REPORT_ERROR(err));
+            goto done;
+        }
+        for(ii = 0; ii < certsSize; ++ii) {
+            cert = xmlSecPtrListRemoveAndReturn(&certsList, ii);
+            if(cert == NULL) {
+                continue;
+            }
+
+            cert_id_size = sizeof(cert_id);
+            err = gnutls_x509_crt_get_key_id(cert, 0, cert_id, &cert_id_size);
+            if(err != GNUTLS_E_SUCCESS) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "gnutls_x509_crt_get_key_id",
+                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                            XMLSEC_GNUTLS_REPORT_ERROR(err));
+                goto done;
+            }
+
+            /* if key ids match, then this is THE key cert!!! */
+            if((key_id_size == cert_id_size) && (memcmp(key_id, cert_id, key_id_size) == 0)) {
+                gnutls_x509_crt_t tmpCert;
+
+                tmpCert = xmlSecGnuTLSX509CertDup(cert);
+                if(tmpCert == NULL) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlSecGnuTLSX509CertDup",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_NO_MESSAGE);
+                    goto done;
+                }
+
+                ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, tmpCert);
+                if(ret < 0) {
+                    xmlSecError(XMLSEC_ERRORS_HERE,
+                                NULL,
+                                "xmlSecGnuTLSKeyDataX509AdoptKeyCert",
+                                XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                                XMLSEC_ERRORS_NO_MESSAGE);
+                    gnutls_x509_crt_deinit(tmpCert);
+                    goto done;
+                }
+                tmpCert = NULL; /* owned by x509Data now */
+            }
+
+            ret = xmlSecGnuTLSKeyDataX509AdoptCert(x509Data, cert);
+            if(ret < 0) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            NULL,
+                            "xmlSecGnuTLSKeyDataX509AdoptCert",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                goto done;
+            }
+            cert = NULL; /* owned by x509Data now */
+        }
+
+        /* set in the key */
+        ret = xmlSecKeyAdoptData(key, x509Data);
+        if(ret < 0) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyAdoptData",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "data=%s",
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+            goto done;
+        }
+        x509Data = NULL; /* owned by key now */
+    }
+
+
+    /* create key value data */
+    keyData = xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey(priv_key);
+    if(keyData == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSCreateKeyDataAndAdoptPrivKey",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    priv_key = NULL; /* owned by keyData now */
+
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeySetValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "data=%s",
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        goto done;
+    }
+    keyData = NULL; /* owned by key now */
+
+    /* success!!! */
+    res = key;
+    key = NULL;
+
+done:
+    if(cert != NULL) {
+        gnutls_x509_crt_deinit(cert);
+    }
+    if(priv_key != NULL) {
+        gnutls_x509_privkey_deinit(priv_key);
+    }
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(x509Data != NULL) {
+        xmlSecKeyDataDestroy(x509Data);
+    }
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
+    xmlSecPtrListFinalize(&certsList);
+    return(res);
 }
 
 /**
@@ -422,19 +634,48 @@ xmlSecGnuTLSAppKeysMngrCertLoadMemory(xmlSecKeysMngrPtr mngr,
                                       const xmlSecByte* data,
                                       xmlSecSize dataSize,
                                       xmlSecKeyDataFormat format,
-                                      xmlSecKeyDataType type ATTRIBUTE_UNUSED) {
+                                      xmlSecKeyDataType type) {
+    xmlSecKeyDataStorePtr x509Store;
+    gnutls_x509_crt_t cert;
+    int ret;
+
     xmlSecAssert2(mngr != NULL, -1);
     xmlSecAssert2(data != NULL, -1);
     xmlSecAssert2(dataSize > 0, -1);
     xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, -1);
 
-    /* TODO */
-    xmlSecError(XMLSEC_ERRORS_HERE,
-                NULL,
-                "xmlSecGnuTLSAppKeysMngrCertLoadMemory",
-                XMLSEC_ERRORS_R_NOT_IMPLEMENTED,
-                XMLSEC_ERRORS_NO_MESSAGE);
-    return(-1);
+    x509Store = xmlSecKeysMngrGetDataStore(mngr, xmlSecGnuTLSX509StoreId);
+    if(x509Store == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeysMngrGetDataStore",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "xmlSecGnuTLSX509StoreId");
+        return(-1);
+    }
+
+    cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
+    if(cert == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CertRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    ret = xmlSecGnuTLSX509StoreAdoptCert(x509Store, cert, type);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509StoreAdoptCert",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        gnutls_x509_crt_deinit(cert);
+        return(-1);
+    }
+
+    return(0);
 }
 
 #endif /* XMLSEC_NO_X509 */

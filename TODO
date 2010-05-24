@@ -68,18 +68,16 @@ aleksey-xmldsig-01/enveloped-gost
 * xmlsec-gnutls (May 24, 2010 using GnuTLS)
 -------------------------------------------------
 
-** Skipped tests due to missing transforms: RSA, DSA, RSA PKCS/OAEP, GOST
+** Skipped tests due to missing transforms: RSA PKCS/OAEP, GOST
 
 aleksey-xmldsig-01/enveloping-sha224-hmac-sha224
 aleksey-xmldsig-01/enveloping-sha224-hmac-sha224-64
 aleksey-xmldsig-01/enveloping-sha224-rsa-sha224
-aleksey-xmldsig-01/enveloped-gost
-
-aleksey-xmldsig-01/enveloping-expired-cert
-phaos-xmldsig-three/signature-rsa-manifest-x509-data-crl
-
 merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5
 merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
+aleksey-xmldsig-01/enveloped-gost
+phaos-xmldsig-three/signature-rsa-manifest-x509-data-crl
+
 01-phaos-xmlenc-3/enc-element-3des-kt-rsa1_5
 01-phaos-xmlenc-3/enc-element-3des-kt-rsa_oaep_sha1
 01-phaos-xmlenc-3/enc-element-aes128-kt-rsa1_5
@@ -90,6 +88,7 @@ merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p
 01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
 
 ** Failed tests due to no support for CRLs in XML document
+
 merlin-xmldsig-twenty-three/signature-x509-crt-crl
 
 -------------------------------------------------

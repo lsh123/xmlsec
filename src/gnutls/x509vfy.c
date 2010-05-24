@@ -140,6 +140,65 @@ xmlSecGnuTLSX509StoreFindCert(xmlSecKeyDataStorePtr store,
     return(res);
 }
 
+static int
+xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
+                          xmlSecSize cert_list_length,
+                          time_t ts)
+{
+    time_t notValidBefore, notValidAfter;
+    xmlSecSize ii;
+
+    xmlSecAssert2(cert_list != NULL, -1);
+
+    for(ii = 0; ii < cert_list_length; ++ii) {
+        const gnutls_x509_crt_t cert = cert_list[ii];
+        if(cert == NULL) {
+            continue;
+        }
+
+        /* get expiration times */
+        notValidBefore = gnutls_x509_crt_get_activation_time(cert);
+        if(notValidBefore == (time_t)-1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gnutls_x509_crt_get_activation_time",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+        notValidAfter = gnutls_x509_crt_get_expiration_time(cert);
+        if(notValidAfter == (time_t)-1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gnutls_x509_crt_get_expiration_time",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+       }
+
+        /* check */
+        if(ts < notValidBefore) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(0);
+        }
+        if(ts > notValidAfter) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        NULL,
+                        XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(0);
+        }
+    }
+
+    /* GOOD! */
+    return(1);
+}
+
 /**
  * xmlSecGnuTLSX509StoreVerify:
  * @store:              the pointer to X509 key data store klass.
@@ -161,7 +220,10 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
     xmlSecSize cert_list_length;
     gnutls_x509_crt_t * ca_list = NULL;
     xmlSecSize ca_list_length;
+    time_t verification_time;
+    unsigned int flags = 0;
     xmlSecSize ii;
+    int ret;
     int err;
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
@@ -214,6 +276,13 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         }
     }
 
+    /* gnutls doesn't allow to specify "verification" timestamp so
+       we have to do it ourselves */
+    verification_time = (keyInfoCtx->certsVerificationTime > 0) ?
+                        keyInfoCtx->certsVerificationTime :
+                        time(0);
+    flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+
     /* We are going to build all possible cert chains and try to verify them */
     for(ii = 0; (ii < certs_size) && (res == NULL); ++ii) {
         gnutls_x509_crt_t cert, cert2;
@@ -258,45 +327,37 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                 cert_list, (int)cert_list_cur_length, /* certs chain */
                 ca_list, (int)ca_list_length, /* trusted cas */
                 NULL, 0, /* crls */
-                0, /* flags */
+                flags, /* flags */
                 &verify);
-        if(err == GNUTLS_E_SUCCESS) {
-            /* TODO: check the timestamp */
-            res = cert;
-        } else {
+        if(err != GNUTLS_E_SUCCESS) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         "gnutls_x509_crt_list_verify",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_GNUTLS_REPORT_ERROR(err));
             /* don't stop, continue! */
+            continue;
         }
-    }
 
-    /*
-    for(ii = 0; ii < certs.size; ++ii) {
-        cert = certs[ii];
-        if(find(certs, where issuer = cert.subj)) {
-            continue; // this is not the "leaf" of a certs chain!
+        /* gnutls doesn't allow to specify "verification" timestamp so
+           we have to do it ourselves */
+        ret = xmlSecGnuTLSX509CheckTime(cert_list, cert_list_cur_length, verification_time);
+        if(ret != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "Time verification failed");
+            /* don't stop, continue! */
+            continue;
         }
-        // build chain
-        for(cert2 = cert; ; ) {
-            put cert2 into certsChain;
-            cert2 = find(certs, where subject = cert2.issuer);
-            if(cert2 == NULL) {
-                cert2 = find(untrusted certs from store, where subject = cert2.issuer);
-            }
-        }
-        if(gnutls_x509_crt_list_verify(certsChain, trusted certs from store)) {
-            // we found it!
-            cert is the key cert;
 
-            // manually check certs time if specified 
-        }
+        /* DONE! */
+        res = cert;
     }
-    */
 
 done:
+    /* cleanup */
     if(ca_list != NULL) {
         xmlFree(ca_list);
     }
@@ -305,181 +366,6 @@ done:
     }
 
     return(res);
-
-#ifdef TODO
-    STACK_OF(X509)* certs2 = NULL;
-    X509 * res = NULL;
-    X509 * cert;
-    X509 * err_cert = NULL;
-    char buf[256];
-    int err = 0, depth;
-    int i;
-    int ret;
-
-    /* dup certs */
-    certs2 = sk_X509_dup(certs);
-    if(certs2 == NULL) {
-        xmlSecError(XMLSEC_ERRORS_HERE,
-                    xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                    "sk_X509_dup",
-                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                    XMLSEC_ERRORS_NO_MESSAGE);
-        goto done;
-    }
-
-    /* add untrusted certs from the store */
-    for(i = 0; i < sk_X509_num(ctx->certsUntrusted); ++i) {
-        ret = sk_X509_push(certs2, sk_X509_value(ctx->certsUntrusted, i));
-        if(ret < 1) {
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        "sk_X509_push",
-                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                        XMLSEC_ERRORS_NO_MESSAGE);
-            goto done;
-        }
-    }
-
-    /* TODO: remove all revoked certs */
-
-    /* get one cert after another and try to verify */
-    for(i = 0; i < sk_X509_num(certs2); ++i) {
-        cert = sk_X509_value(certs2, i);
-        if(xmlSecGnuTLSX509FindNextChainCert(certs2, cert) == NULL) {
-            X509_STORE_CTX xsc;
-
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-            X509_VERIFY_PARAM * vpm = NULL;
-            unsigned long vpm_flags = 0;
-
-            vpm = X509_VERIFY_PARAM_new();
-            if(vpm == NULL) {
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "X509_VERIFY_PARAM_new",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            XMLSEC_ERRORS_NO_MESSAGE);
-                goto done;
-            }
-            vpm_flags = vpm->flags;
-/*
-            vpm_flags &= (~X509_V_FLAG_X509_STRICT);
-*/
-
-            X509_VERIFY_PARAM_set_depth(vpm, 9);
-            X509_VERIFY_PARAM_set_flags(vpm, vpm_flags);
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
-
-
-            X509_STORE_CTX_init (&xsc, ctx->xst, cert, certs2);
-
-            if(keyInfoCtx->certsVerificationTime > 0) {
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-                vpm_flags |= X509_V_FLAG_USE_CHECK_TIME;
-                X509_VERIFY_PARAM_set_time(vpm, keyInfoCtx->certsVerificationTime);
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
-                X509_STORE_CTX_set_time(&xsc, 0, keyInfoCtx->certsVerificationTime);
-            }
-
-#if !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097)
-            X509_STORE_CTX_set0_param(&xsc, vpm);
-#endif /* !defined(XMLSEC_OPENSSL_096) && !defined(XMLSEC_OPENSSL_097) */
-
-
-            ret         = X509_verify_cert(&xsc);
-            err_cert    = X509_STORE_CTX_get_current_cert(&xsc);
-            err         = X509_STORE_CTX_get_error(&xsc);
-            depth       = X509_STORE_CTX_get_error_depth(&xsc);
-
-            X509_STORE_CTX_cleanup (&xsc);
-
-            if(ret == 1) {
-                res = cert;
-                goto done;
-            } else if(ret < 0) {
-                const char* err_msg;
-
-                buf[0] = '\0';
-                X509_NAME_oneline(X509_get_subject_name(err_cert), buf, sizeof buf);
-                err_msg = X509_verify_cert_error_string(err);
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "X509_verify_cert",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "subj=%s;err=%d;msg=%s",
-                            xmlSecErrorsSafeString(buf),
-                            err,
-                            xmlSecErrorsSafeString(err_msg));
-                goto done;
-            } else if(ret == 0) {
-                const char* err_msg;
-
-                buf[0] = '\0';
-                X509_NAME_oneline(X509_get_subject_name(err_cert), buf, sizeof buf);
-                err_msg = X509_verify_cert_error_string(err);
-                xmlSecError(XMLSEC_ERRORS_HERE,
-                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                            "X509_verify_cert",
-                            XMLSEC_ERRORS_R_CRYPTO_FAILED,
-                            "subj=%s;err=%d;msg=%s",
-                            xmlSecErrorsSafeString(buf),
-                            err,
-                            xmlSecErrorsSafeString(err_msg));
-            }
-        }
-    }
-
-    /* if we came here then we found nothing. do we have any error? */
-    if((err != 0) && (err_cert != NULL)) {
-        const char* err_msg;
-
-        err_msg = X509_verify_cert_error_string(err);
-        switch (err) {
-        case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT:
-            X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, sizeof buf);
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_ISSUER_FAILED,
-                        "err=%d;msg=%s;issuer=%s",
-                        err,
-                        xmlSecErrorsSafeString(err_msg),
-                        xmlSecErrorsSafeString(buf));
-            break;
-        case X509_V_ERR_CERT_NOT_YET_VALID:
-        case X509_V_ERR_ERROR_IN_CERT_NOT_BEFORE_FIELD:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_NOT_YET_VALID,
-                        "err=%d;msg=%s", err,
-                        xmlSecErrorsSafeString(err_msg));
-            break;
-        case X509_V_ERR_CERT_HAS_EXPIRED:
-        case X509_V_ERR_ERROR_IN_CERT_NOT_AFTER_FIELD:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_HAS_EXPIRED,
-                        "err=%d;msg=%s", err,
-                        xmlSecErrorsSafeString(err_msg));
-            break;
-        default:
-            xmlSecError(XMLSEC_ERRORS_HERE,
-                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
-                        NULL,
-                        XMLSEC_ERRORS_R_CERT_VERIFY_FAILED,
-                        "err=%d;msg=%s", err,
-                        xmlSecErrorsSafeString(err_msg));
-        }
-    }
-
-done:
-    if(certs2 != NULL) {
-        sk_X509_free(certs2);
-    }
-    return(res);
-#endif /* TODO */
 }
 
 /**

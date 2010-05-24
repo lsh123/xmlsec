@@ -29,6 +29,11 @@
 #include <xmlsec/gcrypt/crypto.h>
 #include <xmlsec/gcrypt/app.h>
 
+static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoad          (const char *filename,
+                                                                 xmlSecKeyDataFormat format);
+static xmlSecKeyPtr     xmlSecGnuTLSAppKeyFromCertLoadMemory    (const xmlSecByte* data,
+                                                                 xmlSecSize dataSize,
+                                                                 xmlSecKeyDataFormat format);
 
 /**
  * xmlSecGnuTLSAppInit:
@@ -81,7 +86,7 @@ xmlSecGnuTLSAppShutdown(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file (not implemented yet).
+ * Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -99,6 +104,10 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
 #ifndef XMLSEC_NO_X509
     case xmlSecKeyDataFormatPkcs12:
         key = xmlSecGnuTLSAppPkcs12Load(filename, pwd, pwdCallback, pwdCallbackCtx);
+        break;
+    case xmlSecKeyDataFormatCertPem:
+    case xmlSecKeyDataFormatCertDer:
+        key = xmlSecGnuTLSAppKeyFromCertLoad(filename, format);
         break;
 #endif /* XMLSEC_NO_X509 */
     default:
@@ -118,7 +127,7 @@ xmlSecGnuTLSAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the memory buffer (not implemented yet).
+ * Reads key from the memory buffer.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -136,6 +145,10 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
     case xmlSecKeyDataFormatPkcs12:
         key = xmlSecGnuTLSAppPkcs12LoadMemory(data, dataSize, pwd, pwdCallback, pwdCallbackCtx);
         break;
+    case xmlSecKeyDataFormatCertPem:
+    case xmlSecKeyDataFormatCertDer:
+        key = xmlSecGnuTLSAppKeyFromCertLoadMemory(data, dataSize, format);
+        break;
 #endif /* XMLSEC_NO_X509 */
     default:
         key = xmlSecGCryptAppKeyLoadMemory(data, dataSize, format, pwd, pwdCallback, pwdCallbackCtx);
@@ -151,8 +164,7 @@ xmlSecGnuTLSAppKeyLoadMemory(const xmlSecByte* data, xmlSecSize dataSize,
  * @filename:           the certificate filename.
  * @format:             the certificate file format.
  *
- * Reads the certificate from $@filename and adds it to key
- * (not implemented yet).
+ * Reads the certificate from $@filename and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -215,7 +227,7 @@ xmlSecGnuTLSAppKeyCertLoad(xmlSecKeyPtr key, const char* filename,
  * @dataSize:           the certificate binary data size.
  * @format:             the certificate file format.
  *
- * Reads the certificate from memory buffer and adds it to key (not implemented yet).
+ * Reads the certificate from memory buffer and adds it to key.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -274,8 +286,7 @@ xmlSecGnuTLSAppKeyCertLoadMemory(xmlSecKeyPtr key,
  * @pwdCallback:        the password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key and all associated certificates from the PKCS12 file
- * (not implemented yet).
+ * Reads key and all associated certificates from the PKCS12 file.
  * For uniformity, call xmlSecGnuTLSAppKeyLoad instead of this function. Pass
  * in format=xmlSecKeyDataFormatPkcs12.
  *
@@ -343,7 +354,7 @@ xmlSecGnuTLSAppPkcs12Load(const char *filename,
  *
  * Reads key and all associated certificates from the PKCS12 data in memory buffer.
  * For uniformity, call xmlSecGnuTLSAppKeyLoadMemory instead of this function. Pass
- * in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).
+ * in format=xmlSecKeyDataFormatPkcs12.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -510,6 +521,157 @@ done:
     return(res);
 }
 
+static xmlSecKeyPtr
+xmlSecGnuTLSAppKeyFromCertLoad(const char *filename,
+                               xmlSecKeyDataFormat format)
+{
+    xmlSecKeyPtr key;
+    xmlSecBuffer buffer;
+    int ret;
+
+    xmlSecAssert2(filename != NULL, NULL);
+
+    ret = xmlSecBufferInitialize(&buffer, 4*1024);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferInitialize",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+
+    ret = xmlSecBufferReadFile(&buffer, filename);
+    if((ret < 0) || (xmlSecBufferGetData(&buffer) == NULL) || (xmlSecBufferGetSize(&buffer) <= 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBufferReadFile",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s", 
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    key = xmlSecGnuTLSAppKeyFromCertLoadMemory(
+                    xmlSecBufferGetData(&buffer),
+                    xmlSecBufferGetSize(&buffer),
+                    format);
+    if(key == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSAppKeyFromCertLoadMemory",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "filename=%s",
+                    xmlSecErrorsSafeString(filename));
+        xmlSecBufferFinalize(&buffer);
+        return(NULL);
+    }
+
+    /* cleanup */
+    xmlSecBufferFinalize(&buffer);
+    return(key);
+}
+
+static xmlSecKeyPtr
+xmlSecGnuTLSAppKeyFromCertLoadMemory(const xmlSecByte* data,
+                                     xmlSecSize dataSize,
+                                     xmlSecKeyDataFormat format)
+{
+    xmlSecKeyPtr key = NULL;
+    xmlSecKeyDataPtr keyData = NULL;
+    xmlSecKeyDataPtr x509Data = NULL;
+    gnutls_x509_crt_t cert = NULL;
+    xmlSecKeyPtr res = NULL;
+    int ret;
+
+    xmlSecAssert2(data != NULL, NULL);
+    xmlSecAssert2(dataSize > 0, NULL);
+    xmlSecAssert2(format != xmlSecKeyDataFormatUnknown, NULL);
+
+    /* read cert */
+    cert = xmlSecGnuTLSX509CertRead(data, dataSize, format);
+    if(cert == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CertRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* create key */
+    key = xmlSecKeyCreate();
+    if(key == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyCreate",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    /* create key value data */
+    keyData = xmlSecGnuTLSX509CertGetKey(cert);
+    if(keyData == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CertGetKey",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    ret = xmlSecKeySetValue(key, keyData);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeySetValue",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    "data=%s",
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(x509Data)));
+        goto done;
+    }
+    keyData = NULL; /* owned by key now */
+
+    /* create x509 data */
+    x509Data = xmlSecKeyEnsureData(key, xmlSecGnuTLSKeyDataX509Id);
+    if(x509Data == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecKeyEnsureData",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    ret = xmlSecGnuTLSKeyDataX509AdoptKeyCert(x509Data, cert);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSKeyDataX509AdoptKeyCert",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    cert = NULL; /* owned by x509Data now */
+
+    /* success */
+    res = key;
+    key = NULL;
+
+done:
+    if(cert != NULL) {
+        gnutls_x509_crt_deinit(cert);
+    }
+    if(keyData != NULL) {
+        xmlSecKeyDataDestroy(keyData);
+    }
+    if(key != NULL) {
+        xmlSecKeyDestroy(key);
+    }
+    return(res);
+}
+
 /**
  * xmlSecGnuTLSAppKeysMngrCertLoad:
  * @mngr:               the keys manager.
@@ -519,7 +681,7 @@ done:
  *                      trusted or not.
  *
  * Reads cert from @filename and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */
@@ -587,7 +749,7 @@ xmlSecGnuTLSAppKeysMngrCertLoad(xmlSecKeysMngrPtr mngr,
  * @type:               the flag that indicates is the certificate trusted or not.
  *
  * Reads cert from binary buffer @data and adds to the list of trusted or known
- * untrusted certs in @store (not implemented yet).
+ * untrusted certs in @store.
  *
  * Returns: 0 on success or a negative value otherwise.
  */

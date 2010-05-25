@@ -202,7 +202,8 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
 /**
  * xmlSecGnuTLSX509StoreVerify:
  * @store:              the pointer to X509 key data store klass.
- * @certs:              the untrusted certificates stack.
+ * @certs:              the untrusted certificates.
+ * @crls:               the crls.
  * @keyInfoCtx:         the pointer to <dsig:KeyInfo/> element processing context.
  *
  * Verifies @certs list.
@@ -212,12 +213,15 @@ xmlSecGnuTLSX509CheckTime(const gnutls_x509_crt_t * cert_list,
 gnutls_x509_crt_t
 xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                             xmlSecPtrListPtr certs,
+                            xmlSecPtrListPtr crls,
                             const xmlSecKeyInfoCtx* keyInfoCtx) {
     xmlSecGnuTLSX509StoreCtxPtr ctx;
     gnutls_x509_crt_t res = NULL;
     xmlSecSize certs_size = 0;
     gnutls_x509_crt_t * cert_list = NULL;
     xmlSecSize cert_list_length;
+    gnutls_x509_crl_t * crl_list = NULL;
+    xmlSecSize crl_list_length;
     gnutls_x509_crt_t * ca_list = NULL;
     xmlSecSize ca_list_length;
     time_t verification_time;
@@ -228,6 +232,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
 
     xmlSecAssert2(xmlSecKeyDataStoreCheckId(store, xmlSecGnuTLSX509StoreId), NULL);
     xmlSecAssert2(certs != NULL, NULL);
+    xmlSecAssert2(crls != NULL, NULL);
     xmlSecAssert2(keyInfoCtx != NULL, NULL);
 
     certs_size = xmlSecPtrListGetSize(certs);
@@ -252,6 +257,30 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
             goto done;
         }
     }
+    crl_list_length = xmlSecPtrListGetSize(crls);
+    if(crl_list_length > 0) {
+        crl_list = (gnutls_x509_crl_t *)xmlMalloc(sizeof(gnutls_x509_crl_t) * crl_list_length);
+        if(crl_list == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                        "xmlMalloc",
+                        XMLSEC_ERRORS_R_MALLOC_FAILED,
+                        "size=%d", (int)(sizeof(gnutls_x509_crl_t) * crl_list_length));
+            goto done;
+        }
+        for(ii = 0; ii < crl_list_length; ++ii) {
+            crl_list[ii] = xmlSecPtrListGetItem(crls, ii);
+            if(crl_list[ii] == NULL) {
+                xmlSecError(XMLSEC_ERRORS_HERE,
+                            xmlSecErrorsSafeString(xmlSecKeyDataStoreGetName(store)),
+                            "xmlSecPtrListGetItem(crls)",
+                            XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                            XMLSEC_ERRORS_NO_MESSAGE);
+                goto done;
+            }
+        }
+    }
+
     ca_list_length = xmlSecPtrListGetSize(&(ctx->certsTrusted));
     if(ca_list_length > 0) {
         ca_list = (gnutls_x509_crt_t *)xmlMalloc(sizeof(gnutls_x509_crt_t) * ca_list_length);
@@ -282,6 +311,11 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                         keyInfoCtx->certsVerificationTime :
                         time(0);
     flags |= GNUTLS_VERIFY_DISABLE_TIME_CHECKS;
+
+    if((keyInfoCtx->flags & XMLSEC_KEYINFO_FLAGS_X509DATA_SKIP_STRICT_CHECKS) != 0) {
+        flags |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD2;
+        flags |= GNUTLS_VERIFY_ALLOW_SIGN_RSA_MD5;
+    }
 
     /* We are going to build all possible cert chains and try to verify them */
     for(ii = 0; (ii < certs_size) && (res == NULL); ++ii) {
@@ -326,7 +360,7 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
         err = gnutls_x509_crt_list_verify(
                 cert_list, (int)cert_list_cur_length, /* certs chain */
                 ca_list, (int)ca_list_length, /* trusted cas */
-                NULL, 0, /* crls */
+                crl_list, (int)crl_list_length, /* crls */
                 flags, /* flags */
                 &verify);
         if(err != GNUTLS_E_SUCCESS) {
@@ -335,6 +369,14 @@ xmlSecGnuTLSX509StoreVerify(xmlSecKeyDataStorePtr store,
                         "gnutls_x509_crt_list_verify",
                         XMLSEC_ERRORS_R_CRYPTO_FAILED,
                         XMLSEC_GNUTLS_REPORT_ERROR(err));
+            /* don't stop, continue! */
+            continue;
+        } else if(verify != 0){
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "gnutls_x509_crt_list_verify",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        "Verification failed: verify=%u", verify);
             /* don't stop, continue! */
             continue;
         }
@@ -360,6 +402,9 @@ done:
     /* cleanup */
     if(ca_list != NULL) {
         xmlFree(ca_list);
+    }
+    if(crl_list != NULL) {
+        xmlFree(crl_list);
     }
     if(cert_list != NULL) {
         xmlFree(cert_list);

@@ -37,14 +37,24 @@ extern "C" {
         xmlSecGnuTLSKeyDataX509GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecGnuTLSKeyDataX509GetKlass         (void);
 
+
 XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSKeyDataX509GetKeyCert       (xmlSecKeyDataPtr data);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataX509AdoptKeyCert     (xmlSecKeyDataPtr data,
                                                                                  gnutls_x509_crt_t cert);
+
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataX509AdoptCert        (xmlSecKeyDataPtr data,
                                                                                  gnutls_x509_crt_t cert);
 XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSKeyDataX509GetCert          (xmlSecKeyDataPtr data,
                                                                                  xmlSecSize pos);
 XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecGnuTLSKeyDataX509GetCertsSize     (xmlSecKeyDataPtr data);
+
+XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSKeyDataX509AdoptCrl         (xmlSecKeyDataPtr data,
+                                                                                 gnutls_x509_crl_t crl);
+XMLSEC_CRYPTO_EXPORT gnutls_x509_crl_t  xmlSecGnuTLSKeyDataX509GetCrl           (xmlSecKeyDataPtr data,
+                                                                                 xmlSecSize pos);
+XMLSEC_CRYPTO_EXPORT xmlSecSize         xmlSecGnuTLSKeyDataX509GetCrlsSize      (xmlSecKeyDataPtr data);
+
+
 XMLSEC_CRYPTO_EXPORT xmlSecKeyDataPtr   xmlSecGnuTLSX509CertGetKey              (gnutls_x509_crt_t cert);
 
 /**************************************************************************
@@ -82,6 +92,7 @@ XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreFindCert   (const x
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT gnutls_x509_crt_t  xmlSecGnuTLSX509StoreVerify     (xmlSecKeyDataStorePtr store,
                                                                          xmlSecPtrListPtr certs,
+                                                                         xmlSecPtrListPtr crls,
                                                                          const xmlSecKeyInfoCtx* keyInfoCtx);
 XMLSEC_CRYPTO_EXPORT int                xmlSecGnuTLSX509StoreAdoptCert  (xmlSecKeyDataStorePtr store,
                                                                          gnutls_x509_crt_t cert,

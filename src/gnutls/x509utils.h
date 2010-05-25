@@ -31,10 +31,18 @@ extern "C" {
         xmlSecGnuTLSX509CrtListGetKlass()
 xmlSecPtrListId         xmlSecGnuTLSX509CrtListGetKlass         (void);
 
+/**************************************************************************
+ *
+ * X509 crls list
+ *
+ *****************************************************************************/
+#define xmlSecGnuTLSX509CrlListId   \
+        xmlSecGnuTLSX509CrlListGetKlass()
+xmlSecPtrListId         xmlSecGnuTLSX509CrlListGetKlass         (void);
 
 /*************************************************************************
  *
- * x509 utils/helpers
+ * x509 certs utils/helpers
  *
  ************************************************************************/
 gnutls_x509_crt_t       xmlSecGnuTLSX509CertDup                 (gnutls_x509_crt_t src);
@@ -52,6 +60,30 @@ void                    xmlSecGnuTLSX509CertDebugDump           (gnutls_x509_crt
                                                                  FILE* output);
 void                    xmlSecGnuTLSX509CertDebugXmlDump        (gnutls_x509_crt_t cert,
                                                                  FILE* output);
+
+/*************************************************************************
+ *
+ * x509 crls utils/helpers
+ *
+ ************************************************************************/
+gnutls_x509_crl_t       xmlSecGnuTLSX509CrlDup                  (gnutls_x509_crl_t src);
+xmlChar *               xmlSecGnuTLSX509CrLGetIssuerDN          (gnutls_x509_crl_t crl);
+gnutls_x509_crl_t       xmlSecGnuTLSX509CrlRead                 (const xmlSecByte* buf,
+                                                                 xmlSecSize size,
+                                                                 xmlSecKeyDataFormat format);
+gnutls_x509_crl_t       xmlSecGnuTLSX509CrlBase64DerRead        (xmlChar* buf);
+xmlChar*                xmlSecGnuTLSX509CrlBase64DerWrite       (gnutls_x509_crl_t crl,
+                                                                 int base64LineWrap);
+void                    xmlSecGnuTLSX509CrlDebugDump            (gnutls_x509_crl_t crl,
+                                                                 FILE* output);
+void                    xmlSecGnuTLSX509CrlDebugXmlDump         (gnutls_x509_crl_t crl,
+                                                                 FILE* output);
+
+/*************************************************************************
+ *
+ * Misc. utils/helpers
+ *
+ ************************************************************************/
 xmlChar*                xmlSecGnuTLSASN1IntegerWrite            (const unsigned char * data, 
                                                                  size_t len);
 

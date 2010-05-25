@@ -100,9 +100,65 @@ xmlSecGnuTLSX509CrtListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
     xmlSecGnuTLSX509CertDebugXmlDump((gnutls_x509_crt_t)ptr, output);
 }
 
+/**************************************************************************
+ *
+ * X509 crl list
+ *
+ *****************************************************************************/
+static xmlSecPtr        xmlSecGnuTLSX509CrlListDuplicateItem    (xmlSecPtr ptr);
+static void             xmlSecGnuTLSX509CrlListDestroyItem      (xmlSecPtr ptr);
+static void             xmlSecGnuTLSX509CrlListDebugDumpItem    (xmlSecPtr ptr,
+                                                                 FILE* output);
+static void             xmlSecGnuTLSX509CrlListDebugXmlDumpItem (xmlSecPtr ptr,
+                                                                 FILE* output);
+
+static xmlSecPtrListKlass xmlSecGnuTLSX509CrlListKlass = {
+    BAD_CAST "gnutls-x509-crl-list",
+    xmlSecGnuTLSX509CrlListDuplicateItem,       /* xmlSecPtrDuplicateItemMethod duplicateItem; */
+    xmlSecGnuTLSX509CrlListDestroyItem,         /* xmlSecPtrDestroyItemMethod destroyItem; */
+    xmlSecGnuTLSX509CrlListDebugDumpItem,       /* xmlSecPtrDebugDumpItemMethod debugDumpItem; */
+    xmlSecGnuTLSX509CrlListDebugXmlDumpItem,    /* xmlSecPtrDebugDumpItemMethod debugXmlDumpItem; */
+};
+
+xmlSecPtrListId
+xmlSecGnuTLSX509CrlListGetKlass(void) {
+    return(&xmlSecGnuTLSX509CrlListKlass);
+}
+
+static xmlSecPtr
+xmlSecGnuTLSX509CrlListDuplicateItem(xmlSecPtr ptr) {
+    xmlSecAssert2(ptr != NULL, NULL);
+
+    return xmlSecGnuTLSX509CrlDup((gnutls_x509_crl_t)ptr);
+}
+
+static void
+xmlSecGnuTLSX509CrlListDestroyItem(xmlSecPtr ptr) {
+    xmlSecAssert(ptr != NULL);
+
+    gnutls_x509_crl_deinit((gnutls_x509_crl_t)ptr);
+}
+
+static void
+xmlSecGnuTLSX509CrlListDebugDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecAssert(ptr != NULL);
+    xmlSecAssert(output != NULL);
+
+    xmlSecGnuTLSX509CrlDebugDump((gnutls_x509_crl_t)ptr, output);
+}
+
+
+static void
+xmlSecGnuTLSX509CrlListDebugXmlDumpItem(xmlSecPtr ptr, FILE* output) {
+    xmlSecAssert(ptr != NULL);
+    xmlSecAssert(output != NULL);
+
+    xmlSecGnuTLSX509CrlDebugXmlDump((gnutls_x509_crl_t)ptr, output);
+}
+
 /*************************************************************************
  *
- * Utils/helpers
+ * x509 certs utils/helpers
  *
  ************************************************************************/
 
@@ -555,6 +611,266 @@ xmlSecGnuTLSX509CertDebugXmlDump(gnutls_x509_crt_t cert, FILE* output) {
     }
 }
 
+/*************************************************************************
+ *
+ * x509 crls utils/helpers
+ *
+ ************************************************************************/
+
+/* HACK: gnutls doesn't have crl duplicate function, so we simply 
+ write crl out and then read it back */
+gnutls_x509_crl_t
+xmlSecGnuTLSX509CrlDup(gnutls_x509_crl_t src) {
+    xmlChar * buf = NULL;
+    gnutls_x509_crl_t res = NULL;
+
+    xmlSecAssert2(src != NULL, NULL);
+
+    buf = xmlSecGnuTLSX509CrlBase64DerWrite(src, 0);
+    if(buf == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CrlBase64DerWrite",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return (NULL);
+    }
+
+    res = xmlSecGnuTLSX509CrlBase64DerRead(buf);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecGnuTLSX509CrlBase64DerRead",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(buf);
+        return (NULL);
+    }
+
+    /* done */
+    xmlFree(buf);
+    return (res);
+}
+
+xmlChar *
+xmlSecGnuTLSX509CrlGetIssuerDN(gnutls_x509_crl_t crl) {
+    char* buf = NULL;
+    size_t bufSize = 0;
+    int err;
+
+    xmlSecAssert2(crl != NULL, NULL);
+
+    /* get issuer size */
+    err = gnutls_x509_crl_get_issuer_dn(crl, NULL, &bufSize);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_crl_get_issuer_dn",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        return(NULL);
+    }
+
+    /* allocate buffer */
+    buf = (char *)xmlMalloc(bufSize + 1);
+    if(buf == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlMalloc",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", (int)bufSize);
+        return(NULL);
+    }
+
+    /* finally write it out */
+    err = gnutls_x509_crl_get_issuer_dn(crl, buf, &bufSize);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_crl_get_issuer_dn",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlFree(buf);
+        return(NULL);
+    }
+
+    /* done */
+    return(BAD_CAST buf);
+}
+
+gnutls_x509_crl_t
+xmlSecGnuTLSX509CrlBase64DerRead(xmlChar* buf) {
+    int ret;
+
+    xmlSecAssert2(buf != NULL, NULL);
+
+    /* usual trick with base64 decoding "in-place" */
+    ret = xmlSecBase64Decode(buf, (xmlSecByte*)buf, xmlStrlen(buf));
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBase64Decode",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(NULL);
+    }
+
+    return(xmlSecGnuTLSX509CrlRead((const xmlSecByte*)buf, ret, xmlSecKeyDataFormatCertDer));
+}
+
+gnutls_x509_crl_t
+xmlSecGnuTLSX509CrlRead(const xmlSecByte* buf, xmlSecSize size, xmlSecKeyDataFormat format) {
+    gnutls_x509_crl_t crl = NULL;
+    gnutls_x509_crt_fmt_t fmt;
+    gnutls_datum_t data;
+    int err;
+
+    xmlSecAssert2(buf != NULL, NULL);
+    xmlSecAssert2(size > 0, NULL);
+
+    /* figure out format */
+    switch(format) {
+    case xmlSecKeyDataFormatPem:
+    case xmlSecKeyDataFormatCertPem:
+        fmt = GNUTLS_X509_FMT_PEM;
+        break;
+    case xmlSecKeyDataFormatDer:
+    case xmlSecKeyDataFormatCertDer:
+        fmt = GNUTLS_X509_FMT_DER;
+        break;
+    default:
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_FORMAT,
+                    "format=%d", format);
+        return(NULL);
+    }
+
+    /* read crl */
+    err = gnutls_x509_crl_init(&crl);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_crl_init",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        return(NULL);
+    }
+
+    data.data = (unsigned char*)buf;
+    data.size = size;
+    err = gnutls_x509_crl_import(crl, &data, fmt);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_crl_import",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        gnutls_x509_crl_deinit(crl);
+        return(NULL);
+    }
+
+    return(crl);
+}
+
+xmlChar*
+xmlSecGnuTLSX509CrlBase64DerWrite(gnutls_x509_crl_t crl, int base64LineWrap) {
+    xmlChar * res = NULL;
+    xmlSecByte* buf = NULL;
+    size_t bufSize = 0;
+    int err;
+
+    xmlSecAssert2(crl != NULL, NULL);
+
+    /* get size */
+    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, NULL, &bufSize);
+    if((err != GNUTLS_E_SHORT_MEMORY_BUFFER) || (bufSize <= 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        return(NULL);
+    }
+
+    /* allocate buffer */
+    buf = (xmlSecByte *)xmlMalloc(bufSize + 1);
+    if(buf == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlMalloc",
+                    XMLSEC_ERRORS_R_MALLOC_FAILED,
+                    "size=%d", (int)bufSize);
+        return(NULL);
+    }
+
+    /* write it out */
+    err = gnutls_x509_crl_export(crl, GNUTLS_X509_FMT_DER, buf, &bufSize);
+    if(err != GNUTLS_E_SUCCESS) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gnutls_x509_crl_export(GNUTLS_X509_FMT_DER)",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_GNUTLS_REPORT_ERROR(err));
+        xmlFree(buf);
+        return(NULL);
+    }
+
+    /* convert to string */
+    res = xmlSecBase64Encode(buf, bufSize, base64LineWrap);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xmlSecBase64Encode",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        xmlFree(buf);
+        return(NULL);
+    }
+
+    /* done */
+    xmlFree(buf);
+    return(res);
+}
+
+void
+xmlSecGnuTLSX509CrlDebugDump(gnutls_x509_crl_t crl, FILE* output) {
+    xmlChar * buf;
+
+    xmlSecAssert(crl != NULL);
+    xmlSecAssert(output != NULL);
+
+    buf = xmlSecGnuTLSX509CrlGetIssuerDN(crl);
+    if(buf != NULL) {
+        fprintf(output, "==== Issuer Name: %s\n", buf);
+        xmlFree(buf);
+    } else {
+        fprintf(output, "==== Issuer Name: unknown\n");
+    }
+}
+
+void
+xmlSecGnuTLSX509CrlDebugXmlDump(gnutls_x509_crl_t crl, FILE* output) {
+    xmlChar * buf;
+
+    xmlSecAssert(crl != NULL);
+    xmlSecAssert(output != NULL);
+
+    buf = xmlSecGnuTLSX509CrlGetIssuerDN(crl);
+    if(buf != NULL) {
+        fprintf(output, "<IssuerName>%s</IssuerName>\n", buf);
+        xmlFree(buf);
+    } else {
+        fprintf(output, "<IssuerName>unknown</IssuerName>\n");
+    }
+}
+
+/*************************************************************************
+ *
+ * Misc. utils/helpers
+ *
+ ************************************************************************/
 xmlChar*
 xmlSecGnuTLSASN1IntegerWrite(const unsigned char * data, size_t len) {
     xmlChar *res = NULL;
@@ -1366,3 +1682,6 @@ done:
 
 
 #endif /* XMLSEC_NO_X509 */
+
+
+

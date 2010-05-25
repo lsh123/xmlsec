@@ -689,63 +689,63 @@ execDSigTest $res_success \
     "signature-rsa-detached-b64-transform" \
     "base64 sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xpath-transform" \
     "xpath sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform-retrieval-method" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-detached-xslt-transform" \
     "xslt sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-enveloped" \
     "enveloped-signature sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-enveloping" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-cert-chain" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \
     "signature-rsa-manifest-x509-data-cert" \
     "sha1 rsa-sha1" \
     "rsa x509" \
-    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format"
+    "--trusted-$cert_format certs/rsa-ca-cert.$cert_format --X509-skip-strict-checks"
 
 execDSigTest $res_success \
     "phaos-xmldsig-three" \

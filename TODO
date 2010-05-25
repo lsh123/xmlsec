@@ -87,10 +87,6 @@ phaos-xmldsig-three/signature-rsa-manifest-x509-data-crl
 01-phaos-xmlenc-3/enc-content-aes256-kt-rsa1_5
 01-phaos-xmlenc-3/enc-text-aes256-kt-rsa_oaep_sha1
 
-** Failed tests due to no support for CRLs in XML document
-
-merlin-xmldsig-twenty-three/signature-x509-crt-crl
-
 -------------------------------------------------
 * xmlsec-gcrypt (May 09, 2010 using GCrypt)
 -------------------------------------------------

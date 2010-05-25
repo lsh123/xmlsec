@@ -521,7 +521,7 @@ xmlSecGCryptPkSignatureExecute(xmlSecTransformPtr transform, int last, xmlSecTra
  *
  ****************************************************************************/
 static int
-xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
+xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out, xmlSecSize min_size) {
     xmlSecSize outSize;
     size_t written;
     gpg_error_t err;
@@ -545,6 +545,11 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
         return(-1);
     }
 
+    /* add zeros at the beggining (if needed) */
+    if((min_size > 0) && (written < min_size)) {
+        outSize += (min_size - written);
+    }
+
     /* allocate space */
     ret = xmlSecBufferSetMaxSize(out, outSize + written + 1);
     if(ret < 0) {
@@ -556,6 +561,16 @@ xmlSecGCryptAppendMpi(gcry_mpi_t a, xmlSecBufferPtr out) {
         return(-1);
     }
     xmlSecAssert2(xmlSecBufferGetMaxSize(out) > outSize, -1);
+
+    /* add zeros at the beggining (if needed) */
+    if((min_size > 0) && (written < min_size)) {
+        xmlSecSize ii;
+        xmlSecByte * p = xmlSecBufferGetData(out);
+
+        for(ii = 0; ii < (min_size - written); ++ii) {
+            p[outSize - ii - 1] = 0;
+        }
+    }
 
     /* write out */
     written = 0;
@@ -738,7 +753,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
     }
 
     /* write out: r + s */
-    ret = xmlSecGCryptAppendMpi(m_r, out);
+    ret = xmlSecGCryptAppendMpi(m_r, out, 20);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -747,8 +762,8 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
-    xmlSecAssert2(xmlSecBufferGetSize(out), 20);
-    ret = xmlSecGCryptAppendMpi(m_s, out);
+    xmlSecAssert2(xmlSecBufferGetSize(out) == 20, -1);
+    ret = xmlSecGCryptAppendMpi(m_s, out, 20);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -757,7 +772,7 @@ xmlSecGCryptDsaPkSign(int digest ATTRIBUTE_UNUSED, xmlSecKeyDataPtr key_data,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
-    xmlSecAssert2(xmlSecBufferGetSize(out), 40);
+    xmlSecAssert2(xmlSecBufferGetSize(out) == (20 + 20), -1);
 
     /* done */
     res = 0;
@@ -1072,7 +1087,7 @@ xmlSecGCryptRsaPkcs1PkSign(int digest, xmlSecKeyDataPtr key_data,
     }
 
     /* write out */
-    ret = xmlSecGCryptAppendMpi(m_sig, out);
+    ret = xmlSecGCryptAppendMpi(m_sig, out, 0);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,

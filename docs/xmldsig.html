@@ -73,8 +73,7 @@ and get detailed report on what and how was signed. </p>
                   <td valign="top"><b>XMLSec with GnuTLS</b></td>
                   <td valign="top"><b>XMLSec with GCrypt</b></td>
                   <td valign="top"><b>XMLSec with NSS</b></td>
-                  <td valign="top"><b>XMLSec with MSCrypto</b>
-</td>
+                  <td valign="top"><b>XMLSec with MSCrypto</b></td>
 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">Detached Signature</td>
@@ -212,7 +211,8 @@ function (can be used to implement enveloped signature)</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
-<td style="width: 40%;" align="left" valign="top">DSA with SHA1 (DSS) <a href="#dsa-sha1"><sup>(1)</sup></a></td>
+<td style="width: 40%;" align="left" valign="top">DSA with SHA1 (DSS) <a href="#dsa-sha1"><sup>(1)</sup></a>
+</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -230,9 +230,17 @@ function (can be used to implement enveloped signature)</td>
 <tr>
 <td style="width: 40%;" valign="top">X509 support</td>
                   <td valign="top">Y</td>
-                  <td valign="top">N</td>
+                  <td valign="top">Y</td>
                   <td valign="top">N</td>
                   <td valign="top">Y</td>
+                  <td valign="top">Y</td>
+</tr>
+<tr>
+<td style="width: 40%;" valign="top">X509 CRL support</td>
+                  <td valign="top">Y</td>
+                  <td valign="top">Y</td>
+                  <td valign="top">N</td>
+                  <td valign="top">N</td>
                   <td valign="top">Y</td>
 </tr>
 <tr>
@@ -245,7 +253,8 @@ function (can be used to implement enveloped signature)</td>
 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a></td>
+<a href="http://www.w3.org/TR/xml-c14n">Canonical XML 1.0</a>
+</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -254,7 +263,8 @@ function (can be used to implement enveloped signature)</td>
 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a></td>
+<a href="http://www.w3.org/TR/xml-exc-c14n">Exlusive Canonical XML 1.0</a>
+</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -263,7 +273,8 @@ function (can be used to implement enveloped signature)</td>
 </tr>
 <tr>
 <td style="width: 40%;" align="left" valign="top">
-<a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a></td>
+<a href="http://www.w3.org/TR/xml-c14n11/">Canonical XML 1.1</a>
+</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
                   <td valign="top">Y</td>
@@ -588,7 +599,8 @@ Key Wrap 192</td>
                   <td valign="top">N</td>
 </tr>
 </tbody></table>
-<div align="left"><h4 style="text-align: center;">Other algorithms</h4>
+<div align="left">
+<h4 style="text-align: center;">Other algorithms</h4>
             <table style="width: 85%; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2"><tbody>
 <tr>
 <td style="width: 40%;" align="left" valign="top"><b>Features and algorithms</b></td>
@@ -596,7 +608,8 @@ Key Wrap 192</td>
                   <td valign="top"><b>XMLSec with GnuTLS</b></td>
                   <td valign="top"><b>XMLSec with GCrypt</b></td>
                   <td valign="top"><b>XMLSec with NSS</b></td>
-                  <td valign="top"><b>XMLSec with MSCrypto</b> </td>
+                  <td valign="top">
+<b>XMLSec with MSCrypto</b> </td>
 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">GOST94 digests</td>
@@ -604,7 +617,8 @@ Key Wrap 192</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a>
+</td>
 </tr>
 <tr>
 <td style="vertical-align: top; width: 40%;">GOST2001 signatures</td>
@@ -612,7 +626,8 @@ Key Wrap 192</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
                   <td valign="top">N</td>
-                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a></td>
+                  <td valign="top">Y<a href="#gost-mscrypto"><sup>(2)</sup></a>
+</td>
 </tr>
 </tbody></table>
 <br><br><a name="dsa-sha1"></a><sup>(1)</sup> Defining <a href="http://www.w3.org/TR/xmldsig-core/#sec-DSAKeyValue"> DSA key</a>

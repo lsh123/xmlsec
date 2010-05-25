@@ -1,0 +1,337 @@
+<refentry id="xmlsec-gnutls-x509">
+<refmeta>
+<refentrytitle role="top_of_page" id="xmlsec-gnutls-x509.top_of_page">x509</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>
+  XMLSEC-GNUTLS Library
+</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>x509</refname>
+<refpurpose>X509 certificates support implementation for GnuTLS.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="xmlsec-gnutls-x509.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>#define             <link linkend="xmlSecGnuTLSKeyDataX509Id">xmlSecGnuTLSKeyDataX509Id</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGnuTLSKeyDataX509GetKlass">xmlSecGnuTLSKeyDataX509GetKlass</link>     (<parameter><type>void</type></parameter>);
+<link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   <link linkend="xmlSecGnuTLSKeyDataX509GetKeyCert">xmlSecGnuTLSKeyDataX509GetKeyCert</link>   (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGnuTLSKeyDataX509AdoptKeyCert">xmlSecGnuTLSKeyDataX509AdoptKeyCert</link> (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGnuTLSKeyDataX509AdoptCert">xmlSecGnuTLSKeyDataX509AdoptCert</link>    (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>);
+<link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   <link linkend="xmlSecGnuTLSKeyDataX509GetCert">xmlSecGnuTLSKeyDataX509GetCert</link>      (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecGnuTLSKeyDataX509GetCertsSize">xmlSecGnuTLSKeyDataX509GetCertsSize</link> (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGnuTLSKeyDataX509AdoptCrl">xmlSecGnuTLSKeyDataX509AdoptCrl</link>     (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crl-t"><type>gnutls_x509_crl_t</type></link> crl</parameter>);
+<link linkend="gnutls-x509-crl-t"><returnvalue>gnutls_x509_crl_t</returnvalue></link>   <link linkend="xmlSecGnuTLSKeyDataX509GetCrl">xmlSecGnuTLSKeyDataX509GetCrl</link>       (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          <link linkend="xmlSecGnuTLSKeyDataX509GetCrlsSize">xmlSecGnuTLSKeyDataX509GetCrlsSize</link>  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);
+<link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>    <link linkend="xmlSecGnuTLSX509CertGetKey">xmlSecGnuTLSX509CertGetKey</link>          (<parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>);
+#define             <link linkend="xmlSecGnuTLSKeyDataRawX509CertId">xmlSecGnuTLSKeyDataRawX509CertId</link>
+<link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     <link linkend="xmlSecGnuTLSKeyDataRawX509CertGetKlass">xmlSecGnuTLSKeyDataRawX509CertGetKlass</link>
+                                                        (<parameter><type>void</type></parameter>);
+#define             <link linkend="xmlSecGnuTLSX509StoreId">xmlSecGnuTLSX509StoreId</link>
+<link linkend="xmlSecKeyDataStoreId"><returnvalue>xmlSecKeyDataStoreId</returnvalue></link>  <link linkend="xmlSecGnuTLSX509StoreGetKlass">xmlSecGnuTLSX509StoreGetKlass</link>     (<parameter><type>void</type></parameter>);
+<link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   <link linkend="xmlSecGnuTLSX509StoreFindCert">xmlSecGnuTLSX509StoreFindCert</link>       (<parameter>const <link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *subjectName</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *issuerName</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *issuerSerial</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ski</parameter>,
+                                                         <parameter>const <link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtx</type></link> *keyInfoCtx</parameter>);
+<link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   <link linkend="xmlSecGnuTLSX509StoreVerify">xmlSecGnuTLSX509StoreVerify</link>         (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> certs</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> crls</parameter>,
+                                                         <parameter>const <link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtx</type></link> *keyInfoCtx</parameter>);
+<link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecGnuTLSX509StoreAdoptCert">xmlSecGnuTLSX509StoreAdoptCert</link>      (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 id="xmlsec-gnutls-x509.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+X509 certificates support implementation for GnuTLS.
+</para>
+</refsect1>
+<refsect1 id="xmlsec-gnutls-x509.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="xmlSecGnuTLSKeyDataX509Id" role="macro">
+<title>xmlSecGnuTLSKeyDataX509Id</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509Id"><primary>xmlSecGnuTLSKeyDataX509Id</primary></indexterm>
+<programlisting>#define             xmlSecGnuTLSKeyDataX509Id</programlisting>
+<para>
+The GnuTLS X509 data klass.
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509GetKlass" role="function">
+<title>xmlSecGnuTLSKeyDataX509GetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509GetKlass"><primary>xmlSecGnuTLSKeyDataX509GetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGnuTLSKeyDataX509GetKlass     (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The GnuTLS X509 key data klass (http://www.w3.org/TR/xmldsig-core/<link linkend="sec-X509Data"><type>sec-X509Data</type></link>).
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the X509 data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509GetKeyCert" role="function">
+<title>xmlSecGnuTLSKeyDataX509GetKeyCert ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509GetKeyCert"><primary>xmlSecGnuTLSKeyDataX509GetKeyCert</primary></indexterm>
+<programlisting><link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   xmlSecGnuTLSKeyDataX509GetKeyCert   (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>
+Gets the certificate from which the key was extracted.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the key's certificate or NULL if key data was not used for key
+extraction or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509AdoptKeyCert" role="function">
+<title>xmlSecGnuTLSKeyDataX509AdoptKeyCert ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509AdoptKeyCert"><primary>xmlSecGnuTLSKeyDataX509AdoptKeyCert</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGnuTLSKeyDataX509AdoptKeyCert (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>);</programlisting>
+<para>
+Sets the key's certificate in <parameter>data</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cert</parameter>&#160;:</term>
+<listitem><simpara>the pointer to GnuTLS X509 certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509AdoptCert" role="function">
+<title>xmlSecGnuTLSKeyDataX509AdoptCert ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509AdoptCert"><primary>xmlSecGnuTLSKeyDataX509AdoptCert</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGnuTLSKeyDataX509AdoptCert    (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>);</programlisting>
+<para>
+Adds certificate to the X509 key data.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cert</parameter>&#160;:</term>
+<listitem><simpara>the pointer to GnuTLS X509 certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509GetCert" role="function">
+<title>xmlSecGnuTLSKeyDataX509GetCert ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509GetCert"><primary>xmlSecGnuTLSKeyDataX509GetCert</primary></indexterm>
+<programlisting><link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   xmlSecGnuTLSKeyDataX509GetCert      (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
+<para>
+Gets a certificate from X509 key data.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the desired certificate position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to certificate or NULL if <parameter>pos</parameter> is larger than the
+number of certificates in <parameter>data</parameter> or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509GetCertsSize" role="function">
+<title>xmlSecGnuTLSKeyDataX509GetCertsSize ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509GetCertsSize"><primary>xmlSecGnuTLSKeyDataX509GetCertsSize</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecGnuTLSKeyDataX509GetCertsSize (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>
+Gets the number of certificates in <parameter>data</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> te number of certificates in <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509AdoptCrl" role="function">
+<title>xmlSecGnuTLSKeyDataX509AdoptCrl ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509AdoptCrl"><primary>xmlSecGnuTLSKeyDataX509AdoptCrl</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGnuTLSKeyDataX509AdoptCrl     (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crl-t"><type>gnutls_x509_crl_t</type></link> crl</parameter>);</programlisting>
+<para>
+Adds crl to the X509 key data.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>crl</parameter>&#160;:</term>
+<listitem><simpara>the pointer to GnuTLS X509 crl.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509GetCrl" role="function">
+<title>xmlSecGnuTLSKeyDataX509GetCrl ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509GetCrl"><primary>xmlSecGnuTLSKeyDataX509GetCrl</primary></indexterm>
+<programlisting><link linkend="gnutls-x509-crl-t"><returnvalue>gnutls_x509_crl_t</returnvalue></link>   xmlSecGnuTLSKeyDataX509GetCrl       (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
+<para>
+Gets a crl from X509 key data.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the desired crl position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to crl or NULL if <parameter>pos</parameter> is larger than the
+number of crls in <parameter>data</parameter> or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataX509GetCrlsSize" role="function">
+<title>xmlSecGnuTLSKeyDataX509GetCrlsSize ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataX509GetCrlsSize"><primary>xmlSecGnuTLSKeyDataX509GetCrlsSize</primary></indexterm>
+<programlisting><link linkend="xmlSecSize"><returnvalue>xmlSecSize</returnvalue></link>          xmlSecGnuTLSKeyDataX509GetCrlsSize  (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
+<para>
+Gets the number of crls in <parameter>data</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> te number of crls in <parameter>data</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSX509CertGetKey" role="function">
+<title>xmlSecGnuTLSX509CertGetKey ()</title>
+<indexterm zone="xmlSecGnuTLSX509CertGetKey"><primary>xmlSecGnuTLSX509CertGetKey</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>    xmlSecGnuTLSX509CertGetKey          (<parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>);</programlisting>
+<para>
+Extracts public key from the <parameter>cert</parameter>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>cert</parameter>&#160;:</term>
+<listitem><simpara>the certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> public key value or NULL if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataRawX509CertId" role="macro">
+<title>xmlSecGnuTLSKeyDataRawX509CertId</title>
+<indexterm zone="xmlSecGnuTLSKeyDataRawX509CertId"><primary>xmlSecGnuTLSKeyDataRawX509CertId</primary></indexterm>
+<programlisting>#define             xmlSecGnuTLSKeyDataRawX509CertId</programlisting>
+<para>
+The GnuTLS raw X509 certificate klass.
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSKeyDataRawX509CertGetKlass" role="function">
+<title>xmlSecGnuTLSKeyDataRawX509CertGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSKeyDataRawX509CertGetKlass"><primary>xmlSecGnuTLSKeyDataRawX509CertGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataId"><returnvalue>xmlSecKeyDataId</returnvalue></link>     xmlSecGnuTLSKeyDataRawX509CertGetKlass
+                                                        (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The raw X509 certificates key data klass.
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> raw X509 certificates key data klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSX509StoreId" role="macro">
+<title>xmlSecGnuTLSX509StoreId</title>
+<indexterm zone="xmlSecGnuTLSX509StoreId"><primary>xmlSecGnuTLSX509StoreId</primary></indexterm>
+<programlisting>#define             xmlSecGnuTLSX509StoreId</programlisting>
+<para>
+The GnuTLS X509 store klass.
+</para></refsect2>
+<refsect2 id="xmlSecGnuTLSX509StoreGetKlass" role="function">
+<title>xmlSecGnuTLSX509StoreGetKlass ()</title>
+<indexterm zone="xmlSecGnuTLSX509StoreGetKlass"><primary>xmlSecGnuTLSX509StoreGetKlass</primary></indexterm>
+<programlisting><link linkend="xmlSecKeyDataStoreId"><returnvalue>xmlSecKeyDataStoreId</returnvalue></link>  xmlSecGnuTLSX509StoreGetKlass     (<parameter><type>void</type></parameter>);</programlisting>
+<para>
+The GnuTLS X509 certificates key data store klass.
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to GnuTLS X509 certificates key data store klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSX509StoreFindCert" role="function">
+<title>xmlSecGnuTLSX509StoreFindCert ()</title>
+<indexterm zone="xmlSecGnuTLSX509StoreFindCert"><primary>xmlSecGnuTLSX509StoreFindCert</primary></indexterm>
+<programlisting><link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   xmlSecGnuTLSX509StoreFindCert       (<parameter>const <link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *subjectName</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *issuerName</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *issuerSerial</parameter>,
+                                                         <parameter>const <link linkend="xmlChar"><type>xmlChar</type></link> *ski</parameter>,
+                                                         <parameter>const <link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtx</type></link> *keyInfoCtx</parameter>);</programlisting>
+<para>
+Searches <parameter>store</parameter> for a certificate that matches given criteria.
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>subjectName</parameter>&#160;:</term>
+<listitem><simpara>the desired certificate name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>issuerName</parameter>&#160;:</term>
+<listitem><simpara>the desired certificate issuer name.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>issuerSerial</parameter>&#160;:</term>
+<listitem><simpara>the desired certificate issuer serial number.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ski</parameter>&#160;:</term>
+<listitem><simpara>the desired certificate SKI.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to found certificate or NULL if certificate is not found
+or an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSX509StoreVerify" role="function">
+<title>xmlSecGnuTLSX509StoreVerify ()</title>
+<indexterm zone="xmlSecGnuTLSX509StoreVerify"><primary>xmlSecGnuTLSX509StoreVerify</primary></indexterm>
+<programlisting><link linkend="gnutls-x509-crt-t"><returnvalue>gnutls_x509_crt_t</returnvalue></link>   xmlSecGnuTLSX509StoreVerify         (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> certs</parameter>,
+                                                         <parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> crls</parameter>,
+                                                         <parameter>const <link linkend="xmlSecKeyInfoCtx"><type>xmlSecKeyInfoCtx</type></link> *keyInfoCtx</parameter>);</programlisting>
+<para>
+Verifies <parameter>certs</parameter> list.
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>certs</parameter>&#160;:</term>
+<listitem><simpara>the untrusted certificates.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>crls</parameter>&#160;:</term>
+<listitem><simpara>the crls.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>keyInfoCtx</parameter>&#160;:</term>
+<listitem><simpara>the pointer to <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-KeyInfo">&lt;dsig:KeyInfo/&gt;</ulink> element processing context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to the first verified certificate from <parameter>certs</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecGnuTLSX509StoreAdoptCert" role="function">
+<title>xmlSecGnuTLSX509StoreAdoptCert ()</title>
+<indexterm zone="xmlSecGnuTLSX509StoreAdoptCert"><primary>xmlSecGnuTLSX509StoreAdoptCert</primary></indexterm>
+<programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecGnuTLSX509StoreAdoptCert      (<parameter><link linkend="xmlSecKeyDataStore"><type>xmlSecKeyDataStorePtr</type></link> store</parameter>,
+                                                         <parameter><link linkend="gnutls-x509-crt-t"><type>gnutls_x509_crt_t</type></link> cert</parameter>,
+                                                         <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
+<para>
+Adds trusted (root) or untrusted certificate to the store.
+</para><variablelist role="params">
+<varlistentry><term><parameter>store</parameter>&#160;:</term>
+<listitem><simpara>the pointer to X509 key data store klass.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cert</parameter>&#160;:</term>
+<listitem><simpara>the pointer to GnuTLS X509 certificate.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>the certificate type (trusted/untrusted).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+</refentry>

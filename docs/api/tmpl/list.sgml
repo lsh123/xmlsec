@@ -152,6 +152,16 @@ Generic list structure implementation.
 @Returns: 
 
 
+<!-- ##### FUNCTION xmlSecPtrListRemoveAndReturn ##### -->
+<para>
+
+</para>
+
+@list: 
+@pos: 
+@Returns: 
+
+
 <!-- ##### FUNCTION xmlSecPtrListDebugDump ##### -->
 <para>
 

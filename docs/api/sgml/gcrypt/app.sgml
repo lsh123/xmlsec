@@ -241,7 +241,7 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key from the a file (not implemented yet).
+Reads key from the a file.
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
 <listitem><simpara>the key filename.
@@ -271,7 +271,7 @@ Reads key from the a file (not implemented yet).
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key from the memory buffer (not implemented yet).
+Reads key from the memory buffer.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>the binary key data.

@@ -61,7 +61,7 @@ xmlSecGCryptAppShutdown(void) {
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the a file (not implemented yet).
+ * Reads key from the a file.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */
@@ -127,7 +127,7 @@ xmlSecGCryptAppKeyLoad(const char *filename, xmlSecKeyDataFormat format,
  * @pwdCallback:        the key password callback.
  * @pwdCallbackCtx:     the user context for password callback.
  *
- * Reads key from the memory buffer (not implemented yet).
+ * Reads key from the memory buffer.
  *
  * Returns: pointer to the key or NULL if an error occurs.
  */

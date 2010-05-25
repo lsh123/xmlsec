@@ -87,7 +87,7 @@
 <h1>
 <a name="XMLSEC-XMLDSIG"></a>xmldsig</h1>
 <div class="REFNAMEDIV">
-<a name="AEN21194"></a><h2>Name</h2>xmldsig -- XML Digital Signature support.</div>
+<a name="AEN21234"></a><h2>Name</h2>xmldsig -- XML Digital Signature support.</div>
 <div class="REFSYNOPSISDIV">
 <a name="XMLSEC-XMLDSIG.SYNOPSIS"></a><h2>Synopsis</h2>
 <pre class="SYNOPSIS">enum                <a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS">xmlSecDSigStatus</a>;
@@ -241,107 +241,107 @@ documents that don't follow XML, XPointer and XML DSig specifications.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21444"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">userData</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21484"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">userData</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to user data (xmlsec and xmlsec-crypto libraries
                              never touches this).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21451"><span style="white-space: nowrap">unsigned <gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> <code class="STRUCTFIELD">flags</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21491"><span style="white-space: nowrap">unsigned <gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> <code class="STRUCTFIELD">flags</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the XML Digital Signature processing flags.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21458"><span style="white-space: nowrap">unsigned <gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> <code class="STRUCTFIELD">flags2</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21498"><span style="white-space: nowrap">unsigned <gtkdoclink href="INT"><span class="TYPE">int</span></gtkdoclink> <code class="STRUCTFIELD">flags2</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the XML Digital Signature processing flags.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21465"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> <code class="STRUCTFIELD">keyInfoReadCtx</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21505"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> <code class="STRUCTFIELD">keyInfoReadCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the reading key context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21472"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> <code class="STRUCTFIELD">keyInfoWriteCtx</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21512"><span style="white-space: nowrap"><a href="xmlsec-keyinfo.html#XMLSECKEYINFOCTX"><span class="TYPE">xmlSecKeyInfoCtx</span></a> <code class="STRUCTFIELD">keyInfoWriteCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the writing key context (not used for signature verification).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21479"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtx</span></a> <code class="STRUCTFIELD">transformCtx</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21519"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtx</span></a> <code class="STRUCTFIELD">transformCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21487"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMURITYPE"><span class="TYPE">xmlSecTransformUriType</span></a> <code class="STRUCTFIELD">enabledReferenceUris</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21527"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMURITYPE"><span class="TYPE">xmlSecTransformUriType</span></a> <code class="STRUCTFIELD">enabledReferenceUris</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the URI types allowed for <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21495"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> <code class="STRUCTFIELD">enabledReferenceTransforms</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21535"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> <code class="STRUCTFIELD">enabledReferenceTransforms</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list of transforms allowed in <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21503"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREEXECUTECALLBACK"><span class="TYPE">xmlSecTransformCtxPreExecuteCallback</span></a> <code class="STRUCTFIELD">referencePreExecuteCallback</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21543"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTXPREEXECUTECALLBACK"><span class="TYPE">xmlSecTransformCtxPreExecuteCallback</span></a> <code class="STRUCTFIELD">referencePreExecuteCallback</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the callback for <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node processing.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21511"><span style="white-space: nowrap"><gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink> <code class="STRUCTFIELD">defSignMethodId</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21551"><span style="white-space: nowrap"><gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink> <code class="STRUCTFIELD">defSignMethodId</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the default signing method klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21518"><span style="white-space: nowrap"><gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink> <code class="STRUCTFIELD">defC14NMethodId</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21558"><span style="white-space: nowrap"><gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink> <code class="STRUCTFIELD">defC14NMethodId</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the default c14n method klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21525"><span style="white-space: nowrap"><gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink> <code class="STRUCTFIELD">defDigestMethodId</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21565"><span style="white-space: nowrap"><gtkdoclink href="XMLSECTRANSFORMID"><span class="TYPE">xmlSecTransformId</span></gtkdoclink> <code class="STRUCTFIELD">defDigestMethodId</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the default digest method klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21532"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> <code class="STRUCTFIELD">signKey</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21572"><span style="white-space: nowrap"><a href="xmlsec-keys.html#XMLSECKEY"><span class="TYPE">xmlSecKeyPtr</span></a> <code class="STRUCTFIELD">signKey</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the signature key; application may set <gtkdoclink href="SIGNKEY"><span class="TYPE">signKey</span></gtkdoclink>
                              before calling <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXSIGN"><span class="TYPE">xmlSecDSigCtxSign</span></a> or <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXVERIFY"><span class="TYPE">xmlSecDSigCtxVerify</span></a>
                              functions.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21545"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMOPERATION"><span class="TYPE">xmlSecTransformOperation</span></a> <code class="STRUCTFIELD">operation</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21585"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMOPERATION"><span class="TYPE">xmlSecTransformOperation</span></a> <code class="STRUCTFIELD">operation</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the operation: sign or verify.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21552"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> <code class="STRUCTFIELD">result</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21592"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> <code class="STRUCTFIELD">result</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to signature (not valid for signature verificaction).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21559"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS"><span class="TYPE">xmlSecDSigStatus</span></a> <code class="STRUCTFIELD">status</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21599"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS"><span class="TYPE">xmlSecDSigStatus</span></a> <code class="STRUCTFIELD">status</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire" target="_top">&lt;dsig:Signatuire/&gt;</a> procesisng status.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21567"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">signMethod</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21607"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">signMethod</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to signature transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21574"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">c14nMethod</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21614"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">c14nMethod</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to c14n transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21581"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">preSignMemBufMethod</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21621"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">preSignMemBufMethod</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to binary buffer right before signature
                              (valid only if <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-SIGNATURE:CAPS"><span class="TYPE">XMLSEC_DSIG_FLAGS_STORE_SIGNATURE</span></a> flag is set).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21590"><span style="white-space: nowrap"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> <code class="STRUCTFIELD">signValueNode</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21630"><span style="white-space: nowrap"><gtkdoclink href="XMLNODE"><span class="TYPE">xmlNodePtr</span></gtkdoclink> <code class="STRUCTFIELD">signValueNode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignatureValue" target="_top">&lt;dsig:SignatureValue/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21598"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">id</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21638"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">id</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to Id attribute of <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21606"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrList</span></a> <code class="STRUCTFIELD">signedInfoReferences</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21646"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrList</span></a> <code class="STRUCTFIELD">signedInfoReferences</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list of references in <a href="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21614"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrList</span></a> <code class="STRUCTFIELD">manifestReferences</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21654"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrList</span></a> <code class="STRUCTFIELD">manifestReferences</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list of references in <a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> nodes.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21622"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21662"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21629"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21669"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 </tbody></table>
@@ -356,11 +356,11 @@ The caller is responsible for destroying returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21651"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21691"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21656"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21696"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to newly allocated context object or NULL if an error
 occurs.</p></td>
 </tr>
@@ -373,7 +373,7 @@ occurs.</p></td>
 <p>Destroy context object created with <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXCREATE"><span class="TYPE">xmlSecDSigCtxCreate</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN21675"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21715"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr></tbody></table>
 </div>
@@ -388,15 +388,15 @@ The caller is responsible for cleaing up returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21699"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21739"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21705"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21745"><span style="white-space: nowrap"><code class="PARAMETER">keysMngr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to keys manager.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21710"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21750"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -408,7 +408,7 @@ The caller is responsible for cleaing up returend object by calling
 <p>Cleans up <code class="PARAMETER">dsigCtx</code> object initialized with <a href="xmlsec-xmldsig.html#XMLSECDSIGCTXINITIALIZE"><span class="TYPE">xmlSecDSigCtxInitialize</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN21730"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21770"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr></tbody></table>
 </div>
@@ -421,15 +421,15 @@ The caller is responsible for cleaing up returend object by calling
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21752"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21792"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21758"><span style="white-space: nowrap"><code class="PARAMETER">tmpl</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21798"><span style="white-space: nowrap"><code class="PARAMETER">tmpl</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node with signature template.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21764"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21804"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -444,15 +444,15 @@ in <gtkdoclink href="STATUS"><span class="TYPE">status</span></gtkdoclink> membe
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21788"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21828"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21794"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21834"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer with <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21800"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21840"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success (check <gtkdoclink href="STATUS"><span class="TYPE">status</span></gtkdoclink> member of <code class="PARAMETER">dsigCtx</code> to get
 signature verification result) or a negative value if an error occurs.</p></td>
 </tr>
@@ -468,15 +468,15 @@ signature verification result) or a negative value if an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21825"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21865"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21831"><span style="white-space: nowrap"><code class="PARAMETER">transformId</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21871"><span style="white-space: nowrap"><code class="PARAMETER">transformId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the transform klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21836"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21876"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -491,15 +491,15 @@ signature verification result) or a negative value if an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21858"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21898"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21864"><span style="white-space: nowrap"><code class="PARAMETER">transformId</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21904"><span style="white-space: nowrap"><code class="PARAMETER">transformId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the transform klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21869"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21909"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -514,11 +514,11 @@ just before signature claculation (valid if and only if
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21889"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21929"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21895"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21935"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -532,11 +532,11 @@ just before signature claculation (valid if and only if
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21917"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21957"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21923"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21963"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -550,11 +550,11 @@ just before signature claculation (valid if and only if
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21945"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21985"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21951"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN21991"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -605,59 +605,59 @@ node or in the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest" target=
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21984"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">userData</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22024"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">userData</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to user data (xmlsec and xmlsec-crypto libraries
                              never touches this).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21991"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"><span class="TYPE">xmlSecDSigCtxPtr</span></a> <code class="STRUCTFIELD">dsigCtx</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22031"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGCTX"><span class="TYPE">xmlSecDSigCtxPtr</span></a> <code class="STRUCTFIELD">dsigCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to "parent" <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN21999"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN"><span class="TYPE">xmlSecDSigReferenceOrigin</span></a> <code class="STRUCTFIELD">origin</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22039"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCEORIGIN"><span class="TYPE">xmlSecDSigReferenceOrigin</span></a> <code class="STRUCTFIELD">origin</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the signature origin (<a href="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> or <a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest" target="_top">&lt;dsig:Manifest/&gt;</a>).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22008"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtx</span></a> <code class="STRUCTFIELD">transformCtx</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22048"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORMCTX"><span class="TYPE">xmlSecTransformCtx</span></a> <code class="STRUCTFIELD">transformCtx</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the reference processing transforms context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22015"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">digestMethod</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22055"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">digestMethod</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to digest transform.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22022"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> <code class="STRUCTFIELD">result</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22062"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECBUFFER"><span class="TYPE">xmlSecBufferPtr</span></a> <code class="STRUCTFIELD">result</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to digest result.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22029"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS"><span class="TYPE">xmlSecDSigStatus</span></a> <code class="STRUCTFIELD">status</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22069"><span style="white-space: nowrap"><a href="xmlsec-xmldsig.html#XMLSECDSIGSTATUS"><span class="TYPE">xmlSecDSigStatus</span></a> <code class="STRUCTFIELD">status</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the reference processing status.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22036"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">preDigestMemBufMethod</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22076"><span style="white-space: nowrap"><a href="xmlsec-transforms.html#XMLSECTRANSFORM"><span class="TYPE">xmlSecTransformPtr</span></a> <code class="STRUCTFIELD">preDigestMemBufMethod</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to binary buffer right before digest
                              (valid only if either
                              <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-SIGNEDINFO-REFERENCES:CAPS"><span class="TYPE">XMLSEC_DSIG_FLAGS_STORE_SIGNEDINFO_REFERENCES</span></a> or
                              <a href="xmlsec-xmldsig.html#XMLSEC-DSIG-FLAGS-STORE-MANIFEST-REFERENCES:CAPS"><span class="TYPE">XMLSEC_DSIG_FLAGS_STORE_MANIFEST_REFERENCES</span></a> flags are set).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22047"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">id</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22087"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">id</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node ID attribute.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22055"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">uri</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22095"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">uri</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node URI attribute.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22063"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">type</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22103"><span style="white-space: nowrap"><gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">type</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node Type attribute.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22071"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22111"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved0</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22078"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22118"><span style="white-space: nowrap"><gtkdoclink href="VOID"><span class="TYPE">void</span></gtkdoclink> *<code class="STRUCTFIELD">reserved1</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>reserved for the future.</p></td>
 </tr>
 </tbody></table>
@@ -673,15 +673,15 @@ function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22103"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22143"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to parent <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22109"><span style="white-space: nowrap"><code class="PARAMETER">origin</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22149"><span style="white-space: nowrap"><code class="PARAMETER">origin</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the reference origin (<a href="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> or <a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22116"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22156"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to newly created context or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -693,7 +693,7 @@ function.</p>
 <p>Destroy context object created with <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXCREATE"><span class="TYPE">xmlSecDSigReferenceCtxCreate</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22135"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22175"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr></tbody></table>
 </div>
@@ -709,19 +709,19 @@ function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22162"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22202"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22168"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22208"><span style="white-space: nowrap"><code class="PARAMETER">dsigCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to parent <a href="http://www.w3.org/TR/xmldsig-core/#sec-Signature" target="_top">&lt;dsig:Signature/&gt;</a> node processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22174"><span style="white-space: nowrap"><code class="PARAMETER">origin</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22214"><span style="white-space: nowrap"><code class="PARAMETER">origin</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the reference origin (<a href="http://www.w3.org/TR/xmldsig-core/#sec-SignedInfo" target="_top">&lt;dsig:SignedInfo/&gt;</a> or <a href="http://www.w3.org/TR/xmldsig-core/#sec-Manifest" target="_top">&lt;dsig:Manifest/&gt;</a> node).</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22181"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22221"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on succes or aa negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -733,7 +733,7 @@ function.</p>
 <p>Cleans up context object created with <a href="xmlsec-xmldsig.html#XMLSECDSIGREFERENCECTXINITIALIZE"><span class="TYPE">xmlSecDSigReferenceCtxInitialize</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22200"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22240"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr></tbody></table>
 </div>
@@ -756,15 +756,15 @@ from elsewhere.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22224"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22264"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22230"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22270"><span style="white-space: nowrap"><code class="PARAMETER">node</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> node.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22236"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22276"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on succes or aa negative value otherwise.</p></td>
 </tr>
 </tbody></table>
@@ -781,11 +781,11 @@ is set).</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22258"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22298"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22264"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22304"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to the buffer or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -799,11 +799,11 @@ is set).</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22286"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22326"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22292"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22332"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -817,11 +817,11 @@ is set).</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22314"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22354"><span style="white-space: nowrap"><code class="PARAMETER">dsigRefCtx</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN22320"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22360"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -839,7 +839,7 @@ is set).</p>
 <p>The <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing contexts list klass.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN22343"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN22383"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> <a href="http://www.w3.org/TR/xmldsig-core/#sec-Reference" target="_top">&lt;dsig:Reference/&gt;</a> element processing context list klass.</p></td>
 </tr></tbody></table>
 </div>

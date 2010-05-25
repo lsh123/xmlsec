@@ -183,7 +183,7 @@ Saves keys from <parameter>mngr</parameter> to  XML keys file.
                                                          <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
 <para>
 Reads cert from <parameter>filename</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter> (not implemented yet).
+untrusted certs in <parameter>store</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
 <listitem><simpara>the keys manager.
@@ -212,7 +212,7 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).
                                                          <parameter><link linkend="xmlSecKeyDataType"><type>xmlSecKeyDataType</type></link> type</parameter>);</programlisting>
 <para>
 Reads cert from binary buffer <parameter>data</parameter> and adds to the list of trusted or known
-untrusted certs in <parameter>store</parameter> (not implemented yet).
+untrusted certs in <parameter>store</parameter>.
 </para><variablelist role="params">
 <varlistentry><term><parameter>mngr</parameter>&#160;:</term>
 <listitem><simpara>the keys manager.
@@ -241,7 +241,7 @@ untrusted certs in <parameter>store</parameter> (not implemented yet).
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key from the a file (not implemented yet).
+Reads key from the a file.
 </para><variablelist role="params">
 <varlistentry><term><parameter>filename</parameter>&#160;:</term>
 <listitem><simpara>the key filename.
@@ -271,7 +271,7 @@ Reads key from the a file (not implemented yet).
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key from the memory buffer (not implemented yet).
+Reads key from the memory buffer.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>the binary key data.
@@ -302,8 +302,7 @@ Reads key from the memory buffer (not implemented yet).
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallback</parameter>,
                                                          <parameter><link linkend="void"><type>void</type></link> *pwdCallbackCtx</parameter>);</programlisting>
 <para>
-Reads key and all associated certificates from the PKCS12 file
-(not implemented yet).
+Reads key and all associated certificates from the PKCS12 file.
 For uniformity, call xmlSecGnuTLSAppKeyLoad instead of this function. Pass
 in format=xmlSecKeyDataFormatPkcs12.
 </para><variablelist role="params">
@@ -333,7 +332,7 @@ in format=xmlSecKeyDataFormatPkcs12.
 <para>
 Reads key and all associated certificates from the PKCS12 data in memory buffer.
 For uniformity, call xmlSecGnuTLSAppKeyLoadMemory instead of this function. Pass
-in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).
+in format=xmlSecKeyDataFormatPkcs12.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>the PKCS12 binary data.
@@ -360,8 +359,7 @@ in format=xmlSecKeyDataFormatPkcs12 (not implemented yet).
                                                          <parameter>const <link linkend="char"><type>char</type></link> *filename</parameter>,
                                                          <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);</programlisting>
 <para>
-Reads the certificate from $<parameter>filename</parameter> and adds it to key
-(not implemented yet).
+Reads the certificate from $<parameter>filename</parameter> and adds it to key.
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
 <listitem><simpara>the pointer to key.
@@ -383,7 +381,7 @@ Reads the certificate from $<parameter>filename</parameter> and adds it to key
                                                          <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> dataSize</parameter>,
                                                          <parameter><link linkend="xmlSecKeyDataFormat"><type>xmlSecKeyDataFormat</type></link> format</parameter>);</programlisting>
 <para>
-Reads the certificate from memory buffer and adds it to key (not implemented yet).
+Reads the certificate from memory buffer and adds it to key.
 </para><variablelist role="params">
 <varlistentry><term><parameter>key</parameter>&#160;:</term>
 <listitem><simpara>the pointer to key.

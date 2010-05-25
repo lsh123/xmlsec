@@ -112,6 +112,8 @@
                                                          <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);
 <gtkdoclink href="INT"><span class="RETURNVALUE">int</span></gtkdoclink><a href="xmlsec-list.html#XMLSECPTRLISTREMOVE">xmlSecPtrListRemove</a>                 (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> list</code>,
                                                          <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);
+<a href="xmlsec-xmlsec.html#XMLSECPTR"><span class="RETURNVALUE">xmlSecPtr</span></a>           <a href="xmlsec-list.html#XMLSECPTRLISTREMOVEANDRETURN">xmlSecPtrListRemoveAndReturn</a>        (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> list</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);
 <gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-list.html#XMLSECPTRLISTDEBUGDUMP">xmlSecPtrListDebugDump</a>              (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> list</code>,
                                                          <code class="PARAMETER"><gtkdoclink href="FILE:CAPS"><span class="TYPE">FILE</span></gtkdoclink> *output</code>);
 <gtkdoclink href="VOID"><span class="RETURNVALUE">void</span></gtkdoclink><a href="xmlsec-list.html#XMLSECPTRLISTDEBUGXMLDUMP">xmlSecPtrListDebugXmlDump</a>           (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> list</code>,
@@ -150,23 +152,23 @@ struct              <a href="xmlsec-list.html#XMLSECPTRLISTKLASS">xmlSecPtrListK
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13136"><span style="white-space: nowrap"><gtkdoclink href="XMLSECPTRLISTID"><span class="TYPE">xmlSecPtrListId</span></gtkdoclink> <code class="STRUCTFIELD">id</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13145"><span style="white-space: nowrap"><gtkdoclink href="XMLSECPTRLISTID"><span class="TYPE">xmlSecPtrListId</span></gtkdoclink> <code class="STRUCTFIELD">id</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list items description.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13143"><span style="white-space: nowrap"><gtkdoclink href="XMLSEC"><span class="TYPE">xmlSecPtr</span></gtkdoclink> *<code class="STRUCTFIELD">data</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13152"><span style="white-space: nowrap"><gtkdoclink href="XMLSEC"><span class="TYPE">xmlSecPtr</span></gtkdoclink> *<code class="STRUCTFIELD">data</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list data.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13150"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> <code class="STRUCTFIELD">use</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13159"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> <code class="STRUCTFIELD">use</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the current list size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13157"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> <code class="STRUCTFIELD">max</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13166"><span style="white-space: nowrap"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> <code class="STRUCTFIELD">max</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the max (allocated) list size.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13164"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECALLOCMODE"><span class="TYPE">xmlSecAllocMode</span></a> <code class="STRUCTFIELD">allocMode</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13173"><span style="white-space: nowrap"><a href="xmlsec-buffer.html#XMLSECALLOCMODE"><span class="TYPE">xmlSecAllocMode</span></a> <code class="STRUCTFIELD">allocMode</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the memory allocation mode.</p></td>
 </tr>
 </tbody></table>
@@ -180,11 +182,11 @@ struct              <a href="xmlsec-list.html#XMLSECPTRLISTKLASS">xmlSecPtrListK
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13186"><span style="white-space: nowrap"><code class="PARAMETER">defAllocMode</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13195"><span style="white-space: nowrap"><code class="PARAMETER">defAllocMode</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the new default memory allocation mode.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13191"><span style="white-space: nowrap"><code class="PARAMETER">defInitialSize</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13200"><span style="white-space: nowrap"><code class="PARAMETER">defInitialSize</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the new default minimal initial size.</p></td>
 </tr>
 </tbody></table>
@@ -199,15 +201,15 @@ for cleaning up by calling <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE"><spa
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13213"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13222"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13218"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13227"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13223"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13232"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -220,7 +222,7 @@ for cleaning up by calling <a href="xmlsec-list.html#XMLSECPTRLISTFINALIZE"><spa
 function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13242"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13251"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr></tbody></table>
 </div>
@@ -233,11 +235,11 @@ by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY"><span class="TYPE">xm
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13261"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13270"><span style="white-space: nowrap"><code class="PARAMETER">id</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list klass.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13266"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13275"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to newly allocated list or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -249,7 +251,7 @@ by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY"><span class="TYPE">xm
 <p>Destroys <code class="PARAMETER">list</code> created with <a href="xmlsec-list.html#XMLSECPTRLISTCREATE"><span class="TYPE">xmlSecPtrListCreate</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13286"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13295"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr></tbody></table>
 </div>
@@ -260,7 +262,7 @@ by calling <a href="xmlsec-list.html#XMLSECPTRLISTDESTROY"><span class="TYPE">xm
 <p>Remove all items from <code class="PARAMETER">list</code> (if any).</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13304"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13313"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr></tbody></table>
 </div>
@@ -275,15 +277,15 @@ we jsut copy pointers to items.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13330"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13339"><span style="white-space: nowrap"><code class="PARAMETER">dst</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to destination list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13335"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13344"><span style="white-space: nowrap"><code class="PARAMETER">src</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to source list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13340"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13349"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -296,11 +298,11 @@ we jsut copy pointers to items.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13358"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13367"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13363"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13372"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to newly allocated list or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -313,11 +315,11 @@ we jsut copy pointers to items.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13380"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13389"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13385"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13394"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the number of itmes in <code class="PARAMETER">list</code>.</p></td>
 </tr>
 </tbody></table>
@@ -331,15 +333,15 @@ we jsut copy pointers to items.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13406"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13415"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13411"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13420"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the item position.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13416"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13425"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> the list item at position <code class="PARAMETER">pos</code> or NULL if <code class="PARAMETER">pos</code> is greater
 than the number of items in the list or an error occurs.</p></td>
 </tr>
@@ -354,15 +356,15 @@ than the number of items in the list or an error occurs.</p></td>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13440"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13449"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13445"><span style="white-space: nowrap"><code class="PARAMETER">item</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13454"><span style="white-space: nowrap"><code class="PARAMETER">item</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the item.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13450"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13459"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -378,19 +380,19 @@ is destroyed.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13474"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13483"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13479"><span style="white-space: nowrap"><code class="PARAMETER">item</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13488"><span style="white-space: nowrap"><code class="PARAMETER">item</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the item.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13484"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13493"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pos.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13489"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13498"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -404,16 +406,38 @@ is destroyed.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13510"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13519"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13515"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13524"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the position.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13520"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13529"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> 0 on success or a negative value if an error occurs.</p></td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<div class="REFSECT2">
+<a name="XMLSECPTRLISTREMOVEANDRETURN"></a><h3>xmlSecPtrListRemoveAndReturn ()</h3>
+<pre class="PROGRAMLISTING"><a href="xmlsec-xmlsec.html#XMLSECPTR"><span class="RETURNVALUE">xmlSecPtr</span></a>           xmlSecPtrListRemoveAndReturn        (<code class="PARAMETER"><a href="xmlsec-list.html#XMLSECPTRLIST"><span class="TYPE">xmlSecPtrListPtr</span></a> list</code>,
+                                                         <code class="PARAMETER"><a href="xmlsec-xmlsec.html#XMLSECSIZE"><span class="TYPE">xmlSecSize</span></a> pos</code>);</pre>
+<p>Remove the list item at the position <code class="PARAMETER">pos</code> and return it back.</p>
+<p></p>
+<table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13550"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13555"><span style="white-space: nowrap"><code class="PARAMETER">pos</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><p>the position.</p></td>
+</tr>
+<tr>
+<td align="LEFT" valign="TOP"><a name="AEN13560"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><p> the pointer to the list item.</p></td>
 </tr>
 </tbody></table>
 </div>
@@ -426,11 +450,11 @@ is destroyed.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13542"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13582"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13547"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13587"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -444,11 +468,11 @@ is destroyed.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13569"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13609"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13574"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13614"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -460,7 +484,7 @@ is destroyed.</p>
 <p>Macro. Returns lists's name.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13586"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13626"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the ponter to list.</p></td>
 </tr></tbody></table>
 </div>
@@ -472,7 +496,7 @@ is destroyed.</p>
 or 0 otherwise.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13600"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13640"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr></tbody></table>
 </div>
@@ -484,11 +508,11 @@ or 0 otherwise.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13615"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13655"><span style="white-space: nowrap"><code class="PARAMETER">list</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the pointer to list.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13620"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13660"><span style="white-space: nowrap"><code class="PARAMETER">dataId</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list Id.</p></td>
 </tr>
 </tbody></table>
@@ -507,11 +531,11 @@ or 0 otherwise.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13644"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13684"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the poinetr to list item.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13649"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13689"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> pointer to new item copy or NULL if an error occurs.</p></td>
 </tr>
 </tbody></table>
@@ -523,7 +547,7 @@ or 0 otherwise.</p>
 <p>Destroys list item <code class="PARAMETER">ptr</code>.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13667"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13707"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the poinetr to list item.</p></td>
 </tr></tbody></table>
 </div>
@@ -536,11 +560,11 @@ or 0 otherwise.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13689"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13729"><span style="white-space: nowrap"><code class="PARAMETER">ptr</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the poinetr to list item.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13694"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13734"><span style="white-space: nowrap"><code class="PARAMETER">output</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the output FILE.</p></td>
 </tr>
 </tbody></table>
@@ -559,23 +583,23 @@ or 0 otherwise.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13706"><span style="white-space: nowrap">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">name</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13746"><span style="white-space: nowrap">const <gtkdoclink href="XMLCHAR"><span class="TYPE">xmlChar</span></gtkdoclink> *<code class="STRUCTFIELD">name</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list klass name.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13713"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDUPLICATEITEMMETHOD"><span class="TYPE">xmlSecPtrDuplicateItemMethod</span></a> <code class="STRUCTFIELD">duplicateItem</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13753"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDUPLICATEITEMMETHOD"><span class="TYPE">xmlSecPtrDuplicateItemMethod</span></a> <code class="STRUCTFIELD">duplicateItem</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the duplciate item method.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13720"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDESTROYITEMMETHOD"><span class="TYPE">xmlSecPtrDestroyItemMethod</span></a> <code class="STRUCTFIELD">destroyItem</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13760"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDESTROYITEMMETHOD"><span class="TYPE">xmlSecPtrDestroyItemMethod</span></a> <code class="STRUCTFIELD">destroyItem</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the destroy item method.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13727"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD"><span class="TYPE">xmlSecPtrDebugDumpItemMethod</span></a> <code class="STRUCTFIELD">debugDumpItem</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13767"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD"><span class="TYPE">xmlSecPtrDebugDumpItemMethod</span></a> <code class="STRUCTFIELD">debugDumpItem</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the debug dump item method.</p></td>
 </tr>
 <tr>
-<td align="LEFT" valign="TOP"><a name="AEN13734"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD"><span class="TYPE">xmlSecPtrDebugDumpItemMethod</span></a> <code class="STRUCTFIELD">debugXmlDumpItem</code>;</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13774"><span style="white-space: nowrap"><a href="xmlsec-list.html#XMLSECPTRDEBUGDUMPITEMMETHOD"><span class="TYPE">xmlSecPtrDebugDumpItemMethod</span></a> <code class="STRUCTFIELD">debugXmlDumpItem</code>;</span></a></td>
 <td align="LEFT" valign="TOP"><p>the debug dump item in xml format method.</p></td>
 </tr>
 </tbody></table>
@@ -587,7 +611,7 @@ or 0 otherwise.</p>
 <p>Macro. Returns the list klass name.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13748"><span style="white-space: nowrap"><code class="PARAMETER">klass</code> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13788"><span style="white-space: nowrap"><code class="PARAMETER">klass</code> :</span></a></td>
 <td align="LEFT" valign="TOP"><p>the list klass.
 2</p></td>
 </tr></tbody></table>
@@ -605,7 +629,7 @@ or 0 otherwise.</p>
 <p>The strins list class.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody><tr>
-<td align="LEFT" valign="TOP"><a name="AEN13770"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
+<td align="LEFT" valign="TOP"><a name="AEN13810"><span style="white-space: nowrap"><span class="emphasis"><i class="EMPHASIS">Returns</i></span> :</span></a></td>
 <td align="LEFT" valign="TOP"><p> strings list klass.</p></td>
 </tr></tbody></table>
 </div>

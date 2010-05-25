@@ -36,6 +36,8 @@
                                                          <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
 <link linkend="int"><returnvalue>int</returnvalue></link>                 <link linkend="xmlSecPtrListRemove">xmlSecPtrListRemove</link>                 (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
                                                          <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
+<link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           <link linkend="xmlSecPtrListRemoveAndReturn">xmlSecPtrListRemoveAndReturn</link>        (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);
 <link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListDebugDump">xmlSecPtrListDebugDump</link>              (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
                                                          <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
 <link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecPtrListDebugXmlDump">xmlSecPtrListDebugXmlDump</link>           (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
@@ -298,6 +300,23 @@ Destroys list item at the position <parameter>pos</parameter> and sets it value 
 <listitem><simpara>the position.
 </simpara></listitem></varlistentry>
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or a negative value if an error occurs.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecPtrListRemoveAndReturn" role="function">
+<title>xmlSecPtrListRemoveAndReturn ()</title>
+<indexterm zone="xmlSecPtrListRemoveAndReturn"><primary>xmlSecPtrListRemoveAndReturn</primary></indexterm>
+<programlisting><link linkend="xmlSecPtr"><returnvalue>xmlSecPtr</returnvalue></link>           xmlSecPtrListRemoveAndReturn        (<parameter><link linkend="xmlSecPtrList"><type>xmlSecPtrListPtr</type></link> list</parameter>,
+                                                         <parameter><link linkend="xmlSecSize"><type>xmlSecSize</type></link> pos</parameter>);</programlisting>
+<para>
+Remove the list item at the position <parameter>pos</parameter> and return it back.
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>the pointer to list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>the position.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the pointer to the list item.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecPtrListDebugDump" role="function">

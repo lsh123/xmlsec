@@ -264,7 +264,7 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaAdoptPrivateKey ##### -->
 <para>
 
 </para>
@@ -274,32 +274,16 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaAdoptKeyPair ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaAdoptPublicKey ##### -->
 <para>
 
 </para>
 
 @data: 
-@pub_key: 
-@priv_key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaGetPublicKey ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataDsaGetPrivateKey ##### -->
-<para>
-
-</para>
-
-@data: 
+@p: 
+@q: 
+@g: 
+@y: 
 @Returns: 
 
 
@@ -475,7 +459,7 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaAdoptKey ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaAdoptPrivateKey ##### -->
 <para>
 
 </para>
@@ -485,32 +469,14 @@ Crypto transforms implementation for GnuTLS.
 @Returns: 
 
 
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaAdoptKeyPair ##### -->
+<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaAdoptPublicKey ##### -->
 <para>
 
 </para>
 
 @data: 
-@pub_key: 
-@priv_key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaGetPublicKey ##### -->
-<para>
-
-</para>
-
-@data: 
-@Returns: 
-
-
-<!-- ##### FUNCTION xmlSecGnuTLSKeyDataRsaGetPrivateKey ##### -->
-<para>
-
-</para>
-
-@data: 
+@m: 
+@e: 
 @Returns: 
 
 

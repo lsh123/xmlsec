@@ -27,6 +27,31 @@
  *****************************************************************************/
 #include <xmlsec/gcrypt/crypto.h>
 
+/**
+ * xmlSecGnuTLSHmacGetMinOutputLength:
+ *
+ * Gets the value of min HMAC length.
+ *
+ * Returns: the min HMAC output length
+ */
+int xmlSecGnuTLSHmacGetMinOutputLength(void)
+{
+    return xmlSecGCryptHmacGetMinOutputLength();
+}
+
+/**
+ * xmlSecGnuTLSHmacSetMinOutputLength:
+ * @min_length: the new min length
+ *
+ * Sets the min HMAC output length
+ */
+void xmlSecGnuTLSHmacSetMinOutputLength(int min_length)
+{
+    xmlSecGCryptHmacSetMinOutputLength(min_length);
+}
+
+
+
 #ifndef XMLSEC_NO_SHA1
 /**
  * xmlSecGnuTLSTransformHmacSha1GetKlass:

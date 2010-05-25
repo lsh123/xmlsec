@@ -1,2 +1,3 @@
+    &xmlsec-gnutls-x509;
     &xmlsec-gnutls-app;
     &xmlsec-gnutls-crypto;

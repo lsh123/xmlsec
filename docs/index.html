@@ -43,35 +43,41 @@
 </table>
 </td>
 <td valign="top"><table width="100%" valign="top"><tr><td valign="top" align="left" id="xmlsecContent">
-<div align="Center">                                          
-      <h1>XML Security Library</h1>
-            </div>
+<div align="center">
+<h1>XML Security Library</h1>
+</div>
 <p>
-             XML Security Library is a C library based on 
-	     <a href="http://xmlsoft.org/">LibXML2</a>.
-      The library  supports major XML security standards:                                        	    
-      </p>
+XML Security Library is a C library based on <a href="http://xmlsoft.org/">LibXML2</a>.
+The library  supports major XML security standards:
+</p>
 <ul>
+<li><a href="http://www.w3.org/TR/xmldsig-core">XML Signature</a></li>
+<li><a href="http://www.w3.org/TR/xmlenc-core/">XML Encryption</a></li>
 <li>
-<a href="http://www.w3.org/TR/xmldsig-core">XML Signature</a>
- 	     </li>
-	     <li>
-<a href="http://www.w3.org/TR/xmlenc-core/">XML Encryption</a>
-	     </li>
-              <li>
-<a href="http://www.w3.org/TR/xml-c14n">Canonical XML</a>
- 	     (was included in <a href="http://xmlsoft.org">LibXML2</a>)</li>
-              <li>
+<a href="http://www.w3.org/TR/xml-c14n">Canonical XML</a> (part of the
+<a href="http://xmlsoft.org">LibXML2</a>)</li>
+<li>
 <a href="http://www.w3.org/TR/xml-exc-c14n">Exclusive Canonical XML</a>
- 	     (was included in <a href="http://xmlsoft.org">LibXML2</a>)</li>
-                                            	    
-      </ul>
+(part of the <a href="http://xmlsoft.org">LibXML2</a>)</li>
+</ul>
 <p>
-             XML Security Library is released under the  	    
-	     <a href="http://www.opensource.org/licenses/mit-license.html">MIT  Licence</a>
-     	    see the Copyright file in the distribution  for details.<br><br></p>
+XML Security Library is released under the
+<a href="http://www.opensource.org/licenses/mit-license.html">MIT  Licence</a>
+see the Copyright file in the distribution  for details.<br><br></p>
 <p><b>News</b></p>
 <ul>
+<li>May 26  2010<br>
+	Changes in <a href="download.html">XML Security Library 1.2.16</a> release:
+	<ul>
+<li>Created xmlsec-gcrypt library.</li>
+	<li>xmlsec-gcrypt: Added RSA with SHA1/SHA256/SHA384/SHA512/MD5/RIPEMD160,
+	DSA with SHA1, AES/DES KW support.</li>
+	<li>xmlsec-gnutls: Added X509 support and converted the library to use
+	xmlsec-gcrypt library for all crypto operations.</li>
+	xmlsec-mscrypto: RSA/OAEP and AES/DES KW support.</ul>
+</li>
+	<li>Several minor bug fixes and code cleanups.</li>
+	</ul>
 <li>April 29 2010<br>
 	Changes in <a href="download.html">XML Security Library 1.2.15</a> release:
 	<ul>
@@ -82,13 +88,11 @@
 	and RSA (the new minimum required version for NSS library is 3.9).</li>
 	<li>xmlsec-gnutls: Added SHA256/384/512 for digest and HMAC;
 	MD5 and RIPEMD160 digests support (the new minimum required version for
-	GnuTLS library is 2.8.0).
-	</li>
-<li>Fixed typo: "Copyrigth" should be "Copyright".</li>
+	GnuTLS library is 2.8.0).</li>
+	<li>Fixed typo: "Copyrigth" should be "Copyright".</li>
 	<li>Several critical bug fixes and code cleanups.</li>
 	</ul>
 </li>
-
 <li>December 5 2009<br>
 	Changes in <a href="download.html">XML Security Library 1.2.14</a> release:
 	<ul>
@@ -100,12 +104,12 @@
 	for complete list).</li>
 	</ul>
 </li>
-
 <li>September 12 2009<br>
 	Changes in <a href="download.html">XML Security Library 1.2.13</a> release:
 	<ul>
 <li>
-	<a href="http://xmlsoft.org/">LibXML2</a> version 2.7.4 is now required</li>
+<a href="http://xmlsoft.org/">LibXML2</a> version 2.7.4 is now
+	required</li>
 	<li>Implemented support for <a href="http://www.w3.org/TR/xml-c14n11/">C14N version 1.1</a>
 </li>
 	<li>Increase default minimum hmac size to 80 bits</li>
@@ -113,7 +117,6 @@
 	<li>Fixed XML dump output</li>
 	</ul>
 </li>
-
 <li>July 14 2009<br>
 	The new <a href="download.html">XML Security Library 1.2.12</a> release
 	includes the following changes (see ChangeLog for the complete list of changes):
@@ -129,8 +132,6 @@
 	<li>Bug fixes.</li>
 	</ul>
 </li>
-
-</ul>
 </td></tr></table></td>
 </tr></table></body>
 </html>

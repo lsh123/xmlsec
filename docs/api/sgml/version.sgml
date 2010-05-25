@@ -33,7 +33,7 @@ Version macros.
 <refsect2 id="XMLSEC-VERSION:CAPS" role="macro">
 <title>XMLSEC_VERSION</title>
 <indexterm zone="XMLSEC-VERSION:CAPS"><primary>XMLSEC_VERSION</primary></indexterm>
-<programlisting>#define XMLSEC_VERSION			"1.2.15"
+<programlisting>#define XMLSEC_VERSION			"1.2.16"
 </programlisting>
 <para>
 The library version string in the format
@@ -58,7 +58,7 @@ The library minor version number.
 <refsect2 id="XMLSEC-VERSION-SUBMINOR:CAPS" role="macro">
 <title>XMLSEC_VERSION_SUBMINOR</title>
 <indexterm zone="XMLSEC-VERSION-SUBMINOR:CAPS"><primary>XMLSEC_VERSION_SUBMINOR</primary></indexterm>
-<programlisting>#define XMLSEC_VERSION_SUBMINOR		15
+<programlisting>#define XMLSEC_VERSION_SUBMINOR		16
 </programlisting>
 <para>
 The library sub-minor version number.
@@ -66,7 +66,7 @@ The library sub-minor version number.
 <refsect2 id="XMLSEC-VERSION-INFO:CAPS" role="macro">
 <title>XMLSEC_VERSION_INFO</title>
 <indexterm zone="XMLSEC-VERSION-INFO:CAPS"><primary>XMLSEC_VERSION_INFO</primary></indexterm>
-<programlisting>#define XMLSEC_VERSION_INFO		"3:15:2"
+<programlisting>#define XMLSEC_VERSION_INFO		"3:16:2"
 </programlisting>
 <para>
 The library version info string in the format

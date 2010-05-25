@@ -161,9 +161,9 @@ check-xkms: $(TEST_APP)
 	)
 
 memcheck-res:
-	@grep -i lost /tmp/*.log | sed 's/==.*== *//' | sort -u
-	@grep -i leak /tmp/*.log | sed 's/==.*== *//' | sort -u
-	@grep -i 'in use' /tmp/*.log | sed 's/==.*== *//' | sort -u
+	@grep -i 'ERROR SUMMARY' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
+	@grep -i 'in use at exit' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
+	@grep -i 'total heap usage' /tmp/*.log | sed 's/.*==.*== *//' | sort -u
 
 memcheck: $(TEST_APP)
 	@(export DEBUG_MEMORY=1 && $(MAKE) check && $(MAKE) memcheck-res)

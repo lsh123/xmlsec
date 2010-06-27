@@ -1,3 +1,6 @@
+2010-06-27  Aleksey Sanin  <aleksey@aleksey.com>
+	* Fixed gcrypt init/shutdown (patch from Roumen)
+
 2010-04-25  Aleksey Sanin  <aleksey@aleksey.com>
 	* 1.2.15 release
 

@@ -34,7 +34,67 @@
  */
 int
 xmlSecGCryptAppInit(const char* config ATTRIBUTE_UNUSED) {
-    /* TODO - do we need to initialize? */
+    /* Secure memory initialisation based on documentation from:
+         http://www.gnupg.org/documentation/manuals/gcrypt/Initializing-the-library.html
+       NOTE sample code don't check gcry_control(...) return code
+
+       All flags from:
+         http://www.gnupg.org/documentation/manuals/gcrypt/Controlling-the-library.html
+
+       Also libgcrypt NEWS entries:
++++++
+.....
+Noteworthy changes in version 1.4.3 (2008-09-18)
+------------------------------------------------
+
+ * Try to auto-initialize Libgcrypt to minimize the effect of
+   applications not doing that correctly.  This is not a perfect
+   solution but given that many applicationion would totally fail
+   without such a hack, we try to help at least with the most common
+   cases.  Folks, please read the manual to learn how to properly
+   initialize Libgcrypt!
+
+ * Auto-initialize the secure memory to 32k instead of aborting the
+   process.
+.....
++++++
+    */
+
+    /* Version check should be the very first call because it
+       makes sure that important subsystems are intialized. */
+
+    /* NOTE configure.in defines GCRYPT_MIN_VERSION */
+    if (!gcry_check_version (GCRYPT_MIN_VERSION)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_check_version",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    /* We don't want to see any warnings, e.g. because we have not yet
+       parsed program options which might be used to suppress such
+       warnings. */
+    gcry_control(GCRYCTL_SUSPEND_SECMEM_WARN);
+
+    /* ... If required, other initialization goes here.  Note that the
+       process might still be running with increased privileges and that
+       the secure memory has not been intialized.  */
+
+    /* Allocate a pool of 32k secure memory.  This make the secure memory
+       available and also drops privileges where needed.  */
+    gcry_control(GCRYCTL_INIT_SECMEM, 32768, 0);
+
+    /* It is now okay to let Libgcrypt complain when there was/is
+      a problem with the secure memory. */
+    gcry_control(GCRYCTL_RESUME_SECMEM_WARN);
+
+    /* ... If required, other initialization goes here.  */
+
+    /* Tell Libgcrypt that initialization has completed. */
+    gcry_control(GCRYCTL_INITIALIZATION_FINISHED, 0);
+
     return(0);
 }
 
@@ -49,7 +109,17 @@ xmlSecGCryptAppInit(const char* config ATTRIBUTE_UNUSED) {
  */
 int
 xmlSecGCryptAppShutdown(void) {
-    /* TODO - do we need to shutdown? */
+    gcry_error_t err;
+
+    err = gcry_control(GCRYCTL_TERM_SECMEM);
+    if (gcry_err_code(err)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "gcry_control(GCRYCTL_TERM_SECMEM)",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
     return(0);
 }
 

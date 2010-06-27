@@ -10,6 +10,7 @@ lib_LTLIBRARIES = \
 
 libxmlsec1_gcrypt_la_CPPFLAGS = \
 	-DPACKAGE=\"@PACKAGE@\" \
+	-DGCRYPT_MIN_VERSION=\"$(GCRYPT_MIN_VERSION)\" \
 	-I../../include \
 	-I$(top_srcdir)/include \
 	$(XMLSEC_DEFINES) \

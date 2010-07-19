@@ -217,8 +217,13 @@ elif test "z$with_libxml" = "z" -a "z$PKGCONFIG_FOUND" = "zyes" ; then
 fi
 if test "z$LIBXML_FOUND" = "zno" ; then
     if test "z$with_libxml" != "zyes" ; then
-	AC_PATH_PROG([LIBXML_CONFIG], [$LIBXML_CONFIG], [],
+        if test "z$with_libxml" != "z" ; then
+	    AC_PATH_PROG([LIBXML_CONFIG], [$LIBXML_CONFIG], [],
 		     [$with_libxml/bin:$PATH])
+	else
+	    AC_PATH_PROG([LIBXML_CONFIG], [$LIBXML_CONFIG], [],
+		     [$PATH])
+	fi
     fi
     AC_MSG_CHECKING([libxml2 $LIBXML_CONFIG ])
     if ! LIBXML_VERSION=`$LIBXML_CONFIG --version 2>/dev/null`; then
@@ -282,8 +287,13 @@ fi
 
 if test "z$LIBXSLT_FOUND" = "zno" ; then
     if test "z$with_libxslt" != "zyes" ; then
-	AC_PATH_PROG([LIBXSLT_CONFIG], [$LIBXSLT_CONFIG], [],
+        if test "z$with_libxslt" != "z" ; then
+	    AC_PATH_PROG([LIBXSLT_CONFIG], [$LIBXSLT_CONFIG], [],
 		     [$with_libxslt/bin:$PATH])
+        else
+	    AC_PATH_PROG([LIBXSLT_CONFIG], [$LIBXSLT_CONFIG], [],
+		     [$PATH])
+        fi
     fi
     AC_MSG_CHECKING(for libxslt libraries >= $LIBXSLT_MIN_VERSION) 
     if ! LIBXSLT_VERSION=`$LIBXSLT_CONFIG --version 2>/dev/null`; then

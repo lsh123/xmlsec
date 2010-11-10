@@ -7,5 +7,5 @@ Name: xmlsec1-nss
 Version: @VERSION@
 Description: XML Security Library implements XML Signature and XML Encryption standards
 Requires: libxml-2.0 >= @LIBXML_MIN_VERSION@ libxslt >= @LIBXSLT_MIN_VERSION@ @NSPR_PACKAGE@ >= @MOZILLA_MIN_VERSION@ @NSS_PACKAGE@ >= @MOZILLA_MIN_VERSION@
-Cflags: -DXMLSEC_CRYPTO=\\\"nss\\\" -DXMLSEC_CRYPTO_NSS=1 @XMLSEC_CORE_CFLAGS@
+Cflags: -DXMLSEC_CRYPTO=\"nss\" -DXMLSEC_CRYPTO_NSS=1 @XMLSEC_CORE_CFLAGS@
 Libs: -L${libdir} -lxmlsec1-nss @XMLSEC_CORE_LIBS@

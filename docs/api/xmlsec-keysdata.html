@@ -547,7 +547,7 @@ key data klasses: <a href="http://www.w3.org/TR/xmldsig-core/#sec-KeyName" targe
 <a name="XMLSECKEYDATACREATE"></a><h3>xmlSecKeyDataCreate ()</h3>
 <pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></a>    xmlSecKeyDataCreate                 (<code class="PARAMETER"><gtkdoclink href="XMLSECKEYDATAID"><span class="TYPE">xmlSecKeyDataId</span></gtkdoclink> id</code>);</pre>
 <p>Allocates and initializes new key data of the specified type <code class="PARAMETER">id</code>.
-Caller is responsible for destroing returend object with
+Caller is responsible for destroying returned object with
 <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY"><span class="TYPE">xmlSecKeyDataDestroy</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
@@ -567,7 +567,7 @@ or NULL if an error occurs.</p></td>
 <a name="XMLSECKEYDATADUPLICATE"></a><h3>xmlSecKeyDataDuplicate ()</h3>
 <pre class="PROGRAMLISTING"><gtkdoclink href="XMLSECKEYDATAPTR"><span class="RETURNVALUE">xmlSecKeyDataPtr</span></gtkdoclink>    xmlSecKeyDataDuplicate              (<code class="PARAMETER"><a href="xmlsec-keysdata.html#XMLSECKEYDATA"><span class="TYPE">xmlSecKeyDataPtr</span></a> data</code>);</pre>
 <p>Creates a duplicate of the given <code class="PARAMETER">data</code>. Caller is responsible for
-destroing returend object with <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY"><span class="TYPE">xmlSecKeyDataDestroy</span></a> function.</p>
+destroying returned object with <a href="xmlsec-keysdata.html#XMLSECKEYDATADESTROY"><span class="TYPE">xmlSecKeyDataDestroy</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>
@@ -1860,7 +1860,7 @@ information about trusted (root) certificates.</p>
 <a name="XMLSECKEYDATASTORECREATE"></a><h3>xmlSecKeyDataStoreCreate ()</h3>
 <pre class="PROGRAMLISTING"><a href="xmlsec-keysdata.html#XMLSECKEYDATASTORE"><span class="RETURNVALUE">xmlSecKeyDataStorePtr</span></a>  xmlSecKeyDataStoreCreate         (<code class="PARAMETER"><gtkdoclink href="XMLSECKEYDATASTOREID"><span class="TYPE">xmlSecKeyDataStoreId</span></gtkdoclink> id</code>);</pre>
 <p>Creates new key data store of the specified klass <code class="PARAMETER">id</code>. Caller is responsible
-for freeng returned object with <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREDESTROY"><span class="TYPE">xmlSecKeyDataStoreDestroy</span></a> function.</p>
+for freeing returned object with <a href="xmlsec-keysdata.html#XMLSECKEYDATASTOREDESTROY"><span class="TYPE">xmlSecKeyDataStoreDestroy</span></a> function.</p>
 <p></p>
 <table class="variablelist" border="0" cellspacing="0" cellpadding="4"><tbody>
 <tr>

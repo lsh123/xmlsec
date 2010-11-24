@@ -253,7 +253,7 @@ xmlSecXkmsServerFormatToString (xmlSecXkmsServerFormat format) {
  * @keysMngr:   the pointer to keys manager.
  *
  * Creates XKMS request server side processing context.
- * The caller is responsible for destroying returend object by calling
+ * The caller is responsible for destroying returned object by calling
  * #xmlSecXkmsServerCtxDestroy function.
  *
  * Returns: pointer to newly allocated context object or NULL if an error
@@ -308,7 +308,7 @@ xmlSecXkmsServerCtxDestroy(xmlSecXkmsServerCtxPtr ctx) {
  * @keysMngr:   the pointer to keys manager.
  *
  * Initializes XKMS element processing context.
- * The caller is responsible for cleaing up returend object by calling
+ * The caller is responsible for cleaning up returned object by calling
  * #xmlSecXkmsServerCtxFinalize function.
  *
  * Returns: 0 on success or a negative value if an error occurs.

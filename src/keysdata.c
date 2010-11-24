@@ -181,7 +181,7 @@ xmlSecKeyDataIdsRegisterDefault(void) {
  * @id:                 the data id.
  *
  * Allocates and initializes new key data of the specified type @id.
- * Caller is responsible for destroing returend object with
+ * Caller is responsible for destroying returned object with
  * #xmlSecKeyDataDestroy function.
  *
  * Returns: the pointer to newly allocated key data structure
@@ -231,7 +231,7 @@ xmlSecKeyDataCreate(xmlSecKeyDataId id)  {
  * @data:               the pointer to the key data.
  *
  * Creates a duplicate of the given @data. Caller is responsible for
- * destroing returend object with #xmlSecKeyDataDestroy function.
+ * destroying returned object with #xmlSecKeyDataDestroy function.
  *
  * Returns: the pointer to newly allocated key data structure
  * or NULL if an error occurs.
@@ -1298,7 +1298,7 @@ xmlSecKeyDataIdListDebugXmlDump(xmlSecPtrListPtr list, FILE* output) {
  * @id:                 the store id.
  *
  * Creates new key data store of the specified klass @id. Caller is responsible
- * for freeng returned object with #xmlSecKeyDataStoreDestroy function.
+ * for freeing returned object with #xmlSecKeyDataStoreDestroy function.
  *
  * Returns: the pointer to newly allocated key data store structure
  * or NULL if an error occurs.

@@ -278,7 +278,7 @@ xmlSecOpenSSLHmacNodeRead(xmlSecTransformPtr transform, xmlNodePtr node, xmlSecT
         }
 
         /* Ensure that HMAC length is greater than min specified.
-           Otherwise, an attacker can set this lenght to 0 or very
+           Otherwise, an attacker can set this length to 0 or very
            small value
         */
         if((int)ctx->dgstSize < xmlSecOpenSSLHmacGetMinOutputLength()) {

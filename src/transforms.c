@@ -327,7 +327,7 @@ xmlSecTransformUriTypeCheck(xmlSecTransformUriType type, const xmlChar* uri) {
  * xmlSecTransformCtxCreate:
  *
  * Creates transforms chain processing context.
- * The caller is responsible for destroying returend object by calling
+ * The caller is responsible for destroying returned object by calling
  * #xmlSecTransformCtxDestroy function.
  *
  * Returns: pointer to newly allocated context object or NULL if an error
@@ -382,7 +382,7 @@ xmlSecTransformCtxDestroy(xmlSecTransformCtxPtr ctx) {
  * @ctx:                the pointer to transforms chain processing context.
  *
  * Initializes transforms chain processing context.
- * The caller is responsible for cleaing up returend object by calling
+ * The caller is responsible for cleaning up returned object by calling
  * #xmlSecTransformCtxFinalize function.
  *
  * Returns: 0 on success or a negative value if an error occurs.
@@ -2874,7 +2874,7 @@ xmlSecTransformIOBufferClose(xmlSecTransformIOBufferPtr buffer) {
     xmlSecAssert2(xmlSecTransformIsValid(buffer->transform), -1);
     xmlSecAssert2(buffer->transformCtx != NULL, -1);
 
-    /* need to flush write buffer before destroing */
+    /* need to flush write buffer before destroying */
     if(buffer->mode == xmlSecTransformIOBufferModeWrite) {
         ret = xmlSecTransformPushBin(buffer->transform, NULL, 0, 1, buffer->transformCtx);
         if(ret < 0) {

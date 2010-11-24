@@ -41,7 +41,7 @@ static int      xmlSecNodeSetWalkRecursive              (xmlSecNodeSetPtr nset,
  * @nodes:              the list of nodes.
  * @type:               the nodes set type.
  *
- * Creates new nodes set. Caller is responsible for freeng returend object
+ * Creates new nodes set. Caller is responsible for freeing returned object
  * by calling #xmlSecNodeSetDestroy function.
  *
  * Returns: pointer to newly allocated node set or NULL if an error occurs.

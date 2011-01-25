@@ -482,18 +482,6 @@ XMLSEC_EXPORT void                      xmlSecTransformDebugXmlDump(xmlSecTransf
          (( transform )->id->name != NULL))
 
 /**
- * xmlSecTransformCheckType:
- * @transform:          the pointer to transform.
- * @t:                  the transform type.
- *
- * Macro. Returns 1 if the @transform is valid and has specified type @t
- * or 0 otherwise.
- */
-#define xmlSecTransformCheckType(transform, t) \
-        (xmlSecTransformIsValid(( transform )) && \
-        ((( transform )->id->type) == ( t )))
-
-/**
  * xmlSecTransformCheckId:
  * @transform:          the pointer to transform.
  * @i:                  the transform id.

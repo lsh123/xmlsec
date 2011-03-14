@@ -24,6 +24,7 @@
 #include <libxslt/extensions.h> 
 #include <libxslt/xsltInternals.h>
 #include <libxslt/xsltutils.h>
+#include <libxslt/security.h>
 #include <libexslt/exslt.h>
 #endif /* XMLSEC_NO_XSLT */
 
@@ -2404,6 +2405,11 @@ xmlSecAppLoadKeys(void) {
 }
 
 static int intialized = 0;
+
+#ifndef XMLSEC_NO_XSLT
+static xsltSecurityPrefsPtr xsltSecPrefs = NULL;
+#endif /* XMLSEC_NO_XSLT */
+
 static int
 xmlSecAppInit(void) {
     if(intialized != 0) {
@@ -2419,6 +2425,19 @@ xmlSecAppInit(void) {
     xmlIndentTreeOutput = 1; 
 #endif /* XMLSEC_NO_XSLT */
                 
+    
+    /* Init libxslt */
+#ifndef XMLSEC_NO_XSLT
+    /* disable everything */
+    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
+#endif /* XMLSEC_NO_XSLT */                
+    
     /* Init xmlsec */
     if(xmlSecInit() < 0) {
         fprintf(stderr, "Error: xmlsec intialization failed.\n");
@@ -2465,6 +2484,7 @@ xmlSecAppShutdown(void) {
     
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
+    xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();            
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();

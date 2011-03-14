@@ -17,6 +17,7 @@
 
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
+#include <libxslt/security.h>
 #endif /* XMLSEC_NO_XSLT */
 
 #include <xmlsec/xmlsec.h>
@@ -37,7 +38,10 @@ int url_decode(char *buf, size_t size);
 int 
 main(int argc, char **argv) {
     xmlSecKeysMngrPtr mngr;
-    
+#ifndef XMLSEC_NO_XSLT
+    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
+#endif /* XMLSEC_NO_XSLT */
+        
     /* start response */
     fprintf(stdout, "Content-type: text/plain\n");
     fprintf(stdout, "\n");
@@ -53,6 +57,18 @@ main(int argc, char **argv) {
     
     /* make sure that we print out everything to stdout */
     xmlGenericErrorContext = stdout;
+
+    /* Init libxslt */
+#ifndef XMLSEC_NO_XSLT
+    /* disable everything */
+    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
+#endif /* XMLSEC_NO_XSLT */
                 
     /* Init xmlsec library */
     if(xmlSecInit() < 0) {
@@ -132,8 +148,10 @@ main(int argc, char **argv) {
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
+    xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();            
 #endif /* XMLSEC_NO_XSLT */
+
     xmlCleanupParser();
     
     return(0);

@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
 
 #ifndef XMLSEC_NO_XSLT
 #include <libxslt/xslt.h>
+#include <libxslt/security.h>
 #endif /* XMLSEC_NO_XSLT */
 
 #include <xmlsec/xmlsec.h>
@@ -105,6 +106,9 @@ static char http_503[] =
 int main(int argc, char** argv) {
     int argpos;
     unsigned short port = DEFAULT_PORT;
+#ifndef XMLSEC_NO_XSLT
+    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
+#endif /* XMLSEC_NO_XSLT */
     xmlSecKeysMngrPtr mngr = NULL;
     xmlSecXkmsServerCtxPtr xkmsCtx = NULL;
     xmlSecXkmsServerFormat format = xmlSecXkmsServerFormatPlain;
@@ -119,6 +123,18 @@ int main(int argc, char** argv) {
     xmlSubstituteEntitiesDefault(1);
 #ifndef XMLSEC_NO_XSLT
     xmlIndentTreeOutput = 1; 
+#endif /* XMLSEC_NO_XSLT */
+
+    /* Init libxslt */
+#ifndef XMLSEC_NO_XSLT
+    /* disable everything */
+    xsltSecPrefs = xsltNewSecurityPrefs(); 
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
+    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+    xsltSetDefaultSecurityPrefs(xsltSecPrefs); 
 #endif /* XMLSEC_NO_XSLT */
                 
     /* Init xmlsec library */
@@ -277,6 +293,7 @@ done:
 
     /* Shutdown libxslt/libxml */
 #ifndef XMLSEC_NO_XSLT
+    xsltFreeSecurityPrefs(xsltSecPrefs);
     xsltCleanupGlobals();            
 #endif /* XMLSEC_NO_XSLT */
     xmlCleanupParser();

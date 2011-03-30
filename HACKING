@@ -153,6 +153,45 @@ If you want to submit a patch please do following:
     (http://www.aleksey.com/xmlsec/bugs.html) for the record. Do not forget
     to put link or bug number in your message if the bug is in bugzilla.
     
+4) Building a release
+- Cleanup, make sure no other changes are pending
+  - make distclean
+  - git status 
+- Update Changelog
+- Write about release changes in the release
+  - docs/index.html and docs/news.html
+- Update release number in 
+  - configure.in (2 places at the top)
+  - docs/download.html
+- Create build
+  - ./autogen.sh
+  - make
+- Build docs (watch for errors!)
+  - make docs
+- Commit the "prepare for X.Y.Z" release
+  - git commit -m"prepare for X.Y.Z release" -a
+- Run tests, make sure everything is OK
+  - make check
+- Build release
+  - sudo ./scripts/build_release.sh
+- Extract tar file, make sure it works
+  - cd /tmp
+  - tar xvfz /usr/src/redhat/SOURCE/xmlsec1-X.Y.z.tar.gz 
+  - cd xmlsec1-X.Y.z
+  - ./configure
+  - make
+  - make check
+- Copy tar file to FTP/Web Download
+- Copy docs/ folder to Web folder
+- Write an announcement email to xmlsec@aleksey.com
+- Update freshmeat.net
+- Relax
+
+
+
+
+
+
 
 
     

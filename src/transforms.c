@@ -61,6 +61,8 @@
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
 
+#include <xmlsec/private/xslt.h>
+
 /**************************************************************************
  *
  * Global xmlSecTransformIds list functions
@@ -113,6 +115,10 @@ xmlSecTransformIdsInit(void) {
         return(-1);
     }
 
+#ifndef XMLSEC_NO_XSLT
+    xmlSecTransformXsltInitialize();
+#endif /* XMLSEC_NO_XSLT */
+
     return(0);
 }
 
@@ -124,6 +130,10 @@ xmlSecTransformIdsInit(void) {
  */
 void
 xmlSecTransformIdsShutdown(void) {
+#ifndef XMLSEC_NO_XSLT
+    xmlSecTransformXsltShutdown();
+#endif /* XMLSEC_NO_XSLT */
+
     xmlSecPtrListFinalize(xmlSecTransformIdsGet());
 }
 

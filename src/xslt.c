@@ -28,6 +28,7 @@
 #include <xmlsec/keys.h>
 #include <xmlsec/parser.h>
 #include <xmlsec/errors.h>
+#include <xmlsec/private/xslt.h>
 
 /**************************************************************************
  *
@@ -95,6 +96,51 @@ static xmlSecTransformKlass xmlSecXsltKlass = {
     NULL,                                       /* void* reserved1; */
 };
 
+
+#define XMLSEC_XSLT_COPY_SEC_PREF(src, dst, pref) \
+    xsltSetSecurityPrefs((dst), (pref),  xsltGetSecurityPrefs((src), (pref)))
+
+static xsltSecurityPrefsPtr g_xslt_default_security_prefs = NULL;
+
+void xmlSecTransformXsltInitialize(void) {
+    xmlSecAssert(g_xslt_default_security_prefs == NULL);
+
+    g_xslt_default_security_prefs = xsltNewSecurityPrefs();
+    xmlSecAssert(g_xslt_default_security_prefs != NULL);
+    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
+    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
+    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
+    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
+    xsltSetSecurityPrefs(g_xslt_default_security_prefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
+}
+
+void xmlSecTransformXsltShutdown(void) {
+    if(g_xslt_default_security_prefs != NULL) {
+        xsltFreeSecurityPrefs(g_xslt_default_security_prefs);
+        g_xslt_default_security_prefs = NULL;
+    }
+}
+
+/**
+ * xmlSecTransformXsltSetDefaultSecurityPrefs:
+ * @sec: the new security preferences
+ *
+ * Sets the new default security preferences. The xmlsec default security policy is 
+ * to disable everything.
+ */
+XMLSEC_EXPORT void
+xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec) {
+    xmlSecAssert(sec != NULL);
+    xmlSecAssert(g_xslt_default_security_prefs != NULL);
+    
+    /* copy prefs */
+    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_FILE);
+    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_FILE);
+    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_CREATE_DIRECTORY);
+    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_READ_NETWORK);
+    XMLSEC_XSLT_COPY_SEC_PREF(sec, g_xslt_default_security_prefs, XSLT_SECPREF_WRITE_NETWORK);
+}
+
 /**
  * xmlSecTransformXsltGetKlass:
  *
@@ -135,6 +181,7 @@ xmlSecTransformXsltGetKlass(void) {
 static int
 xmlSecXsltInitialize(xmlSecTransformPtr transform) {
     xmlSecXsltCtxPtr ctx;
+    int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
@@ -144,6 +191,12 @@ xmlSecXsltInitialize(xmlSecTransformPtr transform) {
 
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecXsltCtx));
+    
+    /* set security prefs  */
+    ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, ctx);
+    xmlSecAssert2(ret == 0, -1);
+
+    /* done */
     return(0);
 }
 

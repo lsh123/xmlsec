@@ -950,6 +950,8 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
                                                                          xmlSecNodeSetType nodeSetType,
                                                                          xmlNodePtr hereNode);
 #ifndef XMLSEC_NO_XSLT
+#include <libxslt/security.h>
+
 /**
  * xmlSecTransformXsltId:
  *
@@ -958,6 +960,7 @@ XMLSEC_EXPORT int               xmlSecTransformXPointerSetExpr          (xmlSecT
 #define xmlSecTransformXsltId \
         xmlSecTransformXsltGetKlass()
 XMLSEC_EXPORT xmlSecTransformId xmlSecTransformXsltGetKlass             (void);
+XMLSEC_EXPORT void              xmlSecTransformXsltSetDefaultSecurityPrefs(xsltSecurityPrefsPtr sec);
 #endif /* XMLSEC_NO_XSLT */
 
 /**

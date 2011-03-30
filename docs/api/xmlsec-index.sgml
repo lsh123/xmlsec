@@ -1254,7 +1254,6 @@
 <listitem><para><link linkend="XMLSEC-TRANSFORM-BINARY-CHUNK-CAPS">XMLSEC-TRANSFORM-BINARY-CHUNK</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCheckId">xmlSecTransformCheckId</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCheckSize">xmlSecTransformCheckSize</link></para></listitem>
-<listitem><para><link linkend="xmlSecTransformCheckType">xmlSecTransformCheckType</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformConnect">xmlSecTransformConnect</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCreateInputBuffer">xmlSecTransformCreateInputBuffer</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformCreate">xmlSecTransformCreate</link></para></listitem>
@@ -1455,6 +1454,7 @@
 <listitem><para><link linkend="xmlSecTransformXPointerSetExpr">xmlSecTransformXPointerSetExpr</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformXsltGetKlass">xmlSecTransformXsltGetKlass</link></para></listitem>
 <listitem><para><link linkend="xmlSecTransformXsltId">xmlSecTransformXsltId</link></para></listitem>
+<listitem><para><link linkend="xmlSecTransformXsltSetDefaultSecurityPrefs">xmlSecTransformXsltSetDefaultSecurityPrefs</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-VERSION-INFO-CAPS">XMLSEC-VERSION-INFO</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-VERSION-MAJOR-CAPS">XMLSEC-VERSION-MAJOR</link></para></listitem>
 <listitem><para><link linkend="XMLSEC-VERSION-MINOR-CAPS">XMLSEC-VERSION-MINOR</link></para></listitem>

@@ -521,7 +521,7 @@ The key data: key value (crypto material), x509 data, pgp data, etc.
 <programlisting><link linkend="xmlSecKeyData"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>    xmlSecKeyDataCreate                 (<parameter><link linkend="xmlSecKeyDataId"><type>xmlSecKeyDataId</type></link> id</parameter>);</programlisting>
 <para>
 Allocates and initializes new key data of the specified type <parameter>id</parameter>.
-Caller is responsible for destroing returend object with
+Caller is responsible for destroying returned object with
 <link linkend="xmlSecKeyDataDestroy"><type>xmlSecKeyDataDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
@@ -537,7 +537,7 @@ or NULL if an error occurs.
 <programlisting><link linkend="xmlSecKeyDataPtr"><returnvalue>xmlSecKeyDataPtr</returnvalue></link>    xmlSecKeyDataDuplicate              (<parameter><link linkend="xmlSecKeyData"><type>xmlSecKeyDataPtr</type></link> data</parameter>);</programlisting>
 <para>
 Creates a duplicate of the given <parameter>data</parameter>. Caller is responsible for
-destroing returend object with <link linkend="xmlSecKeyDataDestroy"><type>xmlSecKeyDataDestroy</type></link> function.
+destroying returned object with <link linkend="xmlSecKeyDataDestroy"><type>xmlSecKeyDataDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>data</parameter>&#160;:</term>
 <listitem><simpara>the pointer to the key data.
@@ -1619,7 +1619,7 @@ information about trusted (root) certificates.
 <programlisting><link linkend="xmlSecKeyDataStore"><returnvalue>xmlSecKeyDataStorePtr</returnvalue></link>  xmlSecKeyDataStoreCreate         (<parameter><link linkend="xmlSecKeyDataStoreId"><type>xmlSecKeyDataStoreId</type></link> id</parameter>);</programlisting>
 <para>
 Creates new key data store of the specified klass <parameter>id</parameter>. Caller is responsible
-for freeng returned object with <link linkend="xmlSecKeyDataStoreDestroy"><type>xmlSecKeyDataStoreDestroy</type></link> function.
+for freeing returned object with <link linkend="xmlSecKeyDataStoreDestroy"><type>xmlSecKeyDataStoreDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>id</parameter>&#160;:</term>
 <listitem><simpara>the store id.

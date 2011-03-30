@@ -226,7 +226,7 @@ an walk procedure should be interrupted.
                                                          <parameter><link linkend="xmlNodeSet"><type>xmlNodeSetPtr</type></link> nodes</parameter>,
                                                          <parameter><link linkend="xmlSecNodeSetType"><type>xmlSecNodeSetType</type></link> type</parameter>);</programlisting>
 <para>
-Creates new nodes set. Caller is responsible for freeng returend object
+Creates new nodes set. Caller is responsible for freeing returned object
 by calling <link linkend="xmlSecNodeSetDestroy"><type>xmlSecNodeSetDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>doc</parameter>&#160;:</term>

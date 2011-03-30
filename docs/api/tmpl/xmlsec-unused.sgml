@@ -132,6 +132,14 @@ xkms
 </para>
 
 
+<!-- ##### MACRO xmlSecTransformCheckType ##### -->
+<para>
+
+</para>
+
+@transform: 
+@t: 
+
 <!-- ##### ENUM xmlSecXkmsKeyBindingStatus ##### -->
 <para>
 

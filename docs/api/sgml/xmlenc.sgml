@@ -247,7 +247,7 @@ XML Encrypiton context.
 <programlisting><link linkend="xmlSecEncCtxPtr"><returnvalue>xmlSecEncCtxPtr</returnvalue></link>     xmlSecEncCtxCreate                  (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
-The caller is responsible for destroying returend object by calling
+The caller is responsible for destroying returned object by calling
 <link linkend="xmlSecEncCtxDestroy"><type>xmlSecEncCtxDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
@@ -275,7 +275,7 @@ Destroy context object created with <link linkend="xmlSecEncCtxCreate"><type>xml
                                                          <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Initializes <ulink URL="http://www.w3.org/TR/xmlenc-core/#sec-EncryptedData">&lt;enc:EncryptedData/&gt;</ulink> element processing context.
-The caller is responsible for cleaing up returend object by calling
+The caller is responsible for cleaning up returned object by calling
 <link linkend="xmlSecEncCtxFinalize"><type>xmlSecEncCtxFinalize</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>encCtx</parameter>&#160;:</term>

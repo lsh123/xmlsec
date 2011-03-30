@@ -294,7 +294,7 @@ XML DSig processing context.
 <programlisting><link linkend="xmlSecDSigCtxPtr"><returnvalue>xmlSecDSigCtxPtr</returnvalue></link>    xmlSecDSigCtxCreate                 (<parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Creates <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
-The caller is responsible for destroying returend object by calling
+The caller is responsible for destroying returned object by calling
 <link linkend="xmlSecDSigCtxDestroy"><type>xmlSecDSigCtxDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>keysMngr</parameter>&#160;:</term>
@@ -322,7 +322,7 @@ Destroy context object created with <link linkend="xmlSecDSigCtxCreate"><type>xm
                                                          <parameter><link linkend="xmlSecKeysMngr"><type>xmlSecKeysMngrPtr</type></link> keysMngr</parameter>);</programlisting>
 <para>
 Initializes <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signature">&lt;dsig:Signature/&gt;</ulink> element processing context.
-The caller is responsible for cleaing up returend object by calling
+The caller is responsible for cleaning up returned object by calling
 <link linkend="xmlSecDSigCtxFinalize"><type>xmlSecDSigCtxFinalize</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>dsigCtx</parameter>&#160;:</term>

@@ -135,8 +135,6 @@ struct              <link linkend="xmlSecTransform">xmlSecTransform</link>;
                                                          <parameter><link linkend="FILE:CAPS"><type>FILE</type></link> *output</parameter>);
 #define             <link linkend="xmlSecTransformGetName">xmlSecTransformGetName</link>              (transform)
 #define             <link linkend="xmlSecTransformIsValid">xmlSecTransformIsValid</link>              (transform)
-#define             <link linkend="xmlSecTransformCheckType">xmlSecTransformCheckType</link>            (transform,
-                                                         t)
 #define             <link linkend="xmlSecTransformCheckId">xmlSecTransformCheckId</link>              (transform,
                                                          i)
 #define             <link linkend="xmlSecTransformCheckSize">xmlSecTransformCheckSize</link>            (transform,
@@ -260,6 +258,8 @@ struct              <link linkend="xmlSecTransformKlass">xmlSecTransformKlass</l
                                                          <parameter><link linkend="xmlNode"><type>xmlNodePtr</type></link> hereNode</parameter>);
 #define             <link linkend="xmlSecTransformXsltId">xmlSecTransformXsltId</link>
 <link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecTransformXsltGetKlass">xmlSecTransformXsltGetKlass</link>         (<parameter><type>void</type></parameter>);
+<link linkend="void"><returnvalue>void</returnvalue></link>                <link linkend="xmlSecTransformXsltSetDefaultSecurityPrefs">xmlSecTransformXsltSetDefaultSecurityPrefs</link>
+                                                        (<parameter><link linkend="xsltSecurityPrefs"><type>xsltSecurityPrefsPtr</type></link> sec</parameter>);
 #define             <link linkend="xmlSecTransformRemoveXmlTagsC14NId">xmlSecTransformRemoveXmlTagsC14NId</link>
 <link linkend="xmlSecTransformId"><returnvalue>xmlSecTransformId</returnvalue></link>   <link linkend="xmlSecTransformRemoveXmlTagsC14NGetKlass">xmlSecTransformRemoveXmlTagsC14NGetKlass</link>
                                                         (<parameter><type>void</type></parameter>);
@@ -758,7 +758,7 @@ The transform execution context.
 <programlisting><link linkend="xmlSecTransformCtx"><returnvalue>xmlSecTransformCtxPtr</returnvalue></link>  xmlSecTransformCtxCreate         (<parameter><type>void</type></parameter>);</programlisting>
 <para>
 Creates transforms chain processing context.
-The caller is responsible for destroying returend object by calling
+The caller is responsible for destroying returned object by calling
 <link linkend="xmlSecTransformCtxDestroy"><type>xmlSecTransformCtxDestroy</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to newly allocated context object or NULL if an error
@@ -782,7 +782,7 @@ Destroy context object created with <link linkend="xmlSecTransformCtxCreate"><ty
 <programlisting><link linkend="int"><returnvalue>int</returnvalue></link>                 xmlSecTransformCtxInitialize        (<parameter><link linkend="xmlSecTransformCtx"><type>xmlSecTransformCtxPtr</type></link> ctx</parameter>);</programlisting>
 <para>
 Initializes transforms chain processing context.
-The caller is responsible for cleaing up returend object by calling
+The caller is responsible for cleaning up returned object by calling
 <link linkend="xmlSecTransformCtxFinalize"><type>xmlSecTransformCtxFinalize</type></link> function.
 </para><variablelist role="params">
 <varlistentry><term><parameter>ctx</parameter>&#160;:</term>
@@ -1557,21 +1557,6 @@ Macro. Returns 1 if the <parameter>transform</parameter> is valid or 0 otherwise
 </para><variablelist role="params">
 <varlistentry><term><parameter>transform</parameter>&#160;:</term>
 <listitem><simpara>the pointer to transform.
-</simpara></listitem></varlistentry>
-</variablelist></refsect2>
-<refsect2 id="xmlSecTransformCheckType" role="macro">
-<title>xmlSecTransformCheckType()</title>
-<indexterm zone="xmlSecTransformCheckType"><primary>xmlSecTransformCheckType</primary></indexterm>
-<programlisting>#define             xmlSecTransformCheckType(transform, t)</programlisting>
-<para>
-Macro. Returns 1 if the <parameter>transform</parameter> is valid and has specified type <parameter>t</parameter>
-or 0 otherwise.
-</para><variablelist role="params">
-<varlistentry><term><parameter>transform</parameter>&#160;:</term>
-<listitem><simpara>the pointer to transform.
-</simpara></listitem></varlistentry>
-<varlistentry><term><parameter>t</parameter>&#160;:</term>
-<listitem><simpara>the transform type.
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformCheckId" role="macro">
@@ -2657,6 +2642,19 @@ that support the XSLT transform. Note that if the output is actually HTML,
 then the result of these steps is logically equivalent [XHTML].
 </para><variablelist role="params">
 <varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> pointer to XSLT transform klass.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="xmlSecTransformXsltSetDefaultSecurityPrefs" role="function">
+<title>xmlSecTransformXsltSetDefaultSecurityPrefs ()</title>
+<indexterm zone="xmlSecTransformXsltSetDefaultSecurityPrefs"><primary>xmlSecTransformXsltSetDefaultSecurityPrefs</primary></indexterm>
+<programlisting><link linkend="void"><returnvalue>void</returnvalue></link>                xmlSecTransformXsltSetDefaultSecurityPrefs
+                                                        (<parameter><link linkend="xsltSecurityPrefs"><type>xsltSecurityPrefsPtr</type></link> sec</parameter>);</programlisting>
+<para>
+Sets the new default security preferences. The xmlsec default security policy is 
+to disable everything.
+</para><variablelist role="params">
+<varlistentry><term><parameter>sec</parameter>&#160;:</term>
+<listitem><simpara>the new security preferences
 </simpara></listitem></varlistentry>
 </variablelist></refsect2>
 <refsect2 id="xmlSecTransformRemoveXmlTagsC14NId" role="macro">

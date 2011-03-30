@@ -678,15 +678,6 @@ Transform object definition.
 @transform: 
 
 
-<!-- ##### MACRO xmlSecTransformCheckType ##### -->
-<para>
-
-</para>
-
-@transform: 
-@t: 
-
-
 <!-- ##### MACRO xmlSecTransformCheckId ##### -->
 <para>
 
@@ -1262,6 +1253,14 @@ Transform object definition.
 
 @void: 
 @Returns: 
+
+
+<!-- ##### FUNCTION xmlSecTransformXsltSetDefaultSecurityPrefs ##### -->
+<para>
+
+</para>
+
+@sec: 
 
 
 <!-- ##### MACRO xmlSecTransformRemoveXmlTagsC14NId ##### -->

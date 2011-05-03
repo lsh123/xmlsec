@@ -66,9 +66,12 @@ static int              xmlSecXsltPushBin                       (xmlSecTransform
 static int              xmlSecXsltExecute                       (xmlSecTransformPtr transform,
                                                                  int last,
                                                                  xmlSecTransformCtxPtr transformCtx);
-static int              xmlSecXslProcess                        (xmlSecBufferPtr in,
-                                                                 xmlSecBufferPtr out,
-                                                                 xsltStylesheetPtr stylesheet);
+static int              xmlSecXslProcess                        (xmlSecXsltCtxPtr ctx,
+                                                                 xmlSecBufferPtr in,
+                                                                 xmlSecBufferPtr out);
+static xmlDocPtr        xmlSecXsApplyStylesheet                 (xmlSecXsltCtxPtr ctx,
+                                                                 xmlDocPtr doc);
+                                                                 
 static xmlSecTransformKlass xmlSecXsltKlass = {
     /* klass/object sizes */
     sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
@@ -181,7 +184,6 @@ xmlSecTransformXsltGetKlass(void) {
 static int
 xmlSecXsltInitialize(xmlSecTransformPtr transform) {
     xmlSecXsltCtxPtr ctx;
-    int ret;
 
     xmlSecAssert2(xmlSecTransformCheckId(transform, xmlSecTransformXsltId), -1);
     xmlSecAssert2(xmlSecTransformCheckSize(transform, xmlSecXsltSize), -1);
@@ -192,10 +194,6 @@ xmlSecXsltInitialize(xmlSecTransformPtr transform) {
     /* initialize context */
     memset(ctx, 0, sizeof(xmlSecXsltCtx));
     
-    /* set security prefs  */
-    ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, ctx);
-    xmlSecAssert2(ret == 0, -1);
-
     /* done */
     return(0);
 }
@@ -363,12 +361,12 @@ xmlSecXsltPushBin(xmlSecTransformPtr transform, const xmlSecByte* data,
         docIn = ctx->parserCtx->myDoc;
         ctx->parserCtx->myDoc = NULL;
 
-        docOut = xsltApplyStylesheet(ctx->xslt, docIn, NULL);
+        docOut = xmlSecXsApplyStylesheet(ctx, docIn);
         if(docOut == NULL) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
-                        "xsltApplyStylesheet",
-                        XMLSEC_ERRORS_R_XSLT_FAILED,
+                        "xmlSecXsApplyStylesheet",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
                         XMLSEC_ERRORS_NO_MESSAGE);
             xmlFreeDoc(docIn);
             return(-1);
@@ -459,7 +457,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
     } else  if((transform->status == xmlSecTransformStatusWorking) && (last != 0)) {
         xmlSecAssert2(outSize == 0, -1);
 
-        ret = xmlSecXslProcess(in, out, ctx->xslt);
+        ret = xmlSecXslProcess(ctx, in, out);
         if(ret < 0) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
@@ -496,7 +494,7 @@ xmlSecXsltExecute(xmlSecTransformPtr transform, int last, xmlSecTransformCtxPtr 
 
 /* TODO: create PopBin method instead */
 static int
-xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr stylesheet) {
+xmlSecXslProcess(xmlSecXsltCtxPtr ctx, xmlSecBufferPtr in, xmlSecBufferPtr out) {
     xmlDocPtr docIn = NULL;
     xmlDocPtr docOut = NULL;
     xmlOutputBufferPtr output = NULL;
@@ -505,7 +503,7 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
 
     xmlSecAssert2(in != NULL, -1);
     xmlSecAssert2(out != NULL, -1);
-    xmlSecAssert2(stylesheet != NULL, -1);
+    xmlSecAssert2(ctx != NULL, -1);
 
     docIn = xmlSecParseMemory(xmlSecBufferGetData(in), xmlSecBufferGetSize(in), 1);
     if(docIn == NULL) {
@@ -517,12 +515,12 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
         goto done;
     }
 
-    docOut = xsltApplyStylesheet(stylesheet, docIn, NULL);
+    docOut = xmlSecXsApplyStylesheet(ctx, docIn);
     if(docOut == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
-                    "xsltApplyStylesheet",
-                    XMLSEC_ERRORS_R_XSLT_FAILED,
+                    "xmlSecXsApplyStylesheet",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);
         goto done;
     }
@@ -537,7 +535,7 @@ xmlSecXslProcess(xmlSecBufferPtr in, xmlSecBufferPtr out,  xsltStylesheetPtr sty
         goto done;
     }
 
-    ret = xsltSaveResultTo(output, docOut, stylesheet);
+    ret = xsltSaveResultTo(output, docOut, ctx->xslt);
     if(ret < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -566,6 +564,54 @@ done:
     if(docOut != NULL) xmlFreeDoc(docOut);
     return(res);
 }
+
+
+static xmlDocPtr
+xmlSecXsApplyStylesheet(xmlSecXsltCtxPtr ctx, xmlDocPtr doc) {
+    xsltTransformContextPtr xsltCtx = NULL;
+    xmlDocPtr res = NULL;
+    int ret;
+    
+    xmlSecAssert2(ctx != NULL, NULL);
+    xmlSecAssert2(ctx->xslt != NULL, NULL);
+    xmlSecAssert2(doc != NULL, NULL);
+
+    xsltCtx = xsltNewTransformContext(ctx->xslt, doc);
+    if(xsltCtx == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xsltNewTransformContext",
+                    XMLSEC_ERRORS_R_XSLT_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }	    
+
+    /* set security prefs  */
+    ret = xsltSetCtxtSecurityPrefs(g_xslt_default_security_prefs, xsltCtx);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xsltSetCtxtSecurityPrefs",
+                    XMLSEC_ERRORS_R_XSLT_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+
+    res = xsltApplyStylesheetUser(ctx->xslt, doc, NULL, NULL, NULL, xsltCtx);
+    if(res == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "xsltApplyStylesheetUser",
+                    XMLSEC_ERRORS_R_XSLT_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        goto done;
+    }
+    
+done:
+    if(xsltCtx != NULL) xsltFreeTransformContext(xsltCtx);
+    return res;    
+}
+
 
 #endif /* XMLSEC_NO_XSLT */
 

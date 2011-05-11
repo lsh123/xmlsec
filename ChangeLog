@@ -1,3 +1,9 @@
+2011-05-11  Aleksey Sanin  <aleksey@aleksey.com>
+        * 1.2.18 release
+
+2011-05-01  Aleksey Sanin  <aleksey@aleksey.com>
+        * Fixed crasher in 64 bit (reported by Roumen)
+
 2011-03-31  Aleksey Sanin  <aleksey@aleksey.com>
         * 1.2.17 release
 

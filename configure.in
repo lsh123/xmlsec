@@ -1374,7 +1374,7 @@ if test "z$enable_crypto_dl" = "zno" ; then
 else
     AC_CHECK_HEADER([ltdl.h], 
 	[
-	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1",
+	XMLSEC_DEFINES="$XMLSEC_DEFINES -DXMLSEC_DL_LIBLTDL=1"
 	AC_CHECK_LIB(
 	    [ltdl],
 	    [lt_dlopenext],

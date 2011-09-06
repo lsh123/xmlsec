@@ -102,6 +102,12 @@ xmlSecOpenSSLEvpDigestCheckId(xmlSecTransformPtr transform) {
     } else
 #endif /* XMLSEC_NO_SHA512 */
 
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST*/
+
 
     {
         return(0);
@@ -164,6 +170,21 @@ xmlSecOpenSSLEvpDigestInitialize(xmlSecTransformPtr transform) {
         ctx->digest = EVP_sha512();
     } else
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGostR3411_94Id)) {
+        ctx->digest = EVP_get_digestbyname("md_gost94");
+				if (!ctx->digest)
+				{
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+				}
+    } else
+#endif /* XMLSEC_NO_GOST*/
 
     {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -679,4 +700,48 @@ xmlSecOpenSSLTransformSha512GetKlass(void) {
     return(&xmlSecOpenSSLSha512Klass);
 }
 #endif /* XMLSEC_NO_SHA512 */
+
+#ifndef XMLSEC_NO_GOST
+/******************************************************************************
+ *
+ * GOSTR3411_94
+ *
+ *****************************************************************************/
+static xmlSecTransformKlass xmlSecOpenSSLGostR3411_94Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* size_t klassSize */
+    xmlSecOpenSSLEvpDigestSize,                   /* size_t objSize */
+
+    xmlSecNameGostR3411_94,                             /* const xmlChar* name; */
+    xmlSecHrefGostR3411_94,                             /* const xmlChar* href; */
+    xmlSecTransformUsageDigestMethod,           /* xmlSecTransformUsage usage; */
+    xmlSecOpenSSLEvpDigestInitialize,             /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpDigestFinalize,               /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    NULL,                                       /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    NULL,                                       /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpDigestVerify,                 /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpDigestExecute,                /* xmlSecTransformExecuteMethod execute; */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformGostR3411_94GetKlass:
+ *
+ * GOSTR3411_94 digest transform klass.
+ *
+ * Returns: pointer to GOSTR3411_94 digest transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGostR3411_94GetKlass(void) {
+    return(&xmlSecOpenSSLGostR3411_94Klass);
+}
+#endif /* XMLSEC_NO_GOST*/
 

@@ -74,6 +74,10 @@ xmlSecCryptoGetFunctions_openssl(void) {
     gXmlSecOpenSSLFunctions->keyDataDsaGetKlass         = xmlSecOpenSSLKeyDataDsaGetKlass;
 #endif /* XMLSEC_NO_DSA */
 
+#ifndef XMLSEC_NO_GOST
+    gXmlSecOpenSSLFunctions->keyDataGost2001GetKlass           = xmlSecOpenSSLKeyDataGost2001GetKlass;
+#endif /* XMLSEC_NO_GOST*/
+
 #ifndef XMLSEC_NO_HMAC
     gXmlSecOpenSSLFunctions->keyDataHmacGetKlass        = xmlSecOpenSSLKeyDataHmacGetKlass;
 #endif /* XMLSEC_NO_HMAC */
@@ -126,6 +130,15 @@ xmlSecCryptoGetFunctions_openssl(void) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #endif /* XMLSEC_NO_DSA */
+
+    /******************************* GOST ********************************/
+#ifndef XMLSEC_NO_GOST
+    gXmlSecOpenSSLFunctions->transformGost2001GostR3411_94GetKlass             = xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass;
+#endif /* XMLSEC_NO_GOST */
+
+#ifndef XMLSEC_NO_GOST
+    gXmlSecOpenSSLFunctions->transformGostR3411_94GetKlass             = xmlSecOpenSSLTransformGostR3411_94GetKlass;
+#endif /* XMLSEC_NO_GOST */
 
     /******************************* HMAC ********************************/
 #ifndef XMLSEC_NO_HMAC

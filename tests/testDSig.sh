@@ -806,9 +806,9 @@ echo "--------- These tests CAN FAIL (extra OS config required) ----------"
 execDSigTest $res_success \
     "" \
     "aleksey-xmldsig-01/enveloped-gost" \
-    "enveloped-signature gostr34102001-gostr3411 gostr3411" \
-    "gost" \
-    "--trusted-$cert_format $topfolder/keys/gost2001ca.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --enabled-key-data x509" \
+    "enveloped-signature gostr3411" \
+    "gost2001" \
+    "--trusted-$cert_format $topfolder/keys/gost2001ca.$cert_format --untrusted-$cert_format $topfolder/keys/ca2cert.$cert_format  --enabled-key-data x509 --verification-time 2007-01-01+10:00:00" \
     "" \
     ""
 

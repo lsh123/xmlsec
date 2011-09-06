@@ -186,6 +186,33 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformDsaSha1GetKlass(voi
 
 /********************************************************************
  *
+ * GOST2001 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST
+
+/**
+ * xmlSecOpenSSLKeyDataGost2001Id:
+ *
+ * The GOST2001 key klass.
+ */
+#define xmlSecOpenSSLKeyDataGost2001Id \
+        xmlSecOpenSSLKeyDataGost2001GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGost2001GetKlass   (void);
+
+/**
+ * xmlSecOpenSSLTransformGost2001GostR3411_94Id:
+ *
+ * The GOST2001 GOSTR3411_94 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformGost2001GostR3411_94Id \
+        xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void);
+
+#endif /* XMLSEC_NO_GOST */
+
+/********************************************************************
+ *
  * HMAC transforms
  *
  *******************************************************************/
@@ -522,6 +549,23 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha384GetKlass(void
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
 
+
+/********************************************************************
+ *
+ * GOSTR3411_94 transform
+ *
+ *******************************************************************/
+#ifndef XMLSEC_NO_GOST
+
+/**
+ * xmlSecOpenSSLTransformGostR3411_94Id:
+ *
+ * The GOSTR3411_94 digest transform klass.
+ */
+#define xmlSecOpenSSLTransformGostR3411_94Id \
+        xmlSecOpenSSLTransformGostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlass(void);
+#endif /* XMLSEC_NO_GOST */
 
 
 

@@ -1,3 +1,6 @@
+2011-09-06  Aleksey Sanin  <aleksey@aleksey.com>
+        * GOST support for xmlsec-openssl (patch from Dmitry Belyavsky)
+
 2011-05-11  Aleksey Sanin  <aleksey@aleksey.com>
         * 1.2.18 release
 

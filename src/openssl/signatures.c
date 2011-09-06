@@ -127,6 +127,12 @@ xmlSecOpenSSLEvpSignatureCheckId(xmlSecTransformPtr transform) {
 
 #endif /* XMLSEC_NO_RSA */
 
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
+        return(1);
+    } else
+#endif /* XMLSEC_NO_GOST*/
+
     {
         return(0);
     }
@@ -209,6 +215,22 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA512 */
 
 #endif /* XMLSEC_NO_RSA */
+
+#ifndef XMLSEC_NO_GOST
+    if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformGost2001GostR3411_94Id)) {
+        ctx->keyId          = xmlSecOpenSSLKeyDataGost2001Id;
+        ctx->digest = EVP_get_digestbyname("md_gost94");
+				if (!ctx->digest)
+				{
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformGetName(transform)),
+                    NULL,
+                    XMLSEC_ERRORS_R_INVALID_TRANSFORM,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+				}
+    } else
+#endif /* XMLSEC_NO_GOST*/
 
     if(1) {
         xmlSecError(XMLSEC_ERRORS_HERE,
@@ -1061,5 +1083,53 @@ xmlSecOpenSSLTransformRsaSha512GetKlass(void) {
 
 #endif /* XMLSEC_NO_RSA */
 
+
+#ifndef XMLSEC_NO_GOST
+/****************************************************************************
+ *
+ * GOST2001-GOSTR3411_94 signature transform
+ *
+ ***************************************************************************/
+
+static xmlSecTransformKlass xmlSecOpenSSLGost2001GostR3411_94Klass = {
+    /* klass/object sizes */
+    sizeof(xmlSecTransformKlass),               /* xmlSecSize klassSize */
+    xmlSecOpenSSLEvpSignatureSize,                /* xmlSecSize objSize */
+
+    xmlSecNameGost2001GostR3411_94,                             /* const xmlChar* name; */
+    xmlSecHrefGost2001GostR3411_94,                             /* const xmlChar* href; */
+    xmlSecTransformUsageSignatureMethod,        /* xmlSecTransformUsage usage; */
+
+    xmlSecOpenSSLEvpSignatureInitialize,          /* xmlSecTransformInitializeMethod initialize; */
+    xmlSecOpenSSLEvpSignatureFinalize,            /* xmlSecTransformFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecTransformNodeReadMethod readNode; */
+    NULL,                                       /* xmlSecTransformNodeWriteMethod writeNode; */
+    xmlSecOpenSSLEvpSignatureSetKeyReq,           /* xmlSecTransformSetKeyReqMethod setKeyReq; */
+    xmlSecOpenSSLEvpSignatureSetKey,              /* xmlSecTransformSetKeyMethod setKey; */
+    xmlSecOpenSSLEvpSignatureVerify,              /* xmlSecTransformVerifyMethod verify; */
+    xmlSecTransformDefaultGetDataType,          /* xmlSecTransformGetDataTypeMethod getDataType; */
+    xmlSecTransformDefaultPushBin,              /* xmlSecTransformPushBinMethod pushBin; */
+    xmlSecTransformDefaultPopBin,               /* xmlSecTransformPopBinMethod popBin; */
+    NULL,                                       /* xmlSecTransformPushXmlMethod pushXml; */
+    NULL,                                       /* xmlSecTransformPopXmlMethod popXml; */
+    xmlSecOpenSSLEvpSignatureExecute,             /* xmlSecTransformExecuteMethod execute; */
+
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass:
+ *
+ * The GOST2001-GOSTR3411_94 signature transform klass.
+ *
+ * Returns: GOST2001-GOSTR3411_94 signature transform klass.
+ */
+xmlSecTransformId
+xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void) {
+    return(&xmlSecOpenSSLGost2001GostR3411_94Klass);
+}
+
+#endif /* XMLSEC_NO_GOST*/
 
 

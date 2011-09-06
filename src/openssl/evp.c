@@ -237,6 +237,19 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
         }
         break;
 #endif /* XMLSEC_NO_DSA */
+#ifndef XMLSEC_NO_GOST
+    case NID_id_GostR3410_2001:
+        data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataGost2001Id);
+        if(data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecOpenSSLKeyDataGost2001Id");
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_GOST */
     default:
         xmlSecError(XMLSEC_ERRORS_HERE,
                     NULL,
@@ -1556,4 +1569,139 @@ xmlSecOpenSSLKeyDataRsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 #endif /* XMLSEC_NO_RSA */
 
 
+#ifndef XMLSEC_NO_GOST
+/**************************************************************************
+ *
+ * GOST2001 xml key representation processing. Contain errors.
+ *
+ *************************************************************************/
+static int              xmlSecOpenSSLKeyDataGost2001Initialize(xmlSecKeyDataPtr data);
+static int              xmlSecOpenSSLKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst,
+                                                         xmlSecKeyDataPtr src);
+static void             xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data);
+static int              xmlSecOpenSSLKeyDataGost2001XmlRead    (xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecOpenSSLKeyDataGost2001XmlWrite(xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecOpenSSLKeyDataGost2001Generate(xmlSecKeyDataPtr data,
+                                                         xmlSecSize sizeBits,
+                                                         xmlSecKeyDataType type);
+
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecOpenSSLKeyDataGost2001GetSize(xmlSecKeyDataPtr data);
+static void              xmlSecOpenSSLKeyDataGost2001DebugDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+static void             xmlSecOpenSSLKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataGost2001Klass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecOpenSSLEvpKeyDataSize,
+
+    /* data */
+    xmlSecNameGOST2001KeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                        /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefGOST2001KeyValue,         /* const xmlChar* href; */
+    xmlSecNodeGOST2001KeyValue,         /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                       /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLKeyDataGost2001Initialize,    /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataGost2001Duplicate,     /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataGost2001Finalize,      /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL, /* xmlSecOpenSSLKeyDataGost2001Generate,*/   /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLKeyDataGost2001GetType,       /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataGost2001GetSize,       /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                               /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,       /* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,       /* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                               /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                               /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLKeyDataGost2001DebugDump,     /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataGost2001DebugXmlDump,/* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                               /* void* reserved0; */
+    NULL,                               /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataGost2001GetKlass:
+ *
+ * The GOST2001 key data klass.
+ *
+ * Returns: pointer to GOST2001 key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataGost2001GetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataGost2001Klass);
+}
+
+
+static int
+xmlSecOpenSSLKeyDataGost2001Initialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataGost2001Duplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataGost2001Id), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataGost2001Id), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecOpenSSLKeyDataGost2001Finalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
+
+    xmlSecOpenSSLEvpKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecOpenSSLKeyDataGost2001GetType(xmlSecKeyDataPtr data) {
+	/* Now I don't know how to find whether we have both private and public key 
+	or the public only*/
+	return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+}
+
+static xmlSecSize
+xmlSecOpenSSLKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id), 0);
+
+    return xmlSecOpenSSLKeyDataGetSize(data);
+}
+
+static void
+xmlSecOpenSSLKeyDataGost2001DebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== gost key: size = %d\n",
+            xmlSecOpenSSLKeyDataGost2001GetSize(data));
+}
+
+static void
+xmlSecOpenSSLKeyDataGost2001DebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<GOST2001KeyValue size=\"%d\" />\n",
+            xmlSecOpenSSLKeyDataGost2001GetSize(data));
+}
+
+#endif /* XMLSEC_NO_GOST*/
 

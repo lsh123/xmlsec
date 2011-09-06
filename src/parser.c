@@ -405,6 +405,9 @@ xmlSecParseFile(const char *filename) {
         return(NULL);
     }
 
+    /* enable parsing of XML documents with large text nodes */
+    xmlCtxtUseOptions (ctxt, XML_PARSE_HUGE);
+
     /* todo: set directories from current doc? */
     if ((ctxt->directory == NULL) && (directory == NULL))
         directory = xmlParserGetDirectory(filename);

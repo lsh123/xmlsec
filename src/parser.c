@@ -406,7 +406,7 @@ xmlSecParseFile(const char *filename) {
     }
 
     /* enable parsing of XML documents with large text nodes */
-    xmlCtxtUseOptions (ctxt, XML_PARSE_HUGE);
+    /* crashes on x64 xmlCtxtUseOptions (ctxt, XML_PARSE_HUGE); */
 
     /* todo: set directories from current doc? */
     if ((ctxt->directory == NULL) && (directory == NULL))

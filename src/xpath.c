@@ -281,6 +281,23 @@ xmlSecXPathDataExecute(xmlSecXPathDataPtr data, xmlDocPtr doc, xmlNodePtr hereNo
         break;
     }
 
+    /* sometime LibXML2 returns an empty nodeset or just NULL, we want
+    to reserve NULL for our own purposes so we simply create an empty
+    node set here */
+    if(xpathObj->nodesetval == NULL) {
+	xpathObj->nodesetval = xmlXPathNodeSetCreate(NULL);
+	if(xpathObj->nodesetval == NULL) {
+		xmlXPathFreeObject(xpathObj);
+		xmlSecError(XMLSEC_ERRORS_HERE,
+			NULL,
+                        "xmlXPathNodeSetCreate",
+                        XMLSEC_ERRORS_R_XML_FAILED,
+                        "expr=%s",
+                        xmlSecErrorsSafeString(data->expr));
+            	return(NULL);
+	}
+    }
+
     nodes = xmlSecNodeSetCreate(doc, xpathObj->nodesetval, data->nodeSetType);
     if(nodes == NULL) {
         xmlSecError(XMLSEC_ERRORS_HERE,

@@ -1682,7 +1682,7 @@ static xmlSecSize
 xmlSecOpenSSLKeyDataGost2001GetSize(xmlSecKeyDataPtr data) {
     xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataGost2001Id), 0);
 
-    return xmlSecOpenSSLKeyDataGetSize(data);
+    return 512;
 }
 
 static void

@@ -209,6 +209,16 @@ XMLSEC_CRYPTO_EXPORT xmlSecKeyDataId    xmlSecOpenSSLKeyDataGost2001GetKlass   (
         xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGost2001GostR3411_94GetKlass(void);
 
+
+/**
+ * xmlSecOpenSSLTransformGostR3411_94Id:
+ *
+ * The GOSTR3411_94 signature transform klass.
+ */
+#define xmlSecOpenSSLTransformGostR3411_94Id \
+	xmlSecOpenSSLTransformGostR3411_94GetKlass()
+XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlass(void);
+
 #endif /* XMLSEC_NO_GOST */
 
 /********************************************************************
@@ -548,24 +558,6 @@ XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha384GetKlass(void
         xmlSecOpenSSLTransformSha512GetKlass()
 XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformSha512GetKlass(void);
 #endif /* XMLSEC_NO_SHA512 */
-
-
-/********************************************************************
- *
- * GOSTR3411_94 transform
- *
- *******************************************************************/
-#ifndef XMLSEC_NO_GOST
-
-/**
- * xmlSecOpenSSLTransformGostR3411_94Id:
- *
- * The GOSTR3411_94 digest transform klass.
- */
-#define xmlSecOpenSSLTransformGostR3411_94Id \
-        xmlSecOpenSSLTransformGostR3411_94GetKlass()
-XMLSEC_CRYPTO_EXPORT xmlSecTransformId xmlSecOpenSSLTransformGostR3411_94GetKlass(void);
-#endif /* XMLSEC_NO_GOST */
 
 
 

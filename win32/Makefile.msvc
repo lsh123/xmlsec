@@ -304,7 +304,7 @@ CPPFLAGS 		= /nologo
 #
 CC 			= cl.exe
 CFLAGS 			= /nologo /D "WIN32" /D "_WINDOWS" 
-CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W1 /MD 
+CFLAGS 			= $(CFLAGS) /D "_MBCS" /D "_REENTRANT"  /W1  
 CFLAGS 			= $(CFLAGS) /I$(BASEDIR) /I$(BASEDIR)\include
 CFLAGS 			= $(CFLAGS) /I$(INCPREFIX)
 CFLAGS 			= $(CFLAGS) /D PACKAGE=\"$(XMLSEC_NAME)\" 
@@ -318,9 +318,9 @@ CFLAGS 			= $(CFLAGS) /D "UNICODE" /D "_UNICODE"
 
 # Optimisation and debug symbols.
 !if "$(DEBUG)" == "1"
-CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Z7
+CFLAGS 			= $(CFLAGS) /D "_DEBUG" /Od /Z7 /MDd 
 !else
-CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2 
+CFLAGS 			= $(CFLAGS) /D "NDEBUG" /O2 /MD
 !endif
 
 # configurable options

@@ -164,9 +164,9 @@ xmlSecCheckVersionExt(int major, int minor, int subminor, xmlSecCheckVersionMode
         }
         break;
     case xmlSecCheckVersionABICompatible:
-        if((minor < XMLSEC_VERSION_MINOR) ||
+        if((minor > XMLSEC_VERSION_MINOR) ||
            ((minor == XMLSEC_VERSION_MINOR) &&
-            (subminor < XMLSEC_VERSION_SUBMINOR))) {
+            (subminor > XMLSEC_VERSION_SUBMINOR))) {
             xmlSecError(XMLSEC_ERRORS_HERE,
                         NULL,
                         NULL,

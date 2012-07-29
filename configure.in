@@ -47,10 +47,6 @@ AC_PATH_PROG(TAR, tar, /bin/tar)
 AC_PATH_PROG(HELP2MAN, help2man)
 AC_PATH_PROG(MAN2HTML, man2html)
 
-dnl Make sure we have an ANSI compiler
-AM_C_PROTOTYPES
-test "z$U" != "z" && AC_MSG_ERROR(Compiler not ANSI compliant)
-
 dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC

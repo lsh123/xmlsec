@@ -118,9 +118,6 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define to 1 if the C compiler supports function prototypes. */
-#undef PROTOTYPES
-
 /* The size of `size_t', as computed by sizeof. */
 #undef SIZEOF_SIZE_T
 
@@ -129,6 +126,3 @@
 
 /* Version number of package */
 #undef VERSION
-
-/* Define like PROTOTYPES; this can be used by system headers. */
-#undef __PROTOTYPES

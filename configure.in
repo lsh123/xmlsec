@@ -950,11 +950,11 @@ dnl    AC_CHECK_LIB(crypt32, CertOpenStore, ....
     LIBS_SAVE="$LIBS"
     LIBS="$LIBS -lcrypt32"
     AC_MSG_CHECKING(for mscrypto libraries)
-    AC_LINK_IFELSE([
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([
 	#include <windows.h>
-	#include <wincrypt.h>
+	#include <wincrypt.h>],[
 	int main () { CertOpenStore(0,0,0,0,0);; return(0); }
-	],
+	])],
 	[],
 	[MSCRYPTO_ENABLE="no"])
     AC_MSG_RESULT([$MSCRYPTO_ENABLE])

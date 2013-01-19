@@ -322,6 +322,42 @@ const xmlChar xmlSecNodeDSAPgenCounter[]        = "PgenCounter";
 const xmlChar xmlSecNameDsaSha1[]               = "dsa-sha1";
 const xmlChar xmlSecHrefDsaSha1[]               = "http://www.w3.org/2000/09/xmldsig#dsa-sha1";
 
+const xmlChar xmlSecNameDsaSha256[]             = "dsa-sha256";
+const xmlChar xmlSecHrefDsaSha256[]             = "http://www.w3.org/2009/xmldsig11#dsa-sha256";
+
+/*************************************************************************
+ *
+ * ECDSA strings
+ *
+ ************************************************************************/
+/* XXX-MAK: More constants will be needed later. */
+const xmlChar xmlSecNameECDSAKeyValue[]         = "ecdsa";
+const xmlChar xmlSecNodeECDSAKeyValue[]         = "ECDSAKeyValue";
+const xmlChar xmlSecHrefECDSAKeyValue[]         = "http://scap.nist.gov/specifications/tmsad/#resource-1.0";
+const xmlChar xmlSecNodeECDSAP[]                = "P";
+const xmlChar xmlSecNodeECDSAQ[]                = "Q";
+const xmlChar xmlSecNodeECDSAG[]                = "G";
+const xmlChar xmlSecNodeECDSAJ[]                = "J";
+const xmlChar xmlSecNodeECDSAX[]                = "X";
+const xmlChar xmlSecNodeECDSAY[]                = "Y";
+const xmlChar xmlSecNodeECDSASeed[]             = "Seed";
+const xmlChar xmlSecNodeECDSAPgenCounter[]      = "PgenCounter";
+
+const xmlChar xmlSecNameEcdsaSha1[]             = "ecdsa-sha1";
+const xmlChar xmlSecHrefEcdsaSha1[]             = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
+
+const xmlChar xmlSecNameEcdsaSha224[]           = "ecdsa-sha224";
+const xmlChar xmlSecHrefEcdsaSha224[]           = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224";
+
+const xmlChar xmlSecNameEcdsaSha256[]           = "ecdsa-sha256";
+const xmlChar xmlSecHrefEcdsaSha256[]           = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
+
+const xmlChar xmlSecNameEcdsaSha384[]           = "ecdsa-sha384";
+const xmlChar xmlSecHrefEcdsaSha384[]           = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
+
+const xmlChar xmlSecNameEcdsaSha512[]           = "ecdsa-sha512";
+const xmlChar xmlSecHrefEcdsaSha512[]           = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
+
 /*************************************************************************
  *
  * EncryptedKey

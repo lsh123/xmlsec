@@ -237,6 +237,19 @@ xmlSecOpenSSLEvpKeyAdopt(EVP_PKEY *pKey) {
         }
         break;
 #endif /* XMLSEC_NO_DSA */
+#ifndef XMLSEC_NO_ECDSA
+    case EVP_PKEY_EC:
+        data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataEcdsaId);
+        if(data == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        NULL,
+                        "xmlSecKeyDataCreate",
+                        XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                        "xmlSecOpenSSLKeyDataEcdsaId");
+            return(NULL);
+        }
+        break;
+#endif /* XMLSEC_NO_ECDSA */
 #ifndef XMLSEC_NO_GOST
     case NID_id_GostR3410_2001:
         data = xmlSecKeyDataCreate(xmlSecOpenSSLKeyDataGost2001Id);
@@ -996,6 +1009,283 @@ xmlSecOpenSSLKeyDataDsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
 }
 
 #endif /* XMLSEC_NO_DSA */
+
+#ifndef XMLSEC_NO_ECDSA
+/**************************************************************************
+ *
+ * ECDSA XML key representation processing.
+ *
+ * http://csrc.nist.gov/publications/PubsNISTIRs.html#NIST-IR-7802
+ *
+ * RFC 4050 [RFC4050] describes a possible <dsig:KeyValue> representation
+ * for an ECDSA key. The representation and processing instructions
+ * described in [RFC4050] are not completely compatible with [XMLDSIG-11];
+ * therefore, ECDSA keys SHOULD NOT be provided through a <dsig:KeyValue>
+ * element.
+ *
+ *************************************************************************/
+static int              xmlSecOpenSSLKeyDataEcdsaInitialize(xmlSecKeyDataPtr data);
+static int              xmlSecOpenSSLKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst,
+                                                           xmlSecKeyDataPtr src);
+static void             xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data);
+static int              xmlSecOpenSSLKeyDataEcdsaXmlRead(xmlSecKeyDataId id,
+                                                         xmlSecKeyPtr key,
+                                                         xmlNodePtr node,
+                                                         xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecOpenSSLKeyDataEcdsaXmlWrite(xmlSecKeyDataId id,
+                                                          xmlSecKeyPtr key,
+                                                          xmlNodePtr node,
+                                                          xmlSecKeyInfoCtxPtr keyInfoCtx);
+static int              xmlSecOpenSSLKeyDataEcdsaGenerate(xmlSecKeyDataPtr data,
+                                                          xmlSecSize sizeBits,
+                                                          xmlSecKeyDataType type);
+
+static xmlSecKeyDataType xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data);
+static xmlSecSize        xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data);
+static void              xmlSecOpenSSLKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+static void             xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data,
+                                                         FILE* output);
+
+static xmlSecKeyDataKlass xmlSecOpenSSLKeyDataEcdsaKlass = {
+    sizeof(xmlSecKeyDataKlass),
+    xmlSecOpenSSLEvpKeyDataSize,
+
+    /* data */
+    xmlSecNameECDSAKeyValue,
+    xmlSecKeyDataUsageKeyValueNode | xmlSecKeyDataUsageRetrievalMethodNodeXml,
+                                                /* xmlSecKeyDataUsage usage; */
+    xmlSecHrefECDSAKeyValue,                    /* const xmlChar* href; */
+    xmlSecNodeECDSAKeyValue,                    /* const xmlChar* dataNodeName; */
+    xmlSecDSigNs,                               /* const xmlChar* dataNodeNs; */
+
+    /* constructors/destructor */
+    xmlSecOpenSSLKeyDataEcdsaInitialize,        /* xmlSecKeyDataInitializeMethod initialize; */
+    xmlSecOpenSSLKeyDataEcdsaDuplicate,         /* xmlSecKeyDataDuplicateMethod duplicate; */
+    xmlSecOpenSSLKeyDataEcdsaFinalize,          /* xmlSecKeyDataFinalizeMethod finalize; */
+    NULL,                                       /* xmlSecKeyDataGenerateMethod generate; */
+
+    /* get info */
+    xmlSecOpenSSLKeyDataEcdsaGetType,           /* xmlSecKeyDataGetTypeMethod getType; */
+    xmlSecOpenSSLKeyDataEcdsaGetSize,           /* xmlSecKeyDataGetSizeMethod getSize; */
+    NULL,                                       /* xmlSecKeyDataGetIdentifier getIdentifier; */
+
+    /* read/write */
+    NULL,           				/* xmlSecKeyDataXmlReadMethod xmlRead; */
+    NULL,           				/* xmlSecKeyDataXmlWriteMethod xmlWrite; */
+    NULL,                                       /* xmlSecKeyDataBinReadMethod binRead; */
+    NULL,                                       /* xmlSecKeyDataBinWriteMethod binWrite; */
+
+    /* debug */
+    xmlSecOpenSSLKeyDataEcdsaDebugDump,         /* xmlSecKeyDataDebugDumpMethod debugDump; */
+    xmlSecOpenSSLKeyDataEcdsaDebugXmlDump,      /* xmlSecKeyDataDebugDumpMethod debugXmlDump; */
+
+    /* reserved for the future */
+    NULL,                                       /* void* reserved0; */
+    NULL,                                       /* void* reserved1; */
+};
+
+/**
+ * xmlSecOpenSSLKeyDataEcdsaGetKlass:
+ *
+ * The ECDSA key data klass.
+ *
+ * Returns: pointer to ECDSA key data klass.
+ */
+xmlSecKeyDataId
+xmlSecOpenSSLKeyDataEcdsaGetKlass(void) {
+    return(&xmlSecOpenSSLKeyDataEcdsaKlass);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa:
+ * @data:               the pointer to ECDSA key data.
+ * @ecdsa:              the pointer to OpenSSL ECDSA key.
+ *
+ * Sets the value of ECDSA key data.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataEcdsaAdoptEcdsa(xmlSecKeyDataPtr data, EC_KEY* ecdsa) {
+    EVP_PKEY* pKey = NULL;
+    int ret;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
+
+    /* construct new EVP_PKEY */
+    if(ecdsa != NULL) {
+        pKey = EVP_PKEY_new();
+        if(pKey == NULL) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        "EVP_PKEY_new",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+
+        ret = EVP_PKEY_assign_EC_KEY(pKey, ecdsa);
+        if(ret != 1) {
+            xmlSecError(XMLSEC_ERRORS_HERE,
+                        xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                        "EVP_PKEY_assign_EC_KEY",
+                        XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                        XMLSEC_ERRORS_NO_MESSAGE);
+            return(-1);
+        }
+    }
+
+    ret = xmlSecOpenSSLKeyDataEcdsaAdoptEvp(data, pKey);
+    if(ret < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataGetName(data)),
+                    "xmlSecOpenSSLKeyDataEcdsaAdoptEvp",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        if(pKey != NULL) {
+            EVP_PKEY_free(pKey);
+        }
+        return(-1);
+    }
+    return(0);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEcdsaGetEcdsa:
+ * @data:               the pointer to ECDSA key data.
+ *
+ * Gets the OpenSSL ECDSA key from ECDSA key data.
+ *
+ * Returns: pointer to OpenSSL ECDSA key or NULL if an error occurs.
+ */
+EC_KEY*
+xmlSecOpenSSLKeyDataEcdsaGetEcdsa(xmlSecKeyDataPtr data) {
+    EVP_PKEY* pKey;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
+
+    pKey = xmlSecOpenSSLKeyDataEcdsaGetEvp(data);
+    xmlSecAssert2((pKey == NULL) || (pKey->type == EVP_PKEY_EC), NULL);
+
+    return((pKey != NULL) ? pKey->pkey.ec : (EC_KEY*)NULL);
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEcdsaAdoptEvp:
+ * @data:               the pointer to ECDSA key data.
+ * @pKey:               the pointer to OpenSSL EVP key.
+ *
+ * Sets the ECDSA key data value to OpenSSL EVP key.
+ *
+ * Returns: 0 on success or a negative value otherwise.
+ */
+int
+xmlSecOpenSSLKeyDataEcdsaAdoptEvp(xmlSecKeyDataPtr data, EVP_PKEY* pKey) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
+    xmlSecAssert2(pKey != NULL, -1);
+    xmlSecAssert2(pKey->type == EVP_PKEY_EC, -1);
+
+    return(xmlSecOpenSSLEvpKeyDataAdoptEvp(data, pKey));
+}
+
+/**
+ * xmlSecOpenSSLKeyDataEcdsaGetEvp:
+ * @data:               the pointer to ECDSA key data.
+ *
+ * Gets the OpenSSL EVP key from ECDSA key data.
+ *
+ * Returns: pointer to OpenSSL EVP key or NULL if an error occurs.
+ */
+EVP_PKEY*
+xmlSecOpenSSLKeyDataEcdsaGetEvp(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), NULL);
+
+    return(xmlSecOpenSSLEvpKeyDataGetEvp(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataEcdsaInitialize(xmlSecKeyDataPtr data) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataInitialize(data));
+}
+
+static int
+xmlSecOpenSSLKeyDataEcdsaDuplicate(xmlSecKeyDataPtr dst, xmlSecKeyDataPtr src) {
+    xmlSecAssert2(xmlSecKeyDataCheckId(dst, xmlSecOpenSSLKeyDataEcdsaId), -1);
+    xmlSecAssert2(xmlSecKeyDataCheckId(src, xmlSecOpenSSLKeyDataEcdsaId), -1);
+
+    return(xmlSecOpenSSLEvpKeyDataDuplicate(dst, src));
+}
+
+static void
+xmlSecOpenSSLKeyDataEcdsaFinalize(xmlSecKeyDataPtr data) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
+
+    xmlSecOpenSSLEvpKeyDataFinalize(data);
+}
+
+static xmlSecKeyDataType
+xmlSecOpenSSLKeyDataEcdsaGetType(xmlSecKeyDataPtr data ATTRIBUTE_UNUSED) {
+    /* XXX-MAK: Fix this. */
+    return(xmlSecKeyDataTypePublic | xmlSecKeyDataTypePrivate);
+}
+
+static xmlSecSize
+xmlSecOpenSSLKeyDataEcdsaGetSize(xmlSecKeyDataPtr data) {
+    const EC_GROUP *group;
+    const EC_KEY *ecdsa;
+    BIGNUM order;
+
+    xmlSecAssert2(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId), 0);
+
+    ecdsa = xmlSecOpenSSLKeyDataEcdsaGetEcdsa(data);
+    if((ecdsa == NULL)) {
+        return(0);
+    }
+
+    group = EC_KEY_get0_group(ecdsa);
+    if(group == NULL) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EC_KEY_get0_group",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(0);
+    }
+
+    if(EC_GROUP_get_order(group, &order, NULL) != 1) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    NULL,
+                    "EC_GROUP_get_order",
+                    XMLSEC_ERRORS_R_CRYPTO_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(0);
+    }
+
+    return(BN_num_bytes(&order));
+}
+
+static void
+xmlSecOpenSSLKeyDataEcdsaDebugDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "=== ecdsa key: size = %d\n",
+            xmlSecOpenSSLKeyDataEcdsaGetSize(data));
+}
+
+static void
+xmlSecOpenSSLKeyDataEcdsaDebugXmlDump(xmlSecKeyDataPtr data, FILE* output) {
+    xmlSecAssert(xmlSecKeyDataCheckId(data, xmlSecOpenSSLKeyDataEcdsaId));
+    xmlSecAssert(output != NULL);
+
+    fprintf(output, "<ECDSAKeyValue size=\"%d\" />\n",
+            xmlSecOpenSSLKeyDataEcdsaGetSize(data));
+}
+
+#endif /* XMLSEC_NO_ECDSA */
 
 #ifndef XMLSEC_NO_RSA
 /**************************************************************************

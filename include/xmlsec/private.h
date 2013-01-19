@@ -334,6 +334,7 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @keyDataAesGetKlass:         the method to get pointer to AES key data klass.
  * @keyDataDesGetKlass:         the method to get pointer to DES key data klass.
  * @keyDataDsaGetKlass:         the method to get pointer to DSA key data klass.
+ * @keyDataEcdsaGetKlass:       the method to get pointer to ECDSA key data klass.
  * @keyDataGost2001GetKlass:    the method to get pointer to GOST 2001 key data klass.
  * @keyDataHmacGetKlass:        the method to get pointer to HMAC key data klass.
  * @keyDataRsaGetKlass:         the method to get pointer to RSA key data klass.
@@ -349,6 +350,12 @@ typedef int                     (*xmlSecCryptoAppKeyCertLoadMemoryMethod)(xmlSec
  * @transformDes3CbcGetKlass:   the method to get pointer to Triple DES encryption transform.
  * @transformKWDes3GetKlass:    the method to get pointer to Triple DES key wrapper transform.
  * @transformDsaSha1GetKlass:   the method to get pointer to DSA-SHA1 signature transform.
+ * @transformDsaSha256GetKlass: the method to get pointer to DSA-SHA256 signature transform.
+ * @transformEcdsaSha1GetKlass: the method to get pointer to ECDSA-SHA1 signature transform.
+ * @transformEcdsaSha224GetKlass: the method to get pointer to ECDSA-SHA224 signature transform.
+ * @transformEcdsaSha256GetKlass: the method to get pointer to ECDSA-SHA256 signature transform.
+ * @transformEcdsaSha384GetKlass: the method to get pointer to ECDSA-SHA384 signature transform.
+ * @transformEcdsaSha512GetKlass: the method to get pointer to ECDSA-SHA512 signature transform.
  * @transformGost2001GostR3411_94GetKlass: the method to get pointer to GOST2001 transform.
  * @transformHmacMd5GetKlass:   the method to get pointer to HMAC-MD5 transform.
  * @transformHmacRipemd160GetKlass: the method to get pointer to HMAC-RIPEMD160 transform.
@@ -402,6 +409,7 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoKeyDataGetKlassMethod            keyDataAesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDesGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataDsaGetKlass;
+    xmlSecCryptoKeyDataGetKlassMethod            keyDataEcdsaGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataGost2001GetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataHmacGetKlass;
     xmlSecCryptoKeyDataGetKlassMethod            keyDataRsaGetKlass;
@@ -421,6 +429,12 @@ struct _xmlSecCryptoDLFunctions {
     xmlSecCryptoTransformGetKlassMethod          transformDes3CbcGetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformKWDes3GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformDsaSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformDsaSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha1GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha224GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha256GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha384GetKlass;
+    xmlSecCryptoTransformGetKlassMethod          transformEcdsaSha512GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformGost2001GostR3411_94GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformHmacMd5GetKlass;
     xmlSecCryptoTransformGetKlassMethod          transformHmacRipemd160GetKlass;

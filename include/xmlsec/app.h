@@ -66,6 +66,13 @@ XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDesGetKlass        
 #define xmlSecKeyDataDsaId                      xmlSecKeyDataDsaGetKlass()
 XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataDsaGetKlass        (void);
 /**
+ * xmlSecKeyDataEcdsaId:
+ *
+ * The ECDSA key klass.
+ */
+#define xmlSecKeyDataEcdsaId                    xmlSecKeyDataEcdsaGetKlass()
+XMLSEC_EXPORT xmlSecKeyDataId                   xmlSecKeyDataEcdsaGetKlass      (void);
+/**
  * xmlSecKeyDataGost2001Id:
  *
  * The GOST2001 key klass.
@@ -182,6 +189,48 @@ XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformKWDes3GetKlass   
  */
 #define xmlSecTransformDsaSha1Id                xmlSecTransformDsaSha1GetKlass()
 XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDsaSha1GetKlass  (void);
+/**
+ * xmlSecTransformDsaSha256Id:
+ *
+ * The DSA-SHA256 signature transform klass.
+ */
+#define xmlSecTransformDsaSha256Id              xmlSecTransformDsaSha256GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformDsaSha256GetKlass  (void);
+/**
+ * xmlSecTransformEcdsaSha1Id:
+ *
+ * The ECDSA-SHA1 signature transform klass.
+ */
+#define xmlSecTransformEcdsaSha1Id              xmlSecTransformEcdsaSha1GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha1GetKlass  (void);
+/**
+ * xmlSecTransformEcdsaSha224Id:
+ *
+ * The ECDSA-SHA224 signature transform klass.
+ */
+#define xmlSecTransformEcdsaSha224Id            xmlSecTransformEcdsaSha224GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha224GetKlass  (void);
+/**
+ * xmlSecTransformEcdsaSha256Id:
+ *
+ * The ECDSA-SHA256 signature transform klass.
+ */
+#define xmlSecTransformEcdsaSha256Id            xmlSecTransformEcdsaSha256GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha256GetKlass  (void);
+/**
+ * xmlSecTransformEcdsaSha384Id:
+ *
+ * The ECDS-SHA384 signature transform klass.
+ */
+#define xmlSecTransformEcdsaSha384Id            xmlSecTransformEcdsaSha384GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha384GetKlass  (void);
+/**
+ * xmlSecTransformEcdsaSha512Id:
+ *
+ * The ECDSA-SHA512 signature transform klass.
+ */
+#define xmlSecTransformEcdsaSha512Id            xmlSecTransformEcdsaSha512GetKlass()
+XMLSEC_EXPORT xmlSecTransformId                 xmlSecTransformEcdsaSha512GetKlass  (void);
 
 /**
  * xmlSecTransformGost2001GostR3411_94Id:

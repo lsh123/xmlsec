@@ -634,6 +634,14 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
                     XMLSEC_ERRORS_NO_MESSAGE);
         return(-1);
     }
+    if((functions->keyDataEcdsaGetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataEcdsaGetKlass()) < 0)) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(functions->keyDataEcdsaGetKlass())),
+                    "xmlSecKeyDataIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
     if((functions->keyDataGost2001GetKlass != NULL) && (xmlSecKeyDataIdsRegister(functions->keyDataGost2001GetKlass()) < 0)) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecKeyDataKlassGetName(functions->keyDataGost2001GetKlass())),
@@ -765,6 +773,60 @@ xmlSecCryptoDLFunctionsRegisterKeyDataAndTransforms(struct _xmlSecCryptoDLFuncti
     if((functions->transformDsaSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformDsaSha1GetKlass()) < 0) {
         xmlSecError(XMLSEC_ERRORS_HERE,
                     xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformDsaSha1GetKlass())),
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if((functions->transformDsaSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformDsaSha256GetKlass()) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformDsaSha256GetKlass())),
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if((functions->transformEcdsaSha1GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha1GetKlass()) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformEcdsaSha1GetKlass())),
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if((functions->transformEcdsaSha224GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha224GetKlass()) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformEcdsaSha224GetKlass())),
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if((functions->transformEcdsaSha256GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha256GetKlass()) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformEcdsaSha256GetKlass())),
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if((functions->transformEcdsaSha384GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha384GetKlass()) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformEcdsaSha384GetKlass())),
+                    "xmlSecTransformIdsRegister",
+                    XMLSEC_ERRORS_R_XMLSEC_FAILED,
+                    XMLSEC_ERRORS_NO_MESSAGE);
+        return(-1);
+    }
+
+    if((functions->transformEcdsaSha512GetKlass != NULL) && xmlSecTransformIdsRegister(functions->transformEcdsaSha512GetKlass()) < 0) {
+        xmlSecError(XMLSEC_ERRORS_HERE,
+                    xmlSecErrorsSafeString(xmlSecTransformKlassGetName(functions->transformEcdsaSha512GetKlass())),
                     "xmlSecTransformIdsRegister",
                     XMLSEC_ERRORS_R_XMLSEC_FAILED,
                     XMLSEC_ERRORS_NO_MESSAGE);

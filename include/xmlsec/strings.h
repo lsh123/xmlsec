@@ -318,6 +318,43 @@ XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeDSAPgenCounter[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDsaSha1[];
 XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha1[];
 
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameDsaSha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefDsaSha256[];
+
+/*************************************************************************
+ *
+ * ECDSA strings
+ *
+ ************************************************************************/
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameECDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAKeyValue[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefECDSAKeyValue[];
+
+/* XXX-MAK: More constants will be needed later. */
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAP[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAQ[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAG[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAJ[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAX[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAY[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSASeed[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNodeECDSAPgenCounter[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha1[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha1[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha224[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha224[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha256[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha256[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha384[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha384[];
+
+XMLSEC_EXPORT_VAR const xmlChar xmlSecNameEcdsaSha512[];
+XMLSEC_EXPORT_VAR const xmlChar xmlSecHrefEcdsaSha512[];
+
 /*************************************************************************
  *
  * GOST2001 strings

@@ -85,7 +85,7 @@ XML Digital signature processing status.
 </para><variablelist role="enum">
 <varlistentry id="xmlSecDSigStatusUnknown" role="constant">
 <term><literal>xmlSecDSigStatusUnknown</literal></term>
-<listitem><simpara>the status is unknow.
+<listitem><simpara>the status is unknown.
 </simpara></listitem>
 </varlistentry>
 <varlistentry id="xmlSecDSigStatusSucceeded" role="constant">
@@ -243,11 +243,11 @@ XML DSig processing context.
 </simpara></listitem>
 </varlistentry>
 <varlistentry><term><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.result">result</structfield>;</term>
-<listitem><simpara>the pointer to signature (not valid for signature verificaction).
+<listitem><simpara>the pointer to signature (not valid for signature verification).
 </simpara></listitem>
 </varlistentry>
 <varlistentry><term><link linkend="xmlSecDSigStatus"><type>xmlSecDSigStatus</type></link>&#160;<structfield id="xmlSecDSigCtx.status">status</structfield>;</term>
-<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire">&lt;dsig:Signatuire/&gt;</ulink> procesisng status.
+<listitem><simpara>the <ulink URL="http://www.w3.org/TR/xmldsig-core/#sec-Signatuire">&lt;dsig:Signatuire/&gt;</ulink> processing status.
 </simpara></listitem>
 </varlistentry>
 <varlistentry><term><link linkend="xmlSecTransform"><type>xmlSecTransformPtr</type></link>&#160;<structfield id="xmlSecDSigCtx.signMethod">signMethod</structfield>;</term>

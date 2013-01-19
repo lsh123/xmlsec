@@ -20,7 +20,7 @@
     
     <sect1 id="xmlsec-notes-sign" >
 	<title>Signing a document.</title>
-	<para>The typical siganture process includes following steps:
+	<para>The typical signature process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
 		Prepare data for signature.

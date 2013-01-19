@@ -171,7 +171,7 @@ XML Encrypiton context.
 </simpara></listitem>
 </varlistentry>
 <varlistentry><term><link linkend="xmlSecBuffer"><type>xmlSecBufferPtr</type></link>&#160;<structfield id="xmlSecEncCtx.result">result</structfield>;</term>
-<listitem><simpara>the pointer to signature (not valid for signature verificaction).
+<listitem><simpara>the pointer to signature (not valid for signature verification).
 </simpara></listitem>
 </varlistentry>
 <varlistentry><term><link linkend="int"><type>int</type></link>&#160;<structfield id="xmlSecEncCtx.resultBase64Encoded">resultBase64Encoded</structfield>;</term>

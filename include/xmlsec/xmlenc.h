@@ -64,7 +64,7 @@ typedef enum {
  * @encKey:                     the signature key; application may set #encKey
  *                              before calling encryption/decryption functions.
  * @operation:                  the operation: encrypt or decrypt.
- * @result:                     the pointer to signature (not valid for signature verificaction).
+ * @result:                     the pointer to signature (not valid for signature verification).
  * @resultBase64Encoded:        the flag: if set then result in #result is base64 encoded.
  * @resultReplaced:             the flag: if set then resulted <enc:EncryptedData/>
  *                              or <enc:EncryptedKey/> node is added to the document.

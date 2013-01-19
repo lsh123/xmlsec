@@ -1797,7 +1797,7 @@ Sat 30 Mar 2002 12:55:30 AM PST Aleksey Sanin <aleksey@aleksey.com>
     
 Wed 27 Mar 2002 11:20:42 PM PST Aleksey Sanin <aleksey@aleksey.com> 
 	*: Added x509 verification support and a skeleton for x509 
-          x509 based sigantures
+          x509 based signatures
     
 Tue 26 Mar 2002 06:30:10 PM PST Aleksey Sanin <aleksey@aleksey.com>
 	*: The result of operation (sign/verify) is returned in the

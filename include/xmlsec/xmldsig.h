@@ -36,7 +36,7 @@ typedef struct _xmlSecDSigReferenceCtx          xmlSecDSigReferenceCtx,
 
 /**
  * xmlSecDSigStatus:
- * @xmlSecDSigStatusUnknown:    the status is unknow.
+ * @xmlSecDSigStatusUnknown:    the status is unknown.
  * @xmlSecDSigStatusSucceeded:  the processing succeeded.
  * @xmlSecDSigStatusInvalid:    the processing failed.
  *
@@ -113,8 +113,8 @@ typedef enum {
  *                              before calling #xmlSecDSigCtxSign or #xmlSecDSigCtxVerify
  *                              functions.
  * @operation:                  the operation: sign or verify.
- * @result:                     the pointer to signature (not valid for signature verificaction).
- * @status:                     the <dsig:Signatuire/> procesisng status.
+ * @result:                     the pointer to signature (not valid for signature verification).
+ * @status:                     the <dsig:Signatuire/> processing status.
  * @signMethod:                 the pointer to signature transform.
  * @c14nMethod:                 the pointer to c14n transform.
  * @preSignMemBufMethod:        the pointer to binary buffer right before signature

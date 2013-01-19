@@ -20,7 +20,7 @@
     
     <sect1 id="xmlsec-notes-verify" >
 	<title>Verifying a signed document</title>
-	<para>The typical siganture verification process includes following steps:
+	<para>The typical signature verification process includes following steps:
 	  <itemizedlist>
 	    <listitem><para>
 		Load keys, X509 certificates, etc. in the <link linkend="xmlSecKeysMngr">keys manager</link> .

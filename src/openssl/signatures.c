@@ -31,7 +31,9 @@ static const EVP_MD *xmlSecOpenSSLDsaSha1Evp                    (void);
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
+#ifdef XMLSEC_OPENSSL_100
 static const EVP_MD *xmlSecOpenSSLDsaSha256Evp                  (void);
+#endif /* XMLSEC_OPENSSL_100 */
 #endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
@@ -237,10 +239,12 @@ xmlSecOpenSSLEvpSignatureInitialize(xmlSecTransformPtr transform) {
 #endif /* XMLSEC_NO_SHA1 */
 
 #ifndef XMLSEC_NO_SHA256
+#ifdef XMLSEC_OPENSSL_100
     if(xmlSecTransformCheckId(transform, xmlSecOpenSSLTransformDsaSha256Id)) {
         ctx->digest     = xmlSecOpenSSLDsaSha256Evp();
         ctx->keyId      = xmlSecOpenSSLKeyDataDsaId;
     } else
+#endif /* XMLSEC_OPENSSL_100 */
 #endif /* XMLSEC_NO_SHA256 */
 
 #endif /* XMLSEC_NO_DSA */
@@ -863,8 +867,10 @@ static const EVP_MD xmlSecOpenSSLDsaSha1MdEvp = {
     xmlSecOpenSSLDsaEvpVerify,
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
     SHA_CBLOCK,
-    sizeof(EVP_MD *)+sizeof(SHA_CTX),
-    NULL
+    sizeof(EVP_MD *)+sizeof(SHA_CTX)
+#ifdef XMLSEC_OPENSSL_100
+   , NULL
+#endif /* XMLSEC_OPENSSL_100 */
 };
 
 static const EVP_MD *xmlSecOpenSSLDsaSha1Evp(void)
@@ -920,7 +926,7 @@ xmlSecOpenSSLTransformDsaSha256GetKlass(void) {
     return(&xmlSecOpenSSLDsaSha256Klass);
 }
 
-#ifndef XMLSEC_OPENSSL_096
+#ifdef XMLSEC_OPENSSL_100
 static int
 xmlSecOpenSSLDsaSha256EvpInit(EVP_MD_CTX *ctx)
 {
@@ -938,24 +944,17 @@ xmlSecOpenSSLDsaSha256EvpFinal(EVP_MD_CTX *ctx, unsigned char *md)
 {
     return SHA256_Final(md,ctx->md_data);
 }
-#endif /* XMLSEC_OPENSSL_096 */
 
 static const EVP_MD xmlSecOpenSSLDsaSha256MdEvp = {
     NID_dsa_with_SHA256,
     NID_dsa_with_SHA256,
     SHA256_DIGEST_LENGTH,
-#ifndef XMLSEC_OPENSSL_096
     0,
     xmlSecOpenSSLDsaSha256EvpInit,
     xmlSecOpenSSLDsaSha256EvpUpdate,
     xmlSecOpenSSLDsaSha256EvpFinal,
     NULL,
     NULL,
-#else /* XMLSEC_OPENSSL_096 */
-    SHA256_Init,
-    SHA256_Update,
-    SHA256_Final,
-#endif /* XMLSEC_OPENSSL_096 */
     xmlSecOpenSSLDsaEvpSign,
     xmlSecOpenSSLDsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
@@ -969,6 +968,7 @@ static const EVP_MD *xmlSecOpenSSLDsaSha256Evp(void)
 {
     return(&xmlSecOpenSSLDsaSha256MdEvp);
 }
+#endif /* XMLSEC_OPENSSL_100 */
 
 #endif /* XMLSEC_NO_SHA256 */
 

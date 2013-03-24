@@ -1344,7 +1344,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha224MdEvp = {
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
-    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA224,0,0,0,0},
+    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA224,0,0,0},
     SHA256_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA256_CTX),
 };
@@ -1441,7 +1441,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha256MdEvp = {
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
-    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA256,0,0,0,0},
+    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA256,0,0,0},
     SHA256_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA256_CTX),
 };
@@ -1538,7 +1538,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha384MdEvp = {
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
-    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA384,0,0,0,0},
+    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA384,0,0,0},
     SHA512_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA512_CTX),
 };
@@ -1635,7 +1635,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha512MdEvp = {
     xmlSecOpenSSLEcdsaEvpSign,
     xmlSecOpenSSLEcdsaEvpVerify,
     /* XXX-MAK: This worries me, not sure that the keys are right. */
-    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA512,0,0,0,0},
+    {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA512,0,0,0},
     SHA512_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA512_CTX),
 };

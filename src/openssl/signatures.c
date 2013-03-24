@@ -864,6 +864,7 @@ static const EVP_MD xmlSecOpenSSLDsaSha1MdEvp = {
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
     SHA_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLDsaSha1Evp(void)
@@ -961,6 +962,7 @@ static const EVP_MD xmlSecOpenSSLDsaSha256MdEvp = {
     {EVP_PKEY_DSA,EVP_PKEY_DSA2,EVP_PKEY_DSA3,EVP_PKEY_DSA4,0},
     SHA256_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA256_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLDsaSha256Evp(void)
@@ -1250,6 +1252,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha1MdEvp = {
     {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA1,0,0,0},
     SHA_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLEcdsaSha1Evp(void)
@@ -1347,6 +1350,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha224MdEvp = {
     {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA224,0,0,0},
     SHA256_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA256_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLEcdsaSha224Evp(void)
@@ -1444,6 +1448,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha256MdEvp = {
     {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA256,0,0,0},
     SHA256_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA256_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLEcdsaSha256Evp(void)
@@ -1541,6 +1546,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha384MdEvp = {
     {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA384,0,0,0},
     SHA512_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA512_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLEcdsaSha384Evp(void)
@@ -1638,6 +1644,7 @@ static const EVP_MD xmlSecOpenSSLEcdsaSha512MdEvp = {
     {NID_X9_62_id_ecPublicKey,NID_ecdsa_with_SHA512,0,0,0},
     SHA512_CBLOCK,
     sizeof(EVP_MD *)+sizeof(SHA512_CTX),
+    NULL
 };
 
 static const EVP_MD *xmlSecOpenSSLEcdsaSha512Evp(void)
